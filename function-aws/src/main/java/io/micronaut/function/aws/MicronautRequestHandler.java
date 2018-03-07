@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package org.particleframework.function.aws;
+package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
-import org.particleframework.context.ApplicationContext;
-import org.particleframework.function.FunctionBean;
-import org.particleframework.function.executor.AbstractFunctionExecutor;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.FunctionBean;
+import io.micronaut.function.executor.AbstractFunctionExecutor;
 
 /**
- * <p>An Amazon Lambda {@link RequestHandler} implementation for Particle {@link FunctionBean}</p>
+ * <p>An Amazon Lambda {@link RequestHandler} implementation for Micronaut {@link FunctionBean}</p>
  *
  * @author Graeme Rocher
  * @since 1.0
  */
-public abstract class ParticleRequestHandler<I,O> extends AbstractFunctionExecutor<I,O, Context> implements RequestHandler<I, O> {
+public abstract class MicronautRequestHandler<I,O> extends AbstractFunctionExecutor<I,O, Context> implements RequestHandler<I, O> {
     @Override
     public final O handleRequest(I input, Context context) {
         ApplicationContext applicationContext = buildApplicationContext(context);

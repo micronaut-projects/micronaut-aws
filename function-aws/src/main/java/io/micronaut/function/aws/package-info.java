@@ -15,9 +15,9 @@
  */
 
 /**
- * <p>Classes to support exposing {@link org.particleframework.function.FunctionBean} instances for AWS lambda</p>
+ * <p>Classes to support exposing {@link io.micronaut.function.FunctionBean} instances for AWS lambda</p>
  *
  * @author Graeme Rocher
  * @since 1.0
  */
-package org.particleframework.function.aws;
+package io.micronaut.function.aws;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package org.particleframework.function.aws
+package io.micronaut.function.aws
 
 import com.amazonaws.services.lambda.runtime.Context
 import spock.lang.Specification
@@ -25,7 +25,7 @@ import javax.inject.Singleton
  * @author Graeme Rocher
  * @since 1.0
  */
-class ParticleRequestHandlerSpec extends Specification {
+class MicronautRequestHandlerSpec extends Specification {
 
     void "test particle request handler"() {
         expect:
@@ -39,7 +39,7 @@ class ParticleRequestHandlerSpec extends Specification {
         }
     }
 
-    static class RoundHandler extends ParticleRequestHandler<Float, Integer> {
+    static class RoundHandler extends MicronautRequestHandler<Float, Integer> {
 
         @Inject MathService mathService
 

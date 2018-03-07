@@ -14,9 +14,9 @@
  * limitations under the License. 
  */
 /**
- * Support classes for binding to {@link org.particleframework.function.FunctionBean} parameters from AWS Lambda requests
+ * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests
  *
  * @author Graeme Rocher
  * @since 1.0
  */
-package org.particleframework.function.aws.bind;
+package io.micronaut.function.aws.bind;

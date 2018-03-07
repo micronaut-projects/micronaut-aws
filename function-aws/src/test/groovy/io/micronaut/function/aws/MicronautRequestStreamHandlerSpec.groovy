@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package org.particleframework.function.aws
+package io.micronaut.function.aws
 
 import com.amazonaws.services.lambda.runtime.Context
-import org.particleframework.context.env.Environment
-import org.particleframework.function.FunctionBean
+import io.micronaut.context.env.Environment
+import io.micronaut.function.FunctionBean
 import spock.lang.Specification
 
 import java.util.function.Function
@@ -27,11 +27,11 @@ import java.util.function.Function
  * @author Graeme Rocher
  * @since 1.0
  */
-class ParticleRequestStreamHandlerSpec extends Specification{
+class MicronautRequestStreamHandlerSpec extends Specification{
 
     void "test particle stream handler with POJO"() {
         given:
-        ParticleRequestStreamHandler requestStreamHandler = new ParticleRequestStreamHandler() {
+        MicronautRequestStreamHandler requestStreamHandler = new MicronautRequestStreamHandler() {
             @Override
             protected String resolveFunctionName(Environment environment) {
                 return "book"
@@ -56,7 +56,7 @@ class ParticleRequestStreamHandlerSpec extends Specification{
 
     void "test particle stream handler with integer"() {
         given:
-        ParticleRequestStreamHandler requestStreamHandler = new ParticleRequestStreamHandler() {
+        MicronautRequestStreamHandler requestStreamHandler = new MicronautRequestStreamHandler() {
             @Override
             protected String resolveFunctionName(Environment environment) {
                 return "multiply-by-two"

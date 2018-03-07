@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package org.particleframework.function.aws;
+package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
-import org.particleframework.context.ApplicationContext;
-import org.particleframework.function.executor.StreamFunctionExecutor;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.executor.StreamFunctionExecutor;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static org.particleframework.function.aws.ParticleRequestHandler.registerContextBeans;
+import static io.micronaut.function.aws.MicronautRequestHandler.registerContextBeans;
 
 /**
- * <p>An implementation of the {@link RequestStreamHandler} for Particle</p>
+ * <p>An implementation of the {@link RequestStreamHandler} for Micronaut</p>
  *
  * @author Graeme Rocher
  * @since 1.0
  */
-public class ParticleRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler {
+public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
         execute(input, output, context);
