@@ -13,10 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.configurations.aws;
+
+import com.amazonaws.ClientConfiguration;
+import io.micronaut.context.annotation.ConfigurationBuilder;
+import io.micronaut.context.annotation.ConfigurationProperties;
+
 /**
- * <p>Classes to support exposing {@link io.micronaut.function.FunctionBean} instances for AWS lambda</p>
+ * Configuration options for AWS client
  *
- * @author Graeme Rocher
+ * @author graemerocher
  * @since 1.0
  */
-package io.micronaut.function.aws;
+
+@ConfigurationProperties("client")
+public class AWSClientConfiguration extends AWSConfiguration {
+
+    @ConfigurationBuilder
+    public ClientConfiguration clientConfiguration = new ClientConfiguration();
+}
