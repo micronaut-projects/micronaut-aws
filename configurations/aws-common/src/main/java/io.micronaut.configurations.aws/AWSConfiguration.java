@@ -13,10 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package io.micronaut.configurations.aws;
+
+import io.micronaut.context.annotation.ConfigurationProperties;
+
 /**
- * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests.
+ * Configuration options for AWS.
  *
- * @author Graeme Rocher
+ * @author graemerocher
  * @since 1.0
  */
-package io.micronaut.function.aws.bind;
+@ConfigurationProperties(AWSConfiguration.PREFIX)
+public class AWSConfiguration {
+
+    /**
+     * Prefix for all AWS settings.
+     */
+    public static final String PREFIX = "aws";
+}

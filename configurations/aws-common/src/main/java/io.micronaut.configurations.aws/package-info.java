@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests.
+ * AWS configuration classes.
  *
- * @author Graeme Rocher
+ * @author graemerocher
  * @since 1.0
  */
-package io.micronaut.function.aws.bind;
+package io.micronaut.configurations.aws;
+
