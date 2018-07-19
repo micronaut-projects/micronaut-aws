@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configurations.aws;
+package io.micronaut.configuration.aws;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 

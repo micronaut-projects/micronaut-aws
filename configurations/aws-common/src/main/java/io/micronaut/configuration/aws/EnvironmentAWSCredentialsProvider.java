@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.micronaut.configurations.aws;
+package io.micronaut.configuration.aws;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;

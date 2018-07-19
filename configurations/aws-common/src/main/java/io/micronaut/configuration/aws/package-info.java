@@ -20,5 +20,5 @@
  * @author graemerocher
  * @since 1.0
  */
-package io.micronaut.configurations.aws;
+package io.micronaut.configuration.aws;
 
