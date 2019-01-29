@@ -13,10 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests.
- *
- * @author Graeme Rocher
- * @since 1.0
- */
-package io.micronaut.function.aws.bind;
+package io.micronaut.function.aws.proxy;
+
+public class SingleValueModel {
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+}

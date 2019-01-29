@@ -1,0 +1,18 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+    compileOnly "io.micronaut:micronaut-inject-java"
+
+    compileOnly "io.micronaut:micronaut-security"
+    compile "io.micronaut:micronaut-http-netty:$micronautVersion"
+    compile "io.micronaut:micronaut-http-server:$micronautVersion"
+    compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.3', {
+        exclude group:'javax.servlet', module:'javax.servlet-api'
+    }
+    compile project(":function-aws")
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-inject-groovy"
+    testCompile "io.micronaut:micronaut-security"
+}

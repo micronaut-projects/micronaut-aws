@@ -13,10 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests.
- *
- * @author Graeme Rocher
- * @since 1.0
- */
-package io.micronaut.function.aws.bind;
+package io.micronaut.function.aws.proxy;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MapResponseModel {
+    private Map<String, String> values;
+
+    public MapResponseModel() {
+        this.values = new HashMap<>();
+    }
+
+    public void addValue(String key, String value) {
+        this.values.put(key, value);
+    }
+
+    public Map<String, String> getValues() {
+        return values;
+    }
+
+    public void setValues(Map<String, String> values) {
+        this.values = values;
+    }
+
+}

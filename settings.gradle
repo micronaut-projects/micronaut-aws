@@ -1,5 +1,6 @@
 rootProject.name = 'aws'
 
 include 'function-aws'
+include 'function-aws-api-proxy'
 include 'aws-common'
 

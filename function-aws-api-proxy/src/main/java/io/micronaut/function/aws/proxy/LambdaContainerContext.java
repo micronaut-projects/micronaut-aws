@@ -13,10 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.function.aws.proxy;
+
+import io.micronaut.context.ApplicationContextProvider;
+import io.micronaut.http.codec.MediaTypeCodec;
+import io.micronaut.web.router.Router;
+
 /**
- * Support classes for binding to {@link io.micronaut.function.FunctionBean} parameters from AWS Lambda requests.
+ * A context object to share state.
  *
- * @author Graeme Rocher
- * @since 1.0
+ * @author graemerocher
+ * @since 1.1
  */
-package io.micronaut.function.aws.bind;
+public interface LambdaContainerContext extends ApplicationContextProvider {
+
+    /**
+     * @return The {@link Router} instance.
+     */
+    Router getRouter();
+
+    /**
+     * @return The JSON codec.
+     */
+    MediaTypeCodec getJsonCodec();
+}
