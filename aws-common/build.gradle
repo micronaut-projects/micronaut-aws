@@ -1,0 +1,15 @@
+group "io.micronaut"
+
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"    
+
+    compile "io.micronaut:micronaut-inject:$micronautVersion"
+    compile "io.micronaut:micronaut-http-client:$micronautVersion"
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: awsSdkVersion
+
+	testCompile "io.micronaut:micronaut-discovery-client"
+	testCompile "io.micronaut:micronaut-inject-groovy"
+	testCompile "io.micronaut:micronaut-http-server-netty"
+	testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+}

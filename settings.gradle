@@ -1,0 +1,5 @@
+rootProject.name = 'aws'
+
+include 'function-aws'
+include 'aws-common'
+

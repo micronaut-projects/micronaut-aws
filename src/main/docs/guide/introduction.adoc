@@ -1,0 +1,2 @@
+This project provides various extensions to Micronaut for Amazon Web Services (AWS).
+

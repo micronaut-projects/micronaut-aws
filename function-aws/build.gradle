@@ -1,6 +1,6 @@
 dependencies {
-    compile project(":function")
-    compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compile "io.micronaut:micronaut-function:$micronautVersion"
+    compile "com.amazonaws:aws-lambda-java-core:$awsLambdaVersion"
 
-    testCompile project(":inject-groovy")
+    testCompile "io.micronaut:micronaut-inject-groovy"
 }
