@@ -16,7 +16,6 @@
 package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.exceptions.InvalidResponseObjectException;
-import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.Headers;
@@ -201,9 +200,9 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         if (contentType != null) {
             int semidx = contentType.indexOf(';');
             if (semidx >= 0) {
-                return LambdaContainerHandler.getContainerConfig().isBinaryContentType(contentType.substring(0, semidx));
+                return MicronautLambdaContainerHandler.getContainerConfig().isBinaryContentType(contentType.substring(0, semidx));
             } else {
-                return LambdaContainerHandler.getContainerConfig().isBinaryContentType(contentType);
+                return MicronautLambdaContainerHandler.getContainerConfig().isBinaryContentType(contentType);
             }
         }
         return false;
