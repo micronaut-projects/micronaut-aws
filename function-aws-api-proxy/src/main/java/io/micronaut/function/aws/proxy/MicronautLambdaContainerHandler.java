@@ -68,9 +68,11 @@ import java.util.stream.Stream;
  * @author graemerocher
  * @since 1.1
  */
-public class MicronautLambdaContainerHandler
+public final class MicronautLambdaContainerHandler
         extends LambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
+    private static final String TIMER_INIT = "MICRONAUT_COLD_START";
+    private static final String TIMER_REQUEST = "MICRONAUT_HANDLE_REQUEST";
     private final ApplicationContextBuilder applicationContextBuilder;
     private final LambdaContainerState lambdaContainerEnvironment;
     private boolean initialized = false;
@@ -84,7 +86,7 @@ public class MicronautLambdaContainerHandler
      * @param applicationContextBuilder The context builder
      * @throws ContainerInitializationException if the container couldn't be started
      */
-    protected MicronautLambdaContainerHandler(
+    private MicronautLambdaContainerHandler(
             LambdaContainerState lambdaContainerEnvironment,
             ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
         super(
@@ -107,7 +109,7 @@ public class MicronautLambdaContainerHandler
      * @param lambdaContainerEnvironment The environment
      * @throws ContainerInitializationException if the container couldn't be started
      */
-    protected MicronautLambdaContainerHandler(LambdaContainerState lambdaContainerEnvironment) throws ContainerInitializationException {
+    private MicronautLambdaContainerHandler(LambdaContainerState lambdaContainerEnvironment) throws ContainerInitializationException {
         this(lambdaContainerEnvironment, ApplicationContext.build());
     }
 
@@ -151,7 +153,7 @@ public class MicronautLambdaContainerHandler
 
     @Override
     public void initialize() throws ContainerInitializationException {
-        Timer.start("MICRONAUT_COLD_START");
+        Timer.start(TIMER_INIT);
         try {
             this.applicationContext = applicationContextBuilder.environments(Environment.FUNCTION)
                     .build()
@@ -170,13 +172,13 @@ public class MicronautLambdaContainerHandler
             );
         }
         this.initialized = true;
-        Timer.stop("MICRONAUT_COLD_START");
+        Timer.stop(TIMER_INIT);
     }
 
     @Override
     protected void handleRequest(
             MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Context lambdaContext) throws Exception {
-        Timer.start("MICRONAUT_HANDLE_REQUEST");
+        Timer.start(TIMER_REQUEST);
 
         try {
             // wire up the application context on the first invocation
@@ -268,7 +270,7 @@ public class MicronautLambdaContainerHandler
                 }
             });
         } finally {
-            Timer.stop("MICRONAUT_HANDLE_REQUEST");
+            Timer.stop(TIMER_REQUEST);
         }
 
 
@@ -326,20 +328,20 @@ public class MicronautLambdaContainerHandler
             return jsonCodec;
         }
 
-        public void setJsonCodec(MediaTypeCodec jsonCodec) {
-            this.jsonCodec = jsonCodec;
-        }
-
-        public void setRouter(Router router) {
-            this.router = router;
-        }
-
         @Override
         public ApplicationContext getApplicationContext() {
             return applicationContext;
         }
 
-        public void setApplicationContext(ApplicationContext applicationContext) {
+        void setJsonCodec(MediaTypeCodec jsonCodec) {
+            this.jsonCodec = jsonCodec;
+        }
+
+        void setRouter(Router router) {
+            this.router = router;
+        }
+
+        void setApplicationContext(ApplicationContext applicationContext) {
             this.applicationContext = applicationContext;
         }
     }

@@ -34,6 +34,7 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.cookie.Cookie;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.util.*;
@@ -79,11 +80,13 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
+    @Nonnull
     public MutableConvertibleValues<Object> getAttributes() {
         return attributes;
     }
 
     @Override
+    @Nonnull
     public Optional<T> getBody() {
         return Optional.ofNullable(body);
     }
@@ -94,14 +97,8 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         return this;
     }
 
-    /**
-     * @return Any cookies
-     */
-    public Map<String, Cookie> getCookies() {
-        return cookies;
-    }
-
     @Override
+    @Nonnull
     public MutableHttpHeaders getHeaders() {
         return awsHeaders;
     }
@@ -128,6 +125,13 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     @Override
     public HttpStatus getStatus() {
         return status;
+    }
+
+    /**
+     * @return Any cookies
+     */
+    Map<String, Cookie> getCookies() {
+        return cookies;
     }
 
     /**

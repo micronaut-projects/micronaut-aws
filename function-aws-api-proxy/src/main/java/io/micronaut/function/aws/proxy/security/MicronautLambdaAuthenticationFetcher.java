@@ -38,6 +38,9 @@ import java.util.Collections;
 @Singleton
 @Requires(classes = AuthenticationFetcher.class)
 public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher {
+
+    public static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
+
     @Override
     public Publisher<Authentication> fetchAuthentication(HttpRequest<?> request) {
         if (request instanceof MicronautAwsProxyRequest) {
@@ -57,7 +60,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                         )
                 );
             } else {
-                final String v = request.getHeaders().get("x-amzn-oidc-identity");
+                final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
                 if (v != null) {
                     return Flowable.just(
                             new DefaultAuthentication(

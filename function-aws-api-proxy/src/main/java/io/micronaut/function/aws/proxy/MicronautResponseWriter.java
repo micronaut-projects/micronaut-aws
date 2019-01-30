@@ -43,6 +43,7 @@ import java.util.Map;
 @Internal
 public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyResponse<?>, AwsProxyResponse> {
 
+    private static final String TIMER_NAME = "MICRONAUT_RESPONSE_WRITE";
     private final LambdaContainerContext lambdaContainerContext;
 
     /**
@@ -57,7 +58,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
     public AwsProxyResponse writeResponse(
             MicronautAwsProxyResponse<?> containerResponse,
             Context lambdaContext) throws InvalidResponseObjectException {
-        Timer.start("MICRONAUT_RESPONSE_WRITE");
+        Timer.start(TIMER_NAME);
         AwsProxyResponse awsProxyResponse = containerResponse.getAwsResponse();
         final Map<String, Cookie> cookies = containerResponse.getCookies();
         if (CollectionUtils.isNotEmpty(cookies)) {
@@ -85,7 +86,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
                             Response.Status.fromStatusCode(status.getCode()).getReasonPhrase());
         }
 
-        Timer.stop("MICRONAUT_RESPONSE_WRITE");
+        Timer.stop(TIMER_NAME);
         return awsProxyResponse;
     }
 }

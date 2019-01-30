@@ -59,51 +59,55 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
             SecurityContext securityContext,
             Context lambdaContext,
             ContainerConfig config) throws InvalidRequestEventException {
-        final String path = stripBasePath(request.getPath(), config);
-        final MicronautAwsProxyRequest<?> containerRequest = new MicronautAwsProxyRequest(
-                path,
-                request,
-                securityContext,
-                lambdaContext,
-                config
-        );
-        final UriRouteMatch<Object, Object> finalRoute = environment.getRouter().route(
-                containerRequest.getMethod(),
-                containerRequest.getPath()
-        ).orElse(null);
-        if (finalRoute != null) {
-            containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
-            final UriRoute route = finalRoute.getRoute();
-            containerRequest.setAttribute(HttpAttributes.ROUTE, route);
-            containerRequest.setAttribute(HttpAttributes.URI_TEMPLATE, route.getUriMatchTemplate().toString());
+        try {
+            final String path = stripBasePath(request.getPath(), config);
+            final MicronautAwsProxyRequest<?> containerRequest = new MicronautAwsProxyRequest(
+                    path,
+                    request,
+                    securityContext,
+                    lambdaContext,
+                    config
+            );
+            final UriRouteMatch<Object, Object> finalRoute = environment.getRouter().route(
+                    containerRequest.getMethod(),
+                    containerRequest.getPath()
+            ).orElse(null);
+            if (finalRoute != null) {
+                containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
+                final UriRoute route = finalRoute.getRoute();
+                containerRequest.setAttribute(HttpAttributes.ROUTE, route);
+                containerRequest.setAttribute(HttpAttributes.URI_TEMPLATE, route.getUriMatchTemplate().toString());
 
-            final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
-            if (permitsRequestBody) {
-                final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
-                    final MediaType expectedContentType = finalRoute
-                            .getAnnotationMetadata()
-                            .getValue(Consumes.class, MediaType.class).orElse(null);
-                    if (expectedContentType != null && expectedContentType.getExtension().equalsIgnoreCase("json")) {
-                        final Optional<String> body = containerRequest.getBody(String.class);
-                        if (body.isPresent()) {
+                final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
+                if (permitsRequestBody) {
+                    final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+                    if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
+                        final MediaType expectedContentType = finalRoute
+                                .getAnnotationMetadata()
+                                .getValue(Consumes.class, MediaType.class).orElse(null);
+                        if (expectedContentType != null && expectedContentType.getExtension().equalsIgnoreCase("json")) {
+                            final Optional<String> body = containerRequest.getBody(String.class);
+                            if (body.isPresent()) {
 
-                            final Optional<Argument<?>> bodyArgument = finalRoute.getBodyArgument();
-                            if (bodyArgument.isPresent()) {
-                                final Object decoded = environment.getJsonCodec().decode(bodyArgument.get(), body.get());
-                                ((MicronautAwsProxyRequest) containerRequest)
-                                        .setDecodedBody(decoded);
-                            } else {
-                                final JsonNode jsonNode = environment.getJsonCodec().decode(JsonNode.class, body.get());
-                                ((MicronautAwsProxyRequest) containerRequest)
-                                        .setDecodedBody(jsonNode);
+                                final Optional<Argument<?>> bodyArgument = finalRoute.getBodyArgument();
+                                if (bodyArgument.isPresent()) {
+                                    final Object decoded = environment.getJsonCodec().decode(bodyArgument.get(), body.get());
+                                    ((MicronautAwsProxyRequest) containerRequest)
+                                            .setDecodedBody(decoded);
+                                } else {
+                                    final JsonNode jsonNode = environment.getJsonCodec().decode(JsonNode.class, body.get());
+                                    ((MicronautAwsProxyRequest) containerRequest)
+                                            .setDecodedBody(jsonNode);
+                                }
                             }
                         }
                     }
                 }
             }
+            return containerRequest;
+        } catch (Exception e) {
+            throw new InvalidRequestEventException("Invalid Request: " + e.getMessage(), e);
         }
-        return containerRequest;
     }
 
     @Override

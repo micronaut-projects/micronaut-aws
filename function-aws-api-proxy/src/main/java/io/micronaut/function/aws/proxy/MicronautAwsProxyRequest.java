@@ -39,6 +39,7 @@ import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
 import java.io.UnsupportedEncodingException;
@@ -133,21 +134,25 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
+    @Nonnull
     public Cookies getCookies() {
         return cookies;
     }
 
     @Override
+    @Nonnull
     public HttpParameters getParameters() {
         return parameters;
     }
 
     @Override
+    @Nonnull
     public HttpMethod getMethod() {
         return httpMethod;
     }
 
     @Override
+    @Nonnull
     public URI getUri() {
         String region = System.getenv("AWS_REGION");
         if (region == null) {
@@ -167,17 +172,20 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
+    @Nonnull
     public HttpHeaders getHeaders() {
         return headers;
     }
 
     @Override
+    @Nonnull
     public MutableConvertibleValues<Object> getAttributes() {
         return attributes;
     }
 
     @SuppressWarnings("unchecked")
     @Override
+    @Nonnull
     public Optional<T> getBody() {
         if (decodedBody != null) {
             return Optional.of(decodedBody);
@@ -187,6 +195,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
+    @Nonnull
     public <T1> Optional<T1> getBody(Argument<T1> type) {
         if (decodedBody != null) {
             return ConversionService.SHARED.convert(decodedBody, type);
