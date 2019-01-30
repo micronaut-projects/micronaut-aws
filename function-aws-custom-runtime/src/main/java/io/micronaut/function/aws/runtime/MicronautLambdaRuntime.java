@@ -61,7 +61,7 @@ public class MicronautLambdaRuntime {
      */
     public static void main(String... args) throws Exception {
         final String runtimeApiEndpoint = System.getenv("AWS_LAMBDA_RUNTIME_API");
-        if (StringUtils.isNotEmpty(runtimeApiEndpoint)) {
+        if (StringUtils.isEmpty(runtimeApiEndpoint)) {
             throw new IllegalStateException("Missing AWS_LAMBDA_RUNTIME_API environment variable. Custom runtime can only be run within AWS Lambda environment.");
         }
 
