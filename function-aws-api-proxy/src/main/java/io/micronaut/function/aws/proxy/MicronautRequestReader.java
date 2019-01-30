@@ -42,14 +42,14 @@ import java.util.Optional;
 @Internal
 class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAwsProxyRequest<?>> {
 
-    private final LambdaContainerContext environment;
+    private final MicronautLambdaContainerContext environment;
 
     /**
      * Default constructor.
      *
-     * @param environment The {@link LambdaContainerContext}
+     * @param environment The {@link MicronautLambdaContainerContext}
      */
-    MicronautRequestReader(LambdaContainerContext environment) {
+    MicronautRequestReader(MicronautLambdaContainerContext environment) {
         this.environment = environment;
     }
 

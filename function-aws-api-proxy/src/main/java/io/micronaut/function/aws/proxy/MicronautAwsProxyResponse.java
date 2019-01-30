@@ -53,7 +53,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
     private final CountDownLatch responseEncodeLatch;
     private final AwsProxyRequest request;
-    private final LambdaContainerContext handler;
+    private final MicronautLambdaContainerContext handler;
     private T body;
     private HttpStatus status;
     private AwsProxyResponse response = new AwsProxyResponse();
@@ -65,12 +65,12 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
      * The default constructor.
      * @param request The request
      * @param latch The latch to indicate request completion
-     * @param environment The {@link LambdaContainerContext}
+     * @param environment The {@link MicronautLambdaContainerContext}
      */
     MicronautAwsProxyResponse(
             AwsProxyRequest request,
             CountDownLatch latch,
-            LambdaContainerContext environment) {
+            MicronautLambdaContainerContext environment) {
         this.responseEncodeLatch = latch;
         this.request = request;
         this.response.setMultiValueHeaders(multiValueHeaders);

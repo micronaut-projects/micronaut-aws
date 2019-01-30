@@ -25,7 +25,7 @@ import io.micronaut.web.router.Router;
  * @author graemerocher
  * @since 1.1
  */
-public interface LambdaContainerContext extends ApplicationContextProvider {
+public interface MicronautLambdaContainerContext extends ApplicationContextProvider {
 
     /**
      * @return The {@link Router} instance.

@@ -313,7 +313,7 @@ public final class MicronautLambdaContainerHandler
     /**
      * Holds state for the running container.
      */
-    private static class LambdaContainerState implements LambdaContainerContext {
+    private static class LambdaContainerState implements MicronautLambdaContainerContext {
         private Router router;
         private ApplicationContext applicationContext;
         private MediaTypeCodec jsonCodec;

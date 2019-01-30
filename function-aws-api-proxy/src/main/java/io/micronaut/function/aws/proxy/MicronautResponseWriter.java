@@ -44,13 +44,13 @@ import java.util.Map;
 public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyResponse<?>, AwsProxyResponse> {
 
     private static final String TIMER_NAME = "MICRONAUT_RESPONSE_WRITE";
-    private final LambdaContainerContext lambdaContainerContext;
+    private final MicronautLambdaContainerContext lambdaContainerContext;
 
     /**
      * Default constructor.
-     * @param lambdaContainerContext The {@link LambdaContainerContext}
+     * @param lambdaContainerContext The {@link MicronautLambdaContainerContext}
      */
-    MicronautResponseWriter(LambdaContainerContext lambdaContainerContext) {
+    MicronautResponseWriter(MicronautLambdaContainerContext lambdaContainerContext) {
         this.lambdaContainerContext = lambdaContainerContext;
     }
 
