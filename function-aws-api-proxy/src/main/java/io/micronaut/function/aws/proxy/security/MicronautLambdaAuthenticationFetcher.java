@@ -45,15 +45,17 @@ import java.util.stream.Stream;
 @Requires(classes = AuthenticationFetcher.class)
 public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher {
 
+    public static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
+
     /**
      * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claims Names</a>
      */
-    protected final static List<String> REGISTERED_CLAIMS_NAMES = Arrays.asList("iss", "sub", "exp", "nbf", "iat", "jti", "aud");
+    private static final List<String> REGISTERED_CLAIMS_NAMES = Arrays.asList("iss", "sub", "exp", "nbf", "iat", "jti", "aud");
 
     /**
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">Standard Claims</a>
      */
-    protected final static List<String> ID_TOKEN_STANDARD_CLAIMS_NAMES = Arrays.asList(
+    private static final List<String> ID_TOKEN_STANDARD_CLAIMS_NAMES = Arrays.asList(
             "name",
             "given_name",
             "family_name",
@@ -78,9 +80,6 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             "acr",
             "amr",
             "azp");
-
-
-    public static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
 
     @Override
     public Publisher<Authentication> fetchAuthentication(HttpRequest<?> request) {
@@ -118,7 +117,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
      * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claims Names</a>
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">Standard Claims</a>
      * @param claims Cognito Claims
-     * @return
+     * @return A map of claims
      */
     protected Map<String, Object> attributesOfClaims(CognitoAuthorizerClaims claims) {
 
@@ -135,7 +134,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
         attributes.put("iat", claims.getIssuedAt());
         attributes.put("exp", claims.getExpiration());
 
-        for(String claim : Stream.concat(ID_TOKEN_STANDARD_CLAIMS_NAMES.stream(), REGISTERED_CLAIMS_NAMES.stream())
+        for (String claim : Stream.concat(ID_TOKEN_STANDARD_CLAIMS_NAMES.stream(), REGISTERED_CLAIMS_NAMES.stream())
                 .collect(Collectors.toList())) {
             String value = claims.getClaim(claim);
             if (value != null) {
