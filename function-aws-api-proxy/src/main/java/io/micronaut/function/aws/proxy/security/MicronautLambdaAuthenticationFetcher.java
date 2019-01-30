@@ -28,6 +28,8 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An authentication fetcher for {@link CognitoAuthorizerClaims}.
@@ -52,11 +54,10 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
 
             if (authorizer != null) {
                 final CognitoAuthorizerClaims claims = authorizer.getClaims();
-                // TODO: Make a custom authentication
                 return Flowable.just(
                         new DefaultAuthentication(
                                 authorizer.getPrincipalId(),
-                                Collections.emptyMap()
+                                attributesOfClaims(claims)
                         )
                 );
             } else {
@@ -72,5 +73,27 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             }
         }
         return Flowable.empty();
+    }
+
+    /**
+     * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claims Names</a>
+     * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">Standard Claims</a>
+     * @param claims Cognito Claims
+     * @return
+     */
+    protected Map<String, Object> attributesOfClaims(CognitoAuthorizerClaims claims) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("sub", claims.getSubject());
+        attributes.put("aud", claims.getAudience());
+        attributes.put("iss", claims.getIssuer());
+        attributes.put("token_use", claims.getTokenUse());
+        attributes.put("cognito:username", claims.getUsername());
+        attributes.put("preferred_username", claims.getUsername());
+        attributes.put("email", claims.getEmail());
+        attributes.put("email_verified", claims.isEmailVerified());
+        attributes.put("auth_time", claims.getAuthTime());
+        attributes.put("iat", claims.getIssuedAt());
+        attributes.put("exp", claims.getExpiration());
+        return attributes;
     }
 }
