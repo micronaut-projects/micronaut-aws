@@ -4,3 +4,4 @@ io.micronaut.function.aws.proxy
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
+io.micronaut.function.aws.runtime

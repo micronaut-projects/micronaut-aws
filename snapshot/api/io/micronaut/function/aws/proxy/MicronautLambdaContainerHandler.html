@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":9,"i3":9,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":9,"i3":9,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -47,7 +47,7 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -73,7 +73,7 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.com.amazonaws.serverless.proxy.internal.LambdaContainerHandler">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -98,7 +98,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>com.amazonaws.serverless.proxy.internal.LambdaContainerHandler&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</li>
+<li><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</li>
 <li>
 <ul class="inheritance">
 <li>io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler</li>
@@ -117,7 +117,7 @@ var activeTableTab = "activeTableTab";
 <hr>
 <br>
 <pre>public final class <span class="typeNameLabel">MicronautLambdaContainerHandler</span>
-extends com.amazonaws.serverless.proxy.internal.LambdaContainerHandler&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;
+extends <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;
 implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, java.lang.AutoCloseable</pre>
 <div class="block">Main entry for AWS API proxy with Micronaut.</div>
 <dl>
@@ -139,11 +139,11 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 </a>
 <h3>Field Summary</h3>
 <ul class="blockList">
-<li class="blockList"><a name="fields.inherited.from.class.com.amazonaws.serverless.proxy.internal.LambdaContainerHandler">
+<li class="blockList"><a name="fields.inherited.from.class.io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler">
 <!--   -->
 </a>
-<h3>Fields inherited from class&nbsp;com.amazonaws.serverless.proxy.internal.LambdaContainerHandler</h3>
-<code>lambdaContext, SERVER_INFO</code></li>
+<h3>Fields inherited from class&nbsp;io.micronaut.function.aws.proxy.<a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></h3>
+<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#lambdaContext">lambdaContext</a>, <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#SERVER_INFO">SERVER_INFO</a></code></li>
 </ul>
 </li>
 </ul>
@@ -182,25 +182,49 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>protected <a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#getContainerResponse-io.micronaut.function.aws.proxy.MicronautAwsProxyRequest-java.util.concurrent.CountDownLatch-">getContainerResponse</a></span>(<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;&nbsp;request,
-                    java.util.concurrent.CountDownLatch&nbsp;latch)</code>&nbsp;</td>
+                    java.util.concurrent.CountDownLatch&nbsp;latch)</code>
+<div class="block">Get the container response.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#handleRequest-io.micronaut.function.aws.proxy.MicronautAwsProxyRequest-io.micronaut.function.aws.proxy.MicronautAwsProxyResponse-com.amazonaws.services.lambda.runtime.Context-">handleRequest</a></span>(<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;&nbsp;containerRequest,
              <a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&nbsp;containerResponse,
-             com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</code>&nbsp;</td>
+             com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</code>
+<div class="block">Handle the request.</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#initialize--">initialize</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#initialize--">initialize</a></span>()</code>
+<div class="block">Initialize the container.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectMapper</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#objectMapper--">objectMapper</a></span>()</code>
+<div class="block">The object mapper.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectReader</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#readerFor-java.lang.Class-">readerFor</a></span>(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest&gt;&nbsp;requestClass)</code>
+<div class="block">Gets a reader for the given request class.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectWriter</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#writerFor-java.lang.Class-">writerFor</a></span>(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyResponse&gt;&nbsp;responseClass)</code>
+<div class="block">Gets a writer for the given response class.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.com.amazonaws.serverless.proxy.internal.LambdaContainerHandler">
+<li class="blockList"><a name="methods.inherited.from.class.io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;com.amazonaws.serverless.proxy.internal.LambdaContainerHandler</h3>
-<code>getContainerConfig, getObjectMapper, proxy, proxyStream, setLogFormatter, stripBasePath</code></li>
+<h3>Methods inherited from class&nbsp;io.micronaut.function.aws.proxy.<a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></h3>
+<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerConfig--">getContainerConfig</a>, <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#proxy-RequestType-com.amazonaws.services.lambda.runtime.Context-">proxy</a>, <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#proxyStream-java.io.InputStream-java.io.OutputStream-com.amazonaws.services.lambda.runtime.Context-">proxyStream</a>, <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#setLogFormatter-com.amazonaws.serverless.proxy.LogFormatter-">setLogFormatter</a>, <a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#stripBasePath-java.lang.String-">stripBasePath</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -274,6 +298,61 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 </dl>
 </li>
 </ul>
+<a name="objectMapper--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>objectMapper</h4>
+<pre>protected&nbsp;com.fasterxml.jackson.databind.ObjectMapper&nbsp;objectMapper()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#objectMapper--">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">The object mapper.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#objectMapper--">objectMapper</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>Return the object mapper.</dd>
+</dl>
+</li>
+</ul>
+<a name="writerFor-java.lang.Class-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>writerFor</h4>
+<pre>protected&nbsp;com.fasterxml.jackson.databind.ObjectWriter&nbsp;writerFor(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyResponse&gt;&nbsp;responseClass)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#writerFor-java.lang.Class-">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">Gets a writer for the given response class.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#writerFor-java.lang.Class-">writerFor</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>responseClass</code> - The response class</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The writer</dd>
+</dl>
+</li>
+</ul>
+<a name="readerFor-java.lang.Class-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>readerFor</h4>
+<pre>protected&nbsp;com.fasterxml.jackson.databind.ObjectReader&nbsp;readerFor(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest&gt;&nbsp;requestClass)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#readerFor-java.lang.Class-">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">Gets a reader for the given request class.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#readerFor-java.lang.Class-">readerFor</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>requestClass</code> - The request class</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The reader</dd>
+</dl>
+</li>
+</ul>
 <a name="getContainerResponse-io.micronaut.function.aws.proxy.MicronautAwsProxyRequest-java.util.concurrent.CountDownLatch-">
 <!--   -->
 </a>
@@ -282,9 +361,16 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 <h4>getContainerResponse</h4>
 <pre>protected&nbsp;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&nbsp;getContainerResponse(<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;&nbsp;request,
                                                             java.util.concurrent.CountDownLatch&nbsp;latch)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerResponse-ContainerRequestType-java.util.concurrent.CountDownLatch-">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">Get the container response.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getContainerResponse</code>&nbsp;in class&nbsp;<code>com.amazonaws.serverless.proxy.internal.LambdaContainerHandler&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerResponse-ContainerRequestType-java.util.concurrent.CountDownLatch-">getContainerResponse</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>request</code> - The request</dd>
+<dd><code>latch</code> - The count down latch</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The response</dd>
 </dl>
 </li>
 </ul>
@@ -296,11 +382,13 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 <h4>initialize</h4>
 <pre>public&nbsp;void&nbsp;initialize()
                 throws com.amazonaws.serverless.exceptions.ContainerInitializationException</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#initialize--">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">Initialize the container.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>initialize</code>&nbsp;in class&nbsp;<code>com.amazonaws.serverless.proxy.internal.LambdaContainerHandler&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#initialize--">initialize</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code></dd>
+<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - when an error occurs</dd>
 </dl>
 </li>
 </ul>
@@ -314,11 +402,17 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
                              <a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&nbsp;containerResponse,
                              com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)
                       throws java.lang.Exception</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#handleRequest-ContainerRequestType-ContainerResponseType-com.amazonaws.services.lambda.runtime.Context-">AbstractLambdaContainerHandler</a></code></span></div>
+<div class="block">Handle the request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>handleRequest</code>&nbsp;in class&nbsp;<code>com.amazonaws.serverless.proxy.internal.LambdaContainerHandler&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dd><code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#handleRequest-ContainerRequestType-ContainerResponseType-com.amazonaws.services.lambda.runtime.Context-">handleRequest</a></code>&nbsp;in class&nbsp;<code><a href="../../../../../io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest,com.amazonaws.serverless.proxy.model.AwsProxyResponse,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;?&gt;,<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>containerRequest</code> - The container request</dd>
+<dd><code>containerResponse</code> - The response</dd>
+<dd><code>lambdaContext</code> - The lambda context</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.Exception</code></dd>
+<dd><code>java.lang.Exception</code> - The exception</dd>
 </dl>
 </li>
 </ul>
@@ -367,7 +461,7 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
 <li><a href="../../../../../io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
@@ -393,7 +487,7 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#fields.inherited.from.class.com.amazonaws.serverless.proxy.internal.LambdaContainerHandler">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler">Field</a>&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

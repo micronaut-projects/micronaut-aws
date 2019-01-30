@@ -67,11 +67,19 @@
 <!--   -->
 </a></div>
 <!-- ========= END OF TOP NAVBAR ========= -->
-<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a name="I:A">
+<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a name="I:A">
 <!--   -->
 </a>
 <h2 class="title">A</h2>
 <dl>
+<dt><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">AbstractLambdaContainerHandler</span></a>&lt;<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="type parameter in AbstractLambdaContainerHandler">RequestType</a>,<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="type parameter in AbstractLambdaContainerHandler">ResponseType</a>,<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="type parameter in AbstractLambdaContainerHandler">ContainerRequestType</a>,<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="type parameter in AbstractLambdaContainerHandler">ContainerResponseType</a>&gt; - Class in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
+<dd>
+<div class="block">Abstract class that declares the basic methods and objects for implementations of <code>LambdaContainerHandler</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#AbstractLambdaContainerHandler-java.lang.Class-java.lang.Class-com.amazonaws.serverless.proxy.RequestReader-com.amazonaws.serverless.proxy.ResponseWriter-com.amazonaws.serverless.proxy.SecurityContextWriter-com.amazonaws.serverless.proxy.ExceptionHandler-">AbstractLambdaContainerHandler(Class&lt;RequestType&gt;, Class&lt;ResponseType&gt;, RequestReader&lt;RequestType, ContainerRequestType&gt;, ResponseWriter&lt;ContainerResponseType, ResponseType&gt;, SecurityContextWriter&lt;RequestType&gt;, ExceptionHandler&lt;ResponseType&gt;)</a></span> - Constructor for class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ACCESS_KEY_ENV_VAR">ACCESS_KEY_ENV_VAR</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>
 <div class="block">Environment variable name for the AWS access key ID.</div>
@@ -89,6 +97,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestArgumentBinder.html#argumentType--">argumentType()</a></span> - Method in class io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind">AwsProxyRequestArgumentBinder</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestContextArgumentBinder.html#argumentType--">argumentType()</a></span> - Method in class io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestContextArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind">AwsProxyRequestContextArgumentBinder</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html#attributesOfClaims-com.amazonaws.serverless.proxy.model.CognitoAuthorizerClaims-">attributesOfClaims(CognitoAuthorizerClaims)</a></span> - Method in class io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security">MicronautLambdaAuthenticationFetcher</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#AWS_SESSION_TOKEN_ENV_VAR">AWS_SESSION_TOKEN_ENV_VAR</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>
@@ -172,6 +182,8 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#ERROR_TEMPLATE">ERROR_TEMPLATE</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:F">
 <!--   -->
@@ -212,17 +224,29 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/AWSClientConfiguration.html#getClientConfiguration--">getClientConfiguration()</a></span> - Method in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSClientConfiguration.html" title="class in io.micronaut.configuration.aws">AWSClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerConfig--">getContainerConfig()</a></span> - Static method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Returns the current container configuration object.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerResponse-ContainerRequestType-java.util.concurrent.CountDownLatch-">getContainerResponse(ContainerRequestType, CountDownLatch)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Get the container response.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#getContainerResponse-io.micronaut.function.aws.proxy.MicronautAwsProxyRequest-java.util.concurrent.CountDownLatch-">getContainerResponse(MicronautAwsProxyRequest&lt;?&gt;, CountDownLatch)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getCookies--">getCookies()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#getCredentials--">getCredentials()</a></span> - Method in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html#getErrorJson-java.lang.String-">getErrorJson(String)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyExceptionHandler</a></dt>
+<dd>
+<div class="block">Get the error JSON.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getHeaders--">getHeaders()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getHeaders--">getHeaders()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/LambdaContainerContext.html#getJsonCodec--">getJsonCodec()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/LambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">LambdaContainerContext</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getJsonCodec--">getJsonCodec()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getMethod--">getMethod()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
@@ -230,7 +254,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getResponse--">getResponse()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/LambdaContainerContext.html#getRouter--">getRouter()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/LambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">LambdaContainerContext</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getRouter--">getRouter()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getStatus--">getStatus()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a></dt>
 <dd>&nbsp;</dd>
@@ -242,13 +266,23 @@
 </a>
 <h2 class="title">H</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html#handle-java.lang.Throwable-">handle(Throwable)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyExceptionHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html#handle-java.lang.Throwable-java.io.OutputStream-">handle(Throwable, OutputStream)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyExceptionHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestHandler.html#handleRequest-I-com.amazonaws.services.lambda.runtime.Context-">handleRequest(I, Context)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestHandler.html" title="class in io.micronaut.function.aws">MicronautRequestHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#handleRequest-java.io.InputStream-java.io.OutputStream-com.amazonaws.services.lambda.runtime.Context-">handleRequest(InputStream, OutputStream, Context)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#handleRequest-ContainerRequestType-ContainerResponseType-com.amazonaws.services.lambda.runtime.Context-">handleRequest(ContainerRequestType, ContainerResponseType, Context)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Handle the request.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#handleRequest-io.micronaut.function.aws.proxy.MicronautAwsProxyRequest-io.micronaut.function.aws.proxy.MicronautAwsProxyResponse-com.amazonaws.services.lambda.runtime.Context-">handleRequest(MicronautAwsProxyRequest&lt;?&gt;, MicronautAwsProxyResponse&lt;?&gt;, Context)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html#HEADER_OIDC_IDENTITY">HEADER_OIDC_IDENTITY</a></span> - Static variable in class io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security">MicronautLambdaAuthenticationFetcher</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#HEADER_RUNTIME_AWS_REQUEST_ID">HEADER_RUNTIME_AWS_REQUEST_ID</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:I">
@@ -256,7 +290,15 @@
 </a>
 <h2 class="title">I</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#INIT_ERROR_URI">INIT_ERROR_URI</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#initialize--">initialize()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Initialize the container.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#initialize--">initialize()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#INVOCATION_TEMPLATE">INVOCATION_TEMPLATE</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/aws/package-summary.html">io.micronaut.configuration.aws</a> - package io.micronaut.configuration.aws</dt>
 <dd>
@@ -274,22 +316,34 @@
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/security/package-summary.html">io.micronaut.function.aws.proxy.security</a> - package io.micronaut.function.aws.proxy.security</dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a> - package io.micronaut.function.aws.runtime</dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:L">
 <!--   -->
 </a>
 <h2 class="title">L</h2>
 <dl>
-<dt><a href="io/micronaut/function/aws/proxy/LambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">LambdaContainerContext</span></a> - Interface in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
-<dd>
-<div class="block">A context object to share state.</div>
-</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#lambdaContext">lambdaContext</a></span> - Variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:M">
 <!--   -->
 </a>
 <h2 class="title">M</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#main-java.lang.String...-">main(String...)</a></span> - Static method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dd>
+<div class="block">Main entry point.</div>
+</dd>
+<dt><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautAwsProxyExceptionHandler</span></a> - Class in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
+<dd>
+<div class="block">Default <code>ExceptionHandler</code> implementation.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html#MicronautAwsProxyExceptionHandler-io.micronaut.function.aws.proxy.MicronautLambdaContainerContext-">MicronautAwsProxyExceptionHandler(MicronautLambdaContainerContext)</a></span> - Constructor for class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyExceptionHandler</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautAwsProxyRequest</span></a>&lt;<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt; - Class in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
 <dd>
 <div class="block">Implementation of <code>HttpRequest</code> that backs onto a <code>AwsProxyRequest</code> object.</div>
@@ -311,10 +365,20 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html#MicronautLambdaAuthenticationFetcher--">MicronautLambdaAuthenticationFetcher()</a></span> - Constructor for class io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security">MicronautLambdaAuthenticationFetcher</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerContext</span></a> - Interface in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
+<dd>
+<div class="block">A context object to share state.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerHandler</span></a> - Class in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
 <dd>
 <div class="block">Main entry for AWS API proxy with Micronaut.</div>
 </dd>
+<dt><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">MicronautLambdaRuntime</span></a> - Class in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
+<dd>
+<div class="block">Class that can be used as a entry point for a custom Lambda runtime.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#MicronautLambdaRuntime--">MicronautLambdaRuntime()</a></span> - Constructor for class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/MicronautRequestHandler.html" title="class in io.micronaut.function.aws"><span class="typeNameLink">MicronautRequestHandler</span></a>&lt;<a href="io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">I</a>,<a href="io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">O</a>&gt; - Class in <a href="io/micronaut/function/aws/package-summary.html">io.micronaut.function.aws</a></dt>
 <dd>
 <div class="block">An Amazon Lambda <code>RequestHandler</code> implementation for Micronaut <code>FunctionBean</code></div>
@@ -332,11 +396,25 @@
 <div class="block">Implementation of the <code>ResponseWriter</code> class for Micronaut.</div>
 </dd>
 </dl>
+<a name="I:N">
+<!--   -->
+</a>
+<h2 class="title">N</h2>
+<dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#NEXT_INVOCATION_URI">NEXT_INVOCATION_URI</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dd>&nbsp;</dd>
+</dl>
 <a name="I:O">
 <!--   -->
 </a>
 <h2 class="title">O</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#objectMapper--">objectMapper()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">The object mapper.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#objectMapper--">objectMapper()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html#ok-T-">ok(T)</a></span> - Method in class io.micronaut.function.aws.proxy.model.factory.<a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html" title="class in io.micronaut.function.aws.proxy.model.factory">MicronautAwsProxyResponseFactory</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -349,12 +427,26 @@
 <dd>
 <div class="block">Prefix for all AWS settings.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#proxy-RequestType-com.amazonaws.services.lambda.runtime.Context-">proxy(RequestType, Context)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Proxies requests to the underlying container given the incoming Lambda request.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#proxyStream-java.io.InputStream-java.io.OutputStream-com.amazonaws.services.lambda.runtime.Context-">proxyStream(InputStream, OutputStream, Context)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Handles Lambda <code>RequestStreamHandler</code> method.</div>
+</dd>
 </dl>
 <a name="I:R">
 <!--   -->
 </a>
 <h2 class="title">R</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#readerFor-java.lang.Class-">readerFor(Class&lt;RequestType&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Gets a reader for the given request class.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#readerFor-java.lang.Class-">readerFor(Class&lt;AwsProxyRequest&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#refresh--">refresh()</a></span> - Method in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -367,12 +459,23 @@
 <dd>
 <div class="block">Environment variable name for the AWS secret key.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#SERVER_INFO">SERVER_INFO</a></span> - Static variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#setLogFormatter-com.amazonaws.serverless.proxy.LogFormatter-">setLogFormatter(LogFormatter&lt;ContainerRequestType, ContainerResponseType&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Sets the formatter used to log request data in CloudWatch.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#status-io.micronaut.http.HttpStatus-java.lang.CharSequence-">status(HttpStatus, CharSequence)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html#status-io.micronaut.http.HttpStatus-java.lang.String-">status(HttpStatus, String)</a></span> - Method in class io.micronaut.function.aws.proxy.model.factory.<a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html" title="class in io.micronaut.function.aws.proxy.model.factory">MicronautAwsProxyResponseFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html#status-io.micronaut.http.HttpStatus-T-">status(HttpStatus, T)</a></span> - Method in class io.micronaut.function.aws.proxy.model.factory.<a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html" title="class in io.micronaut.function.aws.proxy.model.factory">MicronautAwsProxyResponseFactory</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#stripBasePath-java.lang.String-">stripBasePath(String)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Configures the library to strip a base path from incoming requests before passing them on to the wrapped
+ framework.</div>
+</dd>
 </dl>
 <a name="I:T">
 <!--   -->
@@ -389,8 +492,14 @@
 <dl>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautResponseWriter.html#writeResponse-io.micronaut.function.aws.proxy.MicronautAwsProxyResponse-com.amazonaws.services.lambda.runtime.Context-">writeResponse(MicronautAwsProxyResponse&lt;?&gt;, Context)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy">MicronautResponseWriter</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#writerFor-java.lang.Class-">writerFor(Class&lt;ResponseType&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>
+<div class="block">Gets a writer for the given response class.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#writerFor-java.lang.Class-">writerFor(Class&lt;AwsProxyResponse&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;</div>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:W">W</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">
 <!--   -->
