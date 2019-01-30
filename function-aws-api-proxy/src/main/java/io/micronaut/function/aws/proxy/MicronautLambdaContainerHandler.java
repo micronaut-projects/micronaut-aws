@@ -18,11 +18,13 @@ package io.micronaut.function.aws.proxy;
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.AwsProxyExceptionHandler;
 import com.amazonaws.serverless.proxy.AwsProxySecurityContextWriter;
-import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
@@ -33,7 +35,6 @@ import io.micronaut.http.*;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.bind.RequestBinderRegistry;
-import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.HttpFilter;
 import io.micronaut.http.filter.HttpServerFilter;
@@ -69,13 +70,12 @@ import java.util.stream.Stream;
  * @since 1.1
  */
 public final class MicronautLambdaContainerHandler
-        extends LambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
+        extends AbstractLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
     private static final String TIMER_INIT = "MICRONAUT_COLD_START";
     private static final String TIMER_REQUEST = "MICRONAUT_HANDLE_REQUEST";
     private final ApplicationContextBuilder applicationContextBuilder;
     private final LambdaContainerState lambdaContainerEnvironment;
-    private boolean initialized = false;
     private ApplicationContext applicationContext;
     private RequestArgumentSatisfier requestArgumentSatisfier;
     private ExecutorService executorService;
@@ -95,7 +95,7 @@ public final class MicronautLambdaContainerHandler
                 new MicronautRequestReader(lambdaContainerEnvironment),
                 new MicronautResponseWriter(lambdaContainerEnvironment),
                 new AwsProxySecurityContextWriter(),
-                new AwsProxyExceptionHandler()
+                new MicronautAwsProxyExceptionHandler(lambdaContainerEnvironment)
 
         );
         ArgumentUtils.requireNonNull("applicationContextBuilder", applicationContextBuilder);
@@ -142,6 +142,27 @@ public final class MicronautLambdaContainerHandler
     }
 
     @Override
+    protected ObjectMapper objectMapper() {
+        return lambdaContainerEnvironment.getJsonCodec().getObjectMapper();
+    }
+
+    @Override
+    protected ObjectWriter writerFor(Class<AwsProxyResponse> responseClass) {
+        return lambdaContainerEnvironment
+                .getJsonCodec()
+                .getObjectMapper()
+                .writerFor(responseClass);
+    }
+
+    @Override
+    protected ObjectReader readerFor(Class<AwsProxyRequest> requestClass) {
+        return lambdaContainerEnvironment
+                    .getJsonCodec()
+                    .getObjectMapper()
+                    .readerFor(requestClass);
+    }
+
+    @Override
     protected MicronautAwsProxyResponse<?> getContainerResponse(MicronautAwsProxyRequest<?> request, CountDownLatch latch) {
         request.setResponse(new MicronautAwsProxyResponse(
                 request.getAwsProxyRequest(),
@@ -171,21 +192,17 @@ public final class MicronautLambdaContainerHandler
                     e
             );
         }
-        this.initialized = true;
         Timer.stop(TIMER_INIT);
     }
 
     @Override
     protected void handleRequest(
-            MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Context lambdaContext) throws Exception {
+            MicronautAwsProxyRequest<?> containerRequest,
+            MicronautAwsProxyResponse<?> containerResponse,
+            Context lambdaContext) throws Exception {
         Timer.start(TIMER_REQUEST);
 
         try {
-            // wire up the application context on the first invocation
-            if (!initialized) {
-                initialize();
-            }
-
             // process filters & invoke servlet
             ServerRequestContext.with(containerRequest, () -> {
                 final Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(
@@ -316,7 +333,7 @@ public final class MicronautLambdaContainerHandler
     private static class LambdaContainerState implements MicronautLambdaContainerContext {
         private Router router;
         private ApplicationContext applicationContext;
-        private MediaTypeCodec jsonCodec;
+        private JsonMediaTypeCodec jsonCodec;
 
         @Override
         public Router getRouter() {
@@ -324,7 +341,7 @@ public final class MicronautLambdaContainerHandler
         }
 
         @Override
-        public MediaTypeCodec getJsonCodec() {
+        public JsonMediaTypeCodec getJsonCodec() {
             return jsonCodec;
         }
 
@@ -333,7 +350,7 @@ public final class MicronautLambdaContainerHandler
             return applicationContext;
         }
 
-        void setJsonCodec(MediaTypeCodec jsonCodec) {
+        void setJsonCodec(JsonMediaTypeCodec jsonCodec) {
             this.jsonCodec = jsonCodec;
         }
 

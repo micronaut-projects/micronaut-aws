@@ -8,8 +8,11 @@ dependencies {
     compile "io.micronaut:micronaut-http-server:$micronautVersion"
     compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.3', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
+        exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
     compile project(":function-aws")
+
+    runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.9.8'
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"

@@ -120,6 +120,9 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
      * @return A map of claims
      */
     protected Map<String, Object> attributesOfClaims(CognitoAuthorizerClaims claims) {
+        if (claims == null) {
+            return Collections.emptyMap();
+        }
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("sub", claims.getSubject());
@@ -142,7 +145,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             }
         }
         
-        return attributes;
+        return Collections.unmodifiableMap(attributes);
     }
 
 }

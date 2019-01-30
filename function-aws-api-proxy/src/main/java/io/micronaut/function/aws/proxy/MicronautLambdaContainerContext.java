@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.proxy;
 
 import io.micronaut.context.ApplicationContextProvider;
-import io.micronaut.http.codec.MediaTypeCodec;
+import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.web.router.Router;
 
 /**
@@ -35,5 +35,5 @@ public interface MicronautLambdaContainerContext extends ApplicationContextProvi
     /**
      * @return The JSON codec.
      */
-    MediaTypeCodec getJsonCodec();
+    JsonMediaTypeCodec getJsonCodec();
 }
