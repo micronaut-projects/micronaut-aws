@@ -81,10 +81,10 @@ $ aws cloudformation describe-stacks --stack-name ServerlessMicronautApi
 
 ```
 
-Copy the `OutputValue` into a browser or use curl to test your first request:
+Copy the `OutputValue`, adding the prefix `/Prod` to the path into a browser or use curl to test your first request:
 
 ```bash
-$ curl -s https://xxxxxxx.execute-api.us-west-2.amazonaws.com/ping | python -m json.tool
+$ curl -s https://xxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/ping | python -m json.tool
 
 {
     "pong": "Hello, World!"
