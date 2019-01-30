@@ -138,8 +138,9 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
         for(String claim : Stream.concat(ID_TOKEN_STANDARD_CLAIMS_NAMES.stream(), REGISTERED_CLAIMS_NAMES.stream())
                 .collect(Collectors.toList())) {
             String value = claims.getClaim(claim);
-            if (value != null)
-            attributes.putIfAbsent(claim, value);
+            if (value != null) {
+                attributes.putIfAbsent(claim, value);
+            }
         }
         
         return attributes;
