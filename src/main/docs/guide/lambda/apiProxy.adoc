@@ -10,7 +10,7 @@ include::examples/api-proxy-example/src/main/java/example/PingController.java[]
 
 You then need to add the `micronaut-function-aws-api-proxy` dependency:
 
-dependency:micronaut-function-aws-api-proxy[groupId="io.micronaut.configuration"]
+dependency:micronaut-function-aws-api-proxy[groupId="io.micronaut.aws"]
 
 You can then implement a `RequestHandler` that handles the API proxy request:
 

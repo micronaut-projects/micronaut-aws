@@ -1,2 +1,4 @@
-This project provides various extensions to Micronaut for Amazon Web Services (AWS).
+This project provides various extensions to Micronaut for Amazon Web Services (AWS). The primary focus initially is on AWS Lambda, however other integrations may be included in this project in the future.
+
+A base api:configuration.aws.AWSClientConfiguration[] is provided which can be used as a base configuration class for any configuration that needs to configure an AWS SDK client.
 
