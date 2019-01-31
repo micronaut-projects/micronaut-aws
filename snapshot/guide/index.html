@@ -109,7 +109,10 @@
 
 
 <div class="paragraph">
-<p>This project provides various extensions to Micronaut for Amazon Web Services (AWS).</p>
+<p>This project provides various extensions to Micronaut for Amazon Web Services (AWS). The primary focus initially is on AWS Lambda, however other integrations may be included in this project in the future.</p>
+</div>
+<div class="paragraph">
+<p>A base <a href="../api/io/micronaut/configuration/aws/AWSClientConfiguration.html">AWSClientConfiguration</a> is provided which can be used as a base configuration class for any configuration that needs to configure an AWS SDK client.</p>
 </div>
 
 
@@ -255,13 +258,13 @@ public class PingController {
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-function-aws-api-proxy'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-api-proxy'</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.configuration&lt;/groupId&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-function-aws-api-proxy&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -347,10 +350,26 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 <p>You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime.</p>
+<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the `` dependency to your build:</p>
 </div>
 <div class="paragraph">
-<p>The following is an example <code>bootstrap</code></p>
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-custom-runtime'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-custom-runtime&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then create a <code>bootstrap</code> bash script. The following is an example <code>bootstrap</code></p>
 </div>
 <div class="listingblock">
 <div class="title">Example <code>bootstrap</code></div>
@@ -361,7 +380,7 @@ java -XX:TieredStopAtLevel=1 -noverify -cp server.jar io.micronaut.function.aws.
 </div>
 </div>
 <div class="paragraph">
-<p>You need to create a zip bundle including the <code>bootstrap</code> and your application JAR filed (in the above case named <code>server.jar</code>) for deployment to AWS and specify a runtime of <code>provided</code>. For example:</p>
+<p>You then need to create a zip bundle including the <code>bootstrap</code> and your application JAR filed (in the above case named <code>server.jar</code>) for deployment to AWS and specify a runtime of <code>provided</code>. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
