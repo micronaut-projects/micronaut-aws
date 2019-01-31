@@ -9,5 +9,6 @@ dependencies {
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-http-server-netty"
     testCompile "io.micronaut:micronaut-inject-groovy"
 }

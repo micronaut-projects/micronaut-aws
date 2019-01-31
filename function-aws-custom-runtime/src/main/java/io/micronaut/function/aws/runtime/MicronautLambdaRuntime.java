@@ -17,7 +17,6 @@ package io.micronaut.function.aws.runtime;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.serverless.proxy.model.Headers;
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -27,6 +26,7 @@ import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.cli.CommandLine;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.BlockingHttpClient;
@@ -38,6 +38,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Collections;
+import java.util.function.Predicate;
 
 /**
  * Class that can be used as a entry point for a custom Lambda runtime.
@@ -64,22 +65,38 @@ public class MicronautLambdaRuntime {
         if (StringUtils.isEmpty(runtimeApiEndpoint)) {
             throw new IllegalStateException("Missing AWS_LAMBDA_RUNTIME_API environment variable. Custom runtime can only be run within AWS Lambda environment.");
         }
+        final URL runtimeApiURL = new URL(runtimeApiEndpoint);
+        final Predicate<URL> loopUntil = (url) -> true;
 
         CommandLine commandLine = CommandLine.parse(args);
         final ApplicationContextBuilder applicationContextBuilder = ApplicationContext.build()
                                                                         .propertySources(new CommandLinePropertySource(commandLine));
+
+        startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, loopUntil);
+    }
+
+    /**
+     * Starts the runtime API event loop.
+     * @param runtimeApiURL The runtime API URL.
+     * @param applicationContextBuilder The context builder
+     * @param loopUntil A predicate that allows controlling when the event loop should exit
+     */
+    public static void startRuntimeApiEventLoop(
+            URL runtimeApiURL,
+            ApplicationContextBuilder applicationContextBuilder,
+            Predicate<URL> loopUntil) {
         try {
             final MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(applicationContextBuilder);
-            final RxHttpClient endpointClient = handler.getApplicationContext().createBean(RxHttpClient.class, new URL(runtimeApiEndpoint));
+            final RxHttpClient endpointClient = handler.getApplicationContext().createBean(RxHttpClient.class, runtimeApiURL);
             try {
-                while (true) {
+                while (loopUntil.test(runtimeApiURL)) {
                     final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
                     final HttpResponse<AwsProxyRequest> response = blockingHttpClient.exchange(NEXT_INVOCATION_URI, AwsProxyRequest.class);
 
                     final AwsProxyRequest awsProxyRequest = response.body();
                     if (awsProxyRequest != null) {
-                        final Headers headers = awsProxyRequest.getMultiValueHeaders();
-                        final String requestId = headers.getFirst(HEADER_RUNTIME_AWS_REQUEST_ID);
+                        final HttpHeaders headers = response.getHeaders();
+                        final String requestId = headers.get(HEADER_RUNTIME_AWS_REQUEST_ID);
                         try {
                             if (StringUtils.isNotEmpty(requestId)) {
                                 final AwsProxyResponse awsProxyResponse = handler.proxy(awsProxyRequest, new RuntimeContext(requestId, headers));
@@ -116,7 +133,7 @@ public class MicronautLambdaRuntime {
         } catch (Throwable e) {
             e.printStackTrace();
             System.out.println("Request loop failed with: " + e.getMessage());
-            try (RxHttpClient endpointClient = RxHttpClient.create(new URL(runtimeApiEndpoint))) {
+            try (RxHttpClient endpointClient = RxHttpClient.create(runtimeApiURL)) {
                 endpointClient.toBlocking().exchange(HttpRequest.POST(INIT_ERROR_URI, Collections.singletonMap(
                         "errorMessage", e.getMessage()
                 )));
@@ -131,9 +148,9 @@ public class MicronautLambdaRuntime {
      */
     private static class RuntimeContext implements Context {
         private final String requestId;
-        private final Headers headers;
+        private final HttpHeaders headers;
 
-        public RuntimeContext(String requestId, Headers headers) {
+        public RuntimeContext(String requestId, HttpHeaders headers) {
             this.requestId = requestId;
             this.headers = headers;
         }
@@ -165,7 +182,7 @@ public class MicronautLambdaRuntime {
 
         @Override
         public String getInvokedFunctionArn() {
-            return headers.getFirst("Lambda-Runtime-Invoked-Function-Arn");
+            return headers.get("Lambda-Runtime-Invoked-Function-Arn");
         }
 
         @Override

@@ -16,10 +16,7 @@
 package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.ContainerConfig;
-import com.amazonaws.serverless.proxy.model.Headers;
-import com.amazonaws.serverless.proxy.model.MultiValuedTreeMap;
+import com.amazonaws.serverless.proxy.model.*;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ArgumentConversionContext;
@@ -94,13 +91,16 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
         this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(ConversionService.SHARED);
 
-        setAttribute(API_GATEWAY_CONTEXT_PROPERTY, awsProxyRequest.getRequestContext());
+        final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
+        setAttribute(API_GATEWAY_CONTEXT_PROPERTY, requestContext);
         setAttribute(API_GATEWAY_STAGE_VARS_PROPERTY, awsProxyRequest.getStageVariables());
         setAttribute(API_GATEWAY_EVENT_PROPERTY, awsProxyRequest);
-        setAttribute(ALB_CONTEXT_PROPERTY, awsProxyRequest.getRequestContext().getElb());
+        if (requestContext != null) {
+            setAttribute(ALB_CONTEXT_PROPERTY, requestContext.getElb());
+        }
         setAttribute(LAMBDA_CONTEXT_PROPERTY, lambdaContext);
         setAttribute(JAX_SECURITY_CONTEXT_PROPERTY, config);
-        if (securityContext != null) {
+        if (securityContext != null && requestContext != null) {
             setAttribute("micronaut.AUTHENTICATION", securityContext.getUserPrincipal());
         }
     }
@@ -161,8 +161,9 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         String hostHeader = awsProxyRequest.getMultiValueHeaders().getFirst(HttpHeaders.HOST);
-        if (!SecurityUtils.isValidHost(hostHeader, awsProxyRequest.getRequestContext().getApiId(), region)) {
-            hostHeader = new StringBuilder().append(awsProxyRequest.getRequestContext().getApiId())
+        final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
+        if (requestContext != null && !SecurityUtils.isValidHost(hostHeader, requestContext.getApiId(), region)) {
+            hostHeader = new StringBuilder().append(requestContext.getApiId())
                     .append(".execute-api.")
                     .append(region)
                     .append(".amazonaws.com").toString();
