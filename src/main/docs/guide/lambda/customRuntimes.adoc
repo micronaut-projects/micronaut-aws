@@ -1,0 +1,20 @@
+You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.
+
+The api:function.aws.runtime.MicronautLambdaRuntime[] class provides an implementation that you can use to execute a custom runtime.
+
+The following is an example `bootstrap`
+
+.Example `bootstrap`
+[source,bash]
+#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp server.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime
+
+You need to create a zip bundle including the `bootstrap` and your application JAR filed (in the above case named `server.jar`) for deployment to AWS and specify a runtime of `provided`. For example:
+
+[source,bash]
+aws lambda create-function --function-name my-function \
+--zip-file fileb://function.zip --handler function.handler --runtime provided \
+--role arn:aws:iam::123456789:role/lambda_basic_execution
+
+TIP: See https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.html[Publishing a Custom Runtime] for more information.

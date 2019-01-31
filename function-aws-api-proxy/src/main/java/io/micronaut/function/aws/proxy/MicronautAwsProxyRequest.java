@@ -85,7 +85,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             ContainerConfig config) {
         this.awsProxyRequest = awsProxyRequest;
         this.path = path;
-        this.httpMethod = HttpMethod.valueOf(awsProxyRequest.getHttpMethod());
+        final String httpMethod = awsProxyRequest.getHttpMethod();
+        this.httpMethod = StringUtils.isNotEmpty(httpMethod) ? HttpMethod.valueOf(httpMethod) : HttpMethod.GET;
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
         this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(ConversionService.SHARED);
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();

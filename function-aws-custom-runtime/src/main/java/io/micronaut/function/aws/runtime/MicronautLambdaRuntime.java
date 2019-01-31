@@ -30,13 +30,17 @@ import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.BlockingHttpClient;
+import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.uri.UriTemplate;
 import io.micronaut.runtime.context.env.CommandLinePropertySource;
 
+import javax.annotation.Nonnull;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.function.Predicate;
 
@@ -61,18 +65,36 @@ public class MicronautLambdaRuntime {
      * @throws Exception If an error occurs initializing the custom runtime
      */
     public static void main(String... args) throws Exception {
-        final String runtimeApiEndpoint = System.getenv("AWS_LAMBDA_RUNTIME_API");
-        if (StringUtils.isEmpty(runtimeApiEndpoint)) {
-            throw new IllegalStateException("Missing AWS_LAMBDA_RUNTIME_API environment variable. Custom runtime can only be run within AWS Lambda environment.");
-        }
-        final URL runtimeApiURL = new URL(runtimeApiEndpoint);
+        final URL runtimeApiURL = lookupRuntimeApiEndpoint();
         final Predicate<URL> loopUntil = (url) -> true;
 
         CommandLine commandLine = CommandLine.parse(args);
         final ApplicationContextBuilder applicationContextBuilder = ApplicationContext.build()
                                                                         .propertySources(new CommandLinePropertySource(commandLine));
 
-        startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, loopUntil);
+        new MicronautLambdaRuntime()
+                .startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, loopUntil);
+    }
+
+    /**
+     * Starts the runtime API event loop.
+     * @param applicationContextBuilder The context builder
+     * @throws MalformedURLException if the lambda endpoint URL is malformed
+     */
+    public void startRuntimeApiEventLoop(
+            @Nonnull ApplicationContextBuilder applicationContextBuilder) throws MalformedURLException {
+        startRuntimeApiEventLoop(lookupRuntimeApiEndpoint(), applicationContextBuilder, (url) -> true);
+    }
+
+    /**
+     * Starts the runtime API event loop.
+     * @param runtimeApiURL The runtime API URL.
+     * @param applicationContextBuilder The context builder
+     */
+    public void startRuntimeApiEventLoop(
+            @Nonnull URL runtimeApiURL,
+            @Nonnull ApplicationContextBuilder applicationContextBuilder) {
+       startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, (url) -> true);
     }
 
     /**
@@ -81,13 +103,18 @@ public class MicronautLambdaRuntime {
      * @param applicationContextBuilder The context builder
      * @param loopUntil A predicate that allows controlling when the event loop should exit
      */
-    public static void startRuntimeApiEventLoop(
-            URL runtimeApiURL,
-            ApplicationContextBuilder applicationContextBuilder,
-            Predicate<URL> loopUntil) {
+    public void startRuntimeApiEventLoop(
+            @Nonnull URL runtimeApiURL,
+            @Nonnull ApplicationContextBuilder applicationContextBuilder,
+            @Nonnull Predicate<URL> loopUntil) {
         try {
             final MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(applicationContextBuilder);
-            final RxHttpClient endpointClient = handler.getApplicationContext().createBean(RxHttpClient.class, runtimeApiURL);
+            final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
+            config.setReadIdleTimeout(Duration.ofSeconds(30));
+            final RxHttpClient endpointClient = handler.getApplicationContext().createBean(
+                    RxHttpClient.class,
+                    runtimeApiURL,
+                    config);
             try {
                 while (loopUntil.test(runtimeApiURL)) {
                     final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
@@ -141,6 +168,14 @@ public class MicronautLambdaRuntime {
                 // swallow, nothing we can do...
             }
         }
+    }
+
+    private static URL lookupRuntimeApiEndpoint() throws MalformedURLException {
+        final String runtimeApiEndpoint = System.getenv("AWS_LAMBDA_RUNTIME_API");
+        if (StringUtils.isEmpty(runtimeApiEndpoint)) {
+            throw new IllegalStateException("Missing AWS_LAMBDA_RUNTIME_API environment variable. Custom runtime can only be run within AWS Lambda environment.");
+        }
+        return new URL("http://" + runtimeApiEndpoint);
     }
 
     /**

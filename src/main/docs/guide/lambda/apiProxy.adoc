@@ -1,0 +1,30 @@
+An alternative approach to using Micronaut with AWS is to use Micronaut support for the https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java Container] project.
+
+In this arrangement you build your application as a regular REST application, for example:
+
+.Example Controller
+[source,java]
+----
+include::examples/api-proxy-example/src/main/java/example/PingController.java[]
+----
+
+You then need to add the `micronaut-function-aws-api-proxy` dependency:
+
+dependency:micronaut-function-aws-api-proxy[groupId="io.micronaut.configuration"]
+
+You can then implement a `RequestHandler` that handles the API proxy request:
+
+.Example Controller
+[source,java]
+----
+include::examples/api-proxy-example/src/main/java/example/StreamLambdaHandler.java[]
+----
+
+<1> Micronaut is initialized in the static initializer
+<2> The API Proxy Request is handled
+
+The api:function.aws.proxy.MicronautLambdaContainerHandler[] class is used to initialization Micronaut and handle the serverless requests.
+
+The `getAwsProxyHandler()` method also accepts a `ApplicationContextBuilder` instance which you can use to further customizate application bootstrap.
+
+TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-example[Example Application] and associated https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-proxy-example/README.md[README] for instructions on how to deploy locally using https://github.com/awslabs/aws-sam-cli[AWS SAM Local] and AWS Cloud Formation for production.

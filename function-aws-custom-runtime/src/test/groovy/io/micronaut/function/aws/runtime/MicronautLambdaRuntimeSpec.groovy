@@ -20,7 +20,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
         boolean looped = false
-        MicronautLambdaRuntime.startRuntimeApiEventLoop(
+        new MicronautLambdaRuntime().startRuntimeApiEventLoop(
                 embeddedServer.getURL(),
                 ApplicationContext.build(),
                 { URL ->

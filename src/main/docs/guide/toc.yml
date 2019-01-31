@@ -1,1 +1,6 @@
 introduction: Introduction
+lambda:
+  title: AWS Lambda Support
+  requestHandlers: Micronaut Request Handlers
+  apiProxy: AWS API Proxy Support
+  customRuntimes: AWS Lambda Custom Runtimes

@@ -1,3 +1,4 @@
+group "io.micronaut"
 dependencies {
     compile "io.micronaut:micronaut-function:$micronautVersion"
     compile "com.amazonaws:aws-lambda-java-core:$awsLambdaVersion"

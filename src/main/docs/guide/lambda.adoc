@@ -1,0 +1,1 @@
+Regular Micronaut functions created via `mn create-function` can be deployed to Lambda directly. However if you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.
