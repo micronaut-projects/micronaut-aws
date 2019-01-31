@@ -1,5 +1,7 @@
 An alternative approach to using Micronaut with AWS is to use Micronaut support for the https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java Container] project.
 
+TIP: In Micronaut 1.1 or above you can create an API proxy ready application with `mn create-app myapp --features aws-api-proxy`
+
 In this arrangement you build your application as a regular REST application, for example:
 
 .Example Controller
