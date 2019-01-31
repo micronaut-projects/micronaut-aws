@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":9};
+var methods = {"i0":9,"i1":9};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -192,6 +192,14 @@ extends java.lang.Object</pre>
 <div class="block">Main entry point.</div>
 </td>
 </tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#startRuntimeApiEventLoop-java.net.URL-io.micronaut.context.ApplicationContextBuilder-java.util.function.Predicate-">startRuntimeApiEventLoop</a></span>(java.net.URL&nbsp;runtimeApiURL,
+                        io.micronaut.context.ApplicationContextBuilder&nbsp;applicationContextBuilder,
+                        java.util.function.Predicate&lt;java.net.URL&gt;&nbsp;loopUntil)</code>
+<div class="block">Starts the runtime API event loop.</div>
+</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -299,7 +307,7 @@ extends java.lang.Object</pre>
 <a name="main-java.lang.String...-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>main</h4>
 <pre>public static&nbsp;void&nbsp;main(java.lang.String...&nbsp;args)
@@ -310,6 +318,24 @@ extends java.lang.Object</pre>
 <dd><code>args</code> - The arguments</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>java.lang.Exception</code> - If an error occurs initializing the custom runtime</dd>
+</dl>
+</li>
+</ul>
+<a name="startRuntimeApiEventLoop-java.net.URL-io.micronaut.context.ApplicationContextBuilder-java.util.function.Predicate-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>startRuntimeApiEventLoop</h4>
+<pre>public static&nbsp;void&nbsp;startRuntimeApiEventLoop(java.net.URL&nbsp;runtimeApiURL,
+                                            io.micronaut.context.ApplicationContextBuilder&nbsp;applicationContextBuilder,
+                                            java.util.function.Predicate&lt;java.net.URL&gt;&nbsp;loopUntil)</pre>
+<div class="block">Starts the runtime API event loop.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>runtimeApiURL</code> - The runtime API URL.</dd>
+<dd><code>applicationContextBuilder</code> - The context builder</dd>
+<dd><code>loopUntil</code> - A predicate that allows controlling when the event loop should exit</dd>
 </dl>
 </li>
 </ul>
