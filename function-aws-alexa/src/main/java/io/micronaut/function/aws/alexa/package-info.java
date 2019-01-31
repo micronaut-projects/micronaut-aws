@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws
-
-import javax.inject.Singleton
-
-@Singleton
-class MathService {
-    Integer round(Float input) {
-        return Math.round(input)
-    }
-}
+/**
+ * <p>Classes to support exposing {@link io.micronaut.function.FunctionBean} instances for AWS lambda Alexa Skills</p>.
+ *
+ * @author Ryan Vanderwerf
+ * @since 1.0
+ */
+package io.micronaut.function.aws.alexa;

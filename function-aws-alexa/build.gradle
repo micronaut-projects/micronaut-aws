@@ -1,11 +1,12 @@
-group "io.micronaut"
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
     compileOnly "io.micronaut:micronaut-inject-java"
 
     compile "io.micronaut:micronaut-function:$micronautVersion"
-    compile "com.amazonaws:aws-lambda-java-core:$awsLambdaVersion"
+    compile project(":function-aws")
+    compile "com.amazonaws:aws-lambda-java-core:${awsLambdaVersion}"
+    compile "com.amazon.alexa:ask-sdk:${alexaAskSdkVersion}"
 
     testCompile "io.micronaut:micronaut-inject-groovy"
 }
