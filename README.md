@@ -8,3 +8,5 @@ This project includes integration between [Micronaut](http://micronaut.io) and A
 
 See the [Documentation](https://micronaut-projects.github.io/micronaut-aws/latest/guide) for more information.
 
+See the [Snapshot Documentation](https://micronaut-projects.github.io/micronaut-aws/snapshot/guide) for the current development docs.
+
