@@ -1,0 +1,12 @@
+To simplify the programming model Micronaut AWS includes a ann:function.aws.alexa.annotation.IntentHandler[] annotation that can be used on any bean method to make the method an intent handler.
+
+NOTE: The method must accept a single value of type `com.amazon.ask.dispatcher.request.handler.HandlerInput` and return a value of type `Optional<com.amazon.ask.model.Response>` otherwise a compilation error will occur.
+
+A typical Alexa application written in Micronaut looks like:
+
+snippet::com.amazon.ask.helloworld.handlers.AlexaApplication[tags="imports,class", project-base="examples/alexa-hello-world", source="main"]
+
+<1> The `javax.inject.Singleton` annotation is used to define `AlexApplication` as a bean
+<2> Other services can be dependency injected into the constructor
+<3> The ann:function.aws.alexa.annotation.IntentHandler[] is used to indicate which methods are intent handlers
+<4> The method receives a `HandlerInput` and returns a `Response`

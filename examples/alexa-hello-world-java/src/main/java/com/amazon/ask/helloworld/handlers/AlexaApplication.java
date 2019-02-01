@@ -1,5 +1,6 @@
 package com.amazon.ask.helloworld.handlers;
 
+// tag::imports[]
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
 import io.micronaut.function.aws.alexa.Intents;
@@ -7,26 +8,29 @@ import io.micronaut.function.aws.alexa.annotation.IntentHandler;
 
 import javax.inject.Singleton;
 import java.util.Optional;
+// end::imports[]
 
-@Singleton
+// tag::class[]
+@Singleton // <1>
 public class AlexaApplication {
 
     public static final String INTENT_NAME = "HelloWorldIntent";
 
     private final MessageService messageService;
 
-    public AlexaApplication(MessageService messageService) {
+    public AlexaApplication(MessageService messageService) { // <2>
         this.messageService = messageService;
     }
 
-    @IntentHandler(INTENT_NAME)
-    public Optional<Response> greet(HandlerInput input) {
+    @IntentHandler(INTENT_NAME) // <3>
+    public Optional<Response> greet(HandlerInput input) { // <4>
         String speechText = messageService.sayHello();
         return input.getResponseBuilder()
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .build();
     }
+// end::class[]
 
     @IntentHandler(Intents.HELP)
     public Optional<Response> help(HandlerInput input) {

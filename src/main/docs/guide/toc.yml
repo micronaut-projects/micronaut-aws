@@ -4,3 +4,6 @@ lambda:
   requestHandlers: Micronaut Request Handlers
   apiProxy: AWS API Proxy Support
   customRuntimes: AWS Lambda Custom Runtimes
+alexa:
+  title: Alexa Skill Support
+  intentHandler: The IntentHandler Annotation
