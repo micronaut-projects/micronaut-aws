@@ -1,0 +1,5 @@
+profile: function-aws
+defaultPackage: com.amazon.ask.helloworld.handlers
+---
+testFramework: junit
+sourceLanguage: java
