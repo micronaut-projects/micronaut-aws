@@ -73,6 +73,9 @@
 <ul class="horizontal">
 <li><a href="io/micronaut/configuration/aws/package-tree.html">io.micronaut.configuration.aws</a>, </li>
 <li><a href="io/micronaut/function/aws/package-tree.html">io.micronaut.function.aws</a>, </li>
+<li><a href="io/micronaut/function/aws/alexa/package-tree.html">io.micronaut.function.aws.alexa</a>, </li>
+<li><a href="io/micronaut/function/aws/alexa/annotation/package-tree.html">io.micronaut.function.aws.alexa.annotation</a>, </li>
+<li><a href="io/micronaut/function/aws/alexa/handlers/package-tree.html">io.micronaut.function.aws.alexa.handlers</a>, </li>
 <li><a href="io/micronaut/function/aws/proxy/package-tree.html">io.micronaut.function.aws.proxy</a>, </li>
 <li><a href="io/micronaut/function/aws/proxy/model/bind/package-tree.html">io.micronaut.function.aws.proxy.model.bind</a>, </li>
 <li><a href="io/micronaut/function/aws/proxy/model/factory/package-tree.html">io.micronaut.function.aws.proxy.model.factory</a>, </li>
@@ -103,6 +106,7 @@
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyPrincipalBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">AwsProxyPrincipalBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">AwsProxyRequestArgumentBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestContextArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">AwsProxyRequestContextArgumentBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
+<li type="circle">io.micronaut.function.aws.alexa.handlers.<a href="io/micronaut/function/aws/alexa/handlers/DefaultSessionEndedRequestHandler.html" title="class in io.micronaut.function.aws.alexa.handlers"><span class="typeNameLink">DefaultSessionEndedRequestHandler</span></a> (implements com.amazon.ask.dispatcher.request.handler.RequestHandler)</li>
 <li type="circle">io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws"><span class="typeNameLink">EnvironmentAWSCredentialsProvider</span></a> (implements com.amazonaws.auth.AWSCredentialsProvider)</li>
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautAwsProxyExceptionHandler</span></a> (implements com.amazonaws.serverless.proxy.ExceptionHandler&lt;ResponseType&gt;)</li>
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautAwsProxyRequest</span></a>&lt;T&gt; (implements io.micronaut.http.HttpRequest&lt;B&gt;)</li>
@@ -115,6 +119,11 @@
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautResponseWriter</span></a></li>
 </ul>
 </li>
+<li type="circle">com.amazon.ask.SkillStreamHandler (implements com.amazonaws.services.lambda.runtime.RequestStreamHandler)
+<ul>
+<li type="circle">io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa"><span class="typeNameLink">AlexaFunction</span></a> (implements java.lang.AutoCloseable, java.io.Closeable)</li>
+</ul>
+</li>
 <li type="circle">io.micronaut.function.executor.StreamFunctionExecutor&lt;C&gt;
 <ul>
 <li type="circle">io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws"><span class="typeNameLink">MicronautRequestStreamHandler</span></a> (implements com.amazonaws.services.lambda.runtime.RequestStreamHandler)</li>
@@ -125,11 +134,25 @@
 </ul>
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
+<li type="circle">io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaIntents.html" title="interface in io.micronaut.function.aws.alexa"><span class="typeNameLink">AlexaIntents</span></a></li>
 <li type="circle">io.micronaut.context.ApplicationContextProvider
 <ul>
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerContext</span></a></li>
 </ul>
 </li>
+<li type="circle">com.amazon.ask.request.handler.GenericRequestHandler&lt;Input,Output&gt;
+<ul>
+<li type="circle">com.amazon.ask.dispatcher.request.handler.RequestHandler
+<ul>
+<li type="circle">io.micronaut.function.aws.alexa.handlers.<a href="io/micronaut/function/aws/alexa/handlers/AnnotatedRequestHandler.html" title="interface in io.micronaut.function.aws.alexa.handlers"><span class="typeNameLink">AnnotatedRequestHandler</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 title="Annotation Type Hierarchy">Annotation Type Hierarchy</h2>
+<ul>
+<li type="circle">io.micronaut.function.aws.alexa.annotation.<a href="io/micronaut/function/aws/alexa/annotation/IntentHandler.html" title="annotation in io.micronaut.function.aws.alexa.annotation"><span class="typeNameLink">IntentHandler</span></a> (implements java.lang.annotation.Annotation)</li>
 </ul>
 </div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
