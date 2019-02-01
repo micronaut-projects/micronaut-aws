@@ -15,12 +15,12 @@ group "com.amazon.ask.helloworld.handlers"
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://dl.bintray.com/micronaut/core-releases-local" }
 }
 
 dependencyManagement {
     imports {
-        mavenBom 'io.micronaut:micronaut-bom:1.1.0.BUILD-SNAPSHOT'
+        mavenBom 'io.micronaut:micronaut-bom:1.0.4'
     }
 }
 
@@ -30,7 +30,7 @@ configurations {
 }
 
 dependencies {
-    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.BUILD-SNAPSHOT"
+    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.M1"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
     compile "io.micronaut:micronaut-runtime"
@@ -39,10 +39,10 @@ dependencies {
     kaptTest "io.micronaut:micronaut-inject-java"
     runtime "com.amazonaws:aws-lambda-java-log4j2:1.0.0"
     runtime "org.apache.logging.log4j:log4j-slf4j-impl:2.9.1"
-    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7"
-    testCompile "org.junit.jupiter:junit-jupiter-api"
-    testCompile "io.micronaut.test:micronaut-test-junit5"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+    runtime "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8"
+    testCompile "org.junit.jupiter:junit-jupiter-api:5.3.0"
+    testCompile "io.micronaut.test:micronaut-test-junit5:1.0.2"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.0"
 
 }
 
