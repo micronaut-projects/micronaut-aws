@@ -6,29 +6,28 @@ import io.micronaut.function.aws.alexa.Intents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 
 import javax.inject.Singleton
+import java.util.Optional
 
 @Singleton
-class AlexaApplication {
+class AlexaApplication(val messageService: MessageService) {
 
-    private final MessageService messageService
-
-    AlexaApplication(MessageService messageService) {
-        this.messageService = messageService
+    companion object {
+        const val INTENT_NAME = "HelloWorldIntent"
     }
 
-    @IntentHandler("HelloWorldIntent")
-    Optional<Response> greet(HandlerInput input) {
-        String speechText = messageService.sayHello()
-        return input.getResponseBuilder()
+    @IntentHandler(INTENT_NAME)
+    fun greet(input : HandlerInput) : Optional<Response> {
+        val speechText = messageService.sayHello()
+        return input.responseBuilder
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .build()
     }
 
     @IntentHandler(Intents.HELP)
-    Optional<Response> help(HandlerInput input) {
-        String speechText = "You can say hello to me!"
-        return input.getResponseBuilder()
+    fun help(input : HandlerInput ) : Optional<Response> {
+        val speechText = "You can say hello to me!"
+        return input.responseBuilder
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .withReprompt(speechText)
@@ -36,18 +35,18 @@ class AlexaApplication {
     }
 
     @IntentHandler(Intents.FALLBACK)
-    Optional<Response> fallback(HandlerInput input) {
-        String speechText = "Sorry, I don't know that. You can say try saying help!"
-        return input.getResponseBuilder()
+    fun fallback(input : HandlerInput) : Optional<Response>  {
+        val speechText = "Sorry, I don't know that. You can say try saying help!"
+        return input.responseBuilder
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .withReprompt(speechText)
                 .build()
     }
 
-    @IntentHandler([Intents.CANCEL, Intents.STOP])
-    Optional<Response> cancel(HandlerInput input) {
-        return input.getResponseBuilder()
+    @IntentHandler(Intents.CANCEL, Intents.STOP)
+    fun cancel(input : HandlerInput) : Optional<Response> {
+        return input.responseBuilder
                 .withSpeech("Goodbye")
                 .withSimpleCard("HelloWorld", "Goodbye")
                 .build()
