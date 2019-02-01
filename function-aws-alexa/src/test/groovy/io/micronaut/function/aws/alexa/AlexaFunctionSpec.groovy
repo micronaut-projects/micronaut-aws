@@ -57,8 +57,8 @@ class AlexaFunctionSpec extends Specification {
         final RequestEnvelope.Builder envelopeBuilder = RequestEnvelope.builder();
         def intentBuilder = IntentRequest.builder()
         intentBuilder.withIntent(Intent.builder().withName("HelloWorldIntent").build())
-        envelopeBuilder.withRequest(intentBuilder.build());
-        builder.withRequestEnvelope(envelopeBuilder.build());
+        envelopeBuilder.withRequest(intentBuilder.build())
+        builder.withRequestEnvelope(envelopeBuilder.build())
 
 
         then:

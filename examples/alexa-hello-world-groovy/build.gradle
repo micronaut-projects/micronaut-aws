@@ -1,0 +1,78 @@
+plugins {
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "com.github.johnrengelman.shadow" version "4.0.2"
+    id "jp.classmethod.aws.lambda" version "0.38"
+    id "groovy"
+    id "net.ltgt.apt-eclipse" version "0.20"
+    id "net.ltgt.apt-idea" version "0.20"
+}
+
+
+
+version "0.1"
+group "com.amazon.ask.helloworld.handlers"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.micronaut:micronaut-bom:1.1.0.BUILD-SNAPSHOT'
+    }
+}
+
+configurations {
+	// for dependencies that are needed for development only
+	developmentOnly 
+}
+
+dependencies {
+    compileOnly "io.micronaut:micronaut-validation"
+    compileOnly "io.micronaut:micronaut-inject-groovy:1.0.5.BUILD-SNAPSHOT"
+    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.BUILD-SNAPSHOT"
+    compile "io.micronaut:micronaut-inject"
+    compile "io.micronaut:micronaut-validation"
+    compile "io.micronaut:micronaut-runtime-groovy"
+    runtime "com.amazonaws:aws-lambda-java-log4j2:1.0.0"
+    runtime "org.apache.logging.log4j:log4j-slf4j-impl:2.9.1"
+
+    testCompile("org.spockframework:spock-core:1.2-groovy-2.5") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testCompile "io.micronaut:micronaut-inject-groovy:1.0.5.BUILD-SNAPSHOT"
+    testCompile "io.micronaut.test:micronaut-test-spock"
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+test.classpath += configurations.developmentOnly
+test.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
+shadowJar {
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer)
+}
+
+if(new File("${System.getProperty("user.home")}/.aws/credentials").exists()) {
+    task deploy(type: jp.classmethod.aws.gradle.lambda.AWSLambdaMigrateFunctionTask, dependsOn: shadowJar) {
+        functionName = "alexa-hello-world-groovy"
+        handler = "io.micronaut.function.aws.alexa.AlexaFunction"
+        role = "arn:aws:iam::${aws.accountId}:role/lambda_basic_execution"
+        runtime = com.amazonaws.services.lambda.model.Runtime.Java8
+        zipFile = shadowJar.archivePath
+        memorySize = 256
+        timeout = 60
+    }
+
+}
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
