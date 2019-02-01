@@ -30,6 +30,7 @@ import io.micronaut.core.order.OrderUtil;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.core.util.ArrayUtils;
 
+import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -90,7 +91,7 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
      * @param skills The skills
      */
     public AlexaFunction(ApplicationContextBuilder contextBuilder, AlexaSkill... skills) {
-        this(Skills.standard(), contextBuilder, skills);
+        this(null, contextBuilder, skills);
     }
 
     /**
@@ -125,15 +126,19 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
     }
 
     private static AlexaSkill[] initAlexaFunction(
-            SkillBuilder<?> skillBuilder,
+            @Nullable SkillBuilder<?> skillBuilder,
             ApplicationContextBuilder contextBuilder,
             AlexaSkill... skills) {
-        ArgumentUtils.requireNonNull("skillBuilder", skillBuilder);
         ArgumentUtils.requireNonNull("contextBuilder", contextBuilder);
         // Avoid extra lookups
         System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, Environment.AMAZON_EC2);
         contextBuilder.environments(Environment.FUNCTION, ENV_ALEXA);
         final ApplicationContext applicationContext = contextBuilder.build().start();
+
+        if (skillBuilder == null) {
+            skillBuilder = applicationContext.findBean(SkillBuilder.class).orElseGet(Skills::standard);
+        }
+
         staticApplicationContext = applicationContext;
         final AlexaSkill[] array = applicationContext.getBeansOfType(
                 AlexaSkill.class
