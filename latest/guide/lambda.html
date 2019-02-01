@@ -1,0 +1,423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2 AWS Lambda Support 1.1.0.M1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        Micronaut AWS
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>2</strong><span>AWS Lambda Support</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>3</strong><span>Alexa Skill Support</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>3</strong><span>Alexa Skill Support</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2 AWS Lambda Support</h1>
+
+                    <p><strong>Version:</strong> 1.1.0.M1</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#requestHandlers"><strong>2.1</strong><span>Micronaut Request Handlers</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Proxy Support</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimes"><strong>2.3</strong><span>AWS Lambda Custom Runtimes</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="lambda">2 AWS Lambda Support</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Regular Micronaut functions created via <code>mn create-function</code> can be deployed to Lambda directly. However if you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
+</div>
+
+
+<h2 id="requestHandlers">2.1 Micronaut Request Handlers</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/requestHandlers.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The <code>micronaut-function-aws</code> module includes two parent classes you can subclass to implement native AWS Lambda functionality. To get started first add the <code>micronaut-function-aws</code> dependency to your build:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut:micronaut-function-aws'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You can then use either <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> or <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> as your parent class to implement your Lambda handler. For example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Implementing <code>MicronautRequestHandler</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+
+import io.micronaut.context.env.Environment;
+import javax.inject.Inject;
+
+public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @Inject
+    MathService mathService; <i class="conum" data-value="2"></i><b>(2)</b>
+
+    @Inject
+    Environment env;
+
+    @Override
+    public Integer execute(Float input) {
+        return mathService.round(input); <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The class extends <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> and must have a default constructor.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can use field injection to inject dependencies</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The function implementation</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> it is expected that you supply generic types with the input and the output types.</p>
+</div>
+<div class="paragraph">
+<p>If you wish to work with raw streams then subclass <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> instead.</p>
+</div>
+<div class="paragraph">
+<p>You should then configure the class name as the Lambda handler when deploying to AWS. For example with SAM:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: example.RoundHandler::handleRequest</code></pre>
+</div>
+</div>
+
+
+<h2 id="apiProxy">2.2 AWS API Proxy Support</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/apiProxy.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>An alternative approach to using Micronaut with AWS is to use Micronaut support for the <a href="https://github.com/awslabs/aws-serverless-java-container">AWS Serverless Java Container</a> project.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+In Micronaut 1.1 or above you can create an API proxy ready application with <code>mn create-app myapp --features aws-api-proxy</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In this arrangement you build your application as a regular REST application, for example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Controller</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+
+import io.micronaut.http.annotation.*;
+
+@Controller("/ping")
+public class PingController {
+
+    @Get("/")
+    public String index() {
+        return "{\"pong\":true}";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You then need to add the <code>micronaut-function-aws-api-proxy</code> dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-api-proxy'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-api-proxy&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>You can then implement a <code>RequestHandler</code> that handles the API proxy request:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Controller</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+
+import com.amazonaws.serverless.exceptions.ContainerInitializationException;
+import com.amazonaws.serverless.proxy.model.*;
+import com.amazonaws.services.lambda.runtime.*;
+import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
+import java.io.*;
+
+public class StreamLambdaHandler implements RequestStreamHandler {
+    private static MicronautLambdaContainerHandler handler; <i class="conum" data-value="1"></i><b>(1)</b>
+    static {
+        try {
+            handler = MicronautLambdaContainerHandler.getAwsProxyHandler();
+        } catch (ContainerInitializationException e) {
+            // if we fail here. We re-throw the exception to force another cold start
+            e.printStackTrace();
+            throw new RuntimeException("Could not initialize Micronaut", e);
+        }
+    }
+
+    @Override
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
+            throws IOException {
+        handler.proxyStream(inputStream, outputStream, context); <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Micronaut is initialized in the static initializer</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The API Proxy Request is handled</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <a href="../api/io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html">MicronautLambdaContainerHandler</a> class is used to initialization Micronaut and handle the serverless requests.</p>
+</div>
+<div class="paragraph">
+<p>The <code>getAwsProxyHandler()</code> method also accepts a <code>ApplicationContextBuilder</code> instance which you can use to further customize application bootstrap.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-example">Example Application</a> and associated <a href="https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-proxy-example/README.md">README</a> for instructions on how to deploy locally using <a href="https://github.com/awslabs/aws-sam-cli">AWS SAM Local</a> and AWS Cloud Formation for production.
+</td>
+</tr>
+</table>
+</div>
+
+
+<h2 id="customRuntimes">2.3 AWS Lambda Custom Runtimes</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/customRuntimes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the `` dependency to your build:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-custom-runtime'</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-custom-runtime&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then create a <code>bootstrap</code> bash script. The following is an example <code>bootstrap</code></p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp server.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You then need to create a zip bundle including the <code>bootstrap</code> and your application JAR filed (in the above case named <code>server.jar</code>) for deployment to AWS and specify a runtime of <code>provided</code>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">aws lambda create-function --function-name my-function \
+--zip-file fileb://function.zip --handler function.handler --runtime provided \
+--role arn:aws:iam::123456789:role/lambda_basic_execution</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.html">Publishing a Custom Runtime</a> for more information.
+</td>
+</tr>
+</table>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>3</strong><span>Alexa Skill Support</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
