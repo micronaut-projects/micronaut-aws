@@ -3,13 +3,15 @@ package com.amazon.ask.helloworld.handlers
 // tag::imports[]
 import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.Intents
+import groovy.transform.CompileStatic
+import io.micronaut.function.aws.alexa.AlexaIntents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 import javax.inject.Singleton
 // end::imports[]
 
 // tag::class[]
 @Singleton // <1>
+@CompileStatic
 class AlexaApplication {
 
     private final MessageService messageService
@@ -28,7 +30,7 @@ class AlexaApplication {
     }
 // end::class[]
 
-    @IntentHandler(Intents.HELP)
+    @IntentHandler(AlexaIntents.HELP)
     Optional<Response> help(HandlerInput input) {
         String speechText = "You can say hello to me!"
         return input.getResponseBuilder()
@@ -38,7 +40,7 @@ class AlexaApplication {
                 .build()
     }
 
-    @IntentHandler(Intents.FALLBACK)
+    @IntentHandler(AlexaIntents.FALLBACK)
     Optional<Response> fallback(HandlerInput input) {
         String speechText = "Sorry, I don't know that. You can say try saying help!"
         return input.getResponseBuilder()
@@ -48,7 +50,7 @@ class AlexaApplication {
                 .build()
     }
 
-    @IntentHandler([Intents.CANCEL, Intents.STOP])
+    @IntentHandler([AlexaIntents.CANCEL, AlexaIntents.STOP])
     Optional<Response> cancel(HandlerInput input) {
         return input.getResponseBuilder()
                 .withSpeech("Goodbye")

@@ -3,7 +3,7 @@ package com.amazon.ask.helloworld.handlers;
 // tag::imports[]
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
-import io.micronaut.function.aws.alexa.Intents;
+import io.micronaut.function.aws.alexa.AlexaIntents;
 import io.micronaut.function.aws.alexa.annotation.IntentHandler;
 
 import javax.inject.Singleton;
@@ -32,7 +32,7 @@ public class AlexaApplication {
     }
 // end::class[]
 
-    @IntentHandler(Intents.HELP)
+    @IntentHandler(AlexaIntents.HELP)
     public Optional<Response> help(HandlerInput input) {
         String speechText = "You can say hello to me!";
         return input.getResponseBuilder()
@@ -42,7 +42,7 @@ public class AlexaApplication {
                 .build();
     }
 
-    @IntentHandler(Intents.FALLBACK)
+    @IntentHandler(AlexaIntents.FALLBACK)
     public Optional<Response> fallback(HandlerInput input) {
         String speechText = "Sorry, I don't know that. You can say try saying help!";
         return input.getResponseBuilder()
@@ -52,7 +52,7 @@ public class AlexaApplication {
                 .build();
     }
 
-    @IntentHandler({Intents.CANCEL, Intents.STOP})
+    @IntentHandler({AlexaIntents.CANCEL, AlexaIntents.STOP})
     public Optional<Response> cancel(HandlerInput input) {
         return input.getResponseBuilder()
                 .withSpeech("Goodbye")
