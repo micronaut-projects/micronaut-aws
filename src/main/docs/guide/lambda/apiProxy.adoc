@@ -27,6 +27,6 @@ include::examples/api-proxy-example/src/main/java/example/StreamLambdaHandler.ja
 
 The api:function.aws.proxy.MicronautLambdaContainerHandler[] class is used to initialization Micronaut and handle the serverless requests.
 
-The `getAwsProxyHandler()` method also accepts a `ApplicationContextBuilder` instance which you can use to further customizate application bootstrap.
+The `getAwsProxyHandler()` method also accepts a `ApplicationContextBuilder` instance which you can use to further customize application bootstrap.
 
 TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-example[Example Application] and associated https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-proxy-example/README.md[README] for instructions on how to deploy locally using https://github.com/awslabs/aws-sam-cli[AWS SAM Local] and AWS Cloud Formation for production.
