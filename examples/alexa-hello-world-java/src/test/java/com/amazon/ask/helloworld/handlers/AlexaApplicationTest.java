@@ -12,10 +12,10 @@ import javax.inject.Inject;
 import java.util.Optional;
 
 @MicronautTest
-public class HelloWorldIntentHandlerTest {
+public class AlexaApplicationTest {
 
     @Inject
-    HelloWorldIntentHandler handler;
+    AlexaApplication handler;
 
     @Test
     void testHelloWorldIntent() throws Exception {
@@ -23,7 +23,7 @@ public class HelloWorldIntentHandlerTest {
         final RequestEnvelope.Builder envelopeBuilder = RequestEnvelope.builder();
         envelopeBuilder.withRequest(IntentRequest.builder().build());
         builder.withRequestEnvelope(envelopeBuilder.build());
-        final Optional<Response> response = handler.handle(builder.build());
+        final Optional<Response> response = handler.greet(builder.build());
         assertTrue(response.isPresent());
         final OutputSpeech outputSpeech = response.get().getOutputSpeech();
         assertTrue(

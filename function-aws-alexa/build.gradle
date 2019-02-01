@@ -8,5 +8,7 @@ dependencies {
     compile "com.amazonaws:aws-lambda-java-core:${awsLambdaVersion}"
     compile "com.amazon.alexa:ask-sdk:${alexaAskSdkVersion}"
 
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testCompile "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-groovy"
 }
