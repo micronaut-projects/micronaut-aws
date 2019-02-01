@@ -72,7 +72,3 @@ tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
     options.compilerArgs.add('-parameters')
 }
-// use JUnit 5 platform
-test {
-    useJUnitPlatform()
-}
