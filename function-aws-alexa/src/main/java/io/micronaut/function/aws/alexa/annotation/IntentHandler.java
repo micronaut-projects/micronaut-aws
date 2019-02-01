@@ -26,8 +26,18 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Can use used to annotation bean methods an implements {@link com.amazon.ask.dispatcher.request.handler.RequestHandler}
- * instances.
+ * This annotation can be used on bean methods to make any method a {@link com.amazon.ask.dispatcher.request.handler.RequestHandler}, simplifying the Alexa programming model.
+ *
+ * <pre class="code">
+ * &#064;Singleton
+ * public class AlexApplication {
+ *
+ *     &#064;IntentHandler("HelloWorldIntent")
+ *     public Optional<Response> greet(HandlerInput input) {
+ *         // intent logic here
+ *     }
+ * }</pre>
+ *
  *
  * @author graemerocher
  * @since 1.1
