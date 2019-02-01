@@ -11,6 +11,6 @@ The api:function.aws.alexa.AlexaFunction[] will wire up your Alexa application a
 * `com.amazon.ask.dispatcher.exception.ExceptionHandler`
 * `com.amazon.ask.builder.SkillBuilder`
 
-Simply declaring this types as beans will automatically configure the Alexa Skill appropriately.
+Simply declaring these types as beans will automatically configure the Alexa Skill appropriately.
 
 TIP: You can find sample applications in Java, Kotlin and Groovy in the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples[Examples] directory of the repository.
