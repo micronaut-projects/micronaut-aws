@@ -2,3 +2,4 @@ This project provides various extensions to Micronaut for Amazon Web Services (A
 
 A base api:configuration.aws.AWSClientConfiguration[] is provided which can be used as a base configuration class for any configuration that needs to configure an AWS SDK client.
 
+NOTE: Some features described in this release depend on Micronaut 1.1 which is at the development / milestone stage.

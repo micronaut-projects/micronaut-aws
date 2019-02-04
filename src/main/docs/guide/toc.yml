@@ -2,7 +2,7 @@ introduction: Introduction
 lambda:
   title: AWS Lambda Support
   requestHandlers: Micronaut Request Handlers
-  apiProxy: AWS API Proxy Support
+  apiProxy: AWS API Gateway Support
   customRuntimes: AWS Lambda Custom Runtimes
 alexa:
   title: Alexa Skill Support
