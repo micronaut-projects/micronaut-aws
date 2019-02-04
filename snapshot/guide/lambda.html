@@ -79,7 +79,7 @@ function addJsClass() {
                     <div class="toc-item" style="margin-left:0px"><a href="#requestHandlers"><strong>2.1</strong><span>Micronaut Request Handlers</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Proxy Support</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Gateway Support</span></a>
                     </div>
                     
                     <div class="toc-item" style="margin-left:0px"><a href="#customRuntimes"><strong>2.3</strong><span>AWS Lambda Custom Runtimes</span></a>
@@ -194,7 +194,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 </div>
 
 
-<h2 id="apiProxy">2.2 AWS API Proxy Support</h2>
+<h2 id="apiProxy">2.2 AWS API Gateway Support</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/apiProxy.adoc"'>
@@ -336,7 +336,7 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 <p>You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the `` dependency to your build:</p>
+<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the <code>micronaut-function-aws-custom-runtime</code> dependency to your build:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -354,6 +354,11 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </div>
 </p>
 </div>
+<div class="paragraph">
+<p>The application should be built with using the &lt;<a href="#apiProxy">API Gateway</a>&gt; approach.</p>
+</div>
+<div class="sect2">
+<h3 id="_custom_java_runtimes">Custom Java Runtimes</h3>
 <div class="paragraph">
 <p>Then create a <code>bootstrap</code> bash script. The following is an example <code>bootstrap</code></p>
 </div>
@@ -386,6 +391,83 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_graalvm_native_runtimes">Custom GraalVM Native Runtimes</h3>
+<div class="paragraph">
+<p>To achieve the absolutely best cold startup time you can create an API Gateway application that is compiled into a native image and then run using a custom AWS Lambda Runtime. The quickest way to get started is with the Micronaut 1.1 or above CLI:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Using the CLI</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features aws-api-gateway-graal</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Then create a controller, for example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Controller</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+
+import io.micronaut.http.annotation.*;
+
+@Controller("/ping")
+public class PingController {
+
+    @Get("/")
+    public String index() {
+        return "{\"pong\":true}";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:</p>
+</div>
+<div class="listingblock">
+<div class="title">Building the Function ZIP file</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ docker build . -t my-app
+$ mkdir build
+$ docker run --rm --entrypoint cat my-app  /home/application/function.zip &gt; build/function.zip</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application can then be deployed to Lambda either the AWS console or via the CLI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ aws lambda create-function --function-name my-app \
+--zip-file fileb://build/function.zip --handler function.handler --runtime provided \
+--role arn:aws:iam::881337894647:role/lambda_basic_execution</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-graal-custom-runtime-example">Example application</a> on Github
+</td>
+</tr>
+</table>
+</div>
 </div>
 
 
