@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS Serverless Micronaut API - my.service::my-service
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+Outputs:
+  MyServiceApi:
+    Description: URL for application
+    Export:
+      Name: MyServiceApi
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/ping
+Resources:
+  MyServiceFunction:
+    Properties:
+      CodeUri: s3://micronaut-functions/b18c04db02a7f1fbffee1b78e41cd049
+      Events:
+        GetResource:
+          Properties:
+            Method: any
+            Path: /{proxy+}
+          Type: Api
+      Handler: example.StreamLambdaHandler::handleRequest
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Runtime: java8
+      Timeout: 15
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
