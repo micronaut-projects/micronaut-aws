@@ -4,7 +4,7 @@ The api:function.aws.runtime.MicronautLambdaRuntime[] class provides an implemen
 
 dependency:micronaut-function-aws-custom-runtime[groupId="io.micronaut.aws"]
 
-The application should be built with using the <<<apiProxy, API Gateway>>> approach.
+The application should be built with using the <<apiProxy, API Gateway>> approach.
 
 === Custom Java Runtimes
 
