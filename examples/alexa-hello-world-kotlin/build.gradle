@@ -14,7 +14,7 @@ group "com.amazon.ask.helloworld.handlers"
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
     maven { url "https://dl.bintray.com/micronaut/core-releases-local" }
 }
 

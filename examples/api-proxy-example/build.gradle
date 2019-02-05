@@ -12,7 +12,7 @@ group "example"
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
     maven { url "https://dl.bintray.com/micronaut/core-releases-local" }
 }
 
