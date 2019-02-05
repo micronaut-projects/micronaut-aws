@@ -32,7 +32,7 @@ configurations {
 dependencies {
     compileOnly "io.micronaut:micronaut-validation"
     compileOnly "io.micronaut:micronaut-inject-groovy:1.0.5.BUILD-SNAPSHOT"
-    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.BUILD-SNAPSHOT"
+    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.M2"
     compile "io.micronaut:micronaut-inject"
     compile "io.micronaut:micronaut-validation"
     compile "io.micronaut:micronaut-runtime-groovy"
