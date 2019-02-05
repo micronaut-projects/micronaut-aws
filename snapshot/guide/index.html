@@ -45,9 +45,11 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#lambda"><strong>2</strong><span>AWS Lambda Support</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#awsCredentialsProvider"><strong>2</strong><span>AWS Credentials Provider</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>3</strong><span>Alexa Skill Support</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#lambda"><strong>3</strong><span>AWS Lambda Support</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>4</strong><span>Alexa Skill Support</span></a></div>
                                 
                             </div>
                         </div>
@@ -81,17 +83,19 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-introduction"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>2</strong><span>AWS Lambda Support</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-awsCredentialsProvider"><a href="#awsCredentialsProvider"><strong>2</strong><span>AWS Credentials Provider</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>2.1</strong><span>Micronaut Request Handlers</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>3</strong><span>AWS Lambda Support</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-apiProxy"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Gateway Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>3.1</strong><span>Micronaut Request Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>2.3</strong><span>AWS Lambda Custom Runtimes</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-apiProxy"><a href="#apiProxy"><strong>3.2</strong><span>AWS API Gateway Support</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>3</strong><span>Alexa Skill Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>3.3</strong><span>AWS Lambda Custom Runtimes</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-intentHandler"><a href="#intentHandler"><strong>3.1</strong><span>The IntentHandler Annotation</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>4</strong><span>Alexa Skill Support</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-intentHandler"><a href="#intentHandler"><strong>4.1</strong><span>The IntentHandler Annotation</span></a></div>
         
         </div>
     </div>
@@ -134,7 +138,40 @@ Some features described in this release depend on Micronaut 1.1 which is at the 
 </div>
 
 
-<h1 id="lambda">2 AWS Lambda Support</h1>
+<h1 id="awsCredentialsProvider">2 AWS Credentials Provider</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/awsCredentialsProvider.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/:configuration/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a>.</p>
+</div>
+<div class="paragraph">
+<p>For example the following snippet show how you may configure a S3 Client if you set two environment variables:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export AWS_ACCESS_KEY_ID=XXXX
+export AWS_SECRET_KEY=YYYY</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AmazonS3ClientBuilder amazonS3ClientBuilder = AmazonS3ClientBuilder.standard();
+  amazonS3ClientBuilder.setCredentials(new EnvironmentAWSCredentialsProvider(applicationContext.getEnvironment()));
+AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Read about [externalized Configuration with property sources](<a href="https://docs.micronaut.io/latest/guide/index.html#propertySource" class="bare">https://docs.micronaut.io/latest/guide/index.html#propertySource</a>) in Mironaut.</p>
+</div>
+
+
+<h1 id="lambda">3 AWS Lambda Support</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda.adoc"'>
@@ -148,7 +185,7 @@ Some features described in this release depend on Micronaut 1.1 which is at the 
 </div>
 
 
-<h2 id="requestHandlers">2.1 Micronaut Request Handlers</h2>
+<h2 id="requestHandlers">3.1 Micronaut Request Handlers</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/requestHandlers.adoc"'>
@@ -238,7 +275,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 </div>
 
 
-<h2 id="apiProxy">2.2 AWS API Gateway Support</h2>
+<h2 id="apiProxy">3.2 AWS API Gateway Support</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/apiProxy.adoc"'>
@@ -367,7 +404,7 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </div>
 
 
-<h2 id="customRuntimes">2.3 AWS Lambda Custom Runtimes</h2>
+<h2 id="customRuntimes">3.3 AWS Lambda Custom Runtimes</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/customRuntimes.adoc"'>
@@ -526,7 +563,7 @@ $ cat build/response.txt</code></pre>
 </div>
 
 
-<h1 id="alexa">3 Alexa Skill Support</h1>
+<h1 id="alexa">4 Alexa Skill Support</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa.adoc"'>
@@ -605,7 +642,7 @@ You can find sample applications in Java, Kotlin and Groovy in the <a href="http
 </div>
 
 
-<h2 id="intentHandler">3.1 The IntentHandler Annotation</h2>
+<h2 id="intentHandler">4.1 The IntentHandler Annotation</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/intentHandler.adoc"'>
