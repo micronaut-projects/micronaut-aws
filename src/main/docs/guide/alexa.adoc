@@ -2,6 +2,8 @@ The `micronaut-function-aws-alexa` module includes support for building Alexa Sk
 
 dependency:micronaut-function-aws-alexa[groupId="io.micronaut.aws"]
 
+TIP: In Micronaut 1.1 or above you can create an Alexa Skills application with `mn create-function hello-alexa --provider alexa`
+
 When using Micronaut's Alexa support you set your Lambda handler name to api:function.aws.alexa.AlexaFunction[] class or a sublcass of this class if you plan to customize it.
 
 The api:function.aws.alexa.AlexaFunction[] will wire up your Alexa application and supports dependency injection of the following types:
