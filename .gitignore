@@ -16,3 +16,9 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 build
+.DS_Store
+/.DS_Store
+/src/main/.DS_Store
+src/main/docs/.DS_Store
+/src/main/docs/resources/.DS_Store
+/src/main/docs/.DS_Store
