@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>3.1 The IntentHandler Annotation 1.1.0.M1</title>
+    <title>3.1 The IntentHandler Annotation 1.1.0.M2</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -67,7 +67,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>3.1 The IntentHandler Annotation</h1>
 
-                    <p><strong>Version:</strong> 1.1.0.M1</p>
+                    <p><strong>Version:</strong> 1.1.0.M2</p>
                 </div>
 
                 
@@ -105,7 +105,7 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
-import io.micronaut.function.aws.alexa.Intents;
+import io.micronaut.function.aws.alexa.AlexaIntents;
 import io.micronaut.function.aws.alexa.annotation.IntentHandler;
 
 import javax.inject.Singleton;
@@ -136,11 +136,13 @@ public class AlexaApplication {
 <div class="content">
 <pre class="highlight"><code class="language-groovy" data-lang="groovy">import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.Intents
+import groovy.transform.CompileStatic
+import io.micronaut.function.aws.alexa.AlexaIntents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 import javax.inject.Singleton
 
 @Singleton <b class="conum">(1)</b>
+@CompileStatic
 class AlexaApplication {
 
     private final MessageService messageService
@@ -163,7 +165,7 @@ class AlexaApplication {
 <div class="content">
 <pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.Intents
+import io.micronaut.function.aws.alexa.AlexaIntents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 
 import javax.inject.Singleton

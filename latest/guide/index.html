@@ -85,7 +85,7 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>2.1</strong><span>Micronaut Request Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-apiProxy"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Proxy Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-apiProxy"><a href="#apiProxy"><strong>2.2</strong><span>AWS API Gateway Support</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>2.3</strong><span>AWS Lambda Custom Runtimes</span></a></div>
         
@@ -101,7 +101,7 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 1.1.0.M1</p>
+        <p><strong>Version:</strong> 1.1.0.M2</p>
     </div>
     
 
@@ -119,6 +119,18 @@
 </div>
 <div class="paragraph">
 <p>A base <a href="../api/io/micronaut/configuration/aws/AWSClientConfiguration.html">AWSClientConfiguration</a> is provided which can be used as a base configuration class for any configuration that needs to configure an AWS SDK client.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Some features described in this release depend on Micronaut 1.1 which is at the development / milestone stage.
+</td>
+</tr>
+</table>
 </div>
 
 
@@ -226,7 +238,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 </div>
 
 
-<h2 id="apiProxy">2.2 AWS API Proxy Support</h2>
+<h2 id="apiProxy">2.2 AWS API Gateway Support</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/apiProxy.adoc"'>
@@ -245,7 +257,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-In Micronaut 1.1 or above you can create an API proxy ready application with <code>mn create-app myapp --features aws-api-proxy</code>
+In Micronaut 1.1 or above you can create an API proxy ready application with <code>mn create-app myapp --features aws-api-gateway</code>
 </td>
 </tr>
 </table>
@@ -368,7 +380,7 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 <p>You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.</p>
 </div>
 <div class="paragraph">
-<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the `` dependency to your build:</p>
+<p>The <a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a> class provides an implementation that you can use to execute a custom runtime. You need to add the <code>micronaut-function-aws-custom-runtime</code> dependency to your build:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -386,6 +398,11 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </div>
 </p>
 </div>
+<div class="paragraph">
+<p>The application should be built with using the <a href="#apiProxy">API Gateway</a> approach.</p>
+</div>
+<div class="sect2">
+<h3 id="_custom_java_runtimes">Custom Java Runtimes</h3>
 <div class="paragraph">
 <p>Then create a <code>bootstrap</code> bash script. The following is an example <code>bootstrap</code></p>
 </div>
@@ -419,6 +436,94 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 </tr>
 </table>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_custom_graalvm_native_runtimes">Custom GraalVM Native Runtimes</h3>
+<div class="paragraph">
+<p>To achieve the absolutely best cold startup time you can create an API Gateway application that is compiled into a native image and then run using a custom AWS Lambda Runtime. The quickest way to get started is with the Micronaut 1.1 or above CLI:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Using the CLI</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features aws-api-gateway-graal</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Then create a controller, for example:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example Controller</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+
+import io.micronaut.http.annotation.*;
+
+@Controller("/ping")
+public class PingController {
+
+    @Get("/")
+    public String index() {
+        return "{\"pong\":true}";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:</p>
+</div>
+<div class="listingblock">
+<div class="title">Building the Function ZIP file</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ docker build . -t my-app
+$ mkdir build
+$ docker run --rm --entrypoint cat my-app  /home/application/function.zip &gt; build/function.zip</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application can then be deployed to Lambda either via the AWS console or the CLI:</p>
+</div>
+<div class="listingblock">
+<div class="title">Deploying the Function with the AWS CLI</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ aws lambda create-function --function-name my-app \
+--zip-file fileb://build/function.zip --handler function.handler --runtime provided \
+--role arn:aws:iam::881337894647:role/lambda_basic_execution</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-graal-custom-runtime-example">Example application</a> on Github
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Then you can invoke the function:</p>
+</div>
+<div class="listingblock">
+<div class="title">Invoking the Function with the AWS CLI</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ aws lambda invoke --function-name my-app --payload '{"resource": "/{proxy+}", "path": "/ping", "httpMethod": "GET"}' build/response.txt
+$ cat build/response.txt</code></pre>
+</div>
+</div>
+</div>
 
 
 <h1 id="alexa">3 Alexa Skill Support</h1>
@@ -449,6 +554,18 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 </div>
 </p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+In Micronaut 1.1 or above you can create an Alexa Skills application with <code>mn create-function hello-alexa --provider alexa</code>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>When using Micronaut&#8217;s Alexa support you set your Lambda handler name to <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> class or a sublcass of this class if you plan to customize it.</p>
 </div>
@@ -472,7 +589,7 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 </ul>
 </div>
 <div class="paragraph">
-<p>Simply declaring this types as beans will automatically configure the Alexa Skill appropriately.</p>
+<p>Simply declaring these types as beans will automatically configure the Alexa Skill appropriately.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -519,7 +636,7 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
-import io.micronaut.function.aws.alexa.Intents;
+import io.micronaut.function.aws.alexa.AlexaIntents;
 import io.micronaut.function.aws.alexa.annotation.IntentHandler;
 
 import javax.inject.Singleton;
@@ -550,11 +667,13 @@ public class AlexaApplication {
 <div class="content">
 <pre class="highlight"><code class="language-groovy" data-lang="groovy">import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.Intents
+import groovy.transform.CompileStatic
+import io.micronaut.function.aws.alexa.AlexaIntents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 import javax.inject.Singleton
 
 @Singleton <b class="conum">(1)</b>
+@CompileStatic
 class AlexaApplication {
 
     private final MessageService messageService
@@ -577,7 +696,7 @@ class AlexaApplication {
 <div class="content">
 <pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.Intents
+import io.micronaut.function.aws.alexa.AlexaIntents
 import io.micronaut.function.aws.alexa.annotation.IntentHandler
 
 import javax.inject.Singleton
