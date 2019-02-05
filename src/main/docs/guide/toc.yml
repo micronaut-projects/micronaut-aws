@@ -1,4 +1,6 @@
 introduction: Introduction
+awsCredentialsProvider:
+  title: AWS Credentials Provider
 lambda:
   title: AWS Lambda Support
   requestHandlers: Micronaut Request Handlers
