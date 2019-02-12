@@ -31,17 +31,19 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
 
     @Override
     public final O handleRequest(I input, Context context) {
-        ApplicationContext applicationContext = buildApplicationContext(context);
-        startEnvironment(applicationContext);
+        if (applicationContext == null) {
+            applicationContext = buildApplicationContext(context);
+        }
+        if (context != null) {
+            registerContextBeans(context, applicationContext);
+        }
         return applicationContext.inject(this).execute(input);
     }
 
     @Override
     protected ApplicationContext buildApplicationContext(Context context) {
-        ApplicationContext applicationContext = super.buildApplicationContext(context);
-        if (context != null) {
-            registerContextBeans(context, applicationContext);
-        }
+        applicationContext = super.buildApplicationContext(context);
+        startEnvironment(applicationContext);
         return applicationContext;
     }
 
