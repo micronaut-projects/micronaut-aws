@@ -110,8 +110,8 @@ public class MicronautLambdaRuntime {
         try {
             final MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(applicationContextBuilder);
             final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
-            config.setReadIdleTimeout(Duration.ofMinutes(5));
-            config.setReadTimeout(Duration.ofMinutes(5));
+            config.setReadIdleTimeout(null);
+            config.setReadTimeout(null);
             final RxHttpClient endpointClient = handler.getApplicationContext().createBean(
                     RxHttpClient.class,
                     runtimeApiURL,
