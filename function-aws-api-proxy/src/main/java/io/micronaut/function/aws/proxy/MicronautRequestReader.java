@@ -22,6 +22,7 @@ import com.amazonaws.serverless.proxy.model.ContainerConfig;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpMethod;
@@ -85,13 +86,19 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                         final MediaType expectedContentType = finalRoute
                                 .getAnnotationMetadata()
                                 .getValue(Consumes.class, MediaType.class).orElse(null);
-                        if (expectedContentType != null && expectedContentType.getExtension().equalsIgnoreCase("json")) {
+                        if (expectedContentType == null || expectedContentType.getExtension().equalsIgnoreCase("json")) {
                             final Optional<String> body = containerRequest.getBody(String.class);
                             if (body.isPresent()) {
 
                                 final Optional<Argument<?>> bodyArgument = finalRoute.getBodyArgument();
+
                                 if (bodyArgument.isPresent()) {
-                                    final Object decoded = environment.getJsonCodec().decode(bodyArgument.get(), body.get());
+
+                                    Argument<?> type = bodyArgument.get();
+                                    if (Publishers.isConvertibleToPublisher(type.getType())) {
+                                        type = type.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                                    }
+                                    final Object decoded = environment.getJsonCodec().decode(type, body.get());
                                     ((MicronautAwsProxyRequest) containerRequest)
                                             .setDecodedBody(decoded);
                                 } else {
