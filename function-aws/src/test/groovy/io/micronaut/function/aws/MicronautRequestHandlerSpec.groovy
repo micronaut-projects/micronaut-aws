@@ -16,6 +16,7 @@
 package io.micronaut.function.aws
 
 import com.amazonaws.services.lambda.runtime.Context
+import groovy.transform.Canonical
 import io.micronaut.context.env.Environment
 import spock.lang.Specification
 
@@ -37,6 +38,12 @@ class MicronautRequestHandlerSpec extends Specification {
         System.setProperty(Environment.ENVIRONMENTS_PROPERTY, "")
     }
 
+    void "test micronaut request handler conversion from Map"() {
+        expect:
+        new PointHandler().handleRequest([x:10, y:20], Mock(Context)) == new Point(10,20)
+    }
+
+
     @Singleton
     static class MathService {
         Integer round(Float input) {
@@ -55,5 +62,18 @@ class MicronautRequestHandlerSpec extends Specification {
             assert env.activeNames.contains("foo")
             return mathService.round(input)
         }
+    }
+
+    static class PointHandler extends MicronautRequestHandler<Point, Point> {
+
+        @Override
+        Point execute(Point input) {
+            input
+        }
+    }
+
+    @Canonical
+    static class Point {
+        Integer x,y
     }
 }

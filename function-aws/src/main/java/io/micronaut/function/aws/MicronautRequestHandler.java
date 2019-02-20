@@ -17,7 +17,14 @@ package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.core.convert.ArgumentConversionContext;
+import io.micronaut.core.convert.ConversionContext;
+import io.micronaut.core.convert.ConversionError;
+import io.micronaut.core.reflect.GenericTypeUtils;
+import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
+
+import java.util.Optional;
 
 /**
  * <p>An Amazon Lambda {@link RequestHandler} implementation for Micronaut {@link io.micronaut.function.FunctionBean}</p>.
@@ -29,6 +36,9 @@ import io.micronaut.function.executor.AbstractFunctionExecutor;
  */
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O> {
 
+    @SuppressWarnings("unchecked")
+    private final Class<I> inputType = initTypeArgument();
+
     @Override
     public final O handleRequest(I input, Context context) {
         if (applicationContext == null) {
@@ -37,7 +47,29 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         if (context != null) {
             registerContextBeans(context, applicationContext);
         }
+
+        if (!inputType.isInstance(input)) {
+            input = convertInput(input);
+        }
         return applicationContext.inject(this).execute(input);
+    }
+
+    /**
+     * Converts the input the required type. Subclasses can override to provide custom conversion.
+     *
+     * @param input The input
+     * @return The converted input
+     * @throws IllegalArgumentException If input cannot be converted
+     */
+    protected I convertInput(Object input)  {
+        final ArgumentConversionContext<I> cc = ConversionContext.of(inputType);
+        final Optional<I> converted = applicationContext.getConversionService().convert(
+                input,
+                cc
+        );
+        return converted.orElseThrow(() ->
+                new IllegalArgumentException("Unconvertible input: " + input, cc.getLastError().map(ConversionError::getCause).orElse(null))
+        );
     }
 
     @Override
@@ -66,6 +98,18 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         CognitoIdentity identity = context.getIdentity();
         if (identity != null) {
             applicationContext.registerSingleton(identity);
+        }
+    }
+
+    private Class initTypeArgument() {
+        final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
+                getClass(),
+                MicronautRequestHandler.class
+        );
+        if (ArrayUtils.isNotEmpty(args)) {
+            return args[0];
+        } else {
+            return Object.class;
         }
     }
 }
