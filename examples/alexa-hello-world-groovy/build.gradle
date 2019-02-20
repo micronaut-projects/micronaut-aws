@@ -15,12 +15,11 @@ group "com.amazon.ask.helloworld.handlers"
 repositories {
     mavenLocal()
     jcenter()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencyManagement {
     imports {
-        mavenBom 'io.micronaut:micronaut-bom:1.1.0.BUILD-SNAPSHOT'
+        mavenBom 'io.micronaut:micronaut-bom:1.1.0.M1'
     }
 }
 
@@ -31,7 +30,7 @@ configurations {
 
 dependencies {
     compileOnly "io.micronaut:micronaut-validation"
-    compileOnly "io.micronaut:micronaut-inject-groovy:1.0.5.BUILD-SNAPSHOT"
+    compileOnly "io.micronaut:micronaut-inject-groovy:1.1.0.M1"
     compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.M2"
     compile "io.micronaut:micronaut-inject"
     compile "io.micronaut:micronaut-validation"
