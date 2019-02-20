@@ -161,7 +161,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             region = "us-east-1";
         }
 
-        String hostHeader = awsProxyRequest.getMultiValueHeaders().getFirst(HttpHeaders.HOST);
+        final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
         if (requestContext != null && !SecurityUtils.isValidHost(hostHeader, requestContext.getApiId(), region)) {
             hostHeader = new StringBuilder().append(requestContext.getApiId())
