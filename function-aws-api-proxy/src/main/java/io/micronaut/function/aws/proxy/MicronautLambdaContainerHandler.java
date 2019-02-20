@@ -34,6 +34,7 @@ import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.Status;
 import io.micronaut.http.bind.RequestBinderRegistry;
 import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.HttpFilter;
@@ -61,6 +62,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -212,7 +214,7 @@ public final class MicronautLambdaContainerHandler
 
                 if (routeMatch.isPresent()) {
                     try {
-                        final RouteMatch<?> finalRoute = routeMatch.get();
+                        final UriRouteMatch finalRoute = routeMatch.get();
                         containerRequest.setAttribute(
                                 HttpAttributes.ROUTE_MATCH, finalRoute
                         );
@@ -239,6 +241,7 @@ public final class MicronautLambdaContainerHandler
                             );
                             final Object result = boundRoute.execute();
                             if (result == null) {
+                                applyStatus(containerResponse, finalRoute);
                                 return Flowable.just(containerResponse);
                             }
                             if (Publishers.isConvertibleToPublisher(result)) {
@@ -247,10 +250,12 @@ public final class MicronautLambdaContainerHandler
                                     if (!(o instanceof MicronautAwsProxyResponse)) {
                                         ((MutableHttpResponse) containerResponse).body(o);
                                     }
+                                    applyStatus(containerResponse, finalRoute);
                                     return containerResponse;
                                 }).toFlowable();
                             } else {
                                 if (!(result instanceof MicronautAwsProxyResponse)) {
+                                    applyStatus(containerResponse, finalRoute);
                                     ((MutableHttpResponse) containerResponse).body(result);
                                 }
                                 return Flowable.just(containerResponse);
@@ -291,6 +296,10 @@ public final class MicronautLambdaContainerHandler
         }
 
 
+    }
+
+    private void applyStatus(MicronautAwsProxyResponse<?> containerResponse, UriRouteMatch finalRoute) {
+        finalRoute.getValue(Status.class, HttpStatus.class).ifPresent(httpStatus -> containerResponse.status(httpStatus));
     }
 
     @Override
