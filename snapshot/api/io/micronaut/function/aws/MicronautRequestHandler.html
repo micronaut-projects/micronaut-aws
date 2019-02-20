@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -190,24 +190,30 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;I,O&gt;</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#buildApplicationContext-com.amazonaws.services.lambda.runtime.Context-">buildApplicationContext</a></span>(com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code>&nbsp;</td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>protected <a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">I</a></code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#convertInput-java.lang.Object-">convertInput</a></span>(java.lang.Object&nbsp;input)</code>
+<div class="block">Converts the input the required type.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">O</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#handleRequest-I-com.amazonaws.services.lambda.runtime.Context-">handleRequest</a></span>(<a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">I</a>&nbsp;input,
              com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code>&nbsp;</td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected io.micronaut.context.ApplicationContextBuilder</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#newApplicationContextBuilder--">newApplicationContextBuilder</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected io.micronaut.inject.ExecutableMethod&lt;java.lang.Object,java.lang.Object&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#resolveFunction-io.micronaut.function.LocalFunctionRegistry-java.lang.String-">resolveFunction</a></span>(io.micronaut.function.LocalFunctionRegistry&nbsp;arg0,
                java.lang.String&nbsp;arg1)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName</a></span>(io.micronaut.context.env.Environment&nbsp;arg0)</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>protected io.micronaut.context.env.Environment</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html#startEnvironment-io.micronaut.context.ApplicationContext-">startEnvironment</a></span>(io.micronaut.context.ApplicationContext&nbsp;arg0)</code>&nbsp;</td>
 </tr>
@@ -287,6 +293,24 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;I,O&gt;</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>handleRequest</code>&nbsp;in interface&nbsp;<code>com.amazonaws.services.lambda.runtime.RequestHandler&lt;<a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">I</a>,<a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">O</a>&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="convertInput-java.lang.Object-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>convertInput</h4>
+<pre>protected&nbsp;<a href="../../../../io/micronaut/function/aws/MicronautRequestHandler.html" title="type parameter in MicronautRequestHandler">I</a>&nbsp;convertInput(java.lang.Object&nbsp;input)</pre>
+<div class="block">Converts the input the required type. Subclasses can override to provide custom conversion.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>input</code> - The input</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The converted input</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>java.lang.IllegalArgumentException</code> - If input cannot be converted</dd>
 </dl>
 </li>
 </ul>
