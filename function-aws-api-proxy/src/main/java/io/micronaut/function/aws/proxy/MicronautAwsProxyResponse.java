@@ -113,11 +113,6 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         ArgumentUtils.requireNonNull("status", status);
         this.status = status;
         response.setStatusCode(status.getCode());
-        if (StringUtils.isNotEmpty(message)) {
-            response.setStatusDescription(message.toString());
-        } else {
-            response.setStatusDescription(status.getReason());
-        }
         return this;
     }
 
