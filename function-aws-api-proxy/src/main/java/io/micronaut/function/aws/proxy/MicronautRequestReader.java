@@ -24,14 +24,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.type.Argument;
+import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.web.router.UriRoute;
 import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -90,15 +93,19 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                             final Optional<String> body = containerRequest.getBody(String.class);
                             if (body.isPresent()) {
 
-                                final Optional<Argument<?>> bodyArgument = finalRoute.getBodyArgument();
+                                Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+                                if (bodyArgument == null) {
+                                    bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                                                        .findFirst()
+                                                        .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+                                }
 
-                                if (bodyArgument.isPresent()) {
-
-                                    Argument<?> type = bodyArgument.get();
-                                    if (Publishers.isConvertibleToPublisher(type.getType())) {
-                                        type = type.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                                if (bodyArgument != null) {
+                                    final Class<?> rawType = bodyArgument.getType();
+                                    if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
+                                        bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
                                     }
-                                    final Object decoded = environment.getJsonCodec().decode(type, body.get());
+                                    final Object decoded = environment.getJsonCodec().decode(bodyArgument, body.get());
                                     ((MicronautAwsProxyRequest) containerRequest)
                                             .setDecodedBody(decoded);
                                 } else {

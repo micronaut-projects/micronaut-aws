@@ -7,6 +7,7 @@ import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
@@ -18,6 +19,7 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+
 class BodySpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
@@ -28,6 +30,21 @@ class BodySpec extends Specification {
     void "test custom body POJO"() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body('{"x":10,"y":20}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 201
+        response.body == '{"x":10,"y":20}'
+
+    }
+
+    void "test custom body POJO with whole request"() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo-and-request', HttpMethod.POST.toString())
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         builder.body('{"x":10,"y":20}')
 
@@ -62,6 +79,13 @@ class BodySpec extends Specification {
         Point post(@Body Point data) {
             return data
         }
+
+        @Post(uri = "/pojo-and-request")
+        @Status(HttpStatus.CREATED)
+        Point postRequest(HttpRequest<Point> request) {
+            return request.body.orElse(null)
+        }
+
 
         @Post(uri = "/pojo-reactive")
         @Status(HttpStatus.CREATED)
