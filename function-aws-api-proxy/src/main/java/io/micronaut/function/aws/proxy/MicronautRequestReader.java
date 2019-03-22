@@ -35,7 +35,9 @@ import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of the {@link RequestReader} class for Micronaut.
@@ -64,7 +66,7 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
             Context lambdaContext,
             ContainerConfig config) throws InvalidRequestEventException {
         try {
-            final String path = stripBasePath(request.getPath(), config);
+            final String path = config.isStripBasePath() ? stripBasePath(request.getPath(), config) : getPathNoBase(request);
             final MicronautAwsProxyRequest<?> containerRequest = new MicronautAwsProxyRequest(
                     path,
                     request,
@@ -127,5 +129,22 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
     @Override
     protected Class<? extends AwsProxyRequest> getRequestClass() {
         return AwsProxyRequest.class;
+    }
+
+    private static String getPathNoBase(AwsProxyRequest request) {
+        if (request.getResource() == null || "".equals(request.getResource())) {
+            return request.getPath();
+        }
+
+        if (request.getPathParameters() == null || request.getPathParameters().isEmpty()) {
+            return request.getResource();
+        }
+
+        String path = request.getResource();
+        for (Map.Entry<String, String> variable : request.getPathParameters().entrySet()) {
+            path = path.replaceAll("\\{" + Pattern.quote(variable.getKey()) +"\\+?}", variable.getValue());
+        }
+
+        return path;
     }
 }

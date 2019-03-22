@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -277,6 +279,37 @@ public class MicronautAwsProxyTest {
         AwsProxyResponse output = handler.proxy(request, lambdaContext);
         assertEquals(201, output.getStatusCode());
         handler.stripBasePath("");
+    }
+
+    @Test
+    public void automaticStripBasePath_route_shouldRouteCorrectly() {
+        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                .json()
+                .queryString("status", "201")
+                .build();
+        request.setResource("/{proxy+}");
+        request.setPathParameters(Collections.singletonMap("proxy", "echo/status-code"));
+
+        AwsProxyResponse output = handler.proxy(request, lambdaContext);
+        assertEquals(201, output.getStatusCode());
+    }
+
+    @Test
+    public void automaticStripBasePath_route_shouldRouteCorrectly2() {
+        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                .json()
+                .queryString("status", "201")
+                .build();
+
+        request.setResource("/{controller}/{action}");
+
+        Map<String, String> pathParameters = new HashMap<>();
+        pathParameters.put("controller", "echo");
+        pathParameters.put("action", "status-code");
+        request.setPathParameters(pathParameters);
+
+        AwsProxyResponse output = handler.proxy(request, lambdaContext);
+        assertEquals(201, output.getStatusCode());
     }
 
     @Test
