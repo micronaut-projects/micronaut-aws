@@ -22,21 +22,27 @@ import com.amazon.ask.model.IntentRequest
 import com.amazon.ask.model.RequestEnvelope
 import com.amazon.ask.model.Response
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.annotation.Bean
 import io.micronaut.function.aws.alexa.handlers.AnnotatedRequestHandler
 import io.micronaut.function.aws.alexa.handlers.DefaultSessionEndedRequestHandler
 import spock.lang.Specification
 
 import javax.inject.Singleton
+import java.beans.beancontext.BeanContext
 
 class AlexaFunctionSpec extends Specification {
 
     void "test init"() {
         when:
+        // no good way to pass in run properties so this is a workaround to test
+        System.setProperty("alexa.skill-id","23132234234234324dsf")
         AlexaFunction function = new AlexaFunction()
         def context = AlexaFunction.currentAlexaApplicationContext
 
         then:
         context.isRunning()
+        context.getBean(AlexaConfiguration.class).skillId == "23132234234234324dsf"
 
         when:
         def requestHandlers = context.getBeansOfType(RequestHandler)
@@ -67,6 +73,48 @@ class AlexaFunctionSpec extends Specification {
         cleanup:
         function?.close()
     }
+
+
+    void "test init - no config"() {
+        when:
+        System.clearProperty("alexa.skill-id")
+        AlexaFunction function = new AlexaFunction()
+        def context = AlexaFunction.currentAlexaApplicationContext
+
+        then:
+        context.isRunning()
+        context.getBean(AlexaConfiguration.class).skillId == null
+
+        when:
+        def requestHandlers = context.getBeansOfType(RequestHandler)
+
+        then:
+        requestHandlers.size() == 3
+        requestHandlers.find { it instanceof DefaultSessionEndedRequestHandler}
+        requestHandlers.find { it instanceof MyHandler}
+
+        when:
+        AnnotatedRequestHandler handler = requestHandlers.find { it instanceof AnnotatedRequestHandler }
+
+        then:
+        handler
+
+        when:
+        final HandlerInput.Builder builder = HandlerInput.builder();
+        final RequestEnvelope.Builder envelopeBuilder = RequestEnvelope.builder();
+        def intentBuilder = IntentRequest.builder()
+        intentBuilder.withIntent(Intent.builder().withName("HelloWorldIntent").build())
+        envelopeBuilder.withRequest(intentBuilder.build())
+        builder.withRequestEnvelope(envelopeBuilder.build())
+
+
+        then:
+        handler.canHandle(builder.build())
+
+        cleanup:
+        function?.close()
+    }
+
 
     @Singleton
     static class MyHandler implements RequestHandler {

@@ -33,6 +33,8 @@ import io.micronaut.core.util.ArrayUtils;
 import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the base function you extend for Alexa skills support. For now you have to override apply but just call super() in it.
@@ -139,6 +141,8 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
             skillBuilder = applicationContext.findBean(SkillBuilder.class).orElseGet(Skills::standard);
         }
 
+        final AlexaConfiguration alexaConfiguration = applicationContext.findBean(AlexaConfiguration.class).orElse(new AlexaConfiguration());
+
         staticApplicationContext = applicationContext;
         final AlexaSkill[] array = applicationContext.getBeansOfType(
                 AlexaSkill.class
@@ -168,8 +172,13 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
                     .sorted(OrderUtil.COMPARATOR)
                     .forEach(skillBuilder::addRequestInterceptor);
 
-            final Skill skill = skillBuilder.build();
-            return new AlexaSkill[] { skill };
+            if (alexaConfiguration.getSkillId()!=null) {
+                final Skill skill = skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
+                return new AlexaSkill[] { skill };
+            } else {
+                final Skill skill = skillBuilder.build();
+                return new AlexaSkill[] { skill };
+            }
         }
     }
 
