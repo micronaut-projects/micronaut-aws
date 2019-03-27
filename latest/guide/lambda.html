@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>3 AWS Lambda Support 1.1.0.RC2</title>
+    <title>3 AWS Lambda Support 1.1.0.RC3</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -72,7 +72,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>3 AWS Lambda Support</h1>
 
-                    <p><strong>Version:</strong> 1.1.0.RC2</p>
+                    <p><strong>Version:</strong> 1.1.0.RC3</p>
                 </div>
 
                 
@@ -103,7 +103,98 @@ function addJsClass() {
 
 
 <div class="paragraph">
-<p>Regular Micronaut functions created via <code>mn create-function</code> can be deployed to Lambda directly. However if you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
+<p>Regular Micronaut functions created via <code>mn create-function</code> can be deployed to Lambda directly.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Using the CLI</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-function example</pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For example, when using <code>create-function hello</code> Micronaut 1.1 and above will create a function that looks like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
+import io.micronaut.function.executor.FunctionInitializer;
+import javax.inject.*;
+
+@Singleton
+public class EchoFunction extends FunctionInitializer { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    @Inject EchoService echoService; <i class="conum" data-value="2"></i><b>(2)</b>
+
+    public Message echo(Message msg) { <i class="conum" data-value="3"></i><b>(3)</b>
+        return greetingService.hello(msg);
+    }
+
+    public static void main(String...args) throws IOException { <i class="conum" data-value="4"></i><b>(4)</b>
+        EchoFunction function = new EchoFunction();
+        function.run(args, (context)-&gt; function.sayHello(context.get(Message.class)));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The function shouuld be a simple class annotated with <code>@Singleton</code> that extends from <code>FunctionInitializer</code> and has no constructor arguments.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can use dependency injection to inject fields.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The function should be defined as a public method, and accept a single argument that is a simple <code>java.lang</code> type or a POJO bean that can be serialized/deserialized to JSON.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>You can optionally define a <code>main</code> method if you plan to deploy the function to other FaaS environments that use standard in/out if not you can remove the <code>main</code> method</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>FunctionInitiazer</code> super class will bootstrap Micronaut and perform injection on the instance prior to the <code>echo</code> method being executed.</p>
+</div>
+<div class="paragraph">
+<p>An appropriate SAM definition for this function would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Resources:
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: example.EchoFunction::echo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The key part is the <code>Handler</code> which should be set to <code>example.EchoFunction::echo</code> which is the class name and method name combination. The <code>main</code> method is optional and can be removed if it is not needed. The <code>main</code> method allows the function to be executed from the cli, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ echo '{"name":"Fred"}' | java -jar function.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example pipes the JSON into system in which the functions reads and writes the result to system out. Certain FaaS systems such as OpenFaaS use system in/out for function inputs and outputs, hence with the main method in place you can deploy the function to such systems.</p>
+</div>
+<div class="paragraph">
+<p>If you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
 </div>
 
 
@@ -216,7 +307,12 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-In Micronaut 1.1 or above you can create an API proxy ready application with <code>mn create-app myapp --features aws-api-gateway</code>
+<div class="title">Using the CLI with Micronaut 1.1 or above</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features aws-api-gateway</pre>
+</div>
+</div>
 </td>
 </tr>
 </table>
