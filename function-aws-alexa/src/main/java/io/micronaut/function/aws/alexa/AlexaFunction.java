@@ -139,6 +139,8 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
             skillBuilder = applicationContext.findBean(SkillBuilder.class).orElseGet(Skills::standard);
         }
 
+        final AlexaConfiguration alexaConfiguration = applicationContext.findBean(AlexaConfiguration.class).orElse(new AlexaConfiguration());
+
         staticApplicationContext = applicationContext;
         final AlexaSkill[] array = applicationContext.getBeansOfType(
                 AlexaSkill.class
@@ -168,8 +170,13 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
                     .sorted(OrderUtil.COMPARATOR)
                     .forEach(skillBuilder::addRequestInterceptor);
 
-            final Skill skill = skillBuilder.build();
-            return new AlexaSkill[] { skill };
+            if (alexaConfiguration.getSkillId() != null) {
+                final Skill skill = skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
+                return new AlexaSkill[] { skill };
+            } else {
+                final Skill skill = skillBuilder.build();
+                return new AlexaSkill[] { skill };
+            }
         }
     }
 
