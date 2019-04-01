@@ -54,6 +54,7 @@ import org.reactivestreams.Publisher;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
@@ -221,10 +222,10 @@ public final class MicronautLambdaContainerHandler
                             containerResponse.contentType(responseContentType);
                         }
 
-                        final MediaType expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType.class).orElse(null);
+                        final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
                         final MediaType requestContentType = containerRequest.getContentType().orElse(null);
 
-                        if (expectedContentType != null && !expectedContentType.equals(requestContentType)) {
+                        if (expectedContentType != null && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
                             containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                             containerResponse.close();
                             return;

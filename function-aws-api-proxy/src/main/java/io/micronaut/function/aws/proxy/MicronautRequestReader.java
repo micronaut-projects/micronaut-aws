@@ -88,10 +88,8 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                 if (permitsRequestBody) {
                     final MediaType requestContentType = containerRequest.getContentType().orElse(null);
                     if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
-                        final MediaType expectedContentType = finalRoute
-                                .getAnnotationMetadata()
-                                .getValue(Consumes.class, MediaType.class).orElse(null);
-                        if (expectedContentType == null || expectedContentType.getExtension().equalsIgnoreCase("json")) {
+                        final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+                        if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
                             final Optional<String> body = containerRequest.getBody(String.class);
                             if (body.isPresent()) {
 
@@ -142,7 +140,7 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
 
         String path = request.getResource();
         for (Map.Entry<String, String> variable : request.getPathParameters().entrySet()) {
-            path = path.replaceAll("\\{" + Pattern.quote(variable.getKey()) +"\\+?}", variable.getValue());
+            path = path.replaceAll("\\{" + Pattern.quote(variable.getKey()) + "\\+?}", variable.getValue());
         }
 
         return path;
