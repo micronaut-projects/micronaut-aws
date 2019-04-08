@@ -253,10 +253,12 @@ public final class MicronautLambdaContainerHandler
                                         .findBean(ExceptionHandler.class, Qualifiers.byTypeArguments(throwable.getClass(), Object.class)).orElse(null);
 
                                 if (exceptionHandler != null) {
-                                    Object result = exceptionHandler.handle(containerRequest, throwable);
-                                    MutableHttpResponse<?> response = errorResultToResponse(result);
+                                    final Flowable<? extends MutableHttpResponse<?>> responseFlowable = Flowable.fromCallable(() -> {
+                                        Object result = exceptionHandler.handle(containerRequest, throwable);
+                                        return errorResultToResponse(result);
+                                    });
 
-                                    return Flowable.just(response);
+                                    return filterPublisher(requestReference, responseFlowable, executorService);
                                 }
                             } else if (errorHandler instanceof MethodBasedRouteMatch) {
                                 return Flowable.defer(() ->
@@ -325,7 +327,7 @@ public final class MicronautLambdaContainerHandler
         }
     }
 
-    private MutableHttpResponse errorResultToResponse(Object result) {
+    private MutableHttpResponse<?> errorResultToResponse(Object result) {
         MutableHttpResponse<?> response;
         if (result == null) {
             response = io.micronaut.http.HttpResponse.serverError();
@@ -353,12 +355,12 @@ public final class MicronautLambdaContainerHandler
 
     private Flowable<MutableHttpResponse<?>> filterPublisher(
             AtomicReference<HttpRequest<?>> requestReference,
-            Publisher<MutableHttpResponse<?>> routePublisher, ExecutorService executor) {
-        Publisher<io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
+            Publisher<? extends MutableHttpResponse<?>> routePublisher, ExecutorService executor) {
+        Publisher<? extends io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
         List<HttpFilter> filters = new ArrayList<>(lambdaContainerEnvironment.getRouter().findFilters(requestReference.get()));
         if (!filters.isEmpty()) {
             // make the action executor the last filter in the chain
-            filters.add((HttpServerFilter) (req, chain) -> routePublisher);
+            filters.add((HttpServerFilter) (req, chain) -> (Publisher<MutableHttpResponse<?>>) routePublisher);
 
             AtomicInteger integer = new AtomicInteger();
             int len = filters.size();
@@ -375,7 +377,7 @@ public final class MicronautLambdaContainerHandler
             return ((Flowable<MutableHttpResponse<?>>) finalPublisher)
                     .subscribeOn(Schedulers.from(executor));
         } else {
-            return Flowable.fromPublisher(finalPublisher)
+            return (Flowable<MutableHttpResponse<?>>) Flowable.fromPublisher(finalPublisher)
                     .subscribeOn(Schedulers.from(executor));
         }
     }
