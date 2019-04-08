@@ -106,12 +106,6 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
     }
 
-    @Nonnull
-    @Override
-    public String getPath() {
-        return this.path;
-    }
-
     /**
      * The backing {@link AwsProxyRequest} object.
      * @return The backing {@link AwsProxyRequest} object.
