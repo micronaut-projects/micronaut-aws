@@ -28,6 +28,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.AnnotationMetadata;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.http.*;
@@ -43,22 +44,21 @@ import io.micronaut.http.server.binding.RequestArgumentSatisfier;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.web.router.*;
+import io.micronaut.web.router.MethodBasedRouteMatch;
+import io.micronaut.web.router.RouteMatch;
+import io.micronaut.web.router.Router;
+import io.micronaut.web.router.UriRouteMatch;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -78,7 +78,6 @@ public final class MicronautLambdaContainerHandler
     private final LambdaContainerState lambdaContainerEnvironment;
     private ApplicationContext applicationContext;
     private RequestArgumentSatisfier requestArgumentSatisfier;
-    private ExecutorService executorService;
 
     /**
      * constructor.
@@ -182,7 +181,6 @@ public final class MicronautLambdaContainerHandler
             this.lambdaContainerEnvironment.setApplicationContext(applicationContext);
             this.lambdaContainerEnvironment.setJsonCodec(applicationContext.getBean(JsonMediaTypeCodec.class));
             this.lambdaContainerEnvironment.setRouter(applicationContext.getBean(Router.class));
-            this.executorService = applicationContext.getBean(ExecutorService.class, Qualifiers.byName(TaskExecutors.IO));
             this.requestArgumentSatisfier = new RequestArgumentSatisfier(
                     applicationContext.getBean(RequestBinderRegistry.class)
             );
@@ -217,12 +215,11 @@ public final class MicronautLambdaContainerHandler
                                 HttpAttributes.ROUTE_MATCH, finalRoute
                         );
 
-                        final MediaType responseContentType = finalRoute.getAnnotationMetadata().getValue(Produces.class, MediaType.class).orElse(null);
-                        if (responseContentType != null) {
-                            containerResponse.contentType(responseContentType);
-                        }
+                        final AnnotationMetadata annotationMetadata = finalRoute.getAnnotationMetadata();
+                        annotationMetadata.getValue(Produces.class, MediaType.class)
+                                .ifPresent(containerResponse::contentType);
 
-                        final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+                        final MediaType[] expectedContentType = annotationMetadata.getValue(Consumes.class, MediaType[].class).orElse(null);
                         final MediaType requestContentType = containerRequest.getContentType().orElse(null);
 
                         if (expectedContentType != null && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
@@ -236,11 +233,9 @@ public final class MicronautLambdaContainerHandler
                         );
 
                         final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
-                        final Flowable<MutableHttpResponse<?>> filterPublisher = filterPublisher(
+                        final Flowable<MutableHttpResponse<?>> filterPublisher = Flowable.fromPublisher(filterPublisher(
                                 requestReference,
-                                responsePublisher,
-                                executorService
-                        );
+                                responsePublisher));
 
                         filterPublisher.onErrorResumeNext(throwable -> {
                             final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(
@@ -253,16 +248,22 @@ public final class MicronautLambdaContainerHandler
                                         .findBean(ExceptionHandler.class, Qualifiers.byTypeArguments(throwable.getClass(), Object.class)).orElse(null);
 
                                 if (exceptionHandler != null) {
-                                    final Flowable<? extends MutableHttpResponse<?>> responseFlowable = Flowable.fromCallable(() -> {
+                                    final Flowable<? extends MutableHttpResponse<?>> errorFlowable
+                                            = Flowable.fromCallable(() -> {
                                         Object result = exceptionHandler.handle(containerRequest, throwable);
                                         return errorResultToResponse(result);
                                     });
 
-                                    return filterPublisher(requestReference, responseFlowable, executorService);
+                                    return filterPublisher(
+                                            requestReference,
+                                            errorFlowable
+                                    );
                                 }
                             } else if (errorHandler instanceof MethodBasedRouteMatch) {
-                                return Flowable.defer(() ->
-                                        executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler)
+                                return executeRoute(
+                                        containerRequest,
+                                        containerResponse,
+                                        (MethodBasedRouteMatch) errorHandler
                                 );
                             }
                             return Flowable.error(throwable);
@@ -295,7 +296,7 @@ public final class MicronautLambdaContainerHandler
 
     }
 
-    private Publisher<? extends MutableHttpResponse<?>> executeRoute(
+    private Publisher<MutableHttpResponse<?>> executeRoute(
             MicronautAwsProxyRequest<?> containerRequest,
             MicronautAwsProxyResponse<?> containerResponse,
             MethodBasedRouteMatch finalRoute) {
@@ -349,13 +350,13 @@ public final class MicronautLambdaContainerHandler
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         this.applicationContext.close();
     }
 
-    private Flowable<MutableHttpResponse<?>> filterPublisher(
+    private Publisher<MutableHttpResponse<?>> filterPublisher(
             AtomicReference<HttpRequest<?>> requestReference,
-            Publisher<? extends MutableHttpResponse<?>> routePublisher, ExecutorService executor) {
+            Publisher<? extends MutableHttpResponse<?>> routePublisher) {
         Publisher<? extends io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
         List<HttpFilter> filters = new ArrayList<>(lambdaContainerEnvironment.getRouter().findFilters(requestReference.get()));
         if (!filters.isEmpty()) {
@@ -372,14 +373,7 @@ public final class MicronautLambdaContainerHandler
             finalPublisher = routePublisher;
         }
 
-        // Handle the scheduler to subscribe on
-        if (finalPublisher instanceof Flowable) {
-            return ((Flowable<MutableHttpResponse<?>>) finalPublisher)
-                    .subscribeOn(Schedulers.from(executor));
-        } else {
-            return (Flowable<MutableHttpResponse<?>>) Flowable.fromPublisher(finalPublisher)
-                    .subscribeOn(Schedulers.from(executor));
-        }
+        return (Publisher<MutableHttpResponse<?>>) finalPublisher;
     }
 
     /**
