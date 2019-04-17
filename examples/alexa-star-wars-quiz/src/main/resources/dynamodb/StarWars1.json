@@ -1,0 +1,681 @@
+{
+    "StarWarsQuiz": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "0"
+                    },
+                    "Question": {
+                        "S": "Which fellow director helped George Lucas edit the opening crawl of Star Wars?"
+                    },
+                    "option1": {
+                        "S": "Francis Ford Coppola"
+                    },
+                    "option2": {
+                        "S": "Steven Spielburg"
+                    },
+                    "option3": {
+                        "S": "Martin Scorsese"
+                    },
+                    "option4": {
+                        "S": "Brian De Palma"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "1"
+                    },
+
+                    "Question": {
+                        "S": "At the beginning of Episode IV: A New Hope, Princess Leia and her ship are carrying what?"
+                    },
+                    "option1": {
+                        "S": "Untaxed death sticks"
+                    },
+                    "option2": {
+                        "S": "Escaped prisoner from the Empire"
+                    },
+                    "option3": {
+                        "S": "The main council of the Rebel Alliance"
+                    },
+                    "option4": {
+                        "S": "The secret plans to the death star"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "2"
+                    },
+                    "Question": {
+                        "S": "Which two actors have appeared in all the Star Wars films to date (2015)?"
+                    },
+                    "option1": {
+                        "S": "Anthony Daniels and Kenny Baker"
+                    },
+                    "option2": {
+                        "S": "Peter Mayhew and Anthony Daniels"
+                    },
+                    "option3": {
+                        "S": "Frank Oz and Harrison Ford"
+                    },
+                    "option4": {
+                        "S": "Mark Hamill and Carrie Fisher"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "3"
+                    },
+                    "Question": {
+                        "S": "Complete the classic line: “That’s no moon; it’s a..."
+                    },
+                    "option1": {
+                        "S": "Droid"
+                    },
+                    "option2": {
+                        "S": "Spaceship"
+                    },
+                    "option3": {
+                        "S": "Space station"
+                    },
+                    "option4": {
+                        "S": "Time machine"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "4"
+                    },
+                    "Question": {
+                        "S": "In the very opening scene of Episode IV: A New Hope, how many engines does the ship carrying Princess Leia have?"
+                    },
+                    "option1": {
+                        "S": "Fourteen"
+                    },
+                    "option2": {
+                        "S": "Ten"
+                    },
+                    "option3": {
+                        "S": "Twelve"
+                    },
+                    "option4": {
+                        "S": "Eleven"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "5"
+                    },
+                    "Question": {
+                        "S": "As far as we know, what is the main crop of Uncle Owen’s farm?"
+                    },
+                    "option1": {
+                        "S": "Razor moss"
+                    },
+                    "option2": {
+                        "S": "Molo seeds"
+                    },
+                    "option3": {
+                        "S": "Water"
+                    },
+                    "option4": {
+                        "S": "Funnel flowers"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "6"
+                    },
+                    "Question": {
+                        "S": "What species is Jar Jar Binks?"
+                    },
+                    "option1": {
+                        "S": "Neimoidian"
+                    },
+                    "option2": {
+                        "S": "Gungan"
+                    },
+                    "option3": {
+                        "S": "Naboo"
+                    },
+                    "option4": {
+                        "S": "Toydarian"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "7"
+                    },
+                    "Question": {
+                        "S": "What’s on the menu for breakfast with Luke’s Aunt Beru?"
+                    },
+                    "option1": {
+                        "S": "Purple cereal"
+                    },
+                    "option2": {
+                        "S": "Blue milk"
+                    },
+                    "option3": {
+                        "S": "Green toast"
+                    },
+                    "option4": {
+                        "S": "Red butter"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "8"
+                    },
+                    "Question": {
+                        "S": "In the 1997 special edition, a scene featuring Jabba the Hutt was added to Episode IV. Which bounty hunter also appears in that scene?"
+                    },
+                    "option1": {
+                        "S": "IG-88"
+                    },
+                    "option2": {
+                        "S": "Boba Fett"
+                    },
+                    "option3": {
+                        "S": "Bossk"
+                    },
+                    "option4": {
+                        "S": "Boushh"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "9"
+                    },
+                    "Question": {
+                        "S": "Which two characters in A New Hope say the line “I have a bad feeling about this”, or a variation on it?"
+                    },
+                    "option1": {
+                        "S": "Obi-Wan and Luke"
+                    },
+                    "option2": {
+                        "S": "Han and Obi-Wan"
+                    },
+                    "option3": {
+                        "S": "Han and Luke"
+                    },
+                    "option4": {
+                        "S": "Luke and Leia"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "10"
+                    },
+                    "Question": {
+                        "S": "When the Millenium Falcon arrives on the Death Star, Han and Luke steal Stormtrooper uniforms. Whose does Luke’s belong to?"
+                    },
+                    "option1": {
+                        "S": "THX-1138"
+                    },
+                    "option2": {
+                        "S": "DLT-19"
+                    },
+                    "option3": {
+                        "S": "TK-421"
+                    },
+                    "option4": {
+                        "S": "TD-4388"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "11"
+                    },
+                    "Question": {
+                        "S": "During the attack on the first Death Star, what is Luke’s call sign?"
+                    },
+                    "option1": {
+                        "S": "Red Five"
+                    },
+                    "option2": {
+                        "S": "Red Leader"
+                    },
+                    "option3": {
+                        "S": "Rogue One"
+                    },
+                    "option4": {
+                        "S": "Red Nine"
+                    },
+                    "answer": {
+                        "N": "1"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "12"
+                    },
+                    "Question": {
+                        "S": "What does the acronym in TIE fighter stand for?"
+                    },
+                    "option1": {
+                        "S": "The Imperial Engine"
+                    },
+                    "option2": {
+                        "S": "Twin Ion Engine"
+                    },
+                    "option3": {
+                        "S": "Total Imperial Evil"
+                    },
+                    "option4": {
+                        "S": "Two Ion Ender"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "13"
+                    },
+                    "Question": {
+                        "S": "Which Captain receives a battlefield promotion to Admiral when Vader Force-chokes his boss before the Battle of Hoth?"
+                    },
+                    "option1": {
+                        "S": "Ozzel"
+                    },
+                    "option2": {
+                        "S": "Piett"
+                    },
+                    "option3": {
+                        "S": "Rieekan"
+                    },
+                    "option4": {
+                        "S": "Veers"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "14"
+                    },
+                    "Question": {
+                        "S": "How does C-3PO interrupt Han and Leia’s first kiss?"
+                    },
+                    "option1": {
+                        "S": "Sir! Sir! I’ve isolated the reverse power flux coupling!"
+                    },
+                    "option2": {
+                        "S": "Sir, I don't know where your ship learned to communicate, but it has the most peculiar dialect."
+                    },
+                    "option3": {
+                        "S": "Excuse me sir, but might I inquire as to what's going on?"
+                    },
+                    "option4": {
+                        "S": "If I may say so, sir, I noticed earlier the hyperdrive motivator has been damaged. It's impossible to go to lightspeed!"
+                    },
+                    "answer": {
+                        "N": "1"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "15"
+                    },
+                    "Question": {
+                        "S": "Lando’s Cloud City hangs in the atmosphere above which world?"
+                    },
+                    "option1": {
+                        "S": "Endor"
+                    },
+                    "option2": {
+                        "S": "Tattooine"
+                    },
+                    "option3": {
+                        "S": "Yavin"
+                    },
+                    "option4": {
+                        "S": "Bespin"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "16"
+                    },
+                    "Question": {
+                        "S": "Who is the lead singer of Jabba the Hutt’s house band?"
+                    },
+                    "option1": {
+                        "S": "Joh Yowza"
+                    },
+                    "option2": {
+                        "S": "Max Reebo"
+                    },
+                    "option3": {
+                        "S": "Droopy McCool"
+                    },
+                    "option4": {
+                        "S": "Sy Snootles"
+                    },
+                    "answer": {
+                        "N": "4"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "17"
+                    },
+                    "Question": {
+                        "S": "When Princess Leia dresses as a bounty hunter to rescue Han in Return Of The Jedi, what name does she use?"
+                    },
+                    "option1": {
+                        "S": "Boushh"
+                    },
+                    "option2": {
+                        "S": "IG-88"
+                    },
+                    "option3": {
+                        "S": "Boba Fett"
+                    },
+                    "option4": {
+                        "S": "Bossk"
+                    },
+                    "answer": {
+                        "N": "1"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "18"
+                    },
+                    "Question": {
+                        "S": "What do the Ewoks threaten to do to Han Solo?"
+                    },
+                    "option1": {
+                        "S": "Roast him over a spit"
+                    },
+                    "option2": {
+                        "S": "Burn him at the stake"
+                    },
+                    "option3": {
+                        "S": "Crush him under a log"
+                    },
+                    "option4": {
+                        "S": "Hang him upside down over a scorpion pit"
+                    },
+                    "answer": {
+                        "N": "1"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "19"
+                    },
+                    "Question": {
+                        "S": "On what planet does Jabba the Hutt live?"
+                    },
+                    "option1": {
+                        "S": "Bespin"
+                    },
+                    "option2": {
+                        "S": "Tattooine"
+                    },
+                    "option3": {
+                        "S": "Coruscant"
+                    },
+                    "option4": {
+                        "S": "Alderaan"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "20"
+                    },
+                    "Question": {
+                        "S": "Which Steven Spielberg character appears in the Imperial Senate in Phantom Menace?"
+                    },
+                    "option1": {
+                        "S": "E.T."
+                    },
+                    "option2": {
+                        "S": "Indiana Jones"
+                    },
+                    "option3": {
+                        "S": "A velociraptor"
+                    },
+                    "option4": {
+                        "S": "The shark from Jaws"
+                    },
+                    "answer": {
+                        "N": "1"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "21"
+                    },
+                    "Question": {
+                        "S": "What is the correct spelling of the name of the Wookiee home planet?"
+                    },
+                    "option1": {
+                        "S": "K y s h a h k"
+                    },
+                    "option2": {
+                        "S": "K a s h h y k k"
+                    },
+                    "option3": {
+                        "S": "K a s h y y y k"
+                    },
+                    "option4": {
+                        "S": "K a s h h y y k"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "22"
+                    },
+                    "Question": {
+                        "S": "What is the Emperor’s name?"
+                    },
+                    "option1": {
+                        "S": "Nero"
+                    },
+                    "option2": {
+                        "S": "Grevious"
+                    },
+                    "option3": {
+                        "S": "Palpatine"
+                    },
+                    "option4": {
+                        "S": "Dooku"
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "23"
+                    },
+                    "Question": {
+                        "S": "How did Han Solo first acquire the Millennium Falcon?"
+                    },
+                    "option1": {
+                        "S": "He assembled it from scrap"
+                    },
+                    "option2": {
+                        "S": "He won it in a card game"
+                    },
+                    "option3": {
+                        "S": "He salvaged a derelict"
+                    },
+                    "option4": {
+                        "S": "He stole it from the Empire"
+                    },
+                    "answer": {
+                        "N": "2"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Id": {
+                        "N": "24"
+                    },
+                    "Question": {
+                        "S": "Which of these thrilling phrases does NOT appear in the Phantom Menace opening crawl?"
+                    },
+                    "option1": {
+                        "S": "...the greedy Trade Federation..."
+                    },
+                    "option2": {
+                        "S": "...the taxation of trade routes..."
+                    },
+                    "option3": {
+                        "S": "...economic sanctions are imposed..."
+                    },
+                    "option4": {
+                        "S": "... the Congress of the Republic endlessly debates..."
+                    },
+                    "answer": {
+                        "N": "3"
+                    }
+                }
+            }
+        }
+
+    ]
+}

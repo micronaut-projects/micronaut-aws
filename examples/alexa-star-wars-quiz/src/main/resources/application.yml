@@ -1,0 +1,5 @@
+micronaut:
+    function:
+        name: micronaut-star-wars-quiz
+alexa:
+    skill-id: <yourskillidhere>
