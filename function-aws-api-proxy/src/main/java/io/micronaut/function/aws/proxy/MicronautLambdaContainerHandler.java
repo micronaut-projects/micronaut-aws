@@ -54,6 +54,7 @@ import io.reactivex.functions.Function;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -237,11 +238,14 @@ public final class MicronautLambdaContainerHandler
                                 requestReference,
                                 responsePublisher));
 
-                        filterPublisher.onErrorResumeNext(throwable -> {
+                        filterPublisher.onErrorResumeNext(mayBeWrapped -> {
+                            Throwable throwable = mayBeWrapped instanceof UndeclaredThrowableException ? mayBeWrapped.getCause() : mayBeWrapped;
                             final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(
                                     finalRoute.getDeclaringType(),
                                     throwable
-                            ).orElse(null);
+                            ).orElseGet(() -> lambdaContainerEnvironment.getRouter().route(
+                                    throwable
+                            ).orElse(null));
                             if (errorHandler == null) {
                                 final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
                                 final ExceptionHandler exceptionHandler = ctx

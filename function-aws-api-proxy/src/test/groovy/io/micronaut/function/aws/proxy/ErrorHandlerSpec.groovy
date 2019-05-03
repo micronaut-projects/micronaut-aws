@@ -5,16 +5,18 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
-import io.micronaut.core.exceptions.ExceptionHandler
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Error
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
+import io.micronaut.http.annotation.Status
 import spock.lang.AutoCleanup
+import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -42,6 +44,37 @@ class ErrorHandlerSpec extends Specification {
         response.body == 'Exception Handled'
     }
 
+    void 'test custom global exception handlers declared in controller'() {
+        given:
+            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-ctrl', HttpMethod.GET.toString())
+
+        when:
+            def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+            verifyAll {
+                response.statusCode == 200
+                response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
+                response.body == 'bad things happens globally'
+            }
+    }
+
+    @PendingFeature
+    void 'test custom global status handlers declared in controller'() {
+        given:
+            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
+
+        when:
+            def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+            verifyAll {
+                response.statusCode == 200
+                response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
+                response.body == 'global status'
+            }
+    }
+
     void 'test local exception handlers'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/local', HttpMethod.GET.toString())
@@ -63,6 +96,17 @@ class ErrorHandlerSpec extends Specification {
             throw new MyException("bad things")
         }
 
+        @Get('/global-ctrl')
+        String globalControllerHandler() {
+            throw new GloballyHandledException("bad things happens globally")
+        }
+
+        @Get('/global-status-ctrl')
+        @Status(HttpStatus.I_AM_A_TEAPOT)
+        String globalControllerHandlerForStatus() {
+            return 'original global status'
+        }
+
         @Get('/local')
         String localHandler() {
             throw new AnotherException("bad things")
@@ -72,6 +116,23 @@ class ErrorHandlerSpec extends Specification {
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
         String localHandler(AnotherException throwable) {
             return throwable.getMessage()
+        }
+
+    }
+
+    @Controller('/global-errors')
+    static class GlobalErrorController {
+
+        @Error(global = true, exception = GloballyHandledException)
+        @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        String globallyHandledException(GloballyHandledException throwable) {
+            return throwable.getMessage()
+        }
+
+        @Error(global = true, status = HttpStatus.I_AM_A_TEAPOT)
+        @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        String globalControllerHandlerForStatus() {
+            return 'global status'
         }
 
     }
@@ -92,5 +153,9 @@ class ErrorHandlerSpec extends Specification {
 
     @InheritConstructors
     static class AnotherException extends RuntimeException {
+    }
+
+    @InheritConstructors
+    static class GloballyHandledException extends Exception {
     }
 }
