@@ -17,6 +17,7 @@ package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
+import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
@@ -186,6 +187,14 @@ public class EchoMicronautController {
         SingleValueModel valueModel = new SingleValueModel();
         valueModel.setValue(awsProxyRequestContext.getAuthorizer().getContextValue(key));
 
+        return valueModel;
+    }
+
+    @Get("/lambda-context")
+    @Produces(MediaType.APPLICATION_JSON)
+    public SingleValueModel getLambdaContext(Context context) {
+        SingleValueModel valueModel = new SingleValueModel();
+        valueModel.setValue("it works: " + context.getAwsRequestId());
         return valueModel;
     }
 }
