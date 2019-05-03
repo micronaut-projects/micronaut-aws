@@ -358,6 +358,18 @@ public class MicronautAwsProxyTest {
         validateSingleValueModel(resp, refererValue);
     }
 
+    @Test
+    public void context_expectCorrectInjection() {
+        AwsProxyRequest request = getRequestBuilder("/echo/lambda-context", "GET")
+                .nullBody()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .build();
+
+        AwsProxyResponse resp = handler.proxy(request, lambdaContext);
+        assertEquals(200, resp.getStatusCode());
+        validateSingleValueModel(resp, "it works: null");
+    }
+
     private void validateMapResponseModel(AwsProxyResponse output) {
         validateMapResponseModel(output, CUSTOM_HEADER_KEY, CUSTOM_HEADER_VALUE);
     }
