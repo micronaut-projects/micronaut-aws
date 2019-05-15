@@ -105,7 +105,7 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 1.1.0</p>
+        <p><strong>Version:</strong> 1.1.1</p>
     </div>
     
 
@@ -148,7 +148,7 @@ Some features described in this release depend on Micronaut 1.1 which is at the 
 
 
 <div class="paragraph">
-<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/:configuration/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a>.</p>
+<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a>.</p>
 </div>
 <div class="paragraph">
 <p>For example the following snippet show how you may configure a S3 Client if you set two environment variables:</p>
@@ -401,18 +401,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 <div class="listingblock">
 <div class="title">Example Controller</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import io.micronaut.http.annotation.*;
-
-@Controller("/ping")
-public class PingController {
-
-    @Get("/")
-    public String index() {
-        return "{\"pong\":true}";
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-proxy-example/src/main/java/example/PingController.java[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -440,32 +429,7 @@ public class PingController {
 <div class="listingblock">
 <div class="title">Example Controller</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.*;
-import com.amazonaws.services.lambda.runtime.*;
-import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
-import java.io.*;
-
-public class StreamLambdaHandler implements RequestStreamHandler {
-    private static MicronautLambdaContainerHandler handler; <i class="conum" data-value="1"></i><b>(1)</b>
-    static {
-        try {
-            handler = MicronautLambdaContainerHandler.getAwsProxyHandler();
-        } catch (ContainerInitializationException e) {
-            // if we fail here. We re-throw the exception to force another cold start
-            e.printStackTrace();
-            throw new RuntimeException("Could not initialize Micronaut", e);
-        }
-    }
-
-    @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
-            throws IOException {
-        handler.proxyStream(inputStream, outputStream, context); <i class="conum" data-value="2"></i><b>(2)</b>
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-proxy-example/src/main/java/example/StreamLambdaHandler.java[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -598,18 +562,7 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 <div class="listingblock">
 <div class="title">Example Controller</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import io.micronaut.http.annotation.*;
-
-@Controller("/ping")
-public class PingController {
-
-    @Get("/")
-    public String index() {
-        return "{\"pong\":true}";
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-proxy-example/src/main/java/example/PingController.java[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
