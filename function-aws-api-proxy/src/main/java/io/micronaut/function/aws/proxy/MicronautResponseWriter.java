@@ -22,15 +22,22 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.io.Writable;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.netty.cookies.NettyCookie;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +50,7 @@ import java.util.Map;
 @Internal
 public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyResponse<?>, AwsProxyResponse> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautResponseWriter.class);
     private static final String TIMER_NAME = "MICRONAUT_RESPONSE_WRITE";
     private final MicronautLambdaContainerContext lambdaContainerContext;
 
@@ -73,6 +81,20 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
         final Object body = containerResponse.body();
         if (body instanceof CharSequence) {
             awsProxyResponse.setBody(body.toString());
+        } else if (body instanceof Writable) {
+            ByteBuf byteBuf = UnpooledByteBufAllocator.DEFAULT.ioBuffer(128);
+
+            ByteBufOutputStream outputStream = new ByteBufOutputStream(byteBuf);
+            Writable writable = (Writable) body;
+            try {
+                writable.writeTo(outputStream, containerResponse.getCharacterEncoding());
+                String output = byteBuf.toString(containerResponse.getCharacterEncoding());
+                awsProxyResponse.setBody(output);
+            } catch (IOException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getMessage());
+                }
+            }
         } else if (body != null) {
             awsProxyResponse.setBody(
                     containerResponse.encodeBody()

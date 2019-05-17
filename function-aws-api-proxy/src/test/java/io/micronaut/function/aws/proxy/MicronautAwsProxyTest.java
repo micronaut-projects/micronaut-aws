@@ -25,6 +25,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.core.util.CollectionUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,8 +62,9 @@ public class MicronautAwsProxyTest {
         try {
             handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
                         ApplicationContext.build()
-                            .properties(Collections.singletonMap(
-                                    "micronaut.security.enabled", true
+                            .properties(CollectionUtils.mapOf(
+                                    "micronaut.security.enabled", true,
+                                    "micronaut.views.handlebars.enabled", true
                             ))
                 );
         } catch (ContainerInitializationException e) {
@@ -368,6 +370,18 @@ public class MicronautAwsProxyTest {
         AwsProxyResponse resp = handler.proxy(request, lambdaContext);
         assertEquals(200, resp.getStatusCode());
         validateSingleValueModel(resp, "it works: null");
+    }
+
+    @Test
+    public void renderEngineHtml() {
+        AwsProxyRequest request = getRequestBuilder("/echo/render-html", "GET")
+            .header("Content-Type", "text/html")
+            .build();
+
+        AwsProxyResponse resp = handler.proxy(request, lambdaContext);
+
+        assertEquals(200, resp.getStatusCode());
+        assertEquals("<html>Hello Luke Skywalker</html>", resp.getBody());
     }
 
     private void validateMapResponseModel(AwsProxyResponse output) {
