@@ -164,11 +164,19 @@ public final class MicronautLambdaContainerHandler
 
     @Override
     protected MicronautAwsProxyResponse<?> getContainerResponse(MicronautAwsProxyRequest<?> request, CountDownLatch latch) {
-        request.setResponse(new MicronautAwsProxyResponse(
+        MicronautAwsProxyResponse response = new MicronautAwsProxyResponse(
                 request.getAwsProxyRequest(),
                 latch,
                 lambdaContainerEnvironment
-        ));
+        );
+
+        Optional<Object> routeMatchAttr = request.getAttribute(HttpAttributes.ROUTE_MATCH);
+        if (routeMatchAttr.isPresent()) {
+            response.setAttribute(HttpAttributes.ROUTE_MATCH, routeMatchAttr.get());
+        }
+
+        request.setResponse(response);
+
         return request.getResponse();
     }
 

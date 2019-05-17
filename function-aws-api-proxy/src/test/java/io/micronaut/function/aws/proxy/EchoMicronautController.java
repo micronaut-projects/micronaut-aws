@@ -18,10 +18,12 @@ package io.micronaut.function.aws.proxy;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
 import com.amazonaws.services.lambda.runtime.Context;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.views.ModelAndView;
 
 import javax.ws.rs.core.Response;
 import java.security.Principal;
@@ -196,5 +198,12 @@ public class EchoMicronautController {
         SingleValueModel valueModel = new SingleValueModel();
         valueModel.setValue("it works: " + context.getAwsRequestId());
         return valueModel;
+    }
+
+    @Get("/render-html")
+    @Produces(MediaType.TEXT_HTML)
+    public ModelAndView getHtmlFromRenderEngine(Context context) {
+        ModelAndView mav = new ModelAndView("home", CollectionUtils.mapOf("firstname", "Luke", "lastname", "Skywalker"));
+        return mav;
     }
 }
