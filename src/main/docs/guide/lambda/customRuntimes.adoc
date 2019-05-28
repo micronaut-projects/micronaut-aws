@@ -46,7 +46,7 @@ Then create a controller, for example:
 .Example Controller
 [source,java]
 ----
-include::examples/api-proxy-example/src/main/java/example/PingController.java[]
+include::examples/api-gateway-example/src/main/java/example/PingController.java[]
 ----
 
 You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:
