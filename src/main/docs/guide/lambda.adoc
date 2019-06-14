@@ -19,9 +19,9 @@ import javax.inject.*;
 @Singleton
 public class EchoFunction extends FunctionInitializer { // <1>
 
-    @Inject EchoService echoService; // <2>
+    @Inject GreetingService greetingService; // <2>
 
-    public Message echo(Message msg) { // <3>
+    public Message sayHello(Message msg) { // <3>
         return greetingService.hello(msg);
     }
 
