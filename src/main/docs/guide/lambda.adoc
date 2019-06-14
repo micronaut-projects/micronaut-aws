@@ -21,13 +21,13 @@ public class EchoFunction extends FunctionInitializer { // <1>
 
     @Inject GreetingService greetingService; // <2>
 
-    public Message sayHello(Message msg) { // <3>
+    public Message echo(Message msg) { // <3>
         return greetingService.hello(msg);
     }
 
     public static void main(String...args) throws IOException { // <4>
         EchoFunction function = new EchoFunction();
-        function.run(args, (context)-> function.sayHello(context.get(Message.class)));
+        function.run(args, (context)-> function.echo(context.get(Message.class)));
     }    
 }
 ----
