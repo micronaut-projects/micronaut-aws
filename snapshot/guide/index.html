@@ -212,9 +212,9 @@ import javax.inject.*;
 @Singleton
 public class EchoFunction extends FunctionInitializer { <i class="conum" data-value="1"></i><b>(1)</b>
 
-    @Inject EchoService echoService; <i class="conum" data-value="2"></i><b>(2)</b>
+    @Inject GreetingService greetingService; <i class="conum" data-value="2"></i><b>(2)</b>
 
-    public Message echo(Message msg) { <i class="conum" data-value="3"></i><b>(3)</b>
+    public Message sayHello(Message msg) { <i class="conum" data-value="3"></i><b>(3)</b>
         return greetingService.hello(msg);
     }
 
