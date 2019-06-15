@@ -136,13 +136,13 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 
     @Inject GreetingService greetingService; <i class="conum" data-value="2"></i><b>(2)</b>
 
-    public Message sayHello(Message msg) { <i class="conum" data-value="3"></i><b>(3)</b>
+    public Message echo(Message msg) { <i class="conum" data-value="3"></i><b>(3)</b>
         return greetingService.hello(msg);
     }
 
     public static void main(String...args) throws IOException { <i class="conum" data-value="4"></i><b>(4)</b>
         EchoFunction function = new EchoFunction();
-        function.run(args, (context)-&gt; function.sayHello(context.get(Message.class)));
+        function.run(args, (context)-&gt; function.echo(context.get(Message.class)));
     }
 }</code></pre>
 </div>
