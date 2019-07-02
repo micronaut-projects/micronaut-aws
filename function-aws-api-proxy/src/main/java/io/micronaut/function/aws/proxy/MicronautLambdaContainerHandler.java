@@ -62,6 +62,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 /**
@@ -171,9 +172,7 @@ public final class MicronautLambdaContainerHandler
         );
 
         Optional<Object> routeMatchAttr = request.getAttribute(HttpAttributes.ROUTE_MATCH);
-        if (routeMatchAttr.isPresent()) {
-            response.setAttribute(HttpAttributes.ROUTE_MATCH, routeMatchAttr.get());
-        }
+        routeMatchAttr.ifPresent(o -> response.setAttribute(HttpAttributes.ROUTE_MATCH, o));
 
         request.setResponse(response);
 
@@ -225,13 +224,15 @@ public final class MicronautLambdaContainerHandler
                         );
 
                         final AnnotationMetadata annotationMetadata = finalRoute.getAnnotationMetadata();
-                        annotationMetadata.getValue(Produces.class, MediaType.class)
+                        annotationMetadata.stringValue(Produces.class).map(MediaType::new)
                                 .ifPresent(containerResponse::contentType);
 
-                        final MediaType[] expectedContentType = annotationMetadata.getValue(Consumes.class, MediaType[].class).orElse(null);
+                        final MediaType[] expectedContentType = Arrays.stream(annotationMetadata.stringValues(Consumes.class))
+                                .map(MediaType::new)
+                                .toArray(MediaType[]::new);
                         final MediaType requestContentType = containerRequest.getContentType().orElse(null);
 
-                        if (expectedContentType != null && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
+                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
                             containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                             containerResponse.close();
                             return;
@@ -257,7 +258,9 @@ public final class MicronautLambdaContainerHandler
                             if (errorHandler == null) {
                                 final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
                                 final ExceptionHandler exceptionHandler = ctx
-                                        .findBean(ExceptionHandler.class, Qualifiers.byTypeArguments(throwable.getClass(), Object.class)).orElse(null);
+                                        .findBean(ExceptionHandler.class, Qualifiers.byTypeArgumentsClosest(
+                                                throwable.getClass(), Object.class
+                                        )).orElse(null);
 
                                 if (exceptionHandler != null) {
                                     final Flowable<? extends MutableHttpResponse<?>> errorFlowable

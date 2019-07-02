@@ -15,6 +15,7 @@ import io.micronaut.http.annotation.Error
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.http.annotation.Status
+import io.micronaut.http.server.exceptions.ExceptionHandler
 import spock.lang.AutoCleanup
 import spock.lang.PendingFeature
 import spock.lang.Shared
@@ -138,7 +139,17 @@ class ErrorHandlerSpec extends Specification {
     }
 
     @Singleton
-    static class MyErrorHandler implements io.micronaut.http.server.exceptions.ExceptionHandler<MyException, HttpResponse> {
+    static class RuntimeErrorHandler implements ExceptionHandler<RuntimeException, HttpResponse> {
+
+        @Override
+        HttpResponse handle(HttpRequest request, RuntimeException exception) {
+            return HttpResponse.serverError("Exception: " + exception.getMessage())
+                    .contentType(MediaType.TEXT_PLAIN)
+        }
+    }
+
+    @Singleton
+    static class MyErrorHandler implements ExceptionHandler<MyException, HttpResponse> {
 
         @Override
         HttpResponse handle(HttpRequest request, MyException exception) {
@@ -146,6 +157,9 @@ class ErrorHandlerSpec extends Specification {
                                .contentType(MediaType.TEXT_PLAIN)
         }
     }
+
+
+
 
     @InheritConstructors
     static class MyException extends RuntimeException {
