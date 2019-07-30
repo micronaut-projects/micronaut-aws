@@ -19,5 +19,5 @@ dependencies {
     testCompile "io.micronaut:micronaut-inject-groovy"
     testCompile "io.micronaut:micronaut-security"
     testCompile 'io.micronaut:micronaut-views'
-    testRuntime 'com.github.jknack:handlebars:4.1.0'
+    testRuntime 'com.github.jknack:handlebars:4.1.2'
 }
