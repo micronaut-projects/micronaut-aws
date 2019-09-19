@@ -8,7 +8,7 @@ $ mn create-function example
 ----
 ====
 
-For example, when using `create-function hello` Micronaut 1.1 and above will create a function that looks like:
+For example, when using `create-function hello` Micronaut 1.1 and above will create a function that looks like this:
 
 [source,java]
 ----
@@ -32,10 +32,10 @@ public class EchoFunction extends FunctionInitializer { // <1>
 }
 ----
 
-<1> The function shouuld be a simple class annotated with `@Singleton` that extends from `FunctionInitializer` and has no constructor arguments.
+<1> The function should be a simple class annotated with `@Singleton` that extends from `FunctionInitializer` and has no constructor arguments.
 <2> You can use dependency injection to inject fields.
 <3> The function should be defined as a public method, and accept a single argument that is a simple `java.lang` type or a POJO bean that can be serialized/deserialized to JSON.
-<4> You can optionally define a `main` method if you plan to deploy the function to other FaaS environments that use standard in/out if not you can remove the `main` method
+<4> You can optionally define a `main` method if you plan to deploy the function to other FaaS environments that use standard in/out. If not, you can remove the `main` method
 
 The `FunctionInitiazer` super class will bootstrap Micronaut and perform injection on the instance prior to the `echo` method being executed.
 
@@ -57,4 +57,4 @@ $ echo '{"name":"Fred"}' | java -jar function.jar
 
 The above example pipes the JSON into system in which the functions reads and writes the result to system out. Certain FaaS systems such as OpenFaaS use system in/out for function inputs and outputs, hence with the main method in place you can deploy the function to such systems.
 
-If you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.
+If you need further integration with what AWS Lambda has to offer, then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.
