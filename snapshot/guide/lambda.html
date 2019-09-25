@@ -123,7 +123,7 @@ function addJsClass() {
 </table>
 </div>
 <div class="paragraph">
-<p>For example, when using <code>create-function hello</code> Micronaut 1.1 and above will create a function that looks like:</p>
+<p>For example, when using <code>create-function hello</code> Micronaut 1.1 and above will create a function that looks like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -151,7 +151,7 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The function shouuld be a simple class annotated with <code>@Singleton</code> that extends from <code>FunctionInitializer</code> and has no constructor arguments.</td>
+<td>The function should be a simple class annotated with <code>@Singleton</code> that extends from <code>FunctionInitializer</code> and has no constructor arguments.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -163,7 +163,7 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>You can optionally define a <code>main</code> method if you plan to deploy the function to other FaaS environments that use standard in/out if not you can remove the <code>main</code> method</td>
+<td>You can optionally define a <code>main</code> method if you plan to deploy the function to other FaaS environments that use standard in/out. If not, you can remove the <code>main</code> method</td>
 </tr>
 </table>
 </div>
@@ -194,7 +194,7 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 <p>The above example pipes the JSON into system in which the functions reads and writes the result to system out. Certain FaaS systems such as OpenFaaS use system in/out for function inputs and outputs, hence with the main method in place you can deploy the function to such systems.</p>
 </div>
 <div class="paragraph">
-<p>If you need further integration with what AWS Lambda has to offer then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
+<p>If you need further integration with what AWS Lambda has to offer, then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
 </div>
 
 
@@ -327,13 +327,18 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller("/ping")
 public class PingController {
 
+	private Logger log = LoggerFactory.getLogger(PingController.class);
+
     @Get("/")
     public String ping() {
-        return "{\"pong\":true}";
+    	log.trace("Received a ping.");
+    	return "{\"pong\":true}";
     }
 }</code></pre>
 </div>
@@ -525,13 +530,18 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller("/ping")
 public class PingController {
 
+	private Logger log = LoggerFactory.getLogger(PingController.class);
+
     @Get("/")
     public String ping() {
-        return "{\"pong\":true}";
+    	log.trace("Received a ping.");
+    	return "{\"pong\":true}";
     }
 }</code></pre>
 </div>
