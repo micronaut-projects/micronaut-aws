@@ -10,7 +10,7 @@ Resources:
     Properties:
       Handler: example.StreamLambdaHandler::handleRequest
       Runtime: java8
-      CodeUri: build/libs/example-all.jar
+      CodeUri: build/exploded
       MemorySize: 320
       Policies: AWSLambdaBasicExecutionRole
       Timeout: 15

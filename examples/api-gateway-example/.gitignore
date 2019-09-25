@@ -11,3 +11,5 @@ out/
 .project
 .settings
 .classpath
+/output-sam.yaml
+/bin/
