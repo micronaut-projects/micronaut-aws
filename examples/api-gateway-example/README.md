@@ -2,7 +2,15 @@
 
 The starter project defines a simple `/ping` resource that can accept `GET` requests with its tests.
 
-The project folder also includes a `sam.yaml` file. You can use this [SAM](https://github.com/awslabs/serverless-application-model) file to deploy the project to AWS Lambda and Amazon API Gateway or test in local with [SAM Local](https://github.com/awslabs/aws-sam-local).
+The project folder also includes a `sam.yaml` file.
+You can use this [SAM](https://github.com/awslabs/serverless-application-model) file to deploy the project to AWS Lambda and Amazon API Gateway.
+
+A special version of the [SAM](https://github.com/awslabs/serverless-application-model) file (`sam-local.yml`) is provided to run with [SAM Local](https://github.com/awslabs/aws-sam-local).
+The reason for the special version is convenience for local testing - the only difference between `sam.yml` and `sam-local.yml` is the value for `CodeUri`;
+In `sam.yml` it is the fat jar file that is created with the gradle task `shadowJar`, in `sam-local.yml` it is an exploded directory with the application class files and a lib directory containing all the runtime dependencies.
+When running SAM Local, if you used the fat jar, then every invocation would require the fat jar to be expanded, which takes a long time because every dependency jar is expanded when you do this.
+By having the build create the `exploded` directory, that expansion is avoided and the local invocation is much faster.
+Not only is the invocation faster, but it is also sensitive to rebuilds of the project -- each time you `./graldew shadowJar`, the `exploded` directory is updated and any subsequent invocations of an endpoint in the api reflect the new code without having to re-invoke SAM Local.
 
 You can use [AWS SAM Local](https://github.com/awslabs/aws-sam-local) to start your project.
 
@@ -12,10 +20,17 @@ First, install SAM local:
 $ npm install -g aws-sam-local
 ```
 
-Next, from the project root folder - where the `sam.yaml` file is located - start the API with the SAM Local CLI.
+or on a *nix machine with Home Brew
 
 ```bash
-$ sam local start-api --template sam.yaml
+brew install aws/tap/aws-sam-cli
+```
+
+
+Next, from the project root folder - where the `sam-local.yaml` file is located - start the API with the SAM Local CLI.
+
+```bash
+$ sam local start-api --template sam-local.yaml
 
 ...
 Mounting com.amazonaws.serverless.archetypes.StreamLambdaHandler::handleRequest (java8) at http://127.0.0.1:3000/{proxy+} [OPTIONS GET HEAD POST PUT DELETE PATCH]
@@ -28,8 +43,25 @@ Using a new shell, you can send a test ping request to your API:
 $ curl -s http://127.0.0.1:3000/ping | python -m json.tool
 
 {
-    "pong": "Hello, World!"
+    "pong": true
 }
+```
+
+or, with HTTPIE
+
+```bash
+$ http :3000/ping
+
+HTTP/1.0 200 OK
+Content-Length: 13
+Content-Type: application/json
+Date: Wed, 25 Sep 2019 00:50:54 GMT
+Server: Werkzeug/0.15.6 Python/3.7.4
+
+{
+    "pong": true
+}
+
 ```
 
 You can use the [AWS CLI](https://aws.amazon.com/cli/) to quickly deploy your application to AWS Lambda and Amazon API Gateway with your SAM template.
@@ -87,6 +119,6 @@ Copy the `OutputValue`, adding the prefix `/Prod` to the path into a browser or 
 $ curl -s https://xxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/ping | python -m json.tool
 
 {
-    "pong": "Hello, World!"
+    "pong": true
 }
 ```

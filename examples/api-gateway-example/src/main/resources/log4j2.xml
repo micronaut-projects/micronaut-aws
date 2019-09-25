@@ -8,8 +8,19 @@
         </Lambda>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        
+		<Root level="info">
             <AppenderRef ref="Lambda" />
         </Root>
-    </Loggers>
+		
+		<Logger name="io.micronaut" level="info" additivity="true">
+			<appender-ref ref="Lambda" level="debug" />
+		</Logger>
+
+		<Logger name="example" level="trace" additivity="true">
+			<appender-ref ref="Lambda" level="trace" />
+		</Logger>
+
+
+	</Loggers>
 </Configuration>
