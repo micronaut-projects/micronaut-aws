@@ -264,7 +264,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             if (StringUtils.isNotEmpty(name)) {
                 final List<String> strings = params.get(name.toString());
                 if (CollectionUtils.isNotEmpty(strings)) {
-                    return strings.stream().map(v -> decodeValue(name, name.toString())).collect(Collectors.toList());
+                    return strings.stream().map(v -> decodeValue(name, v)).collect(Collectors.toList());
                 }
             }
             return Collections.emptyList();
