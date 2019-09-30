@@ -48,9 +48,9 @@ import static com.amazonaws.serverless.proxy.RequestReader.*;
 /**
  * Implementation of {@link HttpRequest} that backs onto a {@link AwsProxyRequest} object.
  *
+ * @param <T> The body type
  * @author graemerocher
  * @since 1.1
- * @param <T> The body type
  */
 public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     private static final String HEADER_KEY_VALUE_SEPARATOR = "=";
@@ -63,6 +63,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     private final HttpHeaders headers;
     private final HttpParameters parameters;
     private final String path;
+    private final ContainerConfig config;
     private Cookies cookies;
     private MicronautAwsProxyResponse<?> response;
     private T decodedBody;
@@ -70,11 +71,11 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     /**
      * Default constructor.
      *
-     * @param path The path
+     * @param path            The path
      * @param awsProxyRequest The underlying request
      * @param securityContext The {@link SecurityContext}
-     * @param lambdaContext The lambda context
-     * @param config The container configuration
+     * @param lambdaContext   The lambda context
+     * @param config          The container configuration
      */
     MicronautAwsProxyRequest(
             String path,
@@ -82,6 +83,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             SecurityContext securityContext,
             Context lambdaContext,
             ContainerConfig config) {
+        this.config = config;
         this.awsProxyRequest = awsProxyRequest;
         this.path = path;
         final String httpMethod = awsProxyRequest.getHttpMethod();
@@ -107,6 +109,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
     /**
      * The backing {@link AwsProxyRequest} object.
+     *
      * @return The backing {@link AwsProxyRequest} object.
      */
     public final AwsProxyRequest getAwsProxyRequest() {
@@ -126,6 +129,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
     /**
      * Sets the associated response object.
+     *
      * @param response The response
      */
     @Internal
@@ -139,7 +143,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         if (cookies == null) {
             SimpleCookies simpleCookies = new SimpleCookies(ConversionService.SHARED);
             getHeaders().getAll(HttpHeaders.COOKIE).forEach(cookieValue -> {
-                List<HeaderValue> parsedHeaders = parseHeaderValue(cookieValue,  ";", ",");
+                List<HeaderValue> parsedHeaders = parseHeaderValue(cookieValue, ";", ",");
 
 
                 parsedHeaders.stream()
@@ -178,7 +182,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
-        if (requestContext != null && !SecurityUtils.isValidHost(hostHeader, requestContext.getApiId(), region)) {
+
+        if (requestContext != null && !isValidHost(hostHeader, requestContext.getApiId(), region)) {
             hostHeader = requestContext.getApiId() +
                     ".execute-api." +
                     region +
@@ -186,6 +191,21 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         return URI.create(getScheme() + "://" + hostHeader + path);
+    }
+
+    private boolean isValidHost(String host, String apiId, String region) {
+        if (host == null) {
+            return false;
+        }
+        if (host.endsWith(".amazonaws.com")) {
+            String defaultHost = apiId +
+                    ".execute-api." +
+                    region +
+                    ".amazonaws.com";
+            return host.equals(defaultHost);
+        } else {
+            return config.getCustomDomainNames().contains(host);
+        }
     }
 
     @Nonnull
@@ -246,8 +266,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
      * is populated. For example, The header <code>Accept: application/json; application/xml</code> will contain two
      * key value pairs with key null and the value set to application/json and application/xml respectively.
      *
-     * @param headerValue The string value for the HTTP header
-     * @param valueSeparator The separator to be used for parsing header values
+     * @param headerValue        The string value for the HTTP header
+     * @param valueSeparator     The separator to be used for parsing header values
      * @param qualifierSeparator the qualifier separator
      * @return A list of SimpleMapEntry objects with all of the possible values for the header.
      */
@@ -326,6 +346,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
     /**
      * The decoded body.
+     *
      * @param decodedBody The body
      */
     @Internal
