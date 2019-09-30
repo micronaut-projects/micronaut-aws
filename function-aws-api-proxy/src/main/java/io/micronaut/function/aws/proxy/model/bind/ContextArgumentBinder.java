@@ -16,7 +16,6 @@
 package io.micronaut.function.aws.proxy.model.bind;
 
 import com.amazonaws.serverless.proxy.RequestReader;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.type.Argument;
@@ -26,7 +25,7 @@ import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 import javax.inject.Singleton;
 
 /**
- * Allows binding the {@link AwsProxyRequest} object to a method argument.
+ * Allows binding the {@link com.amazonaws.serverless.proxy.model.AwsProxyRequest} object to a method argument.
  *
  * @author graemerocher
  * @since 1.1
