@@ -26,10 +26,7 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.http.HttpHeaders;
-import io.micronaut.http.HttpMethod;
-import io.micronaut.http.HttpParameters;
-import io.micronaut.http.HttpRequest;
+import io.micronaut.http.*;
 import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
@@ -165,13 +162,24 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
         if (requestContext != null && !SecurityUtils.isValidHost(hostHeader, requestContext.getApiId(), region)) {
-            hostHeader = new StringBuilder().append(requestContext.getApiId())
-                    .append(".execute-api.")
-                    .append(region)
-                    .append(".amazonaws.com").toString();
+            hostHeader = requestContext.getApiId() +
+                    ".execute-api." +
+                    region +
+                    ".amazonaws.com";
         }
 
         return URI.create(getScheme() + "://" + hostHeader + path);
+    }
+
+    @Nonnull
+    @Override
+    public Optional<MediaType> getContentType() {
+        Optional<MediaType> specifiedType = HttpRequest.super.getContentType();
+        if (specifiedType.isPresent()) {
+            return specifiedType;
+        } else {
+            return Optional.of(MediaType.APPLICATION_JSON_TYPE);
+        }
     }
 
     @Override

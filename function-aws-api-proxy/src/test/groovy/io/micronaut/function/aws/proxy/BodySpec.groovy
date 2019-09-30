@@ -42,6 +42,20 @@ class BodySpec extends Specification {
 
     }
 
+    void "test custom body POJO - default to JSON"() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo', HttpMethod.POST.toString())
+        builder.body('{"x":10,"y":20}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 201
+        response.body == '{"x":10,"y":20}'
+
+    }
+
     void "test custom body POJO with whole request"() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo-and-request', HttpMethod.POST.toString())
