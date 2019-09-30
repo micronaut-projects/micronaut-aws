@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -162,26 +162,30 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getBody-io.micronaut.core.type.Argument-">getBody</a></span>(io.micronaut.core.type.Argument&lt;T1&gt;&nbsp;type)</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.Optional&lt;io.micronaut.http.MediaType&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getContentType--">getContentType</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>io.micronaut.http.cookie.Cookies</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getCookies--">getCookies</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>io.micronaut.http.HttpHeaders</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getHeaders--">getHeaders</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>io.micronaut.http.HttpMethod</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getMethod--">getMethod</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>io.micronaut.http.HttpParameters</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getParameters--">getParameters</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;?&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getResponse--">getResponse</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.net.URI</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getUri--">getUri</a></span>()</code>&nbsp;</td>
 </tr>
@@ -205,7 +209,7 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</pre>
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;io.micronaut.http.HttpMessage</h3>
-<code>getBody, getCharacterEncoding, getContentLength, getContentType</code></li>
+<code>getBody, getCharacterEncoding, getContentLength</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.io.micronaut.core.attr.MutableAttributeHolder">
@@ -316,6 +320,20 @@ public&nbsp;java.net.URI&nbsp;getUri()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getUri</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpRequest&lt;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getContentType--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getContentType</h4>
+<pre>@Nonnull
+public&nbsp;java.util.Optional&lt;io.micronaut.http.MediaType&gt;&nbsp;getContentType()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code>getContentType</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpMessage&lt;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt;</code></dd>
 </dl>
 </li>
 </ul>
