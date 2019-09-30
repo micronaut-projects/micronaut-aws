@@ -31,6 +31,7 @@ import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
+import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 
 import javax.annotation.Nonnull;
@@ -52,16 +53,17 @@ import static com.amazonaws.serverless.proxy.RequestReader.*;
  * @param <T> The body type
  */
 public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
+    private static final String HEADER_KEY_VALUE_SEPARATOR = "=";
     private static final String CF_PROTOCOL_HEADER_NAME = "CloudFront-Forwarded-Proto";
     private static final String PROTOCOL_HEADER_NAME = "X-Forwarded-Proto";
 
     private final AwsProxyRequest awsProxyRequest;
     private final HttpMethod httpMethod;
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
-    private final Cookies cookies = new SimpleCookies(ConversionService.SHARED);
     private final HttpHeaders headers;
     private final HttpParameters parameters;
     private final String path;
+    private Cookies cookies;
     private MicronautAwsProxyResponse<?> response;
     private T decodedBody;
 
@@ -134,6 +136,21 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @Override
     @Nonnull
     public Cookies getCookies() {
+        if (cookies == null) {
+            SimpleCookies simpleCookies = new SimpleCookies(ConversionService.SHARED);
+            getHeaders().getAll(HttpHeaders.COOKIE).forEach(cookieValue -> {
+                List<HeaderValue> parsedHeaders = parseHeaderValue(cookieValue,  ";", ",");
+
+
+                parsedHeaders.stream()
+                        .filter(e -> e.getKey() != null)
+                        .map(e -> new SimpleCookie(SecurityUtils.crlf(e.getKey()), SecurityUtils.crlf(e.getValue())))
+                        .forEach(simpleCookie ->
+                                simpleCookies.put(simpleCookie.getName(), simpleCookie));
+            });
+
+            cookies = simpleCookies;
+        }
         return cookies;
     }
 
@@ -221,6 +238,90 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Generic method to parse an HTTP header value and split it into a list of key/values for all its components.
+     * When the property in the header does not specify a key the key field in the output pair is null and only the value
+     * is populated. For example, The header <code>Accept: application/json; application/xml</code> will contain two
+     * key value pairs with key null and the value set to application/json and application/xml respectively.
+     *
+     * @param headerValue The string value for the HTTP header
+     * @param valueSeparator The separator to be used for parsing header values
+     * @param qualifierSeparator the qualifier separator
+     * @return A list of SimpleMapEntry objects with all of the possible values for the header.
+     */
+    protected List<HeaderValue> parseHeaderValue(
+            String headerValue, String valueSeparator, String qualifierSeparator) {
+        // Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
+        // Accept-Language: fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5
+        // Cookie: name=value; name2=value2; name3=value3
+        // X-Custom-Header: YQ==
+
+        List<HeaderValue> values = new ArrayList<>();
+        if (headerValue == null) {
+            return values;
+        }
+
+        for (String v : headerValue.split(valueSeparator)) {
+            String curValue = v;
+            float curPreference = 1.0f;
+            HeaderValue newValue = new HeaderValue();
+            newValue.setRawValue(v);
+
+            for (String q : curValue.split(qualifierSeparator)) {
+
+                String[] kv = q.split(HEADER_KEY_VALUE_SEPARATOR, 2);
+                String key = null;
+                String val = null;
+                // no separator, set the value only
+                if (kv.length == 1) {
+                    val = q.trim();
+                }
+                // we have a separator
+                if (kv.length == 2) {
+                    // if the length of the value is 0 we assume that we are looking at a
+                    // base64 encoded value with padding so we just set the value. This is because
+                    // we assume that empty values in a key/value pair will contain at least a white space
+                    if (kv[1].length() == 0) {
+                        val = q.trim();
+                    }
+                    // this was a base64 string with an additional = for padding, set the value only
+                    if ("=".equals(kv[1].trim())) {
+                        val = q.trim();
+                    } else { // it's a proper key/value set both
+                        key = kv[0].trim();
+                        val = ("".equals(kv[1].trim()) ? null : kv[1].trim());
+                    }
+                }
+
+                if (newValue.getValue() == null) {
+                    newValue.setKey(key);
+                    newValue.setValue(val);
+                } else {
+                    // special case for quality q=
+                    if ("q".equals(key)) {
+                        curPreference = Float.parseFloat(val);
+                    } else {
+                        newValue.addAttribute(key, val);
+                    }
+                }
+            }
+            newValue.setPriority(curPreference);
+            values.add(newValue);
+        }
+
+        // sort list by preference
+        values.sort((HeaderValue first, HeaderValue second) -> {
+            if ((first.getPriority() - second.getPriority()) < .001f) {
+                return 0;
+            }
+            if (first.getPriority() < second.getPriority()) {
+                return 1;
+            }
+            return -1;
+        });
+        return values;
     }
 
     /**
@@ -352,6 +453,69 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
                 return ConversionService.SHARED.convert(v, conversionContext);
             }
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Class that represents a header value.
+     */
+    private static class HeaderValue {
+        private String key;
+        private String value;
+        private String rawValue;
+        private float priority;
+        private Map<String, String> attributes;
+
+        public HeaderValue() {
+            attributes = new HashMap<>();
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getRawValue() {
+            return rawValue;
+        }
+
+        public void setRawValue(String rawValue) {
+            this.rawValue = rawValue;
+        }
+
+        public float getPriority() {
+            return priority;
+        }
+
+        public void setPriority(float priority) {
+            this.priority = priority;
+        }
+
+        public Map<String, String> getAttributes() {
+            return attributes;
+        }
+
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
+        }
+
+        public void addAttribute(String key, String value) {
+            attributes.put(key, value);
+        }
+
+        public String getAttribute(String key) {
+            return attributes.get(key);
         }
     }
 }
