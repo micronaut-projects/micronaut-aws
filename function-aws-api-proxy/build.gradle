@@ -4,9 +4,10 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
 
     compileOnly "io.micronaut:micronaut-security"
+    compileOnly "io.micronaut:micronaut-graal"
     compile "io.micronaut:micronaut-http-netty:$micronautVersion"
     compile "io.micronaut:micronaut-http-server:$micronautVersion"
-    compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.3.2', {
+    compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }

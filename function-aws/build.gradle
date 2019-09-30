@@ -5,7 +5,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
 
     compile "io.micronaut:micronaut-function:$micronautVersion"
-    compile "com.amazonaws:aws-lambda-java-core:$awsLambdaVersion"
+    compile "com.amazonaws:aws-lambda-java-core:1.2.0"
 
     testCompile "io.micronaut:micronaut-inject-groovy"
 }

@@ -5,8 +5,8 @@ dependencies {
 
     compile "io.micronaut:micronaut-function:$micronautVersion"
     compile project(":function-aws")
-    compile "com.amazonaws:aws-lambda-java-core:${awsLambdaVersion}"
-    compile "com.amazon.alexa:ask-sdk:${alexaAskSdkVersion}"
+    compile "com.amazonaws:aws-lambda-java-core:1.2.0"
+    compile "com.amazon.alexa:ask-sdk:2.11.2"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"

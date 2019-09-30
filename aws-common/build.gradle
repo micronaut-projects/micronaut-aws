@@ -6,7 +6,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compile group: 'com.amazonaws', name: 'aws-java-sdk-core', version: awsSdkVersion
+    compile 'com.amazonaws:aws-java-sdk-core:1.11.490'
 
 	testCompile "io.micronaut:micronaut-discovery-client"
 	testCompile "io.micronaut:micronaut-inject-groovy"
