@@ -1,3 +1,23 @@
 This project provides various extensions to Micronaut for Amazon Web Services (AWS). The primary focus initially is on AWS Lambda, however other integrations may be included in this project in the future.
 
 A base api:configuration.aws.AWSClientConfiguration[] is provided which can be used as a base configuration class for any configuration that needs to configure an AWS SDK client.
+
+#### Release History
+
+##### 1.0
+
+Initial Release
+
+##### 1.1
+
+Compatibility with Micronaut 1.1
+
+##### 1.2
+
+Compatibility with Micronaut 1.2
+
+##### 1.3
+
+* Improved support for GraalVM native images
+* Upgrade to `aws-serverless-java-container-core` 1.4
+
