@@ -17,9 +17,9 @@ package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.AwsProxySecurityContextWriter;
+import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.serverless.proxy.model.*;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -29,6 +29,7 @@ import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadata;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.http.*;
@@ -70,6 +71,21 @@ import java.util.stream.Stream;
  * @author graemerocher
  * @since 1.1
  */
+@TypeHint(
+        accessType = { TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC },
+        value = {
+                AwsProxyRequest.class,
+                AlbContext.class,
+                ApiGatewayRequestIdentity.class,
+                ApiGatewayAuthorizerContext.class,
+                AwsProxySecurityContext.class,
+                AwsProxyResponse.class,
+                CognitoAuthorizerClaims.class,
+                ContainerConfig.class,
+                ErrorModel.class,
+                MultiValuedTreeMap.class
+        }
+)
 public final class MicronautLambdaContainerHandler
         extends AbstractLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
