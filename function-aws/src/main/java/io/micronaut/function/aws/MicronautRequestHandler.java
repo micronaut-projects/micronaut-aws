@@ -17,6 +17,7 @@ package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
@@ -24,7 +25,10 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
+
+import static io.micronaut.function.aws.MicronautLambdaContext.ENVIRONMENT_LAMBDA;
 
 /**
  * <p>An Amazon Lambda {@link RequestHandler} implementation for Micronaut {@link io.micronaut.function.FunctionBean}</p>.
@@ -34,7 +38,7 @@ import java.util.Optional;
  * @author Graeme Rocher
  * @since 1.0
  */
-public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O> {
+public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
 
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
@@ -77,6 +81,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         applicationContext = super.buildApplicationContext(context);
         startEnvironment(applicationContext);
         return applicationContext;
+    }
+
+    @Nonnull
+    @Override
+    protected ApplicationContextBuilder newApplicationContextBuilder() {
+        ApplicationContextBuilder builder = super.newApplicationContextBuilder();
+        builder.environments(ENVIRONMENT_LAMBDA);
+        return builder;
     }
 
     /**

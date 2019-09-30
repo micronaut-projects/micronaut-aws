@@ -32,6 +32,7 @@ import io.micronaut.core.annotation.AnnotationMetadata;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.ArgumentUtils;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
@@ -198,7 +199,8 @@ public final class MicronautLambdaContainerHandler
     public void initialize() throws ContainerInitializationException {
         Timer.start(TIMER_INIT);
         try {
-            this.applicationContext = applicationContextBuilder.environments(Environment.FUNCTION)
+            this.applicationContext = applicationContextBuilder.environments(
+                    Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
                     .build()
                     .start();
             this.lambdaContainerEnvironment.setApplicationContext(applicationContext);

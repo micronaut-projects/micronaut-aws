@@ -18,8 +18,10 @@ package io.micronaut.function.aws;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,7 +34,7 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  * @author Graeme Rocher
  * @since 1.0
  */
-public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler {
+public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
@@ -46,6 +48,14 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
             registerContextBeans(context, applicationContext);
         }
         return applicationContext;
+    }
+
+    @Nonnull
+    @Override
+    protected ApplicationContextBuilder newApplicationContextBuilder() {
+        ApplicationContextBuilder builder = super.newApplicationContextBuilder();
+        builder.environments(ENVIRONMENT_LAMBDA);
+        return builder;
     }
 
     @Override

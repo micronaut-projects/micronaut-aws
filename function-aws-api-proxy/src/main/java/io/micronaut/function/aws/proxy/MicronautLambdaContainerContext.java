@@ -16,6 +16,7 @@
 package io.micronaut.function.aws.proxy;
 
 import io.micronaut.context.ApplicationContextProvider;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.web.router.Router;
 
@@ -25,7 +26,7 @@ import io.micronaut.web.router.Router;
  * @author graemerocher
  * @since 1.1
  */
-public interface MicronautLambdaContainerContext extends ApplicationContextProvider {
+public interface MicronautLambdaContainerContext extends ApplicationContextProvider, MicronautLambdaContext {
 
     /**
      * @return The {@link Router} instance.

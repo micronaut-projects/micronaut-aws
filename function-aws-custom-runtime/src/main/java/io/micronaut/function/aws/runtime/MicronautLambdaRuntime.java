@@ -25,6 +25,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.cli.CommandLine;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
@@ -69,6 +70,7 @@ public class MicronautLambdaRuntime {
 
         CommandLine commandLine = CommandLine.parse(args);
         final ApplicationContextBuilder applicationContextBuilder = ApplicationContext.build()
+                                                                        .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
                                                                         .propertySources(new CommandLinePropertySource(commandLine));
 
         new MicronautLambdaRuntime()
