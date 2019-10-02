@@ -69,8 +69,6 @@ $ aws lambda create-function --function-name my-app \
 --role arn:aws:iam::881337894647:role/lambda_basic_execution
 ----
 
-TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-proxy-graal-custom-runtime-example[Example application] on Github
-
 Then you can invoke the function:
 
 .Invoking the Function with the AWS CLI
