@@ -75,16 +75,18 @@ import java.util.stream.Stream;
 @TypeHint(
         accessType = { TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC },
         value = {
-                AwsProxyRequest.class,
                 AlbContext.class,
-                ApiGatewayRequestIdentity.class,
                 ApiGatewayAuthorizerContext.class,
-                AwsProxySecurityContext.class,
+                ApiGatewayRequestIdentity.class,
+                AwsProxyRequest.class,
+                AwsProxyRequestContext.class,
                 AwsProxyResponse.class,
                 CognitoAuthorizerClaims.class,
                 ContainerConfig.class,
                 ErrorModel.class,
-                MultiValuedTreeMap.class
+                Headers.class,
+                MultiValuedTreeMap.class,
+                AwsProxySecurityContext.class
         }
 )
 public final class MicronautLambdaContainerHandler
