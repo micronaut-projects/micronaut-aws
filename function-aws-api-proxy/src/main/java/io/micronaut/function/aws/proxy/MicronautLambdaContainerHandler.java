@@ -100,6 +100,23 @@ public final class MicronautLambdaContainerHandler
     private RequestArgumentSatisfier requestArgumentSatisfier;
 
     /**
+     * Default constructor.
+     * @param applicationContextBuilder The context builder
+     * @throws ContainerInitializationException The exception
+     */
+    public MicronautLambdaContainerHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
+        this(new LambdaContainerState(), applicationContextBuilder);
+    }
+
+    /**
+     * Default constructor.
+     * @throws ContainerInitializationException The exception
+     */
+    public MicronautLambdaContainerHandler() throws ContainerInitializationException {
+        this(new LambdaContainerState(), ApplicationContext.build());
+    }
+
+    /**
      * constructor.
      * @param lambdaContainerEnvironment The container environment
      * @param applicationContextBuilder The context builder
@@ -137,6 +154,7 @@ public final class MicronautLambdaContainerHandler
      * @return The {@link MicronautLambdaContainerHandler}
      * @throws ContainerInitializationException if the container couldn't be started
      */
+    @Deprecated
     public static MicronautLambdaContainerHandler getAwsProxyHandler() throws ContainerInitializationException {
         return new MicronautLambdaContainerHandler(new LambdaContainerState());
     }
@@ -146,7 +164,9 @@ public final class MicronautLambdaContainerHandler
      * @param builder The builder to customize the context creation
      * @return The {@link MicronautLambdaContainerHandler}
      * @throws ContainerInitializationException if the container couldn't be started
+     * @deprecated Use {@link #MicronautLambdaContainerHandler(ApplicationContextBuilder)} instead
      */
+    @Deprecated
     public static MicronautLambdaContainerHandler getAwsProxyHandler(ApplicationContextBuilder builder) throws ContainerInitializationException {
         ArgumentUtils.requireNonNull("builder", builder);
         return new MicronautLambdaContainerHandler(new LambdaContainerState(), builder);

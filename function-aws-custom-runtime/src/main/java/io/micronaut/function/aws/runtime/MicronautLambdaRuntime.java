@@ -109,7 +109,7 @@ public class MicronautLambdaRuntime {
             @Nonnull ApplicationContextBuilder applicationContextBuilder,
             @Nonnull Predicate<URL> loopUntil) {
         try {
-            final MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(applicationContextBuilder);
+            final MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(applicationContextBuilder);
             final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
             config.setReadIdleTimeout(null);
             config.setReadTimeout(null);
