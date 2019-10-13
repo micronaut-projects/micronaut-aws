@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -64,7 +65,9 @@ public class MicronautAwsProxyTest {
                         ApplicationContext.build()
                             .properties(CollectionUtils.mapOf(
                                     "micronaut.security.enabled", true,
-                                    "micronaut.views.handlebars.enabled", true
+                                    "micronaut.views.handlebars.enabled", true,
+                                    "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                                    "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
                             ))
                 );
         } catch (ContainerInitializationException e) {
@@ -382,6 +385,23 @@ public class MicronautAwsProxyTest {
 
         assertEquals(200, resp.getStatusCode());
         assertEquals("<html>Hello Luke Skywalker</html>", resp.getBody());
+    }
+
+    @Test
+    public void static_resource() {
+        AwsProxyRequest request = getRequestBuilder("/static-lorem/lorem.txt", "GET")
+                .build();
+
+        AwsProxyResponse resp = handler.proxy(request, lambdaContext);
+
+        final String expectedBody = "Lorem ipsum";
+
+        List<String> contentLength = resp.getMultiValueHeaders().get("Content-Length");
+
+        assertEquals(200, resp.getStatusCode());
+        assertEquals(expectedBody, resp.getBody());
+        assertNotNull(contentLength);
+        assertEquals(contentLength.get(0), String.valueOf(expectedBody.length()));
     }
 
     private void validateMapResponseModel(AwsProxyResponse output) {
