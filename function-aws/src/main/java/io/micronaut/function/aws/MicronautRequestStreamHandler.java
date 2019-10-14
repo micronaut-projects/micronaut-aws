@@ -36,6 +36,16 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
+    /**
+     * Default constructor.
+     */
+    protected MicronautRequestStreamHandler() {
+        // initialize the application context in the constructor
+        // this is faster in Lambda as init cost is giving higher processor priority
+        // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
+        buildApplicationContext(null);
+    }
+
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
         execute(input, output, context);
