@@ -59,6 +59,8 @@ import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -331,16 +333,44 @@ public final class MicronautLambdaContainerHandler
                     } else {
                         final Optional<URL> staticMatch = resourceResolver.resolve(containerRequest.getPath());
                         if (staticMatch.isPresent()) {
-                            Single.just(new StreamedFile(staticMatch.get())).map(streamedFile -> {
-                                long length = streamedFile.getLength();
-                                if (length > -1) {
-                                    containerResponse.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(length));
-                                }
-                                containerResponse.header(HttpHeaders.CONTENT_TYPE, streamedFile.getMediaType().toString());
-                                final byte[] data = IOUtils.toByteArray(streamedFile.getInputStream());
+                            final StreamedFile streamedFile = new StreamedFile(staticMatch.get());
+                            long length = streamedFile.getLength();
+                            if (length > -1) {
+                                containerResponse.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(length));
+                            }
+                            containerResponse.header(HttpHeaders.CONTENT_TYPE, streamedFile.getMediaType().toString());
+                            try (InputStream inputStream = streamedFile.getInputStream()) {
+                                byte[] data = IOUtils.toByteArray(inputStream);
                                 ((MutableHttpResponse) containerResponse).body(data);
-                                return containerRequest;
-                            }).blockingGet();
+                            } catch (Throwable e) {
+                                final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(e).orElse(null);
+                                final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
+                                final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
+
+                                if (errorHandler instanceof MethodBasedRouteMatch) {
+                                    Flowable.fromPublisher(executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler))
+                                            .blockingFirst();
+                                } else {
+
+                                    final ExceptionHandler exceptionHandler = ctx
+                                            .findBean(ExceptionHandler.class, Qualifiers.byTypeArgumentsClosest(
+                                                    e.getClass(), Object.class
+                                            )).orElse(null);
+
+                                    if (exceptionHandler != null) {
+                                        final Flowable<? extends MutableHttpResponse<?>> errorFlowable
+                                                = Flowable.fromCallable(() -> {
+                                            Object result = exceptionHandler.handle(containerRequest, e);
+                                            return errorResultToResponse(result);
+                                        });
+
+                                        Flowable.fromPublisher(filterPublisher(
+                                                requestReference,
+                                                errorFlowable
+                                        )).blockingFirst();
+                                    }
+                                }
+                            }
                         } else {
                             final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
                                     .getRouter()
