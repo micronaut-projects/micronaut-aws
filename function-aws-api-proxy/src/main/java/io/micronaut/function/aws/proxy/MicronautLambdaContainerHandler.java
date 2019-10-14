@@ -44,19 +44,25 @@ import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.server.binding.RequestArgumentSatisfier;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
+import io.micronaut.http.server.types.files.StreamedFile;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.web.router.MethodBasedRouteMatch;
 import io.micronaut.web.router.RouteMatch;
 import io.micronaut.web.router.Router;
 import io.micronaut.web.router.UriRouteMatch;
+import io.micronaut.web.router.resource.StaticResourceResolver;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -98,6 +104,7 @@ public final class MicronautLambdaContainerHandler
     private final LambdaContainerState lambdaContainerEnvironment;
     private ApplicationContext applicationContext;
     private RequestArgumentSatisfier requestArgumentSatisfier;
+    private StaticResourceResolver resourceResolver;
 
     /**
      * Default constructor.
@@ -231,6 +238,7 @@ public final class MicronautLambdaContainerHandler
             this.requestArgumentSatisfier = new RequestArgumentSatisfier(
                     applicationContext.getBean(RequestBinderRegistry.class)
             );
+            this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
         } catch (Exception e) {
             throw new ContainerInitializationException(
                     "Error starting Micronaut container: " + e.getMessage(),
@@ -255,8 +263,8 @@ public final class MicronautLambdaContainerHandler
                         UriRouteMatch.class
                 );
 
-                if (routeMatch.isPresent()) {
-                    try {
+                try {
+                    if (routeMatch.isPresent()) {
                         final UriRouteMatch finalRoute = routeMatch.get();
                         containerRequest.setAttribute(
                                 HttpAttributes.ROUTE_MATCH, finalRoute
@@ -322,25 +330,62 @@ public final class MicronautLambdaContainerHandler
                             }
                             return Flowable.error(throwable);
                         }).blockingFirst();
-                    } finally {
-                        containerResponse.close();
-                    }
+                    } else {
+                        final Optional<URL> staticMatch = resourceResolver.resolve(containerRequest.getPath());
+                        if (staticMatch.isPresent()) {
+                            final StreamedFile streamedFile = new StreamedFile(staticMatch.get());
+                            long length = streamedFile.getLength();
+                            if (length > -1) {
+                                containerResponse.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(length));
+                            }
+                            containerResponse.header(HttpHeaders.CONTENT_TYPE, streamedFile.getMediaType().toString());
+                            try (InputStream inputStream = streamedFile.getInputStream()) {
+                                byte[] data = IOUtils.toByteArray(inputStream);
+                                ((MutableHttpResponse) containerResponse).body(data);
+                            } catch (Throwable e) {
+                                final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(e).orElse(null);
+                                final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
+                                final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
 
-                } else {
-                    try {
-                        final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
-                                .getRouter()
-                                .findAny(containerRequest.getPath());
-                        if (matches.findFirst().isPresent()) {
-                            containerResponse.status(HttpStatus.METHOD_NOT_ALLOWED);
+                                if (errorHandler instanceof MethodBasedRouteMatch) {
+                                    Flowable.fromPublisher(executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler))
+                                            .blockingFirst();
+                                } else {
+
+                                    final ExceptionHandler exceptionHandler = ctx
+                                            .findBean(ExceptionHandler.class, Qualifiers.byTypeArgumentsClosest(
+                                                    e.getClass(), Object.class
+                                            )).orElse(null);
+
+                                    if (exceptionHandler != null) {
+                                        final Flowable<? extends MutableHttpResponse<?>> errorFlowable
+                                                = Flowable.fromCallable(() -> {
+                                            Object result = exceptionHandler.handle(containerRequest, e);
+                                            return errorResultToResponse(result);
+                                        });
+
+                                        Flowable.fromPublisher(filterPublisher(
+                                                requestReference,
+                                                errorFlowable
+                                        )).blockingFirst();
+                                    }
+                                }
+                            }
                         } else {
-                            final MicronautAwsProxyResponse<?> res = containerRequest.getResponse();
-                            res.status(HttpStatus.NOT_FOUND);
-                            res.close();
+                            final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
+                                    .getRouter()
+                                    .findAny(containerRequest.getPath());
+                            if (matches.findFirst().isPresent()) {
+                                containerResponse.status(HttpStatus.METHOD_NOT_ALLOWED);
+                            } else {
+                                final MicronautAwsProxyResponse<?> res = containerRequest.getResponse();
+                                res.status(HttpStatus.NOT_FOUND);
+                                res.close();
+                            }
                         }
-                    } finally {
-                        containerResponse.close();
                     }
+                } finally {
+                    containerResponse.close();
                 }
             });
         } finally {
