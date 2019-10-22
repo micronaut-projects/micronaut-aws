@@ -404,9 +404,16 @@ public final class MicronautLambdaContainerHandler
                 containerRequest,
                 false
         );
-        final Object result = boundRoute.execute();
+
+        Object result = boundRoute.execute();
+
+        if (result instanceof Optional) {
+            Optional<?> optional = (Optional) result;
+            result = optional.orElse(null);
+        }
         if (result == null) {
             applyRouteConfig(containerResponse, finalRoute);
+            containerResponse.status(HttpStatus.NOT_FOUND);
             return Flowable.just(containerResponse);
         }
         if (Publishers.isConvertibleToPublisher(result)) {
