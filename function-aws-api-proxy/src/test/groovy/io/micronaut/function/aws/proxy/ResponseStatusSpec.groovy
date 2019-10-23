@@ -2,7 +2,6 @@ package io.micronaut.function.aws.proxy
 
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpHeaders
@@ -11,6 +10,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
@@ -84,6 +84,26 @@ class ResponseStatusSpec extends Specification {
             handler.close()
     }
 
+    void "test void methods does not cause 404"() {
+        given:
+
+            MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+                    ApplicationContext.build()
+            )
+
+            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/delete-something', HttpMethod.DELETE.toString())
+            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+
+        when:
+            def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+            response.statusCode == 204
+
+        cleanup:
+            handler.close()
+    }
+
     void "test constraint violation causes 400"() {
         given:
 
@@ -126,6 +146,12 @@ class ResponseStatusSpec extends Specification {
         @Post(uri = "/constraint-violation", processes = MediaType.TEXT_PLAIN)
         String constraintViolation() {
             throw new ConstraintViolationException("Failed", Collections.emptySet())
+        }
+
+        @Status(HttpStatus.NO_CONTENT)
+        @Delete(uri = "/delete-something", processes = MediaType.TEXT_PLAIN)
+        void deleteSomething() {
+            // do nothing
         }
     }
 }
