@@ -411,7 +411,7 @@ public final class MicronautLambdaContainerHandler
             Optional<?> optional = (Optional) result;
             result = optional.orElse(null);
         }
-        if (result == null) {
+        if (!void.class.isAssignableFrom(boundRoute.getReturnType().getType()) && result == null) {
             applyRouteConfig(containerResponse, finalRoute);
             containerResponse.status(HttpStatus.NOT_FOUND);
             return Flowable.just(containerResponse);
