@@ -10,7 +10,7 @@ The reason for the special version is convenience for local testing - the only d
 In `sam.yml` it is the fat jar file that is created with the gradle task `shadowJar`, in `sam-local.yml` it is an exploded directory with the application class files and a lib directory containing all the runtime dependencies.
 When running SAM Local, if you used the fat jar, then every invocation would require the fat jar to be expanded, which takes a long time because every dependency jar is expanded when you do this.
 By having the build create the `exploded` directory, that expansion is avoided and the local invocation is much faster.
-Not only is the invocation faster, but it is also sensitive to rebuilds of the project -- each time you `./graldew shadowJar`, the `exploded` directory is updated and any subsequent invocations of an endpoint in the api reflect the new code without having to re-invoke SAM Local.
+Not only is the invocation faster, but it is also sensitive to rebuilds of the project -- each time you `./gradlew shadowJar`, the `exploded` directory is updated and any subsequent invocations of an endpoint in the api reflect the new code without having to re-invoke SAM Local.
 
 You can use [AWS SAM Local](https://github.com/awslabs/aws-sam-local) to start your project.
 
