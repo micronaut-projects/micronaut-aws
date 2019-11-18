@@ -39,7 +39,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     /**
      * Default constructor.
      */
-    protected MicronautRequestStreamHandler() {
+    public MicronautRequestStreamHandler() {
         // initialize the application context in the constructor
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
