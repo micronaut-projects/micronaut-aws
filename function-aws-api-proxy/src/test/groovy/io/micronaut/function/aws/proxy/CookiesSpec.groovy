@@ -19,6 +19,17 @@ class CookiesSpec extends Specification {
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
+    void "test no cookies"() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/cookies-test/all', HttpMethod.GET.toString())
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 200
+        response.body == '{}'
+    }
 
     void "test getCookies method"() {
         given:
