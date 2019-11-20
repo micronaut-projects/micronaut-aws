@@ -443,7 +443,10 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Override
         public List<String> getAll(CharSequence name) {
             if (StringUtils.isNotEmpty(name)) {
-                return multiValueHeaders.get(name.toString());
+                final List<String> strings = multiValueHeaders.get(name.toString());
+                if (CollectionUtils.isNotEmpty(strings)) {
+                    return strings;
+                }
             }
             return Collections.emptyList();
         }
