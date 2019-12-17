@@ -28,6 +28,7 @@
 <body class="body" id="docs" onload="addJsClass();" onhashchange="highlightMenu()">
 
 <div id="table-of-content-nav-link" class="desktop">
+    <a id="theme-switcher" title="Switch to dark theme" href="javascript:switchTheme(true)"><i class="fa fa-moon-o"></i></a>
     <a title="Collapse/Open Table of contents" title="Hide Table of Contents" href="javascript:hideTableOfContents();" class="button">[ + ]</a>
 </div>
 
@@ -38,8 +39,7 @@
         </div>
         <div class="navLinks">
             <ul>
-                    <li>
-                        <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)" class="desktop">
+                    <li class='desktop'><select style='margin-top: 10px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-aws/snapshot/guide/index.html'>1.3.7.BUILD-SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.6/guide/index.html'>1.3.6</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.5/guide/index.html'>1.3.5</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.4/guide/index.html'>1.3.4</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.3/guide/index.html'>1.3.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.2/guide/index.html'>1.3.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.1/guide/index.html'>1.3.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.0/guide/index.html'>1.3.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.2/guide/index.html'>1.1.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.1/guide/index.html'>1.1.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0/guide/index.html'>1.1.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC3/guide/index.html'>1.1.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC2/guide/index.html'>1.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC1/guide/index.html'>1.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.M2/guide/index.html'>1.1.0.M2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.M1/guide/index.html'>1.1.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.3/guide/index.html'>1.0.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.2/guide/index.html'>1.0.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.1/guide/index.html'>1.0.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0/guide/index.html'>1.0.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC3/guide/index.html'>1.0.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC2/guide/index.html'>1.0.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC1/guide/index.html'>1.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M4/guide/index.html'>1.0.0.M4</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M3/guide/index.html'>1.0.0.M3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M2/guide/index.html'>1.0.0.M2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M1/guide/index.html'>1.0.0.M1</option></select></li><li><div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)" class="desktop">
                             <a href="../guide/index.html" class="button">Table of contents</a>
                             <div id="nav-summary-childs" style="display:none;">
                                 
@@ -50,6 +50,8 @@
                                 <div class="toc-item" style="margin-left:0"><a href="#lambda"><strong>3</strong><span>AWS Lambda Support</span></a></div>
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>4</strong><span>Alexa Skill Support</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>5</strong><span>Repository</span></a></div>
                                 
                             </div>
                         </div>
@@ -70,7 +72,6 @@
                 <li class="mobile">
                     <a title="Go to Configuration Reference documentation" href="../guide/configurationreference.html" class="button">Conf</a>
                 </li>
-
             </ul>
 
         </div>
@@ -97,6 +98,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-intentHandler"><a href="#intentHandler"><strong>4.1</strong><span>The IntentHandler Annotation</span></a></div>
         
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>5</strong><span>Repository</span></a></div>
+        
         </div>
     </div>
     
@@ -105,11 +108,10 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 1.3.7.BUILD-SNAPSHOT</p>
+        <p><strong>Version:</strong> <select style='margin-top: 10px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-aws/snapshot/guide/index.html'>1.3.7.BUILD-SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.6/guide/index.html'>1.3.6</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.5/guide/index.html'>1.3.5</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.4/guide/index.html'>1.3.4</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.3/guide/index.html'>1.3.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.2/guide/index.html'>1.3.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.1/guide/index.html'>1.3.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.3.0/guide/index.html'>1.3.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.2/guide/index.html'>1.1.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.1/guide/index.html'>1.1.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0/guide/index.html'>1.1.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC3/guide/index.html'>1.1.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC2/guide/index.html'>1.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.RC1/guide/index.html'>1.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.M2/guide/index.html'>1.1.0.M2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.1.0.M1/guide/index.html'>1.1.0.M1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.3/guide/index.html'>1.0.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.2/guide/index.html'>1.0.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.1/guide/index.html'>1.0.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0/guide/index.html'>1.0.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC3/guide/index.html'>1.0.0.RC3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC2/guide/index.html'>1.0.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.RC1/guide/index.html'>1.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M4/guide/index.html'>1.0.0.M4</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M3/guide/index.html'>1.0.0.M3</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M2/guide/index.html'>1.0.0.M2</option><option value='https://micronaut-projects.github.io/micronaut-aws/1.0.0.M1/guide/index.html'>1.0.0.M1</option></select></p>
     </div>
     
-
-<h1 id="introduction">1 Introduction</h1>
+<h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/introduction.adoc"'>
@@ -159,8 +161,7 @@
 </div>
 </div>
 
-
-<h1 id="awsCredentialsProvider">2 AWS Credentials Provider</h1>
+<h1 id="awsCredentialsProvider"><a class="anchor" href="#awsCredentialsProvider"></a>2 AWS Credentials Provider</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/awsCredentialsProvider.adoc"'>
@@ -192,8 +193,7 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 <p>Read about <a href="https://docs.micronaut.io/latest/guide/index.html#propertySource">externalized Configuration with property sources</a> in Micronaut.</p>
 </div>
 
-
-<h1 id="lambda">3 AWS Lambda Support</h1>
+<h1 id="lambda"><a class="anchor" href="#lambda"></a>3 AWS Lambda Support</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda.adoc"'>
@@ -297,8 +297,7 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 <p>If you need further integration with what AWS Lambda has to offer, then this project includes a number of parent classes and utilities to simplify working with the native Lambda APIs.</p>
 </div>
 
-
-<h2 id="requestHandlers">3.1 Micronaut Request Handlers</h2>
+<h2 id="requestHandlers"><a class="anchor" href="#requestHandlers"></a>3.1 Micronaut Request Handlers</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/requestHandlers.adoc"'>
@@ -387,8 +386,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 </div>
 </div>
 
-
-<h2 id="apiProxy">3.2 AWS API Gateway Support</h2>
+<h2 id="apiProxy"><a class="anchor" href="#apiProxy"></a>3.2 AWS API Gateway Support</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/apiProxy.adoc"'>
@@ -527,8 +525,7 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </table>
 </div>
 
-
-<h2 id="customRuntimes">3.3 AWS Lambda Custom Runtimes</h2>
+<h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>3.3 AWS Lambda Custom Runtimes</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/customRuntimes.adoc"'>
@@ -680,8 +677,7 @@ $ cat build/response.txt</code></pre>
 </div>
 </div>
 
-
-<h1 id="alexa">4 Alexa Skill Support</h1>
+<h1 id="alexa"><a class="anchor" href="#alexa"></a>4 Alexa Skill Support</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa.adoc"'>
@@ -763,8 +759,7 @@ You can find sample applications in Java, Kotlin and Groovy in the <a href="http
 </table>
 </div>
 
-
-<h2 id="intentHandler">4.1 The IntentHandler Annotation</h2>
+<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>4.1 The IntentHandler Annotation</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/intentHandler.adoc"'>
@@ -897,6 +892,22 @@ class AlexaApplication(val messageService: MessageService) { <b class="conum">(2
 <td>The method receives a <code>HandlerInput</code> and returns a <code>Response</code></td>
 </tr>
 </table>
+</div>
+
+<h1 id="repository"><a class="anchor" href="#repository"></a>5 Repository</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/repository.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can find the source code of this project in this repository:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/micronaut-projects/micronaut-aws">https://github.com/micronaut-projects/micronaut-aws</a></p>
 </div>
 
     </div>

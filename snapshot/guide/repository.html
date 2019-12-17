@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>2 AWS Credentials Provider 1.3.7.BUILD-SNAPSHOT</title>
+    <title>5 Repository 1.3.7.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,18 +71,16 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/alexa.html">&lt;&lt; <strong>4</strong><span>Alexa Skill Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/lambda.html"><strong>3</strong><span>AWS Lambda Support</span> >></a></div>
-                
 
 
                 <div class="project">
-                    <h1>2 AWS Credentials Provider</h1>
+                    <h1>5 Repository</h1>
 
                     <p><strong>Version:</strong> 1.3.7.BUILD-SNAPSHOT</p>
                 </div>
@@ -90,44 +88,26 @@ function addJsClass() {
                 
 
                 
-<h1 id="awsCredentialsProvider"><a class="anchor" href="#awsCredentialsProvider"></a>2 AWS Credentials Provider</h1>
+<h1 id="repository"><a class="anchor" href="#repository"></a>5 Repository</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/awsCredentialsProvider.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/repository.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a>.</p>
+<p>You can find the source code of this project in this repository:</p>
 </div>
 <div class="paragraph">
-<p>For example the following snippet show how you may configure a S3 Client if you set two environment variables:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export AWS_ACCESS_KEY_ID=XXXX
-export AWS_SECRET_KEY=YYYY</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AmazonS3ClientBuilder amazonS3ClientBuilder = AmazonS3ClientBuilder.standard();
-  amazonS3ClientBuilder.setCredentials(new EnvironmentAWSCredentialsProvider(applicationContext.getEnvironment()));
-AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Read about <a href="https://docs.micronaut.io/latest/guide/index.html#propertySource">externalized Configuration with property sources</a> in Micronaut.</p>
+<p><a href="https://github.com/micronaut-projects/micronaut-aws">https://github.com/micronaut-projects/micronaut-aws</a></p>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
-                
-                    <div class="toc-item next-right"><a href="../guide/lambda.html"><strong>3</strong><span>AWS Lambda Support</span> >></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/alexa.html">&lt;&lt; <strong>4</strong><span>Alexa Skill Support</span></a></div>
                 
                 <div style="clear:both"></div>
             </div>
