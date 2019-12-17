@@ -9,3 +9,4 @@ lambda:
 alexa:
   title: Alexa Skill Support
   intentHandler: The IntentHandler Annotation
+repository: Repository
