@@ -279,7 +279,7 @@ public final class MicronautLambdaContainerHandler
                                 .toArray(MediaType[]::new);
                         final MediaType requestContentType = containerRequest.getContentType().orElse(null);
 
-                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
+                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType)) && !requestContentType.equals(MediaType.ALL_TYPE)) {
                             containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                             containerResponse.close();
                             return;
