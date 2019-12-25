@@ -59,7 +59,6 @@ import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
