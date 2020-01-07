@@ -59,7 +59,6 @@ import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
@@ -79,7 +78,7 @@ import java.util.stream.Stream;
  * @since 1.1
  */
 @TypeHint(
-        accessType = { TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC },
+        accessType = {TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC},
         value = {
                 AlbContext.class,
                 ApiGatewayAuthorizerContext.class,
@@ -108,6 +107,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * Default constructor.
+     *
      * @param applicationContextBuilder The context builder
      * @throws ContainerInitializationException The exception
      */
@@ -117,6 +117,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * Default constructor.
+     *
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler() throws ContainerInitializationException {
@@ -125,8 +126,9 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * constructor.
+     *
      * @param lambdaContainerEnvironment The container environment
-     * @param applicationContextBuilder The context builder
+     * @param applicationContextBuilder  The context builder
      * @throws ContainerInitializationException if the container couldn't be started
      */
     private MicronautLambdaContainerHandler(
@@ -149,6 +151,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * constructor.
+     *
      * @param lambdaContainerEnvironment The environment
      * @throws ContainerInitializationException if the container couldn't be started
      */
@@ -158,6 +161,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
+     *
      * @return The {@link MicronautLambdaContainerHandler}
      * @throws ContainerInitializationException if the container couldn't be started
      */
@@ -168,6 +172,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
+     *
      * @param builder The builder to customize the context creation
      * @return The {@link MicronautLambdaContainerHandler}
      * @throws ContainerInitializationException if the container couldn't be started
@@ -203,9 +208,9 @@ public final class MicronautLambdaContainerHandler
     @Override
     protected ObjectReader readerFor(Class<AwsProxyRequest> requestClass) {
         return lambdaContainerEnvironment
-                    .getJsonCodec()
-                    .getObjectMapper()
-                    .readerFor(requestClass);
+                .getJsonCodec()
+                .getObjectMapper()
+                .readerFor(requestClass);
     }
 
     @Override
@@ -279,7 +284,7 @@ public final class MicronautLambdaContainerHandler
                                 .toArray(MediaType[]::new);
                         final MediaType requestContentType = containerRequest.getContentType().orElse(null);
 
-                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType))) {
+                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType)) && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(MediaType.ALL))) {
                             containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                             containerResponse.close();
                             return;
