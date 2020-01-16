@@ -19,6 +19,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.env.Environment;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 
 import javax.annotation.Nonnull;
@@ -35,6 +36,8 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  * @since 1.0
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
+
+    private String functionName;
 
     /**
      * Default constructor.
@@ -56,6 +59,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         ApplicationContext applicationContext = super.buildApplicationContext(context);
         if (context != null) {
             registerContextBeans(context, applicationContext);
+            this.functionName = context.getFunctionName();
         }
         return applicationContext;
     }
@@ -71,5 +75,14 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     @Override
     protected void closeApplicationContext() {
         // Avoid closing the application context when running the function in lambda to keep it warm
+    }
+
+    @Override
+    protected String resolveFunctionName(Environment env) {
+        if (this.functionName != null) {
+            return functionName;
+        } else {
+            return super.resolveFunctionName(env);
+        }
     }
 }
