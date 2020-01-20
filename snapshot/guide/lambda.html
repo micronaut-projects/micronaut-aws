@@ -582,7 +582,7 @@ $ docker run --rm --entrypoint cat my-app  /home/application/function.zip &gt; b
 <div class="listingblock">
 <div class="title">Invoking the Function with the AWS CLI</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ aws lambda invoke --function-name my-app --payload '{"resource": "/{proxy+}", "path": "/ping", "httpMethod": "GET"}' build/response.txt
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ aws lambda invoke --function-name my-app --payload '{"resource": "/ping", "path": "/ping", "httpMethod": "GET"}' build/response.txt
 $ cat build/response.txt</code></pre>
 </div>
 </div>
