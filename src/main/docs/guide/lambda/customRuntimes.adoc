@@ -74,6 +74,6 @@ Then you can invoke the function:
 .Invoking the Function with the AWS CLI
 [source,bash]
 ----
-$ aws lambda invoke --function-name my-app --payload '{"resource": "/{proxy+}", "path": "/ping", "httpMethod": "GET"}' build/response.txt
+$ aws lambda invoke --function-name my-app --payload '{"resource": "/ping", "path": "/ping", "httpMethod": "GET"}' build/response.txt
 $ cat build/response.txt
 ----
