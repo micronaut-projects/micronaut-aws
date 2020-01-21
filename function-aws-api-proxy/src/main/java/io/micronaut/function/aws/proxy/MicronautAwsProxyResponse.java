@@ -19,6 +19,7 @@ import com.amazonaws.serverless.exceptions.InvalidResponseObjectException;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.Headers;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
@@ -47,6 +48,7 @@ import java.util.concurrent.CountDownLatch;
  * @since 1.1
  * @param <T> The body type
  */
+@TypeHint(value = MicronautAwsProxyResponse.class)
 public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Closeable {
 
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
