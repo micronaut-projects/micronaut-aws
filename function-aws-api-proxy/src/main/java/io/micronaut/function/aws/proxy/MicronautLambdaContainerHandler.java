@@ -422,7 +422,12 @@ public final class MicronautLambdaContainerHandler
             return Flowable.just(containerResponse);
         }
         if (Publishers.isConvertibleToPublisher(result)) {
-            final Single<?> single = Publishers.convertPublisher(result, Single.class);
+            Single<?> single;
+            if (Publishers.isSingle(result.getClass())) {
+                single = Publishers.convertPublisher(result, Single.class);
+            } else {
+                single = Publishers.convertPublisher(result, Flowable.class).toList();
+            }
             return single.map((Function<Object, MutableHttpResponse<?>>) o -> {
                 if (!(o instanceof MicronautAwsProxyResponse)) {
                     ((MutableHttpResponse) containerResponse).body(o);
