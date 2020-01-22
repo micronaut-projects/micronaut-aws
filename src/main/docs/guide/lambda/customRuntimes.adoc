@@ -77,3 +77,7 @@ Then you can invoke the function:
 $ aws lambda invoke --function-name my-app --payload '{"resource": "/ping", "path": "/ping", "httpMethod": "GET"}' build/response.txt
 $ cat build/response.txt
 ----
+
+There is a complete, step-by-step guide about https://guides.micronaut.io/micronaut-function-graalvm-aws-lambda-gateway/guide/index.html[Micronaut Functions in GraalVM Native Images deployed to AWS Lambda].
+
+You can also check the sample application at the https://github.com/awslabs/aws-serverless-java-container/tree/master/samples/micronaut/pet-store[AWS Serverless Java container repository].
