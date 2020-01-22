@@ -6,3 +6,6 @@ include 'function-aws-alexa'
 include 'function-aws-custom-runtime'
 include 'aws-common'
 
+file('examples').eachDir {
+    includeBuild "examples/${it.name}"
+}
