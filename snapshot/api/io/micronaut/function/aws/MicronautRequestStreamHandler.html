@@ -214,7 +214,7 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName</a></span>(io.micronaut.context.env.Environment&nbsp;arg0)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName</a></span>(io.micronaut.context.env.Environment&nbsp;env)</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>protected io.micronaut.context.env.Environment</code></td>
@@ -334,6 +334,15 @@ protected&nbsp;io.micronaut.context.ApplicationContextBuilder&nbsp;newApplicatio
 </dl>
 </li>
 </ul>
+<a name="resolveFunctionName-io.micronaut.context.env.Environment-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>resolveFunctionName</h4>
+<pre>protected&nbsp;java.lang.String&nbsp;resolveFunctionName(io.micronaut.context.env.Environment&nbsp;env)</pre>
+</li>
+</ul>
 <a name="resolveFunction-io.micronaut.function.LocalFunctionRegistry-java.lang.String-">
 <!--   -->
 </a>
@@ -342,15 +351,6 @@ protected&nbsp;io.micronaut.context.ApplicationContextBuilder&nbsp;newApplicatio
 <h4>resolveFunction</h4>
 <pre>protected&nbsp;io.micronaut.inject.ExecutableMethod&lt;java.lang.Object,java.lang.Object&gt;&nbsp;resolveFunction(io.micronaut.function.LocalFunctionRegistry&nbsp;arg0,
                                                                                                   java.lang.String&nbsp;arg1)</pre>
-</li>
-</ul>
-<a name="resolveFunctionName-io.micronaut.context.env.Environment-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>resolveFunctionName</h4>
-<pre>protected&nbsp;java.lang.String&nbsp;resolveFunctionName(io.micronaut.context.env.Environment&nbsp;arg0)</pre>
 </li>
 </ul>
 <a name="startEnvironment-io.micronaut.context.ApplicationContext-">
