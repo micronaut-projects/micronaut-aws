@@ -315,11 +315,8 @@ public final class MicronautLambdaContainerHandler
                                         )).orElse(null);
 
                                 if (exceptionHandler != null) {
-                                    final Flowable<? extends MutableHttpResponse<?>> errorFlowable
-                                            = Flowable.fromCallable(() -> {
-                                        Object result = exceptionHandler.handle(containerRequest, throwable);
-                                        return errorResultToResponse(result);
-                                    });
+                                    final Flowable<? extends MutableHttpResponse<?>> errorFlowable =
+                                            handleException(containerRequest, containerResponse, throwable, exceptionHandler);
 
                                     return filterPublisher(
                                             requestReference,
@@ -363,11 +360,8 @@ public final class MicronautLambdaContainerHandler
                                             )).orElse(null);
 
                                     if (exceptionHandler != null) {
-                                        final Flowable<? extends MutableHttpResponse<?>> errorFlowable
-                                                = Flowable.fromCallable(() -> {
-                                            Object result = exceptionHandler.handle(containerRequest, e);
-                                            return errorResultToResponse(result);
-                                        });
+                                        final Flowable<? extends MutableHttpResponse<?>> errorFlowable =
+                                                handleException(containerRequest, containerResponse, e, exceptionHandler);
 
                                         Flowable.fromPublisher(filterPublisher(
                                                 requestReference,
@@ -398,6 +392,17 @@ public final class MicronautLambdaContainerHandler
         }
 
 
+    }
+
+    private Flowable<? extends MutableHttpResponse<?>> handleException(MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Throwable throwable, ExceptionHandler exceptionHandler) {
+        return Flowable.fromCallable(() -> {
+            Object result = exceptionHandler.handle(containerRequest, throwable);
+            MutableHttpResponse<?> response = errorResultToResponse(result);
+            containerResponse.status(response.getStatus());
+            response.getContentType().ifPresent(containerResponse::contentType);
+            response.getBody().ifPresent(((MutableHttpResponse) containerResponse)::body);
+            return response;
+        });
     }
 
     private Publisher<MutableHttpResponse<?>> executeRoute(
