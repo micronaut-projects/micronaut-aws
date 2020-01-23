@@ -398,6 +398,7 @@ public final class MicronautLambdaContainerHandler
         return Flowable.fromCallable(() -> {
             Object result = exceptionHandler.handle(containerRequest, throwable);
             MutableHttpResponse<?> response = errorResultToResponse(result);
+            response.getHeaders().forEach((name, values) -> values.forEach(value -> containerResponse.header(name, value)));
             containerResponse.status(response.getStatus());
             response.getContentType().ifPresent(containerResponse::contentType);
             response.getBody().ifPresent(((MutableHttpResponse) containerResponse)::body);
