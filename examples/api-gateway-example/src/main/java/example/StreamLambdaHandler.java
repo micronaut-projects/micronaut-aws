@@ -7,10 +7,12 @@ import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
 import java.io.*;
 
 public class StreamLambdaHandler implements RequestStreamHandler {
-    private static MicronautLambdaContainerHandler handler; // <1>
-    static {
+
+    private MicronautLambdaContainerHandler handler;
+
+    public StreamLambdaHandler() {
         try {
-            handler = new MicronautLambdaContainerHandler();
+            handler = new MicronautLambdaContainerHandler(); // <1>
         } catch (ContainerInitializationException e) {
             // if we fail here. We re-throw the exception to force another cold start
             e.printStackTrace();

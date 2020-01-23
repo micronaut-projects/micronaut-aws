@@ -28,11 +28,11 @@ You can then implement a `RequestHandler` that handles the API proxy request:
 include::examples/api-gateway-example/src/main/java/example/StreamLambdaHandler.java[]
 ----
 
-<1> Micronaut is initialized in the static initializer
+<1> Micronaut is initialized in the constructor
 <2> The API Proxy Request is handled
 
 The api:function.aws.proxy.MicronautLambdaContainerHandler[] class is used to initialization Micronaut and handle the serverless requests.
 
-The `getAwsProxyHandler()` method also accepts a `ApplicationContextBuilder` instance which you can use to further customize application bootstrap.
+The `MicronautLambdaContainerHandler` constructor also accepts a `ApplicationContextBuilder` instance which you can use to further customize application bootstrap.
 
 TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-gateway-example[Example Application] and associated https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-gateway-example/README.md[README] for instructions on how to deploy locally using https://github.com/awslabs/aws-sam-cli[AWS SAM Local] and AWS Cloud Formation for production.
