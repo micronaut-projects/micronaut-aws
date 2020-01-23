@@ -179,10 +179,12 @@ import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
 import java.io.*;
 
 public class StreamLambdaHandler implements RequestStreamHandler {
-    private static MicronautLambdaContainerHandler handler; <i class="conum" data-value="1"></i><b>(1)</b>
-    static {
+
+    private MicronautLambdaContainerHandler handler;
+
+    public StreamLambdaHandler() {
         try {
-            handler = MicronautLambdaContainerHandler.getAwsProxyHandler();
+            handler = new MicronautLambdaContainerHandler(); <i class="conum" data-value="1"></i><b>(1)</b>
         } catch (ContainerInitializationException e) {
             // if we fail here. We re-throw the exception to force another cold start
             e.printStackTrace();
@@ -202,7 +204,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Micronaut is initialized in the static initializer</td>
+<td>Micronaut is initialized in the constructor</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -214,7 +216,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
 <p>The <a href="../api/io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html">MicronautLambdaContainerHandler</a> class is used to initialization Micronaut and handle the serverless requests.</p>
 </div>
 <div class="paragraph">
-<p>The <code>getAwsProxyHandler()</code> method also accepts a <code>ApplicationContextBuilder</code> instance which you can use to further customize application bootstrap.</p>
+<p>The <code>MicronautLambdaContainerHandler</code> constructor also accepts a <code>ApplicationContextBuilder</code> instance which you can use to further customize application bootstrap.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
