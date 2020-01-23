@@ -22,7 +22,10 @@ class ErrorHandlerSpec extends Specification {
     @Shared
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'micronaut.server.cors.enabled': true,
+                    'micronaut.server.cors.configurations.web.allowedOrigins': ['http://localhost:8080']
+            ])
     )
     @Shared
     Context lambdaContext = new MockLambdaContext()
@@ -96,6 +99,18 @@ class ErrorHandlerSpec extends Specification {
         response.statusCode == 400
         response.body.contains 'Invalid JSON: invalid json'
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
+    }
+
+    void 'cors headers are present after exceptions'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/error', HttpMethod.GET.toString())
+                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
     @Controller('/errors')
