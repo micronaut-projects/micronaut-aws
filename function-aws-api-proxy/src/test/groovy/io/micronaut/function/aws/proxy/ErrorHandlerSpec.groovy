@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType
 
 class ErrorHandlerSpec extends Specification {
 
-    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.build()
     )
     @Shared Context lambdaContext = new MockLambdaContext()

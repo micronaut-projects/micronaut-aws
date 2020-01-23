@@ -61,7 +61,7 @@ public class MicronautAwsProxyTest {
 
     static {
         try {
-            handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+            handler = new MicronautLambdaContainerHandler(
                         ApplicationContext.build()
                             .properties(CollectionUtils.mapOf(
                                     "micronaut.security.enabled", true,

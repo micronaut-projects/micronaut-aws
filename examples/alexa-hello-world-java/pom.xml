@@ -4,7 +4,7 @@
   <artifactId>alex-hello-world-java</artifactId>
   <version>0.1</version>
   <properties>
-    <micronaut.version>1.1.0.BUILD-SNAPSHOT</micronaut.version>
+    <micronaut.version>1.2.10</micronaut.version>
     <jdk.version>1.8</jdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

@@ -17,7 +17,7 @@ import spock.lang.Specification
 
 class ConsumesSpec extends Specification {
 
-    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.build()
     )
     @Shared Context lambdaContext = new MockLambdaContext()
