@@ -3,18 +3,11 @@ package io.micronaut.function.aws.proxy
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
+import com.fasterxml.jackson.databind.JsonMappingException
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
-import io.micronaut.http.HttpHeaders
-import io.micronaut.http.HttpMethod
-import io.micronaut.http.HttpRequest
-import io.micronaut.http.HttpResponse
-import io.micronaut.http.HttpStatus
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Error
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Produces
-import io.micronaut.http.annotation.Status
+import io.micronaut.http.*
+import io.micronaut.http.annotation.*
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import spock.lang.AutoCleanup
 import spock.lang.PendingFeature
@@ -26,10 +19,13 @@ import javax.ws.rs.core.MediaType
 
 class ErrorHandlerSpec extends Specification {
 
-    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+    @Shared
+    @AutoCleanup
+    MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.build()
     )
-    @Shared Context lambdaContext = new MockLambdaContext()
+    @Shared
+    Context lambdaContext = new MockLambdaContext()
 
 
     void 'test custom global exception handlers'() {
@@ -41,39 +37,39 @@ class ErrorHandlerSpec extends Specification {
 
         then:
         response.statusCode == 200
-        response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
         response.body == 'Exception Handled'
+        response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
     }
 
     void 'test custom global exception handlers declared in controller'() {
         given:
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-ctrl', HttpMethod.GET.toString())
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-ctrl', HttpMethod.GET.toString())
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            verifyAll {
-                response.statusCode == 200
-                response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
-                response.body == 'bad things happens globally'
-            }
+        verifyAll {
+            response.statusCode == 200
+            response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
+            response.body == 'bad things happens globally'
+        }
     }
 
     @PendingFeature
     void 'test custom global status handlers declared in controller'() {
         given:
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            verifyAll {
-                response.statusCode == 200
-                response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
-                response.body == 'global status'
-            }
+        verifyAll {
+            response.statusCode == 200
+            response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
+            response.body == 'global status'
+        }
     }
 
     void 'test local exception handlers'() {
@@ -87,6 +83,19 @@ class ErrorHandlerSpec extends Specification {
         response.statusCode == 200
         response.body == 'bad things'
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
+    }
+
+    void 'it can process JsonProcessingException'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/error', HttpMethod.GET.toString())
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 400
+        response.body.contains 'Invalid JSON: invalid json'
+        response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
     }
 
     @Controller('/errors')
@@ -119,6 +128,14 @@ class ErrorHandlerSpec extends Specification {
             return throwable.getMessage()
         }
 
+    }
+
+    @Controller('/json')
+    static class JsonController {
+        @Get('/error')
+        String jsonException() {
+            throw new JsonMappingException("invalid json")
+        }
     }
 
     @Controller('/global-errors')
@@ -154,11 +171,9 @@ class ErrorHandlerSpec extends Specification {
         @Override
         HttpResponse handle(HttpRequest request, MyException exception) {
             return HttpResponse.ok("Exception Handled")
-                               .contentType(MediaType.TEXT_PLAIN)
+                    .contentType(MediaType.TEXT_PLAIN)
         }
     }
-
-
 
 
     @InheritConstructors
