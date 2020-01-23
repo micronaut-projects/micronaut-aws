@@ -8,6 +8,7 @@ import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
+import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import spock.lang.AutoCleanup
 import spock.lang.PendingFeature
@@ -167,7 +168,16 @@ class ErrorHandlerSpec extends Specification {
 
         @Get('/corsWithWorkaround')
         String cors() {
-            throw new YetAnotherException("should have cors")
+            throw new AnotherException("should have cors")
+        }
+
+        @Error
+        @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        HttpResponse<String> localHandler(AnotherException throwable) {
+            Optional<String> origin = ServerRequestContext.currentRequest().map { req -> req.getHeaders().getFirst(HttpHeaders.ORIGIN).orElse(null) }
+            MutableHttpResponse<String> response = HttpResponse.serverError(throwable.message)
+            origin.ifPresent{ o -> response.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, o)}
+            return response
         }
     }
 
@@ -199,18 +209,6 @@ class ErrorHandlerSpec extends Specification {
     }
 
     @Singleton
-    static class CorsErrorHandler implements ExceptionHandler<YetAnotherException, HttpResponse> {
-
-        @Override
-        HttpResponse handle(HttpRequest request, YetAnotherException exception) {
-            Optional<String> origin = request.headers.origin
-            MutableHttpResponse<String> response = HttpResponse.serverError(exception.message)
-            origin.ifPresent{ o -> response.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, o)}
-            return response
-        }
-    }
-
-    @Singleton
     static class MyErrorHandler implements ExceptionHandler<MyException, HttpResponse> {
 
         @Override
@@ -227,10 +225,6 @@ class ErrorHandlerSpec extends Specification {
 
     @InheritConstructors
     static class AnotherException extends RuntimeException {
-    }
-
-    @InheritConstructors
-    static class YetAnotherException extends RuntimeException {
     }
 
     @InheritConstructors
