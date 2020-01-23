@@ -421,9 +421,6 @@ public final class MicronautLambdaContainerHandler
             Optional<?> optional = (Optional) result;
             result = optional.orElse(null);
         }
-        if (result instanceof HttpResponse) {
-            ((HttpResponse)result).getHeaders().forEach((name, values) -> values.forEach(value -> containerResponse.header(name, value)));
-        }
         if (!void.class.isAssignableFrom(boundRoute.getReturnType().getType()) && result == null) {
             applyRouteConfig(containerResponse, finalRoute);
             containerResponse.status(HttpStatus.NOT_FOUND);

@@ -8,7 +8,6 @@ import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
-import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import spock.lang.AutoCleanup
 import spock.lang.PendingFeature
@@ -102,22 +101,9 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
     }
 
-    @PendingFeature(reason = "https://github.com/micronaut-projects/micronaut-aws/issues/136")
     void 'cors headers are present after exceptions'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/error', HttpMethod.GET.toString())
-                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
-
-        when:
-        def response = handler.proxy(builder.build(), lambdaContext)
-
-        then:
-        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
-    }
-
-    void 'workaround for cors headers are present after exceptions'() {
-        given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/corsWithWorkaround', HttpMethod.GET.toString())
                 .header(HttpHeaders.ORIGIN, "http://localhost:8080")
 
         when:
@@ -164,20 +150,6 @@ class ErrorHandlerSpec extends Specification {
         @Get('/error')
         String jsonException() {
             throw new JsonMappingException("invalid json")
-        }
-
-        @Get('/corsWithWorkaround')
-        String cors() {
-            throw new AnotherException("should have cors")
-        }
-
-        @Error
-        @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
-        HttpResponse<String> localHandler(AnotherException throwable) {
-            Optional<String> origin = ServerRequestContext.currentRequest().map { req -> req.getHeaders().getFirst(HttpHeaders.ORIGIN).orElse(null) }
-            MutableHttpResponse<String> response = HttpResponse.serverError(throwable.message)
-            origin.ifPresent{ o -> response.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, o)}
-            return response
         }
     }
 
