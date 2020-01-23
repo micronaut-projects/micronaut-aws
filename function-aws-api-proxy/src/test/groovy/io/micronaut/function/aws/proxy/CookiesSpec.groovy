@@ -14,7 +14,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class CookiesSpec extends Specification {
-    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+    @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.build()
     )
     @Shared Context lambdaContext = new MockLambdaContext()

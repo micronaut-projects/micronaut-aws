@@ -10,7 +10,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
     private static MicronautLambdaContainerHandler handler; // <1>
     static {
         try {
-            handler = MicronautLambdaContainerHandler.getAwsProxyHandler();
+            handler = new MicronautLambdaContainerHandler();
         } catch (ContainerInitializationException e) {
             // if we fail here. We re-throw the exception to force another cold start
             e.printStackTrace();

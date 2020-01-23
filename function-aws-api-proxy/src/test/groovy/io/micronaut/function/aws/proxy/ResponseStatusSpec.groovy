@@ -25,7 +25,7 @@ class ResponseStatusSpec extends Specification {
     void "test custom response status"() {
         given:
 
-        def handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+        def handler = new MicronautLambdaContainerHandler(
                 ApplicationContext.build()
         )
 
@@ -47,7 +47,7 @@ class ResponseStatusSpec extends Specification {
     void "test optional causes 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
             )
 
@@ -67,7 +67,7 @@ class ResponseStatusSpec extends Specification {
     void "test null causes 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
             )
 
@@ -87,7 +87,7 @@ class ResponseStatusSpec extends Specification {
     void "test void methods does not cause 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
             )
 
@@ -107,7 +107,7 @@ class ResponseStatusSpec extends Specification {
     void "test constraint violation causes 400"() {
         given:
 
-            MicronautLambdaContainerHandler handler = MicronautLambdaContainerHandler.getAwsProxyHandler(
+            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
             )
 

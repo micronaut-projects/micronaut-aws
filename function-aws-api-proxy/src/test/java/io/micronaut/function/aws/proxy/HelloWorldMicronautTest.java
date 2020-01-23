@@ -75,7 +75,7 @@ public class HelloWorldMicronautTest {
     @BeforeClass
     public static void initializeServer() throws ContainerInitializationException {
         try {
-            handler = MicronautLambdaContainerHandler.getAwsProxyHandler();
+            handler = new MicronautLambdaContainerHandler();
         } catch (RuntimeException e) {
             e.printStackTrace();
             fail();
