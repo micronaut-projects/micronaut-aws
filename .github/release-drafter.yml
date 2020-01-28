@@ -2,7 +2,7 @@ name-template: Micronaut AWS $NEXT_PATCH_VERSION
 tag-template: v$NEXT_PATCH_VERSION
 categories:
   - title: 🚀 Features
-    label: "type:"
+    label: "type: enhancement"
   - title: 🐛 Bug Fixes
     label: "type: bug"
   - title: 🛠 Dependency upgrades
