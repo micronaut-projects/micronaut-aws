@@ -1,8 +1,7 @@
 name: Release
 on:
-  push:
-    tags:
-    - v*
+  release:
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,8 +17,14 @@ jobs:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
       run: ./gradlew bintrayUpload docs
-    - id: release_version
+    - name: Set the current release version
+      id: release_version
       run: echo ::set-output name=release_version::${GITHUB_REF:11}
+    - name: Get next minor version
+      id: semvers
+      uses: "WyriHaximus/github-action-next-semvers@master"
+      with:
+        version: ${{ steps.release_version.outputs.release_version }}
     - name: Publish to Github Pages
       if: success()
       uses: micronaut-projects/github-pages-deploy-action@master
@@ -35,3 +40,10 @@ jobs:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
       run: ./gradlew sWMC
+    - name: Run post release script
+      run: |
+        ./.github/post_release.sh \
+          "${{ secrets.GITHUB_TOKEN }}" \
+          "${{ github.repository }}" \
+          "${{ steps.release_version.outputs.release_version }}" \
+          "${{ steps.semvers.outputs.patch }}"
