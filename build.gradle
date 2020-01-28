@@ -23,9 +23,6 @@ repositories {
     maven { url "https://repo.grails.org/grails/core" }
 }
 
-version project.projectVersion
-
-
 ext {
     distInstallDir = file("$buildDir/dist-tmp")
     homeBinDir = file("bin")
@@ -37,7 +34,7 @@ ext {
 
 subprojects { Project subproject ->
 
-    version project.projectVersion
+    version project.version
 	group "io.micronaut.aws"
     ext {
         isConfiguration = subproject.projectDir.parentFile.name == 'configurations'
@@ -62,7 +59,7 @@ subprojects { Project subproject ->
     jar {
         manifest {
             attributes('Automatic-Module-Name': "${subproject.group}.${subproject.name}".replaceAll('[^\\w\\.\\$_]', "_"))
-            attributes('Implementation-Version': projectVersion)
+            attributes('Implementation-Version': project.version)
             attributes('Implementation-Title': title)
         }
     }
