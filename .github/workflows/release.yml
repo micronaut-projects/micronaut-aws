@@ -34,12 +34,6 @@ jobs:
         BRANCH: gh-pages
         FOLDER: build/docs
         VERSION: ${{ steps.release_version.outputs.release_version }}
-    - name: Synchronize Maven Central
-      if: success()
-      env:
-         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew sWMC
     - name: Run post release script
       run: |
         ./.github/post_release.sh \
@@ -47,3 +41,9 @@ jobs:
           "${{ github.repository }}" \
           "${{ steps.release_version.outputs.release_version }}" \
           "${{ steps.semvers.outputs.patch }}"
+    - name: Synchronize Maven Central
+      if: success()
+      env:
+         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+      run: ./gradlew sWMC
