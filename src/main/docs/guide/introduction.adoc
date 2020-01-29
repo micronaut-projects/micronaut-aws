@@ -4,6 +4,8 @@ A base api:configuration.aws.AWSClientConfiguration[] is provided which can be u
 
 #### Release History
 
+For more information, check the https://github.com/micronaut-projects/micronaut-aws/releases[GitHub release list].
+
 ##### 1.0
 
 Initial Release
@@ -21,3 +23,6 @@ Compatibility with Micronaut 1.2
 * Improved support for GraalVM native images
 * Upgrade to `aws-serverless-java-container-core` 1.4
 
+##### 1.4
+
+Setting Micronaut 1.2 as the minimum supported version
