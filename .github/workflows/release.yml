@@ -12,6 +12,14 @@ jobs:
       with:
         java-version: 1.8
         ref: ${{ github.head_ref }}
+    - name: Set the current release version
+      id: release_version
+      run: echo ::set-output name=release_version::${GITHUB_REF:11}
+    - name: Get next minor version
+      id: semvers
+      uses: "WyriHaximus/github-action-next-semvers@master"
+      with:
+        version: ${{ steps.release_version.outputs.release_version }}
     - name: Run pre release script
       run: |
         ./.github/pre_release.sh \
@@ -24,14 +32,6 @@ jobs:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
       run: ./gradlew bintrayUpload docs
-    - name: Set the current release version
-      id: release_version
-      run: echo ::set-output name=release_version::${GITHUB_REF:11}
-    - name: Get next minor version
-      id: semvers
-      uses: "WyriHaximus/github-action-next-semvers@master"
-      with:
-        version: ${{ steps.release_version.outputs.release_version }}
     - name: Publish to Github Pages
       if: success()
       uses: micronaut-projects/github-pages-deploy-action@master
