@@ -2,12 +2,10 @@ plugins {
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
     id "com.github.johnrengelman.shadow" version "4.0.2"
     id "jp.classmethod.aws.lambda" version "0.38"
-    id "java"
-    id "net.ltgt.apt-eclipse" version "0.20"
-    id "net.ltgt.apt-idea" version "0.20"
+    id 'java-library'
+    id "net.ltgt.apt-eclipse" version "0.21"
+    id "net.ltgt.apt-idea" version "0.21"
 }
-
-
 
 version "0.1"
 group "com.amazon.ask.helloworld.handlers"
