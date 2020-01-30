@@ -3,8 +3,8 @@ plugins {
     id "com.github.johnrengelman.shadow" version "4.0.2"
     id "jp.classmethod.aws.lambda" version "0.38"
     id "groovy"
-    id "net.ltgt.apt-eclipse" version "0.20"
-    id "net.ltgt.apt-idea" version "0.20"
+    id "net.ltgt.apt-eclipse" version "0.21"
+    id "net.ltgt.apt-idea" version "0.21"
 }
 
 
