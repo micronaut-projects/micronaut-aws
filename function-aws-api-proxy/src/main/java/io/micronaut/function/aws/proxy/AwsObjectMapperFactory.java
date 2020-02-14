@@ -16,33 +16,29 @@
 package io.micronaut.function.aws.proxy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.context.ApplicationContextProvider;
-import io.micronaut.function.aws.MicronautLambdaContext;
-import io.micronaut.jackson.codec.JsonMediaTypeCodec;
-import io.micronaut.web.router.Router;
+import io.micronaut.configuration.aws.AWSConfiguration;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
- * A context object to share state.
+ * Factory class that creates an object mapper if the property "aws.proxy.shared-object-mapper" is set to true.
  *
- * @author graemerocher
- * @since 1.1
+ * @author Álvaro Sánchez-Mariscal
+ * @since 1.3.10
  */
-public interface MicronautLambdaContainerContext extends ApplicationContextProvider, MicronautLambdaContext {
+@Factory
+public class AwsObjectMapperFactory {
 
     /**
-     * @return The {@link Router} instance.
+     * @return a new {@link ObjectMapper}
      */
-    Router getRouter();
-
-    /**
-     * @return The JSON codec.
-     */
-    JsonMediaTypeCodec getJsonCodec();
-
-    /**
-     * @return The Jackson's {@link ObjectMapper}
-     */
-    default ObjectMapper getObjectMapper() {
-        return getJsonCodec().getObjectMapper();
+    @Singleton
+    @Named("aws")
+    @Requires(property = AWSConfiguration.PREFIX + "." + MicronautAwsProxyConfiguration.PREFIX + ".shared-object-mapper", value = "false")
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

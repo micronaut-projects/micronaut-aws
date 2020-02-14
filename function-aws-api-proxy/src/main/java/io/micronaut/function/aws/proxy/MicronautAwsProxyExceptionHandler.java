@@ -87,7 +87,6 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
         AwsProxyResponse response = handle(ex);
 
         environment
-                .getJsonCodec()
                 .getObjectMapper()
                 .writeValue(stream, response);
     }
@@ -102,7 +101,9 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
      */
     protected String getErrorJson(String message) {
         try {
-            return environment.getJsonCodec().getObjectMapper().writeValueAsString(new ErrorModel(message));
+            return environment
+                    .getObjectMapper()
+                    .writeValueAsString(new ErrorModel(message));
         } catch (JsonProcessingException e) {
             LOG.error("Could not produce error JSON", e);
             return "{ \"message\": \"" + message + "\" }";

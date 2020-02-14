@@ -194,23 +194,17 @@ public final class MicronautLambdaContainerHandler
 
     @Override
     protected ObjectMapper objectMapper() {
-        return lambdaContainerEnvironment.getJsonCodec().getObjectMapper();
+        return lambdaContainerEnvironment.getObjectMapper();
     }
 
     @Override
     protected ObjectWriter writerFor(Class<AwsProxyResponse> responseClass) {
-        return lambdaContainerEnvironment
-                .getJsonCodec()
-                .getObjectMapper()
-                .writerFor(responseClass);
+        return objectMapper().writerFor(responseClass);
     }
 
     @Override
     protected ObjectReader readerFor(Class<AwsProxyRequest> requestClass) {
-        return lambdaContainerEnvironment
-                .getJsonCodec()
-                .getObjectMapper()
-                .readerFor(requestClass);
+        return objectMapper().readerFor(requestClass);
     }
 
     @Override
@@ -240,6 +234,10 @@ public final class MicronautLambdaContainerHandler
             this.lambdaContainerEnvironment.setApplicationContext(applicationContext);
             this.lambdaContainerEnvironment.setJsonCodec(applicationContext.getBean(JsonMediaTypeCodec.class));
             this.lambdaContainerEnvironment.setRouter(applicationContext.getBean(Router.class));
+
+            applicationContext.findBean(ObjectMapper.class, Qualifiers.byName("aws"))
+                    .ifPresent(this.lambdaContainerEnvironment::setObjectMapper);
+
             this.requestArgumentSatisfier = new RequestArgumentSatisfier(
                     applicationContext.getBean(RequestBinderRegistry.class)
             );
@@ -504,6 +502,7 @@ public final class MicronautLambdaContainerHandler
         private Router router;
         private ApplicationContext applicationContext;
         private JsonMediaTypeCodec jsonCodec;
+        private ObjectMapper objectMapper;
 
         @Override
         public Router getRouter() {
@@ -520,6 +519,11 @@ public final class MicronautLambdaContainerHandler
             return applicationContext;
         }
 
+        @Override
+        public ObjectMapper getObjectMapper() {
+            return objectMapper;
+        }
+
         void setJsonCodec(JsonMediaTypeCodec jsonCodec) {
             this.jsonCodec = jsonCodec;
         }
@@ -531,6 +535,11 @@ public final class MicronautLambdaContainerHandler
         void setApplicationContext(ApplicationContext applicationContext) {
             this.applicationContext = applicationContext;
         }
+
+        void setObjectMapper(ObjectMapper objectMapper) {
+            this.objectMapper = objectMapper;
+        }
+
     }
 
     /**
