@@ -22,7 +22,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
  * Configuration properties for the AWS proxy module.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.3.10
+ * @since 1.4.0
  */
 @ConfigurationProperties(MicronautAwsProxyConfiguration.PREFIX)
 public class MicronautAwsProxyConfiguration extends AWSConfiguration {

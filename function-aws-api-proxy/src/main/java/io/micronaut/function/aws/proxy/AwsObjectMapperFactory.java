@@ -27,7 +27,7 @@ import javax.inject.Singleton;
  * Factory class that creates an object mapper if the property "aws.proxy.shared-object-mapper" is set to true.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.3.10
+ * @since 1.4.0
  */
 @Factory
 public class AwsObjectMapperFactory {
