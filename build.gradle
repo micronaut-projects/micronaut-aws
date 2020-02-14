@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
@@ -18,7 +17,6 @@ plugins {
 }
 
 repositories {
-    // mavenLocal()
     mavenCentral()
     maven { url "https://repo.grails.org/grails/core" }
 }
@@ -110,9 +108,6 @@ subprojects { Project subproject ->
         testCompile("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'
         }
-        testCompile "cglib:cglib-nodep:3.3.0"
-        testCompile "org.objenesis:objenesis:3.1"
-
         testRuntime "ch.qos.logback:logback-classic:1.2.3"
         testCompile "org.codehaus.groovy:groovy-test:$groovyVersion"
     }

@@ -6,7 +6,7 @@ categories:
   - title: 🐛 Bug Fixes
     label: "type: bug"
   - title: 🛠 Dependency upgrades
-    label: "type: dependencies"
+    label: "type: dependency-upgrade"
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 template: |
   ## Changes
