@@ -1,10 +1,14 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
     }
     dependencies {
         classpath "org.grails:grails-docs:$grailsVersion"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.2"
+        classpath "de.marcphilipp.gradle:nexus-publish-plugin:0.4.0"
         classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
         classpath "io.micronaut.docs:micronaut-docs-asciidoc-extensions:$micronautDocsVersion"
         classpath "io.micronaut.docs:micronaut-docs-gradle-plugins:$micronautDocsVersion"
@@ -53,7 +57,7 @@ subprojects { Project subproject ->
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.0/publishing.gradle"
+    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.1/publishing.gradle"
         
 
     jar {

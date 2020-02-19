@@ -19,6 +19,8 @@ jobs:
       uses: micronaut-projects/github-actions/pre-release@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Get staging profile
+      run: ./gradlew getStagingProfile
     - name: Publish to Bintray and Sonatype OSSRH
       env:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
