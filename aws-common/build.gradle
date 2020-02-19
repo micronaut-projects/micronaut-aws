@@ -2,7 +2,7 @@ group "io.micronaut.configuration"
 
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.21"
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"

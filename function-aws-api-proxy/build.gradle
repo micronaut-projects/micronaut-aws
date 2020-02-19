@@ -1,6 +1,6 @@
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.21"
     annotationProcessor "io.micronaut:micronaut-graal"
 
     compileOnly "io.micronaut:micronaut-security"
@@ -13,6 +13,7 @@ dependencies {
     }
     compile "org.slf4j:jcl-over-slf4j:1.7.30"
     compile project(":function-aws")
+    compile project(":aws-common")
 
     runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.10.2'
 

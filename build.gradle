@@ -1,4 +1,7 @@
 buildscript {
+    ext {
+        micronautDocsVersion = "1.0.19"
+    }
     repositories {
         mavenCentral()
         maven { url "https://repo.grails.org/grails/core" }
