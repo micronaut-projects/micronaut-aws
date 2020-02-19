@@ -43,11 +43,16 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
+    private final MicronautRequestHandler<I, O> injectedInstance;
+
+    public MicronautRequestHandler() {
+        buildApplicationContext(null);
+        injectedInstance = applicationContext.inject(this);
+    }
+
     @Override
     public final O handleRequest(I input, Context context) {
-        if (applicationContext == null) {
-            applicationContext = buildApplicationContext(context);
-        }
+
         if (context != null) {
             registerContextBeans(context, applicationContext);
         }
@@ -55,7 +60,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
-        return applicationContext.inject(this).execute(input);
+        return injectedInstance.execute(input);
     }
 
     /**
