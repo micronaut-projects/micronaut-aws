@@ -20,15 +20,15 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Get staging profile
-      run: ./gradlew getStagingProfile
+      run: ./gradlew -Pgnsp.disableApplyOnlyOnRootProjectEnforcement=true getStagingProfile
     - name: Publish to Bintray and Sonatype OSSRH
       env:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew bintrayUpload docs publish
+      run: ./gradlew -Pgnsp.disableApplyOnlyOnRootProjectEnforcement=true bintrayUpload docs publish
     - name: Promote release
       if: success()
-      run: ./gradlew closeAndReleaseRepository
+      run: ./gradlew -Pgnsp.disableApplyOnlyOnRootProjectEnforcement=true closeAndReleaseRepository
     - name: Publish to Github Pages
       if: success()
       uses: micronaut-projects/github-pages-deploy-action@master
