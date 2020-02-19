@@ -6,47 +6,49 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-        ref: ${{ github.head_ref }}
-    - name: Set the current release version
-      id: release_version
-      run: echo ::set-output name=release_version::${GITHUB_REF:11}
-    - name: Get staging profile
-      run: ./gradlew getStagingProfile --info
-    - name: Run pre-release
-      uses: micronaut-projects/github-actions/pre-release@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Publish to Bintray and Sonatype OSSRH
-      env:
-         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew bintrayUpload docs publish
-    - name: Promote release
-      if: success()
-      run: ./gradlew closeAndReleaseRepository
-    - name: Publish to Github Pages
-      if: success()
-      uses: micronaut-projects/github-pages-deploy-action@master
-      env:
-        BETA: ${{ contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC') }}
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        BASE_BRANCH: master
-        BRANCH: gh-pages
-        FOLDER: build/docs
-        VERSION: ${{ steps.release_version.outputs.release_version }}
-    - name: Run post-release
-      if: success()
-      uses: micronaut-projects/github-actions/post-release@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Synchronize Maven Central
-      if: success()
-      env:
-         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew sWMC
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+          ref: ${{ github.head_ref }}
+      - name: Set the current release version
+        id: release_version
+        run: echo ::set-output name=release_version::${GITHUB_REF:11}
+      - name: Get staging profile
+        run: ./gradlew getStagingProfile
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      - name: Run pre-release
+        uses: micronaut-projects/github-actions/pre-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to Bintray and Sonatype OSSRH
+        env:
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: ./gradlew bintrayUpload docs publish
+      - name: Promote release
+        if: success()
+        run: ./gradlew closeAndReleaseRepository
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      - name: Publish to Github Pages
+        if: success()
+        uses: micronaut-projects/github-pages-deploy-action@master
+        env:
+          BETA: ${{ contains(steps.release_version.outputs.release_version, 'M') || contains(steps.release_version.outputs.release_version, 'RC') }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          BASE_BRANCH: master
+          BRANCH: gh-pages
+          FOLDER: build/docs
+          VERSION: ${{ steps.release_version.outputs.release_version }}
+      - name: Run post-release
+        if: success()
+        uses: micronaut-projects/github-actions/post-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
