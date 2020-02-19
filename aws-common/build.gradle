@@ -2,11 +2,14 @@ group "io.micronaut.configuration"
 
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.19"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.21"
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compile 'com.amazonaws:aws-java-sdk-core:1.11.722'
+    compile('com.amazonaws:aws-java-sdk-core:1.11.725'){
+        exclude group: "commons-logging"
+    }
+    compile "org.slf4j:jcl-over-slf4j:1.7.30"
 
 	testCompile "io.micronaut:micronaut-discovery-client"
 	testCompile "io.micronaut:micronaut-inject-groovy"
