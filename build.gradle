@@ -37,7 +37,13 @@ ext {
     homeSrcDir = file("src")
 }
 
-
+def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
+def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
+nexusStaging {
+    username = ossUser
+    password = ossPass
+    packageGroup = "io.micronaut"
+}
 
 subprojects { Project subproject ->
 
@@ -60,7 +66,7 @@ subprojects { Project subproject ->
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/b15b45878b0441cbdc859a59ee84936912d84fd5/publishing.gradle"
+    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/1f14ddfef09d766396006bfadc60df9c53c2b933/publishing.gradle"
         
 
     jar {
