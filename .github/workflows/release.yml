@@ -16,7 +16,7 @@ jobs:
       id: release_version
       run: echo ::set-output name=release_version::${GITHUB_REF:11}
     - name: Get staging profile
-      run: ./gradlew getStagingProfile
+      run: ./gradlew getStagingProfile --info
     - name: Run pre-release
       uses: micronaut-projects/github-actions/pre-release@master
       with:
