@@ -19,11 +19,14 @@ jobs:
       uses: micronaut-projects/github-actions/pre-release@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Publish to Bintray
+    - name: Publish to Bintray and Sonatype OSSRH
       env:
          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-      run: ./gradlew bintrayUpload docs
+      run: ./gradlew bintrayUpload docs publish
+    - name: Promote release
+      if: success()
+      run: ./gradlew closeAndReleaseRepository
     - name: Publish to Github Pages
       if: success()
       uses: micronaut-projects/github-pages-deploy-action@master
