@@ -6,7 +6,7 @@ dependencies {
     compile "io.micronaut:micronaut-function:$micronautVersion"
     compile project(":function-aws")
     compile "com.amazonaws:aws-lambda-java-core:1.2.0"
-    compile("com.amazon.alexa:ask-sdk:2.27.1") {
+    compile("com.amazon.alexa:ask-sdk:2.27.2") {
         exclude group: "commons-logging"
     }
     compile "org.slf4j:jcl-over-slf4j:1.7.30"
