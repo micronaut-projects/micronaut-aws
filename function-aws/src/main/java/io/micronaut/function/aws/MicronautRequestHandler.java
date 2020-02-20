@@ -28,8 +28,6 @@ import io.micronaut.function.executor.AbstractFunctionExecutor;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-import static io.micronaut.function.aws.MicronautLambdaContext.ENVIRONMENT_LAMBDA;
-
 /**
  * <p>An Amazon Lambda {@link RequestHandler} implementation for Micronaut {@link io.micronaut.function.FunctionBean}</p>.
  *
@@ -43,16 +41,13 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
-    private final MicronautRequestHandler<I, O> injectedInstance;
-
     public MicronautRequestHandler() {
         buildApplicationContext(null);
-        injectedInstance = applicationContext.inject(this);
+        applicationContext.inject(this);
     }
 
     @Override
     public final O handleRequest(I input, Context context) {
-
         if (context != null) {
             registerContextBeans(context, applicationContext);
         }
@@ -60,7 +55,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
-        return injectedInstance.execute(input);
+        return this.execute(input);
     }
 
     /**
