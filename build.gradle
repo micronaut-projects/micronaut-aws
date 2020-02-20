@@ -44,6 +44,7 @@ nexusStaging {
     username = ossUser
     password = ossPass
     packageGroup = "io.micronaut"
+    numberOfRetries = 500
 }
 
 subprojects { Project subproject ->
@@ -67,7 +68,7 @@ subprojects { Project subproject ->
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/master/publishing.gradle"
+    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.2/publishing.gradle"
         
 
     jar {
