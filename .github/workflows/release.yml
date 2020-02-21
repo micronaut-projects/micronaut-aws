@@ -15,11 +15,6 @@ jobs:
       - name: Set the current release version
         id: release_version
         run: echo ::set-output name=release_version::${GITHUB_REF:11}
-      - name: Get staging profile
-        run: ./gradlew getStagingProfile
-        env:
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       - name: Run pre-release
         uses: micronaut-projects/github-actions/pre-release@master
         with:
@@ -30,13 +25,10 @@ jobs:
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        run: ./gradlew bintrayUpload docs publish
-      - name: Promote release
-        if: success()
-        run: ./gradlew closeAndReleaseRepository
-        env:
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PASSWORD: ${{ secrets.GPG_KEY_ID }}
+          GPG_FILE: ${{ secrets.GPG_FILE }}
+        run: echo $GPG_FILE | base64 -d > secring.gpg && ./gradlew bintrayUpload docs publish closeAndReleaseRepository
       - name: Publish to Github Pages
         if: success()
         uses: micronaut-projects/github-pages-deploy-action@master
