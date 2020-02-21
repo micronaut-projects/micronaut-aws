@@ -37,16 +37,6 @@ ext {
     homeSrcDir = file("src")
 }
 
-def ossUser = System.getenv("SONATYPE_USERNAME") ?: project.hasProperty("sonatypeOssUsername") ? project.sonatypeOssUsername : ''
-def ossPass = System.getenv("SONATYPE_PASSWORD") ?: project.hasProperty("sonatypeOssPassword") ? project.sonatypeOssPassword : ''
-apply plugin: 'io.codearte.nexus-staging'
-nexusStaging {
-    username = ossUser
-    password = ossPass
-    packageGroup = "io.micronaut"
-    numberOfRetries = 500
-}
-
 subprojects { Project subproject ->
 
     version project.projectVersion
@@ -68,8 +58,7 @@ subprojects { Project subproject ->
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.2/publishing.gradle"
-        
+    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.3/publishing.gradle"
 
     jar {
         manifest {
