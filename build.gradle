@@ -58,7 +58,7 @@ subprojects { Project subproject ->
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
-    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v1.1.4/publishing.gradle"
+    apply from:"https://raw.githubusercontent.com/micronaut-projects/micronaut-build/6f4aa92269d31710188362fd8357c3b684953c6b/publishing.gradle"
 
     jar {
         manifest {
