@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        micronautDocsVersion = "1.0.21"
+        micronautDocsVersion = "1.0.22"
     }
     repositories {
         mavenCentral()
