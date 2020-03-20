@@ -15,7 +15,7 @@ dependencies {
     compile project(":function-aws")
     compile project(":aws-common")
 
-    runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.10.2'
+    runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.10.3'
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"
