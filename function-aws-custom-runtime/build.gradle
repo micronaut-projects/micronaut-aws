@@ -2,8 +2,8 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
     compileOnly "io.micronaut:micronaut-inject-java"
-    compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compile project(":function-aws-api-proxy"), {
+    implementation "io.micronaut:micronaut-http-client:$micronautVersion"
+    implementation project(":function-aws-api-proxy"), {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
 

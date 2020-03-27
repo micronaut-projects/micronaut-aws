@@ -3,13 +3,13 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
     compileOnly "io.micronaut:micronaut-inject-java"
 
-    compile "io.micronaut:micronaut-function:$micronautVersion"
-    compile project(":function-aws")
-    compile "com.amazonaws:aws-lambda-java-core:1.2.0"
-    compile("com.amazon.alexa:ask-sdk:2.27.2") {
+    implementation "io.micronaut:micronaut-function:$micronautVersion"
+    implementation project(":function-aws")
+    implementation "com.amazonaws:aws-lambda-java-core:1.2.0"
+    implementation("com.amazon.alexa:ask-sdk:2.27.2") {
         exclude group: "commons-logging"
     }
-    compile "org.slf4j:jcl-over-slf4j:1.7.30"
+    implementation "org.slf4j:jcl-over-slf4j:1.7.30"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"

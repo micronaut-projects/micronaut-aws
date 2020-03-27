@@ -30,10 +30,10 @@ configurations {
 }
 
 dependencies {
-    compile "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.M2"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
-    compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
-    compile "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.aws:micronaut-function-aws-alexa:1.1.0.M2"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+    implementation "io.micronaut:micronaut-runtime"
     kapt "io.micronaut:micronaut-inject-java"
     kapt "io.micronaut:micronaut-validation"
     kaptTest "io.micronaut:micronaut-inject-java"
