@@ -38,11 +38,11 @@ dependencies {
     runtime "com.amazonaws:aws-lambda-java-log4j2:1.0.0"
     runtime "org.apache.logging.log4j:log4j-slf4j-impl:2.9.1"
 
-    testCompile("org.spockframework:spock-core:1.2-groovy-2.5") {
+    testImplementation("org.spockframework:spock-core:1.2-groovy-2.5") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
-    testCompile "io.micronaut:micronaut-inject-groovy:1.2.10"
-    testCompile "io.micronaut.test:micronaut-test-spock"
+    testImplementation "io.micronaut:micronaut-inject-groovy:1.2.10"
+    testImplementation "io.micronaut.test:micronaut-test-spock"
 }
 
 shadowJar {

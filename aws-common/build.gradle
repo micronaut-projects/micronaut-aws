@@ -11,8 +11,8 @@ dependencies {
     }
     implementation "org.slf4j:jcl-over-slf4j:1.7.30"
 
-	testCompile "io.micronaut:micronaut-discovery-client"
-	testCompile "io.micronaut:micronaut-inject-groovy"
-	testCompile "io.micronaut:micronaut-http-server-netty"
+	testImplementation "io.micronaut:micronaut-discovery-client"
+	testImplementation "io.micronaut:micronaut-inject-groovy"
+	testImplementation "io.micronaut:micronaut-http-server-netty"
 	testAnnotationProcessor "io.micronaut:micronaut-inject-java"
 }

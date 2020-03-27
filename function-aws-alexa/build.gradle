@@ -12,6 +12,6 @@ dependencies {
     implementation "org.slf4j:jcl-over-slf4j:1.7.30"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-inject-java"
+    testImplementation "io.micronaut:micronaut-inject-groovy"
 }

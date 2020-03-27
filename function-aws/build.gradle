@@ -7,5 +7,5 @@ dependencies {
     implementation "io.micronaut:micronaut-function:$micronautVersion"
     api "com.amazonaws:aws-lambda-java-core:1.2.0"
 
-    testCompile "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-inject-groovy"
 }

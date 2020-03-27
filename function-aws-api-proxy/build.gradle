@@ -18,10 +18,10 @@ dependencies {
     runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.10.3'
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-groovy"
-    testCompile "io.micronaut:micronaut-security"
-    testCompile 'io.micronaut:micronaut-views'
-    testCompile "io.projectreactor:reactor-core"
+    testImplementation "io.micronaut:micronaut-inject-java"
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-security"
+    testImplementation 'io.micronaut:micronaut-views'
+    testImplementation "io.projectreactor:reactor-core"
     testRuntime 'com.github.jknack:handlebars:4.1.2'
 }
