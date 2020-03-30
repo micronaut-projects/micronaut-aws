@@ -17,10 +17,6 @@ package io.micronaut.function.aws.runtime;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.services.lambda.runtime.ClientContext;
-import com.amazonaws.services.lambda.runtime.CognitoIdentity;
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.cli.CommandLine;
@@ -52,7 +48,12 @@ import java.util.function.Predicate;
  */
 public class MicronautLambdaRuntime {
 
-    public static final String HEADER_RUNTIME_AWS_REQUEST_ID = "Lambda-Runtime-Aws-Request-Id";
+    /**
+     * @deprecated Use {@value LambdaRuntimeInvocationResponseHeaders#LAMBDA_RUNTIME_AWS_REQUEST_ID} instead
+     */
+    @Deprecated
+    public static final String HEADER_RUNTIME_AWS_REQUEST_ID = LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID;
+
     public static final UriTemplate INVOCATION_TEMPLATE = UriTemplate.of("/2018-06-01/runtime/invocation/{requestId}/response");
     public static final UriTemplate ERROR_TEMPLATE = UriTemplate.of("/2018-06-01/runtime/invocation/$requestId/error");
     public static final String NEXT_INVOCATION_URI = "/2018-06-01/runtime/invocation/next";
@@ -70,8 +71,8 @@ public class MicronautLambdaRuntime {
 
         CommandLine commandLine = CommandLine.parse(args);
         final ApplicationContextBuilder applicationContextBuilder = ApplicationContext.build()
-                                                                        .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
-                                                                        .propertySources(new CommandLinePropertySource(commandLine));
+                .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+                .propertySources(new CommandLinePropertySource(commandLine));
 
         new MicronautLambdaRuntime()
                 .startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, loopUntil);
@@ -79,6 +80,7 @@ public class MicronautLambdaRuntime {
 
     /**
      * Starts the runtime API event loop.
+     *
      * @param applicationContextBuilder The context builder
      * @throws MalformedURLException if the lambda endpoint URL is malformed
      */
@@ -89,20 +91,22 @@ public class MicronautLambdaRuntime {
 
     /**
      * Starts the runtime API event loop.
-     * @param runtimeApiURL The runtime API URL.
+     *
+     * @param runtimeApiURL             The runtime API URL.
      * @param applicationContextBuilder The context builder
      */
     public void startRuntimeApiEventLoop(
             @Nonnull URL runtimeApiURL,
             @Nonnull ApplicationContextBuilder applicationContextBuilder) {
-       startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, (url) -> true);
+        startRuntimeApiEventLoop(runtimeApiURL, applicationContextBuilder, (url) -> true);
     }
 
     /**
      * Starts the runtime API event loop.
-     * @param runtimeApiURL The runtime API URL.
+     *
+     * @param runtimeApiURL             The runtime API URL.
      * @param applicationContextBuilder The context builder
-     * @param loopUntil A predicate that allows controlling when the event loop should exit
+     * @param loopUntil                 A predicate that allows controlling when the event loop should exit
      */
     public void startRuntimeApiEventLoop(
             @Nonnull URL runtimeApiURL,
@@ -125,10 +129,10 @@ public class MicronautLambdaRuntime {
                     final AwsProxyRequest awsProxyRequest = response.body();
                     if (awsProxyRequest != null) {
                         final HttpHeaders headers = response.getHeaders();
-                        final String requestId = headers.get(HEADER_RUNTIME_AWS_REQUEST_ID);
+                        final String requestId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID);
                         try {
                             if (StringUtils.isNotEmpty(requestId)) {
-                                final AwsProxyResponse awsProxyResponse = handler.proxy(awsProxyRequest, new RuntimeContext(requestId, headers));
+                                final AwsProxyResponse awsProxyResponse = handler.proxy(awsProxyRequest, new RuntimeContext(headers));
                                 final String targetUri = INVOCATION_TEMPLATE.expand(
                                         Collections.singletonMap("requestId", requestId)
                                 );
@@ -178,73 +182,5 @@ public class MicronautLambdaRuntime {
             throw new IllegalStateException("Missing AWS_LAMBDA_RUNTIME_API environment variable. Custom runtime can only be run within AWS Lambda environment.");
         }
         return new URL("http://" + runtimeApiEndpoint);
-    }
-
-    /**
-     * A {@link Context} implementation.
-     */
-    private static class RuntimeContext implements Context {
-        private final String requestId;
-        private final HttpHeaders headers;
-
-        public RuntimeContext(String requestId, HttpHeaders headers) {
-            this.requestId = requestId;
-            this.headers = headers;
-        }
-
-        @Override
-        public String getAwsRequestId() {
-            return requestId;
-        }
-
-        @Override
-        public String getLogGroupName() {
-            return null;
-        }
-
-        @Override
-        public String getLogStreamName() {
-            return null;
-        }
-
-        @Override
-        public String getFunctionName() {
-            return null;
-        }
-
-        @Override
-        public String getFunctionVersion() {
-            return null;
-        }
-
-        @Override
-        public String getInvokedFunctionArn() {
-            return headers.get("Lambda-Runtime-Invoked-Function-Arn");
-        }
-
-        @Override
-        public CognitoIdentity getIdentity() {
-            return null;
-        }
-
-        @Override
-        public ClientContext getClientContext() {
-            return null;
-        }
-
-        @Override
-        public int getRemainingTimeInMillis() {
-            return 0;
-        }
-
-        @Override
-        public int getMemoryLimitInMB() {
-            return 0;
-        }
-
-        @Override
-        public LambdaLogger getLogger() {
-            return null;
-        }
     }
 }
