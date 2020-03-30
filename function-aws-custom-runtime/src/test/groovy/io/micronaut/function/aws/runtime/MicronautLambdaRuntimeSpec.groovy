@@ -83,7 +83,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
             context.setIdentity(new ApiGatewayRequestIdentity())
             req.setRequestContext(context)
             HttpResponse.ok(req)
-                .header(MicronautLambdaRuntime.HEADER_RUNTIME_AWS_REQUEST_ID, "123456")
+                .header(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID, "123456")
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
