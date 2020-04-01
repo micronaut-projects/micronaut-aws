@@ -17,6 +17,8 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 build
 
+.DS_Store
+
 # ignore resources, are downloaded via a gradle task from micronaut_docs
 src/main/docs/resources/css/highlight/*.css
 src/main/docs/resources/css/highlight/*.png
