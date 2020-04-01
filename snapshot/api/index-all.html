@@ -208,6 +208,18 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/AWSConfiguration.html#AWSConfiguration--">AWSConfiguration()</a></span> - Constructor for class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws">AWSConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime"><span class="typeNameLink">AwsLambdaRuntimeApi</span></a> - Interface in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">AwsLambdaRuntimeApiError</span></a> - Class in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
+<dd>
+<div class="block">AWS Lambda Runtime Interface Error.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#AwsLambdaRuntimeApiError--">AwsLambdaRuntimeApiError()</a></span> - Constructor for class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#AwsLambdaRuntimeApiError-java.lang.String-java.lang.String-">AwsLambdaRuntimeApiError(String, String)</a></span> - Constructor for class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/AwsObjectMapperFactory.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">AwsObjectMapperFactory</span></a> - Class in <a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a></dt>
 <dd>
 <div class="block">Factory class that creates an object mapper if the property "aws.proxy.shared-object-mapper" is set to true.</div>
@@ -322,7 +334,9 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#ERROR_TEMPLATE">ERROR_TEMPLATE</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#ERROR_TEMPLATE">ERROR_TEMPLATE</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#errorUri-java.lang.String-">errorUri(String)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:F">
@@ -398,6 +412,10 @@
 <dd>
 <div class="block">Get the error JSON.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#getErrorMessage--">getErrorMessage()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#getErrorType--">getErrorType()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getFunctionName--">getFunctionName()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getFunctionVersion--">getFunctionVersion()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
@@ -468,12 +486,6 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html#HEADER_OIDC_IDENTITY">HEADER_OIDC_IDENTITY</a></span> - Static variable in class io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security">MicronautLambdaAuthenticationFetcher</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#HEADER_RUNTIME_AWS_REQUEST_ID">HEADER_RUNTIME_AWS_REQUEST_ID</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
-<dd>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>
-<div class="block"><span class="deprecationComment">Use  instead</span></div>
-</div>
-</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/alexa/AlexaIntents.html#HELP">HELP</a></span> - Static variable in interface io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaIntents.html" title="interface in io.micronaut.function.aws.alexa">AlexaIntents</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -482,7 +494,9 @@
 </a>
 <h2 class="title">I</h2>
 <dl>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#INIT_ERROR_URI">INIT_ERROR_URI</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#INIT_ERROR_URI">INIT_ERROR_URI</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#initializationErrorRequest-java.lang.String-java.lang.String-java.lang.String-">initializationErrorRequest(String, String, String)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#initialize--">initialize()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
 <dd>
@@ -494,7 +508,11 @@
 <dd>
 <div class="block">This annotation can be used on bean methods to make any method a <code>RequestHandler</code>, simplifying the Alexa programming model.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#INVOCATION_TEMPLATE">INVOCATION_TEMPLATE</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#INVOCATION_TEMPLATE">INVOCATION_TEMPLATE</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#invocationErrorRequest-java.lang.String-java.lang.String-java.lang.String-java.lang.String-">invocationErrorRequest(String, String, String, String)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#invocationResponseRequest-java.lang.String-java.lang.Object-">invocationResponseRequest(String, Object)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/configuration/aws/package-summary.html">io.micronaut.configuration.aws</a> - package io.micronaut.configuration.aws</dt>
 <dd>
@@ -550,6 +568,8 @@
 <dd>
 <div class="block">The path to runtime libraries.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#LAMBDA_RUNTIME_FUNCTION_ERROR_TYPE">LAMBDA_RUNTIME_FUNCTION_ERROR_TYPE</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/LambdaRuntimeInvocationResponseHeaders.html#LAMBDA_RUNTIME_INVOKED_FUNCTION_ARN">LAMBDA_RUNTIME_INVOKED_FUNCTION_ARN</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/LambdaRuntimeInvocationResponseHeaders.html" title="interface in io.micronaut.function.aws.runtime">LambdaRuntimeInvocationResponseHeaders</a></dt>
 <dd>
 <div class="block">The ARN of the Lambda function, version, or alias that's specified in the invocation.</div>
@@ -667,7 +687,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#newApplicationContextBuilder--">newApplicationContextBuilder()</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#NEXT_INVOCATION_URI">NEXT_INVOCATION_URI</a></span> - Static variable in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#NEXT_INVOCATION_URI">NEXT_INVOCATION_URI</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:O">
@@ -695,6 +715,8 @@
 <dd>
 <div class="block">Generic method to parse an HTTP header value and split it into a list of key/values for all its components.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#PATH_REQUEST_ID">PATH_REQUEST_ID</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/AWSConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws">AWSConfiguration</a></dt>
 <dd>
 <div class="block">Prefix for all AWS settings.</div>
@@ -729,6 +751,8 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName(Environment)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#responseUri-java.lang.String-">responseUri(String)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">RuntimeContext</span></a> - Class in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
 <dd>
 <div class="block">Implementation of Lambda execution <code>Context</code> for runtime environments.</div>
@@ -746,6 +770,10 @@
 <div class="block">Environment variable name for the AWS secret key.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#SERVER_INFO">SERVER_INFO</a></span> - Static variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorMessage-java.lang.String-">setErrorMessage(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorType-java.lang.String-">setErrorType(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#setLogFormatter-com.amazonaws.serverless.proxy.LogFormatter-">setLogFormatter(LogFormatter&lt;ContainerRequestType, ContainerResponseType&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
 <dd>
