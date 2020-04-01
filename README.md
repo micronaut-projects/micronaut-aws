@@ -22,5 +22,7 @@ Releases are published to JCenter and Maven Central via [Github Actions](https:/
 A release is performed with the following steps:
 
 * [Publish the draft release](https://github.com/micronaut-projects/micronaut-aws/releases). There should be already a draft release created, edit and publish it. The Git Tag should start with `v`. For example `v1.0.0`.
+* Locally, change the version in [gradle.properties](https://github.com/micronaut-projects/micronaut-aws/blob/master/gradle.properties#L1) in a Git commit, tag the commit and push both (commit and tags). For example, if you want to release 1.4.0 the `projectVersion` in gradle properites will be `1.4.0` while the Git tag will be `v1.4.0`.
 * [Monitor the Workflow](https://github.com/micronaut-projects/micronaut-aws/actions?query=workflow%3ARelease) to check it passed successfully.
+* Push a commit to set [projectVersion](https://github.com/micronaut-projects/micronaut-aws/blob/master/gradle.properties#L1)  back to snapshot. For example, if you released `1.4.0` then set it to `1.4.1.BUILD-SNAPSHOT`.
 * Celebrate!
