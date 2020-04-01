@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>3 AWS Lambda Support 1.3.9</title>
+    <title>3 AWS Lambda Support 1.4.0</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -84,7 +84,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>3 AWS Lambda Support</h1>
 
-                    <p><strong>Version:</strong> 1.3.9</p>
+                    <p><strong>Version:</strong> 1.4.0</p>
                 </div>
 
                 
@@ -222,8 +222,9 @@ public class EchoFunction extends FunctionInitializer { <i class="conum" data-va
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut:micronaut-function-aws'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut:micronaut-function-aws")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -357,8 +358,9 @@ public class PingController {
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-api-proxy'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-api-proxy")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -437,6 +439,19 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </tr>
 </table>
 </div>
+<div class="sect2">
+<h3 id="_code_objectmapper_code_configuration"><code>ObjectMapper</code> configuration</h3>
+<div class="paragraph">
+<p>By default, for efficiency reasons, Micronaut uses the default Jackson <code>ObjectMapper</code> to communicate with the AWS API proxy.
+However, if you have configured it for your application (for example, setting <code>jackson.propertyNamingStrategy: SNAKE_CASE</code>)
+in a way that it would be incompatible with the API proxy, you can set <code>aws.proxy.shared-object-mapper: false</code>, and Micronaut
+will create a brand new <code>ObjectMapper</code> for the API proxy.</p>
+</div>
+<div class="paragraph">
+<p>If you wish to further configure this <code>ObjectMapper</code>, you can register a <code>BeanCreatedEventListener&lt;ObjectMapper&gt;</code> and
+filter based on <code>event.getBeanDefinition()</code> having an annotation like <code>@Named("aws")</code>.</p>
+</div>
+</div>
 
 <h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>3.3 AWS Lambda Custom Runtimes</h2>
 
@@ -455,8 +470,9 @@ See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.aws:micronaut-function-aws-custom-runtime'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-custom-runtime")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
