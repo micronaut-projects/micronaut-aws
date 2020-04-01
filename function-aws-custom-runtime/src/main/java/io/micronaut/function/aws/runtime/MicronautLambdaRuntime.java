@@ -24,12 +24,10 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
 import io.micronaut.http.HttpHeaders;
-import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.http.uri.UriTemplate;
 import io.micronaut.runtime.context.env.CommandLinePropertySource;
 
 import javax.annotation.Nonnull;
@@ -37,7 +35,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.function.Predicate;
 
 /**
@@ -46,18 +43,7 @@ import java.util.function.Predicate;
  * @author graemerocher
  * @since 1.1
  */
-public class MicronautLambdaRuntime {
-
-    /**
-     * @deprecated Use {@value LambdaRuntimeInvocationResponseHeaders#LAMBDA_RUNTIME_AWS_REQUEST_ID} instead
-     */
-    @Deprecated
-    public static final String HEADER_RUNTIME_AWS_REQUEST_ID = LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID;
-
-    public static final UriTemplate INVOCATION_TEMPLATE = UriTemplate.of("/2018-06-01/runtime/invocation/{requestId}/response");
-    public static final UriTemplate ERROR_TEMPLATE = UriTemplate.of("/2018-06-01/runtime/invocation/$requestId/error");
-    public static final String NEXT_INVOCATION_URI = "/2018-06-01/runtime/invocation/next";
-    public static final String INIT_ERROR_URI = "/2018-06-01/runtime/init/error";
+public class MicronautLambdaRuntime implements AwsLambdaRuntimeApi {
 
     /**
      * Main entry point.
@@ -124,7 +110,7 @@ public class MicronautLambdaRuntime {
             try {
                 while (loopUntil.test(runtimeApiURL)) {
                     final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
-                    final HttpResponse<AwsProxyRequest> response = blockingHttpClient.exchange(NEXT_INVOCATION_URI, AwsProxyRequest.class);
+                    final HttpResponse<AwsProxyRequest> response = blockingHttpClient.exchange(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI, AwsProxyRequest.class);
 
                     final AwsProxyRequest awsProxyRequest = response.body();
                     if (awsProxyRequest != null) {
@@ -133,24 +119,14 @@ public class MicronautLambdaRuntime {
                         try {
                             if (StringUtils.isNotEmpty(requestId)) {
                                 final AwsProxyResponse awsProxyResponse = handler.proxy(awsProxyRequest, new RuntimeContext(headers));
-                                final String targetUri = INVOCATION_TEMPLATE.expand(
-                                        Collections.singletonMap("requestId", requestId)
-                                );
-                                endpointClient.exchange(
-                                        HttpRequest.POST(targetUri, awsProxyResponse)
-                                ).blockingSubscribe();
+                                endpointClient.exchange(invocationResponseRequest(requestId, awsProxyResponse)).blockingSubscribe();
                             }
                         } catch (Throwable e) {
                             final StringWriter sw = new StringWriter();
                             e.printStackTrace(new PrintWriter(sw));
                             System.out.println("Invocation with requestId [" + requestId + "] failed: " + e.getMessage() + sw.toString());
                             try {
-                                final String targetUri = ERROR_TEMPLATE.expand(
-                                        Collections.singletonMap("requestId", requestId)
-                                );
-                                blockingHttpClient.exchange(HttpRequest.POST(targetUri, Collections.singletonMap(
-                                        "errorMessage", e.getMessage()
-                                )));
+                                blockingHttpClient.exchange(invocationErrorRequest(requestId, e.getMessage(), null, null));
                             } catch (Throwable e2) {
                                 // swallow, nothing we can do...
                             }
@@ -167,9 +143,8 @@ public class MicronautLambdaRuntime {
             e.printStackTrace();
             System.out.println("Request loop failed with: " + e.getMessage());
             try (RxHttpClient endpointClient = RxHttpClient.create(runtimeApiURL)) {
-                endpointClient.toBlocking().exchange(HttpRequest.POST(INIT_ERROR_URI, Collections.singletonMap(
-                        "errorMessage", e.getMessage()
-                )));
+
+                endpointClient.toBlocking().exchange(initializationErrorRequest(e.getMessage(), null, null));
             } catch (Throwable e2) {
                 // swallow, nothing we can do...
             }
