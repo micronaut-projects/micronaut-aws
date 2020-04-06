@@ -6,7 +6,7 @@ dependencies {
 
     compile "io.micronaut:micronaut-inject:$micronautVersion"
     compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compile('com.amazonaws:aws-java-sdk-core:1.11.758'){
+    compile('com.amazonaws:aws-java-sdk-core:1.11.759'){
         exclude group: "commons-logging"
     }
     compile "org.slf4j:jcl-over-slf4j:1.7.30"
