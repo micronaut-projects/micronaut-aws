@@ -35,7 +35,7 @@ class RuntimeContextSpec extends Specification {
         !context.getClientContext()
         context.getRemainingTimeInMillis() == 5000
         context.getMemoryLimitInMB() == 512
-        !context.getLogger()
+        context.getLogger()
 
         where:
         requestId = "777e7e60-e583-483b-ae3a-2ed7c387823d"
