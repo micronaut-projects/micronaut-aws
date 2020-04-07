@@ -18,6 +18,7 @@ package io.micronaut.function.aws.alexa.handlers;
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import io.micronaut.core.annotation.AnnotationMetadata;
+import io.micronaut.core.annotation.AnnotationMetadataProvider;
 import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.core.reflect.InstantiationUtils;
 import io.micronaut.core.util.StringUtils;
@@ -40,11 +41,11 @@ public interface AnnotatedRequestHandler extends RequestHandler {
     @Override
     default boolean canHandle(HandlerInput handlerInput) {
         final Class<? extends AnnotatedRequestHandler> type = getClass();
-        final String annotationMetadata = type.getPackage().getName() + ".$" + type.getSimpleName() + "DefinitionClass$$AnnotationMetadata";
+        final String annotationMetadata = type.getPackage().getName() + ".$" + type.getSimpleName() + "DefinitionClass";
         final AnnotationMetadata metadata = ClassUtils.forName(annotationMetadata, type.getClassLoader()).flatMap(aClass -> {
             final Object o = InstantiationUtils.tryInstantiate(aClass).orElse(null);
-            if (o instanceof AnnotationMetadata) {
-                return Optional.of((AnnotationMetadata) o);
+            if (o instanceof AnnotationMetadataProvider) {
+                return Optional.of(((AnnotationMetadataProvider) o).getAnnotationMetadata());
             }
             return Optional.empty();
         }).orElse(AnnotationMetadata.EMPTY_METADATA);
