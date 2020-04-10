@@ -1,3 +1,4 @@
+io.micronaut.aws.alexa.ssml
 io.micronaut.configuration.aws
 io.micronaut.function.aws
 io.micronaut.function.aws.alexa

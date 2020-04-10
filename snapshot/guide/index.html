@@ -98,6 +98,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-intentHandler"><a href="#intentHandler"><strong>4.1</strong><span>The IntentHandler Annotation</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ssmlbuilder"><a href="#ssmlbuilder"><strong>4.2</strong><span>SSML Builder</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>5</strong><span>Repository</span></a></div>
         
         </div>
@@ -926,6 +928,24 @@ class AlexaApplication(val messageService: MessageService) { <b class="conum">(2
 <td>The method receives a <code>HandlerInput</code> and returns a <code>Response</code></td>
 </tr>
 </table>
+</div>
+
+<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>4.2 SSML Builder</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut Alexa ships with a <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/speech-synthesis-markup-language-ssml-reference.html">Speech Systhesys Markup Language</a> builder.</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">new Ssml().speak(new Ssml("Welcome to Ride Hailer. ").audio('soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01').build()).build() == '&lt;speak&gt;Welcome to Ride Hailer. &lt;audio src="soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01"/&gt;&lt;/speak&gt;'</code></pre>
+</div>
 </div>
 
 <h1 id="repository"><a class="anchor" href="#repository"></a>5 Repository</h1>
