@@ -9,4 +9,5 @@ lambda:
 alexa:
   title: Alexa Skill Support
   intentHandler: The IntentHandler Annotation
+  ssmlbuilder: SSML Builder
 repository: Repository

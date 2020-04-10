@@ -1,0 +1,3 @@
+Micronaut Alexa ships with a https://developer.amazon.com/en-US/docs/alexa/custom-skills/speech-synthesis-markup-language-ssml-reference.html[Speech Systhesys Markup Language] builder.
+
+snippet::io.micronaut.aws.alexa.ssml.AudioSpec[project="function-aws-alexa", tags="ssmlsample", source="test", indent="false"]
