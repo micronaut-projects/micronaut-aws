@@ -16,15 +16,13 @@
 package io.micronaut.function.aws.alexa;
 
 import com.amazon.ask.AlexaSkill;
-import com.amazon.ask.Skill;
 import com.amazon.ask.SkillStreamHandler;
 import com.amazon.ask.Skills;
 import com.amazon.ask.builder.SkillBuilder;
-import com.amazon.ask.dispatcher.exception.ExceptionHandler;
-import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor;
+import io.micronaut.aws.alexa.builders.AlexaSkillBuilder;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.env.ComputePlatform;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.order.OrderUtil;
 import io.micronaut.core.util.ArgumentUtils;
@@ -131,15 +129,13 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
             AlexaSkill... skills) {
         ArgumentUtils.requireNonNull("contextBuilder", contextBuilder);
         // Avoid extra lookups
-        System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, Environment.AMAZON_EC2);
+        System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, ComputePlatform.AMAZON_EC2.toString());
         contextBuilder.environments(Environment.FUNCTION, ENV_ALEXA);
         final ApplicationContext applicationContext = contextBuilder.build().start();
 
         if (skillBuilder == null) {
             skillBuilder = applicationContext.findBean(SkillBuilder.class).orElseGet(Skills::standard);
         }
-
-        final AlexaConfiguration alexaConfiguration = applicationContext.findBean(AlexaConfiguration.class).orElse(new AlexaConfiguration());
 
         staticApplicationContext = applicationContext;
         final AlexaSkill[] array = applicationContext.getBeansOfType(
@@ -157,26 +153,8 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
             return all;
         } else {
 
-            applicationContext.getBeansOfType(RequestHandler.class)
-                    .stream()
-                    .sorted(OrderUtil.COMPARATOR)
-                    .forEach(skillBuilder::addRequestHandler);
-            applicationContext.getBeansOfType(ExceptionHandler.class)
-                    .stream()
-                    .sorted(OrderUtil.COMPARATOR)
-                    .forEach(skillBuilder::addExceptionHandler);
-            applicationContext.getBeansOfType(RequestInterceptor.class)
-                    .stream()
-                    .sorted(OrderUtil.COMPARATOR)
-                    .forEach(skillBuilder::addRequestInterceptor);
-
-            if (alexaConfiguration.getSkillId() != null) {
-                final Skill skill = skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
-                return new AlexaSkill[] { skill };
-            } else {
-                final Skill skill = skillBuilder.build();
-                return new AlexaSkill[] { skill };
-            }
+            AlexaSkillBuilder alexaSkillBuilder = applicationContext.getBean(AlexaSkillBuilder.class);
+            return new AlexaSkill[] { alexaSkillBuilder.buildSkill(skillBuilder) };
         }
     }
 
