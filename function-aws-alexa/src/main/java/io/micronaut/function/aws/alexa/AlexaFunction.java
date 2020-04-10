@@ -22,6 +22,7 @@ import com.amazon.ask.builder.SkillBuilder;
 import io.micronaut.aws.alexa.builders.AlexaSkillBuilder;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.env.ComputePlatform;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.order.OrderUtil;
 import io.micronaut.core.util.ArgumentUtils;
@@ -128,7 +129,7 @@ public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, 
             AlexaSkill... skills) {
         ArgumentUtils.requireNonNull("contextBuilder", contextBuilder);
         // Avoid extra lookups
-        System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, Environment.AMAZON_EC2);
+        System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, ComputePlatform.AMAZON_EC2.toString());
         contextBuilder.environments(Environment.FUNCTION, ENV_ALEXA);
         final ApplicationContext applicationContext = contextBuilder.build().start();
 
