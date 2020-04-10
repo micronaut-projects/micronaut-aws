@@ -126,6 +126,10 @@
 <dd>
 <div class="block">Common intent names.</div>
 </dd>
+<dt><a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders"><span class="typeNameLink">AlexaSkillBuilder</span></a>&lt;<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Request</a>,<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Response</a>&gt; - Interface in <a href="io/micronaut/aws/alexa/builders/package-summary.html">io.micronaut.aws.alexa.builders</a></dt>
+<dd>
+<div class="block"><code>FunctionalInterface</code> to create <code>AlexaSkill</code>.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ALTERNATE_ACCESS_KEY_ENV_VAR">ALTERNATE_ACCESS_KEY_ENV_VAR</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>
 <div class="block">Alternate environment variable name for the AWS access key ID.</div>
@@ -294,6 +298,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#buildApplicationContext-com.amazonaws.services.lambda.runtime.Context-">buildApplicationContext(Context)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-">buildSkill(SkillBuilder&lt;?&gt;)</a></span> - Method in interface io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-">buildSkill(SkillBuilder&lt;?&gt;)</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders">DefaultAlexaSkillBuilder</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:C">
 <!--   -->
@@ -340,6 +348,10 @@
 </a>
 <h2 class="title">D</h2>
 <dl>
+<dt><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders"><span class="typeNameLink">DefaultAlexaSkillBuilder</span></a> - Class in <a href="io/micronaut/aws/alexa/builders/package-summary.html">io.micronaut.aws.alexa.builders</a></dt>
+<dd>
+<div class="block">Creates <code>AlexaSkill</code> by adding request and exception handlers ((<code>RequestHandler</code>, <code>ExceptionHandler</code> beans) and interceptor beans (<code>RequestInterceptor</code> and <code>ResponseInterceptor</code>).</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/alexa/handlers/DefaultSessionEndedRequestHandler.html" title="class in io.micronaut.function.aws.alexa.handlers"><span class="typeNameLink">DefaultSessionEndedRequestHandler</span></a> - Class in <a href="io/micronaut/function/aws/alexa/handlers/package-summary.html">io.micronaut.function.aws.alexa.handlers</a></dt>
 <dd>
 <div class="block">Default session end handler that shuts down the context.</div>
@@ -570,6 +582,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#invocationResponseRequest-java.lang.String-java.lang.Object-">invocationResponseRequest(String, Object)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/alexa/builders/package-summary.html">io.micronaut.aws.alexa.builders</a> - package io.micronaut.aws.alexa.builders</dt>
+<dd>
+<div class="block">Classes related to building <code>AlexaSkill</code></div>
+</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a> - package io.micronaut.aws.alexa.ssml</dt>
 <dd>
 <div class="block">Classes to support building Speech Synthesis Markup Language (SSML)</div>
