@@ -19,21 +19,21 @@ package io.micronaut.aws.alexa.builders;
 import com.amazon.ask.AlexaSkill;
 import com.amazon.ask.Skill;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
-import io.micronaut.context.annotation.EachBean;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
+import javax.inject.Singleton;
 
 /**
- * Creates an {@link AlexaSkill} if no other alexa skills beans are present.
+ * Creates an Alexa Skill only if no AlexaSkillConfiguration is present.
+ *
  * @author sdelamo
  * @since 2.0.0
  */
+@Factory
 @Requires(beans = SkillBuilderProvider.class)
 @Requires(beans = AlexaSkillBuilder.class)
-@Factory
-public class StandardSkillFactory {
-
+@Requires(missingBeans = AlexaSkillConfiguration.class)
+public class MissingAlexaSkillConfigurationSkillFactory {
     private final AlexaSkillBuilder alexaSkillBuilder;
     private final SkillBuilderProvider skillBuilderProvider;
 
@@ -42,28 +42,28 @@ public class StandardSkillFactory {
      * @param alexaSkillBuilder Alexa Skill Builder
      * @param skillBuilderProvider Skill Builder Provider
      */
-    public StandardSkillFactory(AlexaSkillBuilder alexaSkillBuilder,
+    public MissingAlexaSkillConfigurationSkillFactory(AlexaSkillBuilder alexaSkillBuilder,
                                 SkillBuilderProvider skillBuilderProvider) {
         this.alexaSkillBuilder = alexaSkillBuilder;
         this.skillBuilderProvider = skillBuilderProvider;
     }
 
     /**
-     * @param alexaSkillConfiguration Alexa Skill Configuration
+     *
      * @return An Alexa Skill using the {@link AlexaSkillBuilder} and the {@link SkillBuilderProvider} bean.
      */
-    @EachBean(AlexaSkillConfiguration.class)
-    public AlexaSkill createStandardAlexaSkill(@Parameter AlexaSkillConfiguration alexaSkillConfiguration) {
-        return alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), alexaSkillConfiguration);
+    @Singleton
+    public AlexaSkill createStandardAlexaSkill() {
+        return alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), null);
     }
 
     /**
-     * @param alexaSkillConfiguration Alexa Skill Configuration
+     *
      * @return An Alexa Skill using the {@link AlexaSkillBuilder} and the {@link SkillBuilderProvider} bean.
      */
-    @EachBean(AlexaSkillConfiguration.class)
-    public Skill createSkill(@Parameter AlexaSkillConfiguration alexaSkillConfiguration) {
-        AlexaSkill alexaSkill = alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), alexaSkillConfiguration);
+    @Singleton
+    public Skill createStandardSkill() {
+        AlexaSkill alexaSkill = alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), null);
         if (alexaSkill instanceof Skill) {
             return (Skill) alexaSkill;
         }

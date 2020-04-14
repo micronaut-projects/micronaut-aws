@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
- * <p>Classes related to Alexa integration in Micronaut</p>.
+ * The classes which handle exceptions thrown while processing Alexa Requests.
  *
  * @author sdelamo
  * @since 2.0.0
  */
-package io.micronaut.aws.alexa;
+package io.micronaut.aws.alexa.httpserver.exceptions;

@@ -23,9 +23,9 @@ import com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor;
 import com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor;
 import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
+import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.order.OrderUtil;
-import io.micronaut.aws.alexa.conf.AlexaConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,22 +41,19 @@ import javax.validation.constraints.NotNull;
 public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelope, ResponseEnvelope> {
 
     private ApplicationContext applicationContext;
-    private AlexaConfiguration alexaConfiguration;
 
     /**
      *
      * @param applicationContext Application Context
-     * @param alexaConfiguration Alexa Configuration
      */
-    DefaultAlexaSkillBuilder(ApplicationContext applicationContext,
-                             @Nullable AlexaConfiguration alexaConfiguration) {
+    DefaultAlexaSkillBuilder(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        this.alexaConfiguration = alexaConfiguration;
     }
 
     @Nonnull
     @Override
-     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder) {
+     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder,
+                                                                     @Nullable AlexaSkillConfiguration alexaSkillConfiguration) {
         applicationContext.getBeansOfType(RequestHandler.class)
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
@@ -73,7 +70,7 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addResponseInterceptor);
-        return alexaConfiguration == null ? skillBuilder.build() :
-                skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
+        return alexaSkillConfiguration == null ? skillBuilder.build() :
+                skillBuilder.withSkillId(alexaSkillConfiguration.getSkillId()).build();
     }
 }

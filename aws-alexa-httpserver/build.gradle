@@ -1,0 +1,29 @@
+plugins {
+    id "java-library"
+}
+
+dependencies {
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut:micronaut-validation"
+    implementation 'com.github.spotbugs:spotbugs-annotations:3.1.12'
+
+    api project(":aws-alexa")
+    implementation "io.micronaut:micronaut-http-server"
+    implementation ("com.amazon.alexa:ask-sdk-core:2.30.0")
+
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation "org.bouncycastle:bcprov-jdk15on:1.59"
+    testImplementation ("com.amazon.alexa:ask-sdk:2.30.0") {
+        transitive(false)
+    }
+    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.30.0"
+
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
+}

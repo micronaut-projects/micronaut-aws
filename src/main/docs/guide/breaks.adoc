@@ -12,7 +12,7 @@ api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 | `io.micronaut.function.aws.alexa.handlers`
 | `io.micronaut.aws.alexa.handlers`
 
-| api:io.micronaut.aws.alexa.conf.AlexaConfiguration[]
+| api:io.micronaut.aws.alexa.conf.AlexaSkillConfiguration[]
 | `io.micronaut.function.aws.alexa`
 | `io.micronaut.aws.alexa.conf`
 

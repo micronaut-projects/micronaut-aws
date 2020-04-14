@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.alexa.conf;
-
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 /**
- * Alexa Skill Configuration.
+ * Classes to handle Alexa related endpoints.
+ *
+ * @author sdelamo
+ * @since 2.0.0
  */
-public interface AlexaConfiguration {
-    /**
-     * The Skill ID of this Alexa skill.
-     * @return skill id
-     */
-    @NonNull
-    String getSkillId() ;
-}
+package io.micronaut.aws.alexa.httpserver.controllers;
