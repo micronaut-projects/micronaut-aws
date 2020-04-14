@@ -17,7 +17,6 @@
 package io.micronaut.aws.alexa.builders;
 
 import com.amazon.ask.AlexaSkill;
-import io.micronaut.context.BeanContext;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import javax.inject.Singleton;
