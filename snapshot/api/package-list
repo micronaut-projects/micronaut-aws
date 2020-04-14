@@ -1,10 +1,11 @@
+io.micronaut.aws.alexa.annotation
 io.micronaut.aws.alexa.builders
+io.micronaut.aws.alexa.conf
+io.micronaut.aws.alexa.handlers
 io.micronaut.aws.alexa.ssml
 io.micronaut.configuration.aws
 io.micronaut.function.aws
 io.micronaut.function.aws.alexa
-io.micronaut.function.aws.alexa.annotation
-io.micronaut.function.aws.alexa.handlers
 io.micronaut.function.aws.proxy
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory

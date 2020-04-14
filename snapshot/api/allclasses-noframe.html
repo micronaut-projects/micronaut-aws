@@ -12,15 +12,17 @@
 <div class="indexContainer">
 <ul>
 <li><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></li>
-<li><a href="io/micronaut/function/aws/alexa/AlexaConfiguration.html" title="class in io.micronaut.function.aws.alexa">AlexaConfiguration</a></li>
+<li><a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="interfaceName">AlexaConfiguration</span></a></li>
+<li><a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaConfigurationProperties</a></li>
+<li><a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html" title="class in io.micronaut.aws.alexa.conf">AlexaEnvironment</a></li>
 <li><a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa">AlexaFunction</a></li>
-<li><a href="io/micronaut/function/aws/alexa/AlexaIntents.html" title="interface in io.micronaut.function.aws.alexa"><span class="interfaceName">AlexaIntents</span></a></li>
+<li><a href="io/micronaut/aws/alexa/conf/AlexaIntents.html" title="interface in io.micronaut.aws.alexa.conf"><span class="interfaceName">AlexaIntents</span></a></li>
 <li><a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders"><span class="interfaceName">AlexaSkillBuilder</span></a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html" title="enum in io.micronaut.aws.alexa.ssml">AmazonDomain</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/AmazonEffect.html" title="enum in io.micronaut.aws.alexa.ssml">AmazonEffect</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/AmazonEmotion.html" title="enum in io.micronaut.aws.alexa.ssml">AmazonEmotion</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/AmazonEmotionIntensity.html" title="enum in io.micronaut.aws.alexa.ssml">AmazonEmotionIntensity</a></li>
-<li><a href="io/micronaut/function/aws/alexa/handlers/AnnotatedRequestHandler.html" title="interface in io.micronaut.function.aws.alexa.handlers"><span class="interfaceName">AnnotatedRequestHandler</span></a></li>
+<li><a href="io/micronaut/aws/alexa/handlers/AnnotatedRequestHandler.html" title="interface in io.micronaut.aws.alexa.handlers"><span class="interfaceName">AnnotatedRequestHandler</span></a></li>
 <li><a href="io/micronaut/configuration/aws/AWSClientConfiguration.html" title="class in io.micronaut.configuration.aws">AWSClientConfiguration</a></li>
 <li><a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws">AWSConfiguration</a></li>
 <li><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime"><span class="interfaceName">AwsLambdaRuntimeApi</span></a></li>
@@ -32,10 +34,9 @@
 <li><a href="io/micronaut/aws/alexa/ssml/BreakStrength.html" title="enum in io.micronaut.aws.alexa.ssml">BreakStrength</a></li>
 <li><a href="io/micronaut/function/aws/proxy/model/bind/ContextArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind">ContextArgumentBinder</a></li>
 <li><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders">DefaultAlexaSkillBuilder</a></li>
-<li><a href="io/micronaut/function/aws/alexa/handlers/DefaultSessionEndedRequestHandler.html" title="class in io.micronaut.function.aws.alexa.handlers">DefaultSessionEndedRequestHandler</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/EmphasisLevel.html" title="enum in io.micronaut.aws.alexa.ssml">EmphasisLevel</a></li>
 <li><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></li>
-<li><a href="io/micronaut/function/aws/alexa/annotation/IntentHandler.html" title="annotation in io.micronaut.function.aws.alexa.annotation">IntentHandler</a></li>
+<li><a href="io/micronaut/aws/alexa/annotation/IntentHandler.html" title="annotation in io.micronaut.aws.alexa.annotation">IntentHandler</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/InterpretAs.html" title="enum in io.micronaut.aws.alexa.ssml">InterpretAs</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/InterpretAsDateFormat.html" title="enum in io.micronaut.aws.alexa.ssml">InterpretAsDateFormat</a></li>
 <li><a href="io/micronaut/function/aws/runtime/LambdaRuntimeInvocationResponseHeaders.html" title="interface in io.micronaut.function.aws.runtime"><span class="interfaceName">LambdaRuntimeInvocationResponseHeaders</span></a></li>
@@ -52,13 +53,17 @@
 <li><a href="io/micronaut/function/aws/MicronautRequestHandler.html" title="class in io.micronaut.function.aws">MicronautRequestHandler</a></li>
 <li><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></li>
 <li><a href="io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy">MicronautResponseWriter</a></li>
+<li><a href="io/micronaut/function/aws/alexa/MicronautSkillStreamHandler.html" title="class in io.micronaut.function.aws.alexa">MicronautSkillStreamHandler</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/PhoneticAlphabet.html" title="enum in io.micronaut.aws.alexa.ssml">PhoneticAlphabet</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/ProsodyPitch.html" title="enum in io.micronaut.aws.alexa.ssml">ProsodyPitch</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/ProsodyRate.html" title="enum in io.micronaut.aws.alexa.ssml">ProsodyRate</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/ProsodyVolume.html" title="enum in io.micronaut.aws.alexa.ssml">ProsodyVolume</a></li>
 <li><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime"><span class="interfaceName">ReservedRuntimeEnvironmentVariables</span></a></li>
 <li><a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></li>
+<li><a href="io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders"><span class="interfaceName">SkillBuilderProvider</span></a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></li>
+<li><a href="io/micronaut/aws/alexa/builders/StandardSkillBuilderProvider.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillBuilderProvider</a></li>
+<li><a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillFactory</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/SupportedLang.html" title="enum in io.micronaut.aws.alexa.ssml">SupportedLang</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/Voice.html" title="enum in io.micronaut.aws.alexa.ssml">Voice</a></li>
 <li><a href="io/micronaut/aws/alexa/ssml/WordRole.html" title="enum in io.micronaut.aws.alexa.ssml">WordRole</a></li>
