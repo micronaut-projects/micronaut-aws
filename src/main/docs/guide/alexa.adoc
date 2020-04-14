@@ -10,6 +10,7 @@ The api:function.aws.alexa.AlexaFunction[] will wire up your Alexa application a
 
 * `com.amazon.ask.dispatcher.request.handler.RequestHandler`
 * `com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor`
+* `com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor`
 * `com.amazon.ask.dispatcher.exception.ExceptionHandler`
 * `com.amazon.ask.builder.SkillBuilder`
 
