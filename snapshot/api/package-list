@@ -1,6 +1,7 @@
 io.micronaut.aws.alexa.annotation
 io.micronaut.aws.alexa.builders
 io.micronaut.aws.alexa.conf
+io.micronaut.aws.alexa.flashbriefing
 io.micronaut.aws.alexa.handlers
 io.micronaut.aws.alexa.ssml
 io.micronaut.configuration.aws
