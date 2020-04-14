@@ -1,4 +1,4 @@
-package io.micronaut.aws.alexa.builders
+package io.micronaut.aws
 
 trait ConfigurationFixture {
 

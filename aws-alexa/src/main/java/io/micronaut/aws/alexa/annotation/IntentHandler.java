@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.alexa.annotation;
+package io.micronaut.aws.alexa.annotation;
 
 import io.micronaut.aop.Adapter;
-import io.micronaut.function.aws.alexa.handlers.AnnotatedRequestHandler;
+import io.micronaut.aws.alexa.handlers.AnnotatedRequestHandler;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
