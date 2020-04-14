@@ -17,7 +17,7 @@ package io.micronaut.function.aws.alexa;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.model.Response;
-import io.micronaut.function.aws.alexa.annotation.IntentHandler;
+import io.micronaut.aws.alexa.annotation.IntentHandler;
 
 import javax.inject.Singleton;
 import java.util.Optional;

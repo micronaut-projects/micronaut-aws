@@ -13,28 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.alexa;
+package io.micronaut.aws.alexa.conf;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Introspected;
 
-import static io.micronaut.function.aws.alexa.AlexaConfiguration.PREFIX;
+import javax.validation.constraints.NotBlank;
+
+import static io.micronaut.aws.alexa.conf.AlexaConfigurationProperties.PREFIX;
 
 /**
  * This allows configuring properties that area AWS Alexa specific such as skill-id for skill verification.
+ *
+ * @author sdelamo
+ * @since 2.0.0
  */
+@Introspected
 @ConfigurationProperties(PREFIX)
-@Requires(env = AlexaFunction.ENV_ALEXA)
-public class AlexaConfiguration {
+@Requires(property = PREFIX + ".skill-id")
+@Requires(env = AlexaEnvironment.ENV_ALEXA)
+public class AlexaConfigurationProperties implements AlexaConfiguration {
 
     static final String PREFIX = "alexa";
 
+    @NotBlank
+    @NonNull
     private String skillId;
 
     /**
      * The Skill ID of this Alexa skill.
      * @return skill id
      */
+    @Override
+    @NonNull
     public String getSkillId() {
         return skillId;
     }
@@ -43,7 +56,7 @@ public class AlexaConfiguration {
      * The Skill ID of this Alexa skill.
      * @param skillId skill id
      */
-    public void setSkillId(String skillId) {
+    public void setSkillId(@NonNull String skillId) {
         this.skillId = skillId;
     }
 }

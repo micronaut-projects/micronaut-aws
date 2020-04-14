@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.alexa.handlers;
+package io.micronaut.aws.alexa.handlers;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
@@ -22,7 +22,7 @@ import io.micronaut.core.annotation.AnnotationMetadataProvider;
 import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.core.reflect.InstantiationUtils;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.function.aws.alexa.annotation.IntentHandler;
+import io.micronaut.aws.alexa.annotation.IntentHandler;
 
 import java.util.Arrays;
 import java.util.Optional;

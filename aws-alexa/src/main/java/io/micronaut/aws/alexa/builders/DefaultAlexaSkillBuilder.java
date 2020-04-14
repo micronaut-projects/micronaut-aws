@@ -25,7 +25,7 @@ import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.order.OrderUtil;
-import io.micronaut.function.aws.alexa.AlexaConfiguration;
+import io.micronaut.aws.alexa.conf.AlexaConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -73,8 +73,7 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addResponseInterceptor);
-        AlexaSkill<RequestEnvelope, ResponseEnvelope> skill = alexaConfiguration == null ? skillBuilder.build() :
+        return alexaConfiguration == null ? skillBuilder.build() :
                 skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
-        return skill;
     }
 }

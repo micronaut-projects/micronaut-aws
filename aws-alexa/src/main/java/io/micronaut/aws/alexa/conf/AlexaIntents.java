@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.alexa;
+package io.micronaut.aws.alexa.conf;
 
 /**
  * Common intent names.

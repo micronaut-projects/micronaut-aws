@@ -17,20 +17,21 @@ package io.micronaut.function.aws.alexa;
 
 import com.amazon.ask.AlexaSkill;
 import com.amazon.ask.SkillStreamHandler;
-import com.amazon.ask.Skills;
-import com.amazon.ask.builder.SkillBuilder;
-import io.micronaut.aws.alexa.builders.AlexaSkillBuilder;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.aws.alexa.conf.AlexaEnvironment;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
-import io.micronaut.context.env.ComputePlatform;
+import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.order.OrderUtil;
-import io.micronaut.core.util.ArgumentUtils;
-import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.function.aws.MicronautLambdaContext;
 
-import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This is the base function you extend for Alexa skills support. For now you have to override apply but just call super() in it.
@@ -38,130 +39,62 @@ import java.io.IOException;
  *
  * @author Ryan Vanderwerf
  * @author Graeme Rocher
+ * @author sdelamo
  */
-public class AlexaFunction extends SkillStreamHandler implements AutoCloseable, Closeable {
+public class AlexaFunction implements RequestStreamHandler, AutoCloseable, Closeable, ApplicationContextProvider {
 
-    /**
-     * Environment used for setup.
-     */
-    public static final String ENV_ALEXA = "alexa";
-
-    private static ApplicationContext staticApplicationContext;
+    protected ApplicationContext applicationContext;
+    protected SkillStreamHandler skillStreamHandler;
 
     /**
      * Default constructor.
      */
     public AlexaFunction() {
-        this(new AlexaSkill[0]);
+        buildApplicationContext();
+        applicationContext.inject(this);
+        this.skillStreamHandler = new MicronautSkillStreamHandler(
+                applicationContext.getBeansOfType(AlexaSkill.class)
+                        .stream()
+                        .sorted(OrderUtil.COMPARATOR)
+                        .toArray(AlexaSkill[]::new));
     }
 
     /**
-     * Used to construct a function with a custom context builder.
+     * Builds a new builder.
      *
-     * @param contextBuilder The context builder.
+     * @return The {@link ApplicationContextBuilder}
      */
-    public AlexaFunction(ApplicationContextBuilder contextBuilder) {
-        this(contextBuilder, new AlexaSkill[0]);
+    @NonNull
+    protected ApplicationContextBuilder newApplicationContextBuilder() {
+        return ApplicationContext.build(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, AlexaEnvironment.ENV_ALEXA);
     }
 
     /**
-     * Used to construct a function with a custom context builder.
      *
-     * @param skillBuilder The skill builder.
+     * @return returns the current application context or starts a new one.
      */
-    public AlexaFunction(SkillBuilder<?> skillBuilder) {
-        this(skillBuilder, ApplicationContext.build(), new AlexaSkill[0]);
-    }
-
-    /**
-     * Default contructor.
-     *
-     * @param skills The skills to include
-     */
-    public AlexaFunction(AlexaSkill... skills) {
-        this(ApplicationContext.build(), skills);
-    }
-
-    /**
-     * Used to construct a function with a custom context builder.
-     *
-     * @param contextBuilder The context builder.
-     * @param skills The skills
-     */
-    public AlexaFunction(ApplicationContextBuilder contextBuilder, AlexaSkill... skills) {
-        this(null, contextBuilder, skills);
-    }
-
-    /**
-     * Used to construct a function with a custom context builder.
-     *
-     * @param skillBuilder The skill builder
-     * @param contextBuilder The context builder.
-     */
-    public AlexaFunction(SkillBuilder<?> skillBuilder, ApplicationContextBuilder contextBuilder) {
-        this(skillBuilder, contextBuilder, new AlexaSkill[0]);
-    }
-
-    /**
-     * Used to construct a function with a custom context builder.
-     *
-     * @param skillBuilder The skill builder
-     * @param contextBuilder The context builder.
-     * @param skills The skills
-     */
-    protected AlexaFunction(SkillBuilder<?> skillBuilder, ApplicationContextBuilder contextBuilder, AlexaSkill... skills) {
-        super(initAlexaFunction(skillBuilder, contextBuilder, skills));
-        staticApplicationContext.inject(this);
-    }
-
-    /**
-     * Obtain the current Alexa application context.
-     *
-     * @return The context
-     */
-    public static ApplicationContext getCurrentAlexaApplicationContext() {
-        return staticApplicationContext;
-    }
-
-    private static AlexaSkill[] initAlexaFunction(
-            @Nullable SkillBuilder<?> skillBuilder,
-            ApplicationContextBuilder contextBuilder,
-            AlexaSkill... skills) {
-        ArgumentUtils.requireNonNull("contextBuilder", contextBuilder);
-        // Avoid extra lookups
-        System.setProperty(Environment.CLOUD_PLATFORM_PROPERTY, ComputePlatform.AMAZON_EC2.toString());
-        contextBuilder.environments(Environment.FUNCTION, ENV_ALEXA);
-        final ApplicationContext applicationContext = contextBuilder.build().start();
-
-        if (skillBuilder == null) {
-            skillBuilder = applicationContext.findBean(SkillBuilder.class).orElseGet(Skills::standard);
+    @NonNull
+    protected ApplicationContext buildApplicationContext() {
+        if (applicationContext == null) {
+            applicationContext = newApplicationContextBuilder().build().start();
         }
+        return applicationContext;
+    }
 
-        staticApplicationContext = applicationContext;
-        final AlexaSkill[] array = applicationContext.getBeansOfType(
-                AlexaSkill.class
-        ).toArray(new AlexaSkill[0]);
-
-        final boolean hasSkills = ArrayUtils.isNotEmpty(skills);
-        if (hasSkills) {
-            for (AlexaSkill skill : skills) {
-                applicationContext.inject(skill);
-            }
-            final AlexaSkill[] all = ArrayUtils.concat(array, skills);
-            OrderUtil.sort(all);
-
-            return all;
-        } else {
-
-            AlexaSkillBuilder alexaSkillBuilder = applicationContext.getBean(AlexaSkillBuilder.class);
-            return new AlexaSkill[] { alexaSkillBuilder.buildSkill(skillBuilder) };
-        }
+    @Override
+    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
+        skillStreamHandler.handleRequest(input, output, context);
     }
 
     @Override
     public void close() throws IOException {
-        if (staticApplicationContext != null && staticApplicationContext.isRunning()) {
-            staticApplicationContext.close();
+        if (applicationContext != null && applicationContext.isRunning()) {
+            applicationContext.close();
         }
+    }
+
+    @Override
+    public ApplicationContext getApplicationContext() {
+        return this.applicationContext;
     }
 }

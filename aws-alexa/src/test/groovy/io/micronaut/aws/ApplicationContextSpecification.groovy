@@ -1,5 +1,4 @@
-package io.micronaut.aws.alexa.builders
-
+package io.micronaut.aws
 import io.micronaut.context.ApplicationContext
 import spock.lang.AutoCleanup
 import spock.lang.Shared

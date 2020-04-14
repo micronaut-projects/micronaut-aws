@@ -4,15 +4,12 @@ import com.amazon.ask.AlexaSkill
 import com.amazon.ask.Skill
 import com.amazon.ask.Skills
 import com.amazon.ask.dispatcher.request.handler.HandlerInput
+import com.amazon.ask.dispatcher.request.handler.RequestHandler
 import com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor
 import com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor
-import com.amazon.ask.model.Intent
-import com.amazon.ask.model.IntentRequest
-import com.amazon.ask.model.RequestEnvelope
 import com.amazon.ask.model.Response
-import com.amazon.ask.request.SkillRequest
 import com.amazon.ask.request.dispatcher.impl.BaseRequestDispatcher
-import com.amazon.ask.request.impl.BaseSkillRequest
+import io.micronaut.aws.ApplicationContextSpecification
 import io.micronaut.context.annotation.Requires
 import spock.lang.Shared
 import spock.lang.Subject
@@ -34,7 +31,7 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
         thrown(ConstraintViolationException)
     }
 
-    void "Skill builders registers ResponseInterceptor"() {
+    void "Skill builders registers ResponseInterceptor and Request Interceptors"() {
         when:
         AlexaSkill alexaSkill = alexaSkillBuilder.buildSkill(Skills.standard())
 
@@ -60,6 +57,20 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
     @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
     @Singleton
     static class MyResponseInterceptor implements ResponseInterceptor {
+    }
+
+    @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
+    @Singleton
+    static class MyRequestHandler implements RequestHandler {
+        @Override
+        boolean canHandle(HandlerInput handlerInput) {
+            return true
+        }
+
+        @Override
+        Optional<Response> handle(HandlerInput handlerInput) {
+            return Optional.empty()
+        }
     }
 
     @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
