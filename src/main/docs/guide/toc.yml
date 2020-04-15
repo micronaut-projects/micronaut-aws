@@ -12,6 +12,7 @@ alexa:
   title: Alexa Skill Support
   intentHandler: The IntentHandler Annotation
   ssmlbuilder: SSML Builder
+  flashbriefings: Flash Briefings
 repository: Repository
 breaks: Breaking Changes
 releases: Release History
