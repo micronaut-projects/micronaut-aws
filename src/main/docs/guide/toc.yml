@@ -13,3 +13,4 @@ alexa:
   ssmlbuilder: SSML Builder
 repository: Repository
 breaks: Breaking Changes
+releases: Release History
