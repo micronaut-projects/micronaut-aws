@@ -51,9 +51,9 @@
             </div>
 <div class="sect2">
 <h3 id="_aws_alexa_config_properties">Aws Alexa Config Properties</h3>
-<a id="io.micronaut.aws.alexa.conf.AlexaConfigurationProperties" href="#io.micronaut.aws.alexa.conf.AlexaConfigurationProperties">&#128279;</a>
+<a id="io.micronaut.aws.alexa.conf.AlexaSkillConfigurationProperties" href="#io.micronaut.aws.alexa.conf.AlexaSkillConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html">AlexaConfigurationProperties</a></caption>
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html">AlexaSkillConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -68,7 +68,12 @@
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alexa.skill-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alexa.skills.*.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets whether this configuration is enabled. Default true.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alexa.skills.*.skill-id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The Skill ID of this Alexa skill.</p></td>
 </tr>

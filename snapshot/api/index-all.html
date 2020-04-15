@@ -84,16 +84,6 @@
 <dd>
 <div class="block">Environment variable name for the AWS access key ID.</div>
 </dd>
-<dt><a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaConfiguration</span></a> - Interface in <a href="io/micronaut/aws/alexa/conf/package-summary.html">io.micronaut.aws.alexa.conf</a></dt>
-<dd>
-<div class="block">Alexa Skill Configuration.</div>
-</dd>
-<dt><a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaConfigurationProperties</span></a> - Class in <a href="io/micronaut/aws/alexa/conf/package-summary.html">io.micronaut.aws.alexa.conf</a></dt>
-<dd>
-<div class="block">This allows configuring properties that area AWS Alexa specific such as skill-id for skill verification.</div>
-</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html#AlexaConfigurationProperties--">AlexaConfigurationProperties()</a></span> - Constructor for class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaConfigurationProperties</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaEnvironment</span></a> - Class in <a href="io/micronaut/aws/alexa/conf/package-summary.html">io.micronaut.aws.alexa.conf</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html#AlexaEnvironment--">AlexaEnvironment()</a></span> - Constructor for class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html" title="class in io.micronaut.aws.alexa.conf">AlexaEnvironment</a></dt>
@@ -114,6 +104,16 @@
 <dd>
 <div class="block"><code>FunctionalInterface</code> to create <code>AlexaSkill</code>.</div>
 </dd>
+<dt><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfiguration</span></a> - Interface in <a href="io/micronaut/aws/alexa/conf/package-summary.html">io.micronaut.aws.alexa.conf</a></dt>
+<dd>
+<div class="block">Alexa Skill Configuration.</div>
+</dd>
+<dt><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfigurationProperties</span></a> - Class in <a href="io/micronaut/aws/alexa/conf/package-summary.html">io.micronaut.aws.alexa.conf</a></dt>
+<dd>
+<div class="block">This allows configuring properties that area AWS Alexa specific such as skill-id for skill verification.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#AlexaSkillConfigurationProperties-java.lang.String-">AlexaSkillConfigurationProperties(String)</a></span> - Constructor for class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ALTERNATE_ACCESS_KEY_ENV_VAR">ALTERNATE_ACCESS_KEY_ENV_VAR</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></dt>
 <dd>
 <div class="block">Alternate environment variable name for the AWS access key ID.</div>
@@ -286,9 +286,9 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#buildApplicationContext-com.amazonaws.services.lambda.runtime.Context-">buildApplicationContext(Context)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-">buildSkill(SkillBuilder&lt;?&gt;)</a></span> - Method in interface io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">buildSkill(SkillBuilder&lt;?&gt;, AlexaSkillConfiguration)</a></span> - Method in interface io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-">buildSkill(SkillBuilder&lt;?&gt;)</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders">DefaultAlexaSkillBuilder</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">buildSkill(SkillBuilder&lt;?&gt;, AlexaSkillConfiguration)</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders">DefaultAlexaSkillBuilder</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:C">
@@ -330,7 +330,9 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#cookie-io.micronaut.http.cookie.Cookie-">cookie(Cookie)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createStandardAlexaSkill-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">createStandardAlexaSkill(AlexaSkillBuilder, SkillBuilderProvider)</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillFactory</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html#createStandardAlexaSkill--">createStandardAlexaSkill()</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">MissingAlexaSkillConfigurationSkillFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createStandardAlexaSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">createStandardAlexaSkill(AlexaSkillConfiguration)</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#currentTime--">currentTime()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
@@ -344,6 +346,8 @@
 <dd>
 <div class="block">Creates <code>AlexaSkill</code> by adding request and exception handlers ((<code>RequestHandler</code>, <code>ExceptionHandler</code> beans) and interceptor beans (<code>RequestInterceptor</code> and <code>ResponseInterceptor</code>).</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#DefaultAlexaSkillBuilder-java.util.Collection-java.util.Collection-java.util.Collection-java.util.Collection-">DefaultAlexaSkillBuilder(Collection&lt;RequestHandler&gt;, Collection&lt;ExceptionHandler&gt;, Collection&lt;RequestInterceptor&gt;, Collection&lt;ResponseInterceptor&gt;)</a></span> - Constructor for class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders">DefaultAlexaSkillBuilder</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/Ssml.html#domain-io.micronaut.aws.alexa.ssml.AmazonDomain-java.lang.String-">domain(AmazonDomain, String)</a></span> - Method in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
 <dd>
 <div class="block">Applies different speaking styles to the speech.</div>
@@ -496,6 +500,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getMethod--">getMethod()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#getName--">getName()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getObjectMapper--">getObjectMapper()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getParameters--">getParameters()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
@@ -512,11 +518,11 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/StandardSkillBuilderProvider.html#getSkillBuilder--">getSkillBuilder()</a></span> - Method in class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/StandardSkillBuilderProvider.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillBuilderProvider</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html#getSkillId--">getSkillId()</a></span> - Method in interface io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaConfiguration</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html#getSkillId--">getSkillId()</a></span> - Method in interface io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a></dt>
 <dd>
 <div class="block">The Skill ID of this Alexa skill.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html#getSkillId--">getSkillId()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaConfigurationProperties</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#getSkillId--">getSkillId()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
 <dd>
 <div class="block">The Skill ID of this Alexa skill.</div>
 </dd>
@@ -639,6 +645,8 @@
 <dt><a href="io/micronaut/function/aws/proxy/security/package-summary.html">io.micronaut.function.aws.proxy.security</a> - package io.micronaut.function.aws.proxy.security</dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a> - package io.micronaut.function.aws.runtime</dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#isSharedObjectMapper--">isSharedObjectMapper()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -793,6 +801,12 @@
 <dd>
 <div class="block">Constructor to build an instance of <code>SkillStreamHandler</code> with multiple Alexa skills.</div>
 </dd>
+<dt><a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html" title="class in io.micronaut.aws.alexa.builders"><span class="typeNameLink">MissingAlexaSkillConfigurationSkillFactory</span></a> - Class in <a href="io/micronaut/aws/alexa/builders/package-summary.html">io.micronaut.aws.alexa.builders</a></dt>
+<dd>
+<div class="block">Creates an Alexa Skill only if no AlexaSkillConfiguration is present.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html#MissingAlexaSkillConfigurationSkillFactory-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">MissingAlexaSkillConfigurationSkillFactory(AlexaSkillBuilder, SkillBuilderProvider)</a></span> - Constructor for class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">MissingAlexaSkillConfigurationSkillFactory</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a name="I:N">
 <!--   -->
@@ -848,6 +862,8 @@
 <dt><a href="io/micronaut/aws/alexa/ssml/PhoneticAlphabet.html" title="enum in io.micronaut.aws.alexa.ssml"><span class="typeNameLink">PhoneticAlphabet</span></a> - Enum in <a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/Ssml.html#PITCH">PITCH</a></span> - Static variable in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/configuration/aws/AWSConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws">AWSConfiguration</a></dt>
 <dd>
@@ -923,6 +939,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#SERVER_INFO">SERVER_INFO</a></span> - Static variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#setEnabled-boolean-">setEnabled(boolean)</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>
+<div class="block">Sets whether this configuration is enabled.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorMessage-java.lang.String-">setErrorMessage(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorType-java.lang.String-">setErrorType(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
@@ -937,7 +957,7 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#setSharedObjectMapper-boolean-">setSharedObjectMapper(boolean)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html#setSkillId-java.lang.String-">setSkillId(String)</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaConfigurationProperties</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#setSkillId-java.lang.String-">setSkillId(String)</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
 <dd>
 <div class="block">The Skill ID of this Alexa skill.</div>
 </dd>
@@ -953,6 +973,8 @@
 <dd>
 <div class="block"><code>FunctionalInterface</code> to create a <code>SkillBuilder</code>.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#SKILLS_PREFIX">SKILLS_PREFIX</a></span> - Static variable in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/alexa/AlexaFunction.html#skillStreamHandler">skillStreamHandler</a></span> - Variable in class io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa">AlexaFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/Ssml.html#speak-java.lang.String-">speak(String)</a></span> - Method in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
@@ -981,7 +1003,7 @@
 <dd>
 <div class="block">Creates an <code>AlexaSkill</code> if no other alexa skills beans are present.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html#StandardSkillFactory--">StandardSkillFactory()</a></span> - Constructor for class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillFactory</a></dt>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html#StandardSkillFactory-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">StandardSkillFactory(AlexaSkillBuilder, SkillBuilderProvider)</a></span> - Constructor for class io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/StandardSkillFactory.html" title="class in io.micronaut.aws.alexa.builders">StandardSkillFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html#startRuntimeApiEventLoop-io.micronaut.context.ApplicationContextBuilder-">startRuntimeApiEventLoop(ApplicationContextBuilder)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">MicronautLambdaRuntime</a></dt>
 <dd>

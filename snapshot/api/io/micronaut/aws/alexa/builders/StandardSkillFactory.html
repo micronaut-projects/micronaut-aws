@@ -136,7 +136,8 @@ extends java.lang.Object</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#StandardSkillFactory--">StandardSkillFactory</a></span>()</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#StandardSkillFactory-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">StandardSkillFactory</a></span>(<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a>&nbsp;alexaSkillBuilder,
+                    <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders">SkillBuilderProvider</a>&nbsp;skillBuilderProvider)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -155,8 +156,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>com.amazon.ask.AlexaSkill</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createStandardAlexaSkill-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">createStandardAlexaSkill</a></span>(<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a>&nbsp;alexaSkillBuilder,
-                        <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders">SkillBuilderProvider</a>&nbsp;skillBuilderProvider)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createStandardAlexaSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">createStandardAlexaSkill</a></span>(<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -180,13 +180,19 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="StandardSkillFactory--">
+<a name="StandardSkillFactory-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>StandardSkillFactory</h4>
-<pre>public&nbsp;StandardSkillFactory()</pre>
+<pre>public&nbsp;StandardSkillFactory(<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a>&nbsp;alexaSkillBuilder,
+                            <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders">SkillBuilderProvider</a>&nbsp;skillBuilderProvider)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>alexaSkillBuilder</code> - Alexa Skill Builder</dd>
+<dd><code>skillBuilderProvider</code> - Skill Builder Provider</dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -197,19 +203,18 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="createStandardAlexaSkill-io.micronaut.aws.alexa.builders.AlexaSkillBuilder-io.micronaut.aws.alexa.builders.SkillBuilderProvider-">
+<a name="createStandardAlexaSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>createStandardAlexaSkill</h4>
-<pre>@Singleton
-public&nbsp;com.amazon.ask.AlexaSkill&nbsp;createStandardAlexaSkill(<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a>&nbsp;alexaSkillBuilder,
-                                                                     <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders">SkillBuilderProvider</a>&nbsp;skillBuilderProvider)</pre>
+<pre>@EachBean(value=<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration.class</a>)
+public&nbsp;com.amazon.ask.AlexaSkill&nbsp;createStandardAlexaSkill(@Parameter
+                                                                                                         <a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>alexaSkillBuilder</code> - Alexa Skill Builder</dd>
-<dd><code>skillBuilderProvider</code> - Skill Builder Provider</dd>
+<dd><code>alexaSkillConfiguration</code> - Alexa Skill Configuration</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>An Alexa Skill using the <a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders"><code>AlexaSkillBuilder</code></a> and the <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders"><code>SkillBuilderProvider</code></a> bean.</dd>
 </dl>

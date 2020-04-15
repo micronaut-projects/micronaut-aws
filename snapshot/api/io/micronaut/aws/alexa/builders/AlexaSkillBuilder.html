@@ -142,7 +142,8 @@ public interface <span class="typeNameLabel">AlexaSkillBuilder&lt;Request,Respon
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>com.amazon.ask.AlexaSkill&lt;<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Request</a>,<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Response</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-">buildSkill</a></span>(@NotNull com.amazon.ask.builder.SkillBuilder&lt;?&gt;&nbsp;skillBuilder)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html#buildSkill-com.amazon.ask.builder.SkillBuilder-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">buildSkill</a></span>(@NotNull com.amazon.ask.builder.SkillBuilder&lt;?&gt;&nbsp;skillBuilder,
+          <a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -159,7 +160,7 @@ public interface <span class="typeNameLabel">AlexaSkillBuilder&lt;Request,Respon
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="buildSkill-com.amazon.ask.builder.SkillBuilder-">
+<a name="buildSkill-com.amazon.ask.builder.SkillBuilder-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -167,10 +168,13 @@ public interface <span class="typeNameLabel">AlexaSkillBuilder&lt;Request,Respon
 <h4>buildSkill</h4>
 <pre>@Nonnull
 com.amazon.ask.AlexaSkill&lt;<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Request</a>,<a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="type parameter in AlexaSkillBuilder">Response</a>&gt;&nbsp;buildSkill(@NotNull @Nonnull
-                                                                @NotNull com.amazon.ask.builder.SkillBuilder&lt;?&gt;&nbsp;skillBuilder)</pre>
+                                                                @NotNull com.amazon.ask.builder.SkillBuilder&lt;?&gt;&nbsp;skillBuilder,
+                                                                @Nullable
+                                                                <a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>skillBuilder</code> - A Skill builder</dd>
+<dd><code>alexaSkillConfiguration</code> - Alexa Skill Configuration</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>An Alexa skill.</dd>
 </dl>

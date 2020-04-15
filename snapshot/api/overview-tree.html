@@ -102,9 +102,9 @@
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerHandler</span></a> (implements io.micronaut.context.ApplicationContextProvider, java.lang.AutoCloseable, java.io.Closeable)</li>
 </ul>
 </li>
-<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaConfigurationProperties</span></a> (implements io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaConfiguration</a>)</li>
 <li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaEnvironment</span></a></li>
 <li type="circle">io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa"><span class="typeNameLink">AlexaFunction</span></a> (implements io.micronaut.context.ApplicationContextProvider, java.lang.AutoCloseable, java.io.Closeable, com.amazonaws.services.lambda.runtime.RequestStreamHandler)</li>
+<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfigurationProperties</span></a> (implements io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>)</li>
 <li type="circle">io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws"><span class="typeNameLink">AWSConfiguration</span></a>
 <ul>
 <li type="circle">io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSClientConfiguration.html" title="class in io.micronaut.configuration.aws"><span class="typeNameLink">AWSClientConfiguration</span></a></li>
@@ -126,6 +126,7 @@
 <li type="circle">io.micronaut.function.aws.proxy.model.factory.<a href="io/micronaut/function/aws/proxy/model/factory/MicronautAwsProxyResponseFactory.html" title="class in io.micronaut.function.aws.proxy.model.factory"><span class="typeNameLink">MicronautAwsProxyResponseFactory</span></a> (implements io.micronaut.http.HttpResponseFactory)</li>
 <li type="circle">io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security"><span class="typeNameLink">MicronautLambdaAuthenticationFetcher</span></a> (implements io.micronaut.security.filters.AuthenticationFetcher)</li>
 <li type="circle">io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">MicronautLambdaRuntime</span></a> (implements io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a>)</li>
+<li type="circle">io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/MissingAlexaSkillConfigurationSkillFactory.html" title="class in io.micronaut.aws.alexa.builders"><span class="typeNameLink">MissingAlexaSkillConfigurationSkillFactory</span></a></li>
 <li type="circle">com.amazonaws.serverless.proxy.ResponseWriter&lt;ContainerResponseType,ResponseType&gt;
 <ul>
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautResponseWriter</span></a></li>
@@ -150,7 +151,6 @@
 </ul>
 <h2 title="Interface Hierarchy">Interface Hierarchy</h2>
 <ul>
-<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaConfiguration</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaIntents.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaIntents</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders"><span class="typeNameLink">AlexaSkillBuilder</span></a>&lt;Request,Response&gt;</li>
 <li type="circle">io.micronaut.context.ApplicationContextProvider
@@ -174,8 +174,23 @@
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerContext</span></a> (also extends io.micronaut.context.ApplicationContextProvider)</li>
 </ul>
 </li>
+<li type="circle">io.micronaut.core.naming.Named
+<ul>
+<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfiguration</span></a> (also extends io.micronaut.core.order.Ordered, io.micronaut.core.util.Toggleable)</li>
+</ul>
+</li>
+<li type="circle">io.micronaut.core.order.Ordered
+<ul>
+<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfiguration</span></a> (also extends io.micronaut.core.naming.Named, io.micronaut.core.util.Toggleable)</li>
+</ul>
+</li>
 <li type="circle">io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime"><span class="typeNameLink">ReservedRuntimeEnvironmentVariables</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders"><span class="typeNameLink">SkillBuilderProvider</span></a></li>
+<li type="circle">io.micronaut.core.util.Toggleable
+<ul>
+<li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfiguration</span></a> (also extends io.micronaut.core.naming.Named, io.micronaut.core.order.Ordered)</li>
+</ul>
+</li>
 </ul>
 <h2 title="Annotation Type Hierarchy">Annotation Type Hierarchy</h2>
 <ul>
