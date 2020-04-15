@@ -1,5 +1,6 @@
 introduction: Introduction
 whatsNew: What's new?
+corretto: Amazon Correto
 awsCredentialsProvider:
   title: AWS Credentials Provider
 lambda:
