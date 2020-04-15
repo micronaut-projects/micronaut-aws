@@ -20,4 +20,7 @@ dependencies {
         transitive(false)
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.30.0"
+
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
 }

@@ -1,0 +1,12 @@
+Micronaut's eases the creation of https://developer.amazon.com/en-US/docs/alexa/flashbriefing/understand-the-flash-briefing-skill-api.html[Flash Briefing Skills].
+
+> You can create a flash briefing skill to provide Alexa customers with news headlines and other short content. Typically a flash briefing becomes a part of a customer's daily routine.
+
+Your application must expose an endpoint which returns a JSON Array of api:aws.alexa.flashbriefing.FlashBriefingItem[]
+
+snippet::io.micronaut.aws.alexa.flashbriefing.FlashBriefingsController[project="aws-alexa", source="test"]
+
+<1> By default, Micronaut sets the response HTTP Header `Content-Type` with the value `application-json`.
+<2> Flash Briefing Feed items must be valid according to https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html[Flash Briefing Skill API Feed Reference] constraints.
+<3> Items should be provided in order from newest to oldest, based on the date value for the item. Alexa may ignore older items.
+<4> https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html[Flash Briefing Skill API Feed Reference] instructs to provide between 1 and 5 unique items at a time.
