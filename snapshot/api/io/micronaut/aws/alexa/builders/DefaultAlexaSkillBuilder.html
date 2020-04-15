@@ -140,10 +140,8 @@ implements <a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBui
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#DefaultAlexaSkillBuilder-java.util.Collection-java.util.Collection-java.util.Collection-java.util.Collection-">DefaultAlexaSkillBuilder</a></span>(java.util.Collection&lt;com.amazon.ask.dispatcher.request.handler.RequestHandler&gt;&nbsp;requestHandlers,
-                        java.util.Collection&lt;com.amazon.ask.dispatcher.exception.ExceptionHandler&gt;&nbsp;exceptionHandlers,
-                        java.util.Collection&lt;com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor&gt;&nbsp;requestInterceptors,
-                        java.util.Collection&lt;com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor&gt;&nbsp;responseInterceptors)</code>&nbsp;</td>
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html#DefaultAlexaSkillBuilder-java.util.Collection-io.micronaut.context.ApplicationContext-">DefaultAlexaSkillBuilder</a></span>(java.util.Collection&lt;<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&gt;&nbsp;alexaSkillConfigurations,
+                        io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -187,22 +185,18 @@ implements <a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBui
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="DefaultAlexaSkillBuilder-java.util.Collection-java.util.Collection-java.util.Collection-java.util.Collection-">
+<a name="DefaultAlexaSkillBuilder-java.util.Collection-io.micronaut.context.ApplicationContext-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>DefaultAlexaSkillBuilder</h4>
-<pre>public&nbsp;DefaultAlexaSkillBuilder(java.util.Collection&lt;com.amazon.ask.dispatcher.request.handler.RequestHandler&gt;&nbsp;requestHandlers,
-                                java.util.Collection&lt;com.amazon.ask.dispatcher.exception.ExceptionHandler&gt;&nbsp;exceptionHandlers,
-                                java.util.Collection&lt;com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor&gt;&nbsp;requestInterceptors,
-                                java.util.Collection&lt;com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor&gt;&nbsp;responseInterceptors)</pre>
+<pre>public&nbsp;DefaultAlexaSkillBuilder(java.util.Collection&lt;<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&gt;&nbsp;alexaSkillConfigurations,
+                                io.micronaut.context.ApplicationContext&nbsp;applicationContext)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>requestHandlers</code> - Request Handlers</dd>
-<dd><code>exceptionHandlers</code> - Exceptions Handlers</dd>
-<dd><code>requestInterceptors</code> - Request Interceptors</dd>
-<dd><code>responseInterceptors</code> - Response Interceptors</dd>
+<dd><code>alexaSkillConfigurations</code> - Alexa Skill Configurations</dd>
+<dd><code>applicationContext</code> - ApplicationContext</dd>
 </dl>
 </li>
 </ul>
