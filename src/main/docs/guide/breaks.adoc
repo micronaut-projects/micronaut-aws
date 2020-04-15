@@ -1,9 +1,15 @@
 api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 
+== Classes renamed
+
+|===
+| Old Class Name | New Class
+| `io.micronaut.function.aws.alexa.AlexaConfiguration` | api:io.micronaut.aws.alexa.conf.AlexaSkillConfiguration[]
+
 == Classes relocated
 
 |===
-| Class Name |Old Package|New Package
+| Class Name | Old Package|New Package
 | api:io.micronaut.aws.alexa.annotation.IntentHandler[]
 | `io.micronaut.function.aws.alexa.annotation`
 | `io.micronaut.aws.alexa.annotation`
@@ -11,10 +17,6 @@ api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 | api:io.micronaut.aws.alexa.handlers.AnnotatedRequestHandler[]
 | `io.micronaut.function.aws.alexa.handlers`
 | `io.micronaut.aws.alexa.handlers`
-
-| api:io.micronaut.aws.alexa.conf.AlexaConfiguration[]
-| `io.micronaut.function.aws.alexa`
-| `io.micronaut.aws.alexa.conf`
 
 | api:io.micronaut.aws.alexa.conf.AlexaIntents[]
 | `io.micronaut.function.aws.alexa`

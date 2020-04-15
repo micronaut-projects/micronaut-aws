@@ -23,14 +23,14 @@ import com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor;
 import com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor;
 import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
-import io.micronaut.context.ApplicationContext;
+import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.core.order.OrderUtil;
-import io.micronaut.aws.alexa.conf.AlexaConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 /**
  * Creates {@link AlexaSkill} by adding request and exception handlers (({@link RequestHandler}, {@link ExceptionHandler} beans) and interceptor beans ({@link RequestInterceptor} and {@link ResponseInterceptor}).
@@ -40,40 +40,49 @@ import javax.validation.constraints.NotNull;
 @Singleton
 public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelope, ResponseEnvelope> {
 
-    private ApplicationContext applicationContext;
-    private AlexaConfiguration alexaConfiguration;
+    private final Collection<RequestHandler> requestHandlers;
+    private final Collection<ExceptionHandler> exceptionHandlers;
+    private final Collection<RequestInterceptor> requestInterceptors;
+    private final Collection<ResponseInterceptor> responseInterceptors;
 
     /**
      *
-     * @param applicationContext Application Context
-     * @param alexaConfiguration Alexa Configuration
+     * @param requestHandlers Request Handlers
+     * @param exceptionHandlers Exceptions Handlers
+     * @param requestInterceptors Request Interceptors
+     * @param responseInterceptors Response Interceptors
      */
-    DefaultAlexaSkillBuilder(ApplicationContext applicationContext,
-                             @Nullable AlexaConfiguration alexaConfiguration) {
-        this.applicationContext = applicationContext;
-        this.alexaConfiguration = alexaConfiguration;
+    public DefaultAlexaSkillBuilder(Collection<RequestHandler> requestHandlers,
+                                    Collection<ExceptionHandler> exceptionHandlers,
+                                    Collection<RequestInterceptor> requestInterceptors,
+                                    Collection<ResponseInterceptor> responseInterceptors) {
+        this.requestHandlers = requestHandlers;
+        this.exceptionHandlers = exceptionHandlers;
+        this.requestInterceptors = requestInterceptors;
+        this.responseInterceptors = responseInterceptors;
     }
 
     @Nonnull
     @Override
-     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder) {
-        applicationContext.getBeansOfType(RequestHandler.class)
+     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder,
+                                                                     @Nullable AlexaSkillConfiguration alexaSkillConfiguration) {
+        requestHandlers
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addRequestHandler);
-        applicationContext.getBeansOfType(ExceptionHandler.class)
+        exceptionHandlers
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addExceptionHandler);
-        applicationContext.getBeansOfType(RequestInterceptor.class)
+        requestInterceptors
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addRequestInterceptor);
-        applicationContext.getBeansOfType(ResponseInterceptor.class)
+        responseInterceptors
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
                 .forEach(skillBuilder::addResponseInterceptor);
-        return alexaConfiguration == null ? skillBuilder.build() :
-                skillBuilder.withSkillId(alexaConfiguration.getSkillId()).build();
+        return alexaSkillConfiguration == null ? skillBuilder.build() :
+                skillBuilder.withSkillId(alexaSkillConfiguration.getSkillId()).build();
     }
 }

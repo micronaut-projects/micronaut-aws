@@ -4,19 +4,19 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.exceptions.BeanInstantiationException
 import spock.lang.Specification
 
-class AlexaConfigurationPropertiesSpec extends Specification {
+class AlexaSkillConfigurationPropertiesSpec extends Specification {
 
     void "skill id cannot be blank"() {
         when:
         ApplicationContext applicationContext = ApplicationContext.run([:], AlexaEnvironment.ENV_ALEXA)
 
         then:
-        !applicationContext.containsBean(AlexaConfiguration)
+        !applicationContext.containsBean(AlexaSkillConfiguration)
 
         when:
         applicationContext.close()
-        applicationContext = ApplicationContext.run(['alexa.skill-id': ''], AlexaEnvironment.ENV_ALEXA)
-        applicationContext.getBean(AlexaConfiguration)
+        applicationContext = ApplicationContext.run(['alexa.skills.helloworld.skill-id': ''], AlexaEnvironment.ENV_ALEXA)
+        applicationContext.getBean(AlexaSkillConfiguration)
 
         then:
         BeanInstantiationException e = thrown()
@@ -24,13 +24,13 @@ class AlexaConfigurationPropertiesSpec extends Specification {
 
         when:
         applicationContext?.close()
-        applicationContext = ApplicationContext.run(['alexa.skill-id': 'XXX'], AlexaEnvironment.ENV_ALEXA)
+        applicationContext = ApplicationContext.run(['alexa.skills.helloworld.skill-id': 'XXX'], AlexaEnvironment.ENV_ALEXA)
 
         then:
-        applicationContext.containsBean(AlexaConfiguration)
+        applicationContext.containsBean(AlexaSkillConfiguration)
 
         and:
-        applicationContext.getBean(AlexaConfiguration).skillId == 'XXX'
+        applicationContext.getBean(AlexaSkillConfiguration).skillId == 'XXX'
 
         cleanup:
         applicationContext?.close()

@@ -16,13 +16,14 @@
 package io.micronaut.aws.alexa.conf;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Introspected;
 
+import javax.annotation.Nonnull;
 import javax.validation.constraints.NotBlank;
 
-import static io.micronaut.aws.alexa.conf.AlexaConfigurationProperties.PREFIX;
 
 /**
  * This allows configuring properties that area AWS Alexa specific such as skill-id for skill verification.
@@ -31,16 +32,53 @@ import static io.micronaut.aws.alexa.conf.AlexaConfigurationProperties.PREFIX;
  * @since 2.0.0
  */
 @Introspected
-@ConfigurationProperties(PREFIX)
-@Requires(property = PREFIX + ".skill-id")
+@EachProperty(AlexaSkillConfigurationProperties.SKILLS_PREFIX)
 @Requires(env = AlexaEnvironment.ENV_ALEXA)
-public class AlexaConfigurationProperties implements AlexaConfiguration {
+public class AlexaSkillConfigurationProperties implements AlexaSkillConfiguration {
 
-    static final String PREFIX = "alexa";
+    public static final String PREFIX = "alexa";
+
+    public static final String SKILLS_PREFIX = PREFIX + ".skills";
+
+    private static final boolean DEFAULT_ENABLED = true;
+
+    private boolean enabled = DEFAULT_ENABLED;
 
     @NotBlank
     @NonNull
     private String skillId;
+
+    private final String name;
+
+    /**
+     * @param name The name of the configuration
+     */
+    public AlexaSkillConfigurationProperties(@Parameter String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return The name of the configuration
+     */
+    @Override
+    @Nonnull
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Sets whether this configuration is enabled. Default {@value #DEFAULT_ENABLED}.
+     *
+     * @param enabled The enabled setting
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     /**
      * The Skill ID of this Alexa skill.

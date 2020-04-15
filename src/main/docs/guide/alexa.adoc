@@ -17,6 +17,6 @@ The api:function.aws.alexa.AlexaFunction[] will wire up your Alexa application a
 Simply declaring these types as beans will automatically configure the Alexa Skill appropriately.
 
 To set the skill ID of your skill to enable skill verification, set the following property in Micronaut (application.yml or environment variable)
-under the property name 'alexa.skill-id'.
+under the property name 'alexa.skills.myskillname.skill-id'.
 
 TIP: You can find sample applications in Java, Kotlin and Groovy in the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples[Examples] directory of the repository.
