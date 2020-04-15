@@ -31,7 +31,6 @@ import io.micronaut.inject.qualifiers.Qualifiers;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
-import javax.lang.model.element.AnnotationValue;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;

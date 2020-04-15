@@ -17,6 +17,7 @@
 package io.micronaut.aws.alexa.builders;
 
 import com.amazon.ask.AlexaSkill;
+import com.amazon.ask.Skill;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
@@ -54,5 +55,18 @@ public class MissingAlexaSkillConfigurationSkillFactory {
     @Singleton
     public AlexaSkill createStandardAlexaSkill() {
         return alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), null);
+    }
+
+    /**
+     *
+     * @return An Skill using the {@link AlexaSkillBuilder} and the {@link SkillBuilderProvider} bean.
+     */
+    @Singleton
+    public Skill createSkill() {
+        AlexaSkill alexaSkill = alexaSkillBuilder.buildSkill(skillBuilderProvider.getSkillBuilder(), null);
+        if (alexaSkill instanceof Skill) {
+            return (Skill) alexaSkill;
+        }
+        return null;
     }
 }

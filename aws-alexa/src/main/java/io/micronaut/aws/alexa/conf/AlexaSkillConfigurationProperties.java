@@ -18,7 +18,6 @@ package io.micronaut.aws.alexa.conf;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
-import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Introspected;
 
 import javax.annotation.Nonnull;
@@ -33,7 +32,6 @@ import javax.validation.constraints.NotBlank;
  */
 @Introspected
 @EachProperty(AlexaSkillConfigurationProperties.SKILLS_PREFIX)
-@Requires(env = AlexaEnvironment.ENV_ALEXA)
 public class AlexaSkillConfigurationProperties implements AlexaSkillConfiguration {
 
     public static final String PREFIX = "alexa";
