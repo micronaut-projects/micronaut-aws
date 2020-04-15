@@ -48,15 +48,8 @@ import java.util.stream.Collectors;
 @Singleton
 public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelope, ResponseEnvelope> {
 
-    private final Map<String, Collection<RequestHandler>> requestHandlersBySkillName = new HashMap<>();
-    private final Map<String, Collection<ExceptionHandler>> exceptionHandlersBySkillName = new HashMap<>();
-    private final Map<String, Collection<RequestInterceptor>> requestInterceptorsBySkillName = new HashMap<>();
-    private final Map<String, Collection<ResponseInterceptor>> responseInterceptorsBySkillName = new HashMap<>();
-
-    private final List<RequestHandler> unqualifiedRequestHandlers;
-    private final List<ExceptionHandler> unqualifiedExceptionHandlers;
-    private final List<RequestInterceptor> unqualifiedRequestInterceptors;
-    private final List<ResponseInterceptor> unqualifiedResponseInterceptors;
+    private final Map<String, SkillBeans> skillBeans = new HashMap<>();
+    private final SkillBeans unqualifiedSkillBeans;
 
     /**
      *
@@ -66,6 +59,11 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
     public DefaultAlexaSkillBuilder(Collection<AlexaSkillConfiguration> alexaSkillConfigurations,
                                     ApplicationContext applicationContext) {
 
+        Map<String, Collection<RequestHandler>> requestHandlersBySkillName = new HashMap<>();
+        Map<String, Collection<ExceptionHandler>> exceptionHandlersBySkillName = new HashMap<>();
+        Map<String, Collection<RequestInterceptor>> requestInterceptorsBySkillName = new HashMap<>();
+        Map<String, Collection<ResponseInterceptor>> responseInterceptorsBySkillName = new HashMap<>();
+
         List<String> names = alexaSkillConfigurations.stream().map(AlexaSkillConfiguration::getName).collect(Collectors.toList());
         for (String name : names) {
             requestHandlersBySkillName.put(name, applicationContext.getBeansOfType(RequestHandler.class, Qualifiers.byName(name)));
@@ -73,34 +71,47 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
             requestInterceptorsBySkillName.put(name, applicationContext.getBeansOfType(RequestInterceptor.class, Qualifiers.byName(name)));
             responseInterceptorsBySkillName.put(name, applicationContext.getBeansOfType(ResponseInterceptor.class, Qualifiers.byName(name)));
         }
+
         Collection<RequestHandler> requestHandlers = applicationContext.getBeansOfType(RequestHandler.class);
-        List<RequestHandler> requestHandlersList = new ArrayList<>(requestHandlers);
+        List<RequestHandler> unqualifiedRequestHandlers = new ArrayList<>(requestHandlers);
         for (String name : requestHandlersBySkillName.keySet()) {
-            requestHandlersList.removeAll(requestHandlersBySkillName.get(name));
+            unqualifiedRequestHandlers.removeAll(requestHandlersBySkillName.get(name));
         }
-        this.unqualifiedRequestHandlers = requestHandlersList;
 
         Collection<ExceptionHandler> exceptionHandlers = applicationContext.getBeansOfType(ExceptionHandler.class);
-        List<ExceptionHandler> exceptionHandlersList = new ArrayList<>(exceptionHandlers);
+        List<ExceptionHandler> unqualifiedExceptionHandlers = new ArrayList<>(exceptionHandlers);
         for (String name : exceptionHandlersBySkillName.keySet()) {
-            exceptionHandlersList.removeAll(exceptionHandlersBySkillName.get(name));
+            unqualifiedExceptionHandlers.removeAll(exceptionHandlersBySkillName.get(name));
         }
-        this.unqualifiedExceptionHandlers = exceptionHandlersList;
 
         Collection<RequestInterceptor> requestInterceptors = applicationContext.getBeansOfType(RequestInterceptor.class);
-
-        List<RequestInterceptor> requestInterceptorsList = new ArrayList<>(requestInterceptors);
+        List<RequestInterceptor> unqualifiedRequestInterceptors = new ArrayList<>(requestInterceptors);
         for (String name : requestInterceptorsBySkillName.keySet()) {
-            requestInterceptorsList.removeAll(requestInterceptorsBySkillName.get(name));
+            unqualifiedRequestInterceptors.removeAll(requestInterceptorsBySkillName.get(name));
         }
-        this.unqualifiedRequestInterceptors = requestInterceptorsList;
 
         Collection<ResponseInterceptor> responseInterceptors = applicationContext.getBeansOfType(ResponseInterceptor.class);
-        List<ResponseInterceptor> responseInterceptorsList = new ArrayList<>(responseInterceptors);
+        List<ResponseInterceptor> unqualifiedResponseInterceptors = new ArrayList<>(responseInterceptors);
         for (String name : responseInterceptorsBySkillName.keySet()) {
-            responseInterceptorsList.removeAll(responseInterceptorsBySkillName.get(name));
+            unqualifiedResponseInterceptors.removeAll(responseInterceptorsBySkillName.get(name));
         }
-        this.unqualifiedResponseInterceptors = responseInterceptorsList;
+
+        for (String name : names) {
+            skillBeans.put(name,
+                    skillBeansByName(name,
+                            requestHandlersBySkillName,
+                            exceptionHandlersBySkillName,
+                            requestInterceptorsBySkillName,
+                            responseInterceptorsBySkillName,
+                            unqualifiedRequestHandlers,
+                            unqualifiedExceptionHandlers,
+                            unqualifiedRequestInterceptors,
+                            unqualifiedResponseInterceptors));
+        }
+        this.unqualifiedSkillBeans = new SkillBeans(unqualifiedRequestHandlers,
+                unqualifiedExceptionHandlers,
+                unqualifiedRequestInterceptors,
+                unqualifiedResponseInterceptors);
     }
 
     @Nonnull
@@ -108,7 +119,7 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
      public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder,
                                                                      @Nullable AlexaSkillConfiguration alexaSkillConfiguration) {
 
-        SkillBeans skillBeans = skillBeansByName(alexaSkillConfiguration != null ? alexaSkillConfiguration.getName() : null);
+        SkillBeans skillBeans = alexaSkillConfiguration == null ? unqualifiedSkillBeans : this.skillBeans.get(alexaSkillConfiguration.getName());
         skillBeans.getRequestHandlers()
                 .stream()
                 .sorted(OrderUtil.COMPARATOR)
@@ -135,7 +146,15 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
         return skillBuilder.build();
     }
 
-    private SkillBeans skillBeansByName(String name) {
+    private SkillBeans skillBeansByName(String name,
+                                        Map<String, Collection<RequestHandler>> requestHandlersBySkillName,
+                                        Map<String, Collection<ExceptionHandler>> exceptionHandlersBySkillName,
+                                        Map<String, Collection<RequestInterceptor>> requestInterceptorsBySkillName,
+                                        Map<String, Collection<ResponseInterceptor>> responseInterceptorsBySkillName,
+                                        List<RequestHandler> unqualifiedRequestHandlers,
+                                        List<ExceptionHandler> unqualifiedExceptionHandlers,
+                                        List<RequestInterceptor> unqualifiedRequestInterceptors,
+                                        List<ResponseInterceptor> unqualifiedResponseInterceptors) {
         List<RequestHandler> requestHandlers = new ArrayList<>();
         requestHandlers.addAll(unqualifiedRequestHandlers);
         if (name != null && requestHandlersBySkillName.containsKey(name)) {
