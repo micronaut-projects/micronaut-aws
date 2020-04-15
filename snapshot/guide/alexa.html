@@ -109,6 +109,9 @@ function addJsClass() {
                     <div class="toc-item" style="margin-left:0px"><a href="#ssmlbuilder"><strong>6.2</strong><span>SSML Builder</span></a>
                     </div>
                     
+                    <div class="toc-item" style="margin-left:0px"><a href="#flashbriefings"><strong>6.3</strong><span>Flash Briefings</span></a>
+                    </div>
+                    
                 </div>
                 
 
@@ -345,6 +348,85 @@ class AlexaApplication(val messageService: MessageService) { <b class="conum">(2
 
 <div class="paragraph">
 <p>Micronaut Alexa ships with a <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/speech-synthesis-markup-language-ssml-reference.html">Speech Systhesys Markup Language</a> builder.</p>
+</div>
+
+<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>6.3 Flash Briefings</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/flashbriefings.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut&#8217;s eases the creation of <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/understand-the-flash-briefing-skill-api.html">Flash Briefing Skills</a>.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>You can create a flash briefing skill to provide Alexa customers with news headlines and other short content. Typically a flash briefing becomes a part of a customer&#8217;s daily routine.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Your application must expose an endpoint which returns a JSON Array of <a href="../api/io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html">FlashBriefingItem</a></p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
+
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+
+import javax.validation.Validator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Controller("/news")
+public class FlashBriefingsController {
+
+    private final Validator validator;
+    private final FlashBriefingRepository flashBriefingRepository;
+
+    public FlashBriefingsController(Validator validator,
+                                    FlashBriefingRepository flashBriefingRepository) {
+        this.validator = validator;
+        this.flashBriefingRepository = flashBriefingRepository;
+    }
+
+    @Get <b class="conum">(1)</b>
+    public List&lt;FlashBriefingItem&gt; index() {
+        return flashBriefingRepository.find()
+                .stream()
+                .filter(item -&gt; validator.validate(item).isEmpty()) <b class="conum">(2)</b>
+                .sorted() <b class="conum">(3)</b>
+                .limit(5) <b class="conum">(4)</b>
+                .collect(Collectors.toList());
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>By default, Micronaut sets the response HTTP Header <code>Content-Type</code> with the value <code>application-json</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Flash Briefing Feed items must be valid according to <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> constraints.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Items should be provided in order from newest to oldest, based on the date value for the item. Alexa may ignore older items.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td><a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> instructs to provide between 1 and 5 unique items at a time.</td>
+</tr>
+</table>
 </div>
 
 
