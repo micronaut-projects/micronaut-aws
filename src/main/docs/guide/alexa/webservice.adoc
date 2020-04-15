@@ -1,0 +1,12 @@
+Micronaut simplifies https://developer.amazon.com/en-US/docs/alexa/custom-skills/host-a-custom-skill-as-a-web-service.html[hosting a Custom Skill as a Web Service].
+
+The `micronaut-aws-webservice` is a fork of Amazon Servlet module. It allow you to run your Alexa Skill backend logic in Micronaut applications deployed with a netty or servlet runtimes.
+
+Just by including the dependency:
+
+dependency:micronaut-aws-alexa-httpserver[groupId="io.micronaut.aws"]
+
+you get an POST endpoint at `/alexa` (the route is configurable via `alexa.endpoint.path`.
+
+You can configure your Skill's endpoint under `Build/Endpoint` in the Alexa developer console.
+

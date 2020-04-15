@@ -9,9 +9,11 @@ lambda:
   apiProxy: AWS API Gateway Support
   customRuntimes: AWS Lambda Custom Runtimes
 alexa:
-  title: Alexa Skill Support
-  intentHandler: The IntentHandler Annotation
+  title: Alexa Support
   ssmlbuilder: SSML Builder
+  intentHandler: The IntentHandler Annotation
+  webservice: Alexa Skill as a Web Service
+  alexalambda: Alexa Skill as an AWS Lambda Function
   flashbriefings: Flash Briefings
 repository: Repository
 breaks: Breaking Changes
