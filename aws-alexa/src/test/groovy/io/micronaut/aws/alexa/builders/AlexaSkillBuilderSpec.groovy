@@ -17,6 +17,7 @@ import io.micronaut.inject.qualifiers.Qualifiers
 import spock.lang.Shared
 import spock.lang.Subject
 
+import javax.inject.Named
 import javax.inject.Singleton
 import javax.validation.ConstraintViolationException
 
@@ -24,7 +25,10 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
 
     @Override
     Map<String, Object> getConfiguration() {
-        super.configuration + ["alexa.skills.helloworld.skill-id": "23132234234234324dsf"]
+        super.configuration + [
+                "alexa.skills.helloworld.skill-id": "23132234234234324dsf",
+                "alexa.skills.hellomoon.skill-id": "55235151234234234324dsf",
+        ]
     }
 
     @Subject
@@ -59,8 +63,27 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
 
 
         then:
-        dispatcher.responseInterceptors.size() == 1
-        dispatcher.requestInterceptors.size() == 1
+        dispatcher.responseInterceptors.size() == 1 // 1 qualified
+        dispatcher.requestInterceptors.size() == 1 // 1 unqualified
+
+        when:
+        alexaSkill = alexaSkillBuilder.buildSkill(Skills.standard(), applicationContext.getBean(AlexaSkillConfiguration, Qualifiers.byName("hellomoon")))
+
+        then:
+        alexaSkill instanceof Skill
+        alexaSkill instanceof CustomSkill
+        ((CustomSkill ) alexaSkill).skillId == "55235151234234234324dsf"
+
+        and:
+        (((Skill) alexaSkill).requestDispatcher) instanceof BaseRequestDispatcher
+
+        when:
+        dispatcher  =  (BaseRequestDispatcher)((Skill)alexaSkill).requestDispatcher
+
+
+        then:
+        dispatcher.responseInterceptors.size() == 1 // 1 unqualified
+        dispatcher.requestInterceptors.size() == 2 // 1 unqualified + 1 qualified
     }
 
     @Override
@@ -72,6 +95,7 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
     @Singleton
     static class MyResponseInterceptor implements ResponseInterceptor {
     }
+
 
     @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
     @Singleton
@@ -90,5 +114,11 @@ class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
     @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
     @Singleton
     static class MyRequestInterceptor implements RequestInterceptor {
+    }
+
+    @Requires(property = 'spec.name', value = 'AlexaSkillBuilderSpec')
+    @Named("hellomoon")
+    @Singleton
+    static class MoonRequestInterceptor implements RequestInterceptor {
     }
 }
