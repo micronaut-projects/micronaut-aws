@@ -15,41 +15,44 @@
  */
 package io.micronaut.function.aws.alexa
 
+import com.amazon.ask.AlexaSkill
+import com.amazon.ask.CustomSkill
+import com.amazon.ask.Skill
 import com.amazon.ask.dispatcher.request.handler.HandlerInput
 import com.amazon.ask.dispatcher.request.handler.RequestHandler
 import com.amazon.ask.model.Intent
 import com.amazon.ask.model.IntentRequest
 import com.amazon.ask.model.RequestEnvelope
 import com.amazon.ask.model.Response
+import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration
+import io.micronaut.aws.alexa.handlers.AnnotatedRequestHandler
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.DefaultApplicationContext
-import io.micronaut.context.annotation.Bean
-import io.micronaut.function.aws.alexa.handlers.AnnotatedRequestHandler
-import io.micronaut.function.aws.alexa.handlers.DefaultSessionEndedRequestHandler
 import spock.lang.Specification
+import spock.util.environment.RestoreSystemProperties
 
 import javax.inject.Singleton
-import java.beans.beancontext.BeanContext
 
 class AlexaFunctionSpec extends Specification {
 
+    @RestoreSystemProperties
     void "test init"() {
         when:
         // no good way to pass in run properties so this is a workaround to test
-        System.setProperty("alexa.skill-id","23132234234234324dsf")
+        System.setProperty("alexa.skills.helloworld.skill-id","23132234234234324dsf")
         AlexaFunction function = new AlexaFunction()
-        def context = AlexaFunction.currentAlexaApplicationContext
+        ApplicationContext context = function.applicationContext
+        context.containsBean(AlexaSkill)
+        context.containsBean(Skill)
 
         then:
         context.isRunning()
-        context.getBean(AlexaConfiguration.class).skillId == "23132234234234324dsf"
+        context.getBean(AlexaSkillConfiguration.class).skillId == "23132234234234324dsf"
 
         when:
         def requestHandlers = context.getBeansOfType(RequestHandler)
 
         then:
-        requestHandlers.size() == 3
-        requestHandlers.find { it instanceof DefaultSessionEndedRequestHandler}
+        requestHandlers.size() == 2
         requestHandlers.find { it instanceof MyHandler}
 
         when:
@@ -66,31 +69,37 @@ class AlexaFunctionSpec extends Specification {
         envelopeBuilder.withRequest(intentBuilder.build())
         builder.withRequestEnvelope(envelopeBuilder.build())
 
-
         then:
         handler.canHandle(builder.build())
 
         cleanup:
         function?.close()
     }
-
 
     void "test init - no config"() {
         when:
-        System.clearProperty("alexa.skill-id")
         AlexaFunction function = new AlexaFunction()
-        def context = AlexaFunction.currentAlexaApplicationContext
+        ApplicationContext context = function.applicationContext
 
         then:
         context.isRunning()
-        context.getBean(AlexaConfiguration.class).skillId == null
+        !context.containsBean(AlexaSkillConfiguration.class)
+        context.containsBean(Skill)
+        context.containsBean(AlexaSkill)
+
+        when:
+        AlexaSkill alexaSkill = context.getBean(AlexaSkill)
+
+        then:
+        noExceptionThrown()
+        alexaSkill instanceof CustomSkill
+        !((CustomSkill) alexaSkill).skillId
 
         when:
         def requestHandlers = context.getBeansOfType(RequestHandler)
 
         then:
-        requestHandlers.size() == 3
-        requestHandlers.find { it instanceof DefaultSessionEndedRequestHandler}
+        requestHandlers.size() == 2
         requestHandlers.find { it instanceof MyHandler}
 
         when:
@@ -114,7 +123,6 @@ class AlexaFunctionSpec extends Specification {
         cleanup:
         function?.close()
     }
-
 
     @Singleton
     static class MyHandler implements RequestHandler {

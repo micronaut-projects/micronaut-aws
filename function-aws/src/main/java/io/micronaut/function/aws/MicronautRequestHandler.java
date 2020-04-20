@@ -41,6 +41,9 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
+    /**
+     * Constructor.
+     */
     public MicronautRequestHandler() {
         buildApplicationContext(null);
         applicationContext.inject(this);

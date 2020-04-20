@@ -1,0 +1,5 @@
+The `micronaut-function-aws-alexa` module includes support for building deploying an Alexa Skill as a Lambda Function.
+
+dependency:micronaut-function-aws-alexa[groupId="io.micronaut.aws"]
+
+As handler specify `io.micronaut.function.aws.alexa.AlexaFunction`. You don't need to create a class which extends `SkillStreamHandler`, api:function.aws.alexa.AlexaFunction[] takes care of adding request handlers interceptors etc.

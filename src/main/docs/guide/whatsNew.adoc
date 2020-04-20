@@ -1,0 +1,1 @@
+See the section <<breaks, Breaking Changes>> to ease into the migration to Micronaut AWS 2.x
