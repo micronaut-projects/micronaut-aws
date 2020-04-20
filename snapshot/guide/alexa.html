@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>6 Alexa Support 2.0.0.BUILD-SNAPSHOT</title>
+    <title>4 Alexa Skill Support 1.4.1.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -41,28 +41,16 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/whatsNew.html"><strong>2</strong><span>What's new?</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/awsCredentialsProvider.html"><strong>2</strong><span>AWS Credentials Provider</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/corretto.html"><strong>3</strong><span>Amazon Correto</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>3</strong><span>AWS Lambda Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/awsCredentialsProvider.html"><strong>4</strong><span>AWS Credentials Provider</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>4</strong><span>Alexa Skill Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>5</strong><span>AWS Lambda Support</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>6</strong><span>Alexa Support</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>8</strong><span>Breaking Changes</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>9</strong><span>Release History</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>5</strong><span>Repository</span></a>
                         </div>
                         
                     </div>
@@ -83,46 +71,34 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>3</strong><span>AWS Lambda Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>5</strong><span>Repository</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>6 Alexa Support</h1>
+                    <h1>4 Alexa Skill Support</h1>
 
-                    <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 1.4.1.BUILD-SNAPSHOT</p>
                 </div>
 
                 
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#ssmlbuilder"><strong>6.1</strong><span>SSML Builder</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#intentHandler"><strong>6.2</strong><span>The IntentHandler Annotation</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#webservice"><strong>6.3</strong><span>Alexa Skill as a Web Service</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#alexalambda"><strong>6.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a>
-                    </div>
-                    
-                    <div class="toc-item" style="margin-left:0px"><a href="#flashbriefings"><strong>6.5</strong><span>Flash Briefings</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#intentHandler"><strong>4.1</strong><span>The IntentHandler Annotation</span></a>
                     </div>
                     
                 </div>
                 
 
                 
-<h1 id="alexa"><a class="anchor" href="#alexa"></a>6 Alexa Support</h1>
+<h1 id="alexa"><a class="anchor" href="#alexa"></a>4 Alexa Skill Support</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa.adoc"'>
@@ -132,89 +108,42 @@ function addJsClass() {
 
 
 <div class="paragraph">
-<p>The Micronaut&#8217;s <code>aws-alexa</code> module simplifies development of Alexa Skills with Java, Kotlin or Groovy.</p>
+<p>The <code>micronaut-function-aws-alexa</code> module includes support for building Alexa Skills with Micronaut:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-alexa")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-alexa")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-aws-alexa&lt;/artifactId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-alexa&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </p>
 </div>
-<div class="paragraph">
-<p>To create the sample skill described in
-<a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html">Amazon Documentation - Develop your first skill</a> with Micronaut&#8217;s Alexa you will write the same <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#launchrequest-handler">LaunchRequestHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helloworldintent-handler">HelloWorldIntent</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helpintent-handler">HelpIntent</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#cancelandstopintent-handler">CancelandStopHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#fallbackintent-handler">FallbackIntentHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#sessionendedrequest-handler">SessionEndedRequestHandler</a> handlers.</p>
-</div>
-<div class="paragraph">
-<p>You will do just one change, you will annotate those handlers with <code>javax.inject.Singleton</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.Response;
-import com.amazon.ask.request.Predicates;
-
-import javax.inject.Singleton;
-import java.util.Optional;
-
-@Singleton <i class="conum" data-value="1"></i><b>(1)</b>
-public class HelloWorldIntentHandler implements RequestHandler {
-
-    @Override
-    public boolean canHandle(HandlerInput input) {
-        return input.matches(Predicates.intentName("HelloWorldIntent"));
-    }
-
-    @Override
-    public Optional&lt;Response&gt; handle(HandlerInput input) {
-        String speechText = "Hello world";
-        return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build();
-    }
-
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
+<div class="admonitionblock tip">
 <table>
 <tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The Singleton scope indicates only one instance of the bean should exist in the <a href="https://docs.micronaut.io/latest/guide/index.html#beanContext">Micronaut&#8217;s Bean Context</a></td>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+In Micronaut 1.1 or above you can create an Alexa Skills application with <code>mn create-function hello-alexa --provider alexa</code>
+</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Typically, the next step will be to provide an instance of
-<a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">AlexaSkillConfiguration</a>. The easiest way to do that is to configure the skill id via configuration:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">alexa:
-  skills:
-    myskill:
-      skill-id 'xxxx-yaaa-zz123'</code></pre>
-</div>
+<p>When using Micronaut&#8217;s Alexa support you set your Lambda handler name to <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> class or a sublcass of this class if you plan to customize it.</p>
 </div>
 <div class="paragraph">
-<p>Micronaut&#8217;s alexa module provides by default
-<a href="../api/io/micronaut/aws/alexa/builders/StandardSkillBuilderProvider.html">StandardSkillBuilderProvider</a> which creates an SDK instance using the <code>Skills.standard</code> builder. You can provide your own implementation of Micronaut&#8217;s <a href="../api/io/micronaut/aws/alexa/builders/SkillBuilderProvider.html">SkillBuilderProvider</a>.</p>
-</div>
-<div class="paragraph">
-<p>For each <a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">AlexaSkillConfiguration</a> bean,
-Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/builders/SkillBuilderProvider.html">SkillBuilderProvider</a> to create for you a bean of type <a href="http://ask-sdk-java-javadocs.s3-website-us-west-2.amazonaws.com">AlexaSkill</a> for you and wires up the beans of the following types:</p>
+<p>The <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> will wire up your Alexa application and supports dependency injection of the following types:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -225,9 +154,6 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 <p><code>com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor</code></p>
 </li>
 <li>
-<p><code>com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor</code></p>
-</li>
-<li>
 <p><code>com.amazon.ask.dispatcher.exception.ExceptionHandler</code></p>
 </li>
 <li>
@@ -235,26 +161,27 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 </li>
 </ul>
 </div>
-
-<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>6.1 SSML Builder</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
 <div class="paragraph">
-<p>Micronaut Alexa ships with a <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/speech-synthesis-markup-language-ssml-reference.html">Speech Systhesys Markup Language</a> builder.</p>
+<p>Simply declaring these types as beans will automatically configure the Alexa Skill appropriately.</p>
 </div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">new Ssml().speak(new Ssml("Welcome to Ride Hailer. ").audio('soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01').build()).build() == '&lt;speak&gt;Welcome to Ride Hailer. &lt;audio src="soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01"/&gt;&lt;/speak&gt;'</code></pre>
+<div class="paragraph">
+<p>To set the skill ID of your skill to enable skill verification, set the following property in Micronaut (application.yml or environment variable)
+under the property name 'alexa.skill.id'.</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You can find sample applications in Java, Kotlin and Groovy in the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master/examples">Examples</a> directory of the repository.
+</td>
+</tr>
+</table>
 </div>
 
-<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>6.2 The IntentHandler Annotation</h2>
+<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>4.1 The IntentHandler Annotation</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/intentHandler.adoc"'>
@@ -389,166 +316,12 @@ class AlexaApplication(val messageService: MessageService) { <b class="conum">(2
 </table>
 </div>
 
-<h2 id="webservice"><a class="anchor" href="#webservice"></a>6.3 Alexa Skill as a Web Service</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/webservice.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Micronaut simplifies <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/host-a-custom-skill-as-a-web-service.html">hosting a Custom Skill as a Web Service</a>.</p>
-</div>
-<div class="paragraph">
-<p>The <code>micronaut-aws-webservice</code> is a fork of Amazon Servlet module. It allow you to run your Alexa Skill backend logic in Micronaut applications deployed with a netty or servlet runtimes.</p>
-</div>
-<div class="paragraph">
-<p>Just by including the dependency:</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-alexa-httpserver")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-aws-alexa-httpserver&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>you get an POST endpoint at <code>/alexa</code> (the route is configurable via <code>alexa.endpoint.path</code>.</p>
-</div>
-<div class="paragraph">
-<p>You can configure your Skill&#8217;s endpoint under <code>Build/Endpoint</code> in the Alexa developer console.</p>
-</div>
-
-<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>6.4 Alexa Skill as an AWS Lambda Function</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexalambda.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>The <code>micronaut-function-aws-alexa</code> module includes support for building deploying an Alexa Skill as a Lambda Function.</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-alexa")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-function-aws-alexa&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
-</div>
-
-<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>6.5 Flash Briefings</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/flashbriefings.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Micronaut&#8217;s eases the creation of <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/understand-the-flash-briefing-skill-api.html">Flash Briefing Skills</a>.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>You can create a flash briefing skill to provide Alexa customers with news headlines and other short content. Typically a flash briefing becomes a part of a customer&#8217;s daily routine.</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>Your application must expose an endpoint which returns a JSON Array of <a href="../api/io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html">FlashBriefingItem</a></p>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
-
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-
-import javax.validation.Validator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Controller("/news")
-public class FlashBriefingsController {
-
-    private final Validator validator;
-    private final FlashBriefingRepository flashBriefingRepository;
-
-    public FlashBriefingsController(Validator validator,
-                                    FlashBriefingRepository flashBriefingRepository) {
-        this.validator = validator;
-        this.flashBriefingRepository = flashBriefingRepository;
-    }
-
-    @Get <b class="conum">(1)</b>
-    public List&lt;FlashBriefingItem&gt; index() {
-        return flashBriefingRepository.find()
-                .stream()
-                .filter(item -&gt; validator.validate(item).isEmpty()) <b class="conum">(2)</b>
-                .sorted() <b class="conum">(3)</b>
-                .limit(5) <b class="conum">(4)</b>
-                .collect(Collectors.toList());
-    }
-
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>By default, Micronaut sets the response HTTP Header <code>Content-Type</code> with the value <code>application-json</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Flash Briefing Feed items must be valid according to <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> constraints.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Items should be provided in order from newest to oldest, based on the date value for the item. Alexa may ignore older items.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td><a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> instructs to provide between 1 and 5 unique items at a time.</td>
-</tr>
-</table>
-</div>
-
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>3</strong><span>AWS Lambda Support</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>5</strong><span>Repository</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
