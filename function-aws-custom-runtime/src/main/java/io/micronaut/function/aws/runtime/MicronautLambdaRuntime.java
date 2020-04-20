@@ -19,6 +19,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.core.cli.CommandLine;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
@@ -28,7 +29,6 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.runtime.context.env.CommandLinePropertySource;
 
 import javax.annotation.Nonnull;
 import java.io.PrintWriter;
