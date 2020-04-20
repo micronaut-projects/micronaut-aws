@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>6.5 Flash Briefings 2.0.0.BUILD-SNAPSHOT</title>
+    <title>6.3 Alexa Skill as a Web Service 2.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -94,7 +94,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>6.5 Flash Briefings</h1>
+                    <h1>6.3 Alexa Skill as a Web Service</h1>
 
                     <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -102,83 +102,46 @@ function addJsClass() {
                 
 
                 
-<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>6.5 Flash Briefings</h2>
+<h2 id="webservice"><a class="anchor" href="#webservice"></a>6.3 Alexa Skill as a Web Service</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/flashbriefings.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/webservice.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Micronaut&#8217;s eases the creation of <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/understand-the-flash-briefing-skill-api.html">Flash Briefing Skills</a>.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>You can create a flash briefing skill to provide Alexa customers with news headlines and other short content. Typically a flash briefing becomes a part of a customer&#8217;s daily routine.</p>
-</div>
-</blockquote>
+<p>Micronaut simplifies <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/host-a-custom-skill-as-a-web-service.html">hosting a Custom Skill as a Web Service</a>.</p>
 </div>
 <div class="paragraph">
-<p>Your application must expose an endpoint which returns a JSON Array of <a href="../api/io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html">FlashBriefingItem</a></p>
+<p>The <code>micronaut-aws-webservice</code> is a fork of Amazon Servlet module. It allow you to run your Alexa Skill backend logic in Micronaut applications deployed with a netty or servlet runtimes.</p>
+</div>
+<div class="paragraph">
+<p>Just by including the dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-alexa-httpserver")</span></code></pre>
+</div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
-
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-
-import javax.validation.Validator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Controller("/news")
-public class FlashBriefingsController {
-
-    private final Validator validator;
-    private final FlashBriefingRepository flashBriefingRepository;
-
-    public FlashBriefingsController(Validator validator,
-                                    FlashBriefingRepository flashBriefingRepository) {
-        this.validator = validator;
-        this.flashBriefingRepository = flashBriefingRepository;
-    }
-
-    @Get <b class="conum">(1)</b>
-    public List&lt;FlashBriefingItem&gt; index() {
-        return flashBriefingRepository.find()
-                .stream()
-                .filter(item -&gt; validator.validate(item).isEmpty()) <b class="conum">(2)</b>
-                .sorted() <b class="conum">(3)</b>
-                .limit(5) <b class="conum">(4)</b>
-                .collect(Collectors.toList());
-    }
-
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-alexa-httpserver&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>By default, Micronaut sets the response HTTP Header <code>Content-Type</code> with the value <code>application-json</code>.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Flash Briefing Feed items must be valid according to <a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> constraints.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Items should be provided in order from newest to oldest, based on the date value for the item. Alexa may ignore older items.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td><a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> instructs to provide between 1 and 5 unique items at a time.</td>
-</tr>
-</table>
+</p>
+</div>
+<div class="paragraph">
+<p>you get an POST endpoint at <code>/alexa</code> (the route is configurable via <code>alexa.endpoint.path</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can configure your Skill&#8217;s endpoint under <code>Build/Endpoint</code> in the Alexa developer console.</p>
 </div>
 
 
