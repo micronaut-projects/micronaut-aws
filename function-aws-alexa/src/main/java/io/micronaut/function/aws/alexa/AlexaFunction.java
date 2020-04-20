@@ -66,7 +66,8 @@ public class AlexaFunction implements RequestStreamHandler, AutoCloseable, Close
      */
     @NonNull
     protected ApplicationContextBuilder newApplicationContextBuilder() {
-        return ApplicationContext.build(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, AlexaEnvironment.ENV_ALEXA);
+        return ApplicationContext.build(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, AlexaEnvironment.ENV_ALEXA)
+                .eagerInitSingletons(true);
     }
 
     /**

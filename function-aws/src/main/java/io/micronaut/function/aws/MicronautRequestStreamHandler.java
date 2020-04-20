@@ -69,6 +69,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         ApplicationContextBuilder builder = super.newApplicationContextBuilder();
         builder.environments(ENVIRONMENT_LAMBDA);
+        builder.eagerInitSingletons(true);
         return builder;
     }
 
