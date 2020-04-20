@@ -235,8 +235,12 @@ public final class MicronautLambdaContainerHandler
             this.lambdaContainerEnvironment.setJsonCodec(applicationContext.getBean(JsonMediaTypeCodec.class));
             this.lambdaContainerEnvironment.setRouter(applicationContext.getBean(Router.class));
 
-            applicationContext.findBean(ObjectMapper.class, Qualifiers.byName("aws"))
-                    .ifPresent(this.lambdaContainerEnvironment::setObjectMapper);
+            Optional<ObjectMapper> objectMapper = applicationContext.findBean(ObjectMapper.class, Qualifiers.byName("aws"));
+            if (objectMapper.isPresent()) {
+                lambdaContainerEnvironment.setObjectMapper(objectMapper.get());
+            } else {
+                lambdaContainerEnvironment.setObjectMapper(applicationContext.getBean(ObjectMapper.class));
+            }
 
             this.requestArgumentSatisfier = new RequestArgumentSatisfier(
                     applicationContext.getBean(RequestBinderRegistry.class)

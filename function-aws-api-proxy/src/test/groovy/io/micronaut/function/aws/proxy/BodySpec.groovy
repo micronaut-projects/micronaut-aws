@@ -2,7 +2,9 @@ package io.micronaut.function.aws.proxy
 
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpHeaders
@@ -41,6 +43,26 @@ class BodySpec extends Specification {
         response.body == '{"x":10,"y":20}'
 
     }
+
+    void "test readFor"() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body('{"x":10,"y":20}')
+        def objectMapper = handler.getApplicationContext().getBean(ObjectMapper)
+        def bytes = objectMapper.writeValueAsBytes(builder.build())
+        def output = new ByteArrayOutputStream()
+
+
+        when:
+        handler.proxyStream(new ByteArrayInputStream(bytes), output, lambdaContext)
+        def response = objectMapper.readValue(output.toByteArray(), AwsProxyResponse)
+        then:
+        response.statusCode == 201
+        response.body == '{"x":10,"y":20}'
+
+    }
+
 
     void "test custom body POJO - default to JSON"() {
         given:
