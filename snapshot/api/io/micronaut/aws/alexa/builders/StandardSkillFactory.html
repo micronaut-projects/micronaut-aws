@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10};
+var methods = {"i0":10,"i1":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -155,6 +155,10 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>com.amazon.ask.Skill</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">createSkill</a></span>(<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</code>&nbsp;</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>com.amazon.ask.AlexaSkill</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/alexa/builders/StandardSkillFactory.html#createStandardAlexaSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">createStandardAlexaSkill</a></span>(<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</code>&nbsp;</td>
 </tr>
@@ -206,12 +210,29 @@ extends java.lang.Object</pre>
 <a name="createStandardAlexaSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>createStandardAlexaSkill</h4>
 <pre>@EachBean(value=<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration.class</a>)
 public&nbsp;com.amazon.ask.AlexaSkill&nbsp;createStandardAlexaSkill(@Parameter
                                                                                                          <a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</pre>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>alexaSkillConfiguration</code> - Alexa Skill Configuration</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>An Alexa Skill using the <a href="../../../../../io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders"><code>AlexaSkillBuilder</code></a> and the <a href="../../../../../io/micronaut/aws/alexa/builders/SkillBuilderProvider.html" title="interface in io.micronaut.aws.alexa.builders"><code>SkillBuilderProvider</code></a> bean.</dd>
+</dl>
+</li>
+</ul>
+<a name="createSkill-io.micronaut.aws.alexa.conf.AlexaSkillConfiguration-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>createSkill</h4>
+<pre>@EachBean(value=<a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration.class</a>)
+public&nbsp;com.amazon.ask.Skill&nbsp;createSkill(@Parameter
+                                                                                       <a href="../../../../../io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf">AlexaSkillConfiguration</a>&nbsp;alexaSkillConfiguration)</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>alexaSkillConfiguration</code> - Alexa Skill Configuration</dd>
