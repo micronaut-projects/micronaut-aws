@@ -47,7 +47,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
         MockLambadaRuntimeApi lambadaRuntimeApi = embeddedServer.applicationContext.getBean(MockLambadaRuntimeApi)
 
         expect:
-        new PollingConditions().eventually {
+        new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
             assert lambadaRuntimeApi.responses['123456'].body == 'Hello 123456'
