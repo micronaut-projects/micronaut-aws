@@ -1,0 +1,11 @@
+Micronaut's eases the deployment of your functions as a https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html[Custom AWS Lambda runtime]:
+
+> A runtime is a program that runs a Lambda function's handler method when the function is invoked. You can include a runtime in your function's deployment package in the form of an executable file named bootstrap.
+
+Why would you want to deploy your function as a Custom Runtime? For example, to use a different JVM than the one AWS provides or execute your function as https://www.graalvm.org/docs/reference-manual/native-image/[GraalVM Native Image].
+
+First, you need to add the `micronaut-function-aws-custom-runtime` dependency to your build:
+
+dependency:micronaut-function-aws-custom-runtime[groupId="io.micronaut.aws"]
+
+The main API you will interact with is api:function.aws.runtime.AbstractMicronautLambdaRuntime[]. An abstract class which you can extend to create your custom runtime `mainClass`. That class includes the necessary code to perform the https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html#runtimes-custom-build[Processing Tasks] described in the Custom Runtime documentation.

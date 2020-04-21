@@ -3,7 +3,7 @@ package io.micronaut.docs;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 
-@Introspected
+@Introspected // <1>
 class CustomMicronautRequestHandler extends MicronautRequestHandler<Book, BookSaved> {
 
     @Override

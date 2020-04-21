@@ -7,7 +7,12 @@ lambda:
   title: AWS Lambda Support
   requestHandlers: Micronaut Request Handlers
   apiProxy: AWS API Gateway Support
-  customRuntimes: AWS Lambda Custom Runtimes
+lambdaCustomRuntimes:
+  title: AWS Lambda Custom Runtime
+  customRuntimeHandler: Custom Runtime for Handler functions
+  customRuntimeDeploy: Deploy a Custom Runtime
+  customRuntimeApiGateway: Custom runtime for AWS API Gateway Proxy functions
+  customRuntimeGraal: Custom runtime for Function as a GraalVM Native Image
 alexa:
   title: Alexa Support
   ssmlbuilder: SSML Builder

@@ -37,7 +37,9 @@ The `MicronautLambdaContainerHandler` constructor also accepts a `ApplicationCon
 
 TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-gateway-example[Example Application] and associated https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-gateway-example/README.md[README] for instructions on how to deploy locally using https://github.com/awslabs/aws-sam-cli[AWS SAM Local] and AWS Cloud Formation for production.
 
-=== `ObjectMapper` configuration
+Micronaut API Gateway Proxy builds on top of https://github.com/awslabs/aws-serverless-java-container/[AWS Servless Java Container]. You can check a https://github.com/awslabs/aws-serverless-java-container/tree/master/samples/micronaut/pet-store[Pet Store sample application].
+
+== `ObjectMapper` configuration
 
 By default, for efficiency reasons, Micronaut uses the default Jackson `ObjectMapper` to communicate with the AWS API proxy.
 However, if you have configured it for your application (for example, setting `jackson.propertyNamingStrategy: SNAKE_CASE`)

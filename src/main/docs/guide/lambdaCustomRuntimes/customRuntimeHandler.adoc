@@ -1,0 +1,37 @@
+Lets describe a scenario with a handler which works with an input and output POJO.
+
+snippet::io.micronaut.docs.CustomMicronautRequestHandler[project="function-aws-custom-runtime", source="test"]
+
+<1> Annotate your handler with `io.micronaut.core.annotation.Introspected` so that Micronaut can instantiate the handler.
+
+snippet::io.micronaut.docs.Book[project="function-aws-custom-runtime", source="test", tags="imports,clazz"]
+
+<1> Annotate your POJOs with `io.micronaut.core.annotation.Introspected` for reflection-free JSON serialization and deserialization.
+
+snippet::io.micronaut.docs.BookSaved[project="function-aws-custom-runtime", source="test", tags="imports,clazz"]
+
+<1> Annotate your POJOs with `io.micronaut.core.annotation.Introspected` for reflection-free JSON serialization and deserialization.
+
+CAUTION: In the AWS Console, as *Handler* value you will set `io.micronaut.docs.CustomMicronautRequestHandler`.
+
+=== bootstrap
+
+You will deploy your custom runtime code as a ZIP file. At the root of the ZIP file you need a bootstrap file.
+
+> If there's a file named bootstrap in your deployment package, Lambda executes that file.
+
+Create a `bootstrap` bash script:
+
+.Example `bootstrap`
+[source,bash]
+----
+#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.docs.MyLambdaRuntime
+----
+
+Create the class referenced in the previous `bootstrap` file:
+
+snippet::io.micronaut.docs.MyLambdaRuntime[project="function-aws-custom-runtime", source="test"]
+
+The above class is an example of a https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html[Lambda whose trigger is an API Gateway event].

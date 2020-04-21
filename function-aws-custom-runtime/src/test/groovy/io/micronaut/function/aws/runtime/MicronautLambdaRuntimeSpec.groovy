@@ -40,7 +40,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
         String serverUrl = "localhost:$embeddedServer.port"
         CustomMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomMicronautLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
-            customMicronautLambdaRuntime.run([] as String[])
+             customMicronautLambdaRuntime.run([] as String[])
         })
         t.start()
 

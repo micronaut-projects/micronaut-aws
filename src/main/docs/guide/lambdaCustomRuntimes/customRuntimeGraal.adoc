@@ -1,0 +1,96 @@
+To achieve the absolutely best cold startup time you can create a function that is compiled into a GraalVM native image and then run it from the `bootstrap` script.
+
+You need several pieces in place:
+
+== GraalVM native-image.properties
+
+First you will need to create a https://www.graalvm.org/docs/reference-manual/native-image/#native-image-configuration[native-image.properties file]:
+
+[source, properties]
+.src/main/resources/META-INF/io/micronaut/docs/native-image.properties
+----
+Args = -H:IncludeResources=logback.xml|application.yml \
+       -H:Name=demo # <1>
+       -H:Class=io.micronaut.docs.MyLambdaRuntime # <2>
+----
+
+<1> This is the native image name. You reference this name in the Dockerfile which builds the native image
+<2> This is the `mainClass` of your app.
+
+== A Dockerfile to build a GraalVM native image
+
+Create a `Dockerfile` which:
+
+- Uses the `amazonlinux` image
+- Builds the JAR of the function.
+- Install the necessary dependencies.
+- Downloads GraalVM community edition
+- Installs `native-image` utility.
+- With the `native-image` command and the JAR, generates a GraalVM native image
+- Bundles the native image of our function and the bootstrap file into a ZIP file.
+
+.Dockerfile to generate a native image
+[source,bash]
+----
+FROM gradle:6.3.0-jdk8 as builder
+COPY --chown=gradle:gradle . /home/application
+WORKDIR /home/application
+RUN ./gradlew build --no-daemon
+
+FROM amazonlinux:2018.03.0.20191014.0 as graalvm
+
+ENV LANG=en_US.UTF-8
+
+RUN yum install -y gcc gcc-c++ libc6-dev  zlib1g-dev curl bash zlib zlib-devel zip
+
+ENV GRAAL_VERSION 20.0.0
+ENV JDK_VERSION java8
+ENV GRAAL_FILENAME graalvm-ce-${JDK_VERSION}-linux-amd64-${GRAAL_VERSION}.tar.gz
+
+RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/${GRAAL_FILENAME} -o /tmp/${GRAAL_FILENAME}
+
+RUN tar -zxvf /tmp/${GRAAL_FILENAME} -C /tmp \
+    && mv /tmp/graalvm-ce-${JDK_VERSION}-${GRAAL_VERSION} /usr/lib/graalvm
+
+RUN rm -rf /tmp/*
+CMD ["/usr/lib/graalvm/bin/native-image"]
+
+FROM graalvm
+COPY --from=builder /home/application/ /home/application/
+WORKDIR /home/application
+RUN /usr/lib/graalvm/bin/gu install native-image
+RUN /usr/lib/graalvm/bin/native-image --no-server -cp build/libs/demo-*-all.jar
+RUN chmod 777 bootstrap
+RUN chmod 777 demo // <1>
+RUN zip -j function.zip bootstrap demo // <1>
+EXPOSE 8080
+ENTRYPOINT ["/home/application/demo"]
+----
+
+<1> It matches the name used in the `native-image.properties` file.
+
+== Execute the native image from bootstrap
+
+Invoke the native image from the `bootstrap` script:
+
+.Example `bootstrap` with native image
+[source, bash]
+----
+#!/bin/sh
+set -euo pipefail
+./demo -Xmx128m -Djava.library.path=$(pwd)
+----
+
+== A script to build the function ZIP
+
+You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:
+
+.Building the Function ZIP file with a script
+[source,bash]
+.deploy.sh
+----
+#!/bin/bash
+docker build . -t demo
+mkdir -p build
+docker run --rm --entrypoint cat demo  /home/application/function.zip > build/function.zip
+----

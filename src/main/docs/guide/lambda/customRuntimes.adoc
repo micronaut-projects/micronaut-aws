@@ -1,64 +1,3 @@
-You may wish to implement a custom runtime, for example if you wish to use a different JVM than the one AWS provides.
-
-The api:function.aws.runtime.MicronautLambdaRuntime[] class provides an implementation that you can use to execute a custom runtime. You need to add the `micronaut-function-aws-custom-runtime` dependency to your build:
-
-dependency:micronaut-function-aws-custom-runtime[groupId="io.micronaut.aws"]
-
-The application should be built with using the <<apiProxy, API Gateway>> approach.
-
-=== Custom Java Runtimes
-
-Then create a `bootstrap` bash script. The following is an example `bootstrap`
-
-.Example `bootstrap`
-[source,bash]
-----
-#!/bin/sh
-set -euo pipefail
-java -XX:TieredStopAtLevel=1 -noverify -cp server.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime
-----
-
-You then need to create a zip bundle including the `bootstrap` and your application JAR filed (in the above case named `server.jar`) for deployment to AWS and specify a runtime of `provided`. For example:
-
-[source,bash]
-----
-aws lambda create-function --function-name my-function \
---zip-file fileb://function.zip --handler function.handler --runtime provided \
---role arn:aws:iam::123456789:role/lambda_basic_execution
-----
-
-TIP: See https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.html[Publishing a Custom Runtime] for more information.
-
-=== Custom GraalVM Native Runtimes
-
-To achieve the absolutely best cold startup time you can create an API Gateway application that is compiled into a native image and then run using a custom AWS Lambda Runtime. The quickest way to get started is with the Micronaut 1.1 or above CLI:
-
-[TIP]
-.Using the CLI
-====
-----
-$ mn create-app my-app --features aws-api-gateway-graal
-----
-====
-
-Then create a controller, for example:
-
-.Example Controller
-[source,java]
-----
-include::examples/api-gateway-example/src/main/java/example/PingController.java[]
-----
-
-You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:
-
-.Building the Function ZIP file
-[source,bash]
-----
-$ docker build . -t my-app
-$ mkdir build
-$ docker run --rm --entrypoint cat my-app  /home/application/function.zip > build/function.zip
-----
-
 The application can then be deployed to Lambda either via the AWS console or the CLI:
 
 .Deploying the Function with the AWS CLI
@@ -80,4 +19,3 @@ $ cat build/response.txt
 
 There is a complete, step-by-step guide about https://guides.micronaut.io/micronaut-function-graalvm-aws-lambda-gateway/guide/index.html[Micronaut Functions in GraalVM Native Images deployed to AWS Lambda].
 
-You can also check the sample application at the https://github.com/awslabs/aws-serverless-java-container/tree/master/samples/micronaut/pet-store[AWS Serverless Java container repository].

@@ -1,0 +1,15 @@
+If you build your application with the <<apiProxy, API Gateway>> approach. You don't need to create a class which extends
+api:function.aws.runtime.AbstractMicronautLambdaRuntime[] you can use `api:function.aws.runtime.MicronautLambdaRuntime[]`.
+
+The `bootstrap` bash script will reference that class:
+
+.Example `bootstrap` for `MicronautLambdaRuntime`
+[source,bash]
+----
+#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime
+----
+
+In addition to the dependencies to `micronaut-function-aws-aws-custom-runtime`, you will need to include dependencies to the
+`micronaut-function-aws-api-proxy` module.
