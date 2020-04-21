@@ -14,6 +14,8 @@ import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
@@ -124,6 +126,7 @@ class ResponseStatusSpec extends Specification {
             handler.close()
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-status')
     static class StatusController {
 

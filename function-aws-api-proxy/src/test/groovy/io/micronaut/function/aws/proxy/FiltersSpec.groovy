@@ -22,6 +22,8 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
 import io.micronaut.http.server.exceptions.ExceptionHandler
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import io.micronaut.validation.Validated
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
@@ -65,6 +67,7 @@ class FiltersSpec extends Specification {
         response.multiValueHeaders.getFirst('X-Test-Filter') == 'true'
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/filter-test")
     @Validated
     static class TestController {
@@ -77,9 +80,9 @@ class FiltersSpec extends Specification {
         void exception() {
             throw new CustomException()
         }
-
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Filter("/filter-test/**")
     static class TestFilter implements HttpServerFilter {
         @Override

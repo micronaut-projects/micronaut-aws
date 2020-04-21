@@ -9,6 +9,8 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.CookieValue
 import io.micronaut.http.annotation.Get
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -59,6 +61,7 @@ class CookiesSpec extends Specification {
         response.body == '{"one":"foo","two":"bar"}'
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/cookies-test')
     static class CookieController {
 
