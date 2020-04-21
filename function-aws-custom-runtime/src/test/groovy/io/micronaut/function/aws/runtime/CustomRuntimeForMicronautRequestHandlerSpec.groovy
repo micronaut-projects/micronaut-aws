@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
-import io.micronaut.docs.AwsProxyEventMicronautLambdaRuntime
+import io.micronaut.docs.MyLambdaRuntime
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
@@ -23,7 +23,7 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'CustomRuntimeForMicronautRequestHandlerSpec'])
         String serverUrl = "localhost:$embeddedServer.port"
-        AwsProxyEventMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomAwsProxyEventMicronautLambdaRuntime(serverUrl)
+        CustomAwsProxyEventMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomAwsProxyEventMicronautLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
             customMicronautLambdaRuntime.run([] as String[])
         })
@@ -42,7 +42,7 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         embeddedServer.close()
     }
 
-    static class CustomAwsProxyEventMicronautLambdaRuntime extends AwsProxyEventMicronautLambdaRuntime {
+    static class CustomAwsProxyEventMicronautLambdaRuntime extends MyLambdaRuntime {
 
         String serverUrl
 
