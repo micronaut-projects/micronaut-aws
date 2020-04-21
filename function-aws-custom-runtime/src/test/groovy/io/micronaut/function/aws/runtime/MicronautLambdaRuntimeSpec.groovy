@@ -28,35 +28,49 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
+import spock.lang.Timeout
+import spock.util.concurrent.PollingConditions
 
 class MicronautLambdaRuntimeSpec extends Specification {
 
     void "test runtime API loop"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-        boolean looped = false
-        new MicronautLambdaRuntime().startRuntimeApiEventLoop(
-                embeddedServer.getURL(),
-                ApplicationContext.build(),
-                { URL ->
-                    if (!looped) {
-                        looped = true
-                        return true
-                    }
-                    return false
-                }
-        )
+        String serverUrl = "localhost:$embeddedServer.port"
+        CustomMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomMicronautLambdaRuntime(serverUrl)
+        Thread t = new Thread({ ->
+            customMicronautLambdaRuntime.run([] as String[])
+        })
+        t.start()
 
-        MockLambadaRuntimeApi lambadaRuntimeApi= embeddedServer.applicationContext.getBean(MockLambadaRuntimeApi)
+        MockLambadaRuntimeApi lambadaRuntimeApi = embeddedServer.applicationContext.getBean(MockLambadaRuntimeApi)
 
         expect:
-        lambadaRuntimeApi.responses
-        lambadaRuntimeApi.responses['123456']
-        lambadaRuntimeApi.responses['123456'].body == 'Hello 123456'
-
+        new PollingConditions().eventually {
+            assert lambadaRuntimeApi.responses
+            assert lambadaRuntimeApi.responses['123456']
+            assert lambadaRuntimeApi.responses['123456'].body == 'Hello 123456'
+        }
 
         cleanup:
         embeddedServer.close()
+    }
+
+    class CustomMicronautLambdaRuntime extends MicronautLambdaRuntime {
+
+        String serverUrl
+
+        CustomMicronautLambdaRuntime(String serverUrl) {
+            super()
+            this.serverUrl = serverUrl
+        }
+
+        @Override
+        String getEnv(String name) {
+            if (name == ReservedRuntimeEnvironmentVariables.AWS_LAMBDA_RUNTIME_API) {
+                return serverUrl
+            }
+        }
     }
 
     @Controller("/hello")
