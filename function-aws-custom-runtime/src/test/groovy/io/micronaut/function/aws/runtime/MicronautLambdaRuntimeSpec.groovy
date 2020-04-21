@@ -20,6 +20,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -35,7 +36,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
 
     void "test runtime API loop"() {
         given:
-        EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
+        EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'MicronautLambdaRuntimeSpec'])
         String serverUrl = "localhost:$embeddedServer.port"
         CustomMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomMicronautLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
@@ -82,6 +83,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
         }
     }
 
+    @Requires(property = 'spec.name', value = 'MicronautLambdaRuntimeSpec')
     @Controller("/")
     static class MockLambadaRuntimeApi {
 
