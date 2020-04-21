@@ -7,6 +7,8 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -31,7 +33,7 @@ class FluxSpec extends Specification {
         response.body == '["Joe","Lewis"]'
     }
 
-
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/users")
     static class UserController {
 

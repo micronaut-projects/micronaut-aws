@@ -9,6 +9,8 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.server.exceptions.ExceptionHandler
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.PendingFeature
 import spock.lang.Shared
@@ -113,6 +115,7 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
     static class ErrorController {
 
@@ -145,6 +148,7 @@ class ErrorHandlerSpec extends Specification {
 
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/json')
     static class JsonController {
         @Get('/error')
@@ -153,6 +157,7 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/global-errors')
     static class GlobalErrorController {
 

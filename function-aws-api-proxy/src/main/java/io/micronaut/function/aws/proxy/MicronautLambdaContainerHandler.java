@@ -375,7 +375,7 @@ public final class MicronautLambdaContainerHandler
                         } else {
                             final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
                                     .getRouter()
-                                    .findAny(containerRequest.getPath());
+                                    .findAny(containerRequest.getPath(), containerRequest);
                             if (matches.findFirst().isPresent()) {
                                 containerResponse.status(HttpStatus.METHOD_NOT_ALLOWED);
                             } else {

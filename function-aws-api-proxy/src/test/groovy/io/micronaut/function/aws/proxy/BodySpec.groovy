@@ -16,6 +16,8 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import io.reactivex.Single
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -107,6 +109,7 @@ class BodySpec extends Specification {
         response.body == '{"x":10,"y":20}'
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-body')
     static class BodyController {
 

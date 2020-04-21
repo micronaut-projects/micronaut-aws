@@ -3,7 +3,8 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
     annotationProcessor "io.micronaut:micronaut-graal"
 
-    compileOnly "io.micronaut:micronaut-security"
+    compileOnly "io.micronaut:micronaut-security:$micronautSecurity"
+
     compile "io.micronaut:micronaut-http-netty:$micronautVersion"
     compile "io.micronaut:micronaut-http-server:$micronautVersion"
     compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
@@ -20,7 +21,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-java"
     testCompile "io.micronaut:micronaut-inject-groovy"
-    testCompile "io.micronaut:micronaut-security"
+    testCompile "io.micronaut:micronaut-security:$micronautSecurity"
     testCompile 'io.micronaut:micronaut-views'
     testCompile "io.projectreactor:reactor-core"
     testRuntime 'com.github.jknack:handlebars:4.1.2'
