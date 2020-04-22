@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>5.1 Micronaut Request Handlers 2.0.0.BUILD-SNAPSHOT</title>
+    <title>6.4 Custom runtime for Function as a GraalVM Native Image 2.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -86,18 +86,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../../guide/awsCredentialsProvider.html">&lt;&lt; <strong>4</strong><span>AWS Credentials Provider</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../../guide/lambdaCustomRuntimes.html"><strong>6</strong><span>AWS Lambda Custom Runtime</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>5.1 Micronaut Request Handlers</h1>
+                    <h1>6.4 Custom runtime for Function as a GraalVM Native Image</h1>
 
                     <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -105,102 +105,168 @@ function addJsClass() {
                 
 
                 
-<h2 id="requestHandlers"><a class="anchor" href="#requestHandlers"></a>5.1 Micronaut Request Handlers</h2>
+<h2 id="customRuntimeGraal"><a class="anchor" href="#customRuntimeGraal"></a>6.4 Custom runtime for Function as a GraalVM Native Image</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/requestHandlers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeGraal.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>The <code>micronaut-function-aws</code> module includes two parent classes you can subclass to implement native AWS Lambda functionality. To get started first add the <code>micronaut-function-aws</code> dependency to your build:</p>
+<p>To achieve the absolutely best cold startup time you can create a function that is compiled into a GraalVM native image and then run it from the <code>bootstrap</code> script.</p>
 </div>
 <div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut:micronaut-function-aws")</span></code></pre>
+<p>You need several pieces in place:</p>
 </div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-function-aws&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
+<div class="sect1">
+<h2 id="_graalvm_native_image_properties">GraalVM native-image.properties</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You can then use either <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> or <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> as your parent class to implement your Lambda handler. For example:</p>
+<p>First you will need to create a <a href="https://www.graalvm.org/docs/reference-manual/native-image/#native-image-configuration">native-image.properties file</a>:</p>
 </div>
 <div class="listingblock">
-<div class="title">Implementing <code>MicronautRequestHandler</code></div>
+<div class="title">src/main/resources/META-INF/io/micronaut/docs/native-image.properties</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import io.micronaut.context.env.Environment;
-import javax.inject.Inject;
-
-public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; { <i class="conum" data-value="1"></i><b>(1)</b>
-
-    @Inject
-    MathService mathService; <i class="conum" data-value="2"></i><b>(2)</b>
-
-    @Inject
-    Environment env;
-
-    @Override
-    public Integer execute(Float input) {
-        return mathService.round(input); <i class="conum" data-value="3"></i><b>(3)</b>
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">Args = -H:IncludeResources=logback.xml|application.yml \
+       -H:Name=demo <i class="conum" data-value="1"></i><b>(1)</b>
+       -H:Class=io.micronaut.docs.MyLambdaRuntime <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The class extends <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> and must have a default constructor.</td>
+<td>This is the native image name. You reference this name in the Dockerfile which builds the native image</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>You can use field injection to inject dependencies</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The function implementation</td>
+<td>This is the <code>mainClass</code> of your app.</td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>With <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> it is expected that you supply generic types with the input and the output types.</p>
 </div>
-<div class="paragraph">
-<p>If you wish to work with raw streams then subclass <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> instead.</p>
 </div>
+<div class="sect1">
+<h2 id="_a_dockerfile_to_build_a_graalvm_native_image">A Dockerfile to build a GraalVM native image</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>You should then configure the class name as the Lambda handler when deploying to AWS. For example with SAM:</p>
+<p>Create a <code>Dockerfile</code> which:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Uses the <code>amazonlinux</code> image</p>
+</li>
+<li>
+<p>Builds the JAR of the function.</p>
+</li>
+<li>
+<p>Install the necessary dependencies.</p>
+</li>
+<li>
+<p>Downloads GraalVM community edition</p>
+</li>
+<li>
+<p>Installs <code>native-image</code> utility.</p>
+</li>
+<li>
+<p>With the <code>native-image</code> command and the JAR, generates a GraalVM native image</p>
+</li>
+<li>
+<p>Bundles the native image of our function and the bootstrap file into a ZIP file.</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
+<div class="title">Dockerfile to generate a native image</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Resources:
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: example.RoundHandler::handleRequest</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">FROM gradle:6.3.0-jdk8 as builder
+COPY --chown=gradle:gradle . /home/application
+WORKDIR /home/application
+RUN ./gradlew build --no-daemon
+
+FROM amazonlinux:2018.03.0.20191014.0 as graalvm
+
+ENV LANG=en_US.UTF-8
+
+RUN yum install -y gcc gcc-c++ libc6-dev  zlib1g-dev curl bash zlib zlib-devel zip
+
+ENV GRAAL_VERSION 20.0.0
+ENV JDK_VERSION java8
+ENV GRAAL_FILENAME graalvm-ce-${JDK_VERSION}-linux-amd64-${GRAAL_VERSION}.tar.gz
+
+RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/${GRAAL_FILENAME} -o /tmp/${GRAAL_FILENAME}
+
+RUN tar -zxvf /tmp/${GRAAL_FILENAME} -C /tmp \
+    &amp;&amp; mv /tmp/graalvm-ce-${JDK_VERSION}-${GRAAL_VERSION} /usr/lib/graalvm
+
+RUN rm -rf /tmp/*
+CMD ["/usr/lib/graalvm/bin/native-image"]
+
+FROM graalvm
+COPY --from=builder /home/application/ /home/application/
+WORKDIR /home/application
+RUN /usr/lib/graalvm/bin/gu install native-image
+RUN /usr/lib/graalvm/bin/native-image --no-server -cp build/libs/demo-*-all.jar
+RUN chmod 777 bootstrap
+RUN chmod 777 demo <i class="conum" data-value="1"></i><b>(1)</b>
+RUN zip -j function.zip bootstrap demo <i class="conum" data-value="1"></i><b>(1)</b>
+EXPOSE 8080
+ENTRYPOINT ["/home/application/demo"]</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>It matches the name used in the <code>native-image.properties</code> file.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execute_the_native_image_from_bootstrap">Execute the native image from bootstrap</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Invoke the native image from the <code>bootstrap</code> script:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code> with native image</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+./demo -Xmx128m -Djava.library.path=$(pwd)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_script_to_build_the_function_zip">A script to build the function ZIP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:</p>
+</div>
+<div class="listingblock">
+<div class="title">deploy.sh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/bash
+docker build . -t demo
+mkdir -p build
+docker run --rm --entrypoint cat demo  /home/application/function.zip &gt; build/function.zip</code></pre>
+</div>
+</div>
 </div>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../../guide/awsCredentialsProvider.html">&lt;&lt; <strong>4</strong><span>AWS Credentials Provider</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../../guide/lambdaCustomRuntimes.html"><strong>6</strong><span>AWS Lambda Custom Runtime</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>

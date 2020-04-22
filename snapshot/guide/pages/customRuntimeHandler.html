@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>7.4 Alexa Skill as an AWS Lambda Function 2.0.0.BUILD-SNAPSHOT</title>
+    <title>6.1 Custom Runtime for Handler functions 2.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -86,18 +86,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../../guide/lambdaCustomRuntimes.html">&lt;&lt; <strong>6</strong><span>AWS Lambda Custom Runtime</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../../guide/repository.html"><strong>8</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>7.4 Alexa Skill as an AWS Lambda Function</h1>
+                    <h1>6.1 Custom Runtime for Handler functions</h1>
 
                     <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -105,45 +105,167 @@ function addJsClass() {
                 
 
                 
-<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>7.4 Alexa Skill as an AWS Lambda Function</h2>
+<h2 id="customRuntimeHandler"><a class="anchor" href="#customRuntimeHandler"></a>6.1 Custom Runtime for Handler functions</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexalambda.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeHandler.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>The <code>micronaut-function-aws-alexa</code> module includes support for building deploying an Alexa Skill as a Lambda Function.</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-alexa")</span></code></pre>
-</div>
+<p>Lets describe a scenario with a handler which works with an input and output POJO.</p>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-function-aws-alexa&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.docs;
+
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.function.aws.MicronautRequestHandler;
+
+@Introspected <b class="conum">(1)</b>
+class CustomMicronautRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
+
+    @Override
+    public BookSaved execute(Book input) {
+        BookSaved bookSaved = new BookSaved();
+        bookSaved.setName(input.getName());
+        bookSaved.setIsbn("XXX");
+        return bookSaved;
+    }
+}</code></pre>
 </div>
 </div>
-</p>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your handler with <code>io.micronaut.core.annotation.Introspected</code> so that Micronaut can instantiate the handler.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.Introspected;
+import javax.validation.constraints.NotBlank;
+
+@Introspected <b class="conum">(1)</b>
+public class Book {
+
+    @NonNull
+    @NotBlank
+    private String name;
+
+    public Book() {
+    }
+
+    // Getters &amp; Setters</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your POJOs with <code>io.micronaut.core.annotation.Introspected</code> for reflection-free JSON serialization and deserialization.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.Introspected;
+import javax.validation.constraints.NotBlank;
+
+@Introspected <b class="conum">(1)</b>
+public class BookSaved {
+
+    @NonNull
+    @NotBlank
+    private String name;
+
+    @NonNull
+    @NotBlank
+    private String isbn;
+
+    public BookSaved() {
+
+    }
+
+    // Getters &amp; Setters</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your POJOs with <code>io.micronaut.core.annotation.Introspected</code> for reflection-free JSON serialization and deserialization.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+In the AWS Console, as <strong>Handler</strong> value you will set <code>io.micronaut.docs.CustomMicronautRequestHandler</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_bootstrap">bootstrap</h3>
+<div class="paragraph">
+<p>You will deploy your custom runtime code as a ZIP file. At the root of the ZIP file you need a bootstrap file.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>If there&#8217;s a file named bootstrap in your deployment package, Lambda executes that file.</p>
+</div>
+</blockquote>
 </div>
 <div class="paragraph">
-<p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
+<p>Create a <code>bootstrap</code> bash script:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.docs.MyLambdaRuntime</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the class referenced in the previous <code>bootstrap</code> file:</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.docs;
+
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.function.aws.runtime.AbstractMicronautLambdaRuntime;
+
+public class MyLambdaRuntime
+        extends AbstractMicronautLambdaRuntime&lt;APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent, Book, BookSaved&gt; {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above class is an example of a <a href="https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html">Lambda whose trigger is an API Gateway event</a>.</p>
+</div>
 </div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../../guide/lambdaCustomRuntimes.html">&lt;&lt; <strong>6</strong><span>AWS Lambda Custom Runtime</span></a></div>
+                    <div class="toc-item prev-left"><a href="../../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../../guide/repository.html"><strong>8</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
