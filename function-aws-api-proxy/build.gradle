@@ -5,24 +5,22 @@ dependencies {
 
     compileOnly "io.micronaut:micronaut-security:$micronautSecurity"
 
-    compile "io.micronaut:micronaut-http-netty:$micronautVersion"
-    compile "io.micronaut:micronaut-http-server:$micronautVersion"
-    compile 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
+    implementation "io.micronaut:micronaut-http-netty:$micronautVersion"
+    api "io.micronaut:micronaut-http-server:$micronautVersion"
+    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
     }
-    compile "org.slf4j:jcl-over-slf4j:1.7.30"
-    compile project(":function-aws")
-    compile project(":aws-common")
-
-    runtime group:'com.fasterxml.jackson.module', name:'jackson-module-afterburner', version:'2.10.3'
+    api "org.slf4j:jcl-over-slf4j:1.7.30"
+    api project(":function-aws")
+    api project(":aws-common")
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-java"
-    testCompile "io.micronaut:micronaut-inject-groovy"
-    testCompile "io.micronaut:micronaut-security:$micronautSecurity"
-    testCompile 'io.micronaut:micronaut-views'
-    testCompile "io.projectreactor:reactor-core"
-    testRuntime 'com.github.jknack:handlebars:4.1.2'
+    testImplementation "io.micronaut:micronaut-inject-java"
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
+    testImplementation 'io.micronaut:micronaut-views'
+    testImplementation "io.projectreactor:reactor-core"
+    testRuntimeOnly 'com.github.jknack:handlebars:4.1.2'
 }

@@ -4,15 +4,14 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
 
-    compile "io.micronaut:micronaut-inject:$micronautVersion"
-    compile "io.micronaut:micronaut-http-client:$micronautVersion"
-    compile('com.amazonaws:aws-java-sdk-core:1.11.761'){
+    api "io.micronaut:micronaut-inject:$micronautVersion"
+    api('com.amazonaws:aws-java-sdk-core:1.11.761'){
         exclude group: "commons-logging"
     }
-    compile "org.slf4j:jcl-over-slf4j:1.7.30"
+    api "org.slf4j:jcl-over-slf4j:1.7.30"
 
-	testCompile "io.micronaut:micronaut-discovery-client"
-	testCompile "io.micronaut:micronaut-inject-groovy"
-	testCompile "io.micronaut:micronaut-http-server-netty"
+	testImplementation "io.micronaut:micronaut-discovery-client"
+	testImplementation "io.micronaut:micronaut-inject-groovy"
+	testImplementation "io.micronaut:micronaut-http-server-netty"
 	testAnnotationProcessor "io.micronaut:micronaut-inject-java"
 }
