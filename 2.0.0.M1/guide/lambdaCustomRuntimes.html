@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="/cdn-cgi/apps/head/3cOPSgo5Omz84ycX7CvigfX4cpw.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-82213539-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-82213539-2');
+    </script>
+    <title>6 AWS Lambda Custom Runtime 2.0.0.M1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        Micronaut AWS
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/whatsNew.html"><strong>2</strong><span>What's new?</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/corretto.html"><strong>3</strong><span>Amazon Correto</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/awsCredentialsProvider.html"><strong>4</strong><span>AWS Credentials Provider</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>5</strong><span>AWS Lambda Support</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambdaCustomRuntimes.html"><strong>6</strong><span>AWS Lambda Custom Runtime</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>8</strong><span>Repository</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>9</strong><span>Breaking Changes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>10</strong><span>Release History</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>6 AWS Lambda Custom Runtime</h1>
+
+                    <p><strong>Version:</strong> 2.0.0.M1</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeHandler"><strong>6.1</strong><span>Custom Runtime for Handler functions</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeDeploy"><strong>6.2</strong><span>Deploy a Custom Runtime</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeApiGateway"><strong>6.3</strong><span>Custom runtime for AWS API Gateway Proxy functions</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeGraal"><strong>6.4</strong><span>Custom runtime for Function as a GraalVM Native Image</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+<h1 id="lambdaCustomRuntimes"><a class="anchor" href="#lambdaCustomRuntimes"></a>6 AWS Lambda Custom Runtime</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut&#8217;s eases the deployment of your functions as a <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html">Custom AWS Lambda runtime</a>:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>A runtime is a program that runs a Lambda function&#8217;s handler method when the function is invoked. You can include a runtime in your function&#8217;s deployment package in the form of an executable file named bootstrap.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Why would you want to deploy your function as a Custom Runtime? For example, to use a different JVM than the one AWS provides or execute your function as <a href="https://www.graalvm.org/docs/reference-manual/native-image/">GraalVM Native Image</a>.</p>
+</div>
+<div class="paragraph">
+<p>First, you need to add the <code>micronaut-function-aws-custom-runtime</code> dependency to your build:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-custom-runtime")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-custom-runtime&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>The main API you will interact with is <a href="../api/io/micronaut/function/aws/runtime/AbstractMicronautLambdaRuntime.html">AbstractMicronautLambdaRuntime</a>. An abstract class which you can extend to create your custom runtime <code>mainClass</code>. That class includes the necessary code to perform the <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html#runtimes-custom-build">Processing Tasks</a> described in the Custom Runtime documentation.</p>
+</div>
+
+<h2 id="customRuntimeHandler"><a class="anchor" href="#customRuntimeHandler"></a>6.1 Custom Runtime for Handler functions</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeHandler.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Lets describe a scenario with a handler which works with an input and output POJO.</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.docs;
+
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.function.aws.MicronautRequestHandler;
+
+@Introspected <b class="conum">(1)</b>
+class CustomMicronautRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
+
+    @Override
+    public BookSaved execute(Book input) {
+        BookSaved bookSaved = new BookSaved();
+        bookSaved.setName(input.getName());
+        bookSaved.setIsbn("XXX");
+        return bookSaved;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your handler with <code>io.micronaut.core.annotation.Introspected</code> so that Micronaut can instantiate the handler.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.Introspected;
+import javax.validation.constraints.NotBlank;
+
+@Introspected <b class="conum">(1)</b>
+public class Book {
+
+    @NonNull
+    @NotBlank
+    private String name;
+
+    public Book() {
+    }
+
+    // Getters &amp; Setters</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your POJOs with <code>io.micronaut.core.annotation.Introspected</code> for reflection-free JSON serialization and deserialization.</td>
+</tr>
+</table>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.Introspected;
+import javax.validation.constraints.NotBlank;
+
+@Introspected <b class="conum">(1)</b>
+public class BookSaved {
+
+    @NonNull
+    @NotBlank
+    private String name;
+
+    @NonNull
+    @NotBlank
+    private String isbn;
+
+    public BookSaved() {
+
+    }
+
+    // Getters &amp; Setters</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Annotate your POJOs with <code>io.micronaut.core.annotation.Introspected</code> for reflection-free JSON serialization and deserialization.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+In the AWS Console, as <strong>Handler</strong> value you will set <code>io.micronaut.docs.CustomMicronautRequestHandler</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_bootstrap">bootstrap</h3>
+<div class="paragraph">
+<p>You will deploy your custom runtime code as a ZIP file. At the root of the ZIP file you need a bootstrap file.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>If there&#8217;s a file named bootstrap in your deployment package, Lambda executes that file.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Create a <code>bootstrap</code> bash script:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.docs.MyLambdaRuntime</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the class referenced in the previous <code>bootstrap</code> file:</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.docs;
+
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.function.aws.runtime.AbstractMicronautLambdaRuntime;
+
+public class MyLambdaRuntime
+        extends AbstractMicronautLambdaRuntime&lt;APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent, Book, BookSaved&gt; {
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above class is an example of a <a href="https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html">Lambda whose trigger is an API Gateway event</a>.</p>
+</div>
+</div>
+
+<h2 id="customRuntimeDeploy"><a class="anchor" href="#customRuntimeDeploy"></a>6.2 Deploy a Custom Runtime</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeDeploy.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can deploy it via the AWS console or the AWS CLI. You will need to create a zip bundle including the <code>bootstrap</code> and your application JAR file (in the above case named <code>demo.jar</code>).</p>
+</div>
+<div class="paragraph">
+<p>If you use the AWS CLI, specify a runtime of <code>provided</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">aws lambda create-function --function-name my-function \
+--zip-file fileb://function.zip --handler function.handler --runtime provided \
+--role arn:aws:iam::123456789:role/lambda_basic_execution</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.html">Publishing a Custom Runtime</a> for more information.
+</td>
+</tr>
+</table>
+</div>
+
+<h2 id="customRuntimeApiGateway"><a class="anchor" href="#customRuntimeApiGateway"></a>6.3 Custom runtime for AWS API Gateway Proxy functions</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeApiGateway.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>If you build your application with the <a href="#apiProxy">API Gateway</a> approach. You don&#8217;t need to create a class which extends
+<a href="../api/io/micronaut/function/aws/runtime/AbstractMicronautLambdaRuntime.html">AbstractMicronautLambdaRuntime</a> you can use <code><a href="../api/io/micronaut/function/aws/runtime/MicronautLambdaRuntime.html">MicronautLambdaRuntime</a></code>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>bootstrap</code> bash script will reference that class:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code> for <code>MicronautLambdaRuntime</code></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition to the dependencies to <code>micronaut-function-aws-aws-custom-runtime</code>, you will need to include dependencies to the
+<code>micronaut-function-aws-api-proxy</code> module.</p>
+</div>
+
+<h2 id="customRuntimeGraal"><a class="anchor" href="#customRuntimeGraal"></a>6.4 Custom runtime for Function as a GraalVM Native Image</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeGraal.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To achieve the absolutely best cold startup time you can create a function that is compiled into a GraalVM native image and then run it from the <code>bootstrap</code> script.</p>
+</div>
+<div class="paragraph">
+<p>You need several pieces in place:</p>
+</div>
+<div class="sect1">
+<h2 id="_graalvm_native_image_properties">GraalVM native-image.properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First you will need to create a <a href="https://www.graalvm.org/docs/reference-manual/native-image/#native-image-configuration">native-image.properties file</a>:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/META-INF/io/micronaut/docs/native-image.properties</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">Args = -H:IncludeResources=logback.xml|application.yml \
+       -H:Name=demo <i class="conum" data-value="1"></i><b>(1)</b>
+       -H:Class=io.micronaut.docs.MyLambdaRuntime <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This is the native image name. You reference this name in the Dockerfile which builds the native image</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This is the <code>mainClass</code> of your app.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_dockerfile_to_build_a_graalvm_native_image">A Dockerfile to build a GraalVM native image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create a <code>Dockerfile</code> which:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Uses the <code>amazonlinux</code> image</p>
+</li>
+<li>
+<p>Builds the JAR of the function.</p>
+</li>
+<li>
+<p>Install the necessary dependencies.</p>
+</li>
+<li>
+<p>Downloads GraalVM community edition</p>
+</li>
+<li>
+<p>Installs <code>native-image</code> utility.</p>
+</li>
+<li>
+<p>With the <code>native-image</code> command and the JAR, generates a GraalVM native image</p>
+</li>
+<li>
+<p>Bundles the native image of our function and the bootstrap file into a ZIP file.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Dockerfile to generate a native image</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">FROM gradle:6.3.0-jdk8 as builder
+COPY --chown=gradle:gradle . /home/application
+WORKDIR /home/application
+RUN ./gradlew build --no-daemon
+
+FROM amazonlinux:2018.03.0.20191014.0 as graalvm
+
+ENV LANG=en_US.UTF-8
+
+RUN yum install -y gcc gcc-c++ libc6-dev  zlib1g-dev curl bash zlib zlib-devel zip
+
+ENV GRAAL_VERSION 20.0.0
+ENV JDK_VERSION java8
+ENV GRAAL_FILENAME graalvm-ce-${JDK_VERSION}-linux-amd64-${GRAAL_VERSION}.tar.gz
+
+RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/${GRAAL_FILENAME} -o /tmp/${GRAAL_FILENAME}
+
+RUN tar -zxvf /tmp/${GRAAL_FILENAME} -C /tmp \
+    &amp;&amp; mv /tmp/graalvm-ce-${JDK_VERSION}-${GRAAL_VERSION} /usr/lib/graalvm
+
+RUN rm -rf /tmp/*
+CMD ["/usr/lib/graalvm/bin/native-image"]
+
+FROM graalvm
+COPY --from=builder /home/application/ /home/application/
+WORKDIR /home/application
+RUN /usr/lib/graalvm/bin/gu install native-image
+RUN /usr/lib/graalvm/bin/native-image --no-server -cp build/libs/demo-*-all.jar
+RUN chmod 777 bootstrap
+RUN chmod 777 demo <i class="conum" data-value="1"></i><b>(1)</b>
+RUN zip -j function.zip bootstrap demo <i class="conum" data-value="1"></i><b>(1)</b>
+EXPOSE 8080
+ENTRYPOINT ["/home/application/demo"]</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>It matches the name used in the <code>native-image.properties</code> file.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_execute_the_native_image_from_bootstrap">Execute the native image from bootstrap</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Invoke the native image from the <code>bootstrap</code> script:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example <code>bootstrap</code> with native image</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
+set -euo pipefail
+./demo -Xmx128m -Djava.library.path=$(pwd)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_a_script_to_build_the_function_zip">A script to build the function ZIP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can then use Docker to build a function ZIP file ready for deployment to AWS Lambda:</p>
+</div>
+<div class="listingblock">
+<div class="title">deploy.sh</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/bash
+docker build . -t demo
+mkdir -p build
+docker run --rm --entrypoint cat demo  /home/application/function.zip &gt; build/function.zip</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
