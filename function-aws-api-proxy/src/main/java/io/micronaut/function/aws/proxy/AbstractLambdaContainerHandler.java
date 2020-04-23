@@ -107,6 +107,7 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
         this.responseWriter = responseWriter;
         this.securityContextWriter = securityContextWriter;
         this.exceptionHandler = exceptionHandler;
+        config.addBinaryContentTypes("application/zip");
     }
 
 

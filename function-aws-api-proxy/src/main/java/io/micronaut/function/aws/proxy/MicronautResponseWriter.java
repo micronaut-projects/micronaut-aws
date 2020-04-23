@@ -37,7 +37,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -82,14 +85,21 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
         if (body instanceof CharSequence) {
             awsProxyResponse.setBody(body.toString());
         } else if (body instanceof Writable) {
-            ByteBuf byteBuf = UnpooledByteBufAllocator.DEFAULT.ioBuffer(128);
-
-            ByteBufOutputStream outputStream = new ByteBufOutputStream(byteBuf);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Writable writable = (Writable) body;
             try {
-                writable.writeTo(outputStream, containerResponse.getCharacterEncoding());
-                String output = byteBuf.toString(containerResponse.getCharacterEncoding());
-                awsProxyResponse.setBody(output);
+                Charset characterEncoding = containerResponse.getCharacterEncoding();
+                writable.writeTo(outputStream, characterEncoding);
+                if (containerResponse.isBinary(containerResponse.getContentType().map(Object::toString).orElse(null))) {
+                    byte[] bytes = outputStream.toByteArray();
+                    awsProxyResponse.setBody(
+                            Base64.getMimeEncoder().encodeToString(bytes)
+                    );
+                    awsProxyResponse.setBase64Encoded(true);
+                } else {
+                    String output = new String(outputStream.toByteArray(), characterEncoding);
+                    awsProxyResponse.setBody(output);
+                }
             } catch (IOException e) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(e.getMessage());

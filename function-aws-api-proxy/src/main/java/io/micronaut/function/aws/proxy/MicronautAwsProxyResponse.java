@@ -193,7 +193,12 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         responseEncodeLatch.countDown();
     }
 
-    private boolean isBinary(String contentType) {
+    /**
+     * Is the content binary.
+     * @param contentType The content type
+     * @return True if it is
+     */
+    boolean isBinary(String contentType) {
         if (contentType != null) {
             int semidx = contentType.indexOf(';');
             if (semidx >= 0) {

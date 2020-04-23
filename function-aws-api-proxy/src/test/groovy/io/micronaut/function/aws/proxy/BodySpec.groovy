@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.io.Writable
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
@@ -14,6 +15,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
@@ -23,6 +25,12 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import javax.annotation.Nullable
+import java.nio.charset.Charset
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
+
 
 class BodySpec extends Specification {
 
@@ -30,6 +38,22 @@ class BodySpec extends Specification {
                 ApplicationContext.build()
     )
     @Shared Context lambdaContext = new MockLambdaContext()
+
+    void "test writable"() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/writable', HttpMethod.GET.toString())
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 201
+        response.isBase64Encoded()
+        response.getMultiValueHeaders().getFirst(HttpHeaders.CONTENT_TYPE) == 'application/zip'
+        // should be base64
+        isZip(Base64.getMimeDecoder().decode(response.body))
+
+    }
 
     void "test custom body POJO"() {
         given:
@@ -131,10 +155,44 @@ class BodySpec extends Specification {
         Single<Point> post(@Body Single<Point> data) {
             return data
         }
+        @Get(uri = "/writable", produces = "application/zip")
+        @Status(HttpStatus.CREATED)
+        Writable writable() {
+            new Writable() {
+                @Override
+                void writeTo(OutputStream outputStream, @Nullable Charset charset) throws IOException {
+                    ZipOutputStream zipOut = new ZipOutputStream(outputStream)
+                    def entry = new ZipEntry("test")
+                    zipOut.putNextEntry(entry);
+                    outputStream.write("test 1".bytes)
+                    zipOut.closeEntry();
+                    outputStream.flush()
+                }
+
+                @Override
+                void writeTo(Writer out) throws IOException {
+                    // no-op
+                }
+            }
+        }
     }
 
     @Canonical
     static class Point {
         Integer x,y
+    }
+
+    /**
+     * Are the given bytes a zip file.
+     * @param bytes The bytes
+     * @return True if they are
+     */
+    static boolean isZip(byte[] bytes) {
+        if (bytes != null) {
+            return new ZipInputStream(new ByteArrayInputStream(bytes)).withCloseable { zipInputStream ->
+                return zipInputStream.getNextEntry() != null
+            }
+        }
+        return false;
     }
 }
