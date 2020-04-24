@@ -188,7 +188,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 
 @Introspected <b class="conum">(1)</b>
-class CustomMicronautRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
+public class CustomMicronautRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
 
     @Override
     public BookSaved execute(Book input) {
