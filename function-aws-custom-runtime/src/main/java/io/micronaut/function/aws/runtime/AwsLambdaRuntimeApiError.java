@@ -84,4 +84,12 @@ public class AwsLambdaRuntimeApiError {
     public void setErrorType(@Nullable String errorType) {
         this.errorType = errorType;
     }
+
+    @Override
+    public String toString() {
+        return "AwsLambdaRuntimeApiError{" +
+                "errorMessage='" + errorMessage + '\'' +
+                ", errorType='" + errorType + '\'' +
+                '}';
+    }
 }

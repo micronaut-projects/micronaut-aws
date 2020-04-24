@@ -29,7 +29,6 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
-import spock.lang.Timeout
 import spock.util.concurrent.PollingConditions
 
 class MicronautLambdaRuntimeSpec extends Specification {
