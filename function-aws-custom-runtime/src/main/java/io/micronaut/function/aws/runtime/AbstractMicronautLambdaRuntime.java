@@ -209,7 +209,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         logn(LogLevel.DEBUG, "Handler: " + handler);
         if (handler != null) {
             Optional<Class> handlerClassOptional = parseHandlerClass(handler);
+            logn(LogLevel.WARN, "No handler Class parsed for " + handler);
             if (handlerClassOptional.isPresent()) {
+                logn(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection");
                 Class handlerClass = handlerClassOptional.get();
                 final BeanIntrospection introspection = BeanIntrospection.getIntrospection(handlerClass);
                 return introspection.instantiate();
