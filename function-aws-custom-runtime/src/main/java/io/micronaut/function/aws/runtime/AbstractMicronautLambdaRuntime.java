@@ -134,6 +134,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @throws ConfigurationException if the handler is not of type RequestHandler or RequestStreamHandler
      */
     protected void validateHandler() throws ConfigurationException {
+        if (handler == null) {
+            throw new ConfigurationException("no handler instantiated. Override either createHandler() or createRequestStreamHandler() or annotate your Handler class with @Introspected");
+        }
         if (!(handler instanceof RequestHandler || handler instanceof RequestStreamHandler)) {
             throw new ConfigurationException("handler must be of type com.amazonaws.services.lambda.runtime.RequestHandler or com.amazonaws.services.lambda.runtime.RequestStreamHandler");
         }
