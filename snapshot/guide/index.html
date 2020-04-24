@@ -665,7 +665,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 
 @Introspected <b class="conum">(1)</b>
-public class CustomMicronautRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
+public class BookRequestHandler extends MicronautRequestHandler&lt;Book, BookSaved&gt; {
 
     @Override
     public BookSaved execute(Book input) {
@@ -751,7 +751,7 @@ public class BookSaved {
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-In the AWS Console, as <strong>Handler</strong> value you will set <code>io.micronaut.docs.CustomMicronautRequestHandler</code>.
+In the AWS Console, as <strong>Handler</strong> value you will set <code>io.micronaut.docs.BookRequestHandler</code>.
 </td>
 </tr>
 </table>
@@ -776,7 +776,7 @@ In the AWS Console, as <strong>Handler</strong> value you will set <code>io.micr
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">#!/bin/sh
 set -euo pipefail
-java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.docs.MyLambdaRuntime</code></pre>
+java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.docs.BookLambdaRuntime</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -790,8 +790,23 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.function.aws.runtime.AbstractMicronautLambdaRuntime;
 
-public class MyLambdaRuntime
+import java.net.MalformedURLException;
+
+public class BookLambdaRuntime
         extends AbstractMicronautLambdaRuntime&lt;APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent, Book, BookSaved&gt; {
+    public static void main(String[] args) {
+        try {
+            new BookLambdaRuntime().run(args);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected Object createHandler(String... args) {
+        return new BookRequestHandler();
+    }
 }</code></pre>
 </div>
 </div>
@@ -890,7 +905,7 @@ java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.function.aws.ru
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">Args = -H:IncludeResources=logback.xml|application.yml \
        -H:Name=demo <i class="conum" data-value="1"></i><b>(1)</b>
-       -H:Class=io.micronaut.docs.MyLambdaRuntime <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+       -H:Class=io.micronaut.docs.BookLambdaRuntime <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
