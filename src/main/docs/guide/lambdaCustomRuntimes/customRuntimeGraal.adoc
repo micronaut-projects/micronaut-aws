@@ -11,7 +11,7 @@ First you will need to create a https://www.graalvm.org/docs/reference-manual/na
 ----
 Args = -H:IncludeResources=logback.xml|application.yml \
        -H:Name=demo # <1>
-       -H:Class=io.micronaut.docs.MyLambdaRuntime # <2>
+       -H:Class=io.micronaut.docs.BookLambdaRuntime # <2>
 ----
 
 <1> This is the native image name. You reference this name in the Dockerfile which builds the native image
