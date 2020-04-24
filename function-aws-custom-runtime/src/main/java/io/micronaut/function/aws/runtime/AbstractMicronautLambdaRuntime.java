@@ -324,9 +324,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     RxHttpClient.class,
                     runtimeApiURL,
                     config);
+            final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
                     final HttpResponse<RequestType> response = blockingHttpClient.exchange(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI, requestType);
                     final RequestType request = response.body();
                     if (request != null) {
