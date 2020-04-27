@@ -5,6 +5,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
 
 import java.net.MalformedURLException;
 
@@ -19,7 +20,7 @@ public class MicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<AwsPr
     @Override
     protected RequestHandler<AwsProxyRequest, AwsProxyResponse> createRequestHandler(String... args) {
         try {
-            return new MicronautLambdaRuntimeHandler(createApplicationContextBuilderWithArgs(args));
+            return new MicronautLambdaHandler(createApplicationContextBuilderWithArgs(args));
         } catch (ContainerInitializationException e) {
             throw new ConfigurationException("Exception thrown instantiating MicronautLambdaRuntimeHandler");
         }

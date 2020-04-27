@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.runtime;
+package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
@@ -24,7 +24,9 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * AWS {@link RequestHandler} for {@link AwsProxyRequest} and {@link AwsProxyResponse}.
@@ -32,25 +34,25 @@ import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
  * @since 2.0.0
  */
 @Introspected
-public class MicronautLambdaRuntimeHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse>, ApplicationContextProvider {
+public class MicronautLambdaHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse>, ApplicationContextProvider, Closeable {
 
     protected final MicronautLambdaContainerHandler handler;
 
     /**
      * Constructor.
-     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaRuntimeHandler}
+     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaHandler}
      */
-    public MicronautLambdaRuntimeHandler() throws ContainerInitializationException {
+    public MicronautLambdaHandler() throws ContainerInitializationException {
         this.handler = new MicronautLambdaContainerHandler();
     }
 
     /**
      * Constructor.
      * @param applicationContextBuilder Application Context Builder
-     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaRuntimeHandler}
+     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaHandler}
      */
-    public MicronautLambdaRuntimeHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
-        this.handler = new MicronautLambdaContainerHandler();
+    public MicronautLambdaHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
+        this.handler = new MicronautLambdaContainerHandler(applicationContextBuilder);
     }
 
     @Override
@@ -61,5 +63,10 @@ public class MicronautLambdaRuntimeHandler implements RequestHandler<AwsProxyReq
     @Override
     public ApplicationContext getApplicationContext() {
         return this.handler.getApplicationContext();
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.getApplicationContext().close();
     }
 }
