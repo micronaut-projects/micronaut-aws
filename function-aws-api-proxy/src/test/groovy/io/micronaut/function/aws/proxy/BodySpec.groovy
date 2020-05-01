@@ -5,6 +5,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
 import com.fasterxml.jackson.databind.ObjectMapper
+import delight.fileupload.FileUpload
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
 import io.micronaut.core.io.Writable
@@ -16,11 +17,13 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.reactivex.Single
+import org.apache.commons.fileupload.FileItem
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -68,6 +71,34 @@ class BodySpec extends Specification {
         response.statusCode == 201
         response.body == '{"x":10,"y":20}'
 
+    }
+
+    void "test plain text as binary"() {
+        given:
+            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/bytes', HttpMethod.POST.toString())
+            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+            builder.binaryBody(new ByteArrayInputStream('Hello'.bytes))
+
+        when:
+            def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+            response.statusCode == 201
+            response.body == 'Hello'
+    }
+
+    void "test plain text uplaod"() {
+        given:
+            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/multipart', HttpMethod.POST.toString())
+            builder.formFieldPart('name', 'Vlad')
+            builder.formFilePart('file', 'greetings.txt', 'Hello'.bytes)
+
+        when:
+            def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+            response.statusCode == 201
+            response.body == 'Hello Vlad from greetings.txt'
     }
 
     void "test readFor"() {
@@ -155,6 +186,36 @@ class BodySpec extends Specification {
         Single<Point> post(@Body Single<Point> data) {
             return data
         }
+
+        @Post(uri = "/bytes")
+        @Status(HttpStatus.CREATED)
+        String postBytes(@Body byte[] bytes) {
+            return new String(bytes)
+        }
+
+        @Post(uri = "/multipart")
+        @Status(HttpStatus.CREATED)
+        String postMultipart(@Body byte[] bytes, @Header String contentType) {
+            List<FileItem> items = FileUpload.parse(bytes, contentType)
+            String name = null
+            String text = null
+            String fileName = null
+
+            for (FileItem item : items) {
+                switch (item.fieldName) {
+                    case 'name':
+                        name = item.string
+                        break;
+                    case 'file':
+                        text = item.inputStream.text
+                        fileName = item.name
+                        break;
+                }
+            }
+
+            return "$text $name from $fileName"
+        }
+
         @Get(uri = "/writable", produces = "application/zip")
         @Status(HttpStatus.CREATED)
         Writable writable() {
