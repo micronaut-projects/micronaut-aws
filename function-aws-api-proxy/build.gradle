@@ -22,5 +22,8 @@ dependencies {
     testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut:micronaut-views'
     testImplementation "io.projectreactor:reactor-core"
+    testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
+    testImplementation 'javax.servlet:servlet-api:2.4'
+    testImplementation 'org.javadelight:delight-fileupload:0.0.5'
     testRuntimeOnly 'com.github.jknack:handlebars:4.1.2'
 }
