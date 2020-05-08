@@ -5,6 +5,15 @@
 
 This project includes integration between [Micronaut](http://micronaut.io) and AWS.
 
+## Examples
+
+You can generate example applications at https://launch.micronaut.io:
+
+* Lambda API Gateway - Select Application Type "Microaut Application" and the "aws-lambda" feature and generate!
+* Alexa - Select Application Type "Microaut Application" and the "aws-alexa" feature and generate!
+* Request Handler - Select Application Type  "Micronaut Serverless Function" and the "aws-lambda" feature and generate!
+* AWS Lambda Custom Runtime - Select Application Type "Microaut Application" and the "aws-custom-runtime" feature and generate!
+
 ## Documentation
 
 See the [Documentation](https://micronaut-projects.github.io/micronaut-aws/latest/guide) for more information.

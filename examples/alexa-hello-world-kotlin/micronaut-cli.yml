@@ -1,5 +1,0 @@
-profile: function-aws
-defaultPackage: com.amazon.ask.helloworld.handlers
----
-testFramework: spek
-sourceLanguage: kotlin
