@@ -345,24 +345,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 <div class="listingblock">
 <div class="title">Example Controller</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-@Controller("/ping")
-public class PingController {
-
-	private Logger log = LoggerFactory.getLogger(PingController.class);
-
-    @Get("/")
-    public String ping() {
-    	log.trace("Received a ping.");
-    	return "{\"pong\":true}";
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-gateway-example/src/main/java/example/PingController.java[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -391,34 +374,7 @@ public class PingController {
 <div class="listingblock">
 <div class="title">Example Stream Lambda Handler</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.*;
-import com.amazonaws.services.lambda.runtime.*;
-import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
-import java.io.*;
-
-public class StreamLambdaHandler implements RequestStreamHandler {
-
-    private MicronautLambdaContainerHandler handler;
-
-    public StreamLambdaHandler() {
-        try {
-            handler = new MicronautLambdaContainerHandler(); <i class="conum" data-value="1"></i><b>(1)</b>
-        } catch (ContainerInitializationException e) {
-            // if we fail here. We re-throw the exception to force another cold start
-            e.printStackTrace();
-            throw new RuntimeException("Could not initialize Micronaut", e);
-        }
-    }
-
-    @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
-            throws IOException {
-        handler.proxyStream(inputStream, outputStream, context); <i class="conum" data-value="2"></i><b>(2)</b>
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-gateway-example/src/main/java/example/StreamLambdaHandler.java[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">

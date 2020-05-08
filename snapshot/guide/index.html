@@ -474,24 +474,7 @@ public class RoundHandler extends MicronautRequestHandler&lt;Float, Integer&gt; 
 <div class="listingblock">
 <div class="title">Example Controller</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-@Controller("/ping")
-public class PingController {
-
-	private Logger log = LoggerFactory.getLogger(PingController.class);
-
-    @Get("/")
-    public String ping() {
-    	log.trace("Received a ping.");
-    	return "{\"pong\":true}";
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-gateway-example/src/main/java/example/PingController.java[]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -520,34 +503,7 @@ public class PingController {
 <div class="listingblock">
 <div class="title">Example Stream Lambda Handler</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package example;
-
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.*;
-import com.amazonaws.services.lambda.runtime.*;
-import io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler;
-import java.io.*;
-
-public class StreamLambdaHandler implements RequestStreamHandler {
-
-    private MicronautLambdaContainerHandler handler;
-
-    public StreamLambdaHandler() {
-        try {
-            handler = new MicronautLambdaContainerHandler(); <i class="conum" data-value="1"></i><b>(1)</b>
-        } catch (ContainerInitializationException e) {
-            // if we fail here. We re-throw the exception to force another cold start
-            e.printStackTrace();
-            throw new RuntimeException("Could not initialize Micronaut", e);
-        }
-    }
-
-    @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
-            throws IOException {
-        handler.proxyStream(inputStream, outputStream, context); <i class="conum" data-value="2"></i><b>(2)</b>
-    }
-}</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Unresolved directive in &lt;stdin&gt; - include::examples/api-gateway-example/src/main/java/example/StreamLambdaHandler.java[]</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1193,93 +1149,6 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 </div>
 <div class="paragraph">
 <p>A typical Alexa application written in Micronaut looks like:</p>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.ask.model.Response;
-import io.micronaut.function.aws.alexa.AlexaIntents;
-import io.micronaut.function.aws.alexa.annotation.IntentHandler;
-
-import javax.inject.Singleton;
-import java.util.Optional;
-
-@Singleton <b class="conum">(1)</b>
-public class AlexaApplication {
-
-    public static final String INTENT_NAME = "HelloWorldIntent";
-
-    private final MessageService messageService;
-
-    public AlexaApplication(MessageService messageService) { <b class="conum">(2)</b>
-        this.messageService = messageService;
-    }
-
-    @IntentHandler(INTENT_NAME) <b class="conum">(3)</b>
-    public Optional&lt;Response&gt; greet(HandlerInput input) { <b class="conum">(4)</b>
-        String speechText = messageService.sayHello();
-        return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build();
-    }</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import com.amazon.ask.dispatcher.request.handler.HandlerInput
-import com.amazon.ask.model.Response
-import groovy.transform.CompileStatic
-import io.micronaut.function.aws.alexa.AlexaIntents
-import io.micronaut.function.aws.alexa.annotation.IntentHandler
-import javax.inject.Singleton
-
-@Singleton <b class="conum">(1)</b>
-@CompileStatic
-class AlexaApplication {
-
-    private final MessageService messageService
-
-    AlexaApplication(MessageService messageService) { <b class="conum">(2)</b>
-        this.messageService = messageService
-    }
-
-    @IntentHandler("HelloWorldIntent") <b class="conum">(3)</b>
-    Optional&lt;Response&gt; greet(HandlerInput input) { <b class="conum">(4)</b>
-        String speechText = messageService.sayHello()
-        return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build()
-    }</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import com.amazon.ask.dispatcher.request.handler.HandlerInput
-import com.amazon.ask.model.Response
-import io.micronaut.function.aws.alexa.AlexaIntents
-import io.micronaut.function.aws.alexa.annotation.IntentHandler
-
-import javax.inject.Singleton
-import java.util.Optional
-
-@Singleton <b class="conum">(1)</b>
-class AlexaApplication(val messageService: MessageService) { <b class="conum">(2)</b>
-
-    companion object {
-        const val INTENT_NAME = "HelloWorldIntent"
-    }
-
-    @IntentHandler(INTENT_NAME) <b class="conum">(3)</b>
-    fun greet(input : HandlerInput) : Optional&lt;Response&gt; { <b class="conum">(4)</b>
-        val speechText = messageService.sayHello()
-        return input.responseBuilder
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build()
-    }</code></pre>
-</div>
 </div>
 <div class="colist arabic">
 <table>
