@@ -4,7 +4,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 
 @Introspected // <1>
-class CustomMicronautRequestHandler extends MicronautRequestHandler<Book, BookSaved> {
+public class BookRequestHandler extends MicronautRequestHandler<Book, BookSaved> {
 
     @Override
     public BookSaved execute(Book input) {

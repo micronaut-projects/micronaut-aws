@@ -134,6 +134,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @throws ConfigurationException if the handler is not of type RequestHandler or RequestStreamHandler
      */
     protected void validateHandler() throws ConfigurationException {
+        if (handler == null) {
+            throw new ConfigurationException("no handler instantiated. Override either createHandler() or createRequestStreamHandler() or annotate your Handler class with @Introspected");
+        }
         if (!(handler instanceof RequestHandler || handler instanceof RequestStreamHandler)) {
             throw new ConfigurationException("handler must be of type com.amazonaws.services.lambda.runtime.RequestHandler or com.amazonaws.services.lambda.runtime.RequestStreamHandler");
         }
@@ -206,7 +209,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         logn(LogLevel.DEBUG, "Handler: " + handler);
         if (handler != null) {
             Optional<Class> handlerClassOptional = parseHandlerClass(handler);
+            logn(LogLevel.WARN, "No handler Class parsed for " + handler);
             if (handlerClassOptional.isPresent()) {
+                logn(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection");
                 Class handlerClass = handlerClassOptional.get();
                 final BeanIntrospection introspection = BeanIntrospection.getIntrospection(handlerClass);
                 return introspection.instantiate();
@@ -319,9 +324,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     RxHttpClient.class,
                     runtimeApiURL,
                     config);
+            final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
                     final HttpResponse<RequestType> response = blockingHttpClient.exchange(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI, requestType);
                     final RequestType request = response.body();
                     if (request != null) {

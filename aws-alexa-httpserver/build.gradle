@@ -16,7 +16,7 @@ dependencies {
 
     api project(":aws-alexa")
     implementation "io.micronaut:micronaut-http-server"
-    implementation ("com.amazon.alexa:ask-sdk-core:2.30.0")
+    api ("com.amazon.alexa:ask-sdk-core:2.30.0")
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"

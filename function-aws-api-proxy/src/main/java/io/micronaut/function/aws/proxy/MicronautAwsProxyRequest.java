@@ -239,6 +239,9 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             return Optional.of(decodedBody);
         }
         final String body = awsProxyRequest.getBody();
+        if (awsProxyRequest.isBase64Encoded()) {
+            return (Optional<T>) Optional.ofNullable(Base64.getMimeDecoder().decode(body));
+        }
         return (Optional<T>) Optional.ofNullable(body);
     }
 
@@ -250,6 +253,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
         final String body = awsProxyRequest.getBody();
         if (body != null) {
+            if (awsProxyRequest.isBase64Encoded()) {
+                byte[] bytes = Base64.getMimeDecoder().decode(body);
+                if (type.getType().isInstance(bytes)) {
+                    return (Optional<T1>) Optional.of(bytes);
+                }
+                return ConversionService.SHARED.convert(bytes, type);
+            }
             if (type.getType().isInstance(body)) {
                 return (Optional<T1>) Optional.of(body);
             } else {

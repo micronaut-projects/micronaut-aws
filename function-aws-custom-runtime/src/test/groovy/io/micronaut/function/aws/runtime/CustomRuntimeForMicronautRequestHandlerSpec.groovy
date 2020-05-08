@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
-import io.micronaut.docs.MyLambdaRuntime
+import io.micronaut.docs.BookLambdaRuntime
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
@@ -42,24 +42,6 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         embeddedServer.close()
     }
 
-    static class CustomAwsProxyEventMicronautLambdaRuntime extends MyLambdaRuntime {
-
-        String serverUrl
-
-        CustomAwsProxyEventMicronautLambdaRuntime(String serverUrl) {
-            this.serverUrl = serverUrl
-        }
-
-        @Override
-        String getEnv(String name) {
-            if (name == ReservedRuntimeEnvironmentVariables.AWS_LAMBDA_RUNTIME_API) {
-                return serverUrl
-            } else if (name == ReservedRuntimeEnvironmentVariables.HANDLER) {
-                return 'io.micronaut.docs.CustomMicronautRequestHandler'
-            }
-            super.getEnv(name)
-        }
-    }
 
     @Requires(property = 'spec.name', value = 'CustomRuntimeForMicronautRequestHandlerSpec')
     @Controller("/")

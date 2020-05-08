@@ -7,7 +7,7 @@ dependencies {
 
     implementation "io.micronaut:micronaut-http-netty:$micronautVersion"
     api "io.micronaut:micronaut-http-server:$micronautVersion"
-    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
+    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
@@ -22,5 +22,8 @@ dependencies {
     testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut:micronaut-views'
     testImplementation "io.projectreactor:reactor-core"
+    testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
+    testImplementation 'javax.servlet:servlet-api:2.4'
+    testImplementation 'org.javadelight:delight-fileupload:0.0.5'
     testRuntimeOnly 'com.github.jknack:handlebars:4.1.2'
 }
