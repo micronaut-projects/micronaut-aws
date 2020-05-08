@@ -7,7 +7,7 @@ dependencies {
 
     implementation "io.micronaut:micronaut-http-netty:$micronautVersion"
     api "io.micronaut:micronaut-http-server:$micronautVersion"
-    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.4', {
+    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
