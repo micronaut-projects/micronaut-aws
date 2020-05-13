@@ -5,7 +5,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
 
     api "io.micronaut:micronaut-inject:$micronautVersion"
-    api('com.amazonaws:aws-java-sdk-core:1.11.780'){
+    api('com.amazonaws:aws-java-sdk-core:1.11.781'){
         exclude group: "commons-logging"
     }
     api "org.slf4j:jcl-over-slf4j:1.7.30"
