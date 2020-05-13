@@ -373,16 +373,20 @@ public final class MicronautLambdaContainerHandler
                                 }
                             }
                         } else {
+                            final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
                             final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
                                     .getRouter()
                                     .findAny(containerRequest.getPath(), containerRequest);
-                            if (matches.findFirst().isPresent()) {
-                                containerResponse.status(HttpStatus.METHOD_NOT_ALLOWED);
-                            } else {
-                                final MicronautAwsProxyResponse<?> res = containerRequest.getResponse();
-                                res.status(HttpStatus.NOT_FOUND);
-                                res.close();
-                            }
+
+                            final Flowable<? extends MutableHttpResponse<?>> statusFlowable = Flowable.fromCallable(() -> {
+                                containerResponse.status(matches.findFirst().isPresent() ? HttpStatus.METHOD_NOT_ALLOWED : HttpStatus.NOT_FOUND);
+                                return containerResponse;
+                            });
+
+                            Flowable.fromPublisher(filterPublisher(
+                                    requestReference,
+                                    statusFlowable
+                            )).blockingFirst();
                         }
                     }
                 } finally {
