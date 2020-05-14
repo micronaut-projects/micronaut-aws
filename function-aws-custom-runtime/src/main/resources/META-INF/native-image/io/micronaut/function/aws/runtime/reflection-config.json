@@ -1,0 +1,6 @@
+[
+  {
+    "name":"org.apache.http.client.config.RequestConfig$Builder",
+    "allDeclaredMethods" : true
+  }
+]
