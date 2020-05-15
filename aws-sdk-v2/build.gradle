@@ -1,0 +1,13 @@
+ext {
+    awsSdkVersion = "2.13.16"
+}
+
+dependencies {
+    api platform("software.amazon.awssdk:bom:$awsSdkVersion")
+    api project(":aws-common")
+
+    implementation "software.amazon.awssdk:netty-nio-client"
+    implementation "software.amazon.awssdk:apache-client"
+
+    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+}

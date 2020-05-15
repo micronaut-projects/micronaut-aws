@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.aws;
+package io.micronaut.aws.sdk.v1;
 
 import com.amazonaws.ClientConfiguration;
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;

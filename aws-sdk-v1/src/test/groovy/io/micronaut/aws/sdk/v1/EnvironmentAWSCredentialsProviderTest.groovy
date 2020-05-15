@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.aws
+package io.micronaut.aws.sdk.v1
 
 import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.BasicSessionCredentials
+import io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
@@ -39,8 +40,8 @@ class EnvironmentAWSCredentialsProviderTest extends Specification {
         )
 
         Environment environment = applicationContext.getEnvironment()
-        EnvironmentAWSCredentialsProvider awsCredentialsProvider = new
-                EnvironmentAWSCredentialsProvider((environment))
+        EnvironmentAWSCredentialsProvider awsCredentialsProvider =
+                new EnvironmentAWSCredentialsProvider((environment))
 
         when:
         AWSCredentials awsCredentials = awsCredentialsProvider.getCredentials()
@@ -61,8 +62,8 @@ class EnvironmentAWSCredentialsProviderTest extends Specification {
                         "aws.secretAccessKey", "$TEST_SECRET_KEY")))
 
         Environment environment = applicationContext.getEnvironment()
-        EnvironmentAWSCredentialsProvider awsCredentialsProvider = new
-                EnvironmentAWSCredentialsProvider((environment))
+        EnvironmentAWSCredentialsProvider awsCredentialsProvider =
+                new EnvironmentAWSCredentialsProvider((environment))
 
         when:
         AWSCredentials awsCredentials = awsCredentialsProvider.getCredentials()
@@ -81,8 +82,8 @@ class EnvironmentAWSCredentialsProviderTest extends Specification {
                         "aws.sessionToken", "$TEST_SESSION_TOKEN")))
 
         Environment environment = applicationContext.getEnvironment()
-        EnvironmentAWSCredentialsProvider awsCredentialsProvider = new
-                EnvironmentAWSCredentialsProvider((environment))
+        EnvironmentAWSCredentialsProvider awsCredentialsProvider =
+                new EnvironmentAWSCredentialsProvider((environment))
 
         when:
         BasicSessionCredentials awsCredentials = awsCredentialsProvider.getCredentials()
@@ -97,8 +98,8 @@ class EnvironmentAWSCredentialsProviderTest extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run()
         Environment environment = applicationContext.getEnvironment()
-        EnvironmentAWSCredentialsProvider awsCredentialsProvider = new
-                EnvironmentAWSCredentialsProvider((environment))
+        EnvironmentAWSCredentialsProvider awsCredentialsProvider =
+                new EnvironmentAWSCredentialsProvider((environment))
 
         when:
         BasicSessionCredentials awsCredentials = awsCredentialsProvider.getCredentials()

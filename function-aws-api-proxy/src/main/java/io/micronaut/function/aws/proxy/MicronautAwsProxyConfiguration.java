@@ -15,7 +15,7 @@
  */
 package io.micronaut.function.aws.proxy;
 
-import io.micronaut.configuration.aws.AWSConfiguration;
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 /**

@@ -1,4 +1,3 @@
-group "io.micronaut"
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"

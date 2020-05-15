@@ -74,11 +74,6 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     }
 
     @Override
-    protected void closeApplicationContext() {
-        // Avoid closing the application context when running the function in lambda to keep it warm
-    }
-
-    @Override
     protected String resolveFunctionName(Environment env) {
         if (this.functionName != null) {
             return functionName;

@@ -1,0 +1,9 @@
+dependencies {
+    api('com.amazonaws:aws-java-sdk-core:1.11.782')
+    api project(":aws-common")
+
+    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+}

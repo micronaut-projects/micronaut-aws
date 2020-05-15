@@ -12,5 +12,4 @@
         <appender-ref ref="STDOUT" />
     </root>
     <logger name="io.micronaut.aws" level="TRACE"/>
-    <logger name="io.micronaut.function" level="TRACE"/>
 </configuration>

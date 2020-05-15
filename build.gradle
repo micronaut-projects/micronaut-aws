@@ -15,6 +15,7 @@ buildscript {
         classpath 'io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1'
         classpath "io.micronaut.docs:micronaut-docs-asciidoc-extensions:$micronautDocsVersion"
         classpath "io.micronaut.docs:micronaut-docs-gradle-plugins:$micronautDocsVersion"
+        classpath "com.adarshr:gradle-test-logger-plugin:2.0.0"
     }
 }
 
@@ -54,7 +55,7 @@ subprojects { Project subproject ->
     
     apply plugin:"groovy"
     apply plugin:"java-library"
-
+    apply plugin: "com.adarshr.test-logger"
 
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
@@ -81,14 +82,24 @@ subprojects { Project subproject ->
             System.out.flush()
         }
 
-        reports.html.enabled = !System.getenv("TRAVIS")
-        reports.junitXml.enabled = !System.getenv("TRAVIS")
+        reports.html.enabled = !System.getenv("GITHUB_ACTIONS")
+        reports.junitXml.enabled = !System.getenv("GITHUB_ACTIONS")
+    }
 
+    testlogger {
+        theme 'standard'
+        showFullStackTraces true
+        showStandardStreams false
+        showPassedStandardStreams false
+        showSkippedStandardStreams false
+        showFailedStandardStreams true
     }
 
     configurations {
         documentation
         all {
+            exclude group: "commons-logging"
+            exclude group: "org.apache.logging.log4j"
             resolutionStrategy.eachDependency { DependencyResolveDetails details ->
                 String group = details.requested.group
                 if(group == 'org.codehaus.groovy') {
@@ -99,7 +110,11 @@ subprojects { Project subproject ->
     }
     dependencies {
         annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
-        implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        annotationProcessor "io.micronaut:micronaut-inject-java"
+        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
+
+        api platform("io.micronaut:micronaut-bom:$micronautVersion")
+        api "io.micronaut:micronaut-inject"
 
         documentation "org.codehaus.groovy:groovy-templates:$groovyVersion"
         documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
@@ -116,7 +131,7 @@ subprojects { Project subproject ->
         }
         testImplementation "io.micronaut:micronaut-inject-groovy"
 
-        testRuntime "ch.qos.logback:logback-classic:1.2.3"
+        testRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
     }
 
     groovydoc {

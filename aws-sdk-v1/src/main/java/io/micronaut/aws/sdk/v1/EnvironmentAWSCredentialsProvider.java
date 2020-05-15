@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.configuration.aws;
+package io.micronaut.aws.sdk.v1;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;

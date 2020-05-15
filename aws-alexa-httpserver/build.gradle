@@ -26,5 +26,5 @@ dependencies {
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.30.0"
 
-    testRuntimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
 }
