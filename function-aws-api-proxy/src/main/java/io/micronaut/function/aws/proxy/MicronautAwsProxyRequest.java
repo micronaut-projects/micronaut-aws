@@ -38,6 +38,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
@@ -191,6 +192,14 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         return URI.create(getScheme() + "://" + hostHeader + path);
+    }
+
+    @Nonnull
+    @Override
+    public InetSocketAddress getRemoteAddress() {
+        final String sourceIp = this.awsProxyRequest.getRequestContext().getIdentity().getSourceIp();
+        final InetSocketAddress inetSocketAddress = new InetSocketAddress(sourceIp, 0);
+        return inetSocketAddress;
     }
 
     private boolean isValidHost(String host, String apiId, String region) {
