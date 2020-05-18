@@ -1,5 +1,6 @@
 package io.micronaut.aws.sdk.v2.sync;
 
+import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -15,7 +16,7 @@ import javax.inject.Singleton;
 @Factory
 public class ApacheClientFactory {
 
-    @Singleton
+    @Bean(preDestroy = "close")
     @BootstrapContextCompatible
     public SdkHttpClient apacheClient(ApacheClientConfiguration configuration) {
         return configuration.builder.build();

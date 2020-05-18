@@ -8,6 +8,7 @@ dependencies {
 
     implementation "software.amazon.awssdk:netty-nio-client"
     implementation "software.amazon.awssdk:apache-client"
+    implementation "software.amazon.awssdk:s3"
 
     runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
 }
