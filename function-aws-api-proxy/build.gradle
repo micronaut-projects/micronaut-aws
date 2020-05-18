@@ -5,8 +5,8 @@ dependencies {
 
     compileOnly "io.micronaut:micronaut-security:$micronautSecurity"
 
-    implementation "io.micronaut:micronaut-http-netty:$micronautVersion"
-    api "io.micronaut:micronaut-http-server:$micronautVersion"
+    implementation "io.micronaut:micronaut-http-netty"
+    api "io.micronaut:micronaut-http-server"
     api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
@@ -19,7 +19,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
+    testCompileOnly "io.micronaut:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut:micronaut-views'
     testImplementation "io.projectreactor:reactor-core"
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'

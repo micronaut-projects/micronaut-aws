@@ -51,6 +51,7 @@ subprojects { Project subproject ->
     repositories {
         maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.jfrog.org/oss-snapshot-local" }
     }
     
     apply plugin:"groovy"
@@ -109,20 +110,20 @@ subprojects { Project subproject ->
         }
     }
     dependencies {
-        annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+        annotationProcessor enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         annotationProcessor "io.micronaut:micronaut-inject-java"
         annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
 
-        api platform("io.micronaut:micronaut-bom:$micronautVersion")
+        api enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         api "io.micronaut:micronaut-inject"
 
         documentation "org.codehaus.groovy:groovy-templates:$groovyVersion"
         documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
-        testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+        testAnnotationProcessor enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         testAnnotationProcessor "io.micronaut:micronaut-inject-java"
 
-        testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        testImplementation enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         testImplementation "org.codehaus.groovy:groovy-test:$groovyVersion"
         testImplementation "cglib:cglib-nodep:3.3.0"
         testImplementation "org.objenesis:objenesis:3.1"

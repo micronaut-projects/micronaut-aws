@@ -35,7 +35,9 @@ import javax.validation.Valid
 
 class FiltersSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'spec.name': 'FiltersSpec'
+            ])
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
@@ -70,6 +72,7 @@ class FiltersSpec extends Specification {
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/filter-test")
     @Validated
+    @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class TestController {
         @Get("/ok")
         String ok() {
@@ -84,6 +87,7 @@ class FiltersSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Filter("/filter-test/**")
+    @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class TestFilter implements HttpServerFilter {
         @Override
         Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
@@ -100,6 +104,7 @@ class FiltersSpec extends Specification {
 
     @Produces
     @Singleton
+    @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class CustomExceptionHandler implements ExceptionHandler<CustomException, HttpResponse> {
         @Override
         HttpResponse handle(HttpRequest request, CustomException exception) {

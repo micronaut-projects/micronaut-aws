@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.fasterxml.jackson.databind.JsonMappingException
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.server.exceptions.ExceptionHandler
@@ -25,6 +26,7 @@ class ErrorHandlerSpec extends Specification {
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.build().properties([
+                    'spec.name': 'ErrorHandlerSpec',
                     'micronaut.server.cors.enabled': true,
                     'micronaut.server.cors.configurations.web.allowedOrigins': ['http://localhost:8080']
             ])
@@ -117,6 +119,7 @@ class ErrorHandlerSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class ErrorController {
 
         @Get('/global')
@@ -150,6 +153,7 @@ class ErrorHandlerSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/json')
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class JsonController {
         @Get('/error')
         String jsonException() {
@@ -159,6 +163,7 @@ class ErrorHandlerSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/global-errors')
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class GlobalErrorController {
 
         @Error(global = true, exception = GloballyHandledException)
@@ -176,6 +181,7 @@ class ErrorHandlerSpec extends Specification {
     }
 
     @Singleton
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class RuntimeErrorHandler implements ExceptionHandler<RuntimeException, HttpResponse> {
 
         @Override
@@ -186,6 +192,7 @@ class ErrorHandlerSpec extends Specification {
     }
 
     @Singleton
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class MyErrorHandler implements ExceptionHandler<MyException, HttpResponse> {
 
         @Override

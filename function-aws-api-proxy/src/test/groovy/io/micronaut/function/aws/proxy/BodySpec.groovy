@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import delight.fileupload.FileUpload
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.core.io.Writable
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
@@ -38,7 +39,9 @@ import java.util.zip.ZipOutputStream
 class BodySpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'spec.name': 'BodySpec'
+            ])
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
@@ -166,6 +169,7 @@ class BodySpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-body')
+    @Requires(property = 'spec.name', value = 'BodySpec')
     static class BodyController {
 
         @Post(uri = "/pojo")

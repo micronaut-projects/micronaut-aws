@@ -4,6 +4,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -17,7 +18,9 @@ import spock.lang.Specification
 class FluxSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'spec.name': 'FluxSpec'
+            ])
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
@@ -35,6 +38,7 @@ class FluxSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/users")
+    @Requires(property = 'spec.name', value = 'FluxSpec')
     static class UserController {
 
         @Get

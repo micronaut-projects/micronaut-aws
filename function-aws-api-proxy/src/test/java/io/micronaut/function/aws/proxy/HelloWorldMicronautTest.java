@@ -21,6 +21,9 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder;
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -77,7 +80,12 @@ public class HelloWorldMicronautTest {
     @BeforeClass
     public static void initializeServer() throws ContainerInitializationException {
         try {
-            handler = new MicronautLambdaContainerHandler();
+            handler = new MicronautLambdaContainerHandler(
+                    ApplicationContext.build()
+                            .properties(CollectionUtils.mapOf(
+                                    "spec.name", "HelloWorldMicronautTest"
+                            ))
+            );
         } catch (RuntimeException e) {
             e.printStackTrace();
             fail();
@@ -140,6 +148,7 @@ public class HelloWorldMicronautTest {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/")
+    @Requires(property = "spec.name", value = "HelloWorldMicronautTest")
     public static class HelloController {
         @Get("/")
         HttpResponse<String> index() {

@@ -15,8 +15,6 @@ import spock.lang.Specification
  */
 class NettyClientSpec extends Specification {
 
-    @NotYetImplemented
-    @Issue("https://github.com/micronaut-projects/micronaut-core/issues/3245")
     void "netty client can be configured"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
@@ -28,7 +26,6 @@ class NettyClientSpec extends Specification {
 
         then:
         client.configuration().maxConnections() == 123
-
     }
 
 }
