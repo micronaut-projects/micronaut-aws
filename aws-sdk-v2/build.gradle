@@ -5,7 +5,8 @@ ext {
 dependencies {
     api platform("software.amazon.awssdk:bom:$awsSdkVersion")
     api project(":aws-common")
-    runtimeOnly "io.micronaut:micronaut-runtime"
+
+    compileOnly "org.graalvm.nativeimage:svm"
 
     // Clients
     api "software.amazon.awssdk:url-connection-client"
@@ -15,9 +16,10 @@ dependencies {
     // Services
     compileOnly "software.amazon.awssdk:s3"
 
+    // Tests
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
     testImplementation "software.amazon.awssdk:s3"
-
-    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    testRuntimeOnly "io.micronaut:micronaut-runtime"
 }
