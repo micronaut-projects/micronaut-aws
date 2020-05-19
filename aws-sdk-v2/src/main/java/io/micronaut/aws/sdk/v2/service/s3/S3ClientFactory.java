@@ -28,10 +28,10 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
 
 /**
- * TODO: javadoc
+ * Factory that creates an S3 client.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Factory
 public class S3ClientFactory {
@@ -46,6 +46,10 @@ public class S3ClientFactory {
         this.configuration = configuration;
     }
 
+    /**
+     * @param httpClient The sync client
+     * @return an {@link S3Client} instance.
+     */
     @Bean(preDestroy = "close")
     @BootstrapContextCompatible
     @Requires(beans = SdkHttpClient.class)
@@ -59,6 +63,10 @@ public class S3ClientFactory {
                 .build();
     }
 
+    /**
+     * @param httpClient The async client
+     * @return an {@link S3AsyncClient} instance
+     */
     @Bean(preDestroy = "close")
     @BootstrapContextCompatible
     @Requires(beans = SdkAsyncHttpClient.class)

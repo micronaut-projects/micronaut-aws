@@ -1,0 +1,14 @@
+To use an S3 client, add the following dependency:
+
+dependency:s3[groupId="software.amazon.awssdk"]
+
+Then, the following beans will be created, depending on which HTTP client is available:
+
+* `software.amazon.awssdk.services.s3.S3Client`.
+* `software.amazon.awssdk.services.s3.S3AsyncClient`.
+
+The credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.
+
+Additionally, this service accepts the following configuration properties:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties.adoc[]

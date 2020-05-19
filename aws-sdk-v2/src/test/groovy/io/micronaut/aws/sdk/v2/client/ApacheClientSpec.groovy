@@ -1,4 +1,4 @@
-package io.micronaut.aws.sdk.v2
+package io.micronaut.aws.sdk.v2.client
 
 import io.micronaut.context.ApplicationContext
 import software.amazon.awssdk.http.SdkHttpClient
