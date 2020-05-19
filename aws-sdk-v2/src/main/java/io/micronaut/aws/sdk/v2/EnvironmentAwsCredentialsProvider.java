@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017-2020 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.micronaut.aws.sdk.v2;
 
 import io.micronaut.context.env.Environment;
@@ -15,8 +30,7 @@ import software.amazon.awssdk.utils.StringUtils;
  * @author Vladimír Oraný
  * @since 2.0.0
  */
-public class EnvironmentAwsCredentialsProvider implements AwsCredentialsProvider {
-
+public final class EnvironmentAwsCredentialsProvider implements AwsCredentialsProvider {
 
     /**
      * Environment variable name for the AWS access key ID.
@@ -43,10 +57,6 @@ public class EnvironmentAwsCredentialsProvider implements AwsCredentialsProvider
      */
     public static final String AWS_SESSION_TOKEN_ENV_VAR = "aws.session-token";
 
-    public static EnvironmentAwsCredentialsProvider create(Environment environment) {
-        return new EnvironmentAwsCredentialsProvider(environment);
-    }
-
     private final Environment environment;
 
     /**
@@ -55,6 +65,10 @@ public class EnvironmentAwsCredentialsProvider implements AwsCredentialsProvider
      */
     private EnvironmentAwsCredentialsProvider(Environment environment) {
         this.environment = environment;
+    }
+
+    public static EnvironmentAwsCredentialsProvider create(Environment environment) {
+        return new EnvironmentAwsCredentialsProvider(environment);
     }
 
     @Override

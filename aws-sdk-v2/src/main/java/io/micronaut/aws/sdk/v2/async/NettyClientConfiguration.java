@@ -1,23 +1,38 @@
+/*
+ * Copyright 2017-2020 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.micronaut.aws.sdk.v2.async;
 
 import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.aws.sdk.v2.sync.ApacheClientConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
 import software.amazon.awssdk.http.nio.netty.ProxyConfiguration;
 
 /**
- * TODO: javadoc
+ * Configuration properties for the Netty async client.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.0.0
+ * @since 2.0.0
  */
-@ConfigurationProperties("netty-client")
+@ConfigurationProperties(NettyClientConfiguration.PREFIX)
 @BootstrapContextCompatible
 public class NettyClientConfiguration extends AWSConfiguration {
+
+    public static final String PREFIX = "netty-client";
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"eventLoopGroup", "eventLoopGroupBuilder", "sslProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "proxyConfiguration", "http2Configuration", "buildWithDefaults", "applyMutation"})
     private NettyNioAsyncHttpClient.Builder builder = NettyNioAsyncHttpClient.builder();
@@ -25,10 +40,16 @@ public class NettyClientConfiguration extends AWSConfiguration {
     @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
     private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
 
+    /**
+     * @return The builder for {@link NettyNioAsyncHttpClient}
+     */
     public NettyNioAsyncHttpClient.Builder getBuilder() {
         return builder.proxyConfiguration(proxy.build());
     }
 
+    /**
+     * @return The builder for {@link ProxyConfiguration}
+     */
     public ProxyConfiguration.Builder getProxy() {
         return proxy;
     }
