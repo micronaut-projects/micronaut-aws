@@ -1,3 +1,5 @@
+## Class changes
+
 api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 
 .Classes renamed
@@ -22,4 +24,15 @@ api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 | api:io.micronaut.aws.alexa.conf.AlexaIntents[]
 | `io.micronaut.function.aws.alexa`
 | `io.micronaut.aws.alexa.conf`
+|===
+
+## Artifact changes
+
+Now all artifacts are published under the `io.micronaut.aws` group id.
+
+.Artifacts relocated
+|===
+| Old artifact | New artifact
+
+| `io.micronaut:micronaut-function-aws` | `io.micronaut.aws:micronaut-function-aws`
 |===
