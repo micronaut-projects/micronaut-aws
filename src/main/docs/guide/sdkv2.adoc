@@ -2,14 +2,52 @@ To use the https://github.com/aws/aws-sdk-java-v2[AWS SDK v2], add the following
 
 dependency:micronaut-aws-sdk-v2[groupId="io.micronaut.aws"]
 
-By default, Micronaut configures a `SdkHttpClient` instance based on the JVM’s lightweight `URLConnection`. It can be
-configured with the following properties:
+By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
+to use a client based on the JVM's lightweight `URLConnection`, you should configure it as explained below.
+
+## `URLConnection` client
+
+To use the `URLCnnection`-based client, you should exclude the other clients from the classpath:
+
+.Maven
+[source, xml]
+----
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>s3</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache-client</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>netty-nio-client</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>url-connection-client</artifactId>
+</dependency>
+----
+
+.Gradle
+[source,groovy]
+----
+implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache-client"
+    exclude group: "software.amazon.awssdk", module: "netty-nio-client"
+}
+implementation "software.amazon.awssdk:url-connection-client"
+----
+
+Then, you can configure it with the following configuration properties:
 
 include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.UrlConnectionClientConfiguration.adoc[]
 
-You can also use more powerful, but also slower to startup clients. By default, if any of them are in the classpath,
-then the `URLConnection` one will not be configured. You can override this behaviour by setting the following JVM system
-properties:
+If you don't exclude the other clients from the classpath, you still can configure which one is used by setting the
+following JVM system properties:
 
 * `software.amazon.awssdk.http.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` for the `URLConnection` based client.
@@ -19,19 +57,11 @@ properties:
 
 ## Apache HTTP client
 
-To use the Apache HTTP sync client, add the following dependency:
-
-dependency:apache-client[groupId="software.amazon.awssdk"]
-
 The Apache HTTP client can be configured with the following options:
 
 include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration.adoc[]
 
 ## Netty client
-
-To use the Netty async client, add the following dependency:
-
-dependency:netty-nio-client[groupId="software.amazon.awssdk"]
 
 The Netty client can be configured with the following options:
 

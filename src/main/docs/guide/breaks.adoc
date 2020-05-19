@@ -34,5 +34,6 @@ Now all artifacts are published under the `io.micronaut.aws` group id.
 |===
 | Old artifact | New artifact
 
+
 | `io.micronaut:micronaut-function-aws` | `io.micronaut.aws:micronaut-function-aws`
 |===

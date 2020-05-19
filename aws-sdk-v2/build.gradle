@@ -9,7 +9,7 @@ dependencies {
     compileOnly "org.graalvm.nativeimage:svm"
 
     // Clients
-    api "software.amazon.awssdk:url-connection-client"
+    compileOnly "software.amazon.awssdk:url-connection-client"
     compileOnly "software.amazon.awssdk:netty-nio-client"
     compileOnly "software.amazon.awssdk:apache-client"
 
@@ -17,6 +17,7 @@ dependencies {
     compileOnly "software.amazon.awssdk:s3"
 
     // Tests
+    testImplementation "software.amazon.awssdk:url-connection-client"
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
     testImplementation "software.amazon.awssdk:s3"

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.client;
+package io.micronaut.aws.sdk.v2.client.urlConnection;
 
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;

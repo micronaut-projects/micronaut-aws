@@ -20,7 +20,9 @@
  * @since 2.0.0
  */
 @Requires(classes = ApacheHttpClient.class)
+@Configuration
 package io.micronaut.aws.sdk.v2.client.apache;
 
+import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;

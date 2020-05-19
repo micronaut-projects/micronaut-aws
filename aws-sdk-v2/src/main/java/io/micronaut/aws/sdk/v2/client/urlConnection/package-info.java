@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 /**
- * Netty client configuration and factory.
+ * URLConnection client configuration and factory.
  *
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-@Requires(classes = NettyNioAsyncHttpClient.class)
+@Requires(classes = UrlConnectionHttpClient.class)
 @Configuration
-package io.micronaut.aws.sdk.v2.client.netty;
+package io.micronaut.aws.sdk.v2.client.urlConnection;
 
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
+import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;

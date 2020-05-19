@@ -7,9 +7,11 @@ import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.RuntimeClassInitialization;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 /**
  * GraalVM utility class.
@@ -56,7 +58,10 @@ public class AwsSdkAutomaticFeature implements Feature {
     }
 
     private void registerRuntimeReflection(BeforeAnalysisAccess access, String className) {
-        initialize(RuntimeReflection::register, access, className);
+        Class<?> clazz = initialize(RuntimeReflection::register, access, className);
+        if (clazz != null) {
+            registerAllAccess(clazz);
+        }
     }
 
     private void initializeAtBuildTime(BeforeAnalysisAccess access, String className) {
@@ -80,12 +85,23 @@ public class AwsSdkAutomaticFeature implements Feature {
         }
     }
 
-    private void initialize(Consumer<Class<?>> operation, BeforeAnalysisAccess access, String className) {
+    private Class<?> initialize(Consumer<Class<?>> operation, BeforeAnalysisAccess access, String className) {
         Class<?> clazz = access.findClassByName(className);
         if (clazz != null) {
             operation.accept(clazz);
         }
+        return clazz;
 
+    }
+
+    private void registerAllAccess(Class<?> t) {
+        for (Method method : t.getMethods()) {
+            RuntimeReflection.register(method);
+        }
+        Field[] fields = t.getFields();
+        for (Field field : fields) {
+            RuntimeReflection.register(field);
+        }
     }
 
 }

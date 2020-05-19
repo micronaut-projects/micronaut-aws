@@ -20,8 +20,10 @@
  * @since 2.0.0
  */
 @Requires(classes = {S3Client.class, S3AsyncClient.class})
+@Configuration
 package io.micronaut.aws.sdk.v2.service.s3;
 
+import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;

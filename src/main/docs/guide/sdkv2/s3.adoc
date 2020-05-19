@@ -2,7 +2,7 @@ To use an S3 client, add the following dependency:
 
 dependency:s3[groupId="software.amazon.awssdk"]
 
-Then, the following beans will be created, depending on which HTTP client is available:
+Then, the following beans will be created:
 
 * `software.amazon.awssdk.services.s3.S3Client`.
 * `software.amazon.awssdk.services.s3.S3AsyncClient`.

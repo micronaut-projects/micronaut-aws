@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.client;
+package io.micronaut.aws.sdk.v2.client.urlConnection;
 
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
-import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
 /**
  * Factory that creates an {@link java.net.URLConnection} based client.
@@ -42,7 +41,7 @@ public class UrlConnectionClientFactory {
      */
     @Bean(preDestroy = "close")
     @Context
-    @Requires(missingBeans = {SdkHttpClient.class, SdkAsyncHttpClient.class})
+    @Requires(missingBeans = SdkHttpClient.class)
     public SdkHttpClient urlConnectionClient(UrlConnectionClientConfiguration configuration) {
         return doCreateClient(configuration);
     }

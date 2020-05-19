@@ -1,6 +1,6 @@
 package io.micronaut.aws.sdk.v2.client
 
-import io.micronaut.aws.sdk.v2.client.UrlConnectionClientFactory
+import io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory
 import io.micronaut.context.ApplicationContext
 import software.amazon.awssdk.http.SdkHttpClient
 import software.amazon.awssdk.http.SdkHttpConfigurationOption

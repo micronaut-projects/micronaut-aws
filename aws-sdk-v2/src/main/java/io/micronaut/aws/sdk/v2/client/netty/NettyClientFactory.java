@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.client.netty;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
 /**
@@ -30,6 +31,9 @@ import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 @Factory
 public class NettyClientFactory {
 
+    public static final String ASYNC_SERVICE_IMPL = "software.amazon.awssdk.http.async.service.impl";
+    public static final String NETTY_SDK_ASYNC_HTTP_SERVICE = "software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService";
+
     /**
      * @param configuration The Netty client configuration
      * @return an instance of {@link SdkAsyncHttpClient}
@@ -37,6 +41,21 @@ public class NettyClientFactory {
     @Bean(preDestroy = "close")
     @Context
     public SdkAsyncHttpClient nettyClient(NettyClientConfiguration configuration) {
+        return doCreateClient(configuration);
+    }
+    /**
+     * @param configuration The Netty client configuration
+     * @return an instance of {@link SdkAsyncHttpClient}
+     */
+    @Bean(preDestroy = "close")
+    @Context
+    @Requires(property = ASYNC_SERVICE_IMPL, value = NETTY_SDK_ASYNC_HTTP_SERVICE)
+    public SdkAsyncHttpClient systemPropertyClient(NettyClientConfiguration configuration) {
+        return doCreateClient(configuration);
+    }
+
+    private SdkAsyncHttpClient doCreateClient(NettyClientConfiguration configuration) {
         return configuration.getBuilder().build();
     }
+
 }
