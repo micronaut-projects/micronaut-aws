@@ -16,9 +16,9 @@
 package io.micronaut.aws.sdk.v2.client;
 
 import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Context;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 
 /**
@@ -28,7 +28,7 @@ import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
  * @since 2.0.0
  */
 @ConfigurationProperties(UrlConnectionClientConfiguration.PREFIX)
-@BootstrapContextCompatible
+@Context
 public class UrlConnectionClientConfiguration extends AWSConfiguration {
     public static final String PREFIX = "url-connection-client";
 

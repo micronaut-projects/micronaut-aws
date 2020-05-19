@@ -16,7 +16,7 @@
 package io.micronaut.aws.sdk.v2.service.s3;
 
 import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.BootstrapContextCompatible;
+import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
@@ -51,7 +51,7 @@ public class S3ClientFactory {
      * @return an {@link S3Client} instance.
      */
     @Bean(preDestroy = "close")
-    @BootstrapContextCompatible
+    @Context
     @Requires(beans = SdkHttpClient.class)
     public S3Client s3Client(SdkHttpClient httpClient) {
         Region region = regionProvider.getRegion();
@@ -68,7 +68,7 @@ public class S3ClientFactory {
      * @return an {@link S3AsyncClient} instance
      */
     @Bean(preDestroy = "close")
-    @BootstrapContextCompatible
+    @Context
     @Requires(beans = SdkAsyncHttpClient.class)
     public S3AsyncClient s3AsyncClient(SdkAsyncHttpClient httpClient) {
         Region region = regionProvider.getRegion();

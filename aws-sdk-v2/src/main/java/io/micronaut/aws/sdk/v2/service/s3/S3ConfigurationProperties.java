@@ -16,9 +16,9 @@
 package io.micronaut.aws.sdk.v2.service.s3;
 
 import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Context;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Configuration.Builder;
 
@@ -29,7 +29,7 @@ import software.amazon.awssdk.services.s3.S3Configuration.Builder;
  * @since 1.0.0
  */
 @ConfigurationProperties(S3ConfigurationProperties.PREFIX)
-@BootstrapContextCompatible
+@Context
 public class S3ConfigurationProperties extends AWSConfiguration {
 
     public static final String PREFIX = "s3";
