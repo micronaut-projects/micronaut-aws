@@ -7,8 +7,7 @@ import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.RuntimeClassInitialization;
 import org.graalvm.nativeimage.hosted.RuntimeReflection;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -69,10 +68,15 @@ public class AwsSdkAutomaticFeature implements Feature {
     }
 
     private void addProxyClass(BeforeAnalysisAccess access, String... interfaces) {
-        Stream<Class<?>> classStream = Arrays.stream(interfaces)
-                .map(access::findClassByName);
-        if (classStream.allMatch(Objects::nonNull)) {
-            ImageSingletons.lookup(DynamicProxyRegistry.class).addProxyClass(classStream.toArray(Class<?>[]::new));
+        List<Class<?>> classList = new ArrayList<>();
+        for (String anInterface : interfaces) {
+            Class<?> clazz = access.findClassByName(anInterface);
+            if (clazz != null) {
+                classList.add(clazz);
+            }
+        }
+        if (classList.size() == interfaces.length) {
+            ImageSingletons.lookup(DynamicProxyRegistry.class).addProxyClass(classList.toArray(new Class<?>[interfaces.length]));
         }
     }
 
