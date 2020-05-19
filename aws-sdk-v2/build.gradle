@@ -5,10 +5,19 @@ ext {
 dependencies {
     api platform("software.amazon.awssdk:bom:$awsSdkVersion")
     api project(":aws-common")
+    runtimeOnly "io.micronaut:micronaut-runtime"
 
-    implementation "software.amazon.awssdk:netty-nio-client"
-    implementation "software.amazon.awssdk:apache-client"
-    implementation "software.amazon.awssdk:s3"
+    // Clients
+    api "software.amazon.awssdk:url-connection-client"
+    compileOnly "software.amazon.awssdk:netty-nio-client"
+    compileOnly "software.amazon.awssdk:apache-client"
+
+    // Services
+    compileOnly "software.amazon.awssdk:s3"
+
+    testImplementation "software.amazon.awssdk:netty-nio-client"
+    testImplementation "software.amazon.awssdk:apache-client"
+    testImplementation "software.amazon.awssdk:s3"
 
     runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
 }

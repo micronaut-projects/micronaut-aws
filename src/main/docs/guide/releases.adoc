@@ -1,5 +1,11 @@
 For more information, check the https://github.com/micronaut-projects/micronaut-aws/releases[GitHub release list].
 
+##### 2.0
+
+* Upgrade to Micronaut 2.
+* Support for the AWS SDK v2
+* Improved support for Alexa Skills.
+
 ##### 1.4
 
 Setting Micronaut 1.2 as the minimum supported version

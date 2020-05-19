@@ -1,8 +1,12 @@
 introduction: Introduction
 whatsNew: What's new?
 corretto: Amazon Correto
-awsCredentialsProvider:
-  title: AWS Credentials Provider
+sdkv1:
+  title: AWS SDK v1
+  awsCredentialsProvider: AWS Credentials Provider
+sdkv2:
+  title: AWS SDK v2
+  s3: S3
 lambda:
   title: AWS Lambda Support
   requestHandlers: Micronaut Request Handlers

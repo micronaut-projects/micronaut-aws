@@ -1,0 +1,79 @@
+To use the https://github.com/aws/aws-sdk-java-v2[AWS SDK v2], add the following dependency:
+
+dependency:micronaut-aws-sdk-v2[groupId="io.micronaut.aws"]
+
+By default, Micronaut configures a `SdkHttpClient` instance based on the JVM’s lightweight `URLConnection`. It can be
+configured with the following properties:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.UrlConnectionClientConfiguration.adoc[]
+
+You can also use more powerful, but also slower to startup clients. By default, if any of them are in the classpath,
+then the `URLConnection` one will not be configured. You can override this behaviour by setting the following JVM system
+properties:
+
+* `software.amazon.awssdk.http.service.impl`. Possible values:
+** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` for the `URLConnection` based client.
+** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` for the Apache HTTP client (if in the classpath).
+* `software.amazon.awssdk.http.async.service.impl`. Possible values:
+** `software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService` for the Netty client (if in the classpath).
+
+## Apache HTTP client
+
+To use the Apache HTTP sync client, add the following dependency:
+
+dependency:apache-client[groupId="software.amazon.awssdk"]
+
+The Apache HTTP client can be configured with the following options:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration.adoc[]
+
+## Netty client
+
+To use the Netty async client, add the following dependency:
+
+dependency:netty-nio-client[groupId="software.amazon.awssdk"]
+
+The Netty client can be configured with the following options:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration.adoc[]
+
+## Supplying AWS credentials
+
+By default, AWS SDK v2 will attempt to find AWS credentials from the following places:
+
+1. Java system properties: `aws.accessKeyId` and `aws.secretAccessKey`.
+2. Environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+3. The default credential profiles file: `~/.aws/credentials`.
+4. Amazon ECS container credentials, loaded from Amazon ECS if the environment variable
+   `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI` is set.
+5. Instance profile credentials, used on Amazon EC2 instances, and delivered through the Amazon EC2 metadata service.
+
+For more information, check https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/credentials.html[the AWS documentation].
+
+If you still want to specify the credentials via configuration, you can do so in `application.yml`:
+
+[source,yaml]
+----
+aws:
+  accessKeyId: your_access_key_id_here
+  secretKey: your_secret_key_id_here
+  sessionToken: your_session_token_here
+----
+
+## AWS region selection
+
+By default, AWS SDK v2 will attempt to determine the AWS region in the following ways:
+
+1. Environment variable: `AWS_REGION`.
+2. The default shared configuration file: `~/.aws/config`.
+3. Amazon EC2 instance metadata service.
+
+For more information, check https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/java-dg-region-selection.html[the AWS documentation].
+
+If you still want to specify the region via configuration, you can do so in `application.yml`:
+
+[source,yaml]
+----
+aws:
+  region: eu-west-1
+----

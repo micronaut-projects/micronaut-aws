@@ -67,6 +67,10 @@ public final class EnvironmentAwsCredentialsProvider implements AwsCredentialsPr
         this.environment = environment;
     }
 
+    /**
+     * @param environment The Micronaut environment
+     * @return an {@link EnvironmentAwsCredentialsProvider} instance.
+     */
     public static EnvironmentAwsCredentialsProvider create(Environment environment) {
         return new EnvironmentAwsCredentialsProvider(environment);
     }

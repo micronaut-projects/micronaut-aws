@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.sync;
+package io.micronaut.aws.sdk.v2.client.apache;
 
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;

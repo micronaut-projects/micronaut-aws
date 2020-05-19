@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 /**
- * Apache HTTP client configuration and factory.
+ * Netty client configuration and factory.
  *
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-@Requires(classes = ApacheHttpClient.class)
-package io.micronaut.aws.sdk.v2.sync;
+@Requires(classes = NettyNioAsyncHttpClient.class)
+package io.micronaut.aws.sdk.v2.client.netty;
 
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.http.apache.ApacheHttpClient;
+import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
