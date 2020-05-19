@@ -4,8 +4,8 @@
  * @author Álvaro Sánchez-Mariscal
  * @since 1.0.0
  */
-@Requires(classes = NettyNioAsyncHttpClient.class)
+@Requires(classes = ApacheHttpClient.class)
 package io.micronaut.aws.sdk.v2.sync;
 
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
+import software.amazon.awssdk.http.apache.ApacheHttpClient;

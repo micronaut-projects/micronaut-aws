@@ -19,6 +19,6 @@ public class ApacheClientFactory {
     @Bean(preDestroy = "close")
     @BootstrapContextCompatible
     public SdkHttpClient apacheClient(ApacheClientConfiguration configuration) {
-        return configuration.builder.build();
+        return configuration.getBuilder().build();
     }
 }

@@ -11,7 +11,10 @@ class ApacheClientSpec extends Specification {
     void "apache client can be configured"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                ['aws.apache-client.max-connections': 123]
+                [
+                        'aws.apache-client.max-connections': 123,
+                        'aws.apache-client.proxy.username': 'username'
+                ]
         )
 
         when:
@@ -19,5 +22,6 @@ class ApacheClientSpec extends Specification {
 
         then:
         client.resolvedOptions.get(SdkHttpConfigurationOption.MAX_CONNECTIONS) == 123
+        client.requestConfig.proxyConfiguration().username() == 'username'
     }
 }

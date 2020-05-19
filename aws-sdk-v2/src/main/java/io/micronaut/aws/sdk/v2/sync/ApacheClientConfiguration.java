@@ -5,6 +5,7 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
+import software.amazon.awssdk.http.apache.ProxyConfiguration;
 
 /**
  * TODO: javadoc
@@ -16,7 +17,17 @@ import software.amazon.awssdk.http.apache.ApacheHttpClient;
 @BootstrapContextCompatible
 public class ApacheClientConfiguration extends AWSConfiguration {
 
-    @ConfigurationBuilder(prefixes = {""})
-    ApacheHttpClient.Builder builder = ApacheHttpClient.builder();
+    @ConfigurationBuilder(prefixes = {""}, excludes = {"applyMutation", "proxyConfiguration", "httpRoutePlanner", "credentialsProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "buildWithDefaults"})
+    private ApacheHttpClient.Builder builder = ApacheHttpClient.builder();
 
+    @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
+    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
+
+    public ApacheHttpClient.Builder getBuilder() {
+        return builder.proxyConfiguration(proxy.build());
+    }
+
+    public ProxyConfiguration.Builder getProxy() {
+        return proxy;
+    }
 }

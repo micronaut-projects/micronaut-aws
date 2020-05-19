@@ -5,8 +5,6 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
-import javax.inject.Singleton;
-
 /**
  * TODO: javadoc
  *
@@ -20,6 +18,6 @@ public class NettyClientFactory {
     @Bean(preDestroy = "close")
     @BootstrapContextCompatible
     public SdkAsyncHttpClient nettyClient(NettyClientConfiguration configuration) {
-        return configuration.builder.build();
+        return configuration.getBuilder().build();
     }
 }
