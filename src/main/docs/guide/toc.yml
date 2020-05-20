@@ -7,6 +7,8 @@ sdkv1:
 sdkv2:
   title: AWS SDK v2
   s3: S3
+  advancedConfiguration: Advanced configuration
+  otherServices: Other services
 lambda:
   title: AWS Lambda Support
   requestHandlers: Micronaut Request Handlers

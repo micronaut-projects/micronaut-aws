@@ -21,6 +21,7 @@ dependencies {
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
     testImplementation "software.amazon.awssdk:s3"
+    testImplementation "software.amazon.awssdk:rekognition"
     testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
 }

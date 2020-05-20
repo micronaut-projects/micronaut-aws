@@ -15,17 +15,19 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
+import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
+
+import javax.inject.Singleton;
 
 /**
  * Factory that creates an S3 client.
@@ -34,50 +36,55 @@ import software.amazon.awssdk.services.s3.S3Client;
  * @since 2.0.0
  */
 @Factory
-public class S3ClientFactory {
+public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncClientBuilder, S3Client, S3AsyncClient> {
 
-    private final AwsCredentialsProviderChain credentialsProvider;
-    private final AwsRegionProviderChain regionProvider;
     private final S3ConfigurationProperties configuration;
 
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider The region provider
+     * @param configuration The service configuration
+     */
     public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, S3ConfigurationProperties configuration) {
-        this.credentialsProvider = credentialsProvider;
-        this.regionProvider = regionProvider;
+        super(credentialsProvider, regionProvider);
         this.configuration = configuration;
     }
 
-    /**
-     * @param httpClient The sync client
-     * @return an {@link S3Client} instance.
-     */
-    @Bean(preDestroy = "close")
-    @Context
-    @Requires(beans = SdkHttpClient.class)
-    public S3Client s3Client(SdkHttpClient httpClient) {
-        Region region = regionProvider.getRegion();
+    @Override
+    protected S3ClientBuilder createSyncBuilder() {
         return S3Client.builder()
-                .httpClient(httpClient)
-                .region(region)
-                .serviceConfiguration(configuration.getBuilder().build())
-                .credentialsProvider(credentialsProvider)
-                .build();
+                .serviceConfiguration(configuration.getBuilder().build());
     }
 
-    /**
-     * @param httpClient The async client
-     * @return an {@link S3AsyncClient} instance
-     */
-    @Bean(preDestroy = "close")
-    @Context
-    @Requires(beans = SdkAsyncHttpClient.class)
-    public S3AsyncClient s3AsyncClient(SdkAsyncHttpClient httpClient) {
-        Region region = regionProvider.getRegion();
+    @Override
+    protected S3AsyncClientBuilder createAsyncBuilder() {
         return S3AsyncClient.builder()
-                .httpClient(httpClient)
-                .region(region)
-                .serviceConfiguration(configuration.getBuilder().build())
-                .credentialsProvider(credentialsProvider)
-                .build();
+                .serviceConfiguration(configuration.getBuilder().build());
     }
 
+    @Override
+    @Singleton
+    public S3ClientBuilder syncBuilder(SdkHttpClient httpClient) {
+        return super.syncBuilder(httpClient);
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    public S3Client syncClient(S3ClientBuilder builder) {
+        return super.syncClient(builder);
+    }
+
+    @Override
+    @Singleton
+    public S3AsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) {
+        return super.asyncBuilder(httpClient);
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    public S3AsyncClient asyncClient(S3AsyncClientBuilder builder) {
+        return super.asyncClient(builder);
+    }
 }

@@ -43,6 +43,7 @@ public class NettyClientFactory {
     public SdkAsyncHttpClient nettyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
+
     /**
      * @param configuration The Netty client configuration
      * @return an instance of {@link SdkAsyncHttpClient}

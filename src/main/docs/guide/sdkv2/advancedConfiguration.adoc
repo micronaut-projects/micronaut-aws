@@ -1,0 +1,4 @@
+For advanced configuration options that are not suitable to provide via `application.yml`, you can declare a
+`BeanCreatedEventListener` bean that listens for builder bean creations, and apply any further customisation there:
+
+snippet::io.micronaut.aws.sdk.v2.S3ClientBuilderListener[tags="listener", project="aws-sdk-v2", source="test"]
