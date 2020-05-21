@@ -18,7 +18,6 @@ package io.micronaut.aws.sdk.v2.client.netty;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.context.annotation.Context;
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
 import software.amazon.awssdk.http.nio.netty.ProxyConfiguration;
 
@@ -29,7 +28,6 @@ import software.amazon.awssdk.http.nio.netty.ProxyConfiguration;
  * @since 2.0.0
  */
 @ConfigurationProperties(NettyClientConfiguration.PREFIX)
-@Context
 public class NettyClientConfiguration extends AWSConfiguration {
 
     public static final String PREFIX = "netty-client";

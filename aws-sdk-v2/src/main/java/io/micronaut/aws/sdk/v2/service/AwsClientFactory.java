@@ -29,7 +29,7 @@ import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
  *
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
-
+ *
  * @param <SB> The sync builder
  * @param <AB> The async builder
  * @param <SC> The sync client
