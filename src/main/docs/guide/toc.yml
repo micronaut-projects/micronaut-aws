@@ -7,6 +7,10 @@ sdkv1:
 sdkv2:
   title: AWS SDK v2
   s3: S3
+  dynamodb: Dynamo DB
+  ses: SES
+  sns: SNS
+  sqs: SQS
   advancedConfiguration: Advanced configuration
   otherServices: Other services
 lambda:

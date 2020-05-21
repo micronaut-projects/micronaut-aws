@@ -1,0 +1,15 @@
+To use a SQS client, add the following dependency:
+
+dependency:sqs[groupId="software.amazon.awssdk"]
+
+Then, the following beans will be created:
+
+* `software.amazon.awssdk.services.sqs.SqsClientBuilder`
+* `software.amazon.awssdk.services.sqs.SqsClient`.
+
+And:
+
+* `software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder`
+* `software.amazon.awssdk.services.sqs.SqsAsyncClient`.
+
+The HTTP client, credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.

@@ -107,3 +107,8 @@ If you still want to specify the region via configuration, you can do so in `app
 aws:
   region: eu-west-1
 ----
+
+## Third-party libraries
+
+If you are looking for a higher-level API, check out
+https://github.com/agorapulse/micronaut-aws-sdk[Agorapulse's AWS SDK for Micronaut].

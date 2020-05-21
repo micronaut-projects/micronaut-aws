@@ -15,12 +15,20 @@ dependencies {
 
     // Services
     compileOnly "software.amazon.awssdk:s3"
+    compileOnly "software.amazon.awssdk:dynamodb"
+    compileOnly "software.amazon.awssdk:ses"
+    compileOnly "software.amazon.awssdk:sns"
+    compileOnly "software.amazon.awssdk:sqs"
 
     // Tests
     testImplementation "software.amazon.awssdk:url-connection-client"
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
     testImplementation "software.amazon.awssdk:s3"
+    testImplementation "software.amazon.awssdk:dynamodb"
+    testImplementation "software.amazon.awssdk:ses"
+    testImplementation "software.amazon.awssdk:sns"
+    testImplementation "software.amazon.awssdk:sqs"
     testImplementation "software.amazon.awssdk:rekognition"
     testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
     testRuntimeOnly "io.micronaut:micronaut-runtime"

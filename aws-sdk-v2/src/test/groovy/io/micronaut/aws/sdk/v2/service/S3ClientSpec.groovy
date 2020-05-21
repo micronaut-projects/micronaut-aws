@@ -24,7 +24,7 @@ class S3ClientSpec extends Specification{
         S3Client client = applicationContext.getBean(S3Client)
 
         then:
-        client.serviceName() == 's3'
+        client.serviceName() == S3Client.SERVICE_NAME
     }
 
     void "it can configure an S3 async client"() {
@@ -35,7 +35,7 @@ class S3ClientSpec extends Specification{
         S3AsyncClient client = applicationContext.getBean(S3AsyncClient)
 
         then:
-        client.serviceName() == 's3'
+        client.serviceName() == S3Client.SERVICE_NAME
     }
 
     void "builders can be customised"() {

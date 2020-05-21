@@ -17,7 +17,7 @@ class AwsClientFactorySpec extends Specification {
         RekognitionClient client = applicationContext.getBean(RekognitionClient)
 
         then:
-        client.serviceName() == 'rekognition'
+        client.serviceName() == RekognitionClient.SERVICE_NAME
     }
 
     void "it can create async clients"() {
@@ -30,7 +30,7 @@ class AwsClientFactorySpec extends Specification {
         RekognitionAsyncClient client = applicationContext.getBean(RekognitionAsyncClient)
 
         then:
-        client.serviceName() == 'rekognition'
+        client.serviceName() == RekognitionClient.SERVICE_NAME
     }
 
 }
