@@ -47,7 +47,8 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param regionProvider The region provider
      * @param configuration The service configuration
      */
-    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, S3ConfigurationProperties configuration) {
+    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                           S3ConfigurationProperties configuration) {
         super(credentialsProvider, regionProvider);
         this.configuration = configuration;
     }

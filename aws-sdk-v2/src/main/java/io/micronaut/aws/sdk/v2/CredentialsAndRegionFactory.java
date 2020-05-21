@@ -16,13 +16,14 @@
 package io.micronaut.aws.sdk.v2;
 
 import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.env.Environment;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
+
+import javax.inject.Singleton;
 
 /**
  * Factory that creates an AWS credentials and region providers that can read values from the Micronaut environment.
@@ -39,7 +40,6 @@ public class CredentialsAndRegionFactory {
      * first, then delegates to {@link DefaultCredentialsProvider}.
      */
     @Bean(preDestroy = "close")
-    @Context
     public AwsCredentialsProviderChain awsCredentialsProvider(Environment environment) {
         return AwsCredentialsProviderChain.of(
                 EnvironmentAwsCredentialsProvider.create(environment),
@@ -52,7 +52,7 @@ public class CredentialsAndRegionFactory {
      * @return An {@link AwsRegionProviderChain} that attempts to read the values from the Micronaut environment
      * first, then delegates to {@link DefaultAwsRegionProviderChain}.
      */
-    @Context
+    @Singleton
     public AwsRegionProviderChain awsRegionProvider(Environment environment) {
         return new AwsRegionProviderChain(
                 new EnvironmentAwsRegionProvider(environment),

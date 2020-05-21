@@ -16,7 +16,6 @@
 package io.micronaut.aws.sdk.v2.client.netty;
 
 import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -39,7 +38,6 @@ public class NettyClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
-    @Context
     public SdkAsyncHttpClient nettyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
@@ -49,7 +47,6 @@ public class NettyClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
-    @Context
     @Requires(property = ASYNC_SERVICE_IMPL, value = NETTY_SDK_ASYNC_HTTP_SERVICE)
     public SdkAsyncHttpClient systemPropertyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);

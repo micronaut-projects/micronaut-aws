@@ -17,7 +17,6 @@ package io.micronaut.aws.sdk.v2.client.apache;
 
 import io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory;
 import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -38,7 +37,6 @@ public class ApacheClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
-    @Context
     @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, notEquals = UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE)
     public SdkHttpClient apacheClient(ApacheClientConfiguration configuration) {
         return doCreateClient(configuration);
@@ -49,7 +47,6 @@ public class ApacheClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
-    @Context
     @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, value = APACHE_SDK_HTTP_SERVICE)
     public SdkHttpClient systemPropertyClient(ApacheClientConfiguration configuration) {
         return doCreateClient(configuration);
