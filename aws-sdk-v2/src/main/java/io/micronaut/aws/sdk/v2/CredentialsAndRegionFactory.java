@@ -40,6 +40,7 @@ public class CredentialsAndRegionFactory {
      * first, then delegates to {@link DefaultCredentialsProvider}.
      */
     @Bean(preDestroy = "close")
+    @Singleton
     public AwsCredentialsProviderChain awsCredentialsProvider(Environment environment) {
         return AwsCredentialsProviderChain.of(
                 EnvironmentAwsCredentialsProvider.create(environment),

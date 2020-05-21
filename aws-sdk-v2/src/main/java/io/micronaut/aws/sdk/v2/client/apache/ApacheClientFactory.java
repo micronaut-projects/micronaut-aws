@@ -21,6 +21,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
 
+import javax.inject.Singleton;
+
 /**
  * Factory that creates an Apache HTTP client.
  *
@@ -37,6 +39,7 @@ public class ApacheClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, notEquals = UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE)
     public SdkHttpClient apacheClient(ApacheClientConfiguration configuration) {
         return doCreateClient(configuration);
@@ -47,6 +50,7 @@ public class ApacheClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, value = APACHE_SDK_HTTP_SERVICE)
     public SdkHttpClient systemPropertyClient(ApacheClientConfiguration configuration) {
         return doCreateClient(configuration);

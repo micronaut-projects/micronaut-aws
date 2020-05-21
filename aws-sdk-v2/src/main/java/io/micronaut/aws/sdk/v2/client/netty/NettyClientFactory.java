@@ -20,6 +20,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
+import javax.inject.Singleton;
+
 /**
  * Factory that creates a Netty client.
  *
@@ -38,6 +40,7 @@ public class NettyClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     public SdkAsyncHttpClient nettyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
@@ -47,6 +50,7 @@ public class NettyClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(property = ASYNC_SERVICE_IMPL, value = NETTY_SDK_ASYNC_HTTP_SERVICE)
     public SdkAsyncHttpClient systemPropertyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);

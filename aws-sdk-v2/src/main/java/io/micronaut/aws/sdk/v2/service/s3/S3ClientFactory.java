@@ -74,6 +74,7 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     public S3Client syncClient(S3ClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -87,6 +88,7 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
     public S3AsyncClient asyncClient(S3AsyncClientBuilder builder) {
         return super.asyncClient(builder);

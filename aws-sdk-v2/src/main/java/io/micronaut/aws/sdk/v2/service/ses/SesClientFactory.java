@@ -67,6 +67,7 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     public SesClient syncClient(SesClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -80,6 +81,7 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
     public SesAsyncClient asyncClient(SesAsyncClientBuilder builder) {
         return super.asyncClient(builder);

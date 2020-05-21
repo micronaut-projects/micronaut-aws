@@ -20,6 +20,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
 
+import javax.inject.Singleton;
+
 /**
  * Factory that creates an {@link java.net.URLConnection} based client.
  *
@@ -39,6 +41,7 @@ public class UrlConnectionClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(missingBeans = SdkHttpClient.class)
     public SdkHttpClient urlConnectionClient(UrlConnectionClientConfiguration configuration) {
         return doCreateClient(configuration);
@@ -52,6 +55,7 @@ public class UrlConnectionClientFactory {
      * @return An instance of {@link SdkHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(property = HTTP_SERVICE_IMPL, value = URL_CONNECTION_SDK_HTTP_SERVICE)
     public SdkHttpClient systemPropertyClient(UrlConnectionClientConfiguration configuration) {
         return doCreateClient(configuration);

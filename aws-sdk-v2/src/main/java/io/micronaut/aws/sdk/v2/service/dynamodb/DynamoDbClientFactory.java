@@ -66,6 +66,7 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     public DynamoDbClient syncClient(DynamoDbClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -78,6 +79,7 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     public DynamoDbAsyncClient asyncClient(DynamoDbAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }

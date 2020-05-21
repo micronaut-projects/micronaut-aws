@@ -67,6 +67,7 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     public SqsClient syncClient(SqsClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -80,6 +81,7 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
 
     @Override
     @Bean(preDestroy = "close")
+    @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
     public SqsAsyncClient asyncClient(SqsAsyncClientBuilder builder) {
         return super.asyncClient(builder);
