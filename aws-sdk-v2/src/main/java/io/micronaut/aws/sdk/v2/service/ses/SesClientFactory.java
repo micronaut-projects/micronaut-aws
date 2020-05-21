@@ -31,10 +31,10 @@ import software.amazon.awssdk.services.ses.SesClientBuilder;
 import javax.inject.Singleton;
 
 /**
- * Factory that create4s a SES client,
+ * Factory that create4s a SES client.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Factory
 public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyncClientBuilder, SesClient, SesAsyncClient> {

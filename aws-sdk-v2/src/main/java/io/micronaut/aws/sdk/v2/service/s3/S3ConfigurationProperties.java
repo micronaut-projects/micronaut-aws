@@ -26,7 +26,7 @@ import software.amazon.awssdk.services.s3.S3Configuration.Builder;
  * Configuration properties for S3.
  *
  * @author Álvaro Sánchez-Mariscal
- * @since 1.0.0
+ * @since 2.0.0
  */
 @ConfigurationProperties(S3Client.SERVICE_NAME)
 public class S3ConfigurationProperties extends AWSConfiguration {
