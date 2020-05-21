@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.client.apache;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Context;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.http.apache.ProxyConfiguration;
 
@@ -28,6 +29,7 @@ import software.amazon.awssdk.http.apache.ProxyConfiguration;
  * @since 2.0.0
  */
 @ConfigurationProperties(ApacheClientConfiguration.PREFIX)
+@Context
 public class ApacheClientConfiguration extends AWSConfiguration {
 
     public static final String PREFIX = "apache-client";

@@ -50,12 +50,14 @@ public class RekognitionClientFactory extends AwsClientFactory<RekognitionClient
 
     @Override
     @Singleton
+    @Requires(beans = SdkAsyncHttpClient.class)
     public RekognitionAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) { // <2>
         return super.asyncBuilder(httpClient);
     }
 
     @Override
     @Bean(preDestroy = "close")
+    @Requires(beans = SdkAsyncHttpClient.class)
     public RekognitionAsyncClient asyncClient(RekognitionAsyncClientBuilder builder) { // <3>
         return super.asyncClient(builder);
     }
