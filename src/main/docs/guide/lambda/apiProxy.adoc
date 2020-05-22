@@ -35,7 +35,19 @@ The api:function.aws.proxy.MicronautLambdaContainerHandler[] class is used to in
 
 The `MicronautLambdaContainerHandler` constructor also accepts a `ApplicationContextBuilder` instance which you can use to further customize application bootstrap.
 
-TIP: See the https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-gateway-example[Example Application] and associated https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-gateway-example/README.md[README] for instructions on how to deploy locally using https://github.com/awslabs/aws-sam-cli[AWS SAM Local] and AWS Cloud Formation for production.
+[TIP]
+.Using the CLI
+====
+To create an AWS API Gateway Proxy application:
+----
+$ mn create-app my-app --features aws-lambda
+----
+Or with Micronaut Launch
+----
+$ curl https://launch.micronaut.io/example.zip\?features\=aws-lambda -o example.zip
+$ unzip example.zip -d example
+----
+====
 
 Micronaut API Gateway Proxy builds on top of https://github.com/awslabs/aws-serverless-java-container/[AWS Servless Java Container]. You can check a https://github.com/awslabs/aws-serverless-java-container/tree/master/samples/micronaut/pet-store[Pet Store sample application].
 
