@@ -4,6 +4,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
@@ -17,7 +18,9 @@ import spock.lang.Specification
 
 class CookiesSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'spec.name': 'CookiesSpec'
+            ])
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
@@ -63,6 +66,7 @@ class CookiesSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/cookies-test')
+    @Requires(property = 'spec.name', value = 'CookiesSpec')
     static class CookieController {
 
         @Get(uri = "/all")

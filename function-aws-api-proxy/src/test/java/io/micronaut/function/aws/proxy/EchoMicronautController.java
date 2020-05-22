@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
 import com.amazonaws.services.lambda.runtime.Context;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
@@ -36,6 +37,7 @@ import static io.micronaut.function.aws.proxy.MicronautAwsProxyTest.SERVLET_RESP
 
 @Controller("/echo")
 @Secured(SecurityRule.IS_ANONYMOUS)
+@Requires(property = "spec.name", value = "MicronautAwsProxyTest")
 public class EchoMicronautController {
     @Get("/encoded-param")
     public SingleValueModel echoEncodedParam(@QueryValue("param") String param) {

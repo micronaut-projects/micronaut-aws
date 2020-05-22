@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,15 +67,10 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     @Nonnull
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
-        ApplicationContextBuilder builder = super.newApplicationContextBuilder();
-        builder.environments(ENVIRONMENT_LAMBDA);
-        builder.eagerInitSingletons(true);
-        return builder;
-    }
-
-    @Override
-    protected void closeApplicationContext() {
-        // Avoid closing the application context when running the function in lambda to keep it warm
+        return super.newApplicationContextBuilder()
+                .environments(ENVIRONMENT_LAMBDA)
+                .eagerInitSingletons(true)
+                .eagerInitConfiguration(true);
     }
 
     @Override

@@ -1,0 +1,5 @@
+aws:
+  accessKeyId: yamlAccessKeyId
+  secretKey: yamlSecretKey
+  sessionToken: yamlSessionToken
+  region: eu-west-43

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import com.amazonaws.serverless.exceptions.InvalidResponseObjectException;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.Headers;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
@@ -35,7 +36,6 @@ import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.cookie.Cookie;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -98,16 +98,17 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         return this;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <B> MutableHttpResponse<B> body(@Nullable B body) {
+        this.body = (T) body;
+        return (MutableHttpResponse<B>) this;
+    }
+
     @Override
     @Nonnull
     public MutableHttpHeaders getHeaders() {
         return awsHeaders;
-    }
-
-    @Override
-    public MutableHttpResponse<T> body(@Nullable T body) {
-        this.body = body;
-        return this;
     }
 
     @Override

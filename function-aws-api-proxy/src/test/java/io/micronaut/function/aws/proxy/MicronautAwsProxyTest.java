@@ -64,6 +64,7 @@ public class MicronautAwsProxyTest {
             handler = new MicronautLambdaContainerHandler(
                         ApplicationContext.build()
                             .properties(CollectionUtils.mapOf(
+                                    "spec.name", "MicronautAwsProxyTest",
                                     "micronaut.security.enabled", true,
                                     "micronaut.views.handlebars.enabled", true,
                                     "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",

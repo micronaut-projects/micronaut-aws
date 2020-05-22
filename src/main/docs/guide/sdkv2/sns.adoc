@@ -1,0 +1,15 @@
+To use a SNS client, add the following dependency:
+
+dependency:sns[groupId="software.amazon.awssdk"]
+
+Then, the following beans will be created:
+
+* `software.amazon.awssdk.services.sns.SnsClientBuilder`
+* `software.amazon.awssdk.services.sns.SnsClient`.
+
+And:
+
+* `software.amazon.awssdk.services.sns.SnsAsyncClientBuilder`
+* `software.amazon.awssdk.services.sns.SnsAsyncClient`.
+
+The HTTP client, credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.

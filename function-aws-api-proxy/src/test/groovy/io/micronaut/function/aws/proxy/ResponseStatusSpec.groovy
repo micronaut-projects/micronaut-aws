@@ -4,16 +4,12 @@ import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.Status
+import io.micronaut.http.annotation.*
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.Specification
@@ -28,7 +24,9 @@ class ResponseStatusSpec extends Specification {
         given:
 
         def handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build()
+                ApplicationContext.build().properties([
+                        'spec.name': 'ResponseStatusSpec'
+                ])
         )
 
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status', HttpMethod.POST.toString())
@@ -49,85 +47,94 @@ class ResponseStatusSpec extends Specification {
     void "test optional causes 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build()
-            )
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build().properties([
+                        'spec.name': 'ResponseStatusSpec'
+                ])
+        )
 
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/optional', HttpMethod.GET.toString())
-            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/optional', HttpMethod.GET.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 404
+        response.statusCode == 404
 
         cleanup:
-            handler.close()
+        handler.close()
     }
 
     void "test null causes 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build()
-            )
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build().properties([
+                        'spec.name': 'ResponseStatusSpec'
+                ])
+        )
 
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/null', HttpMethod.GET.toString())
-            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/null', HttpMethod.GET.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 404
+        response.statusCode == 404
 
         cleanup:
-            handler.close()
+        handler.close()
     }
 
     void "test void methods does not cause 404"() {
         given:
 
-            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build()
-            )
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build().properties([
+                        'spec.name': 'ResponseStatusSpec'
+                ])
+        )
 
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/delete-something', HttpMethod.DELETE.toString())
-            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/delete-something', HttpMethod.DELETE.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 204
+        response.statusCode == 204
 
         cleanup:
-            handler.close()
+        handler.close()
     }
 
-    void "test constraint violation causes 400"() {
+    void "test constraint violation causes 502"() {
         given:
 
-            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build()
-            )
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build().properties([
+                        'spec.name': 'ResponseStatusSpec'
+                ])
+        )
 
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/constraint-violation', HttpMethod.POST.toString())
-            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/constraint-violation', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 400
+        response.statusCode == 502
 
         cleanup:
-            handler.close()
+        handler.close()
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-status')
+    @Requires(property = 'spec.name', value = 'ResponseStatusSpec')
     static class StatusController {
 
         @Post(uri = "/", processes = MediaType.TEXT_PLAIN)

@@ -4,6 +4,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
@@ -17,7 +18,9 @@ import spock.lang.Specification
 class ParametersSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build()
+            ApplicationContext.build().properties([
+                    'spec.name': 'ParametersSpec'
+            ])
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 
@@ -37,6 +40,7 @@ class ParametersSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/parameters-test')
+    @Requires(property = 'spec.name', value = 'ParametersSpec')
     static class BodyController {
 
         @Get(uri = "/all")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.proxy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.configuration.aws.AWSConfiguration;
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 
