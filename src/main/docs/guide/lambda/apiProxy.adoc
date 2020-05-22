@@ -13,7 +13,7 @@ In this arrangement you build your application as a regular REST application, fo
 .Example Controller
 [source,java]
 ----
-include::examples/api-gateway-example/src/main/java/example/PingController.java[]
+include::function-aws-api-proxy/src/test/java/example/PingController.java[]
 ----
 
 You then need to add the `micronaut-function-aws-api-proxy` dependency:
@@ -25,7 +25,7 @@ You can then implement a `RequestHandler` that handles the API proxy request:
 .Example Stream Lambda Handler
 [source,java]
 ----
-include::examples/api-gateway-example/src/main/java/example/StreamLambdaHandler.java[]
+include::function-aws-api-proxy/src/test/java/example/StreamLambdaHandler.java[]
 ----
 
 <1> Micronaut is initialized in the constructor

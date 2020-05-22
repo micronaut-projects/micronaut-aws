@@ -1,5 +1,7 @@
-Micronatu AWS 2.0.0 contains improvements to ease the creation of Alexa Skills with Micronaut:
+Micronaut AWS 2.0.0 contains improvements to ease the creation of Alexa Skills with Micronaut:
 
+- Support for AWS SDK 2
+- Improvements to GraalVM support on Lambda
 - Creation of Alexa Skills as http services. 
 - Creation of Flash Briefing skills. 
 - Easier creation of SSML.
