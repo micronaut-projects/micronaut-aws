@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>6 AWS Lambda Custom Runtime 2.0.0.BUILD-SNAPSHOT</title>
+    <title>7 AWS Lambda Custom Runtime 2.0.0.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -47,25 +47,28 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/corretto.html"><strong>3</strong><span>Amazon Correto</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/awsCredentialsProvider.html"><strong>4</strong><span>AWS Credentials Provider</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv1.html"><strong>4</strong><span>AWS SDK v1</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>5</strong><span>AWS Lambda Support</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv2.html"><strong>5</strong><span>AWS SDK v2</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambdaCustomRuntimes.html"><strong>6</strong><span>AWS Lambda Custom Runtime</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>6</strong><span>AWS Lambda Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambdaCustomRuntimes.html"><strong>7</strong><span>AWS Lambda Custom Runtime</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>8</strong><span>Repository</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>8</strong><span>Alexa Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>9</strong><span>Breaking Changes</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>10</strong><span>Release History</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>10</strong><span>Breaking Changes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>11</strong><span>Release History</span></a>
                         </div>
                         
                     </div>
@@ -86,18 +89,18 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>6</strong><span>AWS Lambda Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>8</strong><span>Alexa Support</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>6 AWS Lambda Custom Runtime</h1>
+                    <h1>7 AWS Lambda Custom Runtime</h1>
 
                     <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
                 </div>
@@ -106,23 +109,23 @@ function addJsClass() {
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeHandler"><strong>6.1</strong><span>Custom Runtime for Handler functions</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeHandler"><strong>7.1</strong><span>Custom Runtime for Handler functions</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeDeploy"><strong>6.2</strong><span>Deploy a Custom Runtime</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeDeploy"><strong>7.2</strong><span>Deploy a Custom Runtime</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeApiGateway"><strong>6.3</strong><span>Custom runtime for AWS API Gateway Proxy functions</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeApiGateway"><strong>7.3</strong><span>Custom runtime for AWS API Gateway Proxy functions</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeGraal"><strong>6.4</strong><span>Custom runtime for Function as a GraalVM Native Image</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#customRuntimeGraal"><strong>7.4</strong><span>Custom runtime for Function as a GraalVM Native Image</span></a>
                     </div>
                     
                 </div>
                 
 
                 
-<h1 id="lambdaCustomRuntimes"><a class="anchor" href="#lambdaCustomRuntimes"></a>6 AWS Lambda Custom Runtime</h1>
+<h1 id="lambdaCustomRuntimes"><a class="anchor" href="#lambdaCustomRuntimes"></a>7 AWS Lambda Custom Runtime</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes.adoc"'>
@@ -168,7 +171,7 @@ function addJsClass() {
 <p>The main API you will interact with is <a href="../api/io/micronaut/function/aws/runtime/AbstractMicronautLambdaRuntime.html">AbstractMicronautLambdaRuntime</a>. An abstract class which you can extend to create your custom runtime <code>mainClass</code>. That class includes the necessary code to perform the <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html#runtimes-custom-build">Processing Tasks</a> described in the Custom Runtime documentation.</p>
 </div>
 
-<h2 id="customRuntimeHandler"><a class="anchor" href="#customRuntimeHandler"></a>6.1 Custom Runtime for Handler functions</h2>
+<h2 id="customRuntimeHandler"><a class="anchor" href="#customRuntimeHandler"></a>7.1 Custom Runtime for Handler functions</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeHandler.adoc"'>
@@ -338,7 +341,7 @@ public class BookLambdaRuntime
 </div>
 </div>
 
-<h2 id="customRuntimeDeploy"><a class="anchor" href="#customRuntimeDeploy"></a>6.2 Deploy a Custom Runtime</h2>
+<h2 id="customRuntimeDeploy"><a class="anchor" href="#customRuntimeDeploy"></a>7.2 Deploy a Custom Runtime</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeDeploy.adoc"'>
@@ -373,7 +376,7 @@ See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-walkthrough.h
 </table>
 </div>
 
-<h2 id="customRuntimeApiGateway"><a class="anchor" href="#customRuntimeApiGateway"></a>6.3 Custom runtime for AWS API Gateway Proxy functions</h2>
+<h2 id="customRuntimeApiGateway"><a class="anchor" href="#customRuntimeApiGateway"></a>7.3 Custom runtime for AWS API Gateway Proxy functions</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeApiGateway.adoc"'>
@@ -402,7 +405,7 @@ java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.function.aws.ru
 <code>micronaut-function-aws-api-proxy</code> module.</p>
 </div>
 
-<h2 id="customRuntimeGraal"><a class="anchor" href="#customRuntimeGraal"></a>6.4 Custom runtime for Function as a GraalVM Native Image</h2>
+<h2 id="customRuntimeGraal"><a class="anchor" href="#customRuntimeGraal"></a>7.4 Custom runtime for Function as a GraalVM Native Image</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambdaCustomRuntimes/customRuntimeGraal.adoc"'>
@@ -561,9 +564,9 @@ docker run --rm --entrypoint cat demo  /home/application/function.zip &gt; build
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>6</strong><span>AWS Lambda Support</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>7</strong><span>Alexa Support</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/alexa.html"><strong>8</strong><span>Alexa Support</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="/cdn-cgi/apps/head/3cOPSgo5Omz84ycX7CvigfX4cpw.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-82213539-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-82213539-2');
+    </script>
+    <title>5 AWS SDK v2 2.0.0.BUILD-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navTitle">
+        
+        Micronaut AWS
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/whatsNew.html"><strong>2</strong><span>What's new?</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/corretto.html"><strong>3</strong><span>Amazon Correto</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv1.html"><strong>4</strong><span>AWS SDK v1</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv2.html"><strong>5</strong><span>AWS SDK v2</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>6</strong><span>AWS Lambda Support</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambdaCustomRuntimes.html"><strong>7</strong><span>AWS Lambda Custom Runtime</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>8</strong><span>Alexa Support</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>10</strong><span>Breaking Changes</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>11</strong><span>Release History</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/sdkv1.html">&lt;&lt; <strong>4</strong><span>AWS SDK v1</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/lambda.html"><strong>6</strong><span>AWS Lambda Support</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>5 AWS SDK v2</h1>
+
+                    <p><strong>Version:</strong> 2.0.0.BUILD-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#s3"><strong>5.1</strong><span>S3</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#dynamodb"><strong>5.2</strong><span>Dynamo DB</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#ses"><strong>5.3</strong><span>SES</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#sns"><strong>5.4</strong><span>SNS</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#sqs"><strong>5.5</strong><span>SQS</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#advancedConfiguration"><strong>5.6</strong><span>Advanced configuration</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#otherServices"><strong>5.7</strong><span>Other services</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+<h1 id="sdkv2"><a class="anchor" href="#sdkv2"></a>5 AWS SDK v2</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use the <a href="https://github.com/aws/aws-sdk-java-v2">AWS SDK v2</a>, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-sdk-v2")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-sdk-v2&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
+to use a client based on the JVM&#8217;s lightweight <code>URLConnection</code>, you should configure it as explained below.</p>
+</div>
+<div class="sect1">
+<h2 id="_code_urlconnection_code_client"><code>URLConnection</code> client</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To use the <code>URLCnnection</code>-based client, you should exclude the other clients from the classpath:</p>
+</div>
+<div class="listingblock">
+<div class="title">Maven</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;s3&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+            &lt;artifactId&gt;apache-client&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+            &lt;artifactId&gt;netty-nio-client&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;url-connection-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache-client"
+    exclude group: "software.amazon.awssdk", module: "netty-nio-client"
+}
+implementation "software.amazon.awssdk:url-connection-client"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, you can configure it with the following configuration properties:</p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::/home/runner/work/micronaut-aws/micronaut-aws/build/generated/configurationProperties/io.micronaut.aws.sdk.v2.client.UrlConnectionClientConfiguration.adoc[]</p>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t exclude the other clients from the classpath, you still can configure which one is used by setting the
+following JVM system properties:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.http.service.impl</code>. Possible values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService</code> for the <code>URLConnection</code> based client.</p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.http.apache.ApacheSdkHttpService</code> for the Apache HTTP client (if in the classpath).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>software.amazon.awssdk.http.async.service.impl</code>. Possible values:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService</code> for the Netty client (if in the classpath).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_apache_http_client">Apache HTTP client</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Apache HTTP client can be configured with the following options:</p>
+</div>
+<a id="io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html">ApacheClientConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.socket-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.connection-acquisition-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.max-connections</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.local-address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.net.InetAddress</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.expect-continue-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.connection-time-to-live</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.connection-max-idle-time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.use-idle-connection-reaper</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.net.URI</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.ntlm-domain</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.ntlm-workstation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.non-proxy-hosts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Set</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.add-non-proxy-host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.preemptive-basic-authentication-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.use-system-property-values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_netty_client">Netty client</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Netty client can be configured with the following options:</p>
+</div>
+<a id="io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html">NettyClientConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.max-concurrency</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.max-pending-connection-acquires</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.read-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.write-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.connection-acquisition-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.connection-time-to-live</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.connection-max-idle-time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.use-idle-connection-reaper</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.protocol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.Protocol</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.max-http2streams</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.scheme</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.non-proxy-hosts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Set</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_supplying_aws_credentials">Supplying AWS credentials</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, AWS SDK v2 will attempt to find AWS credentials from the following places:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Java system properties: <code>aws.accessKeyId</code> and <code>aws.secretAccessKey</code>.</p>
+</li>
+<li>
+<p>Environment variables: <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code>.</p>
+</li>
+<li>
+<p>The default credential profiles file: <code>~/.aws/credentials</code>.</p>
+</li>
+<li>
+<p>Amazon ECS container credentials, loaded from Amazon ECS if the environment variable
+<code>AWS_CONTAINER_CREDENTIALS_RELATIVE_URI</code> is set.</p>
+</li>
+<li>
+<p>Instance profile credentials, used on Amazon EC2 instances, and delivered through the Amazon EC2 metadata service.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For more information, check <a href="https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/credentials.html">the AWS documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you still want to specify the credentials via configuration, you can do so in <code>application.yml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
+  accessKeyId: your_access_key_id_here
+  secretKey: your_secret_key_id_here
+  sessionToken: your_session_token_here</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aws_region_selection">AWS region selection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, AWS SDK v2 will attempt to determine the AWS region in the following ways:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Environment variable: <code>AWS_REGION</code>.</p>
+</li>
+<li>
+<p>The default shared configuration file: <code>~/.aws/config</code>.</p>
+</li>
+<li>
+<p>Amazon EC2 instance metadata service.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For more information, check <a href="https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/java-dg-region-selection.html">the AWS documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you still want to specify the region via configuration, you can do so in <code>application.yml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
+  region: eu-west-1</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_third_party_libraries">Third-party libraries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you are looking for a higher-level API, check out
+<a href="https://github.com/agorapulse/micronaut-aws-sdk">Agorapulse&#8217;s AWS SDK for Micronaut</a>.</p>
+</div>
+</div>
+</div>
+
+<h2 id="s3"><a class="anchor" href="#s3"></a>5.1 S3</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/s3.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use an S3 client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:s3")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;s3&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.s3.S3ClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.s3.S3Client</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.s3.S3AsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.s3.S3AsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, this service accepts the following configuration properties:</p>
+</div>
+<a id="io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties" href="#io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html">S3ConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.dualstack-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.accelerate-mode-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.path-style-access-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.checksum-validation-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.chunked-encoding-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.use-arn-region-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.profile-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="dynamodb"><a class="anchor" href="#dynamodb"></a>5.2 Dynamo DB</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/dynamodb.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a DynamoDb client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:dynamodb")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;dynamodb&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.dynamodb.DynamoDbClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="ses"><a class="anchor" href="#ses"></a>5.3 SES</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/ses.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a SES client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:ses")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;ses&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.ses.SesClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.ses.SesClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.ses.SesAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.ses.SesAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="sns"><a class="anchor" href="#sns"></a>5.4 SNS</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sns.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a SNS client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:sns")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;sns&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.sns.SnsClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.sns.SnsClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.sns.SnsAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.sns.SnsAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="sqs"><a class="anchor" href="#sqs"></a>5.5 SQS</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sqs.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a SQS client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:sqs")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;sqs&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.sqs.SqsClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.sqs.SqsClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.sqs.SqsAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>5.6 Advanced configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>For advanced configuration options that are not suitable to provide via <code>application.yml</code>, you can declare a
+<code>BeanCreatedEventListener</code> bean that listens for builder bean creations, and apply any further customisation there:</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Singleton
+public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3ClientBuilder&gt; {
+
+    @Override
+    public S3ClientBuilder onCreated(BeanCreatedEvent&lt;S3ClientBuilder&gt; event) {
+        S3ClientBuilder builder = event.getBean();
+        builder.overrideConfiguration(ClientOverrideConfiguration.builder().retryPolicy(RetryMode.LEGACY).build());
+
+        return builder;
+    }
+}</code></pre>
+</div>
+</div>
+
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>5.7 Other services</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/otherServices.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Since the list of services offered by AWS is huge, you can write your own client support and leverage the foundation
+classes that support the services supported by Micronaut.</p>
+</div>
+<div class="paragraph">
+<p>To do so, you would create a <code>@Factory</code> class that would get injected some other beans to do its job.</p>
+</div>
+<div class="paragraph">
+<p>For example, to create a client for AWS Rekognition:</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Factory
+public class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient&gt; {
+
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+        super(credentialsProvider, regionProvider);
+    }
+
+    // Sync client
+    @Override
+    protected RekognitionClientBuilder createSyncBuilder() { <b class="conum">(1)</b>
+        return RekognitionClient.builder();
+    }
+
+    @Override
+    @Singleton
+    public RekognitionClientBuilder syncBuilder(SdkHttpClient httpClient) { <b class="conum">(2)</b>
+        return super.syncBuilder(httpClient);
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    public RekognitionClient syncClient(RekognitionClientBuilder builder) { <b class="conum">(3)</b>
+        return super.syncClient(builder);
+    }
+
+    // Async client
+    @Override
+    protected RekognitionAsyncClientBuilder createAsyncBuilder() { <b class="conum">(1)</b>
+        return RekognitionAsyncClient.builder();
+    }
+
+    @Override
+    @Singleton
+    @Requires(beans = SdkAsyncHttpClient.class)
+    public RekognitionAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) { <b class="conum">(2)</b>
+        return super.asyncBuilder(httpClient);
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    @Requires(beans = SdkAsyncHttpClient.class)
+    public RekognitionAsyncClient asyncClient(RekognitionAsyncClientBuilder builder) { <b class="conum">(3)</b>
+        return super.asyncClient(builder);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This method needs to be implemented so that the parent factory class knows how to create the builder. You may apply
+additional customisations to the builder here.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This method gives a chance to register a <code>BeanCreaterEventListener</code> over the builder, so that any builder can be
+customised. Needs to be overriden to apply the <code>@Singleton</code> annotation.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This method builds the client. Needs to be overriden to apply the <code>@Bean</code> annotation.</td>
+</tr>
+</table>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/sdkv1.html">&lt;&lt; <strong>4</strong><span>AWS SDK v1</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/lambda.html"><strong>6</strong><span>AWS Lambda Support</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

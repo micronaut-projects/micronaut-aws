@@ -81,6 +81,27 @@
 <ul class="blockList">
 <li class="blockList">
 <table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.<a href="io/micronaut/aws/AWSConfiguration.html" title="class in io.micronaut.aws">AWSConfiguration</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.AWSConfiguration.PREFIX">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/AWSConfiguration.html#PREFIX">PREFIX</a></code></td>
+<td class="colLast"><code>"aws"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
 <caption><span>io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaEnvironment.html" title="class in io.micronaut.aws.alexa.conf">AlexaEnvironment</a></span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
@@ -497,7 +518,7 @@
 <ul class="blockList">
 <li class="blockList">
 <table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
-<caption><span>io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/AWSConfiguration.html" title="class in io.micronaut.configuration.aws">AWSConfiguration</a></span><span class="tabEnd">&nbsp;</span></caption>
+<caption><span>io.micronaut.aws.sdk.v1.<a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.aws.sdk.v1">EnvironmentAWSCredentialsProvider</a></span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th scope="col">Constant Field</th>
@@ -505,18 +526,95 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.AWSConfiguration.PREFIX">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider.ACCESS_KEY_ENV_VAR">
 <!--   -->
 </a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/AWSConfiguration.html#PREFIX">PREFIX</a></code></td>
-<td class="colLast"><code>"aws"</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#ACCESS_KEY_ENV_VAR">ACCESS_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.access-key-id"</code></td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider.ALTERNATE_ACCESS_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#ALTERNATE_ACCESS_KEY_ENV_VAR">ALTERNATE_ACCESS_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.access-key"</code></td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider.ALTERNATE_SECRET_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#ALTERNATE_SECRET_KEY_ENV_VAR">ALTERNATE_SECRET_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.secret-access-key"</code></td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider.AWS_SESSION_TOKEN_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#AWS_SESSION_TOKEN_ENV_VAR">AWS_SESSION_TOKEN_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.session-token"</code></td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider.SECRET_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#SECRET_KEY_ENV_VAR">SECRET_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.secret-key"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html" title="class in io.micronaut.aws.sdk.v2">EnvironmentAwsCredentialsProvider</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider.ACCESS_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#ACCESS_KEY_ENV_VAR">ACCESS_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.access-key-id"</code></td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider.ALTERNATE_ACCESS_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#ALTERNATE_ACCESS_KEY_ENV_VAR">ALTERNATE_ACCESS_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.access-key"</code></td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider.ALTERNATE_SECRET_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#ALTERNATE_SECRET_KEY_ENV_VAR">ALTERNATE_SECRET_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.secret-access-key"</code></td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider.AWS_SESSION_TOKEN_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#AWS_SESSION_TOKEN_ENV_VAR">AWS_SESSION_TOKEN_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.session-token"</code></td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider.SECRET_KEY_ENV_VAR">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#SECRET_KEY_ENV_VAR">SECRET_KEY_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.secret-key"</code></td>
 </tr>
 </tbody>
 </table>
 </li>
 <li class="blockList">
 <table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
-<caption><span>io.micronaut.configuration.aws.<a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.configuration.aws">EnvironmentAWSCredentialsProvider</a></span><span class="tabEnd">&nbsp;</span></caption>
+<caption><span>io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/EnvironmentAwsRegionProvider.html" title="class in io.micronaut.aws.sdk.v2">EnvironmentAwsRegionProvider</a></span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th scope="col">Constant Field</th>
@@ -524,39 +622,145 @@
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider.ACCESS_KEY_ENV_VAR">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.EnvironmentAwsRegionProvider.REGION_ENV_VAR">
 <!--   -->
 </a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ACCESS_KEY_ENV_VAR">ACCESS_KEY_ENV_VAR</a></code></td>
-<td class="colLast"><code>"aws.access-key-id"</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsRegionProvider.html#REGION_ENV_VAR">REGION_ENV_VAR</a></code></td>
+<td class="colLast"><code>"aws.region"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.apache.<a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.apache">ApacheClientConfiguration</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration.PREFIX">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html#PREFIX">PREFIX</a></code></td>
+<td class="colLast"><code>"apache-client"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.apache.<a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientFactory.html" title="class in io.micronaut.aws.sdk.v2.client.apache">ApacheClientFactory</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.apache.ApacheClientFactory.APACHE_SDK_HTTP_SERVICE">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientFactory.html#APACHE_SDK_HTTP_SERVICE">APACHE_SDK_HTTP_SERVICE</a></code></td>
+<td class="colLast"><code>"software.amazon.awssdk.http.apache.ApacheSdkHttpService"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.netty.<a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.netty">NettyClientConfiguration</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration.PREFIX">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html#PREFIX">PREFIX</a></code></td>
+<td class="colLast"><code>"netty-client"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.netty.<a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientFactory.html" title="class in io.micronaut.aws.sdk.v2.client.netty">NettyClientFactory</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.netty.NettyClientFactory.ASYNC_SERVICE_IMPL">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientFactory.html#ASYNC_SERVICE_IMPL">ASYNC_SERVICE_IMPL</a></code></td>
+<td class="colLast"><code>"software.amazon.awssdk.http.async.service.impl"</code></td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider.ALTERNATE_ACCESS_KEY_ENV_VAR">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.netty.NettyClientFactory.NETTY_SDK_ASYNC_HTTP_SERVICE">
 <!--   -->
 </a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ALTERNATE_ACCESS_KEY_ENV_VAR">ALTERNATE_ACCESS_KEY_ENV_VAR</a></code></td>
-<td class="colLast"><code>"aws.access-key"</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientFactory.html#NETTY_SDK_ASYNC_HTTP_SERVICE">NETTY_SDK_ASYNC_HTTP_SERVICE</a></code></td>
+<td class="colLast"><code>"software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService"</code></td>
 </tr>
+</tbody>
+</table>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.urlConnection.<a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.urlConnection">UrlConnectionClientConfiguration</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
 <tr class="altColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider.ALTERNATE_SECRET_KEY_ENV_VAR">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration.PREFIX">
 <!--   -->
 </a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#ALTERNATE_SECRET_KEY_ENV_VAR">ALTERNATE_SECRET_KEY_ENV_VAR</a></code></td>
-<td class="colLast"><code>"aws.secret-access-key"</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html#PREFIX">PREFIX</a></code></td>
+<td class="colLast"><code>"url-connection-client"</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList">
+<table class="constantsSummary" border="0" cellpadding="3" cellspacing="0" summary="Constant Field Values table, listing constant fields, and values">
+<caption><span>io.micronaut.aws.sdk.v2.client.urlConnection.<a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientFactory.html" title="class in io.micronaut.aws.sdk.v2.client.urlConnection">UrlConnectionClientFactory</a></span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th scope="col">Constant Field</th>
+<th class="colLast" scope="col">Value</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory.HTTP_SERVICE_IMPL">
+<!--   -->
+</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientFactory.html#HTTP_SERVICE_IMPL">HTTP_SERVICE_IMPL</a></code></td>
+<td class="colLast"><code>"software.amazon.awssdk.http.service.impl"</code></td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider.AWS_SESSION_TOKEN_ENV_VAR">
+<td class="colFirst"><a name="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE">
 <!--   -->
 </a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#AWS_SESSION_TOKEN_ENV_VAR">AWS_SESSION_TOKEN_ENV_VAR</a></code></td>
-<td class="colLast"><code>"aws.session-token"</code></td>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><a name="io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider.SECRET_KEY_ENV_VAR">
-<!--   -->
-</a><code>public&nbsp;static&nbsp;final&nbsp;java.lang.String</code></td>
-<td><code><a href="io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html#SECRET_KEY_ENV_VAR">SECRET_KEY_ENV_VAR</a></code></td>
-<td class="colLast"><code>"aws.secret-key"</code></td>
+<td><code><a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientFactory.html#URL_CONNECTION_SDK_HTTP_SERVICE">URL_CONNECTION_SDK_HTTP_SERVICE</a></code></td>
+<td class="colLast"><code>"software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService"</code></td>
 </tr>
 </tbody>
 </table>
