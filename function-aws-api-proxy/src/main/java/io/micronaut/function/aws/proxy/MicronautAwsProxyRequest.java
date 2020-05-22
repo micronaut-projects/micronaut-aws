@@ -197,9 +197,15 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @Nonnull
     @Override
     public InetSocketAddress getRemoteAddress() {
-        final String sourceIp = this.awsProxyRequest.getRequestContext().getIdentity().getSourceIp();
-        final InetSocketAddress inetSocketAddress = new InetSocketAddress(sourceIp, 0);
-        return inetSocketAddress;
+        AwsProxyRequestContext requestContext = this.awsProxyRequest.getRequestContext();
+        if (requestContext != null) {
+            ApiGatewayRequestIdentity identity = requestContext.getIdentity();
+            if (identity != null) {
+                final String sourceIp = identity.getSourceIp();
+                return new InetSocketAddress(sourceIp, 0);
+            }
+        }
+        return HttpRequest.super.getRemoteAddress();
     }
 
     private boolean isValidHost(String host, String apiId, String region) {
