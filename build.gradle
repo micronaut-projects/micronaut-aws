@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        micronautDocsVersion = "1.0.22"
+        micronautDocsVersion = "1.0.23"
     }
     repositories {
         mavenCentral()
@@ -112,7 +112,7 @@ subprojects { Project subproject ->
     dependencies {
         annotationProcessor enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         annotationProcessor "io.micronaut:micronaut-inject-java"
-        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.22"
+        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
 
         api enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion")
         api "io.micronaut:micronaut-inject"
