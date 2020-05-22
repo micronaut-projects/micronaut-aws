@@ -447,7 +447,24 @@ public class StreamLambdaHandler implements RequestStreamHandler {
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-See the <a href="https://github.com/micronaut-projects/micronaut-aws/tree/master/examples/api-gateway-example">Example Application</a> and associated <a href="https://github.com/micronaut-projects/micronaut-aws/blob/master/examples/api-gateway-example/README.md">README</a> for instructions on how to deploy locally using <a href="https://github.com/awslabs/aws-sam-cli">AWS SAM Local</a> and AWS Cloud Formation for production.
+<div class="title">Using the CLI</div>
+<div class="paragraph">
+<p>To create an AWS API Gateway Proxy application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ mn create-app my-app --features aws-lambda</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or with Micronaut Launch</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ curl https://launch.micronaut.io/example.zip\?features\=aws-lambda -o example.zip
+$ unzip example.zip -d example</pre>
+</div>
+</div>
 </td>
 </tr>
 </table>
