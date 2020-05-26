@@ -11,6 +11,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
 import io.micronaut.security.annotation.Secured
+import io.micronaut.security.config.SecurityConfigurationProperties
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.Specification
 
@@ -110,12 +111,13 @@ class ResponseStatusSpec extends Specification {
         handler.close()
     }
 
-    void "test constraint violation causes 502"() {
+    void "test constraint violation causes 400"() {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                 ApplicationContext.build().properties([
-                        'spec.name': 'ResponseStatusSpec'
+                        'spec.name': 'ResponseStatusSpec',
+                        (SecurityConfigurationProperties.PREFIX + ".enabled"):false
                 ])
         )
 
@@ -126,7 +128,7 @@ class ResponseStatusSpec extends Specification {
         def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-        response.statusCode == 502
+        response.statusCode == 400
 
         cleanup:
         handler.close()

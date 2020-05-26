@@ -140,6 +140,7 @@ class FiltersSpec extends Specification {
     }
 
     @Singleton
+    @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class NoRouteRule extends AbstractSecurityRule {
 
         NoRouteRule(RolesFinder rolesFinder) {

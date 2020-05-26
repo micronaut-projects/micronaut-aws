@@ -19,7 +19,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
-    testCompileOnly "io.micronaut:micronaut-security:$micronautSecurity"
+    testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut:micronaut-views'
     testImplementation "io.projectreactor:reactor-core"
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'

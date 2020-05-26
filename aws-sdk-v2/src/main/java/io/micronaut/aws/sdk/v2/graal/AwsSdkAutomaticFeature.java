@@ -17,6 +17,7 @@ package io.micronaut.aws.sdk.v2.graal;
 
 import com.oracle.svm.core.annotate.AutomaticFeature;
 import com.oracle.svm.core.jdk.proxy.DynamicProxyRegistry;
+import io.micronaut.core.annotation.Internal;
 import org.graalvm.nativeimage.ImageSingletons;
 import org.graalvm.nativeimage.hosted.Feature;
 import org.graalvm.nativeimage.hosted.RuntimeClassInitialization;
@@ -35,7 +36,8 @@ import java.util.function.Consumer;
  * @since 2.0.0
  */
 @AutomaticFeature
-public class AwsSdkAutomaticFeature implements Feature {
+@Internal
+public final class AwsSdkAutomaticFeature implements Feature {
 
     /**
      * @param baa the {@link BeforeAnalysisAccess} instance
