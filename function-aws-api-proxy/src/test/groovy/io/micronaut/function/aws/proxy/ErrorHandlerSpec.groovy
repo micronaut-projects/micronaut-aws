@@ -7,8 +7,10 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
+import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
+import io.micronaut.http.codec.CodecException
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
@@ -18,6 +20,8 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import javax.inject.Singleton
+import javax.validation.Valid
+import javax.validation.constraints.Min
 import javax.ws.rs.core.MediaType
 
 class ErrorHandlerSpec extends Specification {
@@ -92,22 +96,35 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.TEXT_PLAIN
     }
 
-    void 'it can process JsonProcessingException'() {
+    void 'json message format errors return 400'() {
         given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/error', HttpMethod.GET.toString())
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/jsonBody', HttpMethod.POST.toString()).body("{\"numberField\": \"textInsteadOfNumber\"}")
 
         when:
         def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
         response.statusCode == 400
-        response.body.contains 'Invalid JSON: invalid json'
+        response.body.contains 'Invalid JSON: Error decoding JSON stream for type'
+        response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
+    }
+
+    void 'message validation errors return 400'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/jsonBody', HttpMethod.POST.toString()).body("{\"numberField\": 0}")
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 400
+        response.body.contains 'data.numberField: must be greater than or equal to 1'
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
     }
 
     void 'cors headers are present after exceptions'() {
         given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/error', HttpMethod.GET.toString())
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global', HttpMethod.GET.toString())
                 .header(HttpHeaders.ORIGIN, "http://localhost:8080")
 
         when:
@@ -151,13 +168,19 @@ class ErrorHandlerSpec extends Specification {
 
     }
 
+    @Introspected
+    static class RequestObject {
+        @Min(1L)
+        Integer numberField;
+    }
+
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/json')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class JsonController {
-        @Get('/error')
-        String jsonException() {
-            throw new JsonMappingException("invalid json")
+        @Post('/jsonBody')
+        String jsonBody(@Valid @Body RequestObject data) {
+            return "blah"
         }
     }
 
@@ -178,6 +201,17 @@ class ErrorHandlerSpec extends Specification {
             return 'global status'
         }
 
+    }
+
+    @Singleton
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
+    static class CodecExceptionExceptionHandler
+            implements ExceptionHandler<CodecException, HttpResponse> {
+
+        @Override
+        HttpResponse handle(HttpRequest request, CodecException exception) {
+            return HttpResponse.badRequest("Invalid JSON: " + exception.getMessage()).contentType(MediaType.APPLICATION_JSON)
+        }
     }
 
     @Singleton
