@@ -21,6 +21,7 @@ import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
 import com.amazonaws.serverless.proxy.model.*;
 import com.amazonaws.services.lambda.runtime.Context;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -31,6 +32,8 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadata;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
+import io.micronaut.core.type.Argument;
+import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.http.*;
@@ -400,6 +403,42 @@ public final class MicronautLambdaContainerHandler
 
     }
 
+    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, MethodBasedRouteMatch<Object, Object> finalRoute) {
+        final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
+        if (permitsRequestBody) {
+            final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+            if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
+                final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+                if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
+                    final Optional<String> body = containerRequest.getBody(String.class);
+                    if (body.isPresent()) {
+
+                        Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+                        if (bodyArgument == null) {
+                            bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                                .findFirst()
+                                .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+                        }
+
+                        if (bodyArgument != null) {
+                            final Class<?> rawType = bodyArgument.getType();
+                            if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
+                                bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                            }
+                            final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body.get());
+                            ((MicronautAwsProxyRequest) containerRequest)
+                                .setDecodedBody(decoded);
+                        } else {
+                            final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body.get());
+                            ((MicronautAwsProxyRequest) containerRequest)
+                                .setDecodedBody(jsonNode);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private Flowable<? extends MutableHttpResponse<?>> handleException(MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Throwable throwable, ExceptionHandler exceptionHandler) {
         return Flowable.fromCallable(() -> {
             Object result = exceptionHandler.handle(containerRequest, throwable);
@@ -420,6 +459,12 @@ public final class MicronautLambdaContainerHandler
                 containerRequest,
                 false
         );
+
+        try {
+            decodeRequestBody(containerRequest, finalRoute);
+        } catch (Exception e) {
+            return Flowable.error(e);
+        }
 
         Object result = boundRoute.execute();
 

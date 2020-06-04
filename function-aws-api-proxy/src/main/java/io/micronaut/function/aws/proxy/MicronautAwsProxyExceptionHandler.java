@@ -15,7 +15,6 @@
  */
 package io.micronaut.function.aws.proxy;
 
-import com.amazonaws.serverless.exceptions.InvalidRequestEventException;
 import com.amazonaws.serverless.proxy.AwsProxyExceptionHandler;
 import com.amazonaws.serverless.proxy.ExceptionHandler;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
@@ -42,7 +41,6 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
     //-------------------------------------------------------------
     private static final Logger LOG = LoggerFactory.getLogger(AwsProxyExceptionHandler.class);
     private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
-    private static final String GATEWAY_TIMEOUT_ERROR = "Gateway timeout";
     //-------------------------------------------------------------
     // Variables - Private - Static
     //-------------------------------------------------------------
@@ -75,11 +73,7 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
         // adding a print stack trace in case we have no appender or we are running inside SAM local, where need the
         // output to go to the stderr.
         ex.printStackTrace();
-        if (ex instanceof InvalidRequestEventException) {
-            return new AwsProxyResponse(500, headers, getErrorJson(INTERNAL_SERVER_ERROR));
-        } else {
-            return new AwsProxyResponse(502, headers, getErrorJson(GATEWAY_TIMEOUT_ERROR));
-        }
+        return new AwsProxyResponse(500, headers, getErrorJson(INTERNAL_SERVER_ERROR));
     }
 
     @Override

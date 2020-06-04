@@ -20,23 +20,13 @@ import com.amazonaws.serverless.proxy.RequestReader;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.ContainerConfig;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.core.type.Argument;
-import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.http.HttpAttributes;
-import io.micronaut.http.HttpMethod;
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Consumes;
 import io.micronaut.web.router.UriRoute;
 import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -67,7 +57,7 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
             ContainerConfig config) throws InvalidRequestEventException {
         try {
             final String path = config.isStripBasePath() ? stripBasePath(request.getPath(), config) : getPathNoBase(request);
-            final MicronautAwsProxyRequest<?> containerRequest = new MicronautAwsProxyRequest(
+            final MicronautAwsProxyRequest<?> containerRequest = new MicronautAwsProxyRequest<>(
                     path,
                     request,
                     securityContext,
@@ -83,40 +73,6 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                 final UriRoute route = finalRoute.getRoute();
                 containerRequest.setAttribute(HttpAttributes.ROUTE, route);
                 containerRequest.setAttribute(HttpAttributes.URI_TEMPLATE, route.getUriMatchTemplate().toString());
-
-                final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
-                if (permitsRequestBody) {
-                    final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                    if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
-                        final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                        if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
-                            final Optional<String> body = containerRequest.getBody(String.class);
-                            if (body.isPresent()) {
-
-                                Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
-                                if (bodyArgument == null) {
-                                    bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
-                                                        .findFirst()
-                                                        .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
-                                }
-
-                                if (bodyArgument != null) {
-                                    final Class<?> rawType = bodyArgument.getType();
-                                    if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
-                                        bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
-                                    }
-                                    final Object decoded = environment.getJsonCodec().decode(bodyArgument, body.get());
-                                    ((MicronautAwsProxyRequest) containerRequest)
-                                            .setDecodedBody(decoded);
-                                } else {
-                                    final JsonNode jsonNode = environment.getJsonCodec().decode(JsonNode.class, body.get());
-                                    ((MicronautAwsProxyRequest) containerRequest)
-                                            .setDecodedBody(jsonNode);
-                                }
-                            }
-                        }
-                    }
-                }
             }
             return containerRequest;
         } catch (Exception e) {
