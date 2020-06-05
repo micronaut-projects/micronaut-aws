@@ -4,6 +4,7 @@ dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-lambda', version: '1.11.285'
     api "io.micronaut:micronaut-function-client:$micronautVersion"
+    api project(":aws-sdk-v1")
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"

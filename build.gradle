@@ -33,10 +33,15 @@ subprojects { Project subproject ->
     }
 
     dependencies {
+        annotationProcessor "io.micronaut:micronaut-inject-java"
+        annotationProcessor "io.micronaut:micronaut-graal"
+        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
+        testAnnotationProcessor "io.micronaut:micronaut-inject-java"
         testImplementation("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'
         }
-        testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"        
+        testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
+        testImplementation 'org.junit.vintage:junit-vintage-engine'
     }
 
     test {
