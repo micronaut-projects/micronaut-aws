@@ -86,7 +86,6 @@ public interface AwsLambdaRuntimeApi {
         return request;
     }
 
-
     /**
      *
      * @param errorMessage Error Message

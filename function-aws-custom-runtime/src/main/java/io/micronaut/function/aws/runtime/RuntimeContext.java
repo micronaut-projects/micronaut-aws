@@ -115,7 +115,6 @@ public class RuntimeContext implements Context {
         return LambdaRuntime.getLogger();
     }
 
-
     /**
      * @param name the name of the environment variable
      * @return the string value of the variable, or {@code null} if the variable is not defined
