@@ -62,14 +62,13 @@ public class MicronautAwsProxyTest {
     static {
         try {
             handler = new MicronautLambdaContainerHandler(
-                        ApplicationContext.build()
-                            .properties(CollectionUtils.mapOf(
-                                    "spec.name", "MicronautAwsProxyTest",
-                                    "micronaut.security.enabled", true,
-                                    "micronaut.views.handlebars.enabled", true,
-                                    "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
-                                    "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
-                            ))
+                        ApplicationContext.build(CollectionUtils.mapOf(
+                                "spec.name", "MicronautAwsProxyTest",
+                                "micronaut.security.enabled", true,
+                                "micronaut.views.handlebars.enabled", true,
+                                "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                                "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
+                        ))
                 );
         } catch (ContainerInitializationException e) {
             throw new RuntimeException("Test failed to start: " + e.getMessage(), e);
@@ -276,57 +275,74 @@ public class MicronautAwsProxyTest {
 
     @Test
     public void stripBasePath_route_shouldRouteCorrectly() {
-        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
-                .json()
-                .queryString("status", "201")
-                .build();
         handler.stripBasePath("/custompath");
-        AwsProxyResponse output = handler.proxy(request, lambdaContext);
-        assertEquals(201, output.getStatusCode());
-        handler.stripBasePath("");
+        try {
+            AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                    .json()
+                    .queryString("status", "201")
+                    .build();
+            AwsProxyResponse output = handler.proxy(request, lambdaContext);
+            assertEquals(201, output.getStatusCode());
+        } finally {
+            handler.stripBasePath("");
+        }
     }
 
     @Test
     public void automaticStripBasePath_route_shouldRouteCorrectly() {
-        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
-                .json()
-                .queryString("status", "201")
-                .build();
-        request.setResource("/{proxy+}");
-        request.setPathParameters(Collections.singletonMap("proxy", "echo/status-code"));
+        handler.stripBasePath("/custompath");
+        try {
+            AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                    .json()
+                    .queryString("status", "201")
+                    .build();
+            request.setResource("/{proxy+}");
+            request.setPathParameters(Collections.singletonMap("proxy", "echo/status-code"));
 
-        AwsProxyResponse output = handler.proxy(request, lambdaContext);
-        assertEquals(201, output.getStatusCode());
+            AwsProxyResponse output = handler.proxy(request, lambdaContext);
+            assertEquals(201, output.getStatusCode());
+        } finally {
+            handler.stripBasePath("");
+        }
     }
 
     @Test
     public void automaticStripBasePath_route_shouldRouteCorrectly2() {
-        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
-                .json()
-                .queryString("status", "201")
-                .build();
+        handler.stripBasePath("/custompath");
+        try {
+            AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                    .json()
+                    .queryString("status", "201")
+                    .build();
 
-        request.setResource("/{controller}/{action}");
+            request.setResource("/{controller}/{action}");
 
-        Map<String, String> pathParameters = new HashMap<>();
-        pathParameters.put("controller", "echo");
-        pathParameters.put("action", "status-code");
-        request.setPathParameters(pathParameters);
+            Map<String, String> pathParameters = new HashMap<>();
+            pathParameters.put("controller", "echo");
+            pathParameters.put("action", "status-code");
+            request.setPathParameters(pathParameters);
 
-        AwsProxyResponse output = handler.proxy(request, lambdaContext);
-        assertEquals(201, output.getStatusCode());
+            AwsProxyResponse output = handler.proxy(request, lambdaContext);
+            assertEquals(201, output.getStatusCode());
+        } finally {
+            handler.stripBasePath("");
+        }
     }
 
     @Test
     public void stripBasePath_route_shouldReturn404() {
-        AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
-                .json()
-                .queryString("status", "201")
-                .build();
         handler.stripBasePath("/custom");
-        AwsProxyResponse output = handler.proxy(request, lambdaContext);
-        assertEquals(404, output.getStatusCode());
-        handler.stripBasePath("");
+        try {
+            AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
+                    .json()
+                    .queryString("status", "201")
+                    .build();
+            AwsProxyResponse output = handler.proxy(request, lambdaContext);
+            assertEquals(404, output.getStatusCode());
+        } finally {
+
+            handler.stripBasePath("");
+        }
     }
 
     @Test
