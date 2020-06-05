@@ -272,6 +272,8 @@
 <dd>
 <div class="block">The version of the function being executed.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#AWS_LAMBDA_FUNCTIONS">AWS_LAMBDA_FUNCTIONS</a></span> - Static variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html#AWS_LAMBDA_LOG_GROUP_NAME">AWS_LAMBDA_LOG_GROUP_NAME</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime">ReservedRuntimeEnvironmentVariables</a></dt>
 <dd>
 <div class="block">The name of the Amazon CloudWatch Logs group for the function.</div>
@@ -326,6 +328,36 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/CredentialsAndRegionFactory.html#awsCredentialsProvider-io.micronaut.context.env.Environment-">awsCredentialsProvider(Environment)</a></span> - Method in class io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/CredentialsAndRegionFactory.html" title="class in io.micronaut.aws.sdk.v2">CredentialsAndRegionFactory</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSInvokeRequestDefinition</span></a> - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
+<dd>
+<div class="block">Builds an <code>InvokeRequest</code> for each definition under <code>aws.lambda.functions</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#AWSInvokeRequestDefinition-java.lang.String-">AWSInvokeRequestDefinition(String)</a></span> - Constructor for class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/AWSLambdaAsyncClientFactory.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSLambdaAsyncClientFactory</span></a> - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaAsyncClientFactory.html#AWSLambdaAsyncClientFactory-io.micronaut.function.client.aws.AWSLambdaConfiguration-">AWSLambdaAsyncClientFactory(AWSLambdaConfiguration)</a></span> - Constructor for class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaAsyncClientFactory.html" title="class in io.micronaut.function.client.aws">AWSLambdaAsyncClientFactory</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSLambdaConfiguration</span></a> - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
+<dd>
+<div class="block">Configuration options for AWS Lambda.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#AWSLambdaConfiguration-io.micronaut.configuration.aws.AWSClientConfiguration-io.micronaut.context.env.Environment-">AWSLambdaConfiguration(AWSClientConfiguration, Environment)</a></span> - Constructor for class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSLambdaFunctionExecutor</span></a>&lt;<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="type parameter in AWSLambdaFunctionExecutor">I</a>,<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="type parameter in AWSLambdaFunctionExecutor">O</a>&gt; - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
+<dd>
+<div class="block">A <code>FunctionInvoker</code> for invoking functions on AWS.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html#AWSLambdaFunctionExecutor-com.amazonaws.services.lambda.AWSLambdaAsync-io.micronaut.core.io.buffer.ByteBufferFactory-io.micronaut.jackson.codec.JsonMediaTypeCodec-java.util.concurrent.ExecutorService-">AWSLambdaFunctionExecutor(AWSLambdaAsync, ByteBufferFactory, JsonMediaTypeCodec, ExecutorService)</a></span> - Constructor for class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws">AWSLambdaFunctionExecutor</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime"><span class="typeNameLink">AwsLambdaRuntimeApi</span></a> - Interface in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">AwsLambdaRuntimeApiError</span></a> - Class in <a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a></dt>
@@ -422,6 +454,8 @@
 <dd>
 <div class="block">The character encoding used.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html#choose-io.micronaut.function.client.FunctionDefinition-">choose(FunctionDefinition)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws">AWSLambdaFunctionExecutor</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html#clientConfiguration">clientConfiguration</a></span> - Variable in class io.micronaut.aws.sdk.v1.<a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html" title="class in io.micronaut.aws.sdk.v1">AWSClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/alexa/AlexaFunction.html#close--">close()</a></span> - Method in class io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa">AlexaFunction</a></dt>
@@ -696,6 +730,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html#getBuilder--">getBuilder()</a></span> - Method in class io.micronaut.aws.sdk.v2.service.s3.<a href="io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html" title="class in io.micronaut.aws.sdk.v2.service.s3">S3ConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#getBuilder--">getBuilder()</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/verifiers/SkillRequestSignatureVerifier.html#getCertificateFromCache-java.lang.String-">getCertificateFromCache(String)</a></span> - Method in class io.micronaut.aws.alexa.httpserver.verifiers.<a href="io/micronaut/aws/alexa/httpserver/verifiers/SkillRequestSignatureVerifier.html" title="class in io.micronaut.aws.alexa.httpserver.verifiers">SkillRequestSignatureVerifier</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html#getClientConfiguration--">getClientConfiguration()</a></span> - Method in class io.micronaut.aws.sdk.v1.<a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html" title="class in io.micronaut.aws.sdk.v1">AWSClientConfiguration</a></dt>
@@ -745,6 +781,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getInvokedFunctionArn--">getInvokedFunctionArn()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#getInvokeRequest--">getInvokeRequest()</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getJsonCodec--">getJsonCodec()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getLogger--">getLogger()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
@@ -762,6 +800,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getMethod--">getMethod()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#getName--">getName()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#getName--">getName()</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getObjectMapper--">getObjectMapper()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
 <dd>&nbsp;</dd>
@@ -903,6 +943,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#invocationResponseRequest-java.lang.String-java.lang.Object-">invocationResponseRequest(String, Object)</a></span> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html#invoke-io.micronaut.function.client.FunctionDefinition-I-io.micronaut.core.type.Argument-">invoke(FunctionDefinition, I, Argument&lt;O&gt;)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws">AWSLambdaFunctionExecutor</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#invokeRequest">invokeRequest</a></span> - Variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/package-summary.html">io.micronaut.aws</a> - package io.micronaut.aws</dt>
 <dd>
 <div class="block">AWS configuration classes.</div>
@@ -1011,6 +1055,10 @@
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/package-summary.html">io.micronaut.function.aws.runtime</a> - package io.micronaut.function.aws.runtime</dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a> - package io.micronaut.function.client.aws</dt>
+<dd>
+<div class="block">Function AWS lamda configuration.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
@@ -1286,6 +1334,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>
+<div class="block">Prefix for AWS Lambda settings.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/services/DefaultRequestEnvelopeService.html#process-com.amazon.ask.model.RequestEnvelope-">process(RequestEnvelope)</a></span> - Method in class io.micronaut.aws.alexa.httpserver.services.<a href="io/micronaut/aws/alexa/httpserver/services/DefaultRequestEnvelopeService.html" title="class in io.micronaut.aws.alexa.httpserver.services">DefaultRequestEnvelopeService</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/services/RequestEnvelopeService.html#process-com.amazon.ask.model.RequestEnvelope-">process(RequestEnvelope)</a></span> - Method in interface io.micronaut.aws.alexa.httpserver.services.<a href="io/micronaut/aws/alexa/httpserver/services/RequestEnvelopeService.html" title="interface in io.micronaut.aws.alexa.httpserver.services">RequestEnvelopeService</a></dt>
@@ -1440,6 +1492,8 @@
 <dd>
 <div class="block">Sets whether this configuration is enabled.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#setEndpointConfiguration-com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration-">setEndpointConfiguration(AwsClientBuilder.EndpointConfiguration)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorMessage-java.lang.String-">setErrorMessage(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorType-java.lang.String-">setErrorType(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
@@ -1450,11 +1504,15 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html#setMainText-java.lang.String-">setMainText(String)</a></span> - Method in class io.micronaut.aws.alexa.flashbriefing.<a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html" title="class in io.micronaut.aws.alexa.flashbriefing">FlashBriefingItem</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#setMetricsCollector-com.amazonaws.metrics.RequestMetricCollector-">setMetricsCollector(RequestMetricCollector)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#setPath-java.lang.String-">setPath(String)</a></span> - Method in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
 <dd>
 <div class="block">Default value (<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#DEFAULT_PATH">"/alexa"</a>).</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html#setRedirectionUrl-java.lang.String-">setRedirectionUrl(String)</a></span> - Method in class io.micronaut.aws.alexa.flashbriefing.<a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html" title="class in io.micronaut.aws.alexa.flashbriefing">FlashBriefingItem</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#setRequestHandlers-com.amazonaws.handlers.RequestHandler2...-">setRequestHandlers(RequestHandler2...)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#setSharedObjectMapper-boolean-">setSharedObjectMapper(boolean)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
