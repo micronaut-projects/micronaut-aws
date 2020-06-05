@@ -25,7 +25,7 @@ import com.amazonaws.handlers.RequestHandler2;
 import com.amazonaws.metrics.RequestMetricCollector;
 import com.amazonaws.services.lambda.AWSLambdaAsyncClient;
 import com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder;
-import io.micronaut.configuration.aws.AWSClientConfiguration;
+import io.micronaut.aws.sdk.v1.AWSClientConfiguration;
 import io.micronaut.configuration.aws.AWSConfiguration;
 import io.micronaut.configuration.aws.EnvironmentAWSCredentialsProvider;
 import io.micronaut.context.annotation.ConfigurationBuilder;

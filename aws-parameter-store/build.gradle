@@ -1,0 +1,12 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-graal"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
+
+    api "io.micronaut:micronaut-discovery-client"
+    api project(":aws-route53")
+    api project(":aws-sdk-v1")
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-ssm', version: '1.11.683'
+
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+}
