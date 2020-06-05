@@ -208,7 +208,16 @@ public class MicronautAwsProxyTest {
     }
 
     @Test
-    public void errors_unknownRoute_expect404() {
+    public void errors_unknownRoute_expect404() throws ContainerInitializationException {
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build(CollectionUtils.mapOf(
+                        "spec.name", "MicronautAwsProxyTest",
+                        "micronaut.security.enabled", false,
+                        "micronaut.views.handlebars.enabled", true,
+                        "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                        "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
+                ))
+        );
         AwsProxyRequest request = getRequestBuilder("/echo/test33", "GET").build();
 
         AwsProxyResponse output = handler.proxy(request, lambdaContext);
@@ -227,7 +236,16 @@ public class MicronautAwsProxyTest {
     }
 
     @Test
-    public void error_statusCode_methodNotAllowed() {
+    public void error_statusCode_methodNotAllowed() throws ContainerInitializationException {
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build(CollectionUtils.mapOf(
+                        "spec.name", "MicronautAwsProxyTest",
+                        "micronaut.security.enabled", false,
+                        "micronaut.views.handlebars.enabled", true,
+                        "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                        "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
+                ))
+        );
         AwsProxyRequest request = getRequestBuilder("/echo/status-code", "POST")
                 .json()
                 .queryString("status", "201")
@@ -330,7 +348,16 @@ public class MicronautAwsProxyTest {
     }
 
     @Test
-    public void stripBasePath_route_shouldReturn404() {
+    public void stripBasePath_route_shouldReturn404() throws ContainerInitializationException {
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.build(CollectionUtils.mapOf(
+                        "spec.name", "MicronautAwsProxyTest",
+                        "micronaut.security.enabled", false,
+                        "micronaut.views.handlebars.enabled", true,
+                        "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                        "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
+                ))
+        );
         handler.stripBasePath("/custom");
         try {
             AwsProxyRequest request = getRequestBuilder("/custompath/echo/status-code", "GET")
