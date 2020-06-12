@@ -44,7 +44,7 @@ implementation "software.amazon.awssdk:url-connection-client"
 
 Then, you can configure it with the following configuration properties:
 
-include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.UrlConnectionClientConfiguration.adoc[]
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration.adoc[]
 
 If you don't exclude the other clients from the classpath, you still can configure which one is used by setting the
 following JVM system properties:
