@@ -11,10 +11,6 @@ buildscript {
 
 subprojects { Project subproject ->
 
-    repositories {
-        maven { url "https://oss.jfrog.org/oss-snapshot-local" }
-    }
-
     group "io.micronaut.aws"
 
     apply plugin: "io.micronaut.build.common"
