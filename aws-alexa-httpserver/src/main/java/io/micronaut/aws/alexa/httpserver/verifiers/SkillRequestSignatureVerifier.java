@@ -122,7 +122,6 @@ public class SkillRequestSignatureVerifier implements SkillServletVerifier {
         this.proxy = proxy;
     }
 
-
     /**
      *
      * @param url URL where the certificate can be found.
