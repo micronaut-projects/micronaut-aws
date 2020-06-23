@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-2019 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -109,8 +109,6 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
         this.exceptionHandler = exceptionHandler;
     }
 
-
-
     //-------------------------------------------------------------
     // Methods - Abstract
     //-------------------------------------------------------------
@@ -187,7 +185,6 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
         this.logFormatter = formatter;
     }
 
-
     /**
      * Proxies requests to the underlying container given the incoming Lambda request. This method returns a populated
      * return object for the Lambda function.
@@ -220,7 +217,6 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
         }
     }
 
-
     /**
      * Handles Lambda <code>RequestStreamHandler</code> method. The method uses an <code>ObjectMapper</code>
      * to transform the incoming input stream into the given {@link RequestType} and then calls the
@@ -250,7 +246,6 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
             output.close();
         }
     }
-
 
     //-------------------------------------------------------------
     // Methods - Getter/Setter

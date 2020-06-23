@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-$YEAR original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.alexa.conf;
-
-/**
- * Common intent names.
- *
- * @author graemerocher
- * @since 1.1
- */
-public interface AlexaIntents {
-    String STOP = "AMAZON.StopIntent";
-    String CANCEL = "AMAZON.CancelIntent";
-    String FALLBACK = "AMAZON.FallbackIntent";
-    String HELP = "AMAZON.HelpIntent";
-}
