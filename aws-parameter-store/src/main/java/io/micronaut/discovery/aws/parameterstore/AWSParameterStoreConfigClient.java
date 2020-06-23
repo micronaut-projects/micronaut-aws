@@ -66,7 +66,6 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     private AWSSimpleSystemsManagementAsync client;
     private ExecutorService executorService;
 
-
     /**
      * Initialize @Singleton.
      *

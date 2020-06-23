@@ -54,10 +54,16 @@ import com.amazonaws.services.servicediscovery.model.ListOperationsRequest
 import com.amazonaws.services.servicediscovery.model.ListOperationsResult
 import com.amazonaws.services.servicediscovery.model.ListServicesRequest
 import com.amazonaws.services.servicediscovery.model.ListServicesResult
+import com.amazonaws.services.servicediscovery.model.ListTagsForResourceRequest
+import com.amazonaws.services.servicediscovery.model.ListTagsForResourceResult
 import com.amazonaws.services.servicediscovery.model.Operation
 import com.amazonaws.services.servicediscovery.model.RegisterInstanceRequest
 import com.amazonaws.services.servicediscovery.model.RegisterInstanceResult
 import com.amazonaws.services.servicediscovery.model.ServiceSummary
+import com.amazonaws.services.servicediscovery.model.TagResourceRequest
+import com.amazonaws.services.servicediscovery.model.TagResourceResult
+import com.amazonaws.services.servicediscovery.model.UntagResourceRequest
+import com.amazonaws.services.servicediscovery.model.UntagResourceResult
 import com.amazonaws.services.servicediscovery.model.UpdateInstanceCustomHealthStatusRequest
 import com.amazonaws.services.servicediscovery.model.UpdateInstanceCustomHealthStatusResult
 import com.amazonaws.services.servicediscovery.model.UpdateServiceRequest
@@ -320,7 +326,17 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
             return listServicesAsync(listServicesRequest)
         }
 
-        @Override
+    @Override
+    Future<ListTagsForResourceResult> listTagsForResourceAsync(ListTagsForResourceRequest listTagsForResourceRequest) {
+        return null
+    }
+
+    @Override
+    Future<ListTagsForResourceResult> listTagsForResourceAsync(ListTagsForResourceRequest listTagsForResourceRequest, AsyncHandler<ListTagsForResourceRequest, ListTagsForResourceResult> asyncHandler) {
+        return null
+    }
+
+    @Override
         Future<RegisterInstanceResult> registerInstanceAsync(RegisterInstanceRequest registerInstanceRequest) {
 
             return CompletableFuture.supplyAsync(new Supplier<RegisterInstanceResult>() {
@@ -344,7 +360,27 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
             return registerInstanceAsync(registerInstanceRequest)
         }
 
-        @Override
+    @Override
+    Future<TagResourceResult> tagResourceAsync(TagResourceRequest tagResourceRequest) {
+        return null
+    }
+
+    @Override
+    Future<TagResourceResult> tagResourceAsync(TagResourceRequest tagResourceRequest, AsyncHandler<TagResourceRequest, TagResourceResult> asyncHandler) {
+        return null
+    }
+
+    @Override
+    Future<UntagResourceResult> untagResourceAsync(UntagResourceRequest untagResourceRequest) {
+        return null
+    }
+
+    @Override
+    Future<UntagResourceResult> untagResourceAsync(UntagResourceRequest untagResourceRequest, AsyncHandler<UntagResourceRequest, UntagResourceResult> asyncHandler) {
+        return null
+    }
+
+    @Override
         Future<UpdateInstanceCustomHealthStatusResult> updateInstanceCustomHealthStatusAsync(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
             return null
         }
@@ -459,12 +495,27 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
             return null
         }
 
-        @Override
+    @Override
+    ListTagsForResourceResult listTagsForResource(ListTagsForResourceRequest listTagsForResourceRequest) {
+        return null
+    }
+
+    @Override
         RegisterInstanceResult registerInstance(RegisterInstanceRequest registerInstanceRequest) {
             return null
         }
 
-        @Override
+    @Override
+    TagResourceResult tagResource(TagResourceRequest tagResourceRequest) {
+        return null
+    }
+
+    @Override
+    UntagResourceResult untagResource(UntagResourceRequest untagResourceRequest) {
+        return null
+    }
+
+    @Override
         UpdateInstanceCustomHealthStatusResult updateInstanceCustomHealthStatus(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
             return null
         }
