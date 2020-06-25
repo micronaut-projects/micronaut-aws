@@ -9,10 +9,11 @@ This project includes integration between [Micronaut](http://micronaut.io) and A
 
 You can generate example applications at https://launch.micronaut.io:
 
-* Lambda API Gateway - Select Application Type "Micronaut Application" and the "aws-lambda" feature and generate!
-* Alexa - Select Application Type "Micronaut Application" and the "aws-alexa" feature and generate!
-* Request Handler - Select Application Type  "Micronaut Serverless Function" and the "aws-lambda" feature and generate!
-* AWS Lambda Custom Runtime - Select Application Type "Micronaut Application" and the "aws-custom-runtime" feature and generate!
+* Lambda API Gateway - Select Application Type `Application` and the `aws-lambda` feature and generate!
+* Alexa - Select Application Type `Application` and the `aws-alexa` feature and generate!
+* Request Handler - Select Application Type  `Serverless Function` and the `aws-lambda` feature and generate!
+* AWS Lambda Custom Runtime - Select Application Type `Application` and the `aws-custom-runtime` feature and generate!
+* AWS Lambda GraalVM Native Custom Runtime - Select Application Type `Application` and the `aws-custom-runtime` and `graalvm` features and generate!
 
 ## Documentation
 
