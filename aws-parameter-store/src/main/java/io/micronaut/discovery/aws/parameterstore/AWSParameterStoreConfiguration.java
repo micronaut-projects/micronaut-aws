@@ -49,10 +49,12 @@ public class AWSParameterStoreConfiguration extends AWSClientConfiguration imple
     private static final String DEFAULT_PATH = "/" + PREFIX + "/";
     private static final boolean DEFAULT_SECURE = false;
     private static final boolean DEFAULT_ENABLED = false;
+    private static final boolean DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS = true;
 
     private boolean useSecureParameters = DEFAULT_SECURE;
     private String rootHierarchyPath = DEFAULT_PATH;
     private boolean enabled = DEFAULT_ENABLED;
+    private boolean searchActiveEnvironments = DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS;
 
     /**
      * Enable or disable this feature.
@@ -99,12 +101,30 @@ public class AWSParameterStoreConfiguration extends AWSClientConfiguration imple
     }
 
     /**
-     * Use auto-decryption via MKS for SecureString parameters. Default value ({@value DEFAULT_SECURE}).
+     * Use auto-decryption via MKS for SecureString parameters. Default value ({@value #DEFAULT_SECURE}).
      * If set to false, you will not get unencrypted values.
      *
      * @param useSecureParameters True if secure parameters should be used
      */
     public void setUseSecureParameters(boolean useSecureParameters) {
         this.useSecureParameters = useSecureParameters;
+    }
+
+    /**
+     * @return Search active environment paths
+     */
+    public boolean isSearchActiveEnvironments() {
+        return searchActiveEnvironments;
+    }
+
+    /**
+     * Search additional paths suffixed with each active environment.
+     * e.g. /config/application_EC2
+     * Default value ({@value #DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS}).
+     *
+     * @param searchActiveEnvironments True if paths suffixed with micronaut profiles should be searched
+     */
+    public void setSearchActiveEnvironments(boolean searchActiveEnvironments) {
+        this.searchActiveEnvironments = searchActiveEnvironments;
     }
 }

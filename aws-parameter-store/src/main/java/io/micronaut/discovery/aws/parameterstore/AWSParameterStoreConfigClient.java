@@ -59,8 +59,7 @@ import java.util.concurrent.Future;
 @BootstrapContextCompatible
 public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AWSParameterStoreConfiguration.class);
-    private final AWSClientConfiguration awsConfiguration;
+    private static final Logger LOG = LoggerFactory.getLogger(AWSParameterStoreConfigClient.class);
     private final AWSParameterStoreConfiguration awsParameterStoreConfiguration;
     private final String serviceId;
     private AWSSimpleSystemsManagementAsync client;
@@ -80,7 +79,6 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
             AWSParameterStoreConfiguration awsParameterStoreConfiguration,
             ApplicationConfiguration applicationConfiguration,
             @Nullable Route53ClientDiscoveryConfiguration route53ClientDiscoveryConfiguration) throws SdkClientException {
-        this.awsConfiguration = awsConfiguration;
         this.awsParameterStoreConfiguration = awsParameterStoreConfiguration;
         this.client = AWSSimpleSystemsManagementAsyncClient.asyncBuilder().withClientConfiguration(awsConfiguration.getClientConfiguration()).build();
         this.serviceId = (route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId() : applicationConfiguration.getName()).orElse(null);
@@ -101,7 +99,10 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         if (!awsParameterStoreConfiguration.isEnabled()) {
             return Flowable.empty();
         }
-        List<String> activeNames = new ArrayList<>(environment.getActiveNames());
+
+        List<String> activeNames = awsParameterStoreConfiguration.isSearchActiveEnvironments() ?
+                new ArrayList<>(environment.getActiveNames()) : Collections.emptyList();
+
         Optional<String> serviceId = Optional.ofNullable(this.serviceId);
 
 
