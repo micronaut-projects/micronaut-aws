@@ -3,7 +3,7 @@ dependencies {
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
     annotationProcessor "io.micronaut:micronaut-graal"
 
-    compileOnly "io.micronaut:micronaut-security:$micronautSecurity"
+    compileOnly "io.micronaut.security:micronaut-security:$micronautSecurity"
 
     implementation "io.micronaut:micronaut-http-netty"
     api "io.micronaut:micronaut-http-server"
@@ -19,7 +19,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-security:$micronautSecurity"
+    testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut.views:micronaut-views-handlebars'
     testImplementation "io.projectreactor:reactor-core"
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
