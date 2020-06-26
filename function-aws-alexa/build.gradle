@@ -14,15 +14,15 @@ dependencies {
 
     implementation project(":function-aws")
 
-    api "com.amazon.alexa:ask-sdk-lambda-support:2.30.0"
+    api "com.amazon.alexa:ask-sdk-lambda-support:2.30.1"
     api project(":aws-alexa")
 
     runtimeOnly("org.slf4j:jcl-over-slf4j:1.7.30")
 
-    testImplementation ("com.amazon.alexa:ask-sdk:2.30.0") {
+    testImplementation ("com.amazon.alexa:ask-sdk:2.30.1") {
         transitive(false)
     }
-    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.30.0"
+    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.30.1"
 
 
 }
