@@ -1,5 +1,9 @@
 For more information, check the https://github.com/micronaut-projects/micronaut-aws/releases[GitHub release list].
 
+##### 2.0.1
+
+* Fixed support for API Versioning with `@Version`.
+
 ##### 2.0
 
 * Upgrade to Micronaut 2.

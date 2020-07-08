@@ -64,10 +64,12 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                     lambdaContext,
                     config
             );
-            final UriRouteMatch<Object, Object> finalRoute = environment.getRouter().route(
-                    containerRequest.getMethod(),
-                    containerRequest.getPath()
-            ).orElse(null);
+
+            UriRouteMatch<Object, Object> finalRoute = environment.getRouter()
+                    .find(containerRequest)
+                    .findFirst()
+                    .orElse(null);
+
             if (finalRoute != null) {
                 containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
                 final UriRoute route = finalRoute.getRoute();

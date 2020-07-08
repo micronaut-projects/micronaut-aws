@@ -26,13 +26,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.MediaType;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +42,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test class for the Jersey AWS_PROXY default implementation
@@ -222,17 +225,6 @@ public class MicronautAwsProxyTest {
 
         AwsProxyResponse output = handler.proxy(request, lambdaContext);
         assertEquals(404, output.getStatusCode());
-    }
-
-    @Test
-    public void error_contentType_invalidContentType() {
-        AwsProxyRequest request = getRequestBuilder("/echo/json-body", "POST")
-                .header("Content-Type", "application/octet-stream")
-                .body("asdasdasd")
-                .build();
-
-        AwsProxyResponse output = handler.proxy(request, lambdaContext);
-        assertEquals(415, output.getStatusCode());
     }
 
     @Test

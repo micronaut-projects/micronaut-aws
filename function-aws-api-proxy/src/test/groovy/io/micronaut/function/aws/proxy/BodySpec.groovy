@@ -78,30 +78,30 @@ class BodySpec extends Specification {
 
     void "test plain text as binary"() {
         given:
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/bytes', HttpMethod.POST.toString())
-            builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
-            builder.binaryBody(new ByteArrayInputStream('Hello'.bytes))
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/bytes', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+        builder.binaryBody(new ByteArrayInputStream('Hello'.bytes))
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 201
-            response.body == 'Hello'
+        response.statusCode == 201
+        response.body == 'Hello'
     }
 
     void "test plain text uplaod"() {
         given:
-            AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/multipart', HttpMethod.POST.toString())
-            builder.formFieldPart('name', 'Vlad')
-            builder.formFilePart('file', 'greetings.txt', 'Hello'.bytes)
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/multipart', HttpMethod.POST.toString())
+        builder.formFieldPart('name', 'Vlad')
+        builder.formFilePart('file', 'greetings.txt', 'Hello'.bytes)
 
         when:
-            def response = handler.proxy(builder.build(), lambdaContext)
+        def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
-            response.statusCode == 201
-            response.body == 'Hello Vlad from greetings.txt'
+        response.statusCode == 201
+        response.body == 'Hello Vlad from greetings.txt'
     }
 
     void "test readFor"() {
@@ -191,13 +191,13 @@ class BodySpec extends Specification {
             return data
         }
 
-        @Post(uri = "/bytes")
+        @Post(uri = "/bytes", consumes = MediaType.TEXT_PLAIN)
         @Status(HttpStatus.CREATED)
         String postBytes(@Body byte[] bytes) {
             return new String(bytes)
         }
 
-        @Post(uri = "/multipart")
+        @Post(uri = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA)
         @Status(HttpStatus.CREATED)
         String postMultipart(@Body byte[] bytes, @Header String contentType) {
             List<FileItem> items = FileUpload.parse(bytes, contentType)
