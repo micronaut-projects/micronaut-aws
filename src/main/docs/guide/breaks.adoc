@@ -37,3 +37,17 @@ Now all artifacts are published under the `io.micronaut.aws` group id.
 
 | `io.micronaut:micronaut-function-aws` | `io.micronaut.aws:micronaut-function-aws`
 |===
+
+== Content negotiation
+
+When using AWS API Proxy, the new support for server side content negotiation may require changes to tests. For example
+a test that makes a call such as:
+
+[source,java]
+----
+String result = client.toBlocking().retrieve(
+    HttpRequest.GET("/test")
+        .accept("text/plain"), String)
+----
+
+If the server implementation does not declare the route as `@Produces("text/plain")` the request won't match.
