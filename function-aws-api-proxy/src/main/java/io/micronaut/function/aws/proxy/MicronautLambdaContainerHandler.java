@@ -281,19 +281,9 @@ public final class MicronautLambdaContainerHandler
                         );
 
                         final AnnotationMetadata annotationMetadata = finalRoute.getAnnotationMetadata();
-                        annotationMetadata.stringValue(Produces.class).map(MediaType::new)
-                                .ifPresent(containerResponse::contentType);
-
-                        final MediaType[] expectedContentType = Arrays.stream(annotationMetadata.stringValues(Consumes.class))
+                        annotationMetadata.stringValue(Produces.class)
                                 .map(MediaType::new)
-                                .toArray(MediaType[]::new);
-                        final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-
-                        if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType)) && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(MediaType.ALL_TYPE))) {
-                            containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-                            containerResponse.close();
-                            return;
-                        }
+                                .ifPresent(containerResponse::contentType);
 
                         final Flowable<MutableHttpResponse<?>> responsePublisher = Flowable.defer(() ->
                                 executeRoute(containerRequest, containerResponse, finalRoute)
@@ -338,6 +328,28 @@ public final class MicronautLambdaContainerHandler
                             return Flowable.error(throwable);
                         }).blockingFirst();
                     } else {
+                        final Optional<UriRouteMatch<Object, Object>> finalRoute = lambdaContainerEnvironment.getRouter().route(
+                                containerRequest.getMethod(),
+                                containerRequest.getPath()
+                        );
+
+                        if (finalRoute.isPresent()) {
+                            final AnnotationMetadata annotationMetadata = finalRoute.get().getAnnotationMetadata();
+                            annotationMetadata.stringValue(Produces.class).map(MediaType::new)
+                                    .ifPresent(containerResponse::contentType);
+
+                            final MediaType[] expectedContentType = Arrays.stream(annotationMetadata.stringValues(Consumes.class))
+                                    .map(MediaType::new)
+                                    .toArray(MediaType[]::new);
+                            final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+
+                            if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType)) && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(MediaType.ALL_TYPE))) {
+                                containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+                                containerResponse.close();
+                                return;
+                            }
+                        }
+
                         final Optional<URL> staticMatch = resourceResolver.resolve(containerRequest.getPath());
                         if (staticMatch.isPresent()) {
                             final StreamedFile streamedFile = new StreamedFile(staticMatch.get());

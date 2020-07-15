@@ -122,7 +122,7 @@ public class EchoMicronautController {
     }
 
     @Get("/binary")
-    @Produces("application/octet-stream")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public HttpResponse<byte[]> echoBinaryData() {
         byte[] b = new byte[128];
         new Random().nextBytes(b);

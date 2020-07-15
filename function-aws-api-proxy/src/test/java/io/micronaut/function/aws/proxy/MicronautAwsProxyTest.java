@@ -248,6 +248,17 @@ public class MicronautAwsProxyTest {
     }
 
     @Test
+    public void error_contentType_invalidContentType() {
+        AwsProxyRequest request = getRequestBuilder("/echo/json-body", "POST")
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM)
+                .body("asdasdasd")
+                .build();
+
+        AwsProxyResponse output = handler.proxy(request, lambdaContext);
+        assertEquals(415, output.getStatusCode());
+    }
+
+    @Test
     public void responseBody_responseWriter_validBody() throws JsonProcessingException {
         SingleValueModel singleValueModel = new SingleValueModel();
         singleValueModel.setValue(CUSTOM_HEADER_VALUE);
