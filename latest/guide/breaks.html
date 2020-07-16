@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>10 Breaking Changes 2.0.0</title>
+    <title>10 Breaking Changes 2.0.1</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -102,7 +102,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>10 Breaking Changes</h1>
 
-                    <p><strong>Version:</strong> 2.0.0</p>
+                    <p><strong>Version:</strong> 2.0.1</p>
                 </div>
 
                 
@@ -201,6 +201,25 @@ function addJsClass() {
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_content_negotiation">Content negotiation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using AWS API Proxy, the new support for server side content negotiation may require changes to tests. For example
+a test that makes a call such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String result = client.toBlocking().retrieve(
+    HttpRequest.GET("/test")
+        .accept("text/plain"), String)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the server implementation does not declare the route as <code>@Produces("text/plain")</code> the request won&#8217;t match.</p>
+</div>
 </div>
 </div>
 
