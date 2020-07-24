@@ -14,7 +14,7 @@ dependencies {
 
     implementation project(":function-aws")
 
-    api "com.amazon.alexa:ask-sdk-lambda-support:2.30.2"
+    api "com.amazon.alexa:ask-sdk-lambda-support:2.31.0"
     api project(":aws-alexa")
 
     runtimeOnly("org.slf4j:jcl-over-slf4j:1.7.30")
