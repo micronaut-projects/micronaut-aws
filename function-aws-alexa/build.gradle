@@ -19,7 +19,7 @@ dependencies {
 
     runtimeOnly("org.slf4j:jcl-over-slf4j:1.7.30")
 
-    testImplementation ("com.amazon.alexa:ask-sdk:2.30.2") {
+    testImplementation ("com.amazon.alexa:ask-sdk:2.31.0") {
         transitive(false)
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.31.0"
