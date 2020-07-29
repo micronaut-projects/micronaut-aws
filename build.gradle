@@ -44,9 +44,6 @@ subprojects { Project subproject ->
         testImplementation 'org.junit.vintage:junit-vintage-engine'
     }
 
-    test {
-        useJUnitPlatform()
-    }
 }
 
 apply plugin: "io.micronaut.build.docs"
