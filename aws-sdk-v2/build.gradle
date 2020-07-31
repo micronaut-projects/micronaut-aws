@@ -1,5 +1,5 @@
 ext {
-    awsSdkVersion = "2.13.63"
+    awsSdkVersion = "2.13.65"
 }
 
 dependencies {
