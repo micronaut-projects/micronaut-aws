@@ -1,5 +1,5 @@
 dependencies {
-    api('com.amazonaws:aws-java-sdk-core:1.11.832')
+    api('com.amazonaws:aws-java-sdk-core:1.11.836')
     api project(":aws-common")
 
     runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
