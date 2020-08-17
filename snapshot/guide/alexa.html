@@ -11,7 +11,7 @@
 
         gtag('config', 'UA-82213539-2');
     </script>
-    <title>8 Alexa Support 2.0.2.BUILD-SNAPSHOT</title>
+    <title>6 Alexa Support 1.4.2.BUILD-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -47,28 +47,22 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/corretto.html"><strong>3</strong><span>Amazon Correto</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv1.html"><strong>4</strong><span>AWS SDK v1</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/awsCredentialsProvider.html"><strong>4</strong><span>AWS Credentials Provider</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/sdkv2.html"><strong>5</strong><span>AWS SDK v2</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>5</strong><span>AWS Lambda Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambda.html"><strong>6</strong><span>AWS Lambda Support</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>6</strong><span>Alexa Support</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/lambdaCustomRuntimes.html"><strong>7</strong><span>AWS Lambda Custom Runtime</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/alexa.html"><strong>8</strong><span>Alexa Support</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>8</strong><span>Breaking Changes</span></a>
                         </div>
                         
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/breaks.html"><strong>10</strong><span>Breaking Changes</span></a>
-                        </div>
-                        
-                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>11</strong><span>Release History</span></a>
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>9</strong><span>Release History</span></a>
                         </div>
                         
                     </div>
@@ -89,49 +83,49 @@ function addJsClass() {
             <div id="main" class="corner-all">
 
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambdaCustomRuntimes.html">&lt;&lt; <strong>7</strong><span>AWS Lambda Custom Runtime</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
                 
-                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span> >></a></div>
                 
 
 
                 <div class="project">
-                    <h1>8 Alexa Support</h1>
+                    <h1>6 Alexa Support</h1>
 
-                    <p><strong>Version:</strong> 2.0.2.BUILD-SNAPSHOT</p>
+                    <p><strong>Version:</strong> 1.4.2.BUILD-SNAPSHOT</p>
                 </div>
 
                 
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#ssmlbuilder"><strong>8.1</strong><span>SSML Builder</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#ssmlbuilder"><strong>6.1</strong><span>SSML Builder</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#intentHandler"><strong>8.2</strong><span>The IntentHandler Annotation</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#intentHandler"><strong>6.2</strong><span>The IntentHandler Annotation</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#webservice"><strong>8.3</strong><span>Alexa Skill as a Web Service</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#webservice"><strong>6.3</strong><span>Alexa Skill as a Web Service</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#alexalambda"><strong>8.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#alexalambda"><strong>6.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#flashbriefings"><strong>8.5</strong><span>Flash Briefings</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#flashbriefings"><strong>6.5</strong><span>Flash Briefings</span></a>
                     </div>
                     
                 </div>
                 
 
                 
-<h1 id="alexa"><a class="anchor" href="#alexa"></a>8 Alexa Support</h1>
+<h1 id="alexa"><a class="anchor" href="#alexa"></a>6 Alexa Support</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -242,10 +236,10 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 </ul>
 </div>
 
-<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>8.1 SSML Builder</h2>
+<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>6.1 SSML Builder</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -260,10 +254,10 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 </div>
 </div>
 
-<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>8.2 The IntentHandler Annotation</h2>
+<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>6.2 The IntentHandler Annotation</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/intentHandler.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa/intentHandler.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -287,6 +281,93 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <div class="paragraph">
 <p>A typical Alexa application written in Micronaut looks like:</p>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
+import com.amazon.ask.model.Response;
+import io.micronaut.function.aws.alexa.AlexaIntents;
+import io.micronaut.function.aws.alexa.annotation.IntentHandler;
+
+import javax.inject.Singleton;
+import java.util.Optional;
+
+@Singleton <b class="conum">(1)</b>
+public class AlexaApplication {
+
+    public static final String INTENT_NAME = "HelloWorldIntent";
+
+    private final MessageService messageService;
+
+    public AlexaApplication(MessageService messageService) { <b class="conum">(2)</b>
+        this.messageService = messageService;
+    }
+
+    @IntentHandler(INTENT_NAME) <b class="conum">(3)</b>
+    public Optional&lt;Response&gt; greet(HandlerInput input) { <b class="conum">(4)</b>
+        String speechText = messageService.sayHello();
+        return input.getResponseBuilder()
+                .withSpeech(speechText)
+                .withSimpleCard("HelloWorld", speechText)
+                .build();
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">import com.amazon.ask.dispatcher.request.handler.HandlerInput
+import com.amazon.ask.model.Response
+import groovy.transform.CompileStatic
+import io.micronaut.function.aws.alexa.AlexaIntents
+import io.micronaut.function.aws.alexa.annotation.IntentHandler
+import javax.inject.Singleton
+
+@Singleton <b class="conum">(1)</b>
+@CompileStatic
+class AlexaApplication {
+
+    private final MessageService messageService
+
+    AlexaApplication(MessageService messageService) { <b class="conum">(2)</b>
+        this.messageService = messageService
+    }
+
+    @IntentHandler("HelloWorldIntent") <b class="conum">(3)</b>
+    Optional&lt;Response&gt; greet(HandlerInput input) { <b class="conum">(4)</b>
+        String speechText = messageService.sayHello()
+        return input.getResponseBuilder()
+                .withSpeech(speechText)
+                .withSimpleCard("HelloWorld", speechText)
+                .build()
+    }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import com.amazon.ask.dispatcher.request.handler.HandlerInput
+import com.amazon.ask.model.Response
+import io.micronaut.function.aws.alexa.AlexaIntents
+import io.micronaut.function.aws.alexa.annotation.IntentHandler
+
+import javax.inject.Singleton
+import java.util.Optional
+
+@Singleton <b class="conum">(1)</b>
+class AlexaApplication(val messageService: MessageService) { <b class="conum">(2)</b>
+
+    companion object {
+        const val INTENT_NAME = "HelloWorldIntent"
+    }
+
+    @IntentHandler(INTENT_NAME) <b class="conum">(3)</b>
+    fun greet(input : HandlerInput) : Optional&lt;Response&gt; { <b class="conum">(4)</b>
+        val speechText = messageService.sayHello()
+        return input.responseBuilder
+                .withSpeech(speechText)
+                .withSimpleCard("HelloWorld", speechText)
+                .build()
+    }</code></pre>
+</div>
+</div>
 <div class="colist arabic">
 <table>
 <tr>
@@ -308,10 +389,10 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 </table>
 </div>
 
-<h2 id="webservice"><a class="anchor" href="#webservice"></a>8.3 Alexa Skill as a Web Service</h2>
+<h2 id="webservice"><a class="anchor" href="#webservice"></a>6.3 Alexa Skill as a Web Service</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/webservice.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa/webservice.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -350,10 +431,10 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <p>You can configure your Skill&#8217;s endpoint under <code>Build/Endpoint</code> in the Alexa developer console.</p>
 </div>
 
-<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>8.4 Alexa Skill as an AWS Lambda Function</h2>
+<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>6.4 Alexa Skill as an AWS Lambda Function</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexalambda.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa/alexalambda.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -383,10 +464,10 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
 </div>
 
-<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>8.5 Flash Briefings</h2>
+<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>6.5 Flash Briefings</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/flashbriefings.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/1.4.x/src/main/docs/guide/alexa/flashbriefings.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -465,9 +546,9 @@ public class FlashBriefingsController {
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
-                    <div class="toc-item prev-left"><a href="../guide/lambdaCustomRuntimes.html">&lt;&lt; <strong>7</strong><span>AWS Lambda Custom Runtime</span></a></div>
+                    <div class="toc-item prev-left"><a href="../guide/lambda.html">&lt;&lt; <strong>5</strong><span>AWS Lambda Support</span></a></div>
                 
-                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>9</strong><span>Repository</span> >></a></div>
+                    <div class="toc-item next-right"><a href="../guide/repository.html"><strong>7</strong><span>Repository</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>
