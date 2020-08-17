@@ -31,6 +31,6 @@ Releases are published to JCenter and Maven Central via [Github Actions](https:/
 
 A release is performed with the following steps:
 
-* [Publish the draft release](https://github.com/micronaut-projects/micronaut-aws/releases). There should be already a draft release created, edit and publish it. The Git Tag should start with `v`. For example `v1.0.0`.
-* [Monitor the Workflow](https://github.com/micronaut-projects/micronaut-aws/actions?query=workflow%3ARelease) to check it passed successfully.
-* Celebrate!
+- [Publish the draft release](https://github.com/micronaut-projects/micronaut-aws/releases). There should be already a draft release created, edit and publish it. The Git Tag should start with `v`. For example `v1.0.0`.
+- [Monitor the Workflow](https://github.com/micronaut-projects/micronaut-aws/actions?query=workflow%3ARelease) to check it passed successfully.
+- Celebrate!
