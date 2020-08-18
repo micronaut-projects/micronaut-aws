@@ -24,4 +24,20 @@ class NettyClientSpec extends Specification {
         client.pools.proxyConfiguration.host == 'localhost'
     }
 
+    void "netty client should not be configured with empty proxy configuration"() {
+        given:
+        ApplicationContext applicationContext = ApplicationContext.run(
+                [
+                        'aws.netty-client.max-concurrency': 123
+                ]
+        )
+
+        when:
+        NettyNioAsyncHttpClient client = applicationContext.getBean(SdkAsyncHttpClient) as NettyNioAsyncHttpClient
+
+        then:
+        client.configuration().maxConnections() == 123
+        client.pools.proxyConfiguration == null
+    }
+
 }
