@@ -26,9 +26,7 @@ import io.micronaut.context.env.Environment
 import io.micronaut.context.env.EnvironmentPropertySource
 import io.micronaut.context.env.PropertySource
 import io.micronaut.context.env.PropertySourcePropertyResolver
-import io.micronaut.core.io.socket.SocketUtils
 import io.micronaut.core.order.OrderUtil
-import io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfigClient
 import io.micronaut.runtime.server.EmbeddedServer
 import io.reactivex.Flowable
 import spock.lang.AutoCleanup
@@ -84,12 +82,12 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                     parameters.add(parameter)
                 }
                 result.setParameters(parameters)
-                result;
+                result
             }
-            return futureTask;
+            return futureTask
         }
 
-        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest->
+        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
 
             FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
             futureTask.isDone() >> { return true }
@@ -179,9 +177,9 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                     parameters.add(parameter)
                 }
                 result.setParameters(parameters)
-                result;
+                result
             }
-            return futureTask;
+            return futureTask
 
 
             when:
@@ -205,14 +203,14 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
     void "given a nextToken from AWS, client should paginate to retrieve all properties"() {
         given:
         String paramPath = "/config/application"
-        client.client.getParametersByPathAsync({ req -> req.nextToken == null} as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
+        client.client.getParametersByPathAsync({ req -> req.nextToken == null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
             setupParamByPathResultMock(paramPath, req, 1..10)
         }
-        client.client.getParametersByPathAsync({ req -> req.nextToken != null} as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
+        client.client.getParametersByPathAsync({ req -> req.nextToken != null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
             setupParamByPathResultMock(paramPath, req, 11..20)
         }
 
-        client.client.getParametersAsync(_) >> {  GetParametersRequest getRequest->
+        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
             FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
@@ -234,11 +232,10 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                 }
 
                 result.setParameters(parameters)
-                result;
+                result
             }
-            return futureTask;
+            return futureTask
         }
-
 
 
         when:
@@ -267,7 +264,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         futureTask.get() >> {
             GetParametersByPathResult result = new GetParametersByPathResult()
             ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-            if(req.path == paramPath) {
+            if (req.path == paramPath) {
                 (paramRange).each {
                     Parameter parameter = new Parameter()
                     parameter.name = "${paramPath}/parameter-${it}"
@@ -305,13 +302,13 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                     parameters.add(parameter)
                 }
                 result.setParameters(parameters)
-                result;
+                result
             }
-            return futureTask;
+            return futureTask
 
         }
 
-        client.client.getParametersAsync(_) >> {  GetParametersRequest getRequest->
+        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
 
             FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
             futureTask.isDone() >> { return true }
@@ -335,9 +332,9 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                 }
 
                 result.setParameters(parameters)
-                result;
+                result
             }
-            return futureTask;
+            return futureTask
         }
 
 
@@ -358,4 +355,71 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         propertySources[1].toList().size() == 1
     }
 
+    void "searching for active environments in AWS Systems Manager Parameter Store can be disabled"() {
+        given:
+        EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
+                [
+                        'aws.client.system-manager.parameterstore.enabled'                  : 'true',
+                        'aws.client.system-manager.parameterstore.searchActiveEnvironments' : 'false',
+                        'micronaut.application.name'                                        : 'amazonTest'],
+                Environment.AMAZON_EC2
+
+        )
+
+        AWSParameterStoreConfigClient client = embeddedServer.applicationContext.getBean(AWSParameterStoreConfigClient)
+
+        client.client = Mock(AWSSimpleSystemsManagementAsync)
+
+        def searchedPaths = []
+        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+
+            searchedPaths += getRequest.path
+
+            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            futureTask.isDone() >> { return true }
+            futureTask.get() >> {
+                return new GetParametersByPathResult()
+            }
+            return futureTask
+        }
+
+        def searchedNames = []
+        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
+
+            searchedNames.addAll(getRequest.names)
+
+            FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
+            futureTask.isDone() >> { return true }
+            futureTask.get() >> {
+                GetParametersResult result = new GetParametersResult()
+                ArrayList<Parameter> parameters = new ArrayList<Parameter>()
+                if (getRequest.names.contains("/config/application")) {
+                    def parameter = new Parameter(
+                            name: "/config/application/someKey",
+                            value: "someValue",
+                            type: "String")
+                    parameters.add(parameter)
+                }
+
+                result.setParameters(parameters)
+                result
+            }
+            return futureTask
+        }
+
+        when:
+        def env = Mock(Environment)
+        env.getActiveNames() >> (['first', 'second'] as Set)
+        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+
+        then: "verify that active environment paths are not searched"
+        propertySources.size() == 1
+        propertySources[0].get('someKey') == 'someValue'
+
+        [searchedPaths, searchedNames].forEach {
+            assert it.size() == 2
+            assert it.contains('/config/application')
+            assert it.contains('/config/amazon-test')
+        }
+    }
 }
