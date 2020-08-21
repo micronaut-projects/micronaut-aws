@@ -11,5 +11,5 @@ set -euo pipefail
 java -XX:TieredStopAtLevel=1 -noverify -cp demo.jar io.micronaut.function.aws.runtime.MicronautLambdaRuntime
 ----
 
-In addition to the dependencies to `micronaut-function-aws-aws-custom-runtime`, you will need to include dependencies to the
+In addition to the dependencies to `micronaut-function-aws-custom-runtime`, you will need to include dependencies to the
 `micronaut-function-aws-api-proxy` module.
