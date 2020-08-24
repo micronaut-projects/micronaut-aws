@@ -1,10 +1,10 @@
 An alternative approach to using Micronaut with AWS is to use Micronaut support for the https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java Container] project.
 
 [TIP]
-.Using the CLI with Micronaut 1.1 or above
+.Using the CLI with Micronaut 2.0 or above
 ====
 ----
-$ mn create-app my-app --features aws-api-gateway
+$ mn create-app my-app --features aws-lambda
 ----
 ====
 
