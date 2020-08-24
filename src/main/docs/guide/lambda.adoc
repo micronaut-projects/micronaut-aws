@@ -1,4 +1,4 @@
-Regular Micronaut functions created via `mn create-function` can be deployed to Lambda directly. 
+Regular Micronaut functions created via `mn create-function-app` can be deployed to Lambda directly. 
 
 [TIP]
 .Using the CLI
@@ -8,7 +8,7 @@ $ mn create-function-app example
 ----
 ====
 
-For example, when using `create-function hello` Micronaut 1.1 and above will create a function that looks like this:
+For example, when using `create-function-app hello` Micronaut 1.1 and above will create a function that looks like this:
 
 [source,java]
 ----
