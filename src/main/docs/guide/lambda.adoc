@@ -4,7 +4,7 @@ Regular Micronaut functions created via `mn create-function` can be deployed to 
 .Using the CLI
 ====
 ----
-$ mn create-function example
+$ mn create-function-app example
 ----
 ====
 
