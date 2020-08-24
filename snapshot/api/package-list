@@ -1,4 +1,3 @@
-io.micronaut.aws
 io.micronaut.aws.alexa.annotation
 io.micronaut.aws.alexa.builders
 io.micronaut.aws.alexa.conf
@@ -11,22 +10,7 @@ io.micronaut.aws.alexa.httpserver.exceptions
 io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
 io.micronaut.aws.alexa.ssml
-io.micronaut.aws.sdk.v1
-io.micronaut.aws.sdk.v2
-io.micronaut.aws.sdk.v2.client.apache
-io.micronaut.aws.sdk.v2.client.netty
-io.micronaut.aws.sdk.v2.client.urlConnection
-io.micronaut.aws.sdk.v2.graal
-io.micronaut.aws.sdk.v2.service
-io.micronaut.aws.sdk.v2.service.dynamodb
-io.micronaut.aws.sdk.v2.service.s3
-io.micronaut.aws.sdk.v2.service.ses
-io.micronaut.aws.sdk.v2.service.sns
-io.micronaut.aws.sdk.v2.service.sqs
-io.micronaut.discovery.aws.parameterstore
-io.micronaut.discovery.aws.route53
-io.micronaut.discovery.aws.route53.client
-io.micronaut.discovery.aws.route53.registration
+io.micronaut.configuration.aws
 io.micronaut.function.aws
 io.micronaut.function.aws.alexa
 io.micronaut.function.aws.proxy
@@ -34,4 +18,3 @@ io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
 io.micronaut.function.aws.runtime
-io.micronaut.function.client.aws
