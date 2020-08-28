@@ -1,0 +1,5 @@
+To deploy a Micronaut function to AWS Lambda you have to choose a https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html[AWS Lambda Runtime]. For Micronaut functions, you select a Java (8 or 11) or custom runtime. To deploy your Micronaut function as a https://www.graalvm.org/reference-manual/native-image/[GraalVM Native Image] you need to select a custom runtime.
+
+image::aws-lambda-runtime-java11.png[Select Java 11 Corretto Runtime]
+
+image::aws-lambda-runtime-custom.png[Select Custom Runtime]

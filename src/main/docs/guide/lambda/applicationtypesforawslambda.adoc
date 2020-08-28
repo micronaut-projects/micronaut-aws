@@ -1,0 +1,10 @@
+In https://launch.micronaut.io[Micronaut Launch], you can select the feature `aws-lambda` for applications of type `Application` or `Serverless Function`. Those application types have their CLI equivalents commands.
+
+[%header,cols=2*]
+|===
+| Application Type |  CLI Command
+| `Application`
+| `create-app`
+| `Serverless Function`
+| `create-function-app`
+|===

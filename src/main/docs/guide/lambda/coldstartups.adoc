@@ -1,0 +1,12 @@
+Instances of Lambdas are added and removed dynamically.
+When a new instance handles its first request, the response time increases, which is called a cold start. After that request is processed, the instance stays alive (≈10 m) to be reused for subsequent requests.
+
+Lambdas execution have different phases (Initialization, Invocation...).
+
+During the initialization phase:
+
+- AWS Lambda starts a JVM.
+- Java runtime loads and initializes handler class.
+- Lambda calls the handler method.
+
+The intialization phase has access to more CPU because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.

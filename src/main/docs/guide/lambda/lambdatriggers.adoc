@@ -1,0 +1,17 @@
+https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html[AWS Lambda integrates with other AWS services] to invoke functions. The Micronaut application type you select depends on the triggers you want to support. To respond to incoming HTTP requests (e.g. https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html[AWS Lambda Proxy integrations in API Gateway]) you can choose either `Application` or `Serverless Function`. For other triggers, such as consuming events from a queue, or run on a schedule you will choose `Serverless Function`.
+
+[%header,cols=2*]
+|===
+| Application Type
+| Trigger type
+| `Application` or `Serverless Function`
+| HTTP requests to a single endpoint
+| `Application`
+| HTTP requests to multiple endpoints
+| `Serverless Function`
+| S3 events, events for a queue, schedule triggers etc.
+|===
+
+On the one hand, if you need to support a single endpoint a `Serverless Function` gives you a function with less code (which translates to a faster cold startup).
+
+On the other hand, functions written as an application of type `Application` allows you to code with a more familiar paradigm - Classes annotated with  `@Controller`. That it is possible because, through the https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws-api-proxy[micronaut-function-aws-api-proxy] dependency, Micronaut integrates with the https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java Container] project.

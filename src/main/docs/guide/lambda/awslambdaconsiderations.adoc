@@ -1,0 +1,8 @@
+To deploy a AWS Lambda function you have to:
+
+- Select a runtime
+- Choose how your Lambda is triggered
+- Specify your Handler
+- Upload your code
+
+The above decisions influence the type of Micronaut application you choose.
