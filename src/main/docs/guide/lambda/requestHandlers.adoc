@@ -1,32 +1,45 @@
-The `micronaut-function-aws` module includes two parent classes you can subclass to implement native AWS Lambda functionality. To get started first add the `micronaut-function-aws` dependency to your build:
+https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html[AWS Lambda Function Handler]
+
+> Your Lambda function's handler is the method in your function code that processes events. When your function is invoked, Lambda runs the handler method. When the handler exits or returns a response, it becomes available to handle another event.
+
+The https://github.com/aws/aws-lambda-java-libs/tree/master/aws-lambda-java-core[aws-lambda-java-core] library defines two interfaces for handler methods. When coding your functions with Micronaut you don't implement those interfaces directly. Instead you extend or use its Micronaut equivalents:
+
+[%header,cols=3*]
+|===
+| Application Type
+| AWS Handler Interface
+| Micronaut Handler Class
+| Serverless Function
+| https://github.com/aws/aws-lambda-java-libs/blob/master/aws-lambda-java-core/src/main/java/com/amazonaws/services/lambda/runtime/RequestHandler.java[com.amazonaws.services.lambda.runtime.RequestHandler]
+| api:function.aws.MicronautRequestHandler[]
+| Serverless Function
+| https://github.com/aws/aws-lambda-java-libs/blob/master/aws-lambda-java-core/src/main/java/com/amazonaws/services/lambda/runtime/RequestStreamHandler.java[com.amazonaws.services.lambda.runtime.RequestStreamHandler]
+| api:function.aws.MicronautRequestStreamHandler[]
+| Application
+| `RequestStreamHandler<AwsProxyRequest,AwsProxyResponse>`
+| api:function.aws.proxy.MicronautLambdaHandler[] |
+|===
+
+For functions of type `Application`, use the handler api:function.aws.proxy.MicronautLambdaHandler[].
+
+To resolve that class you need to add the `micronaut-function-aws-api-proxy` dependency to your build.
+
+dependency:micronaut-function-aws-api-proxy[]
+
+For Serverless Functions the decision to use one `MicronautRequestHandler` or `MicronautRequestStreamHandler` depends on how you want to handle the input and output types.
+
+To resolve those classes you need to add the `micronaut-function-aws` dependency to your build.
 
 dependency:micronaut-function-aws[]
 
-You can then use either api:function.aws.MicronautRequestHandler[] or api:function.aws.MicronautRequestStreamHandler[] as your parent class to implement your Lambda handler. For example:
+With api:function.aws.MicronautRequestHandler[], it is expected that you supply generic types with the input and the output types. If you wish to work with raw streams then subclass api:function.aws.MicronautRequestStreamHandler[] instead.
 
-.Implementing `MicronautRequestHandler`
-[source,java]
-----
-package example;
-
-include::function-aws/src/test/groovy/io/micronaut/function/aws/RoundHandler.java[tags=imports]
-
-include::function-aws/src/test/groovy/io/micronaut/function/aws/RoundHandler.java[tags=class]
-----
-
-<1> The class extends api:function.aws.MicronautRequestHandler[] and must have a default constructor.
-<2> You can use field injection to inject dependencies
-<3> The function implementation
-
-With api:function.aws.MicronautRequestHandler[] it is expected that you supply generic types with the input and the output types.
-
-If you wish to work with raw streams then subclass api:function.aws.MicronautRequestStreamHandler[] instead.
-
-You should then configure the class name as the Lambda handler when deploying to AWS. For example with SAM:
-
-[source,yaml]
-Resources:
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: example.RoundHandler::handleRequest
+[%header,cols=2*]
+|===
+| Input / Output Types
+| Handler
+| Supply Generic types with the input and Output
+| Class which extends api:function.aws.MicronautRequestHandler[] |
+| Raw streams
+| api:function.aws.MicronautRequestStreamHandler[] |
+|===

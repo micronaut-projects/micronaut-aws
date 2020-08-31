@@ -1,21 +1,11 @@
-The application can then be deployed to Lambda either via the AWS console or the CLI:
+https://www.graalvm.org/[GraalVM] is a universal virtual machine which allows to compile Java programs to https://www.graalvm.org/reference-manual/native-image/[native executables].
 
-.Deploying the Function with the AWS CLI
-[source,bash]
-----
-$ aws lambda create-function --function-name my-app \
---zip-file fileb://build/function.zip --handler function.handler --runtime provided \
---role arn:aws:iam::881337894647:role/lambda_basic_execution
-----
+The introduction of https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html[AWS Lambda custom runtimes] enables cold startup improvements for Java applications running in AWS Lambda.
 
-Then you can invoke the function:
+> A runtime is a program that runs a Lambda function's handler method when the function is invoked. You can include a runtime in your function's deployment package in the form of an executable file named bootstrap
 
-.Invoking the Function with the AWS CLI
-[source,bash]
-----
-$ aws lambda invoke --function-name my-app --payload '{"resource": "/ping", "path": "/ping", "httpMethod": "GET"}' build/response.txt
-$ cat build/response.txt
-----
+Micronaut's dependency https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws-custom-runtime[micronaut-function-aws-custom-runtime] eases the creation of AWS Lambda Custom runtime to execute a Micronaut function.
 
-There is a complete, step-by-step guide about https://guides.micronaut.io/micronaut-function-graalvm-aws-lambda-gateway/guide/index.html[Micronaut Functions in GraalVM Native Images deployed to AWS Lambda].
+The main API you will interact with is api:function.aws.runtime.AbstractMicronautLambdaRuntime[]. An abstract class which you can extend to create your custom runtime `mainClass`. That class includes the necessary code to perform the https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html#runtimes-custom-build[Processing Tasks] described in the Custom Runtime documentation.
 
+When you generate a project with Micronaut CLI or https://launch.micronaut.io[Micronaut Launch] with `aws-lambda` and `graalvm` features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.

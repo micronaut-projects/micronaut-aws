@@ -1,0 +1,20 @@
+Check the step-by-step tutorials to get you started:
+
+[%header,cols=3*]
+|===
+| Application Type
+| Runtime
+| Tutorial
+| Application
+| Java 11
+| Deploy a Micronaut application to AWS Lambda Java 11 Runtime https://guides.micronaut.io/mn-application-aws-lambda-java11/guide/index.html[JAVA] https://guides.micronaut.io/mn-application-aws-lambda-java11-kotlin/guide/index.html[KOTLIN] https://guides.micronaut.io/mn-application-aws-lambda-java11-groovy/guide/index.html[GROOVY]
+| Serverless Function
+| Java 11
+| Deploy a Serverless Micronaut function to AWS Lambda Java 11 Runtime https://guides.micronaut.io/mn-serverless-function-aws-lambda/guide/index.html[JAVA] https://guides.micronaut.io/mn-serverless-function-aws-lambda-kotlin/guide/index.html[KOTLIN] https://guides.micronaut.io/mn-serverless-function-aws-lambda-groovy/guide/index.html[GROOVY]
+| Application
+| GraalVM Native Image in Custom Runtime
+| Deploy a Micronaut application as a GraalVM Native Image to AWS Lambda https://guides.micronaut.io/mn-application-aws-lambda-graalvm/guide/index.html[JAVA] https://guides.micronaut.io/mn-application-aws-lambda-graalvm-kotlin/guide/index.html[KOTLIN]
+| Serverless Function
+| GraalVM Native Image in Custom Runtime
+| Deploy a Serverless Micronaut function as a GraalVM Native Image to AWS Lambda https://guides.micronaut.io/mn-serverless-function-aws-lambda-graalvm/guide/index.html[JAVA]
+|===
