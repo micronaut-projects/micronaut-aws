@@ -1,4 +1,5 @@
 introduction: Introduction
+releases: Release History
 whatsNew: What's new?
 corretto: Amazon Correto
 sdkv1:
@@ -33,4 +34,3 @@ alexa:
   flashbriefings: Flash Briefings
 repository: Repository
 breaks: Breaking Changes
-releases: Release History

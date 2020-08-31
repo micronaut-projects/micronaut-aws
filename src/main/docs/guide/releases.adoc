@@ -1,32 +1,3 @@
-For more information, check the https://github.com/micronaut-projects/micronaut-aws/releases[GitHub release list].
+For this project, you can find a list of releases (with release notes) here:
 
-##### 2.0.1
-
-* Fixed support for API Versioning with `@Version`.
-
-##### 2.0
-
-* Upgrade to Micronaut 2.
-* Support for the AWS SDK v2
-* Improved support for Alexa Skills.
-
-##### 1.4
-
-Setting Micronaut 1.2 as the minimum supported version
-
-##### 1.3
-
-* Improved support for GraalVM native images
-* Upgrade to `aws-serverless-java-container-core` 1.4
-
-##### 1.2
-
-Compatibility with Micronaut 1.2
-
-##### 1.1
-
-Compatibility with Micronaut 1.1
-
-##### 1.0
-
-Initial Release
+ https://github.com/{githubSlug}/releases[https://github.com/{githubSlug}/releases]
