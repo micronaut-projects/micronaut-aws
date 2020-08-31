@@ -1,7 +1,7 @@
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-graal"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.24"
 
     api "io.micronaut:micronaut-discovery-client"
     api project(":aws-route53")
