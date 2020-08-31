@@ -1,13 +1,13 @@
 dependencies {
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-graal"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.23"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.24"
 
     api "io.micronaut:micronaut-discovery-client"
     api project(":aws-sdk-v1")
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-route53', version: '1.11.850'
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.850'
-    implementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.11.850'
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-servicediscovery', version: '1.11.850'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-route53', version: '1.11.851'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.851'
+    implementation group: 'com.amazonaws', name: 'jmespath-java', version: '1.11.851'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-servicediscovery', version: '1.11.851'
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
