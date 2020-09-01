@@ -39,7 +39,7 @@ With api:function.aws.MicronautRequestHandler[], it is expected that you supply 
 | Input / Output Types
 | Handler
 | Supply Generic types with the input and Output
-| Class which extends api:function.aws.MicronautRequestHandler[] |
+| Class which extends api:function.aws.MicronautRequestHandler[]
 | Raw streams
-| api:function.aws.MicronautRequestStreamHandler[] |
+| api:function.aws.MicronautRequestStreamHandler[]
 |===
