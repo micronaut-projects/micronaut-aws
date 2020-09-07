@@ -65,6 +65,7 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -249,6 +250,9 @@ public final class MicronautLambdaContainerHandler
                     applicationContext.getBean(RequestBinderRegistry.class)
             );
             this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
+            applicationContext.getEnvironment().addConverter(
+                    byte[].class, String.class, bytes -> new String(bytes, StandardCharsets.UTF_8)
+            );
         } catch (Exception e) {
             throw new ContainerInitializationException(
                     "Error starting Micronaut container: " + e.getMessage(),
