@@ -33,5 +33,6 @@ io.micronaut.function.aws.proxy
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
+io.micronaut.function.aws.proxy.test
 io.micronaut.function.aws.runtime
 io.micronaut.function.client.aws
