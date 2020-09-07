@@ -1,0 +1,11 @@
+dependencies {
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    api "io.micronaut:micronaut-http-server"
+    api project(":function-aws-api-proxy")
+
+    implementation 'org.eclipse.jetty:jetty-server:9.4.31.v20200723'
+    testCompileOnly "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut.test:micronaut-test-spock:1.2.3"
+    testImplementation "io.micronaut:micronaut-http-client"
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+}

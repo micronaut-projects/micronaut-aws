@@ -66,7 +66,7 @@ public class MicronautLambdaHandler implements RequestHandler<AwsProxyRequest, A
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         this.getApplicationContext().close();
     }
 }
