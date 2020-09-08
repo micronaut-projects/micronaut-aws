@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>2.1.0.BUILD-SNAPSHOT</p>
+                <p><strong>Version:</strong>2.1.0.RC2</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -202,9 +202,78 @@
 </div>
 <div class="sect2">
 <h3 id="_aws_route53_config_properties">Aws Route53 Config Properties</h3>
+<a id="io.micronaut.discovery.aws.route53.Route53AutoRegistrationConfiguration" href="#io.micronaut.discovery.aws.route53.Route53AutoRegistrationConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53AutoRegistrationConfiguration.html">Route53AutoRegistrationConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.aws-service-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Setting for service id to make easier testing.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.ip-addr</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.prefer-ip-address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.fail-fast</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.deregister</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.retry-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.retry-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.health-path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.route53.Route53DiscoveryConfiguration" href="#io.micronaut.discovery.aws.route53.Route53DiscoveryConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 5. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53DiscoveryConfiguration.html">Route53DiscoveryConfiguration</a></caption>
+<caption class="title">Table 6. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53DiscoveryConfiguration.html">Route53DiscoveryConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -233,7 +302,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.route53.Route53ClientDiscoveryConfiguration" href="#io.micronaut.discovery.aws.route53.Route53ClientDiscoveryConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 6. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html">Route53ClientDiscoveryConfiguration</a></caption>
+<caption class="title">Table 7. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html">Route53ClientDiscoveryConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -400,75 +469,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.discovery.client.port</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.discovery.aws.route53.Route53AutoRegistrationConfiguration" href="#io.micronaut.discovery.aws.route53.Route53AutoRegistrationConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 7. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/route53/Route53AutoRegistrationConfiguration.html">Route53AutoRegistrationConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.aws-service-id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Setting for service id to make easier testing.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.ip-addr</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.prefer-ip-address</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.fail-fast</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.deregister</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.retry-count</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.retry-delay</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.route53.registration.health-path</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -694,9 +694,92 @@
 </div>
 <div class="sect2">
 <h3 id="_aws_sdk_v2_config_properties">Aws Sdk V2 Config Properties</h3>
+<a id="io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties" href="#io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html">S3ConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.dualstack-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.accelerate-mode-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.path-style-access-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.checksum-validation-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.chunked-encoding-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.use-arn-region-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.profile-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html">UrlConnectionClientConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.socket-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 9. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html">NettyClientConfiguration</a></caption>
+<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html">NettyClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -783,89 +866,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.non-proxy-hosts</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Set</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 10. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html">UrlConnectionClientConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.socket-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.connection-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties" href="#io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 11. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html">S3ConfigurationProperties</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.dualstack-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.accelerate-mode-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.path-style-access-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.checksum-validation-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.chunked-encoding-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.use-arn-region-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.profile-name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -1010,73 +1010,9 @@
 </div>
 <div class="sect2">
 <h3 id="_function_client_aws_config_properties">Function Client Aws Config Properties</h3>
-<a id="io.micronaut.function.client.aws.AWSLambdaConfiguration" href="#io.micronaut.function.client.aws.AWSLambdaConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.executor-factory</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.ExecutorFactory</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.credentials</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.auth.AWSCredentialsProvider</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-configuration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.ClientConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.metrics-collector</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.metrics.RequestMetricCollector</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.region</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.regions.Regions</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.endpoint-configuration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.AwsClientBuilder$EndpointConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.request-handlers</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.handlers.RequestHandler2[]</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.monitoring-listener</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.MonitoringListener</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-side-monitoring-configuration-provider</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.CsmConfigurationProvider</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.function.client.aws.AWSInvokeRequestDefinition" href="#io.micronaut.function.client.aws.AWSInvokeRequestDefinition">&#128279;</a>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
+<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1143,6 +1079,70 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.functions.*.sdk-client-execution-timeout</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.function.client.aws.AWSLambdaConfiguration" href="#io.micronaut.function.client.aws.AWSLambdaConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.executor-factory</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.ExecutorFactory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.credentials</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.auth.AWSCredentialsProvider</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.ClientConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.metrics-collector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.metrics.RequestMetricCollector</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.region</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.regions.Regions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.endpoint-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.AwsClientBuilder$EndpointConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.request-handlers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.handlers.RequestHandler2[]</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.monitoring-listener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.MonitoringListener</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-side-monitoring-configuration-provider</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.CsmConfigurationProvider</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
