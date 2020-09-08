@@ -158,10 +158,28 @@
 <dd>
 <div class="block">Alternate environment variable name for the AWS secret key.</div>
 </dd>
+<dt><a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html" title="class in io.micronaut.discovery.cloud.aws"><span class="typeNameLink">AmazonComputeInstanceMetadataResolver</span></a> - Class in <a href="io/micronaut/discovery/cloud/aws/package-summary.html">io.micronaut.discovery.cloud.aws</a></dt>
+<dd>
+<div class="block">Resolves <code>ComputeInstanceMetadata</code> for Amazon EC2.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html#AmazonComputeInstanceMetadataResolver-com.fasterxml.jackson.databind.ObjectMapper-io.micronaut.discovery.cloud.aws.AmazonMetadataConfiguration-">AmazonComputeInstanceMetadataResolver(ObjectMapper, AmazonMetadataConfiguration)</a></span> - Constructor for class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html" title="class in io.micronaut.discovery.cloud.aws">AmazonComputeInstanceMetadataResolver</a></dt>
+<dd>
+<div class="block">Create a new instance to resolve <code>ComputeInstanceMetadata</code> for Amazon EC2.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html#AmazonComputeInstanceMetadataResolver--">AmazonComputeInstanceMetadataResolver()</a></span> - Constructor for class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html" title="class in io.micronaut.discovery.cloud.aws">AmazonComputeInstanceMetadataResolver</a></dt>
+<dd>
+<div class="block">Create a new instance to resolve <code>ComputeInstanceMetadata</code> for Amazon EC2 with default configurations.</div>
+</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html" title="enum in io.micronaut.aws.alexa.ssml"><span class="typeNameLink">AmazonDomain</span></a> - Enum in <a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a></dt>
 <dd>
 <div class="block">The name of the speaking style to apply to the speech.</div>
 </dd>
+<dt><a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html" title="class in io.micronaut.discovery.cloud.aws"><span class="typeNameLink">AmazonEC2InstanceMetadata</span></a> - Class in <a href="io/micronaut/discovery/cloud/aws/package-summary.html">io.micronaut.discovery.cloud.aws</a></dt>
+<dd>
+<div class="block">Represents <code>ComputeInstanceMetadata</code> for Amazon's EC2.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html#AmazonEC2InstanceMetadata--">AmazonEC2InstanceMetadata()</a></span> - Constructor for class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html" title="class in io.micronaut.discovery.cloud.aws">AmazonEC2InstanceMetadata</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/AmazonEffect.html" title="enum in io.micronaut.aws.alexa.ssml"><span class="typeNameLink">AmazonEffect</span></a> - Enum in <a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a></dt>
 <dd>
 <div class="block">Applies Amazon-specific effects to the speech.</div>
@@ -172,6 +190,12 @@
 <dd>
 <div class="block">The intensity or strength of the emotion to express.</div>
 </dd>
+<dt><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws"><span class="typeNameLink">AmazonMetadataConfiguration</span></a> - Class in <a href="io/micronaut/discovery/cloud/aws/package-summary.html">io.micronaut.discovery.cloud.aws</a></dt>
+<dd>
+<div class="block">Default configuration for retrieving Amazon EC2 metadata for <code>ComputePlatform.AMAZON_EC2</code>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#AmazonMetadataConfiguration--">AmazonMetadataConfiguration()</a></span> - Constructor for class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/handlers/AnnotatedRequestHandler.html" title="interface in io.micronaut.aws.alexa.handlers"><span class="typeNameLink">AnnotatedRequestHandler</span></a> - Interface in <a href="io/micronaut/aws/alexa/handlers/package-summary.html">io.micronaut.aws.alexa.handlers</a></dt>
 <dd>
 <div class="block">Interface used by <a href="io/micronaut/aws/alexa/annotation/IntentHandler.html" title="annotation in io.micronaut.aws.alexa.annotation"><code>IntentHandler</code></a> to implement requests.</div>
@@ -260,6 +284,8 @@
 <dd>
 <div class="block">Constant for AWS alias dns name.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#AWS_API_VERSION">AWS_API_VERSION</a></span> - Static variable in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html#AWS_EXECUTION_ENV">AWS_EXECUTION_ENV</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime">ReservedRuntimeEnvironmentVariables</a></dt>
 <dd>
 <div class="block">The runtime identifier, prefixed by AWS_Lambda_—for example, AWS_Lambda_java8.</div>
@@ -306,6 +332,8 @@
 <dd>
 <div class="block">(Custom runtime) The host and port of the runtime API.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#AWS_METADATA_URL">AWS_METADATA_URL</a></span> - Static variable in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html#AWS_REGION">AWS_REGION</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime">ReservedRuntimeEnvironmentVariables</a></dt>
 <dd>
 <div class="block">The AWS Region where the Lambda function is executed.</div>
@@ -636,12 +664,20 @@
 </a>
 <h2 class="title">D</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#DEFAULT_ENABLED">DEFAULT_ENABLED</a></span> - Static variable in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>
+<div class="block">The default enable value.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#DEFAULT_PATH">DEFAULT_PATH</a></span> - Static variable in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/AskHttpServerConstants.html#DEFAULT_TOLERANCE_MILLIS">DEFAULT_TOLERANCE_MILLIS</a></span> - Static variable in class io.micronaut.aws.alexa.httpserver.<a href="io/micronaut/aws/alexa/httpserver/AskHttpServerConstants.html" title="class in io.micronaut.aws.alexa.httpserver">AskHttpServerConstants</a></dt>
 <dd>
 <div class="block">Default timestamp offset tolerance value in millis, used if a custom value is not provided through the
  <a href="io/micronaut/aws/alexa/httpserver/AskHttpServerConstants.html#TIMESTAMP_TOLERANCE_SYSTEM_PROPERTY">"com.amazon.speech.speechlet.servlet.timestampTolerance"</a> system property.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#DEFAULT_URL">DEFAULT_URL</a></span> - Static variable in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>
+<div class="block">The default url value.</div>
 </dd>
 <dt><a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders"><span class="typeNameLink">DefaultAlexaSkillBuilder</span></a> - Class in <a href="io/micronaut/aws/alexa/builders/package-summary.html">io.micronaut.aws.alexa.builders</a></dt>
 <dd>
@@ -699,6 +735,10 @@
 </a>
 <h2 class="title">E</h2>
 <dl>
+<dt><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws"><span class="typeNameLink">EC2MetadataKeys</span></a> - Enum in <a href="io/micronaut/discovery/cloud/aws/package-summary.html">io.micronaut.discovery.cloud.aws</a></dt>
+<dd>
+<div class="block">A enum of Amazon EC2 metadata.</div>
+</dd>
 <dt><a href="io/micronaut/discovery/aws/route53/registration/EC2ServiceInstance.html" title="class in io.micronaut.discovery.aws.route53.registration"><span class="typeNameLink">EC2ServiceInstance</span></a> - Class in <a href="io/micronaut/discovery/aws/route53/registration/package-summary.html">io.micronaut.discovery.aws.route53.registration</a></dt>
 <dd>
 <div class="block">Represents EC2 service instance metadata.</div>
@@ -860,6 +900,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getClientContext--">getClientContext()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html#getComputePlatform--">getComputePlatform()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html" title="class in io.micronaut.discovery.cloud.aws">AmazonEC2InstanceMetadata</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html#getConnectionPoolConfiguration--">getConnectionPoolConfiguration()</a></span> - Method in class io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html" title="class in io.micronaut.discovery.aws.route53">Route53ClientDiscoveryConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#getContainerConfig--">getContainerConfig()</a></span> - Static method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
@@ -937,6 +979,8 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getIdentity--">getIdentity()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#getInstanceDocumentUrl--">getInstanceDocumentUrl()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/registration/EC2ServiceInstance.html#getInstanceId--">getInstanceId()</a></span> - Method in class io.micronaut.discovery.aws.route53.registration.<a href="io/micronaut/discovery/aws/route53/registration/EC2ServiceInstance.html" title="class in io.micronaut.discovery.aws.route53.registration">EC2ServiceInstance</a></dt>
 <dd>
 <div class="block">Gets AWS ID for the instance.</div>
@@ -967,9 +1011,13 @@
 <dd>
 <div class="block">Gets the metadata information gathered from AWS for this instance.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#getMetadataUrl--">getMetadataUrl()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getMethod--">getMethod()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html#getName--">getName()</a></span> - Method in class io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfigurationProperties.html" title="class in io.micronaut.aws.alexa.conf">AlexaSkillConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#getName--">getName()</a></span> - Method in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#getName--">getName()</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
@@ -1069,6 +1117,12 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html#getURI--">getURI()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html" title="class in io.micronaut.function.aws.proxy.test">AwsApiProxyTestServer</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#getUrl--">getUrl()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#getURL-java.lang.String-java.lang.String-">getURL(String, String)</a></span> - Method in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>
+<div class="block">The URL for metadata information.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html#getURL--">getURL()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html" title="class in io.micronaut.function.aws.proxy.test">AwsApiProxyTestServer</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#getUseSecureParameters--">getUseSecureParameters()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
@@ -1281,6 +1335,10 @@
 <dd>
 <div class="block">Integration with AWS Route53.</div>
 </dd>
+<dt><a href="io/micronaut/discovery/cloud/aws/package-summary.html">io.micronaut.discovery.cloud.aws</a> - package io.micronaut.discovery.cloud.aws</dt>
+<dd>
+<div class="block">AWS cloud configuration.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/package-summary.html">io.micronaut.function.aws</a> - package io.micronaut.function.aws</dt>
 <dd>
 <div class="block">Classes to support exposing <code>FunctionBean</code> instances for AWS lambda</div>
@@ -1317,6 +1375,8 @@
 <dd>
 <div class="block">enable/disable this feature.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html#isRunning--">isRunning()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html" title="class in io.micronaut.function.aws.proxy.test">AwsApiProxyTestServer</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#isSearchActiveEnvironments--">isSearchActiveEnvironments()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
@@ -1578,6 +1638,8 @@
 <dd>
 <div class="block">Generic method to parse an HTTP header value and split it into a list of key/values for all its components.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#path">path</a></span> - Variable in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#PATH_REQUEST_ID">PATH_REQUEST_ID</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/PhoneticAlphabet.html" title="enum in io.micronaut.aws.alexa.ssml"><span class="typeNameLink">PhoneticAlphabet</span></a> - Enum in <a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a></dt>
@@ -1604,6 +1666,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/Route53DiscoveryConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/Route53DiscoveryConfiguration.html" title="class in io.micronaut.discovery.aws.route53">Route53DiscoveryConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>
+<div class="block">Prefix for Amazon EC2 configuration metadata.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
@@ -1704,6 +1770,8 @@
 <dd>
 <div class="block">this resolves the correct bean for the environment.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html#resolve-io.micronaut.context.env.Environment-">resolve(Environment)</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonComputeInstanceMetadataResolver.html" title="class in io.micronaut.discovery.cloud.aws">AmazonComputeInstanceMetadataResolver</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html#resolveCredentials--">resolveCredentials()</a></span> - Method in class io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/EnvironmentAwsCredentialsProvider.html" title="class in io.micronaut.aws.sdk.v2">EnvironmentAwsCredentialsProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName(Environment)</a></span> - Method in class io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautRequestStreamHandler.html" title="class in io.micronaut.function.aws">MicronautRequestStreamHandler</a></dt>
@@ -1842,17 +1910,25 @@
 <dd>
 <div class="block">enable/disabled this feature.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#setEnabled-boolean-">setEnabled(boolean)</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>
+<div class="block">Default value (<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#DEFAULT_ENABLED">true</a>).</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#setEndpointConfiguration-com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration-">setEndpointConfiguration(AwsClientBuilder.EndpointConfiguration)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorMessage-java.lang.String-">setErrorMessage(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#setErrorType-java.lang.String-">setErrorType(String)</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#setInstanceDocumentUrl-java.lang.String-">setInstanceDocumentUrl(String)</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html#setLogFormatter-com.amazonaws.serverless.proxy.LogFormatter-">setLogFormatter(LogFormatter&lt;ContainerRequestType, ContainerResponseType&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a></dt>
 <dd>
 <div class="block">Sets the formatter used to log request data in CloudWatch.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html#setMainText-java.lang.String-">setMainText(String)</a></span> - Method in class io.micronaut.aws.alexa.flashbriefing.<a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html" title="class in io.micronaut.aws.alexa.flashbriefing">FlashBriefingItem</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#setMetadataUrl-java.lang.String-">setMetadataUrl(String)</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#setMetricsCollector-com.amazonaws.metrics.RequestMetricCollector-">setMetricsCollector(RequestMetricCollector)</a></span> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -1894,6 +1970,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html#setUpdateDate-java.time.ZonedDateTime-">setUpdateDate(ZonedDateTime)</a></span> - Method in class io.micronaut.aws.alexa.flashbriefing.<a href="io/micronaut/aws/alexa/flashbriefing/FlashBriefingItem.html" title="class in io.micronaut.aws.alexa.flashbriefing">FlashBriefingItem</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#setUrl-java.lang.String-">setUrl(String)</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
+<dd>
+<div class="block">Default value (<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#DEFAULT_URL">"http://169.254.169.254"</a>).</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#setUseSecureParameters-boolean-">setUseSecureParameters(boolean)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
 <dd>
 <div class="block">Use auto-decryption via MKS for SecureString parameters.</div>
@@ -2169,6 +2249,11 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/EnvironmentAwsRegionProvider.html#toString--">toString()</a></span> - Method in class io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/EnvironmentAwsRegionProvider.html" title="class in io.micronaut.aws.sdk.v2">EnvironmentAwsRegionProvider</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#toString--">toString()</a></span> - Method in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>
+<div class="block">Returns the name of this enum constant, as contained in the
+ declaration.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#toString--">toString()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html#TZ">TZ</a></span> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime">ReservedRuntimeEnvironmentVariables</a></dt>
@@ -2269,6 +2354,10 @@
 <dd>
 <div class="block">Returns the enum constant of this type with the specified name.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#valueOf-java.lang.String-">valueOf(String)</a></span> - Static method in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this type with the specified name.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html#values--">values()</a></span> - Static method in enum io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html" title="enum in io.micronaut.aws.alexa.ssml">AmazonDomain</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum type, in
@@ -2340,6 +2429,11 @@ the order they are declared.</div>
 the order they are declared.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/WordRole.html#values--">values()</a></span> - Static method in enum io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/WordRole.html" title="enum in io.micronaut.aws.alexa.ssml">WordRole</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum type, in
+the order they are declared.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html#values--">values()</a></span> - Static method in enum io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/EC2MetadataKeys.html" title="enum in io.micronaut.discovery.cloud.aws">EC2MetadataKeys</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum type, in
 the order they are declared.</div>
