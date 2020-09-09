@@ -1,6 +1,8 @@
 package io.micronaut.function.aws.proxy.test
 
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -12,6 +14,7 @@ import io.micronaut.test.annotation.MicronautTest
 import spock.lang.Specification
 
 import javax.inject.Inject
+import javax.validation.Valid
 
 @MicronautTest
 class AwsApiProxyTestServerSpec extends Specification {
@@ -45,6 +48,20 @@ class AwsApiProxyTestServerSpec extends Specification {
         result == 'goodbody'
     }
 
+    void 'test invoke post with POJO via server'() {
+        when:
+        HttpResponse<BookSaved> response = client.exchange(HttpRequest.POST('/books', new Book(name: 'Building Microservices')), BookSaved).blockingFirst()
+
+        then:
+        response.status() == HttpStatus.OK
+
+        when:
+        BookSaved result = response.body()
+
+        then:
+        result.name == 'Building Microservices'
+        result.isbn
+    }
 
     @Controller('/test')
     static class TestController {
@@ -56,6 +73,18 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Post(value = '/', processes = MediaType.TEXT_PLAIN)
         String test(@Body String body) {
             return 'good' + body
+        }
+    }
+
+    @Controller("/books")
+    static class BookController {
+
+        @Post
+        BookSaved save(@Valid @Body Book book) {
+            BookSaved bookSaved = new BookSaved()
+            bookSaved.name = book.name
+            bookSaved.isbn = UUID.randomUUID().toString()
+            bookSaved
         }
     }
 }
