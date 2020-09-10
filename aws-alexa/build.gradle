@@ -13,13 +13,13 @@ dependencies {
 
     implementation 'com.github.spotbugs:spotbugs-annotations'
 
-    compileOnly ("com.amazon.alexa:ask-sdk:2.33.0")
-    api ("com.amazon.alexa:ask-sdk-core:2.33.0")
+    compileOnly ("com.amazon.alexa:ask-sdk:2.34.0")
+    api ("com.amazon.alexa:ask-sdk-core:2.34.0")
 
-    testImplementation ("com.amazon.alexa:ask-sdk:2.33.0") {
+    testImplementation ("com.amazon.alexa:ask-sdk:2.34.0") {
         transitive(false)
     }
-    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.33.0"
+    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.34.0"
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
