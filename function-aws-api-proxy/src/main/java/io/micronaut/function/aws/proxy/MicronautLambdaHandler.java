@@ -26,7 +26,6 @@ import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.core.annotation.Introspected;
 
 import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * AWS {@link RequestHandler} for {@link AwsProxyRequest} and {@link AwsProxyResponse}.
