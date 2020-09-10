@@ -16,20 +16,18 @@
 package io.micronaut.function.aws.proxy.test;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
-import com.amazonaws.serverless.proxy.model.*;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.io.socket.SocketUtils;
 import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
-import io.micronaut.http.HttpMethod;
 import io.micronaut.http.server.HttpServerConfiguration;
 import io.micronaut.http.server.exceptions.HttpServerException;
 import io.micronaut.http.server.exceptions.ServerStartupException;
 import io.micronaut.runtime.ApplicationConfiguration;
 import io.micronaut.runtime.server.EmbeddedServer;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -38,14 +36,11 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Base64;
-import java.util.Enumeration;
-import java.util.Map;
+import java.net.BindException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -59,31 +54,31 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Internal
 public class AwsApiProxyTestServer implements EmbeddedServer {
     private final ApplicationContext applicationContext;
-    private final boolean randomPort;
-    private int port;
+    private final ServerPort serverPort;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Server server;
 
-    public AwsApiProxyTestServer(
-            ApplicationContext applicationContext,
-            HttpServerConfiguration httpServerConfiguration) {
+    public AwsApiProxyTestServer(ApplicationContext applicationContext,
+                                 HttpServerConfiguration httpServerConfiguration) {
         this.applicationContext = applicationContext;
-        Optional<Integer> port = httpServerConfiguration.getPort();
-        if (port.isPresent()) {
-            this.port = port.get();
-            if (this.port == -1) {
-                this.port = SocketUtils.findAvailableTcpPort();
-                this.randomPort = true;
+        this.serverPort = createServerPort(httpServerConfiguration);
+    }
+
+    private ServerPort createServerPort(HttpServerConfiguration httpServerConfiguration) {
+        Optional<Integer> portOpt = httpServerConfiguration.getPort();
+        if (portOpt.isPresent()) {
+            Integer port = portOpt.get();
+            if (port == -1) {
+                return new ServerPort(true, SocketUtils.findAvailableTcpPort());
+
             } else {
-                this.randomPort = false;
+                return new ServerPort(false, port);
             }
         } else {
             if (applicationContext.getEnvironment().getActiveNames().contains(Environment.TEST)) {
-                this.randomPort = true;
-                this.port = SocketUtils.findAvailableTcpPort();
+                return new ServerPort(true, SocketUtils.findAvailableTcpPort());
             } else {
-                this.randomPort = false;
-                this.port = 8080;
+                return new ServerPort(false, 8080);
             }
         }
     }
@@ -92,6 +87,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     public EmbeddedServer start() {
         if (running.compareAndSet(false, true)) {
             int retryCount = 0;
+            int port = serverPort.getPort();
             while (retryCount <= 3) {
                 try {
                     this.server = new Server(port);
@@ -99,8 +95,8 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
                     this.server.start();
                     break;
                 } catch (BindException e) {
-                    if (randomPort) {
-                        this.port = SocketUtils.findAvailableTcpPort();
+                    if (serverPort.isRandom()) {
+                        port = SocketUtils.findAvailableTcpPort();
                         retryCount++;
                     } else {
                         throw new ServerStartupException(e.getMessage(), e);
@@ -130,7 +126,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
 
     @Override
     public int getPort() {
-        return port;
+        return serverPort.getPort();
     }
 
     @Override
@@ -181,8 +177,16 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
 
         private final MicronautLambdaHandler lambdaHandler;
 
+        private final ServletToAwsProxyRequestAdapter requestAdapter;
+        private final ServletToAwsProxyResponseAdapter responseAdapter;
+        private final ContextProvider contextProvider;
+
         public AwsProxyHandler() throws ContainerInitializationException {
-            lambdaHandler = new MicronautLambdaHandler(ApplicationContext.builder());
+            lambdaHandler = new MicronautLambdaHandler();
+            ApplicationContext ctx = lambdaHandler.getApplicationContext();
+            this.requestAdapter = ctx.getBean(ServletToAwsProxyRequestAdapter.class);
+            this.responseAdapter = ctx.getBean(ServletToAwsProxyResponseAdapter.class);
+            this.contextProvider = ctx.getBean(ContextProvider.class);
         }
 
         @Override
@@ -191,74 +195,11 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             this.lambdaHandler.close();
         }
 
-        public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
-            AwsProxyRequest awsProxyRequest = new AwsProxyRequest();
-            AwsProxyRequestContext requestContext = new AwsProxyRequestContext();
-            requestContext.setIdentity(new ApiGatewayRequestIdentity());
-            requestContext.setHttpMethod(request.getMethod());
-            requestContext.setRequestTimeEpoch(Instant.now().toEpochMilli());
-            awsProxyRequest.setRequestContext(requestContext);
-            awsProxyRequest.setHttpMethod(request.getMethod());
-            awsProxyRequest.setPath(request.getRequestURI());
-            Headers requestHeaders = new Headers();
-            awsProxyRequest.setMultiValueHeaders(requestHeaders);
-            Map<String, String[]> parameterMap = request.getParameterMap();
-            MultiValuedTreeMap<String, String> params = new MultiValuedTreeMap<>();
-            awsProxyRequest.setMultiValueQueryStringParameters(params);
-            parameterMap.forEach((s, strings) -> params.addAll(s, s));
-            Enumeration<String> headerNames = request.getHeaderNames();
-            while (headerNames.hasMoreElements()) {
-                String s = headerNames.nextElement();
-                Enumeration<String> headers = request.getHeaders(s);
-                while (headers.hasMoreElements()) {
-                    String v = headers.nextElement();
-                    requestHeaders.add(s, v);
-                }
-            }
-            HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
-            if (HttpMethod.permitsRequestBody(httpMethod)) {
-                try (InputStream requestBody = request.getInputStream()) {
-                    byte[] data = IOUtils.toByteArray(requestBody);
-                    awsProxyRequest.setIsBase64Encoded(true);
-                    awsProxyRequest.setBody(Base64.getEncoder().encodeToString(data));
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-
-            AwsProxyResponse awsProxyResponse = lambdaHandler
-                    .handleRequest(awsProxyRequest, new MockLambdaContext());
-            Headers responseHeaders = awsProxyResponse.getMultiValueHeaders();
-
-            responseHeaders.forEach((key, strings) -> {
-                for (String string : strings) {
-                    response.addHeader(key, string);
-                }
-            });
-            response.setStatus(awsProxyResponse.getStatusCode());
-            if (httpMethod != HttpMethod.HEAD && httpMethod != HttpMethod.OPTIONS) {
-                byte[] bodyAsBytes = new byte[0];
-                if (awsProxyResponse.isBase64Encoded()) {
-                    String body = awsProxyResponse.getBody();
-                    if (body != null) {
-                        bodyAsBytes = Base64.getDecoder().decode(body);
-                    }
-                } else {
-                    String body = awsProxyResponse.getBody();
-                    if (body != null) {
-                        bodyAsBytes = body.getBytes(StandardCharsets.UTF_8);
-                    }
-                }
-
-                response.setContentLength(bodyAsBytes.length);
-                if (bodyAsBytes.length > 0) {
-                    try (OutputStream responseBody = response.getOutputStream()) {
-                        responseBody.write(bodyAsBytes);
-                        responseBody.flush();
-                    }
-                }
-            }
-
+        public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
+                throws IOException {
+            AwsProxyRequest awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
+            AwsProxyResponse awsProxyResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
+            responseAdapter.handle(request, awsProxyResponse, response);
         }
     }
 }
