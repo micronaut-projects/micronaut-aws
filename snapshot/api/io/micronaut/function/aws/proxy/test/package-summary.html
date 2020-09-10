@@ -73,6 +73,35 @@
 <div class="contentContainer">
 <ul class="blockList">
 <li class="blockList">
+<table class="typeSummary" border="0" cellpadding="3" cellspacing="0" summary="Interface Summary table, listing interfaces, and an explanation">
+<caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Interface</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tbody>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/ContextProvider.html" title="interface in io.micronaut.function.aws.proxy.test">ContextProvider</a></td>
+<td class="colLast">
+<div class="block">Provides a Lambda execution environment's Context.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/ServletToAwsProxyRequestAdapter.html" title="interface in io.micronaut.function.aws.proxy.test">ServletToAwsProxyRequestAdapter</a></td>
+<td class="colLast">
+<div class="block">Adapts from <code>HttpServletRequest</code> to <code>AwsProxyRequest</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/ServletToAwsProxyResponseAdapter.html" title="interface in io.micronaut.function.aws.proxy.test">ServletToAwsProxyResponseAdapter</a></td>
+<td class="colLast">
+<div class="block">Writes the contents of a <code>AwsProxyResponse</code> to a <code>HttpServletResponse</code>.</div>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li class="blockList">
 <table class="typeSummary" border="0" cellpadding="3" cellspacing="0" summary="Class Summary table, listing classes, and an explanation">
 <caption><span>Class Summary</span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
@@ -84,6 +113,30 @@
 <td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html" title="class in io.micronaut.function.aws.proxy.test">AwsApiProxyTestServer</a></td>
 <td class="colLast">
 <div class="block">Implementation that spins up an HTTP server based on Jetty that proxies request to a Lambda.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/DefaultServletToAwsProxyRequestAdapter.html" title="class in io.micronaut.function.aws.proxy.test">DefaultServletToAwsProxyRequestAdapter</a></td>
+<td class="colLast">
+<div class="block"><code>DefaultImplementation</code> of <a href="../../../../../../io/micronaut/function/aws/proxy/test/ServletToAwsProxyRequestAdapter.html" title="interface in io.micronaut.function.aws.proxy.test"><code>ServletToAwsProxyRequestAdapter</code></a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/DefaultServletToAwsProxyResponseAdapter.html" title="class in io.micronaut.function.aws.proxy.test">DefaultServletToAwsProxyResponseAdapter</a></td>
+<td class="colLast">
+<div class="block"><code>DefaultImplementation</code> of <a href="../../../../../../io/micronaut/function/aws/proxy/test/ServletToAwsProxyResponseAdapter.html" title="interface in io.micronaut.function.aws.proxy.test"><code>ServletToAwsProxyResponseAdapter</code></a>.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/MockContextProvider.html" title="class in io.micronaut.function.aws.proxy.test">MockContextProvider</a></td>
+<td class="colLast">
+<div class="block">Provides a <code>MockLambdaContext</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><a href="../../../../../../io/micronaut/function/aws/proxy/test/ServerPort.html" title="class in io.micronaut.function.aws.proxy.test">ServerPort</a></td>
+<td class="colLast">
+<div class="block">Encapsulates the port assignment to be used when starting a server.</div>
 </td>
 </tr>
 </tbody>
