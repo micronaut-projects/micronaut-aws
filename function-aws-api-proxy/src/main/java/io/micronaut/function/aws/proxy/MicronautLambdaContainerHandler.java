@@ -250,9 +250,8 @@ public final class MicronautLambdaContainerHandler
                     applicationContext.getBean(RequestBinderRegistry.class)
             );
             this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
-            applicationContext.getEnvironment().addConverter(
-                    byte[].class, String.class, bytes -> new String(bytes, StandardCharsets.UTF_8)
-            );
+            addConverters();
+
         } catch (Exception e) {
             throw new ContainerInitializationException(
                     "Error starting Micronaut container: " + e.getMessage(),
@@ -260,6 +259,22 @@ public final class MicronautLambdaContainerHandler
             );
         }
         Timer.stop(TIMER_INIT);
+    }
+
+    /**
+     * Add converters to the Application environment.
+     */
+    protected void addConverters() {
+        addByteArrayToStringConverter();
+    }
+
+    /**
+     * Adds a converter from byte array to string.
+     */
+    protected void addByteArrayToStringConverter() {
+        applicationContext.getEnvironment().addConverter(
+                byte[].class, String.class, bytes -> new String(bytes, StandardCharsets.UTF_8)
+        );
     }
 
     @Override
