@@ -6,7 +6,7 @@ dependencies {
     api "io.micronaut:micronaut-discovery-client"
     api project(":aws-route53")
     api project(":aws-sdk-v1")
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-ssm', version: '1.11.856'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-ssm', version: '1.11.857'
 
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
