@@ -23,6 +23,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
@@ -36,6 +37,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.reactivestreams.Publisher;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -51,6 +53,9 @@ public class HelloWorldMicronautTest {
     private static final String CUSTOM_HEADER_KEY = "X-Custom-Header";
     private static final String CUSTOM_HEADER_VALUE = "My Header Value";
     private static final String BODY_TEXT_RESPONSE = "Hello World";
+    private static final String BODY_TEXT_JSON_RESPONSE = "{\"data\": {\"findById\": {\"lastName\": \"Doe\", \"firstName\": \"John\", \"gender\": \"MALE\"}}}";
+
+
 
     private static final String COOKIE_NAME = "MyCookie";
     private static final String COOKIE_VALUE = "CookieValue";
@@ -146,6 +151,15 @@ public class HelloWorldMicronautTest {
         assertEquals(BODY_TEXT_RESPONSE, response.getBody());
     }
 
+    @Test
+    public void singleAnnotationRoute_notConvertedToList_notEncoded() {
+        AwsProxyRequest req = getRequestBuilder().method("GET").path("/single").build();
+        AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(BODY_TEXT_JSON_RESPONSE, response.getBody());
+    }
+
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/")
     @Requires(property = "spec.name", value = "HelloWorldMicronautTest")
@@ -176,5 +190,11 @@ public class HelloWorldMicronautTest {
                     .cookie(Cookie.of(COOKIE_NAME + "2", COOKIE_VALUE + "2").domain(COOKIE_DOMAIN).path(COOKIE_PATH));
             return response;
         }
+        @Get(value = "/single", single = true)
+        Publisher<String> singleRoute() {
+            return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
+        }
+
+
     }
 }
