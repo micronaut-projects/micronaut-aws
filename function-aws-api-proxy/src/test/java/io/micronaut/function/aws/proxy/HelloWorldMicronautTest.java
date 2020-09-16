@@ -21,6 +21,8 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder;
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
@@ -44,6 +46,7 @@ import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -160,6 +163,20 @@ public class HelloWorldMicronautTest {
         assertEquals(BODY_TEXT_JSON_RESPONSE, response.getBody());
     }
 
+    @Test
+    public void notSingleAnnotationRoute_convertedToList_encoded() throws JsonProcessingException {
+        AwsProxyRequest req = getRequestBuilder().method("GET").path("/notSingle").build();
+        AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
+
+        assertEquals(200, response.getStatusCode());
+        List<String> expectedList = Arrays.asList(BODY_TEXT_JSON_RESPONSE);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResult = objectMapper.writeValueAsString(expectedList);
+        assertEquals(expectedResult, response.getBody());
+
+    }
+
+
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/")
     @Requires(property = "spec.name", value = "HelloWorldMicronautTest")
@@ -195,6 +212,10 @@ public class HelloWorldMicronautTest {
             return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
         }
 
+        @Get(value = "/notSingle")
+        Publisher<String> notSingleRoute() {
+            return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
+        }
 
     }
 }
