@@ -21,10 +21,13 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder;
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -36,21 +39,24 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.reactivestreams.Publisher;
 
 import javax.ws.rs.core.HttpHeaders;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.*;
-
 
 @RunWith(Parameterized.class)
 public class HelloWorldMicronautTest {
     private static final String CUSTOM_HEADER_KEY = "X-Custom-Header";
     private static final String CUSTOM_HEADER_VALUE = "My Header Value";
     private static final String BODY_TEXT_RESPONSE = "Hello World";
+    private static final String BODY_TEXT_JSON_RESPONSE = "{\"data\": {\"findById\": {\"lastName\": \"Doe\", \"firstName\": \"John\", \"gender\": \"MALE\"}}}";
 
     private static final String COOKIE_NAME = "MyCookie";
     private static final String COOKIE_VALUE = "CookieValue";
@@ -82,7 +88,7 @@ public class HelloWorldMicronautTest {
         try {
             handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
-                            .properties(CollectionUtils.mapOf(
+                            .properties(Collections.singletonMap(
                                     "spec.name", "HelloWorldMicronautTest"
                             ))
             );
@@ -102,7 +108,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/hello").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(CUSTOM_HEADER_KEY));
         assertEquals(CUSTOM_HEADER_VALUE, response.getMultiValueHeaders().getFirst(CUSTOM_HEADER_KEY));
         assertEquals(BODY_TEXT_RESPONSE, response.getBody());
@@ -113,7 +119,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/cookie").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.SET_COOKIE));
         assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.SET_COOKIE).contains(COOKIE_NAME + "=" + COOKIE_VALUE));
         assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.SET_COOKIE).contains(COOKIE_DOMAIN));
@@ -125,7 +131,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/multi-cookie").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.SET_COOKIE));
 
         assertEquals(2, response.getMultiValueHeaders().get(HttpHeaders.SET_COOKIE).size());
@@ -140,10 +146,30 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(CUSTOM_HEADER_KEY));
         assertEquals(CUSTOM_HEADER_VALUE, response.getMultiValueHeaders().getFirst(CUSTOM_HEADER_KEY));
         assertEquals(BODY_TEXT_RESPONSE, response.getBody());
+    }
+
+    @Test
+    public void singleAnnotationRoute_notConvertedToList_notEncoded() {
+        AwsProxyRequest req = getRequestBuilder().method("GET").path("/single").build();
+        AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
+
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
+        assertEquals(BODY_TEXT_JSON_RESPONSE, response.getBody());
+    }
+
+    @Test
+    public void notSingleAnnotationRoute_convertedToList_encoded() throws JsonProcessingException {
+        AwsProxyRequest req = getRequestBuilder().method("GET").path("/notSingle").build();
+        AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
+        List<String> expectedList = Collections.singletonList(BODY_TEXT_JSON_RESPONSE);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResult = objectMapper.writeValueAsString(expectedList);
+        assertEquals(expectedResult, response.getBody());
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
@@ -175,6 +201,16 @@ public class HelloWorldMicronautTest {
             response.cookie(Cookie.of(COOKIE_NAME, COOKIE_VALUE).domain(COOKIE_DOMAIN).path(COOKIE_PATH))
                     .cookie(Cookie.of(COOKIE_NAME + "2", COOKIE_VALUE + "2").domain(COOKIE_DOMAIN).path(COOKIE_PATH));
             return response;
+        }
+
+        @Get(value = "/single", single = true)
+        Publisher<String> singleRoute() {
+            return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
+        }
+
+        @Get(value = "/notSingle")
+        Publisher<String> notSingleRoute() {
+            return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
         }
     }
 }
