@@ -510,7 +510,7 @@ public final class MicronautLambdaContainerHandler
         }
         if (Publishers.isConvertibleToPublisher(result)) {
             Single<?> single;
-            if (Publishers.isSingle(result.getClass())) {
+            if (Publishers.isSingle(result.getClass()) || boundRoute.getReturnType().isSpecifiedSingle()) {
                 single = Publishers.convertPublisher(result, Single.class);
             } else {
                 single = Publishers.convertPublisher(result, Flowable.class).toList();
