@@ -28,6 +28,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -108,7 +109,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/hello").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(CUSTOM_HEADER_KEY));
         assertEquals(CUSTOM_HEADER_VALUE, response.getMultiValueHeaders().getFirst(CUSTOM_HEADER_KEY));
         assertEquals(BODY_TEXT_RESPONSE, response.getBody());
@@ -119,7 +120,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/cookie").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.SET_COOKIE));
         assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.SET_COOKIE).contains(COOKIE_NAME + "=" + COOKIE_VALUE));
         assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.SET_COOKIE).contains(COOKIE_DOMAIN));
@@ -131,7 +132,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/multi-cookie").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.SET_COOKIE));
 
         assertEquals(2, response.getMultiValueHeaders().get(HttpHeaders.SET_COOKIE).size());
@@ -146,7 +147,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertTrue(response.getMultiValueHeaders().containsKey(CUSTOM_HEADER_KEY));
         assertEquals(CUSTOM_HEADER_VALUE, response.getMultiValueHeaders().getFirst(CUSTOM_HEADER_KEY));
         assertEquals(BODY_TEXT_RESPONSE, response.getBody());
@@ -157,7 +158,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/single").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertEquals(BODY_TEXT_JSON_RESPONSE, response.getBody());
     }
 
@@ -166,7 +167,7 @@ public class HelloWorldMicronautTest {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/notSingle").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
 
-        assertEquals(200, response.getStatusCode());
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         List<String> expectedList = Arrays.asList(BODY_TEXT_JSON_RESPONSE);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResult = objectMapper.writeValueAsString(expectedList);
