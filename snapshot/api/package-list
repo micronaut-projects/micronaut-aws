@@ -27,13 +27,11 @@ io.micronaut.discovery.aws.parameterstore
 io.micronaut.discovery.aws.route53
 io.micronaut.discovery.aws.route53.client
 io.micronaut.discovery.aws.route53.registration
-io.micronaut.discovery.cloud.aws
 io.micronaut.function.aws
 io.micronaut.function.aws.alexa
 io.micronaut.function.aws.proxy
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
-io.micronaut.function.aws.proxy.test
 io.micronaut.function.aws.runtime
 io.micronaut.function.client.aws
