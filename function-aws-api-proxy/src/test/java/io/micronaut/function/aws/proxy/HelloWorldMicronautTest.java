@@ -51,7 +51,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
 @RunWith(Parameterized.class)
 public class HelloWorldMicronautTest {
     private static final String CUSTOM_HEADER_KEY = "X-Custom-Header";
@@ -172,9 +171,7 @@ public class HelloWorldMicronautTest {
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResult = objectMapper.writeValueAsString(expectedList);
         assertEquals(expectedResult, response.getBody());
-
     }
-
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/")
@@ -216,6 +213,5 @@ public class HelloWorldMicronautTest {
         Publisher<String> notSingleRoute() {
             return Publishers.map(Publishers.just(BODY_TEXT_JSON_RESPONSE),String::new);
         }
-
     }
 }
