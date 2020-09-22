@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
@@ -47,6 +46,7 @@ import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -88,7 +88,7 @@ public class HelloWorldMicronautTest {
         try {
             handler = new MicronautLambdaContainerHandler(
                     ApplicationContext.build()
-                            .properties(CollectionUtils.mapOf(
+                            .properties(Collections.singletonMap(
                                     "spec.name", "HelloWorldMicronautTest"
                             ))
             );
@@ -165,9 +165,8 @@ public class HelloWorldMicronautTest {
     public void notSingleAnnotationRoute_convertedToList_encoded() throws JsonProcessingException {
         AwsProxyRequest req = getRequestBuilder().method("GET").path("/notSingle").build();
         AwsProxyResponse response = handler.proxy(req, new MockLambdaContext());
-
         assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
-        List<String> expectedList = Arrays.asList(BODY_TEXT_JSON_RESPONSE);
+        List<String> expectedList = Collections.singletonList(BODY_TEXT_JSON_RESPONSE);
         ObjectMapper objectMapper = new ObjectMapper();
         String expectedResult = objectMapper.writeValueAsString(expectedList);
         assertEquals(expectedResult, response.getBody());
