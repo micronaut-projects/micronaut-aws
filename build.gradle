@@ -19,10 +19,6 @@ subprojects { Project subproject ->
         enforcedPlatform = true
     }
 
-    if (subproject.parent.name == "examples" || subproject.name == "examples") {
-        return
-    }
-
     apply plugin: "io.micronaut.build.dependency-updates"
     if (subproject.name != 'test-suite') {
         apply plugin: "io.micronaut.build.publishing"
