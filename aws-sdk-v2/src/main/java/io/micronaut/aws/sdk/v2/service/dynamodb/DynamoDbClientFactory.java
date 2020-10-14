@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.service.dynamodb;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -73,6 +74,7 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
 
     @Override
     @Singleton
+    @Requires(beans = SdkAsyncHttpClient.class)
     public DynamoDbAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) {
         return super.asyncBuilder(httpClient);
     }
@@ -80,6 +82,7 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
     @Override
     @Bean(preDestroy = "close")
     @Singleton
+    @Requires(beans = SdkAsyncHttpClient.class)
     public DynamoDbAsyncClient asyncClient(DynamoDbAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }
