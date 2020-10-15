@@ -345,6 +345,7 @@ public&nbsp;software.amazon.awssdk.services.dynamodb.DynamoDbClient&nbsp;syncCli
 <li class="blockList">
 <h4>asyncBuilder</h4>
 <pre>@Singleton
+ @Requires(beans=software.amazon.awssdk.http.async.SdkAsyncHttpClient.class)
 public&nbsp;software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder&nbsp;asyncBuilder(software.amazon.awssdk.http.async.SdkAsyncHttpClient&nbsp;httpClient)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#asyncBuilder-software.amazon.awssdk.http.async.SdkAsyncHttpClient-">AwsClientFactory</a></code></span></div>
 <div class="block">Configures the builder so that it uses the appropriate HTTP client, credentials and region providers.
@@ -368,6 +369,7 @@ public&nbsp;software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder&
 <h4>asyncClient</h4>
 <pre>@Bean(preDestroy="close")
  @Singleton
+ @Requires(beans=software.amazon.awssdk.http.async.SdkAsyncHttpClient.class)
 public&nbsp;software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient&nbsp;asyncClient(software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder&nbsp;builder)</pre>
 <div class="block"><span class="descfrmTypeLabel">Description copied from class:&nbsp;<code><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#asyncClient-AB-">AwsClientFactory</a></code></span></div>
 <div class="block">Creates the async client. It requires a bean of type <code>AB</code>.</div>
