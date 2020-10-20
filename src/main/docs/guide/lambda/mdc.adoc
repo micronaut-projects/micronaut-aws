@@ -38,7 +38,4 @@ You can use those MDC Keys in a logging pattern:
 </configuration>
 ----
 
-You can configure the MDC Key population with:
-
-include::{includedir}configurationProperties/io.micronaut.function.aws.logging.MappingDiagnosticContextConfigurationProperties.adoc[]
-
+Override api:function.aws.MicronautRequestHandler[] `populateMappingDiagnosticContextValues` or `populateMappingDiagnosticContextWithXrayTraceId` methods to adjust the functionality to your needs.
