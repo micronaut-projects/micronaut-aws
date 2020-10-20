@@ -1,0 +1,44 @@
+`micronaut-function-aws` adds SLF4J Mapping Diagnostic Context Key/Value pairs for:
+
+[%header,cols=2*]
+|===
+| MDC Key
+| Description
+| AWSRequestId
+| The AWS request ID associated with the request.
+| AWSFunctionName
+| The name of the function being executed.
+| AWSFunctionVersion
+| The version of the function being executed.
+| AWSFunctionArn
+| The function Arn of the resource being invoked.
+| AWSFunctionMemoryLimit
+| The memory size configured for the Lambda function
+| AWSFunctionRemainingTime
+| The time remaining for this execution in milliseconds
+| AWS-XRAY-TRACE-ID
+| Amazon XRay trace id.
+|===
+
+You can use those MDC Keys in a logging pattern:
+
+[source,xml]
+----
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>false</withJansi>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %X{AWSFunctionVersion}  %X{AWS-XRAY-TRACE-ID} %-5p %c{1} - %m%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+    <logger name="groovycalamari.bots.l337" level="TRACE"/>
+</configuration>
+----
+
+You can configure the MDC Key population with:
+
+include::{includedir}configurationProperties/io.micronaut.function.aws.logging.MappingDiagnosticContextConfigurationProperties.adoc[]
+

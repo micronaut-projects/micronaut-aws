@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.ClientContext
 import com.amazonaws.services.lambda.runtime.CognitoIdentity
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.LambdaLogger
-import io.micronaut.context.ApplicationContext
 import org.spockframework.mock.MockUtil
 import spock.lang.Shared
 import spock.lang.Specification

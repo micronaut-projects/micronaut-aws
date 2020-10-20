@@ -23,6 +23,7 @@ import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.function.aws.logging.MappingDiagnosticContextSetter;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 
 import javax.annotation.Nonnull;
@@ -53,6 +54,13 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     public final O handleRequest(I input, Context context) {
         if (context != null) {
             registerContextBeans(context, applicationContext);
+        }
+        if (applicationContext.containsBean(MappingDiagnosticContextSetter.class)) {
+            MappingDiagnosticContextSetter mdcSetter = applicationContext.getBean(MappingDiagnosticContextSetter.class);
+            if (context != null) {
+                mdcSetter.populateMappingDiagnosticContextValues(context);
+            }
+            mdcSetter.populateMappingDiagnosticContextWithXrayTraceId();
         }
 
         if (!inputType.isInstance(input)) {

@@ -24,6 +24,7 @@ lambda:
   requestHandlers: Lambda Handlers
   coldstartups: Cold Startups
   customRuntimes: GraalVM and AWS Custom runtimes
+  mdc: MDC Logging
   lambdaTutorials: Micronaut AWS Lambda Tutorials
 alexa:
   title: Alexa Support
