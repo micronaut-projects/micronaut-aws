@@ -16,6 +16,7 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.convert.ArgumentConversionContext;
@@ -24,6 +25,7 @@ import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
+import org.slf4j.MDC;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -37,6 +39,15 @@ import java.util.Optional;
  * @since 1.0
  */
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
+
+    public static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
+    public static final String MDC_DEFAULT_AWS_REQUEST_ID = "AWSRequestId";
+    public static final String MDC_DEFAULT_FUNCTION_NAME = "AWSFunctionName";
+    public static final String MDC_DEFAULT_FUNCTION_VERSION = "AWSFunctionVersion";
+    public static final String MDC_DEFAULT_FUNCTION_ARN = "AWSFunctionArn";
+    public static final String MDC_DEFAULT_FUNCTION_MEMORY_SIZE = "AWSFunctionMemoryLimit";
+    public static final String MDC_DEFAULT_FUNCTION_REMAINING_TIME = "AWSFunctionRemainingTime";
+    public static final String MDC_DEFAULT_XRAY_TRACE_ID = "AWS-XRAY-TRACE-ID";
 
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
@@ -53,12 +64,65 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     public final O handleRequest(I input, Context context) {
         if (context != null) {
             registerContextBeans(context, applicationContext);
+            populateMappingDiagnosticContextValues(context);
         }
-
+        populateMappingDiagnosticContextWithXrayTraceId();
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
         return this.execute(input);
+    }
+
+    /**
+     * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/java-logging.html">AWS Lambda function logging in Java</a>
+     * @param context The Lambda execution environment context object.
+     */
+    protected void populateMappingDiagnosticContextValues(@NonNull Context context) {
+        if (context.getAwsRequestId() != null) {
+            mdcput(MDC_DEFAULT_AWS_REQUEST_ID, context.getAwsRequestId());
+        }
+        if (context.getFunctionName() != null) {
+            mdcput(MDC_DEFAULT_FUNCTION_NAME, context.getFunctionName());
+        }
+        if (context.getFunctionVersion() != null) {
+            mdcput(MDC_DEFAULT_FUNCTION_VERSION, context.getFunctionVersion());
+        }
+        if (context.getInvokedFunctionArn() != null) {
+            mdcput(MDC_DEFAULT_FUNCTION_ARN, context.getInvokedFunctionArn());
+        }
+        mdcput(MDC_DEFAULT_FUNCTION_MEMORY_SIZE, String.valueOf(context.getMemoryLimitInMB()));
+        mdcput(MDC_DEFAULT_FUNCTION_REMAINING_TIME, String.valueOf(context.getRemainingTimeInMillis()));
+    }
+
+    /**
+     * Put a diagnostic context value.
+     * @param key non-null key
+     * @param val value to put in the map
+     * @throws IllegalArgumentException in case the "key" parameter is null
+     */
+    protected void mdcput(@NonNull String key, @NonNull String val) throws IllegalArgumentException {
+        MDC.put(key, val);
+    }
+
+    /**
+     * Populate MDC with XRay Trace ID if is able to parse it.
+     */
+    protected void populateMappingDiagnosticContextWithXrayTraceId() {
+        parseXrayTraceId().ifPresent(xrayTraceId -> mdcput(MDC_DEFAULT_XRAY_TRACE_ID, xrayTraceId));
+    }
+
+    /**
+     * Parses XRay Trace ID from _X_AMZN_TRACE_ID environment variable.
+     * @see <a href="https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html">Trace ID injection into logs</a>
+     * @return Trace id or empty if not found
+     */
+    @NonNull
+    protected static Optional<String> parseXrayTraceId() {
+        final String X_AMZN_TRACE_ID = System.getenv(ENV_X_AMZN_TRACE_ID);
+        if (X_AMZN_TRACE_ID != null) {
+            return Optional.of(X_AMZN_TRACE_ID.split(";")[0].replace("Root=", ""));
+        }
+        return Optional.empty();
     }
 
     /**
