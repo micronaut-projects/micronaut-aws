@@ -138,7 +138,9 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>7.8</strong><span>GraalVM and AWS Custom runtimes</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>7.9</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mdc"><a href="#mdc"><strong>7.9</strong><span>MDC Logging</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>7.10</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
         
@@ -1624,7 +1626,84 @@ When a new instance handles its first request, the response time increases, whic
 <p>When you generate a project with Micronaut CLI or <a href="https://launch.micronaut.io">Micronaut Launch</a> with <code>aws-lambda</code> and <code>graalvm</code> features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.</p>
 </div>
 
-<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>7.9 Micronaut AWS Lambda Tutorials</h2>
+<h2 id="mdc"><a class="anchor" href="#mdc"></a>7.9 MDC Logging</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/mdc.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p><code>micronaut-function-aws</code> adds SLF4J Mapping Diagnostic Context Key/Value pairs for:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">MDC Key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSRequestId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS request ID associated with the request.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSFunctionName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the function being executed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSFunctionVersion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The version of the function being executed.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSFunctionArn</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The function Arn of the resource being invoked.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSFunctionMemoryLimit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The memory size configured for the Lambda function</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWSFunctionRemainingTime</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The time remaining for this execution in milliseconds</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS-XRAY-TRACE-ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon XRay trace id.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>You can use those MDC Keys in a logging pattern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;configuration&gt;
+    &lt;appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;withJansi&gt;false&lt;/withJansi&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %X{AWSFunctionVersion}  %X{AWS-XRAY-TRACE-ID} %-5p %c{1} - %m%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;root level="info"&gt;
+        &lt;appender-ref ref="STDOUT" /&gt;
+    &lt;/root&gt;
+    &lt;logger name="groovycalamari.bots.l337" level="TRACE"/&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Override <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> <code>populateMappingDiagnosticContextValues</code> or <code>populateMappingDiagnosticContextWithXrayTraceId</code> methods to adjust the functionality to your needs.</p>
+</div>
+
+<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>7.10 Micronaut AWS Lambda Tutorials</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaTutorials.adoc"'>
