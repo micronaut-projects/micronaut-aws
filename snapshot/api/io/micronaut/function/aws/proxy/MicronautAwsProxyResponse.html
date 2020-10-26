@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -156,22 +156,26 @@ implements io.micronaut.http.MutableHttpResponse&lt;T&gt;, java.io.Closeable</pr
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#cookie-io.micronaut.http.cookie.Cookie-">cookie</a></span>(io.micronaut.http.cookie.Cookie&nbsp;cookie)</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.Map&lt;java.lang.String,io.micronaut.http.cookie.Cookie&gt;</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getAllCookies--">getAllCookies</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>io.micronaut.core.convert.value.MutableConvertibleValues&lt;java.lang.Object&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getAttributes--">getAttributes</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="type parameter in MicronautAwsProxyResponse">T</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getBody--">getBody</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>io.micronaut.http.MutableHttpHeaders</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getHeaders--">getHeaders</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>io.micronaut.http.HttpStatus</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#getStatus--">getStatus</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>io.micronaut.http.MutableHttpResponse&lt;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="type parameter in MicronautAwsProxyResponse">T</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html#status-io.micronaut.http.HttpStatus-java.lang.CharSequence-">status</a></span>(io.micronaut.http.HttpStatus&nbsp;status,
       java.lang.CharSequence&nbsp;message)</code>&nbsp;</td>
@@ -196,7 +200,7 @@ implements io.micronaut.http.MutableHttpResponse&lt;T&gt;, java.io.Closeable</pr
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;io.micronaut.http.HttpResponse</h3>
-<code>accepted, accepted, badRequest, badRequest, body, code, created, created, created, header, noContent, notAllowed, notAllowed, notAllowedGeneric, notFound, notFound, notModified, ok, ok, permanentRedirect, reason, redirect, seeOther, serverError, serverError, setAttribute, status, status, status, temporaryRedirect, unauthorized, unprocessableEntity, uri</code></li>
+<code>accepted, accepted, badRequest, badRequest, body, code, created, created, created, getCookie, getCookies, header, noContent, notAllowed, notAllowed, notAllowedGeneric, notFound, notFound, notModified, ok, ok, permanentRedirect, reason, redirect, seeOther, serverError, serverError, setAttribute, status, status, status, temporaryRedirect, unauthorized, unprocessableEntity, uri</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.io.micronaut.http.MutableHttpMessage">
@@ -343,6 +347,19 @@ public&nbsp;io.micronaut.http.MutableHttpHeaders&nbsp;getHeaders()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code>getStatus</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpResponse&lt;<a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyResponse.html" title="type parameter in MicronautAwsProxyResponse">T</a>&gt;</code></dd>
+</dl>
+</li>
+</ul>
+<a name="getAllCookies--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllCookies</h4>
+<pre>public&nbsp;java.util.Map&lt;java.lang.String,io.micronaut.http.cookie.Cookie&gt;&nbsp;getAllCookies()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>Any cookies</dd>
 </dl>
 </li>
 </ul>
