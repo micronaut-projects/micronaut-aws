@@ -231,8 +231,10 @@ public final class MicronautLambdaContainerHandler
     public void initialize() throws ContainerInitializationException {
         Timer.start(TIMER_INIT);
         try {
-            this.applicationContext = applicationContextBuilder.environments(
-                    Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+            this.applicationContext = applicationContextBuilder
+                    .environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+                    .eagerInitSingletons(true)
+                    .eagerInitConfiguration(true)
                     .build()
                     .start();
             this.lambdaContainerEnvironment.setApplicationContext(applicationContext);
