@@ -127,7 +127,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     /**
      * @return Any cookies
      */
-    public Map<String, Cookie> getAllCookies() {
+    Map<String, Cookie> getAllCookies() {
         return cookies;
     }
 
