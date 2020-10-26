@@ -68,7 +68,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
             Context lambdaContext) throws InvalidResponseObjectException {
         Timer.start(TIMER_NAME);
         AwsProxyResponse awsProxyResponse = containerResponse.getAwsResponse();
-        final Map<String, Cookie> cookies = containerResponse.getCookies();
+        final Map<String, Cookie> cookies = containerResponse.getAllCookies();
         if (CollectionUtils.isNotEmpty(cookies)) {
             final io.netty.handler.codec.http.cookie.Cookie[] nettyCookies = cookies.values().stream().filter(c -> c instanceof NettyCookie).map(c -> ((NettyCookie) c).getNettyCookie()).toArray(io.netty.handler.codec.http.cookie.Cookie[]::new);
             final List<String> values = ServerCookieEncoder.LAX.encode(nettyCookies);
