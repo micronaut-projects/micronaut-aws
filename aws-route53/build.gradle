@@ -7,7 +7,7 @@ dependencies {
     api project(":aws-sdk-v1")
     implementation 'com.amazonaws:aws-java-sdk-route53:1.11.887'
     implementation 'com.amazonaws:aws-java-sdk-core:1.11.887'
-    implementation 'com.amazonaws:jmespath-java:1.11.887'
+    implementation 'com.amazonaws:jmespath-java:1.11.892'
     implementation 'com.amazonaws:aws-java-sdk-servicediscovery:1.11.887'
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
