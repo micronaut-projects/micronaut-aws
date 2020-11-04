@@ -17,6 +17,7 @@ package io.micronaut.discovery.aws.parameterstore;
 
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.EnvironmentPropertySource;
+import io.micronaut.core.annotation.Internal;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
@@ -24,8 +25,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *
+ *
+ * @author ttzn
+ * @since 2.1.2
+ */
+@Internal
 @Singleton
-class DefaultParameterQueryProvider implements AWSParameterQueryProvider {
+final class DefaultParameterQueryProvider implements AWSParameterQueryProvider {
     private static int basePriority = EnvironmentPropertySource.POSITION + 100;
     private static int envBasePriority = basePriority + 50;
 

@@ -15,6 +15,7 @@
  */
 package io.micronaut.discovery.aws.parameterstore;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.context.env.Environment;
 
@@ -37,9 +38,19 @@ import java.util.Optional;
  * }}
  * </pre>
  *
+ * @author ttzn
  * @since 2.1.2
  */
 @DefaultImplementation(DefaultParameterQueryProvider.class)
 public interface AWSParameterQueryProvider {
-    List<ParameterQuery> getParameterQueries(Environment environment, Optional<String> serviceId, AWSParameterStoreConfiguration configuration);
+    /**
+     * @param environment the current application environment
+     * @param serviceId the service ID or application name, if applicable
+     * @param configuration the parameter store configuration
+     * @return a list of {@link ParameterQuery} that will be used to configure calls
+     * to the Parameter Store
+     */
+    @NonNull List<ParameterQuery> getParameterQueries(@NonNull Environment environment,
+                                                      @NonNull Optional<String> serviceId,
+                                                      @NonNull AWSParameterStoreConfiguration configuration);
 }

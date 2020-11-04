@@ -20,6 +20,7 @@ package io.micronaut.discovery.aws.parameterstore;
  * configuration values to the Parameter Store, as well as the name of the
  * resulting property source and associated priority.
  *
+ * @author ttzn
  * @since 2.1.2
  */
 public class ParameterQuery {

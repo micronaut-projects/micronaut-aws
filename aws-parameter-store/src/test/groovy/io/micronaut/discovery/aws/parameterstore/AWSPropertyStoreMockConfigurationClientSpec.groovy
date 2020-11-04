@@ -461,15 +461,14 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
         when:
         def env = Mock(Environment)
-        env.getActiveNames() >> (['first', 'second'] as Set)
         def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
 
         then: "verify that the custom paths were searched"
         propertySources.size() == 1
         propertySources[0].get('someKey') == 'someValue'
 
-        assert searchedPaths.size() == 2
-        assert searchedPaths.contains('/root/application')
-        assert searchedPaths.contains('/config/foo')
+        searchedPaths.size() == 2
+        searchedPaths.contains('/root/application')
+        searchedPaths.contains('/config/foo')
     }
 }
