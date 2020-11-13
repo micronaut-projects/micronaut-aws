@@ -30,6 +30,8 @@ import java.util.Optional;
  *
  * <pre>
  * {@code
+ * @Singleton
+ * @BootstrapContextCompatible
  * @Replaces(AWSParameterQueryProvider.class)
  * public class CustomParameterQueryProvider implements AWSParameterQueryProvider {
  *
