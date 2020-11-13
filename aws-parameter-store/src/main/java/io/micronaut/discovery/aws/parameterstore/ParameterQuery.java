@@ -21,7 +21,7 @@ package io.micronaut.discovery.aws.parameterstore;
  * resulting property source and associated priority.
  *
  * @author ttzn
- * @since 2.1.2
+ * @since 2.3.0
  */
 public class ParameterQuery {
     private final String path;

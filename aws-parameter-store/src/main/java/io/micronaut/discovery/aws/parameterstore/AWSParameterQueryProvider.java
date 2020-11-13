@@ -39,7 +39,7 @@ import java.util.Optional;
  * </pre>
  *
  * @author ttzn
- * @since 2.1.2
+ * @since 2.3.0
  */
 @DefaultImplementation(DefaultParameterQueryProvider.class)
 public interface AWSParameterQueryProvider {
