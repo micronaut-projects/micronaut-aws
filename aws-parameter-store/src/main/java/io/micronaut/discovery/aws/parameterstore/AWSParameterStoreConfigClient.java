@@ -19,11 +19,11 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsync;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsyncClient;
 import com.amazonaws.services.simplesystemsmanagement.model.*;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.aws.sdk.v1.AWSClientConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
-import io.micronaut.context.env.EnvironmentPropertySource;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.discovery.aws.route53.Route53ClientDiscoveryConfiguration;
@@ -31,13 +31,13 @@ import io.micronaut.discovery.client.ClientUtil;
 import io.micronaut.discovery.config.ConfigurationClient;
 import io.micronaut.runtime.ApplicationConfiguration;
 import io.micronaut.scheduling.TaskExecutors;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import edu.umd.cs.findbugs.annotations.Nullable;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -61,9 +61,10 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(AWSParameterStoreConfigClient.class);
     private final AWSParameterStoreConfiguration awsParameterStoreConfiguration;
-    private final String serviceId;
+    private final Optional<String> serviceId;
     private AWSSimpleSystemsManagementAsync client;
     private ExecutorService executorService;
+    private AWSParameterQueryProvider queryProvider;
 
     /**
      * Initialize @Singleton.
@@ -71,6 +72,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      * @param awsConfiguration                    your aws configuration credentials
      * @param awsParameterStoreConfiguration      configuration for the parameter store
      * @param applicationConfiguration            the application configuration
+     * @param queryProvider                       the query provider that will help find configuration values
      * @param route53ClientDiscoveryConfiguration configuration for route53 service discovery, if you are using this (not required)
      * @throws SdkClientException If the aws sdk client could not be created
      */
@@ -78,10 +80,12 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
             AWSClientConfiguration awsConfiguration,
             AWSParameterStoreConfiguration awsParameterStoreConfiguration,
             ApplicationConfiguration applicationConfiguration,
+            AWSParameterQueryProvider queryProvider,
             @Nullable Route53ClientDiscoveryConfiguration route53ClientDiscoveryConfiguration) throws SdkClientException {
         this.awsParameterStoreConfiguration = awsParameterStoreConfiguration;
         this.client = AWSSimpleSystemsManagementAsyncClient.asyncBuilder().withClientConfiguration(awsConfiguration.getClientConfiguration()).build();
-        this.serviceId = (route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId() : applicationConfiguration.getName()).orElse(null);
+        this.serviceId = route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId() : applicationConfiguration.getName();
+        this.queryProvider = queryProvider;
     }
 
 
@@ -100,101 +104,16 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
             return Flowable.empty();
         }
 
-        List<String> activeNames = awsParameterStoreConfiguration.isSearchActiveEnvironments() ?
-                new ArrayList<>(environment.getActiveNames()) : Collections.emptyList();
-
-        Optional<String> serviceId = Optional.ofNullable(this.serviceId);
-
-
-        String path = awsParameterStoreConfiguration.getRootHierarchyPath();
-        if (!path.endsWith("/")) {
-            path += "/";
-        }
-
-        String pathPrefix = path.substring(1);
-        String commonConfigPath = path + Environment.DEFAULT_NAME;
-        String commonPrefix = commonConfigPath.substring(1);
-        final boolean hasApplicationSpecificConfig = serviceId.isPresent();
-        String applicationSpecificPath = hasApplicationSpecificConfig ? path + serviceId.get() : null;
-        String applicationPrefix = hasApplicationSpecificConfig ? applicationSpecificPath.substring(1) : null;
-
-        Flowable<ParametersWithBasePath> configurationValues = Flowable.fromPublisher(getParametersRecursive(commonConfigPath));
-
-        if (hasApplicationSpecificConfig) {
-            configurationValues = Flowable.concat(
-                    configurationValues,
-                    Flowable.fromPublisher(getParametersRecursive(applicationSpecificPath)));
-        }
-        if (!activeNames.isEmpty()) {
-            // look for the environment configs since we can't wildcard partial paths on aws
-            for (String activeName : activeNames) {
-                String environmentSpecificPath = commonConfigPath + "_" + activeName;
-                configurationValues = Flowable.concat(
-                        configurationValues,
-                        Flowable.fromPublisher(getParametersRecursive(environmentSpecificPath)));
-
-                if (applicationSpecificPath != null) {
-                    String appEnvironmentSpecificPath = applicationSpecificPath + "_" + activeName;
-                    configurationValues = Flowable.concat(
-                            configurationValues,
-                            Flowable.fromPublisher(getParametersRecursive(appEnvironmentSpecificPath)));
-                }
-            }
-
-        }
-
-        int basePriority = EnvironmentPropertySource.POSITION + 100;
-        int envBasePriority = basePriority + 50;
-
-        final Map<String, LocalSource> propertySources = new HashMap<>();
-        final Flowable<ParametersWithBasePath> parameterFlowable = configurationValues;
-        Flowable<PropertySource> propertySourceFlowable = Flowable.create(emitter -> {
-            parameterFlowable.subscribe(
-                    parametersWithBasePath -> {
-                        if (parametersWithBasePath.parameters.isEmpty()) {
-                            if (LOG.isTraceEnabled()) {
-                                LOG.trace("parameterBasePath={} no parameters found", parametersWithBasePath.basePath);
-                            }
-                            return;
-                        }
-                        String key = parametersWithBasePath.basePath;
-                        boolean isCommonConfigKey = key.substring(1).startsWith(commonPrefix);
-                        boolean isApplicationSpecificConfigKey = hasApplicationSpecificConfig && key.substring(1).startsWith(applicationPrefix);
-                        boolean validKey = isCommonConfigKey || isApplicationSpecificConfigKey;
-                        if (validKey) {
-                            String fullName = key.substring(pathPrefix.length() + 1);
-                            Set<String> propertySourceNames = calcPropertySourceNames(fullName, activeNames);
-                            Map<String, Object> properties = convertParametersToMap(parametersWithBasePath);
-                            if (LOG.isTraceEnabled()) {
-                                properties.keySet().iterator().forEachRemaining(param -> LOG.trace("param found: parameterBasePath={} parameter={}", parametersWithBasePath.basePath, param));
-                            }
-                            for (String propertySourceName : propertySourceNames) {
-                                String envName = ClientUtil.resolveEnvironment(propertySourceName, activeNames);
-                                LocalSource localSource = propertySources.computeIfAbsent(propertySourceName, s -> new LocalSource(isApplicationSpecificConfigKey, envName, propertySourceName));
-                                localSource.putAll(properties);
-                            }
-                        }
-                    },
-                    emitter::onError,
-                    () -> {
-                        for (LocalSource localSource : propertySources.values()) {
-                            int priority;
-                            if (localSource.environment != null) {
-                                priority = envBasePriority + (activeNames.indexOf(localSource.environment) * 2);
-                            } else {
-                                priority = basePriority + 1;
-                            }
-                            if (localSource.appSpecific) {
-                                priority++;
-                            }
-                            if (LOG.isTraceEnabled()) {
-                                LOG.trace("source={} got priority={}", localSource.name, priority);
-                            }
-                            emitter.onNext(PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID + '-' + localSource.name, localSource.values, priority));
-                        }
-                        emitter.onComplete();
-                    });
-        }, BackpressureStrategy.ERROR);
+        List<ParameterQuery> queries = queryProvider.getParameterQueries(environment, serviceId, awsParameterStoreConfiguration);
+        Flowable<ParameterQueryResult> queryResults =
+                Flowable.concat(
+                    Flowable.fromIterable(queries)
+                        .map(this::getParameters));
+        Flowable<PropertySource> propertySourceFlowable =
+                queryResults
+                    .flatMapMaybe(this::buildLocalSource)
+                    .reduce(new HashMap<>(), AWSParameterStoreConfigClient::mergeLocalSources)
+                    .flatMapPublisher(AWSParameterStoreConfigClient::toPropertySourcePublisher);
 
         return propertySourceFlowable.onErrorResumeNext(AWSParameterStoreConfigClient::onPropertySourceError);
 
@@ -234,11 +153,30 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         }
     }
 
-    private Publisher<ParametersWithBasePath> getParametersRecursive(String path) {
-        return Flowable.concat(
-                Flowable.fromPublisher(getParameters(path)).map(r -> new ParametersWithBasePath(path, r.getParameters())),
-                Flowable.fromPublisher(getHierarchy(path, new ArrayList<>(), null)).map(r -> new ParametersWithBasePath(path, r))
-        );
+    private Publisher<ParameterQueryResult> getParameters(ParameterQuery query) {
+        String path = query.getPath();
+        return query.isName()
+                ? Flowable.fromPublisher(getParameters(path)).map(r -> new ParameterQueryResult(query, r.getParameters()))
+                : Flowable.fromPublisher(getHierarchy(path, new ArrayList<>(), null)).map(r -> new ParameterQueryResult(query, r));
+    }
+
+    private Maybe<LocalSource> buildLocalSource(ParameterQueryResult queryResult) {
+        String key = queryResult.query.getPath();
+        if (queryResult.parameters.isEmpty()) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("parameterBasePath={} no parameters found", key);
+            }
+            return Maybe.empty();
+        }
+        Map<String, Object> properties = convertParametersToMap(queryResult);
+        String propertySourceName = queryResult.query.getPropertySourceName();
+        if (LOG.isTraceEnabled()) {
+            properties.keySet().iterator().forEachRemaining(param ->
+                    LOG.trace("param found: parameterBasePath={} parameter={}", queryResult.query.getPath(), param));
+        }
+        LocalSource localSource = new LocalSource(queryResult.query.getPriority(), propertySourceName);
+        localSource.putAll(properties);
+        return Maybe.just(localSource);
     }
 
     private Flowable<List<Parameter>> getHierarchy(final String path, final List<Parameter> parameters, final String nextToken) {
@@ -336,15 +274,15 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     }
 
     /**
-     * Helper class for converting parameters from amazon format to a map.
+     * Helper method for converting parameters from amazon format to a map.
      *
-     * @param parametersWithBasePath parameters with the base path
+     * @param queryResult parameters with the base path
      * @return map of the results, converted
      */
-    private Map<String, Object> convertParametersToMap(ParametersWithBasePath parametersWithBasePath) {
+    private static Map<String, Object> convertParametersToMap(ParameterQueryResult queryResult) {
         Map<String, Object> output = new HashMap<>();
-        for (Parameter param : parametersWithBasePath.parameters) {
-            String key = param.getName().substring(parametersWithBasePath.basePath.length());
+        for (Parameter param : queryResult.parameters) {
+            String key = param.getName().substring(queryResult.query.getPath().length());
             if (key.length() > 1) {
                 key = key.substring(1).replace("/", ".");
             }
@@ -360,14 +298,51 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     }
 
     /**
+     * Stores LocalSource objects into an accumulator map. If two LocalSource have the same property source name
+     * (which happens when using both GetParameters and GetParametersByPath-style queries), the properties are
+     * merged, with the new LocalSource overwriting any existing keys.
+     *
+     * @param accumulator a map of local sources indexed by property source name
+     * @param localSource the local source to store
+     * @return the accumulator
+     */
+    private static Map<String, LocalSource> mergeLocalSources(Map<String, LocalSource> accumulator, LocalSource localSource) {
+        LocalSource previous = accumulator.get(localSource.name);
+        if (previous == null) {
+            accumulator.put(localSource.name, localSource);
+        } else {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("merging into existing source {} from {}", localSource.name, localSource.priority);
+            }
+            if (previous.priority != localSource.priority) {
+                LOG.warn("local source {} redeclared with priority {} instead ofg {}, ignoring", localSource.name,
+                        localSource.priority, previous.priority);
+            }
+            previous.putAll(localSource.values);
+        }
+        return accumulator;
+    }
+
+    private static Flowable<PropertySource> toPropertySourcePublisher(Map<String, LocalSource> localSourceMap) {
+        return Flowable.fromIterable(localSourceMap.values())
+            .map(localSource -> {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
+                }
+                return PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID
+                        + '-' + localSource.name, localSource.values, localSource.priority);
+            });
+    }
+
+    /**
      * Simple container class to hold the list of parameters and a base path which was used to collect them.
      */
-    private static class ParametersWithBasePath {
-        private final String basePath;
+    static class ParameterQueryResult {
+        private final ParameterQuery query;
         private final List<Parameter> parameters;
 
-        public ParametersWithBasePath(String basePath, List<Parameter> parameters) {
-            this.basePath = basePath;
+        public ParameterQueryResult(ParameterQuery query, List<Parameter> parameters) {
+            this.query = query;
             this.parameters = parameters;
         }
     }
@@ -377,21 +352,14 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      */
     private static class LocalSource {
 
-        private final boolean appSpecific;
-        private final String environment;
+        private final int priority;
         private final String name;
         private final Map<String, Object> values = new LinkedHashMap<>();
 
-        LocalSource(boolean appSpecific,
-                    String environment,
+        LocalSource(int priority,
                     String name) {
-            this.appSpecific = appSpecific;
-            this.environment = environment;
+            this.priority = priority;
             this.name = name;
-        }
-
-        void put(String key, Object value) {
-            this.values.put(key, value);
         }
 
         void putAll(Map<String, Object> values) {

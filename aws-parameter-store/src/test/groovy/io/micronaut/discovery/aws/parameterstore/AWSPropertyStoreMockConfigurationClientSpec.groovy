@@ -16,11 +16,7 @@
 package io.micronaut.discovery.aws.parameterstore
 
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsync
-import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathRequest
-import com.amazonaws.services.simplesystemsmanagement.model.GetParametersByPathResult
-import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest
-import com.amazonaws.services.simplesystemsmanagement.model.GetParametersResult
-import com.amazonaws.services.simplesystemsmanagement.model.Parameter
+import com.amazonaws.services.simplesystemsmanagement.model.*
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.EnvironmentPropertySource
@@ -32,6 +28,7 @@ import io.reactivex.Flowable
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
+
 import java.util.concurrent.FutureTask
 
 /**
@@ -421,5 +418,57 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
             assert it.contains('/config/application')
             assert it.contains('/config/amazon-test')
         }
+    }
+
+    void "custom parameter query providers can be configured"() {
+        given:
+        EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
+                [
+                        'aws.client.system-manager.parameterstore.enabled'                  : 'true',
+                        'micronaut.application.name'                                        : 'amazonTest'],
+                Environment.AMAZON_EC2
+
+        )
+        AWSParameterStoreConfigClient client = embeddedServer.applicationContext.getBean(AWSParameterStoreConfigClient)
+
+        client.client = Mock(AWSSimpleSystemsManagementAsync)
+        client.queryProvider = (env, serviceId, configuration) -> [
+            new ParameterQuery("/root/application", "/root/application", -1),
+            new ParameterQuery('/config/foo', '/config/foo', -10)
+        ]
+
+        def searchedPaths = []
+        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+
+            searchedPaths += getRequest.path
+
+            def result = new GetParametersByPathResult()
+            if (getRequest.path.startsWith("/root/application")) {
+                def parameter = new Parameter(
+                        name: "/root/application/someKey",
+                        value: "someValue",
+                        type: "String")
+                result.setParameters([parameter])
+            }
+
+            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            futureTask.isDone() >> { return true }
+            futureTask.get() >> {
+                return result
+            }
+            return futureTask
+        }
+
+        when:
+        def env = Mock(Environment)
+        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+
+        then: "verify that the custom paths were searched"
+        propertySources.size() == 1
+        propertySources[0].get('someKey') == 'someValue'
+
+        searchedPaths.size() == 2
+        searchedPaths.contains('/root/application')
+        searchedPaths.contains('/config/foo')
     }
 }
