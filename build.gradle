@@ -14,12 +14,8 @@ subprojects { Project subproject ->
     group "io.micronaut.aws"
 
     apply plugin: "io.micronaut.build.common"
-
-    micronautBuild {
-        enforcedPlatform = true
-    }
-
     apply plugin: "io.micronaut.build.dependency-updates"
+    
     if (subproject.name != 'test-suite') {
         apply plugin: "io.micronaut.build.publishing"
     }
