@@ -12,6 +12,7 @@ sdkv2:
   ses: SES
   sns: SNS
   sqs: SQS
+  ssm: SSM
   advancedConfiguration: Advanced configuration
   otherServices: Other services
 lambda:
