@@ -40,13 +40,22 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     private String functionName;
 
     /**
-     * Default constructor.
+     * Default constructor; will initialize a suitable {@link ApplicationContext} for
+     * Lambda deployment.
      */
     public MicronautRequestStreamHandler() {
         // initialize the application context in the constructor
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
         buildApplicationContext(null);
+    }
+
+    /**
+     * Constructor used to inject a preexisting {@link ApplicationContext}.
+     * @param applicationContext the application context
+     */
+    public MicronautRequestStreamHandler(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -67,10 +76,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     @Nonnull
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
-        return super.newApplicationContextBuilder()
-                .environments(ENVIRONMENT_LAMBDA)
-                .eagerInitSingletons(true)
-                .eagerInitConfiguration(true);
+        return new LambdaApplicationContextBuilder();
     }
 
     @Override

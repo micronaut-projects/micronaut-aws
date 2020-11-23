@@ -53,10 +53,24 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     private final Class<I> inputType = initTypeArgument();
 
     /**
-     * Constructor.
+     * Default constructor; will initialize a suitable {@link ApplicationContext} for
+     * Lambda deployment.
      */
     public MicronautRequestHandler() {
         buildApplicationContext(null);
+        injectIntoApplicationContext();
+    }
+
+    /**
+     * Constructor used to inject a preexisting {@link ApplicationContext}.
+     * @param applicationContext the application context
+     */
+    public MicronautRequestHandler(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        injectIntoApplicationContext();
+    }
+
+    private void injectIntoApplicationContext() {
         applicationContext.inject(this);
     }
 
@@ -154,10 +168,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @Nonnull
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
-        return super.newApplicationContextBuilder()
-                .environments(ENVIRONMENT_LAMBDA)
-                .eagerInitSingletons(true)
-                .eagerInitConfiguration(true);
+        return new LambdaApplicationContextBuilder();
     }
 
     /**
