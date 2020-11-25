@@ -100,7 +100,7 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
     protected MultiValuedTreeMap<String, String> createParams(@NonNull HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
         MultiValuedTreeMap<String, String> params = new MultiValuedTreeMap<>();
-        parameterMap.forEach((s, strings) -> params.addAll(s, s));
+        parameterMap.forEach(params::addAll);
         return params;
     }
 

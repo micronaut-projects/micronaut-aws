@@ -6,6 +6,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.annotation.MicronautTest
@@ -45,17 +46,31 @@ class AwsApiProxyTestServerSpec extends Specification {
         result == 'goodbody'
     }
 
+    void 'query values are picked up'() {
+        when:
+        def result = client.retrieve(HttpRequest.GET('/test-param?foo=bar')
+                                        .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
 
-    @Controller('/test')
+        then:
+            result == 'get:bar'
+    }
+
+
+    @Controller
     static class TestController {
-        @Get(value = '/', produces = MediaType.TEXT_PLAIN)
+        @Get(value = '/test', produces = MediaType.TEXT_PLAIN)
         String test() {
             return 'good'
         }
 
-        @Post(value = '/', processes = MediaType.TEXT_PLAIN)
+        @Post(value = '/test', processes = MediaType.TEXT_PLAIN)
         String test(@Body String body) {
             return 'good' + body
+        }
+
+        @Get(value = '/test-param{?foo}', processes = MediaType.TEXT_PLAIN)
+        String search(@QueryValue String foo) {
+            return 'get:' + foo
         }
     }
 }
