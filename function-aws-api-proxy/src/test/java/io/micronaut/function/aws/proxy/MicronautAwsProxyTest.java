@@ -29,6 +29,8 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.MediaType;
 import org.apache.commons.codec.binary.Base64;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -58,26 +60,8 @@ public class MicronautAwsProxyTest {
     private static final String AUTHORIZER_PRINCIPAL_ID = "test-principal-" + UUID.randomUUID().toString();
     private static final String USER_PRINCIPAL = "user1";
 
-
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static MicronautLambdaContainerHandler handler;
-
-    static {
-        try {
-            handler = new MicronautLambdaContainerHandler(
-                        ApplicationContext.build(CollectionUtils.mapOf(
-                                "spec.name", "MicronautAwsProxyTest",
-                                "micronaut.security.enabled", true,
-                                "micronaut.views.handlebars.enabled", true,
-                                "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
-                                "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
-                        ))
-                );
-        } catch (ContainerInitializationException e) {
-            throw new RuntimeException("Test failed to start: " + e.getMessage(), e);
-        }
-    }
-
     private static Context lambdaContext = new MockLambdaContext();
 
     private boolean isAlb;
@@ -86,7 +70,29 @@ public class MicronautAwsProxyTest {
         isAlb = alb;
     }
 
-    @Parameterized.Parameters
+    @BeforeClass
+    public static void initHandler() {
+        try {
+            handler = new MicronautLambdaContainerHandler(
+                    ApplicationContext.build(CollectionUtils.mapOf(
+                            "spec.name", "MicronautAwsProxyTest",
+                            "micronaut.security.enabled", true,
+                            "micronaut.views.handlebars.enabled", true,
+                            "micronaut.router.static-resources.lorem.paths", "classpath:static-lorem/",
+                            "micronaut.router.static-resources.lorem.mapping", "/static-lorem/**"
+                    ))
+            );
+        } catch (ContainerInitializationException e) {
+            throw new RuntimeException("Test failed to start: " + e.getMessage(), e);
+        }
+    }
+
+    @AfterClass
+    public static void cleanup() {
+        handler.close();
+    }
+
+    @Parameterized.Parameters(name = "isALB == {0}")
     public static Collection<Object> data() {
         return Arrays.asList(new Object[] { false, true });
     }

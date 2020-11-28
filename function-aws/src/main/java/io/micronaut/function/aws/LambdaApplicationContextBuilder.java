@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws;
 
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.DefaultApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
 
@@ -26,8 +27,13 @@ import io.micronaut.context.env.Environment;
  */
 public class LambdaApplicationContextBuilder extends DefaultApplicationContextBuilder {
     public LambdaApplicationContextBuilder() {
-        environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA);
-        eagerInitConfiguration(true);
-        eagerInitSingletons(true);
+        setLambdaConfiguration(this);
+    }
+
+    public static void setLambdaConfiguration(ApplicationContextBuilder builder) {
+        builder
+            .environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+            .eagerInitConfiguration(true)
+            .eagerInitSingletons(true);
     }
 }
