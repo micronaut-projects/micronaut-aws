@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.24"
+    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
 
@@ -13,13 +13,13 @@ dependencies {
 
     implementation 'com.github.spotbugs:spotbugs-annotations'
 
-    compileOnly ("com.amazon.alexa:ask-sdk:2.35.1")
-    api ("com.amazon.alexa:ask-sdk-core:2.35.1")
+    compileOnly ("com.amazon.alexa:ask-sdk:2.37.1")
+    api ("com.amazon.alexa:ask-sdk-core:2.37.1")
 
-    testImplementation ("com.amazon.alexa:ask-sdk:2.35.1") {
+    testImplementation ("com.amazon.alexa:ask-sdk:2.37.1") {
         transitive(false)
     }
-    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.35.1"
+    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.37.1"
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
