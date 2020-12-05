@@ -28,7 +28,6 @@ class AwsApiProxyTestServerSpec extends Specification {
         result == 'good'
     }
 
-
     void 'test invoke function via server 2'() {
         when:
         String result = client.retrieve('/test').blockingFirst()
