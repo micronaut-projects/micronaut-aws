@@ -27,15 +27,7 @@ class AwsApiProxyTestServerSpec extends Specification {
         then:
         result == 'good'
     }
-
-    void 'test invoke function via server 2'() {
-        when:
-        String result = client.retrieve('/test').blockingFirst()
-
-        then:
-        result == 'good'
-    }
-
+    
     void 'test invoke post via server'() {
         when:
         String result = client.retrieve(HttpRequest.POST('/test', "body")
