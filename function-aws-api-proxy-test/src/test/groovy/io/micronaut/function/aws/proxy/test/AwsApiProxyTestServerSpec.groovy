@@ -51,7 +51,7 @@ class AwsApiProxyTestServerSpec extends Specification {
                                         .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
 
         then:
-            result == 'get:bar'
+        result == 'get:bar'
     }
 
 
