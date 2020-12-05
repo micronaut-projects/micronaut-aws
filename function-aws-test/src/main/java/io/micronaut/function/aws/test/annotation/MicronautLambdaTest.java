@@ -28,9 +28,9 @@ import java.lang.annotation.*;
  * Annotation that can be applied to any JUnit 5 test to enable testing
  * AWS Lambda handlers with a pre-configured ApplicationContext. Based on
  * {@link io.micronaut.test.extensions.junit5.annotation.MicronautTest}
- * and supports the same options.
+ * and supports the same options except contextBuilder.
  *
- * @author ttz
+ * @author ttzn
  * @since 2.3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
