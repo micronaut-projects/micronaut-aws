@@ -60,17 +60,17 @@ class AwsApiProxyTestServerSpec extends Specification {
     static class TestController {
         @Get(value = '/test', produces = MediaType.TEXT_PLAIN)
         String test() {
-            return 'good'
+            'good'
         }
 
         @Post(value = '/test', processes = MediaType.TEXT_PLAIN)
         String test(@Body String body) {
-            return 'good' + body
+            'good' + body
         }
 
         @Get(value = '/test-param{?foo}', processes = MediaType.TEXT_PLAIN)
         String search(@QueryValue String foo) {
-            return 'get:' + foo
+            'get:' + foo
         }
     }
 }
