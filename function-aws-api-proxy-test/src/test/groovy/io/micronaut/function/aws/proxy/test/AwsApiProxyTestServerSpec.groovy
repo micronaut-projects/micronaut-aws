@@ -22,7 +22,7 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'test invoke function via server'() {
         when:
-        def result = client.retrieve('/test').blockingFirst()
+        String result = client.retrieve('/test').blockingFirst()
 
         then:
         result == 'good'
@@ -31,7 +31,7 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'test invoke function via server 2'() {
         when:
-        def result = client.retrieve('/test').blockingFirst()
+        String result = client.retrieve('/test').blockingFirst()
 
         then:
         result == 'good'
@@ -39,7 +39,7 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'test invoke post via server'() {
         when:
-        def result = client.retrieve(HttpRequest.POST('/test', "body")
+        String result = client.retrieve(HttpRequest.POST('/test', "body")
                                         .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
 
         then:
@@ -48,7 +48,7 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'query values are picked up'() {
         when:
-        def result = client.retrieve(HttpRequest.GET('/test-param?foo=bar')
+        String result = client.retrieve(HttpRequest.GET('/test-param?foo=bar')
                                         .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
 
         then:
