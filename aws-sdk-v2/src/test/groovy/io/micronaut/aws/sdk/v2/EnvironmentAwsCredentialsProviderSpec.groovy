@@ -43,6 +43,9 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
         awsCredentials.secretAccessKey() == TEST_SECRET_KEY
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "AWS alternate accessKey and secretAccessKey can be read from environment"() {
@@ -61,6 +64,9 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
         awsCredentials.secretAccessKey() == TEST_SECRET_KEY
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "AWS accessKeyId, secretKey, and sessionToken can be read from environment"() {
@@ -79,6 +85,9 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
         awsCredentials.accessKeyId() == TEST_KEY_ID
         awsCredentials.secretAccessKey() == TEST_SECRET_KEY
         awsCredentials.sessionToken() == TEST_SESSION_TOKEN
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "AWS accessKeyId, secretKey, and sessionToken can be read via yaml configuration"() {
@@ -93,6 +102,9 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
         awsCredentials.accessKeyId() == "yamlAccessKeyId"
         awsCredentials.secretAccessKey() == "yamlSecretKey"
         awsCredentials.sessionToken() == "yamlSessionToken"
+
+        cleanup:
+        applicationContext.close()
     }
 
 
@@ -110,6 +122,8 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
         awsCredentials.secretAccessKey() == TEST_SECRET_KEY
-    }
 
+        cleanup:
+        applicationContext.close()
+    }
 }
