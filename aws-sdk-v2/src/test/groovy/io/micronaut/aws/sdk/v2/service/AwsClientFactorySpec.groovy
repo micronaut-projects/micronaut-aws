@@ -1,18 +1,16 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.context.ApplicationContext
+import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.services.rekognition.RekognitionAsyncClient
 import software.amazon.awssdk.services.rekognition.RekognitionClient
-import spock.lang.AutoCleanup
-import spock.lang.Shared
-import spock.lang.Specification
 
-class AwsClientFactorySpec extends Specification {
-    @AutoCleanup
-    @Shared
-    ApplicationContext applicationContext = ApplicationContext.run([
-            'spec.name': 'AwsClientFactorySpec'
-    ])
+class AwsClientFactorySpec extends ApplicationContextSpecification {
+    @Override
+    Map<String, Object> getConfiguration() {
+        super.configuration + [
+                'spec.name': 'AwsClientFactorySpec'
+        ]
+    }
 
     void "it can create sync clients"() {
         when:

@@ -26,5 +26,8 @@ class UrlConnectionClientSpec extends Specification {
 
         then:
         client.options.get(SdkHttpConfigurationOption.CONNECTION_TIMEOUT) == Duration.of(13, ChronoUnit.SECONDS)
+
+        cleanup:
+        applicationContext.close()
     }
 }
