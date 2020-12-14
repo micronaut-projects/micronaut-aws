@@ -21,6 +21,9 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
 
         then:
         region.toString() == TEST_REGION
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "region can be read via yaml configuration"() {
@@ -32,6 +35,9 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
 
         then:
         region.toString() == TEST_REGION
+
+        cleanup:
+        applicationContext.close()
     }
 
     @RestoreSystemProperties
@@ -45,6 +51,9 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
 
         then:
         region.toString() == TEST_REGION
+
+        cleanup:
+        applicationContext.close()
     }
 
 }

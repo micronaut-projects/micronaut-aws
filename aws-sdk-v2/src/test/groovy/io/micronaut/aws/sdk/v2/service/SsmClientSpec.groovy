@@ -1,16 +1,10 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.context.ApplicationContext
+import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.services.ssm.SsmAsyncClient
 import software.amazon.awssdk.services.ssm.SsmClient
-import spock.lang.AutoCleanup
-import spock.lang.Shared
-import spock.lang.Specification
 
-class SsmClientSpec extends Specification {
-    @AutoCleanup
-    @Shared
-    ApplicationContext applicationContext = ApplicationContext.run()
+class SsmClientSpec extends ApplicationContextSpecification {
 
     void "it can configure a sync client"() {
         when:

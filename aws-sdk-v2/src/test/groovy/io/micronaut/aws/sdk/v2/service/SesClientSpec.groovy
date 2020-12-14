@@ -1,16 +1,10 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.context.ApplicationContext
+import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.services.ses.SesAsyncClient
 import software.amazon.awssdk.services.ses.SesClient
-import spock.lang.AutoCleanup
-import spock.lang.Shared
-import spock.lang.Specification
 
-class SesClientSpec extends Specification {
-    @AutoCleanup
-    @Shared
-    ApplicationContext applicationContext = ApplicationContext.run()
+class SesClientSpec extends ApplicationContextSpecification {
 
     void "it can configure a sync client"() {
         when:
