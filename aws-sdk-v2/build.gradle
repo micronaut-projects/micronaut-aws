@@ -19,6 +19,7 @@ dependencies {
     compileOnly "software.amazon.awssdk:ses"
     compileOnly "software.amazon.awssdk:sns"
     compileOnly "software.amazon.awssdk:sqs"
+    compileOnly "software.amazon.awssdk:ssm"
 
     // Tests
     testImplementation "software.amazon.awssdk:url-connection-client"
@@ -29,6 +30,7 @@ dependencies {
     testImplementation "software.amazon.awssdk:ses"
     testImplementation "software.amazon.awssdk:sns"
     testImplementation "software.amazon.awssdk:sqs"
+    testImplementation "software.amazon.awssdk:ssm"
     testImplementation "software.amazon.awssdk:rekognition"
     testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
