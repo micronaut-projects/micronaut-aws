@@ -1,22 +1,21 @@
 package io.micronaut.aws.sdk.v2.client
 
-import io.micronaut.context.ApplicationContext
+import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.http.SdkHttpClient
 import software.amazon.awssdk.http.SdkHttpConfigurationOption
 import software.amazon.awssdk.http.apache.ApacheHttpClient
-import spock.lang.Specification
 
-class ApacheClientSpec extends Specification {
+class ApacheClientSpec extends ApplicationContextSpecification {
+
+    @Override
+    Map<String, Object> getConfiguration() {
+        super.configuration + [
+                'aws.apache-client.max-connections': 123,
+                'aws.apache-client.proxy.username': 'username'
+        ]
+    }
 
     void "apache client can be configured"() {
-        given:
-        ApplicationContext applicationContext = ApplicationContext.run(
-                [
-                        'aws.apache-client.max-connections': 123,
-                        'aws.apache-client.proxy.username': 'username'
-                ]
-        )
-
         when:
         ApacheHttpClient client = applicationContext.getBean(SdkHttpClient) as ApacheHttpClient
 
