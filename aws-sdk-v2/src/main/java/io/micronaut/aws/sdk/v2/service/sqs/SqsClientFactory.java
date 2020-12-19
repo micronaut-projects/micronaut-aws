@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.sqs;
 
+import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -28,7 +29,9 @@ import software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.SqsClientBuilder;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
+import java.util.Optional;
 
 /**
  * Factory that creates a SQS client.
@@ -45,8 +48,9 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                               @Named("sqs") Optional<AwsClientConfiguration> clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
     }
 
     @Override

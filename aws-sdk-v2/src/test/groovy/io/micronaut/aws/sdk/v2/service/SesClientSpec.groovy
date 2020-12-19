@@ -1,10 +1,19 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Property
+import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import software.amazon.awssdk.services.ses.SesAsyncClient
 import software.amazon.awssdk.services.ses.SesClient
+import spock.lang.Specification
 
-class SesClientSpec extends ApplicationContextSpecification {
+import javax.inject.Inject
+
+@MicronautTest(rebuildContext = true)
+class SesClientSpec extends Specification {
+    @Inject
+    ApplicationContext applicationContext
 
     void "it can configure a sync client"() {
         when:
@@ -20,5 +29,18 @@ class SesClientSpec extends ApplicationContextSpecification {
 
         then:
         client.serviceName() == SesClient.SERVICE_NAME
+    }
+
+    @Property(name = "aws.ses.endpoint-override", value = "https://test.io")
+    void "it can have custom endpoint configurations"() {
+        when:
+        SesClient client = applicationContext.getBean(SesClient)
+        SesAsyncClient asyncClient = applicationContext.getBean(SesAsyncClient)
+        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("ses")).get()
+
+        then:
+        client != null
+        asyncClient != null
+        config.endpointOverride.get() == URI.create("https://test.io")
     }
 }

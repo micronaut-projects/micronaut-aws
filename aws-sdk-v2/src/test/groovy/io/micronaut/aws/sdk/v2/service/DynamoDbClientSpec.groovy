@@ -1,10 +1,19 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Property
+import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
+import spock.lang.Specification
 
-class DynamoDbClientSpec extends ApplicationContextSpecification {
+import javax.inject.Inject
+
+@MicronautTest(rebuildContext = true)
+class DynamoDbClientSpec extends Specification {
+    @Inject
+    ApplicationContext applicationContext
 
     void "it can configure a sync client"() {
         when:
@@ -20,5 +29,18 @@ class DynamoDbClientSpec extends ApplicationContextSpecification {
 
         then:
         client.serviceName() == DynamoDbClient.SERVICE_NAME
+    }
+
+    @Property(name = "aws.dynamo.endpoint-override", value = "https://test.io")
+    void "it can have custom endpoint configurations"() {
+        when:
+        DynamoDbClient client = applicationContext.getBean(DynamoDbClient)
+        DynamoDbAsyncClient asyncClient = applicationContext.getBean(DynamoDbAsyncClient)
+        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("dynamo")).get()
+
+        then:
+        client != null
+        asyncClient != null
+        config.endpointOverride.get() == URI.create("https://test.io")
     }
 }

@@ -1,10 +1,19 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Property
+import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.S3Client
+import spock.lang.Specification
 
-class S3ClientSpec extends ApplicationContextSpecification {
+import javax.inject.Inject
+
+@MicronautTest(rebuildContext = true)
+class S3ClientSpec extends Specification {
+    @Inject
+    ApplicationContext applicationContext
 
     void "it can configure an S3 client"() {
         when:
@@ -20,5 +29,18 @@ class S3ClientSpec extends ApplicationContextSpecification {
 
         then:
         client.serviceName() == S3Client.SERVICE_NAME
+    }
+
+    @Property(name = "aws.s3.endpoint-override", value = "https://test.io")
+    void "it can have custom endpoint configurations"() {
+        when:
+        S3Client client = applicationContext.getBean(S3Client)
+        S3AsyncClient asyncClient = applicationContext.getBean(S3AsyncClient)
+        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("s3")).get()
+
+        then:
+        client != null
+        asyncClient != null
+        config.endpointOverride.get() == URI.create("https://test.io")
     }
 }

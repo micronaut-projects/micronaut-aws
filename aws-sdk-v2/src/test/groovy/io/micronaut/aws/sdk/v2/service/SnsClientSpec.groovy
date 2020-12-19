@@ -1,10 +1,19 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.annotation.Property
+import io.micronaut.inject.qualifiers.Qualifiers
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import software.amazon.awssdk.services.sns.SnsAsyncClient
 import software.amazon.awssdk.services.sns.SnsClient
+import spock.lang.Specification
 
-class SnsClientSpec extends ApplicationContextSpecification {
+import javax.inject.Inject
+
+@MicronautTest(rebuildContext = true)
+class SnsClientSpec extends Specification {
+    @Inject
+    ApplicationContext applicationContext
 
     void "it can configure a sync client"() {
         when:
@@ -20,5 +29,18 @@ class SnsClientSpec extends ApplicationContextSpecification {
 
         then:
         client.serviceName() == SnsClient.SERVICE_NAME
+    }
+
+    @Property(name = "aws.sns.endpoint-override", value = "https://test.io")
+    void "it can have custom endpoint configurations"() {
+        when:
+        SnsClient client = applicationContext.getBean(SnsClient)
+        SnsAsyncClient asyncClient = applicationContext.getBean(SnsAsyncClient)
+        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("sns")).get()
+
+        then:
+        client != null
+        asyncClient != null
+        config.endpointOverride.get() == URI.create("https://test.io")
     }
 }

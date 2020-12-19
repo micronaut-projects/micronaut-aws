@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.ssm;
 
+import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -28,7 +29,9 @@ import software.amazon.awssdk.services.ssm.SsmAsyncClientBuilder;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.SsmClientBuilder;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
+import java.util.Optional;
 
 /**
  * Factory that creates a SSM client.
@@ -45,8 +48,9 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                               @Named("s3") Optional<AwsClientConfiguration> clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
     }
 
     @Override

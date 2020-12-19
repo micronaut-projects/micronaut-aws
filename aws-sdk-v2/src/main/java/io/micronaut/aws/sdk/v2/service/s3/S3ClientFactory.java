@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
+import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -28,7 +29,9 @@ import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
+import java.util.Optional;
 
 /**
  * Factory that creates an S3 client.
@@ -49,8 +52,9 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param configuration The service configuration
      */
     public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                           S3ConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider);
+                           S3ConfigurationProperties configuration,
+                           @Named("s3") Optional<AwsClientConfiguration> clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
         this.configuration = configuration;
     }
 
