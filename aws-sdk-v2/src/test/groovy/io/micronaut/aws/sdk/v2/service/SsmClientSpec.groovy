@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Property
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import software.amazon.awssdk.core.client.config.SdkClientOption
 import software.amazon.awssdk.services.ssm.SsmAsyncClient
 import software.amazon.awssdk.services.ssm.SsmClient
 import spock.lang.Specification
@@ -36,11 +37,10 @@ class SsmClientSpec extends Specification {
         when:
         SsmClient client = applicationContext.getBean(SsmClient)
         SsmAsyncClient asyncClient = applicationContext.getBean(SsmAsyncClient)
-        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("ssm")).get()
+        ClientConfigurationProperties config = applicationContext.findBean(ClientConfigurationProperties, Qualifiers.byName("ssm")).get()
 
         then:
-        client != null
-        asyncClient != null
-        config.endpointOverride.get() == URI.create("https://test.io")
+        client.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
+        asyncClient.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
     }
 }

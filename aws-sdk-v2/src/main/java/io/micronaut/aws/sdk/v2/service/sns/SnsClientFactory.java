@@ -15,7 +15,6 @@
  */
 package io.micronaut.aws.sdk.v2.service.sns;
 
-import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -29,9 +28,7 @@ import software.amazon.awssdk.services.sns.SnsAsyncClientBuilder;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.SnsClientBuilder;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.Optional;
 
 /**
  * Factory that creates a SNS client.
@@ -49,7 +46,7 @@ public class SnsClientFactory extends AwsClientFactory<SnsClientBuilder, SnsAsyn
      * @param regionProvider      The region provider
      */
     protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               @Named("s3") Optional<AwsClientConfiguration> clientConfiguration) {
+                               SnsConfigurationProperties clientConfiguration) {
         super(credentialsProvider, regionProvider, clientConfiguration);
     }
 

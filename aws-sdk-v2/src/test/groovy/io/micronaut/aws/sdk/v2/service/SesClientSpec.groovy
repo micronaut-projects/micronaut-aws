@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Property
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import software.amazon.awssdk.core.client.config.SdkClientOption
 import software.amazon.awssdk.services.ses.SesAsyncClient
 import software.amazon.awssdk.services.ses.SesClient
 import spock.lang.Specification
@@ -36,11 +37,9 @@ class SesClientSpec extends Specification {
         when:
         SesClient client = applicationContext.getBean(SesClient)
         SesAsyncClient asyncClient = applicationContext.getBean(SesAsyncClient)
-        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("ses")).get()
 
         then:
-        client != null
-        asyncClient != null
-        config.endpointOverride.get() == URI.create("https://test.io")
+        client.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
+        asyncClient.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
     }
 }

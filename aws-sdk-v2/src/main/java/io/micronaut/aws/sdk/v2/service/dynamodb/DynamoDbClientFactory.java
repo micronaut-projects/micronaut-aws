@@ -15,7 +15,6 @@
  */
 package io.micronaut.aws.sdk.v2.service.dynamodb;
 
-import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -29,9 +28,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.Optional;
 
 /**
  * Factory that creates a Dynamo DB client.
@@ -49,7 +46,7 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
      * @param regionProvider      The region provider
      */
     protected DynamoDbClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                                    @Named("dynamo") Optional<AwsClientConfiguration> clientConfiguration) {
+                                    DynamoDbConfigurationProperties clientConfiguration) {
         super(credentialsProvider, regionProvider, clientConfiguration);
     }
 

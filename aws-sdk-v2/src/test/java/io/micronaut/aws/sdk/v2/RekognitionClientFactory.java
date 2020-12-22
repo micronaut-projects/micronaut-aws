@@ -1,6 +1,5 @@
 package io.micronaut.aws.sdk.v2;
 
-import io.micronaut.aws.sdk.v2.service.AwsClientConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
@@ -14,9 +13,7 @@ import software.amazon.awssdk.services.rekognition.RekognitionAsyncClientBuilder
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
 import software.amazon.awssdk.services.rekognition.RekognitionClientBuilder;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.Optional;
 
 @Requires(property = "spec.name", value = "AwsClientFactorySpec")
 //tag::class[]
@@ -24,7 +21,7 @@ import java.util.Optional;
 public class RekognitionClientFactory extends AwsClientFactory<RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient> {
 
     protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                                       @Named("rekognition") Optional<AwsClientConfiguration> clientConfiguration) {
+                                       RekognitionConfigurationProperties clientConfiguration) {
         super(credentialsProvider, regionProvider, clientConfiguration);
     }
 

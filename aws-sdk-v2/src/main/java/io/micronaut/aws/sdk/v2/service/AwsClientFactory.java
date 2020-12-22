@@ -24,8 +24,6 @@ import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
 
-import java.util.Optional;
-
 /**
  * Abstract class that eases creation of AWS client factories.
  *
@@ -41,7 +39,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
-    protected final AwsClientConfiguration clientConfiguration;
+    protected final ClientConfigurationProperties clientConfiguration;
 
     /**
      * Constructor.
@@ -50,10 +48,10 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @param regionProvider The region provider
      */
     protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               Optional<AwsClientConfiguration> clientConfiguration) {
+                               ClientConfigurationProperties clientConfiguration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
-        this.clientConfiguration = clientConfiguration.orElse(AwsClientConfiguration.DEFAULT);
+        this.clientConfiguration = clientConfiguration;
     }
 
     /**

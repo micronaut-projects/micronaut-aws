@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Property
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import software.amazon.awssdk.core.client.config.SdkClientOption
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import spock.lang.Specification
@@ -36,11 +37,10 @@ class DynamoDbClientSpec extends Specification {
         when:
         DynamoDbClient client = applicationContext.getBean(DynamoDbClient)
         DynamoDbAsyncClient asyncClient = applicationContext.getBean(DynamoDbAsyncClient)
-        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("dynamo")).get()
+        ClientConfigurationProperties config = applicationContext.findBean(ClientConfigurationProperties, Qualifiers.byName("dynamo")).get()
 
         then:
-        client != null
-        asyncClient != null
-        config.endpointOverride.get() == URI.create("https://test.io")
+        client.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
+        asyncClient.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
     }
 }

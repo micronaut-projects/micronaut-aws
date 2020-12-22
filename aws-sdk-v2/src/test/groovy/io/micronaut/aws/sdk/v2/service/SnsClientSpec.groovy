@@ -4,6 +4,7 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Property
 import io.micronaut.inject.qualifiers.Qualifiers
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import software.amazon.awssdk.core.client.config.SdkClientOption
 import software.amazon.awssdk.services.sns.SnsAsyncClient
 import software.amazon.awssdk.services.sns.SnsClient
 import spock.lang.Specification
@@ -36,11 +37,10 @@ class SnsClientSpec extends Specification {
         when:
         SnsClient client = applicationContext.getBean(SnsClient)
         SnsAsyncClient asyncClient = applicationContext.getBean(SnsAsyncClient)
-        AwsClientConfiguration config = applicationContext.findBean(AwsClientConfiguration, Qualifiers.byName("sns")).get()
+        ClientConfigurationProperties config = applicationContext.findBean(ClientConfigurationProperties, Qualifiers.byName("sns")).get()
 
         then:
-        client != null
-        asyncClient != null
-        config.endpointOverride.get() == URI.create("https://test.io")
+        client.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
+        asyncClient.clientConfiguration.option(SdkClientOption.ENDPOINT) == URI.create("https//test.io")
     }
 }
