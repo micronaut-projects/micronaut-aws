@@ -48,10 +48,19 @@ public class MicronautLambdaHandler implements RequestHandler<AwsProxyRequest, A
     /**
      * Constructor.
      * @param applicationContextBuilder Application Context Builder
-     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaHandler}
+     * @throws ContainerInitializationException thrown initializing {@link MicronautLambdaHandler}
      */
     public MicronautLambdaHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
         this.handler = new MicronautLambdaContainerHandler(applicationContextBuilder);
+    }
+
+    /**
+     * Constructor.
+     * @param applicationContext Application Context (must be started already)
+     * @throws ContainerInitializationException thrown initializing {@link MicronautLambdaHandler}
+     */
+    public MicronautLambdaHandler(ApplicationContext applicationContext) throws ContainerInitializationException {
+        this.handler = new MicronautLambdaContainerHandler(applicationContext);
     }
 
     @Override

@@ -1,0 +1,51 @@
+To test Lambda handlers with JUnit 5, use the api:io.micronaut.function.aws.test.MicronautLambdaTest[]
+annotation which will configure a suitable `ApplicationContext` for use in a Lambda environment. The following
+dependency is needed:
+
+dependency:micronaut-function-aws-test[scope="testImplementation"]
+
+Testing subclasses of `MicronautRequestHandler` or `MicronautRequestStreamHandler` with this annotation requires
+both a no-arg and a one-arg constructor, the latter being used to inject the test application context:
+
+```java
+public class SampleRequestHandler extends MicronautRequestHandler<String, String> {
+    // Used in AWS
+    public SampleRequestHandler() {
+    }
+
+    // Used in tests
+    public SampleRequestHandler(ApplicationContext applicationContext) {
+        super(applicationContext);
+    }
+
+    @Override
+    public String execute(String input) {
+        return null;
+    }
+}
+```
+
+Example usage:
+
+```java
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+
+@MicronautLambdaTest
+public class RequestHandlerTest {
+    @Inject
+    private ApplicationContext context;
+
+    @Test
+    void testHandler() {
+        SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context);
+        // ...
+    }
+}
+```
+
+The annotation supports the same options as `@MicronautTest`, except that you may not specify a custom
+`ApplicationContextBuilder` class.

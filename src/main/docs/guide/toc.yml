@@ -27,6 +27,7 @@ lambda:
   customRuntimes: GraalVM and AWS Custom runtimes
   mdc: MDC Logging
   lambdaTutorials: Micronaut AWS Lambda Tutorials
+  lambdaTesting: Testing Lambda Handlers
 alexa:
   title: Alexa Support
   ssmlbuilder: SSML Builder

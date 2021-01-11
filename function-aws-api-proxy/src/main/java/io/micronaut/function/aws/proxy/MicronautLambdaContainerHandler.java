@@ -28,14 +28,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
-import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.AnnotationMetadata;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.core.util.ArgumentUtils;
-import io.micronaut.function.aws.MicronautLambdaContext;
+import io.micronaut.function.aws.LambdaApplicationContextBuilder;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
@@ -116,7 +115,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
-        this(new LambdaContainerState(), applicationContextBuilder);
+        this(new LambdaContainerState(), applicationContextBuilder, null);
     }
 
     /**
@@ -125,7 +124,16 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler() throws ContainerInitializationException {
-        this(new LambdaContainerState(), ApplicationContext.build());
+        this(new LambdaContainerState(), ApplicationContext.build(), null);
+    }
+
+    /**
+     * Constructor used to inject a preexisting {@link ApplicationContext}.
+     *
+     * @throws ContainerInitializationException The exception
+     */
+    public MicronautLambdaContainerHandler(ApplicationContext applicationContext) throws ContainerInitializationException {
+        this(new LambdaContainerState(), ApplicationContext.build(), applicationContext);
     }
 
     /**
@@ -137,7 +145,8 @@ public final class MicronautLambdaContainerHandler
      */
     private MicronautLambdaContainerHandler(
             LambdaContainerState lambdaContainerEnvironment,
-            ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
+            ApplicationContextBuilder applicationContextBuilder,
+            ApplicationContext applicationContext) throws ContainerInitializationException {
         super(
                 AwsProxyRequest.class,
                 AwsProxyResponse.class,
@@ -150,7 +159,13 @@ public final class MicronautLambdaContainerHandler
         ArgumentUtils.requireNonNull("applicationContextBuilder", applicationContextBuilder);
         this.lambdaContainerEnvironment = lambdaContainerEnvironment;
         this.applicationContextBuilder = applicationContextBuilder;
-        initialize();
+
+        if (applicationContext == null) {
+            initialize();
+        } else {
+            this.applicationContext = applicationContext;
+            initContainerState();
+        }
     }
 
     /**
@@ -160,7 +175,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException if the container couldn't be started
      */
     private MicronautLambdaContainerHandler(LambdaContainerState lambdaContainerEnvironment) throws ContainerInitializationException {
-        this(lambdaContainerEnvironment, ApplicationContext.build());
+        this(lambdaContainerEnvironment, ApplicationContext.build(), null);
     }
 
     /**
@@ -185,7 +200,7 @@ public final class MicronautLambdaContainerHandler
     @Deprecated
     public static MicronautLambdaContainerHandler getAwsProxyHandler(ApplicationContextBuilder builder) throws ContainerInitializationException {
         ArgumentUtils.requireNonNull("builder", builder);
-        return new MicronautLambdaContainerHandler(new LambdaContainerState(), builder);
+        return new MicronautLambdaContainerHandler(new LambdaContainerState(), builder, null);
     }
 
     /**
@@ -231,29 +246,9 @@ public final class MicronautLambdaContainerHandler
     public void initialize() throws ContainerInitializationException {
         Timer.start(TIMER_INIT);
         try {
-            this.applicationContext = applicationContextBuilder
-                    .environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
-                    .eagerInitSingletons(true)
-                    .eagerInitConfiguration(true)
-                    .build()
-                    .start();
-            this.lambdaContainerEnvironment.setApplicationContext(applicationContext);
-            this.lambdaContainerEnvironment.setJsonCodec(applicationContext.getBean(JsonMediaTypeCodec.class));
-            this.lambdaContainerEnvironment.setRouter(applicationContext.getBean(Router.class));
-
-            Optional<ObjectMapper> objectMapper = applicationContext.findBean(ObjectMapper.class, Qualifiers.byName("aws"));
-            if (objectMapper.isPresent()) {
-                lambdaContainerEnvironment.setObjectMapper(objectMapper.get());
-            } else {
-                lambdaContainerEnvironment.setObjectMapper(applicationContext.getBean(ObjectMapper.class));
-            }
-
-            this.requestArgumentSatisfier = new RequestArgumentSatisfier(
-                    applicationContext.getBean(RequestBinderRegistry.class)
-            );
-            this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
-            addConverters();
-
+            LambdaApplicationContextBuilder.setLambdaConfiguration(applicationContextBuilder);
+            this.applicationContext = applicationContextBuilder.build().start();
+            initContainerState();
         } catch (Exception e) {
             throw new ContainerInitializationException(
                     "Error starting Micronaut container: " + e.getMessage(),
@@ -261,6 +256,25 @@ public final class MicronautLambdaContainerHandler
             );
         }
         Timer.stop(TIMER_INIT);
+    }
+
+    protected void initContainerState() {
+        this.lambdaContainerEnvironment.setApplicationContext(applicationContext);
+        this.lambdaContainerEnvironment.setJsonCodec(applicationContext.getBean(JsonMediaTypeCodec.class));
+        this.lambdaContainerEnvironment.setRouter(applicationContext.getBean(Router.class));
+
+        Optional<ObjectMapper> objectMapper = applicationContext.findBean(ObjectMapper.class, Qualifiers.byName("aws"));
+        if (objectMapper.isPresent()) {
+            lambdaContainerEnvironment.setObjectMapper(objectMapper.get());
+        } else {
+            lambdaContainerEnvironment.setObjectMapper(applicationContext.getBean(ObjectMapper.class));
+        }
+
+        this.requestArgumentSatisfier = new RequestArgumentSatisfier(
+                applicationContext.getBean(RequestBinderRegistry.class)
+        );
+        this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
+        addConverters();
     }
 
     /**

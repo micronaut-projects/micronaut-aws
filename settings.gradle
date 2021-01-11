@@ -13,4 +13,4 @@ include 'function-aws-custom-runtime'
 include 'aws-common'
 include 'aws-sdk-v1'
 include 'aws-sdk-v2'
-
+include 'function-aws-test'
