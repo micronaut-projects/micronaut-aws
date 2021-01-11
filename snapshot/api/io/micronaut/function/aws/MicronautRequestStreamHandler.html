@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.io.micronaut.function.executor.AbstractExecutor">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -98,10 +98,15 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li>io.micronaut.function.executor.AbstractExecutor&lt;C&gt;</li>
+<li>
+<ul class="inheritance">
 <li>io.micronaut.function.executor.StreamFunctionExecutor&lt;com.amazonaws.services.lambda.runtime.Context&gt;</li>
 <li>
 <ul class="inheritance">
 <li>io.micronaut.function.aws.MicronautRequestStreamHandler</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -138,17 +143,13 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <!--   -->
 </a>
 <h3>Field Summary</h3>
-<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
-<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colLast" scope="col">Field and Description</th>
-</tr>
-<tr class="altColor">
-<td class="colFirst"><code>protected io.micronaut.context.ApplicationContext</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#applicationContext">applicationContext</a></span></code>&nbsp;</td>
-</tr>
-</table>
+<ul class="blockList">
+<li class="blockList"><a name="fields.inherited.from.class.io.micronaut.function.executor.AbstractExecutor">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;io.micronaut.function.executor.AbstractExecutor</h3>
+<code>applicationContext</code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a name="fields.inherited.from.class.io.micronaut.function.aws.MicronautLambdaContext">
 <!--   -->
@@ -210,17 +211,8 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#newApplicationContextBuilder--">newApplicationContextBuilder</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code>protected io.micronaut.inject.ExecutableMethod&lt;java.lang.Object,java.lang.Object&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunction-io.micronaut.function.LocalFunctionRegistry-java.lang.String-">resolveFunction</a></span>(io.micronaut.function.LocalFunctionRegistry&nbsp;arg0,
-               java.lang.String&nbsp;arg1)</code>&nbsp;</td>
-</tr>
-<tr id="i4" class="altColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#resolveFunctionName-io.micronaut.context.env.Environment-">resolveFunctionName</a></span>(io.micronaut.context.env.Environment&nbsp;env)</code>&nbsp;</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>protected io.micronaut.context.env.Environment</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#startEnvironment-io.micronaut.context.ApplicationContext-">startEnvironment</a></span>(io.micronaut.context.ApplicationContext&nbsp;arg0)</code>&nbsp;</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -229,6 +221,13 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 </a>
 <h3>Methods inherited from class&nbsp;io.micronaut.function.executor.StreamFunctionExecutor</h3>
 <code>execute, execute</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.io.micronaut.function.executor.AbstractExecutor">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;io.micronaut.function.executor.AbstractExecutor</h3>
+<code>close, getApplicationContext, resolveFunction, startEnvironment</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a name="methods.inherited.from.class.java.lang.Object">
@@ -245,23 +244,6 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
-<!-- ============ FIELD DETAIL =========== -->
-<ul class="blockList">
-<li class="blockList"><a name="field.detail">
-<!--   -->
-</a>
-<h3>Field Detail</h3>
-<a name="applicationContext">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>applicationContext</h4>
-<pre>protected&nbsp;io.micronaut.context.ApplicationContext applicationContext</pre>
-</li>
-</ul>
-</li>
-</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -326,6 +308,10 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <li class="blockList">
 <h4>buildApplicationContext</h4>
 <pre>protected&nbsp;io.micronaut.context.ApplicationContext&nbsp;buildApplicationContext(com.amazonaws.services.lambda.runtime.Context&nbsp;context)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>buildApplicationContext</code>&nbsp;in class&nbsp;<code>io.micronaut.function.executor.AbstractExecutor&lt;com.amazonaws.services.lambda.runtime.Context&gt;</code></dd>
+</dl>
 </li>
 </ul>
 <a name="newApplicationContextBuilder--">
@@ -336,34 +322,23 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <h4>newApplicationContextBuilder</h4>
 <pre>@Nonnull
 protected&nbsp;io.micronaut.context.ApplicationContextBuilder&nbsp;newApplicationContextBuilder()</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>newApplicationContextBuilder</code>&nbsp;in class&nbsp;<code>io.micronaut.function.executor.AbstractExecutor&lt;com.amazonaws.services.lambda.runtime.Context&gt;</code></dd>
+</dl>
 </li>
 </ul>
 <a name="resolveFunctionName-io.micronaut.context.env.Environment-">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>resolveFunctionName</h4>
 <pre>protected&nbsp;java.lang.String&nbsp;resolveFunctionName(io.micronaut.context.env.Environment&nbsp;env)</pre>
-</li>
-</ul>
-<a name="resolveFunction-io.micronaut.function.LocalFunctionRegistry-java.lang.String-">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>resolveFunction</h4>
-<pre>protected&nbsp;io.micronaut.inject.ExecutableMethod&lt;java.lang.Object,java.lang.Object&gt;&nbsp;resolveFunction(io.micronaut.function.LocalFunctionRegistry&nbsp;arg0,
-                                                                                                  java.lang.String&nbsp;arg1)</pre>
-</li>
-</ul>
-<a name="startEnvironment-io.micronaut.context.ApplicationContext-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>startEnvironment</h4>
-<pre>protected&nbsp;io.micronaut.context.env.Environment&nbsp;startEnvironment(io.micronaut.context.ApplicationContext&nbsp;arg0)</pre>
+<dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>resolveFunctionName</code>&nbsp;in class&nbsp;<code>io.micronaut.function.executor.AbstractExecutor&lt;com.amazonaws.services.lambda.runtime.Context&gt;</code></dd>
+</dl>
 </li>
 </ul>
 </li>
@@ -419,13 +394,13 @@ protected&nbsp;io.micronaut.context.ApplicationContextBuilder&nbsp;newApplicatio
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li><a href="#fields.inherited.from.class.io.micronaut.function.executor.AbstractExecutor">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
