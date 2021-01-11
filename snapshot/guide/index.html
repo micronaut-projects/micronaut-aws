@@ -144,6 +144,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>7.10</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>7.11</strong><span>Testing Lambda Handlers</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-ssmlbuilder"><a href="#ssmlbuilder"><strong>8.1</strong><span>SSML Builder</span></a></div>
@@ -1838,6 +1840,91 @@ When a new instance handles its first request, the response time increases, whic
 </tr>
 </tbody>
 </table>
+
+<h2 id="lambdaTesting"><a class="anchor" href="#lambdaTesting"></a>7.11 Testing Lambda Handlers</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
+/src/main/docs/guide/lambda/lambdaTesting.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To test Lambda handlers with JUnit 5, use the <a href="../api/io/micronaut/function/aws/test/MicronautLambdaTest.html">MicronautLambdaTest</a>
+annotation which will configure a suitable <code>ApplicationContext</code> for use in a Lambda environment. The following
+dependency is needed:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">testImplementation(<span class="hljs-string">"io.micronaut:micronaut-function-aws-test")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-aws-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Testing subclasses of <code>MicronautRequestHandler</code> or <code>MicronautRequestStreamHandler</code> with this annotation requires
+both a no-arg and a one-arg constructor, the latter being used to inject the test application context:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SampleRequestHandler extends MicronautRequestHandler&lt;String, String&gt; {
+    // Used in AWS
+    public SampleRequestHandler() {
+    }
+
+    // Used in tests
+    public SampleRequestHandler(ApplicationContext applicationContext) {
+        super(applicationContext);
+    }
+
+    @Override
+    public String execute(String input) {
+        return null;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example usage:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+
+@MicronautLambdaTest
+public class RequestHandlerTest {
+    @Inject
+    private ApplicationContext context;
+
+    @Test
+    void testHandler() {
+        SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context);
+        // ...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The annotation supports the same options as <code>@MicronautTest</code>, except that you may not specify a custom
+<code>ApplicationContextBuilder</code> class.</p>
+</div>
 
 <h1 id="alexa"><a class="anchor" href="#alexa"></a>8 Alexa Support</h1>
 

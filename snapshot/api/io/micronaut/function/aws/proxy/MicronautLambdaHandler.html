@@ -164,6 +164,11 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;com.amazonaws
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaHandler.html#MicronautLambdaHandler-io.micronaut.context.ApplicationContext-">MicronautLambdaHandler</a></span>(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code>
+<div class="block">Constructor.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaHandler.html#MicronautLambdaHandler-io.micronaut.context.ApplicationContextBuilder-">MicronautLambdaHandler</a></span>(io.micronaut.context.ApplicationContextBuilder&nbsp;applicationContextBuilder)</code>
 <div class="block">Constructor.</div>
 </td>
@@ -253,7 +258,7 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;com.amazonaws
 <a name="MicronautLambdaHandler-io.micronaut.context.ApplicationContextBuilder-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>MicronautLambdaHandler</h4>
 <pre>public&nbsp;MicronautLambdaHandler(io.micronaut.context.ApplicationContextBuilder&nbsp;applicationContextBuilder)
@@ -263,7 +268,24 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;com.amazonaws
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>applicationContextBuilder</code> - Application Context Builder</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - thrown intializing <a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaHandler.html" title="class in io.micronaut.function.aws.proxy"><code>MicronautLambdaHandler</code></a></dd>
+<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - thrown initializing <a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaHandler.html" title="class in io.micronaut.function.aws.proxy"><code>MicronautLambdaHandler</code></a></dd>
+</dl>
+</li>
+</ul>
+<a name="MicronautLambdaHandler-io.micronaut.context.ApplicationContext-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>MicronautLambdaHandler</h4>
+<pre>public&nbsp;MicronautLambdaHandler(io.micronaut.context.ApplicationContext&nbsp;applicationContext)
+                       throws com.amazonaws.serverless.exceptions.ContainerInitializationException</pre>
+<div class="block">Constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>applicationContext</code> - Application Context (must be started already)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - thrown initializing <a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaHandler.html" title="class in io.micronaut.function.aws.proxy"><code>MicronautLambdaHandler</code></a></dd>
 </dl>
 </li>
 </ul>

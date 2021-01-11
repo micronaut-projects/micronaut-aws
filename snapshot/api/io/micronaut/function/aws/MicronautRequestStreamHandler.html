@@ -171,7 +171,13 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 </tr>
 <tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#MicronautRequestStreamHandler--">MicronautRequestStreamHandler</a></span>()</code>
-<div class="block">Default constructor.</div>
+<div class="block">Default constructor; will initialize a suitable <code>ApplicationContext</code> for
+ Lambda deployment.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../io/micronaut/function/aws/MicronautRequestStreamHandler.html#MicronautRequestStreamHandler-io.micronaut.context.ApplicationContext-">MicronautRequestStreamHandler</a></span>(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code>
+<div class="block">Constructor used to inject a preexisting <code>ApplicationContext</code>.</div>
 </td>
 </tr>
 </table>
@@ -265,11 +271,26 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <a name="MicronautRequestStreamHandler--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>MicronautRequestStreamHandler</h4>
 <pre>public&nbsp;MicronautRequestStreamHandler()</pre>
-<div class="block">Default constructor.</div>
+<div class="block">Default constructor; will initialize a suitable <code>ApplicationContext</code> for
+ Lambda deployment.</div>
+</li>
+</ul>
+<a name="MicronautRequestStreamHandler-io.micronaut.context.ApplicationContext-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>MicronautRequestStreamHandler</h4>
+<pre>public&nbsp;MicronautRequestStreamHandler(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</pre>
+<div class="block">Constructor used to inject a preexisting <code>ApplicationContext</code>.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>applicationContext</code> - the application context</dd>
+</dl>
 </li>
 </ul>
 </li>

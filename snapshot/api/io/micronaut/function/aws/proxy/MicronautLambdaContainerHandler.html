@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":41,"i5":41,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":41,"i5":41,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -164,6 +164,11 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#MicronautLambdaContainerHandler-io.micronaut.context.ApplicationContext-">MicronautLambdaContainerHandler</a></span>(io.micronaut.context.ApplicationContext&nbsp;applicationContext)</code>
+<div class="block">Constructor used to inject a preexisting <code>ApplicationContext</code>.</div>
+</td>
+</tr>
+<tr class="altColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#MicronautLambdaContainerHandler-io.micronaut.context.ApplicationContextBuilder-">MicronautLambdaContainerHandler</a></span>(io.micronaut.context.ApplicationContextBuilder&nbsp;applicationContextBuilder)</code>
 <div class="block">Default constructor.</div>
 </td>
@@ -233,24 +238,28 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 </td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#initContainerState--">initContainerState</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#initialize--">initialize</a></span>()</code>
 <div class="block">Initialize the container.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectMapper</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#objectMapper--">objectMapper</a></span>()</code>
 <div class="block">The object mapper.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectReader</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#readerFor-java.lang.Class-">readerFor</a></span>(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyRequest&gt;&nbsp;requestClass)</code>
 <div class="block">Gets a reader for the given request class.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>protected com.fasterxml.jackson.databind.ObjectWriter</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautLambdaContainerHandler.html#writerFor-java.lang.Class-">writerFor</a></span>(java.lang.Class&lt;com.amazonaws.serverless.proxy.model.AwsProxyResponse&gt;&nbsp;responseClass)</code>
 <div class="block">Gets a writer for the given response class.</div>
@@ -305,12 +314,27 @@ implements io.micronaut.context.ApplicationContextProvider, java.io.Closeable, j
 <a name="MicronautLambdaContainerHandler--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>MicronautLambdaContainerHandler</h4>
 <pre>public&nbsp;MicronautLambdaContainerHandler()
                                 throws com.amazonaws.serverless.exceptions.ContainerInitializationException</pre>
 <div class="block">Default constructor.</div>
+<dl>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - The exception</dd>
+</dl>
+</li>
+</ul>
+<a name="MicronautLambdaContainerHandler-io.micronaut.context.ApplicationContext-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>MicronautLambdaContainerHandler</h4>
+<pre>public&nbsp;MicronautLambdaContainerHandler(io.micronaut.context.ApplicationContext&nbsp;applicationContext)
+                                throws com.amazonaws.serverless.exceptions.ContainerInitializationException</pre>
+<div class="block">Constructor used to inject a preexisting <code>ApplicationContext</code>.</div>
 <dl>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - The exception</dd>
@@ -472,6 +496,15 @@ public static&nbsp;<a href="../../../../../io/micronaut/function/aws/proxy/Micro
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>com.amazonaws.serverless.exceptions.ContainerInitializationException</code> - when an error occurs</dd>
 </dl>
+</li>
+</ul>
+<a name="initContainerState--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>initContainerState</h4>
+<pre>protected&nbsp;void&nbsp;initContainerState()</pre>
 </li>
 </ul>
 <a name="addConverters--">
