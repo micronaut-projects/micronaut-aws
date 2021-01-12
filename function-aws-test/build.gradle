@@ -6,4 +6,6 @@ dependencies {
     api "io.micronaut:micronaut-function:$micronautVersion"
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+
+    testRuntimeOnly project(":aws-parameter-store")
 }
