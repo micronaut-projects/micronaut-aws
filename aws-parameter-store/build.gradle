@@ -3,7 +3,7 @@ dependencies {
     annotationProcessor "io.micronaut:micronaut-graal"
     annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
 
-    api 'io.micronaut.discovery:micronaut-discovery-client:2.2.0'
+    api 'io.micronaut.discovery:micronaut-discovery-client:2.2.1'
     api project(":aws-route53")
     api project(":aws-sdk-v1")
     implementation 'com.amazonaws:aws-java-sdk-ssm:1.11.934'
