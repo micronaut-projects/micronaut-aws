@@ -37,7 +37,7 @@ public class MicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<AwsPr
         try {
             return new MicronautLambdaHandler(createApplicationContextBuilderWithArgs(args));
         } catch (ContainerInitializationException e) {
-            throw new ConfigurationException("Exception thrown instantiating MicronautLambdaRuntimeHandler");
+            throw new ConfigurationException("Exception thrown instantiating MicronautLambdaRuntimeHandler", e);
         }
     }
 
