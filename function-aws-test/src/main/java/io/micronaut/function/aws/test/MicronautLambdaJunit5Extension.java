@@ -15,63 +15,37 @@
  */
 package io.micronaut.function.aws.test;
 
-import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import io.micronaut.test.annotation.MicronautTestValue;
-import io.micronaut.test.context.TestContext;
 import io.micronaut.test.extensions.junit5.MicronautJunit5Extension;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestInstantiationException;
 import org.junit.platform.commons.support.AnnotationSupport;
-
-import java.util.Optional;
 
 /**
  * Extension for testing Lambda environments with Junit 5.
  *
- * @author graemerocher
- * @since 1.0
+ * @author ttzn
+ * @since 2.3.0
  */
 public class MicronautLambdaJunit5Extension extends MicronautJunit5Extension {
     private static final ExtensionContext.Namespace NAMESPACE =
             ExtensionContext.Namespace.create(MicronautLambdaJunit5Extension.class);
 
     @Override
-    public void beforeAll(ExtensionContext extensionContext) throws Exception {
-        final Class<?> testClass = extensionContext.getRequiredTestClass();
-        MicronautTestValue micronautTestValue = AnnotationSupport
-                        .findAnnotation(testClass, MicronautLambdaTest.class)
-                        .map(this::buildValueObject)
-                        .orElse(null);
-        beforeClass(extensionContext, testClass, micronautTestValue);
-        getStore(extensionContext).put(ApplicationContext.class, applicationContext);
-        if (specDefinition != null) {
-            TestInstance ti = AnnotationSupport.findAnnotation(testClass, TestInstance.class).orElse(null);
-            if (ti != null && ti.value() == TestInstance.Lifecycle.PER_CLASS) {
-                Object testInstance = extensionContext.getRequiredTestInstance();
-                applicationContext.inject(testInstance);
-            }
-        }
-        beforeTestClass(buildContext(extensionContext));
+    protected void postProcessBuilder(ApplicationContextBuilder builder) {
+        LambdaApplicationContextBuilder.setLambdaConfiguration(builder);
     }
 
-    private static ExtensionContext.Store getStore(ExtensionContext context) {
-        return context.getRoot().getStore(NAMESPACE);
+    @Override
+    protected MicronautTestValue buildMicronautTestValue(Class<?> testClass) {
+        return AnnotationSupport
+                .findAnnotation(testClass, MicronautLambdaTest.class)
+                .map(this::buildValueObject)
+                .orElse(null);
     }
 
-    private TestContext buildContext(ExtensionContext context) {
-        return new TestContext(
-                applicationContext,
-                context.getTestClass().orElse(null),
-                context.getTestMethod().orElse(null),
-                context.getTestInstance().orElse(null),
-                context.getExecutionException().orElse(null));
-    }
-
-    @SuppressWarnings("unchecked")
     private MicronautTestValue buildValueObject(MicronautLambdaTest micronautTest) {
         return new MicronautTestValue(
                 micronautTest.application(),
@@ -81,36 +55,18 @@ public class MicronautLambdaJunit5Extension extends MicronautJunit5Extension {
                 micronautTest.rollback(),
                 micronautTest.transactional(),
                 micronautTest.rebuildContext(),
-                new Class[]{ LambdaApplicationContextBuilder.class },
+                micronautTest.contextBuilder(),
                 micronautTest.transactionMode(),
                 micronautTest.startApplication());
     }
 
     @Override
-    public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext extensionContext) {
-        final Optional<Object> testInstance = extensionContext.getTestInstance();
-        if (testInstance.isPresent()) {
+    protected boolean hasExpectedAnnotations(Class<?> testClass) {
+        return AnnotationSupport.isAnnotated(testClass, MicronautLambdaTest.class);
+    }
 
-            final Class<?> requiredTestClass = extensionContext.getRequiredTestClass();
-            if (applicationContext.containsBean(requiredTestClass)) {
-                return ConditionEvaluationResult.enabled("Test bean active");
-            } else {
-
-                final boolean hasBeanDefinition = isTestSuiteBeanPresent(requiredTestClass);
-                if (!hasBeanDefinition) {
-                    throw new TestInstantiationException(MISCONFIGURED_MESSAGE);
-                } else {
-                    return ConditionEvaluationResult.disabled(DISABLED_MESSAGE);
-                }
-
-            }
-        } else {
-            final Class<?> testClass = extensionContext.getRequiredTestClass();
-            if (AnnotationSupport.isAnnotated(testClass, MicronautLambdaTest.class)) {
-                return ConditionEvaluationResult.enabled("Test bean active");
-            } else {
-                return ConditionEvaluationResult.disabled(DISABLED_MESSAGE);
-            }
-        }
+    @Override
+    protected ExtensionContext.Store getStore(ExtensionContext context) {
+        return context.getRoot().getStore(NAMESPACE);
     }
 }

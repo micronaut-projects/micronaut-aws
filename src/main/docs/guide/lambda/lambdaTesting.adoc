@@ -47,5 +47,5 @@ public class RequestHandlerTest {
 }
 ```
 
-The annotation supports the same options as `@MicronautTest`, except that you may not specify a custom
-`ApplicationContextBuilder` class.
+The annotation supports the same options as `@MicronautTest`. Please note that regardless of whether or not you provide
+a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).

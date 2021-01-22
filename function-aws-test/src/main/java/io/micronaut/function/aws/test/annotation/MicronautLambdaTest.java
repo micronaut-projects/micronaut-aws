@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.test.annotation;
 
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.function.aws.test.MicronautLambdaJunit5Extension;
@@ -28,7 +29,7 @@ import java.lang.annotation.*;
  * Annotation that can be applied to any JUnit 5 test to enable testing
  * AWS Lambda handlers with a pre-configured ApplicationContext. Based on
  * {@link io.micronaut.test.extensions.junit5.annotation.MicronautTest}
- * and supports the same options except contextBuilder.
+ * and supports the same options.
  *
  * @author ttzn
  * @since 2.3.0
@@ -80,6 +81,14 @@ public @interface MicronautLambdaTest {
      * @return true if the application context should be rebuilt for each test method
      */
     boolean rebuildContext() default false;
+
+    /**
+     * The application context builder to use to construct the context. Note that some builder
+     * methods may be called to set Lambda-specific configuration (e.g. eager initialization &
+     * additional environments).
+     * @return The builder
+     */
+    Class<? extends ApplicationContextBuilder>[] contextBuilder() default {};
 
     /**
      * The transaction mode describing how transactions should be handled for each test.
