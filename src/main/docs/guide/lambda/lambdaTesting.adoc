@@ -2,7 +2,7 @@ To test Lambda handlers with JUnit 5, use the api:io.micronaut.function.aws.test
 annotation which will configure a suitable `ApplicationContext` for use in a Lambda environment. The following
 dependency is needed:
 
-dependency:micronaut-function-aws-test[scope="testImplementation"]
+dependency:micronaut-function-aws-test[scope="testImplementation",groupId="io.micronaut.aws"]
 
 Testing subclasses of `MicronautRequestHandler` or `MicronautRequestStreamHandler` with this annotation requires
 both a no-arg and a one-arg constructor, the latter being used to inject the test application context:
