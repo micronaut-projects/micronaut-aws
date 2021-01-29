@@ -101,7 +101,7 @@ public @interface <span class="memberNameLabel">MicronautLambdaTest</span></pre>
 <div class="block">Annotation that can be applied to any JUnit 5 test to enable testing
  AWS Lambda handlers with a pre-configured ApplicationContext. Based on
  <code>MicronautTest</code>
- and supports the same options except contextBuilder.</div>
+ and supports the same options.</div>
 <dl>
 <dt><span class="simpleTagLabel">Since:</span></dt>
 <dd>2.3.0</dd>
@@ -131,44 +131,50 @@ public @interface <span class="memberNameLabel">MicronautLambdaTest</span></pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#application--">application</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>java.lang.String[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#environments--">environments</a></span></code>&nbsp;</td>
+<td class="colFirst"><code>java.lang.Class&lt;? extends io.micronaut.context.ApplicationContextBuilder&gt;[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#contextBuilder--">contextBuilder</a></span></code>
+<div class="block">The application context builder to use to construct the context.</div>
+</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>java.lang.String[]</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#packages--">packages</a></span></code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#environments--">environments</a></span></code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>java.lang.String[]</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#packages--">packages</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
 <td class="colFirst"><code>java.lang.String[]</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#propertySources--">propertySources</a></span></code>
 <div class="block">One or many references to classpath.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#rebuildContext--">rebuildContext</a></span></code>
 <div class="block">Whether to rebuild the application context before each test method.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#rollback--">rollback</a></span></code>
 <div class="block">Whether to rollback (if possible) any data access code between each test execution.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#startApplication--">startApplication</a></span></code>
 <div class="block">Whether to start <code>EmbeddedApplication</code>.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#transactional--">transactional</a></span></code>
 <div class="block">Allow disabling or enabling of automatic transaction wrapping.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>io.micronaut.test.annotation.TransactionMode</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html#transactionMode--">transactionMode</a></span></code>
 <div class="block">The transaction mode describing how transactions should be handled for each test.</div>
@@ -327,6 +333,29 @@ public @interface <span class="memberNameLabel">MicronautLambdaTest</span></pre>
 <dl>
 <dt>Default:</dt>
 <dd>false</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="contextBuilder--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>contextBuilder</h4>
+<pre>public abstract&nbsp;java.lang.Class&lt;? extends io.micronaut.context.ApplicationContextBuilder&gt;[]&nbsp;contextBuilder</pre>
+<div class="block">The application context builder to use to construct the context. Note that some builder
+ methods may be called to set Lambda-specific configuration (e.g. eager initialization &
+ additional environments).</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The builder</dd>
+</dl>
+<dl>
+<dt>Default:</dt>
+<dd>{}</dd>
 </dl>
 </li>
 </ul>
