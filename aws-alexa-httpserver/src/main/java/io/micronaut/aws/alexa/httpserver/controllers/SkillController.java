@@ -106,10 +106,7 @@ public class SkillController {
             }
 
         } catch (IOException e) {
-
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Unable to parse a byte array to RequestEnvelope");
-            }
+            LOG.error("Unable to parse a byte array to RequestEnvelope");
         }
         return HttpResponse.badRequest();
     }

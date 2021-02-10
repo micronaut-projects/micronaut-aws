@@ -41,9 +41,7 @@ public class SecurityExceptionHandler implements ExceptionHandler<SecurityExcept
 
     @Override
     public HttpResponse handle(HttpRequest request, SecurityException ex) {
-        if (LOG.isErrorEnabled()) {
-            LOG.error("Incoming request failed verification 400", ex);
-        }
+        LOG.error("Incoming request failed verification 400", ex);
         JsonError error = new JsonError(ex.getMessage());
         error.link(Link.SELF, Link.of(request.getUri()));
         return HttpResponse.badRequest(error);

@@ -124,7 +124,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      **/
     public void run(String... args) throws MalformedURLException {
         final URL runtimeApiURL = lookupRuntimeApiEndpoint();
-        logn(LogLevel.DEBUG, "runtime endpoint: " + runtimeApiURL.toString());
+        logn(LogLevel.DEBUG, "runtime endpoint: ", runtimeApiURL);
         final Predicate<URL> loopUntil = (url) -> true;
         startRuntimeApiEventLoop(runtimeApiURL, loopUntil, args);
     }
@@ -206,12 +206,12 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     @Nullable
     protected Object createEnvironmentHandler() {
         String handler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
-        logn(LogLevel.DEBUG, "Handler: " + handler);
+        logn(LogLevel.DEBUG, "Handler: ", handler);
         if (handler != null) {
             Optional<Class> handlerClassOptional = parseHandlerClass(handler);
-            logn(LogLevel.WARN, "No handler Class parsed for " + handler);
+            logn(LogLevel.WARN, "No handler Class parsed for ", handler);
             if (handlerClassOptional.isPresent()) {
-                logn(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection");
+                log(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection\n");
                 Class handlerClass = handlerClassOptional.get();
                 final BeanIntrospection introspection = BeanIntrospection.getIntrospection(handlerClass);
                 return introspection.instantiate();
@@ -243,11 +243,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     @Nullable
     protected ResponseType createResponse(HandlerResponseType handlerResponse) {
         if (handlerResponseType == responseType) {
-            logn(LogLevel.TRACE, "HandlerResponseType and ResponseType are identical");
+            log(LogLevel.TRACE, "HandlerResponseType and ResponseType are identical\n");
             return (ResponseType) handlerResponse;
 
         } else if (responseType == APIGatewayProxyResponseEvent.class) {
-            logn(LogLevel.TRACE, "response type is APIGatewayProxyResponseEvent");
+            log(LogLevel.TRACE, "response type is APIGatewayProxyResponseEvent\n");
             String json = serializeAsJsonString(handlerResponse);
             if (json != null) {
                 return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
@@ -273,7 +273,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         response.setHeaders(headers);
         response.setBody(body);
         response.setStatusCode(status.getCode());
-        logn(LogLevel.TRACE, "response: " + status.getCode() + " content type: " + headers.get(HttpHeaders.CONTENT_TYPE) + " message " + body);
+        logn(LogLevel.TRACE, "response: ", status.getCode(), " content type: ", headers.get(HttpHeaders.CONTENT_TYPE), " message ", body);
         return response;
     }
 
@@ -291,11 +291,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
         } else if (request instanceof APIGatewayProxyRequestEvent) {
-            logn(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent");
+            log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
             String content = ((APIGatewayProxyRequestEvent) request).getBody();
             return valueFromContent(content, handlerRequestType);
         }
-        logn(LogLevel.TRACE, "createHandlerRequest return null");
+        log(LogLevel.TRACE, "createHandlerRequest return null\n");
         return null;
     }
 
@@ -330,7 +330,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     final HttpResponse<RequestType> response = blockingHttpClient.exchange(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI, requestType);
                     final RequestType request = response.body();
                     if (request != null) {
-                        logn(LogLevel.DEBUG, "request body " + request.toString());
+                        logn(LogLevel.DEBUG, "request body ", request);
 
                         HandlerRequestType handlerRequest = createHandlerRequest(request);
                         final HttpHeaders headers = response.getHeaders();
@@ -338,26 +338,26 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
 
                         final Context context = new RuntimeContext(headers);
                         final String requestId = context.getAwsRequestId();
-                        logn(LogLevel.DEBUG, "request id " + requestId + " found");
+                        logn(LogLevel.DEBUG, "request id ", requestId, " found");
                         try {
                             if (StringUtils.isNotEmpty(requestId)) {
-                                logn(LogLevel.TRACE, "invoking handler");
+                                log(LogLevel.TRACE, "invoking handler\n");
                                 HandlerResponseType handlerResponse = null;
                                 if (handler instanceof RequestHandler) {
                                     handlerResponse = ((RequestHandler<HandlerRequestType, HandlerResponseType>) handler).handleRequest(handlerRequest, context);
                                 }
-                                logn(LogLevel.TRACE, "handler response received");
+                                log(LogLevel.TRACE, "handler response received\n");
                                 final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
-                                logn(LogLevel.TRACE, "sending function response");
+                                log(LogLevel.TRACE, "sending function response\n");
                                 endpointClient.exchange(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)).blockingSubscribe();
                             } else {
-                                logn(LogLevel.WARN, "request id is empty");
+                                log(LogLevel.WARN, "request id is empty\n");
                             }
 
                         } catch (Throwable e) {
                             final StringWriter sw = new StringWriter();
                             e.printStackTrace(new PrintWriter(sw));
-                            logn(LogLevel.WARN, "Invocation with requestId [" + requestId + "] failed: " + e.getMessage() + sw.toString());
+                            logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", e.getMessage(), sw);
                             try {
                                 blockingHttpClient.exchange(invocationErrorRequest(requestId, e.getMessage(), null, null));
 
@@ -377,7 +377,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             }
         } catch (Throwable e) {
             e.printStackTrace();
-            logn(LogLevel.ERROR, "Request loop failed with: " + e.getMessage());
+            logn(LogLevel.ERROR, "Request loop failed with: ", e.getMessage());
             reportInitializationError(runtimeApiURL, e);
         }
     }
@@ -390,7 +390,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     @SuppressWarnings("EmptyBlock")
     protected void propagateTraceId(HttpHeaders headers) {
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
-        logn(LogLevel.DEBUG, "Trace id: " + traceId + "\n");
+        logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
             //TODO Set Env.variable _X_AMZN_TRACE_ID with value traceId
         }
@@ -472,15 +472,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param msg Message to log
      */
     protected void log(LogLevel level, String msg) {
-        boolean shouldLog = false;
-        if (level == LogLevel.ALL) {
-            shouldLog = true;
-        } else if (level == LogLevel.OFF || level == LogLevel.NOT_SPECIFIED) {
-            shouldLog = false;
-        } else if (getLogLevel().ordinal() <= level.ordinal()) {
-            shouldLog = true;
-        }
-        if (shouldLog) {
+        if (shouldLog(level)) {
             LambdaRuntime.getLogger().log(msg);
         }
     }
@@ -499,7 +491,34 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param msg Message to log
      */
     protected void logn(LogLevel logLevel, String msg) {
-        log(logLevel, msg + "\n");
+        logn(logLevel, msg, '\n');
+    }
+
+    /**
+     * @param level Log Level
+     * @param messageParts One or more message parts to concatenate and log if enabled
+     */
+    protected void logn(LogLevel level, Object... messageParts) {
+        if (!shouldLog(level)) {
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Object part : messageParts) {
+            sb.append(part);
+        }
+        sb.append('\n');
+        LambdaRuntime.getLogger().log(sb.toString());
+    }
+
+    protected boolean shouldLog(LogLevel level) {
+        if (level == LogLevel.ALL) {
+            return true;
+        }
+        if (level == LogLevel.OFF || level == LogLevel.NOT_SPECIFIED) {
+            return false;
+        }
+        return getLogLevel().ordinal() <= level.ordinal();
     }
 
     private URL lookupRuntimeApiEndpoint() throws MalformedURLException {

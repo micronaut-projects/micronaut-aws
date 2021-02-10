@@ -111,16 +111,12 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
             try {
                 ec2InstanceMetadata.setLocalHostname(readEc2MetadataUrl(new URL(ec2InstanceMetadataURL + EC2MetadataKeys.localHostname.getName()), CONNECTION_TIMEOUT_IN_MILLS, READ_TIMEOUT_IN_MILLS));
             } catch (IOException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("Error getting local hostname from url:" + ec2InstanceMetadataURL + EC2MetadataKeys.localHostname.name(), e);
-                }
+                LOG.error("Error getting local hostname from url:{}{}", ec2InstanceMetadataURL, EC2MetadataKeys.localHostname.name(), e);
             }
             try {
                 ec2InstanceMetadata.setPublicHostname(readEc2MetadataUrl(new URL(ec2InstanceMetadataURL + EC2MetadataKeys.publicHostname.getName()), CONNECTION_TIMEOUT_IN_MILLS, READ_TIMEOUT_IN_MILLS));
             } catch (IOException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("error getting public host name from:" + ec2InstanceMetadataURL + EC2MetadataKeys.publicHostname.name(), e);
-                }
+                LOG.error("error getting public host name from:{}{}", ec2InstanceMetadataURL, EC2MetadataKeys.publicHostname.name(), e);
             }
             // build up network info
             try {
@@ -139,14 +135,12 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
                 ec2InstanceMetadata.setInterfaces(new ArrayList<>());
                 ec2InstanceMetadata.getInterfaces().add(networkInterface);
             } catch (IOException e) {
-                LOG.error("error getting public host name from:" + ec2InstanceMetadataURL + EC2MetadataKeys.publicHostname.getName(), e);
+                LOG.error("error getting public host name from:{}{}", ec2InstanceMetadataURL, EC2MetadataKeys.publicHostname.getName(), e);
             }
 
             Map<?, ?> metadata = objectMapper.convertValue(ec2InstanceMetadata, Map.class);
             populateMetadata(ec2InstanceMetadata, metadata);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("EC2 Metadata found:" + ec2InstanceMetadata.getMetadata().toString());
-            }
+            LOG.debug("EC2 Metadata found:{}", ec2InstanceMetadata.getMetadata());
             //TODO make individual calls for building network interfaces.. required recursive http calls for all mac addresses
         } catch (IOException e) {
             LOG.error("Error reading ec2 metadata url", e);

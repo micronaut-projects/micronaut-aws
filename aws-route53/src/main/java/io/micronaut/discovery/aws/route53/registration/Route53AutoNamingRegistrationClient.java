@@ -142,9 +142,7 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
             if (instance.getMetadata().contains("instanceId")) {
                 opt = Optional.of(instance.getMetadata().asMap().get("instanceId"));
             } else {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("Cannot determine the instance ID. Are you sure you are running on AWS EC2?");
-                }
+                LOG.error("Cannot determine the instance ID. Are you sure you are running on AWS EC2?");
             }
         }
 
@@ -166,7 +164,7 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
 
             if (status.getOperational().isPresent() && !status.getOperational().get()) {
                 getDiscoveryClient().deregisterInstance(new DeregisterInstanceRequest().withInstanceId(instanceId).withServiceId(route53AutoRegistrationConfiguration.getAwsServiceId()));
-                LOG.info("Health status is non operational, instance id " + instanceId + " was de-registered from the discovery service.");
+                LOG.info("Health status is non operational, instance id {} was de-registered from the discovery service.", instanceId);
             }
 
         });
@@ -243,9 +241,7 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
             if (metadata.contains("instanceId")) {
                 instanceId = metadata.asMap().get("instanceId");
             } else {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("Cannot determine the instance ID. Are you sure you are running on AWS EC2?");
-                }
+                LOG.error("Cannot determine the instance ID. Are you sure you are running on AWS EC2?");
             }
         }
         RegisterInstanceRequest instanceRequest = new RegisterInstanceRequest().withServiceId(route53AutoRegistrationConfiguration.getAwsServiceId())
@@ -260,9 +256,7 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
 
             @Override
             public void onNext(RegisterInstanceResult registerInstanceResult) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Called AWS to register service [{}] with {}", instance.getId(), route53AutoRegistrationConfiguration.getAwsServiceId());
-                }
+                LOG.info("Called AWS to register service [{}] with {}", instance.getId(), route53AutoRegistrationConfiguration.getAwsServiceId());
                 if (registerInstanceResult.getOperationId() != null) {
                     ServiceRegistrationStatusTask serviceRegistrationStatusTask = new ServiceRegistrationStatusTask(getDiscoveryClient(),
                             route53AutoRegistrationConfiguration,
@@ -280,9 +274,7 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
 
             @Override
             public void onError(Throwable t) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("Error registering instance with AWS:" + t.getMessage(), t);
-                }
+                LOG.error("Error registering instance with AWS: {}", t.getMessage(), t);
                 if (route53AutoRegistrationConfiguration.isFailFast() && instance instanceof EmbeddedServerInstance) {
                     LOG.error("Error registering instance with AWS and Failfast is set: stopping instance");
                     ((EmbeddedServerInstance) instance).getEmbeddedServer().stop();
@@ -291,10 +283,8 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
 
             @Override
             public void onComplete() {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Success calling register service request [{}] with {} is complete.", instance.getId(),
-                            route53AutoRegistrationConfiguration.getAwsServiceId());
-                }
+                LOG.info("Success calling register service request [{}] with {} is complete.", instance.getId(),
+                        route53AutoRegistrationConfiguration.getAwsServiceId());
             }
         });
 
@@ -380,11 +370,12 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
                 opResult = getDiscoveryClient().getOperation(new GetOperationRequest().withOperationId(operationId));
                 result = opResult.getOperation().getStatus();
                 if (opResult.getOperation().getStatus().equals("SUCCESS")) {
-                    LOG.info("Successfully get operation id " + operationId);
+                    LOG.info("Successfully get operation id {}", operationId);
                     return opResult;
                 } else {
                     if (opResult.getOperation().getStatus().equals("FAIL")) {
-                        LOG.error("Error calling aws service for operationId:" + operationId + " error code:" + opResult.getOperation().getErrorCode() + " error message:" + opResult.getOperation().getErrorMessage());
+                        LOG.error("Error calling aws service for operationId:{} error code:{} error message:{}",
+                                operationId, opResult.getOperation().getErrorCode(), opResult.getOperation().getErrorMessage());
                         return opResult;
                     }
                 }
