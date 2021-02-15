@@ -42,10 +42,7 @@ public class AskSdkExceptionHandler implements ExceptionHandler<AskSdkException,
 
     @Override
     public HttpResponse handle(HttpRequest request, AskSdkException ex) {
-
-        if (LOG.isErrorEnabled()) {
-            LOG.error("Exception occurred processing request envelope, returning status code 500", ex);
-        }
+        LOG.error("Exception occurred processing request envelope, returning status code 500", ex);
         JsonError error = new JsonError(ex.getMessage());
         error.link(Link.SELF, Link.of(request.getUri()));
         return HttpResponse.serverError(error);

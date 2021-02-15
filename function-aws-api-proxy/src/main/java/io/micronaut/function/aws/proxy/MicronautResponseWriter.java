@@ -98,9 +98,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
                     awsProxyResponse.setBody(output);
                 }
             } catch (IOException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e.getMessage());
-                }
+                LOG.error(e.getMessage());
             }
         } else if (body != null) {
             awsProxyResponse.setBody(

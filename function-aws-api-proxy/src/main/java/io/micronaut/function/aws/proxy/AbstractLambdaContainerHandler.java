@@ -206,7 +206,7 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
 
             latch.await();
 
-            if (logFormatter != null) {
+            if (logFormatter != null && log.isInfoEnabled()) {
                 log.info(SecurityUtils.crlf(logFormatter.format(containerRequest, containerResponse, securityContext)));
             }
 

@@ -163,9 +163,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     private Maybe<LocalSource> buildLocalSource(ParameterQueryResult queryResult) {
         String key = queryResult.query.getPath();
         if (queryResult.parameters.isEmpty()) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("parameterBasePath={} no parameters found", key);
-            }
+            LOG.trace("parameterBasePath={} no parameters found", key);
             return Maybe.empty();
         }
         Map<String, Object> properties = convertParametersToMap(queryResult);
@@ -311,9 +309,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         if (previous == null) {
             accumulator.put(localSource.name, localSource);
         } else {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("merging into existing source {} from {}", localSource.name, localSource.priority);
-            }
+            LOG.trace("merging into existing source {} from {}", localSource.name, localSource.priority);
             if (previous.priority != localSource.priority) {
                 LOG.warn("local source {} redeclared with priority {} instead ofg {}, ignoring", localSource.name,
                         localSource.priority, previous.priority);
@@ -326,9 +322,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     private static Flowable<PropertySource> toPropertySourcePublisher(Map<String, LocalSource> localSourceMap) {
         return Flowable.fromIterable(localSourceMap.values())
             .map(localSource -> {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
-                }
+                LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
                 return PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID
                         + '-' + localSource.name, localSource.values, localSource.priority);
             });
