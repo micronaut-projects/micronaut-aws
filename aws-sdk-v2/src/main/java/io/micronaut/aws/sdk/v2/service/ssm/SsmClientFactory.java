@@ -17,6 +17,7 @@ package io.micronaut.aws.sdk.v2.service.ssm;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
@@ -37,6 +38,7 @@ import javax.inject.Singleton;
  * @since 2.3.0
  */
 @Factory
+@BootstrapContextCompatible
 public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyncClientBuilder, SsmClient, SsmAsyncClient> {
 
     /**
@@ -61,6 +63,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
 
     @Override
     @Singleton
+    @BootstrapContextCompatible
     public SsmClientBuilder syncBuilder(SdkHttpClient httpClient) {
         return super.syncBuilder(httpClient);
     }
@@ -68,6 +71,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
     @Override
     @Bean(preDestroy = "close")
     @Singleton
+    @BootstrapContextCompatible
     public SsmClient syncClient(SsmClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -75,6 +79,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
     @Override
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
+    @BootstrapContextCompatible
     public SsmAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) {
         return super.asyncBuilder(httpClient);
     }
@@ -83,6 +88,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
+    @BootstrapContextCompatible
     public SsmAsyncClient asyncClient(SsmAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }
