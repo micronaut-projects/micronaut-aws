@@ -43,6 +43,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * A {@link ConfigurationClient} implementation for AWS ParameterStore.
@@ -286,13 +287,14 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
                 key = key.substring(1).replace("/", ".");
             }
 
-            if (param.type().equals("StringList")) {
+            if (ParameterType.STRING_LIST.equals(param.type())) {
                 String[] items = param.value().split(",");
                 output.put(key, Arrays.asList(items));
             } else {
                 output.put(key, param.value());
             }
         }
+        LOG.trace("Converted " + output);
         return output;
     }
 

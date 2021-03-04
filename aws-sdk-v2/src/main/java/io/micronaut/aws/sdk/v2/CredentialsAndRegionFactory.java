@@ -16,6 +16,7 @@
 package io.micronaut.aws.sdk.v2;
 
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.env.Environment;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
@@ -32,6 +33,7 @@ import javax.inject.Singleton;
  * @since 2.0.0
  */
 @Factory
+@BootstrapContextCompatible
 public class CredentialsAndRegionFactory {
 
     /**

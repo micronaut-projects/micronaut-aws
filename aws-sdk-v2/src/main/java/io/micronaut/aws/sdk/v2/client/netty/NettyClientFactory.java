@@ -16,6 +16,7 @@
 package io.micronaut.aws.sdk.v2.client.netty;
 
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -30,6 +31,7 @@ import javax.inject.Singleton;
  */
 
 @Factory
+@BootstrapContextCompatible
 public class NettyClientFactory {
 
     public static final String ASYNC_SERVICE_IMPL = "software.amazon.awssdk.http.async.service.impl";

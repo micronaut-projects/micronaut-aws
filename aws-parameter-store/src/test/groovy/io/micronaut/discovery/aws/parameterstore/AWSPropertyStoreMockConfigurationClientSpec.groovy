@@ -72,8 +72,8 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
                 if (getRequest.path() == "/config/application") {
                     Parameter parameter = Parameter.builder()
-                            .name("/config/application")
-                            .value("encryptedValue=true")
+                            .name("/config/application/pets")
+                            .value("dino,marty")
                             .type("StringList")
                             .build()
                     parameters.add(parameter)
@@ -88,38 +88,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
             CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                int end = 0
-                if (getRequest.names().contains("/config/application")) {
-                    end = 6
-                }
-                if (getRequest.names().contains("/config/amazon-test")) {
-                    end = 5
-                }
-                if (getRequest.names().contains("/config/application_first")) {
-                    end = 4
-                }
-                if (getRequest.names().contains("/config/amazon-test_first")) {
-                    end = 3
-                }
-                if (getRequest.names().contains("/config/application_second")) {
-                    end = 2
-                }
-                if (getRequest.names().contains("/config/amazon-test_second")) {
-                    end = 1
-                }
-                int start = 1
-                while (end > 0) {
-                    Parameter parameter = Parameter.builder()
-                            .name(getRequest.names()[0] + "/some/aws/value-" + start)
-                            .value(end.toString())
-                            .type("String")
-                            .build()
-                    parameters.add(parameter)
-                    start++
-                    end--
-                }
-                GetParametersResponse.builder().parameters(parameters).build()
+                GetParametersResponse.builder().build()
             }
             return futureTask
         }
@@ -133,22 +102,11 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         PropertySourcePropertyResolver resolver = new PropertySourcePropertyResolver(propertySources as PropertySource[])
 
         then: "verify property source characteristics"
-        propertySources.size() == 6
+        propertySources.size() == 1
         propertySources[0].name == "route53-application"
-        propertySources[1].name == "route53-amazon-test"
-        propertySources[2].name == "route53-application[first]"
-        propertySources[3].name == "route53-amazon-test[first]"
-        propertySources[4].name == "route53-application[second]"
-        propertySources[5].name == "route53-amazon-test[second]"
-
         propertySources[0].order > EnvironmentPropertySource.POSITION
 
-        resolver.getRequiredProperty("some.aws.value-1", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-2", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-3", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-4", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-5", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-6", String) == "1"
+        resolver.getRequiredProperty("pets", List<String>.class) == ["dino", "marty"]
     }
 
 
