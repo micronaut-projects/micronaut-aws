@@ -59,9 +59,11 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#parametersStore"><strong>9</strong><span>Parameter Store as Cloud Configuration</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#breaks"><strong>10</strong><span>Breaking Changes</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#breaks"><strong>11</strong><span>Breaking Changes</span></a></div>
                                 
                             </div>
                         </div>
@@ -158,9 +160,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>8.5</strong><span>Flash Briefings</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>9</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>9</strong><span>Parameter Store as Cloud Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-breaks"><a href="#breaks"><strong>10</strong><span>Breaking Changes</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-breaks"><a href="#breaks"><strong>11</strong><span>Breaking Changes</span></a></div>
         
         </div>
     </div>
@@ -2266,7 +2270,108 @@ public class FlashBriefingsController {
 </table>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>9 Repository</h1>
+<h1 id="parametersStore"><a class="anchor" href="#parametersStore"></a>9 Parameter Store as Cloud Configuration</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
+/src/main/docs/guide/parametersStore.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Micronaut supports configuration sharing via <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>. You need the following dependencies configured:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-parameter-store")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-parameter-store&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>To enable distributed configuration a <code>src/main/resources/bootstrap.yml</code> configuration file must be created and configured to use Parameter Store:</p>
+</div>
+<div class="listingblock">
+<div class="title">bootstrap.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: hello-world
+  config-client:
+    enabled: true
+aws:
+  client:
+    system-manager:
+      parameterstore:
+        enabled: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://micronaut-projects.github.io/micronaut-aws/latest/guide/configurationreference.html#io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfiguration">configuration reference</a> for all configuration options.</p>
+</div>
+<div class="paragraph">
+<p>You can configure shared properties from the AWS Console &#8594; System Manager &#8594; Parameter Store.</p>
+</div>
+<div class="paragraph">
+<p>Micronaut uses a hierarchy to read configuration values, and supports <code>String</code>, <code>StringList</code>, and <code>SecureString</code> types.</p>
+</div>
+<div class="paragraph">
+<p>You can create environment-specific configurations as well by including the environment name after an underscore <code>_</code>. For example if <code>micronaut.application.name</code> is set to <code>helloworld</code>, specifying configuration values under <code>helloworld_test</code> will be applied only to the <code>test</code> environment.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Configuration Resolution Precedence</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Directory</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration, example <code>/config/hello-world</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application_prod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications for the <code>prod</code> <a href="../api/io/micronaut/context/env/Environment.html">Environment</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]_prod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration for an active <a href="../api/io/micronaut/context/env/Environment.html">Environment</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For example, if the configuration name <code>/config/application_test/server.url</code> is configured in AWS Parameter Store, any application connecting to that parameter store can retrieve the value using <code>server.url</code>. If the application has <code>micronaut.application.name</code> configured to be <code>myapp</code>, a value with the name <code>/config/myapp_test/server.url</code> overrides the value just for that application.</p>
+</div>
+<div class="paragraph">
+<p>Each level of the tree can be composed of key=value pairs. For multiple key/value pairs, set the type to <code>StringList</code>.</p>
+</div>
+<div class="paragraph">
+<p>For special secure information, such as keys or passwords, use the type <code>SecureString</code>. KMS will be automatically invoked when you add and retrieve values, and will decrypt them with the default key store for your account. If you set the configuration to not use secure strings, they will be returned to you encrypted and you must manually decrypt them.</p>
+</div>
+
+<h1 id="repository"><a class="anchor" href="#repository"></a>10 Repository</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
@@ -2283,7 +2388,7 @@ public class FlashBriefingsController {
 <p><a href="https://github.com/micronaut-projects/micronaut-aws">https://github.com/micronaut-projects/micronaut-aws</a></p>
 </div>
 
-<h1 id="breaks"><a class="anchor" href="#breaks"></a>10 Breaking Changes</h1>
+<h1 id="breaks"><a class="anchor" href="#breaks"></a>11 Breaking Changes</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
