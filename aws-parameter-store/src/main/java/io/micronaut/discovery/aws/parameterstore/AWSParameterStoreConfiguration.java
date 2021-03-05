@@ -28,7 +28,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 /**
  * This is the configuration class for the AWSParameterStoreConfigClient for AWS Parameter Store based configuration.
  */
-@Requires(classes = {com.amazonaws.ClientConfiguration.class, AWSClientConfiguration.class})
 @Requires(env = Environment.AMAZON_EC2)
 @Requires(property = AWSParameterStoreConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 @ConfigurationProperties(AWSParameterStoreConfiguration.CONFIGURATION_PREFIX)

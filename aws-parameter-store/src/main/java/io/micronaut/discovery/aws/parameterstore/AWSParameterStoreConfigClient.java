@@ -16,11 +16,7 @@
 package io.micronaut.discovery.aws.parameterstore;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsync;
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsyncClient;
-import com.amazonaws.services.simplesystemsmanagement.model.*;
 import edu.umd.cs.findbugs.annotations.Nullable;
-import io.micronaut.aws.sdk.v1.AWSClientConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
@@ -37,13 +33,17 @@ import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.ssm.SsmAsyncClient;
+import software.amazon.awssdk.services.ssm.model.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * A {@link ConfigurationClient} implementation for AWS ParameterStore.
@@ -53,23 +53,22 @@ import java.util.concurrent.Future;
  * @since 1.0
  */
 @Singleton
-@Requires(classes = {AWSSimpleSystemsManagementAsyncClient.class, AWSClientConfiguration.class})
 @Requires(env = Environment.AMAZON_EC2)
-@Requires(beans = AWSParameterStoreConfiguration.class)
+@Requires(beans = {AWSParameterStoreConfiguration.class, SsmAsyncClient.class})
 @BootstrapContextCompatible
 public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(AWSParameterStoreConfigClient.class);
     private final AWSParameterStoreConfiguration awsParameterStoreConfiguration;
     private final Optional<String> serviceId;
-    private AWSSimpleSystemsManagementAsync client;
+    private SsmAsyncClient client;
     private ExecutorService executorService;
     private AWSParameterQueryProvider queryProvider;
 
     /**
      * Initialize @Singleton.
      *
-     * @param awsConfiguration                    your aws configuration credentials
+     * @param asyncClient                         async client
      * @param awsParameterStoreConfiguration      configuration for the parameter store
      * @param applicationConfiguration            the application configuration
      * @param queryProvider                       the query provider that will help find configuration values
@@ -77,13 +76,13 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      * @throws SdkClientException If the aws sdk client could not be created
      */
     AWSParameterStoreConfigClient(
-            AWSClientConfiguration awsConfiguration,
+            SsmAsyncClient asyncClient,
             AWSParameterStoreConfiguration awsParameterStoreConfiguration,
             ApplicationConfiguration applicationConfiguration,
             AWSParameterQueryProvider queryProvider,
             @Nullable Route53ClientDiscoveryConfiguration route53ClientDiscoveryConfiguration) throws SdkClientException {
         this.awsParameterStoreConfiguration = awsParameterStoreConfiguration;
-        this.client = AWSSimpleSystemsManagementAsyncClient.asyncBuilder().withClientConfiguration(awsConfiguration.getClientConfiguration()).build();
+        this.client = asyncClient;
         this.serviceId = route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId() : applicationConfiguration.getName();
         this.queryProvider = queryProvider;
     }
@@ -92,7 +91,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     /**
      * Get your PropertySources from AWS Parameter Store.
      * Property sources are expected to be set up in this way:
-     * \ configuration \ micronaut \ environment name \ app name \
+     * \ config \ micronaut \ environment name \ app name \
      * If you want to change the base \configuration\micronaut set the property aws.system-manager.parameterStore.rootHierarchyPath
      *
      * @param environment The environment
@@ -107,13 +106,13 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         List<ParameterQuery> queries = queryProvider.getParameterQueries(environment, serviceId, awsParameterStoreConfiguration);
         Flowable<ParameterQueryResult> queryResults =
                 Flowable.concat(
-                    Flowable.fromIterable(queries)
-                        .map(this::getParameters));
+                        Flowable.fromIterable(queries)
+                                .map(this::getParameters));
         Flowable<PropertySource> propertySourceFlowable =
                 queryResults
-                    .flatMapMaybe(this::buildLocalSource)
-                    .reduce(new HashMap<>(), AWSParameterStoreConfigClient::mergeLocalSources)
-                    .flatMapPublisher(AWSParameterStoreConfigClient::toPropertySourcePublisher);
+                        .flatMapMaybe(this::buildLocalSource)
+                        .reduce(new HashMap<>(), AWSParameterStoreConfigClient::mergeLocalSources)
+                        .flatMapPublisher(AWSParameterStoreConfigClient::toPropertySourcePublisher);
 
         return propertySourceFlowable.onErrorResumeNext(AWSParameterStoreConfigClient::onPropertySourceError);
 
@@ -137,7 +136,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         }
     }
 
-    private static Publisher<? extends GetParametersResult> onGetParametersError(Throwable throwable) {
+    private static Publisher<? extends GetParametersResponse> onGetParametersError(Throwable throwable) {
         if (throwable instanceof SdkClientException) {
             return Flowable.error(throwable);
         } else {
@@ -145,7 +144,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         }
     }
 
-    private static Publisher<? extends GetParametersByPathResult> onGetParametersByPathResult(Throwable throwable) {
+    private static Publisher<? extends GetParametersByPathResponse> onGetParametersByPathResult(Throwable throwable) {
         if (throwable instanceof SdkClientException) {
             return Flowable.error(throwable);
         } else {
@@ -156,7 +155,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     private Publisher<ParameterQueryResult> getParameters(ParameterQuery query) {
         String path = query.getPath();
         return query.isName()
-                ? Flowable.fromPublisher(getParameters(path)).map(r -> new ParameterQueryResult(query, r.getParameters()))
+                ? Flowable.fromPublisher(getParameters(path)).map(r -> new ParameterQueryResult(query, r.parameters()))
                 : Flowable.fromPublisher(getHierarchy(path, new ArrayList<>(), null)).map(r -> new ParameterQueryResult(query, r));
     }
 
@@ -178,16 +177,16 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     }
 
     private Flowable<List<Parameter>> getHierarchy(final String path, final List<Parameter> parameters, final String nextToken) {
-        Flowable<GetParametersByPathResult> paramPage = Flowable.fromPublisher(getHierarchy(path, nextToken));
+        Flowable<GetParametersByPathResponse> paramPage = Flowable.fromPublisher(getHierarchy(path, nextToken));
 
         return paramPage.flatMap(getParametersByPathResult -> {
-            List<Parameter> params = getParametersByPathResult.getParameters();
+            List<Parameter> params = getParametersByPathResult.parameters();
 
-            if (getParametersByPathResult.getNextToken() != null) {
+            if (getParametersByPathResult.nextToken() != null) {
                 return Flowable.merge(
                         Flowable.just(parameters),
-                        getHierarchy(path, params, getParametersByPathResult.getNextToken())
-                    );
+                        getHierarchy(path, params, getParametersByPathResult.nextToken())
+                );
             } else {
                 return Flowable.merge(
                         Flowable.just(parameters),
@@ -201,22 +200,22 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      * Gets the Parameter hierarchy from AWS parameter store.
      * Please note this only returns something if the current node has children and will not return itself.
      *
-     *
-     * @param path path based on the parameter names PRIORITY_TOP.e. /config/application/.*
+     * @param path      path based on the parameter names PRIORITY_TOP.e. /config/application/.*
      * @param nextToken token to paginate in the resultset from AWS
      * @return Publisher for GetParametersByPathResult
      */
-    private Publisher<GetParametersByPathResult> getHierarchy(String path, String nextToken) {
+    private Publisher<GetParametersByPathResponse> getHierarchy(String path, String nextToken) {
         LOG.trace("Retrieving parameters by path {}, pagination requested: {}", path, nextToken != null);
-        GetParametersByPathRequest getRequest = new GetParametersByPathRequest()
-                .withWithDecryption(awsParameterStoreConfiguration.getUseSecureParameters())
-                .withPath(path)
-                .withRecursive(true)
-                .withNextToken(nextToken);
+        GetParametersByPathRequest getRequest = GetParametersByPathRequest.builder()
+                .withDecryption(awsParameterStoreConfiguration.getUseSecureParameters())
+                .path(path)
+                .recursive(true)
+                .nextToken(nextToken)
+                .build();
 
-        Future<GetParametersByPathResult> future = client.getParametersByPathAsync(getRequest);
+        Future<GetParametersByPathResponse> future = client.getParametersByPath(getRequest);
 
-        Flowable<GetParametersByPathResult> invokeFlowable;
+        Flowable<GetParametersByPathResponse> invokeFlowable;
         if (executorService != null) {
             invokeFlowable = Flowable.fromFuture(future, Schedulers.from(executorService));
         } else {
@@ -232,13 +231,16 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      * @param path this is the hierarchy path (via name field) from the property store
      * @return invokeFlowable - converted future from AWS SDK Async
      */
-    private Publisher<GetParametersResult> getParameters(String path) {
+    private Publisher<GetParametersResponse> getParameters(String path) {
 
-        GetParametersRequest getRequest = new GetParametersRequest().withWithDecryption(awsParameterStoreConfiguration.getUseSecureParameters()).withNames(path);
+        GetParametersRequest getRequest = GetParametersRequest.builder()
+                .withDecryption(awsParameterStoreConfiguration.getUseSecureParameters())
+                .names(path)
+                .build();
 
-        Future<GetParametersResult> future = client.getParametersAsync(getRequest);
+        CompletableFuture<GetParametersResponse> future = client.getParameters(getRequest);
 
-        Flowable<GetParametersResult> invokeFlowable;
+        Flowable<GetParametersResponse> invokeFlowable;
         if (executorService != null) {
             invokeFlowable = Flowable.fromFuture(future, Schedulers.from(executorService));
         } else {
@@ -280,18 +282,19 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     private static Map<String, Object> convertParametersToMap(ParameterQueryResult queryResult) {
         Map<String, Object> output = new HashMap<>();
         for (Parameter param : queryResult.parameters) {
-            String key = param.getName().substring(queryResult.query.getPath().length());
+            String key = param.name().substring(queryResult.query.getPath().length());
             if (key.length() > 1) {
                 key = key.substring(1).replace("/", ".");
             }
 
-            if (param.getType().equals("StringList")) {
-                String[] items = param.getValue().split(",");
+            if (ParameterType.STRING_LIST.equals(param.type())) {
+                String[] items = param.value().split(",");
                 output.put(key, Arrays.asList(items));
             } else {
-                output.put(key, param.getValue());
+                output.put(key, param.value());
             }
         }
+        LOG.trace("Converted " + output);
         return output;
     }
 
@@ -321,11 +324,39 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
     private static Flowable<PropertySource> toPropertySourcePublisher(Map<String, LocalSource> localSourceMap) {
         return Flowable.fromIterable(localSourceMap.values())
-            .map(localSource -> {
-                LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
-                return PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID
-                        + '-' + localSource.name, localSource.values, localSource.priority);
-            });
+                .map(localSource -> {
+                    LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
+                    return PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID
+                            + '-' + localSource.name, localSource.values, localSource.priority);
+                });
+    }
+
+    /**
+     * @param client SsmAsyncClient client
+     */
+    protected void setClient(SsmAsyncClient client) {
+        this.client = client;
+    }
+
+    /**
+     * @return SsmAsyncClient client
+     */
+    protected SsmAsyncClient getClient() {
+        return client;
+    }
+
+    /**
+     * @return query provider
+     */
+    protected AWSParameterQueryProvider getQueryProvider() {
+        return queryProvider;
+    }
+
+    /**
+     * @param queryProvider query provider
+     */
+    protected void setQueryProvider(AWSParameterQueryProvider queryProvider) {
+        this.queryProvider = queryProvider;
     }
 
     /**

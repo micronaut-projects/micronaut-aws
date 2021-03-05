@@ -15,8 +15,6 @@
  */
 package io.micronaut.discovery.aws.parameterstore
 
-import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementAsync
-import com.amazonaws.services.simplesystemsmanagement.model.*
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.EnvironmentPropertySource
@@ -25,11 +23,13 @@ import io.micronaut.context.env.PropertySourcePropertyResolver
 import io.micronaut.core.order.OrderUtil
 import io.micronaut.runtime.server.EmbeddedServer
 import io.reactivex.Flowable
+import software.amazon.awssdk.services.ssm.SsmAsyncClient
+import software.amazon.awssdk.services.ssm.model.*
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.util.concurrent.FutureTask
+import java.util.concurrent.CompletableFuture
 
 /**
  * Test for mocking of aws property store.
@@ -43,11 +43,11 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
     @AutoCleanup
     @Shared
-    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
+    EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class,
             [
-                    'aws.client.system-manager.parameterstore.enabled': 'true',
-                    'aws.system-manager.parameterstore.useSecureParameters' : 'false',
-                    'micronaut.application.name':'amazonTest'],
+                    'aws.client.system-manager.parameterstore.enabled'     : 'true',
+                    'aws.system-manager.parameterstore.useSecureParameters': 'false',
+                    'micronaut.application.name'                           : 'amazonTest'],
             Environment.AMAZON_EC2
 
     )
@@ -57,72 +57,38 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
 
     def setup() {
-        client.client = Mock(AWSSimpleSystemsManagementAsync)
+        client.client = Mock(SsmAsyncClient)
     }
 
     void "test discovery property sources from AWS Systems Manager Parameter Store - StringList"() {
 
         given:
 
-        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+        client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
 
-            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersByPathResult result = new GetParametersByPathResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.path == "/config/application") {
-                    Parameter parameter = new Parameter()
-                    parameter.name = "/config/application"
-                    parameter.value = "encryptedValue=true"
-                    parameter.type = "StringList"
+                if (getRequest.path() == "/config/application") {
+                    Parameter parameter = Parameter.builder()
+                            .name("/config/application/pets")
+                            .value("dino,marty")
+                            .type("StringList")
+                            .build()
                     parameters.add(parameter)
                 }
-                result.setParameters(parameters)
-                result
+                GetParametersByPathResponse.builder().parameters(parameters).build()
             }
             return futureTask
         }
 
-        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
+        client.client.getParameters(_) >> { GetParametersRequest getRequest ->
 
-            FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersResult result = new GetParametersResult()
-
-                ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                int end = 0
-                if (getRequest.names.contains("/config/application")) {
-                    end = 6
-                }
-                if (getRequest.names.contains("/config/amazon-test")) {
-                    end = 5
-                }
-                if (getRequest.names.contains("/config/application_first")) {
-                    end = 4
-                }
-                if (getRequest.names.contains("/config/amazon-test_first")) {
-                    end = 3
-                }
-                if (getRequest.names.contains("/config/application_second")) {
-                    end = 2
-                }
-                if (getRequest.names.contains("/config/amazon-test_second")) {
-                    end = 1
-                }
-                int start = 1
-                while (end > 0) {
-                    Parameter parameter = new Parameter()
-                    parameter.name = getRequest.names[0] + "/some/aws/value-" + start
-                    parameter.value = end.toString()
-                    parameter.type = "String"
-                    parameters.add(parameter)
-                    start++
-                    end--
-                }
-                result.setParameters(parameters)
-                result
+                GetParametersResponse.builder().build()
             }
             return futureTask
         }
@@ -136,104 +102,107 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         PropertySourcePropertyResolver resolver = new PropertySourcePropertyResolver(propertySources as PropertySource[])
 
         then: "verify property source characteristics"
-        propertySources.size() == 6
+        propertySources.size() == 1
         propertySources[0].name == "route53-application"
-        propertySources[1].name == "route53-amazon-test"
-        propertySources[2].name == "route53-application[first]"
-        propertySources[3].name == "route53-amazon-test[first]"
-        propertySources[4].name == "route53-application[second]"
-        propertySources[5].name == "route53-amazon-test[second]"
-
         propertySources[0].order > EnvironmentPropertySource.POSITION
 
-        resolver.getRequiredProperty("some.aws.value-1", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-2", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-3", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-4", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-5", String) == "1"
-        resolver.getRequiredProperty("some.aws.value-6", String) == "1"
+        resolver.getRequiredProperty("pets", List<String>.class) == ["dino", "marty"]
     }
 
 
     void "test discovery property sources from AWS Systems Manager Parameter Store - String"() {
 
         given:
-
-        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
-
-            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+        client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
+            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersByPathResult result = new GetParametersByPathResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.path == "/config/application") {
-                    Parameter parameter = new Parameter()
-                    parameter.name = "/config/application/encryptedValue"
-                    parameter.value = "true"
-                    parameter.type = "String"
+                if (getRequest.path() == "/config/application") {
+                    Parameter parameter = Parameter.builder()
+                            .name("/config/application/encryptedValue")
+                            .value("true")
+                            .type("String")
+                            .build()
                     parameters.add(parameter)
                 }
-                result.setParameters(parameters)
-                result
+                GetParametersByPathResponse.builder().parameters(parameters).build()
             }
             return futureTask
-
-
-            when:
-            def env = Mock(Environment)
-            env.getActiveNames() >> (['test'] as Set)
-            List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
-
-            then: "verify property source characteristics"
-            propertySources.size() == 2
-            propertySources[0].order > EnvironmentPropertySource.POSITION
-            propertySources[0].name == 'route53-application'
-            propertySources[0].get('datasource.url') == "mysql://blah"
-            propertySources[0].size() == 21
-            propertySources[1].name == 'route53-application[test]'
-            propertySources[1].get("foo") == "bar"
-            propertySources[1].order > propertySources[0].order
-            propertySources[1].toList().size() == 1
         }
+
+        client.client.getParameters(_) >> { GetParametersRequest getRequest ->
+            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
+            futureTask.isDone() >> { return true }
+            futureTask.get() >> {
+                ArrayList<Parameter> parameters = new ArrayList<Parameter>()
+                if (getRequest.names().contains("/config/application_test")) {
+                    Parameter parameter1 = Parameter.builder()
+                            .name("/config/application_test/foo")
+                            .value("bar")
+                            .type("String")
+                            .build()
+                    parameters.add(parameter1)
+                }
+
+                GetParametersResponse.builder().parameters(parameters).build()
+            }
+            return futureTask
+        }
+
+        when:
+        def env = Mock(Environment)
+        env.getActiveNames() >> (['test'] as Set)
+        List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+
+        then: "verify property source characteristics"
+        propertySources.size() == 2
+        propertySources[0].order > EnvironmentPropertySource.POSITION
+        propertySources[0].name == 'route53-application'
+        propertySources[0].get('encryptedValue') == "true"
+        propertySources[0].size() == 1
+        propertySources[1].name == 'route53-application[test]'
+        propertySources[1].get("foo") == "bar"
+        propertySources[1].order > propertySources[0].order
+        propertySources[1].toList().size() == 1
     }
 
     void "given a nextToken from AWS, client should paginate to retrieve all properties"() {
         given:
         String paramPath = "/config/application"
-        client.client.getParametersByPathAsync({ req -> req.nextToken == null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
+        client.client.getParametersByPath({ req -> req.nextToken == null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
             setupParamByPathResultMock(paramPath, req, 1..10)
         }
-        client.client.getParametersByPathAsync({ req -> req.nextToken != null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
+        client.client.getParametersByPath({ req -> req.nextToken != null } as GetParametersByPathRequest) >> { GetParametersByPathRequest req ->
             setupParamByPathResultMock(paramPath, req, 11..20)
         }
 
-        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
-            FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
+        client.client.getParameters(_) >> { GetParametersRequest getRequest ->
+            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersResult result = new GetParametersResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.names.contains(paramPath)) {
-                    Parameter parameter = new Parameter()
-                    parameter.name = "/config/application/datasource/url"
-                    parameter.value = "mysql://blah"
-                    parameter.type = "String"
+                if (getRequest.names().contains(paramPath)) {
+                    Parameter parameter = Parameter.builder()
+                            .name("/config/application/datasource/url")
+                            .value("mysql://blah")
+                            .type("String")
+                            .build()
                     parameters.add(parameter)
                 }
-                if (getRequest.names.contains("/config/application_test")) {
-                    Parameter parameter1 = new Parameter()
-                    parameter1.name = "/config/application_test/foo"
-                    parameter1.value = "bar"
-                    parameter1.type = "String"
+                if (getRequest.names().contains("/config/application_test")) {
+                    Parameter parameter1 = Parameter.builder()
+                            .name("/config/application_test/foo")
+                            .value("bar")
+                            .type("String")
+                            .build()
                     parameters.add(parameter1)
                 }
 
-                result.setParameters(parameters)
-                result
+                GetParametersResponse.builder().parameters(parameters).build()
             }
             return futureTask
         }
-
 
         when:
         def env = Mock(Environment)
@@ -255,26 +224,24 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
     }
 
-    FutureTask setupParamByPathResultMock(String paramPath, GetParametersByPathRequest req, IntRange paramRange) {
-        FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+    CompletableFuture setupParamByPathResultMock(String paramPath, GetParametersByPathRequest req, IntRange paramRange) {
+        CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
         futureTask.isDone() >> { return true }
         futureTask.get() >> {
-            GetParametersByPathResult result = new GetParametersByPathResult()
+            GetParametersByPathResponse.Builder builder = GetParametersByPathResponse.builder()
             ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-            if (req.path == paramPath) {
+            if (req.path() == paramPath) {
                 (paramRange).each {
-                    Parameter parameter = new Parameter()
-                    parameter.name = "${paramPath}/parameter-${it}"
-                    parameter.value = "parameter-value-${it}"
-                    parameter.type = "String"
+                    Parameter parameter = Parameter.builder()
+                            .name("${paramPath}/parameter-${it}")
+                            .value("parameter-value-${it}")
+                            .type("String")
+                            .build()
                     parameters.add(parameter)
                 }
-
-                result.nextToken = req.nextToken == null ? "nextPage" : null
+                builder.nextToken(req.nextToken() == null ? "nextPage" : null)
             }
-
-            result.setParameters(parameters)
-            result
+            builder.parameters(parameters).build()
         }
         return futureTask
     }
@@ -284,52 +251,51 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
         given:
 
-        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+        client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
 
-            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersByPathResult result = new GetParametersByPathResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.path == "/config/application") {
-                    Parameter parameter = new Parameter()
-                    parameter.name = "/config/application/encryptedValue"
-                    parameter.value = "true"
-                    parameter.type = "SecureString"
+                if (getRequest.path() == "/config/application") {
+                    Parameter parameter = Parameter.builder()
+                            .name("/config/application/encryptedValue")
+                            .value("true")
+                            .type("SecureString")
+                            .build()
+
                     parameters.add(parameter)
                 }
-                result.setParameters(parameters)
-                result
+                GetParametersByPathResponse.builder().parameters(parameters).build()
             }
             return futureTask
 
         }
 
-        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
+        client.client.getParameters(_) >> { GetParametersRequest getRequest ->
 
-            FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersResult result = new GetParametersResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.names.contains("/config/application")) {
+                if (getRequest.names().contains("/config/application")) {
 
-                    Parameter parameter = new Parameter()
-                    parameter.name = "/config/application/datasource/url"
-                    parameter.value = "mysql://blah"
-                    parameter.type = "SecureString"
+                    Parameter parameter = Parameter.builder()
+                            .name("/config/application/datasource/url")
+                            .value("mysql://blah")
+                            .type("SecureString")
+                            .build()
                     parameters.add(parameter)
                 }
-                if (getRequest.names.contains("/config/application_test")) {
-                    Parameter parameter1 = new Parameter()
-                    parameter1.name = "/config/application_test/foo"
-                    parameter1.value = "bar"
-                    parameter1.type = "SecureString"
+                if (getRequest.names().contains("/config/application_test")) {
+                    Parameter parameter1 = Parameter.builder()
+                            .name("/config/application_test/foo")
+                            .value("bar")
+                            .type("SecureString")
+                            .build()
                     parameters.add(parameter1)
                 }
-
-                result.setParameters(parameters)
-                result
+                GetParametersResponse.builder().parameters(parameters).build()
             }
             return futureTask
         }
@@ -356,50 +322,47 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
                 [
-                        'aws.client.system-manager.parameterstore.enabled'                  : 'true',
-                        'aws.client.system-manager.parameterstore.searchActiveEnvironments' : 'false',
-                        'micronaut.application.name'                                        : 'amazonTest'],
+                        'aws.client.system-manager.parameterstore.enabled'                 : 'true',
+                        'aws.client.system-manager.parameterstore.searchActiveEnvironments': 'false',
+                        'micronaut.application.name'                                       : 'amazonTest'],
                 Environment.AMAZON_EC2
 
         )
 
         AWSParameterStoreConfigClient client = embeddedServer.applicationContext.getBean(AWSParameterStoreConfigClient)
 
-        client.client = Mock(AWSSimpleSystemsManagementAsync)
+        client.client = Mock(SsmAsyncClient)
 
         def searchedPaths = []
-        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+        client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
 
             searchedPaths += getRequest.path
 
-            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                return new GetParametersByPathResult()
+                return GetParametersByPathResponse.builder().build()
             }
             return futureTask
         }
 
         def searchedNames = []
-        client.client.getParametersAsync(_) >> { GetParametersRequest getRequest ->
+        client.client.getParameters(_) >> { GetParametersRequest getRequest ->
 
-            searchedNames.addAll(getRequest.names)
+            searchedNames.addAll(getRequest.names())
 
-            FutureTask<GetParametersResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                GetParametersResult result = new GetParametersResult()
                 ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.names.contains("/config/application")) {
-                    def parameter = new Parameter(
-                            name: "/config/application/someKey",
-                            value: "someValue",
-                            type: "String")
-                    parameters.add(parameter)
+                if (getRequest.names().contains("/config/application")) {
+                    parameters.add(Parameter.builder()
+                            .name("/config/application/someKey")
+                            .value("someValue")
+                            .type("String").
+                            build())
                 }
-
-                result.setParameters(parameters)
-                result
+                GetParametersResponse.builder().parameters(parameters).build()
             }
             return futureTask
         }
@@ -424,37 +387,38 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
                 [
-                        'aws.client.system-manager.parameterstore.enabled'                  : 'true',
-                        'micronaut.application.name'                                        : 'amazonTest'],
+                        'aws.client.system-manager.parameterstore.enabled': 'true',
+                        'micronaut.application.name'                      : 'amazonTest'],
                 Environment.AMAZON_EC2
 
         )
         AWSParameterStoreConfigClient client = embeddedServer.applicationContext.getBean(AWSParameterStoreConfigClient)
 
-        client.client = Mock(AWSSimpleSystemsManagementAsync)
+        client.client = Mock(SsmAsyncClient)
         client.queryProvider = (env, serviceId, configuration) -> [
-            new ParameterQuery("/root/application", "/root/application", -1),
-            new ParameterQuery('/config/foo', '/config/foo', -10)
+                new ParameterQuery("/root/application", "/root/application", -1),
+                new ParameterQuery('/config/foo', '/config/foo', -10)
         ]
 
         def searchedPaths = []
-        client.client.getParametersByPathAsync(_) >> { GetParametersByPathRequest getRequest ->
+        client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
 
-            searchedPaths += getRequest.path
+            searchedPaths += getRequest.path()
 
-            def result = new GetParametersByPathResult()
-            if (getRequest.path.startsWith("/root/application")) {
-                def parameter = new Parameter(
-                        name: "/root/application/someKey",
-                        value: "someValue",
-                        type: "String")
-                result.setParameters([parameter])
+            def responseBuilder = GetParametersByPathResponse.builder()
+            if (getRequest.path().startsWith("/root/application")) {
+                def parameter = Parameter.builder()
+                        .name("/root/application/someKey")
+                        .value("someValue")
+                        .type("String")
+                        .build()
+                responseBuilder.parameters([parameter])
             }
 
-            FutureTask<GetParametersByPathResult> futureTask = Mock(FutureTask)
+            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
             futureTask.isDone() >> { return true }
             futureTask.get() >> {
-                return result
+                return responseBuilder.build()
             }
             return futureTask
         }

@@ -35,5 +35,6 @@ alexa:
   webservice: Alexa Skill as a Web Service
   alexalambda: Alexa Skill as an AWS Lambda Function
   flashbriefings: Flash Briefings
+parametersStore: Parameter Store as Cloud Configuration
 repository: Repository
 breaks: Breaking Changes
