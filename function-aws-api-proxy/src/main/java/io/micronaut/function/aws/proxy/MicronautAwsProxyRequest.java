@@ -379,6 +379,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         this.decodedBody = decodedBody;
     }
 
+    /**
+     * @return true if body was already decoded, false otherwise
+     */
+    boolean isBodyDecoded(){
+        return decodedBody != null;
+    }
+
     private String getScheme() {
         // if we don't have any headers to deduce the value we assume HTTPS - API Gateway's default
         if (awsProxyRequest.getMultiValueHeaders() == null) {

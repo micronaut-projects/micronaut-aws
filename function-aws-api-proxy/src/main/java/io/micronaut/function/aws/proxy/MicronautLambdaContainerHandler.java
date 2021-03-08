@@ -49,10 +49,7 @@ import io.micronaut.http.server.exceptions.ExceptionHandler;
 import io.micronaut.http.server.types.files.StreamedFile;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
-import io.micronaut.web.router.MethodBasedRouteMatch;
-import io.micronaut.web.router.RouteMatch;
-import io.micronaut.web.router.Router;
-import io.micronaut.web.router.UriRouteMatch;
+import io.micronaut.web.router.*;
 import io.micronaut.web.router.resource.StaticResourceResolver;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -451,34 +448,36 @@ public final class MicronautLambdaContainerHandler
     }
 
     private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, MethodBasedRouteMatch<Object, Object> finalRoute) {
-        final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
-        if (permitsRequestBody) {
-            final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-            if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
-                final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
-                    final Optional<String> body = containerRequest.getBody(String.class);
-                    if (body.isPresent()) {
+        if (!containerRequest.isBodyDecoded()) {
+            final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
+            if (permitsRequestBody) {
+                final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
+                    final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
+                        final Optional<String> body = containerRequest.getBody(String.class);
+                        if (body.isPresent()) {
 
-                        Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
-                        if (bodyArgument == null) {
-                            bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
-                                .findFirst()
-                                .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
-                        }
-
-                        if (bodyArgument != null) {
-                            final Class<?> rawType = bodyArgument.getType();
-                            if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
-                                bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                            Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+                            if (bodyArgument == null) {
+                                bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                                        .findFirst()
+                                        .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
                             }
-                            final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body.get());
-                            ((MicronautAwsProxyRequest) containerRequest)
-                                .setDecodedBody(decoded);
-                        } else {
-                            final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body.get());
-                            ((MicronautAwsProxyRequest) containerRequest)
-                                .setDecodedBody(jsonNode);
+
+                            if (bodyArgument != null) {
+                                final Class<?> rawType = bodyArgument.getType();
+                                if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
+                                    bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                                }
+                                final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body.get());
+                                ((MicronautAwsProxyRequest) containerRequest)
+                                        .setDecodedBody(decoded);
+                            } else {
+                                final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body.get());
+                                ((MicronautAwsProxyRequest) containerRequest)
+                                        .setDecodedBody(jsonNode);
+                            }
                         }
                     }
                 }
