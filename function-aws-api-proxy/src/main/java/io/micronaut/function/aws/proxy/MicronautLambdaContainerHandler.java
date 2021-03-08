@@ -126,6 +126,7 @@ public final class MicronautLambdaContainerHandler
 
     /**
      * Constructor used to inject a preexisting {@link ApplicationContext}.
+     * @param applicationContext application context
      *
      * @throws ContainerInitializationException The exception
      */

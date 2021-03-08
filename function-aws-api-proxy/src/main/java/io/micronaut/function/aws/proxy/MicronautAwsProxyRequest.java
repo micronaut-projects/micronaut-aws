@@ -382,7 +382,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     /**
      * @return true if body was already decoded, false otherwise
      */
-    boolean isBodyDecoded(){
+    boolean isBodyDecoded() {
         return decodedBody != null;
     }
 
