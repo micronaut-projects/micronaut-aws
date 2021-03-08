@@ -154,6 +154,32 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
+    void 'cors headers are present after failed deserialisation'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/jsonBody', HttpMethod.POST.toString())
+                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
+                .body('{"numberField": "string is not a number"}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
+    }
+
+    void 'cors headers are present after failed deserialisation when error handler is used'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/errors/global', HttpMethod.POST.toString())
+                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
+                .body('{"numberField": "string is not a number"}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
+    }
+
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')

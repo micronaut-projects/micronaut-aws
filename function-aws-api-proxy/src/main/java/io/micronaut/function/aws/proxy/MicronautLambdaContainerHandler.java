@@ -352,10 +352,15 @@ public final class MicronautLambdaContainerHandler
                                     );
                                 }
                             } else if (errorHandler instanceof MethodBasedRouteMatch) {
-                                return executeRoute(
+                                final Publisher<? extends MutableHttpResponse<?>> errorPublisher = executeRoute(
                                         containerRequest,
                                         containerResponse,
                                         (MethodBasedRouteMatch) errorHandler
+                                );
+
+                                return filterPublisher(
+                                        requestReference,
+                                        errorPublisher
                                 );
                             }
                             return Flowable.error(throwable);
