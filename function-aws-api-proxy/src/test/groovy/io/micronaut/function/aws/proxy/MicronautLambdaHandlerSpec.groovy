@@ -80,6 +80,9 @@ class MicronautLambdaHandlerSpec extends Specification {
         then:
         response
         response.body == "<div>ok</div>"
+
+        cleanup:
+        handler.close()
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
