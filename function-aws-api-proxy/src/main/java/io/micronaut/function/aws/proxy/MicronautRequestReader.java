@@ -26,6 +26,7 @@ import io.micronaut.web.router.UriRoute;
 import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -65,12 +66,10 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                     config
             );
 
-            UriRouteMatch<Object, Object> finalRoute = environment.getRouter()
-                    .find(containerRequest)
-                    .findFirst()
-                    .orElse(null);
+            List<UriRouteMatch<Object, Object>> uriRoutes = environment.getRouter().findAllClosest(containerRequest);
 
-            if (finalRoute != null) {
+            if (!uriRoutes.isEmpty()) {
+                UriRouteMatch<Object, Object> finalRoute = uriRoutes.get(0);
                 containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
                 final UriRoute route = finalRoute.getRoute();
                 containerRequest.setAttribute(HttpAttributes.ROUTE, route);
