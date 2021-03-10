@@ -3,7 +3,7 @@ package io.micronaut.function.aws.proxy
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
-import com.fasterxml.jackson.databind.JsonMappingException
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
@@ -11,10 +11,13 @@ import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.codec.CodecException
+import io.micronaut.http.hateoas.JsonError
+import io.micronaut.http.hateoas.Link
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
+import spock.lang.Issue
 import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
@@ -38,6 +41,23 @@ class ErrorHandlerSpec extends Specification {
     @Shared
     Context lambdaContext = new MockLambdaContext()
 
+    @Shared
+    ObjectMapper objectMapper = handler.getApplicationContext().getBean(ObjectMapper.class)
+
+    void 'test custom global exception handlers for POST with body'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/errors/global', HttpMethod.POST.toString())
+                .header(HttpHeaders.CONTENT_TYPE, io.micronaut.http.MediaType.APPLICATION_JSON)
+                .body(objectMapper.writeValueAsString(new RequestObject(101)))
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 200
+        response.body.startsWith("{\"message\":\"Error: bad things when post and body in request\",\"")
+        response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
+    }
 
     void 'test custom global exception handlers'() {
         given:
@@ -134,6 +154,32 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
+    void 'cors headers are present after failed deserialisation'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/jsonBody', HttpMethod.POST.toString())
+                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
+                .body('{"numberField": "string is not a number"}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
+    }
+
+    void 'cors headers are present after failed deserialisation when error handler is used'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/errors/global', HttpMethod.POST.toString())
+                .header(HttpHeaders.ORIGIN, "http://localhost:8080")
+                .body('{"numberField": "string is not a number"}')
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
+    }
+
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
@@ -165,13 +211,38 @@ class ErrorHandlerSpec extends Specification {
         String localHandler(AnotherException throwable) {
             return throwable.getMessage()
         }
+    }
 
+    @Issue("issues/761")
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Controller(value = '/json/errors', produces = io.micronaut.http.MediaType.APPLICATION_JSON)
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
+    static class JsonErrorController {
+
+        @Post('/global')
+        String globalHandlerPost(@Body RequestObject object) {
+            throw new RuntimeException("bad things when post and body in request")
+        }
+
+        @Error
+
+        HttpResponse<JsonError> errorHandler(HttpRequest request, RuntimeException exception) {
+            JsonError error = new JsonError("Error: " + exception.getMessage())
+                    .link(Link.SELF, Link.of(request.getUri()));
+
+            return HttpResponse.<JsonError>status(HttpStatus.OK)
+                    .body(error)
+        }
     }
 
     @Introspected
     static class RequestObject {
         @Min(1L)
         Integer numberField;
+
+        RequestObject(Integer numberField) {
+            this.numberField = numberField
+        }
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
