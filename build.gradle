@@ -11,29 +11,51 @@ subprojects { Project subproject ->
 
     group "io.micronaut.aws"
 
-    apply plugin: "io.micronaut.build.internal.common"
-    apply plugin: "io.micronaut.build.internal.dependency-updates"
-
-    if (subproject.name != 'test-suite') {
-        apply plugin: "io.micronaut.build.internal.publishing"
+    boolean isExampleOrBenchmark = subproject.name.contains("example")
+    ext {
+        skipDocumentation = true
     }
 
-    repositories {
-        jcenter()
-    }
+    if (subproject.name != 'aws-bom' && !isExampleOrBenchmark) {
 
-    dependencies {
-        annotationProcessor "io.micronaut:micronaut-inject-java"
-        annotationProcessor "io.micronaut:micronaut-graal"
-        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
-        testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-        testImplementation("org.spockframework:spock-core:${spockVersion}") {
-            exclude module:'groovy-all'
+        apply plugin: "io.micronaut.build.internal.common"
+        apply plugin: "io.micronaut.build.internal.dependency-updates"
+
+        if (subproject.name != 'test-suite') {
+            apply plugin: "io.micronaut.build.internal.publishing"
         }
-        testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
-        testImplementation 'org.junit.vintage:junit-vintage-engine'
-    }
 
+        repositories {
+            jcenter()
+        }
+
+        dependencies {
+            annotationProcessor "io.micronaut:micronaut-inject-java"
+            annotationProcessor "io.micronaut:micronaut-graal"
+            annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
+
+            testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+            testImplementation("org.spockframework:spock-core:${spockVersion}") {
+                exclude module: 'groovy-all'
+            }
+            testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
+            testImplementation 'org.junit.vintage:junit-vintage-engine'
+
+        }
+    } else if (isExampleOrBenchmark) {
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
+        apply plugin: 'java'
+
+    } else {
+        apply plugin: "java-platform"
+        version projectVersion
+        apply plugin: "io.micronaut.build.internal.dependency-updates"
+        apply plugin: "io.micronaut.build.internal.publishing"
+
+    }
 }
 
 apply plugin: "io.micronaut.build.internal.docs"
