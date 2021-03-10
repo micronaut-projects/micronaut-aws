@@ -5,6 +5,7 @@ file('examples').eachDir {
     project(":${it.name}").projectDir = it
 }
 
+include 'aws-bom'
 include 'function-aws'
 include 'function-client-aws'
 include 'function-aws-api-proxy'

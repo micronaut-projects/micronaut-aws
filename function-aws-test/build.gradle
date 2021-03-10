@@ -1,6 +1,5 @@
 dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     implementation "io.micronaut.test:micronaut-test-junit5:$micronautTestVersion"
     api project(":function-aws")
     api "io.micronaut:micronaut-function:$micronautVersion"

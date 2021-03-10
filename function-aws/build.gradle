@@ -1,10 +1,8 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
     compileOnly "io.micronaut:micronaut-inject-java"
 
     api "io.micronaut:micronaut-function:$micronautVersion"
-    api "com.amazonaws:aws-lambda-java-core:1.2.1"
+    api "com.amazonaws:aws-lambda-java-core:${amazonLambdaVersion}"
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
 }
