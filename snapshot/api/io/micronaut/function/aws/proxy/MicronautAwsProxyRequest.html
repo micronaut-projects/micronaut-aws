@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -209,6 +209,10 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getUri--">getUri</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i12" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#isBodyDecoded--">isBodyDecoded</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>protected java.util.List&lt;io.micronaut.function.aws.proxy.MicronautAwsProxyRequest.HeaderValue&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#parseHeaderValue-java.lang.String-java.lang.String-java.lang.String-">parseHeaderValue</a></span>(java.lang.String&nbsp;headerValue,
                 java.lang.String&nbsp;valueSeparator,
@@ -441,7 +445,7 @@ public&nbsp;&lt;T1&gt;&nbsp;java.util.Optional&lt;T1&gt;&nbsp;getBody(io.microna
 <a name="parseHeaderValue-java.lang.String-java.lang.String-java.lang.String-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>parseHeaderValue</h4>
 <pre>protected&nbsp;java.util.List&lt;io.micronaut.function.aws.proxy.MicronautAwsProxyRequest.HeaderValue&gt;&nbsp;parseHeaderValue(java.lang.String&nbsp;headerValue,
@@ -458,6 +462,19 @@ public&nbsp;&lt;T1&gt;&nbsp;java.util.Optional&lt;T1&gt;&nbsp;getBody(io.microna
 <dd><code>qualifierSeparator</code> - the qualifier separator</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>A list of SimpleMapEntry objects with all of the possible values for the header.</dd>
+</dl>
+</li>
+</ul>
+<a name="isBodyDecoded--">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>isBodyDecoded</h4>
+<pre>public&nbsp;boolean&nbsp;isBodyDecoded()</pre>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if body was already decoded, false otherwise</dd>
 </dl>
 </li>
 </ul>
