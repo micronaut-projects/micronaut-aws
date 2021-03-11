@@ -13,7 +13,7 @@ dependencies {
 
     implementation 'com.github.spotbugs:spotbugs-annotations'
 
-    compileOnly ("com.amazon.alexa:ask-sdk:2.37.1")
+    implementation ("com.amazon.alexa:ask-sdk:2.37.1")
     api ("com.amazon.alexa:ask-sdk-core:2.37.1")
 
     testImplementation ("com.amazon.alexa:ask-sdk:2.37.1") {
