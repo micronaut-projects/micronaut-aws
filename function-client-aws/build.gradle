@@ -1,8 +1,8 @@
 dependencies {
-    compileOnly "io.micronaut:micronaut-inject-java"
-    implementation "com.amazonaws:aws-java-sdk-lambda:${awsSdkV1Version}"
-    api "io.micronaut:micronaut-function-client:$micronautVersion"
     api project(":aws-sdk-v1")
+    compileOnly "io.micronaut:micronaut-inject-java"
+    implementation "com.amazonaws:aws-java-sdk-lambda"
+    api "io.micronaut:micronaut-function-client:$micronautVersion"
 
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
