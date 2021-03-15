@@ -4,10 +4,10 @@ javaPlatform {
 dependencies {
     constraints {
         for (Project p : rootProject.subprojects) {
-            if (p.name.endsWith("-bom") ||  p.name.contains('example')) {
-            	continue	
-        	} 
-            
+            if (p.name.endsWith("-bom") || p.name.contains('example')) {
+                continue
+            }
+
             api "$p.group:micronaut-$p.name:$p.version"
         }
 

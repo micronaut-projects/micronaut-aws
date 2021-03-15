@@ -1,9 +1,9 @@
 dependencies {
     api "io.micronaut.discovery:micronaut-discovery-client:${micronautDiscoveryClientVersion}"
     api project(":aws-sdk-v1")
-    implementation "com.amazonaws:aws-java-sdk-route53:${awsSdkV1Version}"
-    implementation "com.amazonaws:aws-java-sdk-core:${awsSdkV1Version}"
-    implementation "com.amazonaws:jmespath-java:${awsSdkV1Version}"
-    implementation "com.amazonaws:aws-java-sdk-servicediscovery:${awsSdkV1Version}"
+    implementation "com.amazonaws:aws-java-sdk-route53"
+    implementation "com.amazonaws:aws-java-sdk-core"
+    implementation "com.amazonaws:jmespath-java"
+    implementation "com.amazonaws:aws-java-sdk-servicediscovery"
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }

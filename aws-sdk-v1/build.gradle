@@ -1,5 +1,6 @@
 dependencies {
-    api "com.amazonaws:aws-java-sdk-core:${awsSdkV1Version}"
+    api platform("com.amazonaws:aws-java-sdk-bom:${awsSdkV1Version}")
+    api "com.amazonaws:aws-java-sdk-core"
     api project(":aws-common")
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
