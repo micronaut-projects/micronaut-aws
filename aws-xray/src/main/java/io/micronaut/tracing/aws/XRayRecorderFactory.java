@@ -1,0 +1,86 @@
+/*
+ * Copyright 2021 original authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.micronaut.tracing.aws;
+
+import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.AWSXRayRecorder;
+import com.amazonaws.xray.AWSXRayRecorderBuilder;
+import com.amazonaws.xray.listeners.SegmentListener;
+import com.amazonaws.xray.plugins.Plugin;
+import com.amazonaws.xray.strategy.sampling.CentralizedSamplingStrategy;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.env.Environment;
+import io.micronaut.core.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
+import java.net.URL;
+import java.util.List;
+
+/**
+ * The factory configures and creates the {@link AWSXRayRecorder}. Based on the configured
+ * {@link Environment} respective {@link Plugin} is configured to the {@link AWSXRayRecorder}.
+ *
+ * @author Pavol Gressa
+ * @since 2.3
+ */
+@Requires(env = Environment.AMAZON_EC2)
+@Requires(property = XRayConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Factory
+public class XRayRecorderFactory {
+
+    private static final Logger LOG = LoggerFactory.getLogger(XRayRecorderFactory.class);
+
+    /**
+     * @return aws xray recorder builder
+     */
+    @Singleton
+    public AWSXRayRecorderBuilder builder() {
+        return AWSXRayRecorderBuilder.standard();
+    }
+
+    @Singleton
+    public AWSXRayRecorder build(AWSXRayRecorderBuilder builder,
+                                 XRayConfiguration awsxRayConfiguration,
+                                 List<Plugin> plugins,
+                                 List<SegmentListener> segmentListeners
+    ) {
+        if (awsxRayConfiguration.getSamplingRule().isPresent()) {
+            String sampligRule = awsxRayConfiguration.getSamplingRule().get();
+            try {
+                URL ruleFile = XRayRecorderFactory.class.getResource(sampligRule);
+                builder.withSamplingStrategy(new CentralizedSamplingStrategy(ruleFile));
+            } catch (Exception e) {
+                LOG.error(String.format("Failed to configure sampling rule: %s", sampligRule), e);
+            }
+        }
+
+        builder.withDefaultPlugins();
+        for (Plugin plugin : plugins) {
+            builder.withPlugin(plugin);
+        }
+
+        for(SegmentListener segmentListener : segmentListeners){
+            builder.withSegmentListener(segmentListener);
+        }
+
+        AWSXRayRecorder awsxRayRecorder = builder.build();
+        AWSXRay.setGlobalRecorder(awsxRayRecorder);
+        return awsxRayRecorder;
+    }
+}
