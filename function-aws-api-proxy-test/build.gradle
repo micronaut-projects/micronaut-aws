@@ -1,5 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     api "io.micronaut:micronaut-http-server"
     api project(":function-aws-api-proxy")
 
