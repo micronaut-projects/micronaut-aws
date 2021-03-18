@@ -1,10 +1,5 @@
 rootProject.name = 'aws'
 
-file('examples').eachDir {
-    include it.name
-    project(":${it.name}").projectDir = it
-}
-
 include 'function-aws'
 include 'function-client-aws'
 include 'function-aws-api-proxy'

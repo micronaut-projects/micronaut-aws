@@ -1,4 +1,0 @@
-endpoints:
-  env:
-    enabled: true
-    sensitive: true
