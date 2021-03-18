@@ -2,7 +2,6 @@ plugins {
     id 'java-library'
 }
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
 
     implementation "io.micronaut:micronaut-inject"

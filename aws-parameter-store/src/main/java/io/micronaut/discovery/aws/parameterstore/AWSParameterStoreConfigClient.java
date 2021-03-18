@@ -43,7 +43,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 /**
  * A {@link ConfigurationClient} implementation for AWS ParameterStore.

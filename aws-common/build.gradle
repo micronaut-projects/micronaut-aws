@@ -1,6 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-
     api "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-runtime:$micronautVersion"
 

@@ -1,5 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-graal"
 
     api 'io.micronaut.discovery:micronaut-discovery-client:2.3.0'
