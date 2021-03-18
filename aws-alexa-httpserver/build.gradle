@@ -12,15 +12,15 @@ dependencies {
 
     api project(":aws-alexa")
     implementation "io.micronaut:micronaut-http-server"
-    api ("com.amazon.alexa:ask-sdk-core:${amazonAlexaVersion}")
+    api ("com.amazon.alexa:ask-sdk-core:2.37.1")
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "org.bouncycastle:bcprov-jdk15on:1.68"
-    testImplementation ("com.amazon.alexa:ask-sdk:${amazonAlexaVersion}") {
+    testImplementation ("com.amazon.alexa:ask-sdk:2.37.1") {
         transitive(false)
     }
-    testImplementation "com.amazon.alexa:ask-sdk-apache-client:${amazonAlexaVersion}"
+    testImplementation "com.amazon.alexa:ask-sdk-apache-client:2.37.1"
 
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:${jclOverSl4fjVersion}"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
 }

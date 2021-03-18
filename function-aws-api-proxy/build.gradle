@@ -8,7 +8,7 @@ dependencies {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
     }
-    api "org.slf4j:jcl-over-slf4j:${jclOverSl4fjVersion}"
+    api "org.slf4j:jcl-over-slf4j:1.7.30"
     api project(":function-aws")
     api project(":aws-common")
 

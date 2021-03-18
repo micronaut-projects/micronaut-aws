@@ -11,24 +11,8 @@ subprojects { Project subproject ->
 
     group "io.micronaut.aws"
 
-    boolean isExampleOrBenchmark = subproject.name.contains("example")
-    ext {
-        skipDocumentation = true
-    }
-
-    if (subproject.name != 'aws-bom' && !isExampleOrBenchmark) {
-
+    if (subproject.name != 'aws-bom') {
         apply plugin: "io.micronaut.build.internal.common"
-        apply plugin: "io.micronaut.build.internal.dependency-updates"
-
-        if (subproject.name != 'test-suite') {
-            apply plugin: "io.micronaut.build.internal.publishing"
-        }
-
-        repositories {
-            jcenter()
-        }
-
         dependencies {
             annotationProcessor "io.micronaut:micronaut-inject-java"
             annotationProcessor "io.micronaut:micronaut-graal"
@@ -42,20 +26,12 @@ subprojects { Project subproject ->
             testImplementation 'org.junit.vintage:junit-vintage-engine'
 
         }
-    } else if (isExampleOrBenchmark) {
-        repositories {
-            jcenter()
-            mavenCentral()
-        }
-        apply plugin: 'java'
-
     } else {
         apply plugin: "java-platform"
         version projectVersion
-        apply plugin: "io.micronaut.build.internal.dependency-updates"
-        apply plugin: "io.micronaut.build.internal.publishing"
-
     }
+    apply plugin: "io.micronaut.build.internal.dependency-updates"
+    apply plugin: "io.micronaut.build.internal.publishing"
 }
 
 apply plugin: "io.micronaut.build.internal.docs"
