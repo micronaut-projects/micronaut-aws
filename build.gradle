@@ -25,7 +25,7 @@ subprojects { Project subproject ->
     dependencies {
         annotationProcessor "io.micronaut:micronaut-inject-java"
         annotationProcessor "io.micronaut:micronaut-graal"
-        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
+        annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:$micronautDocsVersion"
         testAnnotationProcessor "io.micronaut:micronaut-inject-java"
         testImplementation("org.spockframework:spock-core:${spockVersion}") {
             exclude module:'groovy-all'

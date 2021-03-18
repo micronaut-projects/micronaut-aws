@@ -1,6 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-inject-java"
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
     compileOnly "io.micronaut:micronaut-inject-java"
     implementation 'com.amazonaws:aws-java-sdk-lambda:1.11.976'
     api "io.micronaut:micronaut-function-client:$micronautVersion"
