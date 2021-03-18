@@ -1,5 +1,4 @@
 dependencies {
-    annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:1.0.25"
     annotationProcessor "io.micronaut:micronaut-graal"
 
     compileOnly "io.micronaut.security:micronaut-security:$micronautSecurity"
