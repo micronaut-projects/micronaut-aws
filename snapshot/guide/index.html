@@ -152,13 +152,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-ssmlbuilder"><a href="#ssmlbuilder"><strong>8.1</strong><span>SSML Builder</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-intentHandler"><a href="#intentHandler"><strong>8.2</strong><span>The IntentHandler Annotation</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-webservice"><a href="#webservice"><strong>8.2</strong><span>Alexa Skill as a Web Service</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-webservice"><a href="#webservice"><strong>8.3</strong><span>Alexa Skill as a Web Service</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-alexalambda"><a href="#alexalambda"><strong>8.3</strong><span>Alexa Skill as an AWS Lambda Function</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-alexalambda"><a href="#alexalambda"><strong>8.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a></div>
-        
-        <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>8.5</strong><span>Flash Briefings</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>8.4</strong><span>Flash Briefings</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>9</strong><span>Parameter Store as Cloud Configuration</span></a></div>
         
@@ -2064,56 +2062,7 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 </div>
 </div>
 
-<h2 id="intentHandler"><a class="anchor" href="#intentHandler"></a>8.2 The IntentHandler Annotation</h2>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
-/src/main/docs/guide/alexa/intentHandler.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>To simplify the programming model Micronaut AWS includes a <a href="../api/io/micronaut/function/aws/alexa/annotation/IntentHandler.html">@IntentHandler</a> annotation that can be used on any bean method to make the method an intent handler.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The method must accept a single value of type <code>com.amazon.ask.dispatcher.request.handler.HandlerInput</code> and return a value of type <code>Optional&lt;com.amazon.ask.model.Response&gt;</code> otherwise a compilation error will occur.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>A typical Alexa application written in Micronaut looks like:</p>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>javax.inject.Singleton</code> annotation is used to define <code>AlexApplication</code> as a bean</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Other services can be dependency injected into the constructor</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The <a href="../api/io/micronaut/function/aws/alexa/annotation/IntentHandler.html">@IntentHandler</a> is used to indicate which methods are intent handlers</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The method receives a <code>HandlerInput</code> and returns a <code>Response</code></td>
-</tr>
-</table>
-</div>
-
-<h2 id="webservice"><a class="anchor" href="#webservice"></a>8.3 Alexa Skill as a Web Service</h2>
+<h2 id="webservice"><a class="anchor" href="#webservice"></a>8.2 Alexa Skill as a Web Service</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
@@ -2156,7 +2105,7 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <p>You can configure your Skill&#8217;s endpoint under <code>Build/Endpoint</code> in the Alexa developer console.</p>
 </div>
 
-<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>8.4 Alexa Skill as an AWS Lambda Function</h2>
+<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>8.3 Alexa Skill as an AWS Lambda Function</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
@@ -2190,7 +2139,7 @@ The method must accept a single value of type <code>com.amazon.ask.dispatcher.re
 <p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
 </div>
 
-<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>8.5 Flash Briefings</h2>
+<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>8.4 Flash Briefings</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
