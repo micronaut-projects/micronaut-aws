@@ -23,8 +23,6 @@ subprojects { Project subproject ->
                 exclude module: 'groovy-all'
             }
             testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
-            testImplementation 'org.junit.vintage:junit-vintage-engine'
-
         }
     } else {
         apply plugin: "java-platform"
