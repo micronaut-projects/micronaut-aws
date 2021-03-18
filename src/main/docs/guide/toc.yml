@@ -31,7 +31,6 @@ lambda:
 alexa:
   title: Alexa Support
   ssmlbuilder: SSML Builder
-  intentHandler: The IntentHandler Annotation
   webservice: Alexa Skill as a Web Service
   alexalambda: Alexa Skill as an AWS Lambda Function
   flashbriefings: Flash Briefings
