@@ -10,7 +10,6 @@ dependencies {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-inject-groovy"

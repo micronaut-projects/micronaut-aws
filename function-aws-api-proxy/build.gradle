@@ -12,7 +12,6 @@ dependencies {
     api project(":function-aws")
     api project(":aws-common")
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
