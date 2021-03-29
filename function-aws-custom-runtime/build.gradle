@@ -3,7 +3,7 @@ dependencies {
     compileOnly project(":function-aws-api-proxy")
 
     api "io.micronaut:micronaut-http-client"
-    api "com.amazonaws:aws-lambda-java-events:3.7.0"
+    api "com.amazonaws:aws-lambda-java-events:3.8.0"
     implementation 'com.github.spotbugs:spotbugs-annotations'
 
     testImplementation project(":function-aws-api-proxy"), {
