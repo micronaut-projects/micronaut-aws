@@ -1,5 +1,5 @@
 dependencies {
-    api platform("software.amazon.awssdk:bom:2.16.23")
+    api platform("software.amazon.awssdk:bom:2.16.29")
     api project(":aws-common")
 
     compileOnly "org.graalvm.nativeimage:svm"
