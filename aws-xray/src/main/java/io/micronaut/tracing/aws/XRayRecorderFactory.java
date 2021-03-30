@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,10 +31,11 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Singleton;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The factory configures and creates the {@link AWSXRayRecorder}. Based on the configured
- * {@link Environment} respective {@link Plugin} is configured to the {@link AWSXRayRecorder}.
+ * {@link Environment} respective {@link Plugin}s are configured to the {@link AWSXRayRecorder}.
  *
  * @author Pavol Gressa
  * @since 2.3
@@ -47,6 +48,8 @@ public class XRayRecorderFactory {
     private static final Logger LOG = LoggerFactory.getLogger(XRayRecorderFactory.class);
 
     /**
+     * Create the {@link AWSXRayRecorderBuilder}. For additional configuration register {@link io.micronaut.context.event.BeanCreatedEventListener}.
+     *
      * @return aws xray recorder builder
      */
     @Singleton
@@ -54,11 +57,19 @@ public class XRayRecorderFactory {
         return AWSXRayRecorderBuilder.standard();
     }
 
+    /**
+     * Creates {@link AWSXRayRecorder} singleton bean.
+     * @param builder The builder
+     * @param awsxRayConfiguration The recorder configuration
+     * @param plugins The {@link Plugin}s to configure
+     * @param segmentListeners The {@link SegmentListener}s to configure
+     * @return built {@link AWSXRayRecorder}
+     */
     @Singleton
     public AWSXRayRecorder build(AWSXRayRecorderBuilder builder,
                                  XRayConfiguration awsxRayConfiguration,
-                                 List<Plugin> plugins,
-                                 List<SegmentListener> segmentListeners
+                                 Optional<List<Plugin>> plugins,
+                                 Optional<List<SegmentListener>> segmentListeners
     ) {
         if (awsxRayConfiguration.getSamplingRule().isPresent()) {
             String sampligRule = awsxRayConfiguration.getSamplingRule().get();
@@ -71,12 +82,17 @@ public class XRayRecorderFactory {
         }
 
         builder.withDefaultPlugins();
-        for (Plugin plugin : plugins) {
-            builder.withPlugin(plugin);
+
+        if (plugins.isPresent()) {
+            for (Plugin plugin : plugins.get()) {
+                builder.withPlugin(plugin);
+            }
         }
 
-        for(SegmentListener segmentListener : segmentListeners){
-            builder.withSegmentListener(segmentListener);
+        if (segmentListeners.isPresent()) {
+            for (SegmentListener segmentListener : segmentListeners.get()) {
+                builder.withSegmentListener(segmentListener);
+            }
         }
 
         AWSXRayRecorder awsxRayRecorder = builder.build();

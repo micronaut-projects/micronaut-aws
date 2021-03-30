@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
 package io.micronaut.tracing.aws.filter;
 
 import com.amazonaws.xray.entities.Segment;
-import com.amazonaws.xray.entities.TraceHeader;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.core.async.publisher.Publishers;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
+import io.micronaut.http.simple.SimpleHttpHeaders;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.DispatcherType;
@@ -39,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
+import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.security.Principal;
@@ -50,88 +52,68 @@ import java.util.Optional;
 import java.util.Vector;
 
 /**
+ * Segment request context holds references to created {@link Segment} and {@link HttpRequest} resp
+ * {@link io.micronaut.http.HttpResponse} adapters to {@link HttpServletRequest} resp. {@link HttpServletResponse}
+ * classes.
+ *
  * @author Pavol Gressa
  * @since 2.5
  */
-@SuppressWarnings("PublisherImplementation")
-public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
+public class SegmentRequestContext {
 
-    private final Publisher<T> publisher;
-    private final HttpRequest<?> request;
-    private final AWSXRayServletFilter delegate;
+    private final Segment segment;
+    private final HttpRequestAdapter httpRequestAdapter;
+    private final HttpResponseAdapter httpResponseAdapter;
 
-    public XRayPublisher(Publisher<T> publisher, HttpRequest<?> request, AWSXRayServletFilter awsxRayServletFilter) {
-        this.publisher = publisher;
-        this.delegate = awsxRayServletFilter;
-        this.request = request;
+    SegmentRequestContext(@NotNull Segment segment, @NotNull HttpRequestAdapter httpRequestAdapter, @NotNull HttpResponseAdapter httpResponseAdapter) {
+        this.segment = segment;
+        this.httpRequestAdapter = httpRequestAdapter;
+        this.httpResponseAdapter = httpResponseAdapter;
     }
 
-    private Optional<TraceHeader> getTraceHeader(HttpRequest<?> request) {
-        String traceHeaderString = request.getHeaders().get(TraceHeader.HEADER_KEY);
-        if (null != traceHeaderString) {
-            return Optional.of(TraceHeader.fromString(traceHeaderString));
-        }
-        return Optional.empty();
+    /**
+     * @return The http request
+     */
+    public HttpRequest<?> getHttpRequest() {
+        return this.getHttpRequestAdapter().request;
     }
 
-    @Override
-    public void subscribe(Subscriber<? super T> actual) {
-        //noinspection SubscriberImplementation
-        publisher.subscribe(new Subscriber<T>() {
-
-            Segment segment;
-
-            @Override
-            public void onSubscribe(Subscription s) {
-                segment = delegate.preFilter(new HttpRequestAdapter(request), null);
-                actual.onSubscribe(s);
-            }
-
-            @Override
-            public void onNext(T object) {
-                if (object instanceof MutableHttpResponse) {
-                    MutableHttpResponse<?> mutableHttpResponse = (MutableHttpResponse<?>) object;
-
-                    Optional<TraceHeader> incomingHeader = getTraceHeader(request);
-                    final TraceHeader responseHeader;
-                    if (incomingHeader.isPresent()) {
-                        // create a new header, and use the incoming header so we know what to do in regards to sending back the sampling
-                        // decision.
-                        responseHeader = new TraceHeader(segment.getTraceId());
-                        if (TraceHeader.SampleDecision.REQUESTED == incomingHeader.get().getSampled()) {
-                            responseHeader.setSampled(segment.isSampled() ? TraceHeader.SampleDecision.SAMPLED : TraceHeader.SampleDecision.NOT_SAMPLED);
-                        }
-                    } else {
-                        // Create a new header, we're the tracing root. We wont return the sampling decision.
-                        responseHeader = new TraceHeader(segment.getTraceId());
-                    }
-                    mutableHttpResponse.header(TraceHeader.HEADER_KEY, responseHeader.toString());
-
-                    delegate.postFilter(new HttpRequestAdapter(request), new HttpResponseAdapter(mutableHttpResponse));
-                }
-                actual.onNext(object);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                if (segment != null) {
-                    segment.addException(t);
-                }
-                actual.onError(t);
-            }
-
-            @Override
-            public void onComplete() {
-                actual.onComplete();
-            }
-        });
+    /**
+     * @return The http response
+     */
+    public MutableHttpResponse<?> getMutableHttpResponse() {
+        return this.getHttpResponseAdapter().response;
     }
 
-    static class HttpRequestAdapter implements HttpServletRequest
-    {
+    /**
+     * @return The segment
+     */
+    public Segment getSegment() {
+        return segment;
+    }
+
+    /**
+     * @return The adapted http request
+     */
+    public HttpRequestAdapter getHttpRequestAdapter() {
+        return httpRequestAdapter;
+    }
+
+    /**
+     * @return The adapted http response
+     */
+    public HttpResponseAdapter getHttpResponseAdapter() {
+        return httpResponseAdapter;
+    }
+
+    /**
+     * Naive adapter of {@link io.micronaut.http.HttpRequest} to {@link HttpServletRequest}
+     * only for purpose of reusing existing functionality in {@link XRayHttpServerFilter}.
+     */
+    static class HttpRequestAdapter implements HttpServletRequest {
         private final HttpRequest<?> request;
 
-        public HttpRequestAdapter(HttpRequest<?> request) {
+        public HttpRequestAdapter(@NotNull HttpRequest<?> request) {
             this.request = request;
         }
 
@@ -167,9 +149,9 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public String getContentType() {
-            if(request.getContentType().isPresent()){
+            if (request.getContentType().isPresent()) {
                 return request.getContentType().get().getName();
-            }else {
+            } else {
                 return null;
             }
         }
@@ -226,7 +208,7 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public String getRemoteAddr() {
-            throw new UnsupportedOperationException("Not implemented.");
+            return request.getRemoteAddress().getHostString();
         }
 
         @Override
@@ -361,7 +343,7 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public String getMethod() {
-            throw new UnsupportedOperationException("Not implemented.");
+            return request.getMethodName();
         }
 
         @Override
@@ -406,12 +388,12 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public String getRequestURI() {
-            throw new UnsupportedOperationException("Not implemented.");
+            return request.getUri().getPath();
         }
 
         @Override
         public StringBuffer getRequestURL() {
-            throw new UnsupportedOperationException("Not implemented.");
+            return new StringBuffer(request.getUri().toString());
         }
 
         @Override
@@ -485,11 +467,20 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
         }
     }
 
-    static class HttpResponseAdapter implements HttpServletResponse{
+    /**
+     * Naive adapter of {@link io.micronaut.http.MutableHttpResponse} to {@link HttpServletResponse}
+     * only for purpose of reusing existing functionality in {@link XRayHttpServerFilter}.
+     */
+    static class HttpResponseAdapter implements HttpServletResponse {
+
         private final MutableHttpResponse<?> response;
 
-        public HttpResponseAdapter(MutableHttpResponse<?> response) {
+        public HttpResponseAdapter(@NotNull MutableHttpResponse<?> response) {
             this.response = response;
+        }
+
+        public MutableHttpResponse<?> getResponse() {
+            return response;
         }
 
         @Override
@@ -499,7 +490,7 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public String getContentType() {
-            if(response.getHeaders().getContentType().isPresent()){
+            if (response.getHeaders().getContentType().isPresent()) {
                 return response.getHeaders().getContentType().get();
             }
             return null;
@@ -637,11 +628,7 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
 
         @Override
         public void addHeader(String name, String value) {
-            if(response != null){
-                response.getHeaders().add(name, value);
-            }else{
-
-            }
+            response.getHeaders().add(name, value);
         }
 
         @Override
@@ -682,6 +669,50 @@ public class XRayPublisher<T> implements Publishers.MicronautPublisher<T> {
         @Override
         public Collection<String> getHeaderNames() {
             throw new UnsupportedOperationException("Not implemented.");
+        }
+
+        static MutableHttpResponse<?> createEmpty(ConversionService<?> conversionService) {
+            return new MutableHttpResponse<Object>() {
+
+                private final SimpleHttpHeaders simpleHttpHeaders = new SimpleHttpHeaders(conversionService);
+
+                @Override
+                public MutableHttpResponse<Object> cookie(io.micronaut.http.cookie.Cookie cookie) {
+                    throw new UnsupportedOperationException("Not implemented.");
+                }
+
+                @Override
+                public MutableHttpResponse<Object> body(@Nullable Object body) {
+                    throw new UnsupportedOperationException("Not implemented.");
+                }
+
+                @Override
+                public MutableHttpResponse<Object> status(HttpStatus status, CharSequence message) {
+                    throw new UnsupportedOperationException("Not implemented.");
+                }
+
+                @Override
+                public HttpStatus getStatus() {
+                    throw new UnsupportedOperationException("Not implemented.");
+                }
+
+                @Override
+                public MutableHttpHeaders getHeaders() {
+                    return simpleHttpHeaders;
+                }
+
+                @NonNull
+                @Override
+                public MutableConvertibleValues<Object> getAttributes() {
+                    throw new UnsupportedOperationException("Not implemented.");
+                }
+
+                @NonNull
+                @Override
+                public Optional<Object> getBody() {
+                    return Optional.empty();
+                }
+            };
         }
     }
 }

@@ -1,34 +1,33 @@
 dependencies {
-    compileOnly "io.micronaut:micronaut-inject-java"
-
-    api project(":aws-common")
-    api project(":aws-sdk-v2")
-    api "javax.servlet:javax.servlet-api:4.0.1"
-    implementation "io.micronaut:micronaut-runtime"
+    api "io.micronaut:micronaut-inject"
+    api "io.micronaut:micronaut-runtime"
+    api("io.micronaut:micronaut-http")
 
     // core for manual instrumentation
     api platform("com.amazonaws:aws-xray-recorder-sdk-bom:${awsXRayVersion}")
-    compile("com.amazonaws:aws-xray-recorder-sdk-core")
-    compile("io.micronaut:micronaut-http")
+    implementation project(":aws-common")
+    implementation project(":aws-sdk-v2")
+    implementation("com.amazonaws:aws-xray-recorder-sdk-core")
 
     // http client
-    compile("com.amazonaws:aws-xray-recorder-sdk-apache-http")
+    api "javax.servlet:javax.servlet-api:4.0.1"
+    compileOnly("com.amazonaws:aws-xray-recorder-sdk-apache-http")
 
     // cloudwatch metrics
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-metrics")
 
     // aws sdk v2
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2")
-    compileOnly("com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2-instrumentor")
 
-    // sql
-    compileOnly("com.amazonaws:aws-xray-recorder-sdk-sql")
-    compileOnly("com.amazonaws:aws-xray-recorder-sdk-sql-mysql")
-    compileOnly("com.amazonaws:aws-xray-recorder-sdk-sql-postgres")
-
-    testImplementation "io.micronaut:micronaut-runtime"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
+    // for testing sdk tracer injection
     testImplementation project(":aws-sdk-v2")
-    testImplementation "com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2-instrumentor"
     testImplementation "software.amazon.awssdk:s3"
+    testImplementation "software.amazon.awssdk:ses"
+    testImplementation "software.amazon.awssdk:sns"
+    testImplementation "software.amazon.awssdk:sqs"
+
+    // for testing http filter
+    testImplementation "io.micronaut:micronaut-runtime"
+    testImplementation "io.micronaut:micronaut-http-client"
+    testImplementation "io.micronaut:micronaut-http-server-netty"
 }

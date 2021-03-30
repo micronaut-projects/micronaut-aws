@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.tracing.aws.XRayConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.client.builder.SdkClientBuilder;
 
 import javax.inject.Singleton;
@@ -34,17 +36,20 @@ import javax.inject.Singleton;
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(classes = TracingInterceptor.class)
-@Requires(property = XRayConfiguration.SdkClientsConfiguration.PREFIX +".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.SdkClientsConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
 @Singleton
 public class SdkClientBuilderListener implements BeanCreatedEventListener<SdkClientBuilder<?, ?>> {
+    private static final Logger LOG = LoggerFactory.getLogger(SdkClientBuilderListener.class);
 
     /**
-     * Handle {@link SdkClientBuilder} builder creation.
+     * Add {@link TracingInterceptor} to {@link SdkClientBuilder}.
+     *
      * @param event bean created event
      * @return sdk client builder
      */
     @Override
     public SdkClientBuilder<?, ?> onCreated(BeanCreatedEvent<SdkClientBuilder<?, ?>> event) {
+        LOG.trace(String.format("Registering x-ray tracing interceptor to %s", event.getBean().getClass().getSimpleName()));
         return event.getBean().overrideConfiguration(builder ->
                 builder.addExecutionInterceptor(new TracingInterceptor()));
     }

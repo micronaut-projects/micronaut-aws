@@ -16,41 +16,39 @@
 package io.micronaut.tracing.aws.filter;
 
 import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import com.amazonaws.xray.strategy.SegmentNamingStrategy;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.annotation.Filter;
-import io.micronaut.http.filter.HttpServerFilter;
-import io.micronaut.http.filter.ServerFilterChain;
+import io.micronaut.http.filter.ClientFilterChain;
+import io.micronaut.http.filter.HttpClientFilter;
 import io.micronaut.http.filter.ServerFilterPhase;
 import io.micronaut.tracing.aws.XRayConfiguration;
 import org.reactivestreams.Publisher;
 
-import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 
 /**
- * Micronaut AWS x-ray filter.
+ * {@link HttpClientFilter} that handles creation of AWX x-ray subsegment.
  *
  * @author Pavol Gressa
- * @since 2.3
+ * @since 2.5
  */
 @Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpClientFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
 @Filter("/**")
-public class AWSXRayHttpServerFilter implements HttpServerFilter {
-    private final AWSXRayServletFilter delegate;
+public class XRayHttpClientFilter implements HttpClientFilter {
+    private final AWSXRayRecorder recorder;
 
-    public AWSXRayHttpServerFilter(@Nullable SegmentNamingStrategy segmentNamingStrategy, @Nullable AWSXRayRecorder recorder) {
-        delegate = new AWSXRayServletFilter(segmentNamingStrategy, recorder);
+    public XRayHttpClientFilter(@NotNull AWSXRayRecorder recorder) {
+        this.recorder = recorder;
     }
 
     @Override
-    public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
-        return new XRayPublisher<>(chain.proceed(request), request, delegate);
+    public Publisher<? extends HttpResponse<?>> doFilter(MutableHttpRequest<?> request, ClientFilterChain chain) {
+        Publisher<? extends HttpResponse<?>> requestPublisher = chain.proceed(request);
+        return new XRayClientTracingPublisher(request, requestPublisher, recorder);
     }
 
     @Override
