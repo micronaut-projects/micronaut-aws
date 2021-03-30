@@ -1,0 +1,42 @@
+The module `micronaut-aws-xray` produces two essential beans:
+
+* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorderBuilder.html[AWSXRayRecorderBuilder]
+* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[AWSXRayRecorder]
+
+The `AWSXRayRecorderBuilder` bean allows you to adjust the configuration of the `AWSXRayRecorder`. Note that the beans of type https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/plugins/Plugin.html[Plugin] and https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/listeners/SegmentListener.html[SegmentListener] are automatically configured. For all other custom configuration use https://docs.micronaut.io/latest/api/io/micronaut/context/event/BeanCreatedEventListener.html[BeanCreatedEventListener<AWSXRayRecorderBuilder>].
+
+By injecting the `AWSXRayRecorder` you can directly instrument the AWS X-Ray SDK to create new Segment or Subsegments.
+
+Finally you can configure https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html[the sampling rule] definition file using the configuration property `aws.xray.samplingRule`.
+
+Note that you can disable the AWS X-Ray Micronaut integration by:
+
+.application.yml
+[source,yaml]
+----
+aws:
+  xray:
+    enabled: false
+----
+
+=== Interaction with AWSXRayRecorder
+You can access current https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Segment.html[Segment] or https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Subsegment.html[Subsegment] by injecting the `AWSXRayRecorder` bean:
+
+```java
+@Singleton
+public class BookService {
+
+    private final AWSXRayRecorder recorder;
+
+    public SampleRequestHandler(AWSXRayRecorder recorder) {
+        this.recorder = recorder;
+    }
+
+    public Book getBook(String name) {
+        recorder.beginSubsegment("listBooks");
+        // get book
+        recorder.endSubsegment();
+        return book;
+    }
+}
+```

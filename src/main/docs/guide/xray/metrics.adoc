@@ -1,0 +1,17 @@
+You can use publish unsampled https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-monitoring.html[Amazon CloudWatch metrics from your collected X-Ray segments].
+
+Start by adding dependency:
+dependency:aws-xray-recorder-sdk-metrics[groupId="com.amazonaws"]
+
+Depedency contains https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/metrics/MetricsSegmentListener.html[MetricsSegmentListener] that will be automatically configured to the https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[AWSXRayRecorder].
+
+Note you can disable `MetricSegmentListener` automatic configuration by:
+
+.application.yml
+[source,yaml]
+----
+aws:
+  xray:
+    cloudwatch:
+      enabled: false
+----

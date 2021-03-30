@@ -77,7 +77,7 @@ public class XRayRecorderFactory {
                 URL ruleFile = XRayRecorderFactory.class.getResource(sampligRule);
                 builder.withSamplingStrategy(new CentralizedSamplingStrategy(ruleFile));
             } catch (Exception e) {
-                LOG.error(String.format("Failed to configure sampling rule: %s", sampligRule), e);
+                LOG.warn(String.format("Failed to configure sampling rule: %s", sampligRule), e);
             }
         }
 
