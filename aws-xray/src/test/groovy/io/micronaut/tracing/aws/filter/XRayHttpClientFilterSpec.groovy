@@ -43,7 +43,6 @@ class XRayHttpClientFilterSpec extends Specification {
         emitter.segments[0].subsegments
         emitter.segments[0].subsegments.size() == 1
         emitter.segments[0].subsegments[0].name.startsWith("localhost")
-        emitter.segments[0].subsegments[0].isEmitted()
 
         cleanup:
         embeddedServer.stop()

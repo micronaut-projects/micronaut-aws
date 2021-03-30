@@ -45,11 +45,11 @@ class XRayConfigurationSpec extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
-                "aws.xray.httpfilter.fixedSegmentName": "fixed segment name",
+                "aws.xray.httpfilter.server.fixedSegmentName": "fixed segment name",
         ], Environment.AMAZON_EC2)
 
         when:
-        XRayConfiguration.XRayHttpFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayConfiguration.XRayHttpFilterConfiguration)
+        XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration)
 
         then:
         httpFilterConfiguration.isEnabled()
