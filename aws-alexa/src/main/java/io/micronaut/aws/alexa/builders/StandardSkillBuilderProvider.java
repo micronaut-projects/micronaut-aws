@@ -17,6 +17,7 @@ package io.micronaut.aws.alexa.builders;
 
 import com.amazon.ask.Skills;
 import com.amazon.ask.builder.SkillBuilder;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Secondary;
 
@@ -36,6 +37,7 @@ import javax.inject.Singleton;
 public class StandardSkillBuilderProvider implements SkillBuilderProvider {
 
     @Override
+    @NonNull
     public SkillBuilder<?> getSkillBuilder() {
         return Skills.standard();
     }
