@@ -154,26 +154,22 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
                                         List<ExceptionHandler> unqualifiedExceptionHandlers,
                                         List<RequestInterceptor> unqualifiedRequestInterceptors,
                                         List<ResponseInterceptor> unqualifiedResponseInterceptors) {
-        List<RequestHandler> requestHandlers = new ArrayList<>();
-        requestHandlers.addAll(unqualifiedRequestHandlers);
+        List<RequestHandler> requestHandlers = new ArrayList<>(unqualifiedRequestHandlers);
         if (name != null && requestHandlersBySkillName.containsKey(name)) {
             requestHandlers.addAll(requestHandlersBySkillName.get(name));
         }
 
-        List<ExceptionHandler> exceptionHandlers = new ArrayList<>();
-        exceptionHandlers.addAll(unqualifiedExceptionHandlers);
+        List<ExceptionHandler> exceptionHandlers = new ArrayList<>(unqualifiedExceptionHandlers);
         if (name != null && exceptionHandlersBySkillName.containsKey(name)) {
             exceptionHandlers.addAll(exceptionHandlersBySkillName.get(name));
         }
 
-        List<RequestInterceptor> requestInterceptors = new ArrayList<>();
-        requestInterceptors.addAll(unqualifiedRequestInterceptors);
+        List<RequestInterceptor> requestInterceptors = new ArrayList<>(unqualifiedRequestInterceptors);
         if (name != null && requestInterceptorsBySkillName.containsKey(name)) {
             requestInterceptors.addAll(requestInterceptorsBySkillName.get(name));
         }
 
-        List<ResponseInterceptor> responseInterceptors = new ArrayList<>();
-        responseInterceptors.addAll(unqualifiedResponseInterceptors);
+        List<ResponseInterceptor> responseInterceptors = new ArrayList<>(unqualifiedResponseInterceptors);
         if (name != null && responseInterceptorsBySkillName.containsKey(name)) {
             responseInterceptors.addAll(responseInterceptorsBySkillName.get(name));
         }
