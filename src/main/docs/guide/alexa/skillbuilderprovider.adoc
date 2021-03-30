@@ -1,0 +1,15 @@
+You have to provide your an implementation of Micronaut's api:aws.alexa.builders.SkillBuilderProvider[].
+
+Micronaut's alexa module provides by default
+api:aws.alexa.builders.StandardSkillBuilderProvider[] which creates an SDK instance using the `Skills.standard` builder. However, to use it, you need add the dependency:
+
+dependency:ask-sdk[groupId="com.amazon.alexa",version="{askVersion}"]
+
+For each api:aws.alexa.conf.AlexaSkillConfiguration[] bean,
+Micronaut uses the builder provided by [api:aws.alexa.builders.SkillBuilderProvider[] to create for you a bean of type http://ask-sdk-java-javadocs.s3-website-us-west-2.amazonaws.com[AlexaSkill] for you and wires up the beans of the following types:
+
+* `com.amazon.ask.dispatcher.request.handler.RequestHandler`
+* `com.amazon.ask.dispatcher.request.interceptor.RequestInterceptor`
+* `com.amazon.ask.dispatcher.request.interceptor.ResponseInterceptor`
+* `com.amazon.ask.dispatcher.exception.ExceptionHandler`
+* `com.amazon.ask.builder.SkillBuilder`
