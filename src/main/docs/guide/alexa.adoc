@@ -46,7 +46,7 @@ api:aws.alexa.conf.AlexaSkillConfiguration[]. The easiest way to do that is to c
 alexa:
   skills:
     myskill:
-      skill-id 'xxxx-yaaa-zz123'
+      skill-id: 'xxxx-yaaa-zz123'
 ```
 
 Micronaut's alexa module provides by default
