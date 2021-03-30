@@ -30,10 +30,10 @@ lambda:
   lambdaTesting: Testing Lambda Handlers
 alexa:
   title: Alexa Support
-  ssmlbuilder: SSML Builder
   intentHandler: The IntentHandler Annotation
-  webservice: Alexa Skill as a Web Service
   alexalambda: Alexa Skill as an AWS Lambda Function
+  webservice: Alexa Skill as a Web Service
+  ssmlbuilder: SSML Builder
   flashbriefings: Flash Briefings
 parametersStore: Parameter Store as Cloud Configuration
 repository: Repository
