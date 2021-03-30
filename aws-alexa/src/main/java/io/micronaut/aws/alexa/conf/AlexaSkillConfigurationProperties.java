@@ -19,8 +19,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Introspected;
-
-import javax.annotation.Nonnull;
 import javax.validation.constraints.NotBlank;
 
 
@@ -59,7 +57,7 @@ public class AlexaSkillConfigurationProperties implements AlexaSkillConfiguratio
      * @return The name of the configuration
      */
     @Override
-    @Nonnull
+    @NonNull
     public String getName() {
         return name;
     }
