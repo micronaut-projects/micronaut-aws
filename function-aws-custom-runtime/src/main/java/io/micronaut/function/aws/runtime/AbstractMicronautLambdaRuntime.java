@@ -511,6 +511,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         LambdaRuntime.getLogger().log(sb.toString());
     }
 
+    /**
+     *
+     * @param level Log level
+     * @return where it should log or not
+     */
     protected boolean shouldLog(LogLevel level) {
         if (level == LogLevel.ALL) {
             return true;
