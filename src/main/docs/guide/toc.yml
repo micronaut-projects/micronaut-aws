@@ -30,6 +30,9 @@ lambda:
   lambdaTesting: Testing Lambda Handlers
 alexa:
   title: Alexa Support
+  alexaskillconfiguration: Alexa Skill Configuration
+  skillbuilderprovider: Skill Builder Provider
+  alexahandlers: Handlers
   intentHandler: The IntentHandler Annotation
   alexalambda: Alexa Skill as an AWS Lambda Function
   webservice: Alexa Skill as a Web Service
