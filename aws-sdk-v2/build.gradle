@@ -10,12 +10,14 @@ dependencies {
     compileOnly "software.amazon.awssdk:apache-client"
 
     // Services
-    compileOnly "software.amazon.awssdk:s3"
-    compileOnly "software.amazon.awssdk:dynamodb"
-    compileOnly "software.amazon.awssdk:ses"
-    compileOnly "software.amazon.awssdk:sns"
-    compileOnly "software.amazon.awssdk:sqs"
-    compileOnly "software.amazon.awssdk:ssm"
+    compileOnly 'software.amazon.awssdk:aws-sdk-java:2.16.31'
+    annotationProcessor project(":aws-sdk-v2-processor")
+//    compileOnly "software.amazon.awssdk:s3"
+//    compileOnly "software.amazon.awssdk:dynamodb"
+//    compileOnly "software.amazon.awssdk:ses"
+//    compileOnly "software.amazon.awssdk:sns"
+//    compileOnly "software.amazon.awssdk:sqs"
+//    compileOnly "software.amazon.awssdk:ssm"
 
     // Tests
     testImplementation "software.amazon.awssdk:url-connection-client"

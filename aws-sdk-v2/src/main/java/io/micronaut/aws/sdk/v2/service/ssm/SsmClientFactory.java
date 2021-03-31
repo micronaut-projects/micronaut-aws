@@ -34,6 +34,9 @@ import javax.inject.Singleton;
 /**
  * Factory that creates a SSM client.
  *
+ * This factory is not generated due to {@link BootstrapContextCompatible} annotation that is required for
+ * AWS Paramater Store module.
+ *
  * @author ttzn
  * @since 2.3.0
  */
