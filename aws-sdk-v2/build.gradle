@@ -25,7 +25,7 @@ dependencies {
     testImplementation "software.amazon.awssdk:s3"
     testImplementation "software.amazon.awssdk:dynamodb"
     testImplementation "software.amazon.awssdk:ses"
-    testImplementation 'software.amazon.awssdk:secretsmanager'
+    testImplementation "software.amazon.awssdk:secretsmanager"
     testImplementation "software.amazon.awssdk:sns"
     testImplementation "software.amazon.awssdk:sqs"
     testImplementation "software.amazon.awssdk:ssm"
