@@ -1,0 +1,18 @@
+Micronaut module contains two method annotations api:io.micronaut.aws.xray.annotation.AwsXraySegment[] and api:io.micronaut.aws.xray.annotation.AwsXraySubsegment[] that ease integration of X-Ray into your application by automatically creating segment resp. subsegment.
+
+Simply annotate the method and Micronaut will do the rest:
+
+```java
+@Singleton
+class BookService {
+
+    @AwsXraySubsegment(name="listingbooks")
+    public List<Book> listBooks() {
+        // ...
+    }
+}
+```
+
+You can specify the segment resp. subsegment name by configuring the `name` annotation field. Note that if the `name` is not specified the method name will be used as source of the name.
+
+Additionally in `AwsXraySegment` annotation you can configure the segment `namespace`.

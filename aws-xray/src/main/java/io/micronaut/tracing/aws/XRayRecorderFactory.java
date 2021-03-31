@@ -20,6 +20,7 @@ import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
+import com.amazonaws.xray.strategy.LogErrorContextMissingStrategy;
 import com.amazonaws.xray.strategy.sampling.CentralizedSamplingStrategy;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
@@ -59,10 +60,11 @@ public class XRayRecorderFactory {
 
     /**
      * Creates {@link AWSXRayRecorder} singleton bean.
-     * @param builder The builder
+     *
+     * @param builder              The builder
      * @param awsxRayConfiguration The recorder configuration
-     * @param plugins The {@link Plugin}s to configure
-     * @param segmentListeners The {@link SegmentListener}s to configure
+     * @param plugins              The {@link Plugin}s to configure
+     * @param segmentListeners     The {@link SegmentListener}s to configure
      * @return built {@link AWSXRayRecorder}
      */
     @Singleton

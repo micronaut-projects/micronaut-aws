@@ -1,7 +1,7 @@
 package io.micronaut.tracing.aws.annotation
 
 import com.amazonaws.xray.AWSXRay
-import com.amazonaws.xray.AWSXRayRecorderBuilder
+import com.amazonaws.xray.exceptions.SegmentNotFoundException
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import io.micronaut.tracing.aws.SegmentBean
@@ -23,7 +23,17 @@ class AwsXraySegmentInterceptorSpec extends Specification {
     SegmentBean segmentBean = applicationContext.getBean(SegmentBean)
 
     def setup() {
-        AWSXRay.setGlobalRecorder(AWSXRayRecorderBuilder.standard().withEmitter(testEmitter).build())
+        testEmitter.reset()
+    }
+
+    def "it configures the segment namespace"() {
+        when:
+        segmentBean.customSegmentWithNamespace()
+
+        then:
+        testEmitter.segments
+        testEmitter.segments[0].name == "bar"
+        testEmitter.segments[0].namespace == "namespace"
     }
 
     def "it configures the segment name"() {
@@ -43,20 +53,34 @@ class AwsXraySegmentInterceptorSpec extends Specification {
         testEmitter.segments[0].name == "bar"
     }
 
-    def "it skips subsegment when there is no segment"() {
+    def "it creates new segment with metadata data of existing segment"() {
+        when:
+        def parentSegment = AWSXRay.beginSegment("parent segment")
+        segmentBean.customSegmentWithNamespace()
+        parentSegment.run(() -> AWSXRay.globalRecorder.endSegment(), AWSXRay.globalRecorder)
+
+        then:
+        testEmitter.segments
+        testEmitter.segments.size() == 2
+        testEmitter.segments[0].name == "bar"
+        testEmitter.segments[0].namespace == "namespace"
+        testEmitter.segments[1].name == "parent segment"
+        testEmitter.segments[0].traceId == testEmitter.segments[1].traceId
+    }
+
+    def "it throws exception when there is no segment"() {
         when:
         segmentBean.subsegment()
 
         then:
+        thrown(SegmentNotFoundException)
         testEmitter.segments.isEmpty()
         testEmitter.subsegments.isEmpty()
     }
 
     def "it configures the subsegment name"() {
         when:
-        AWSXRay.beginSegment("segment 1")
-        segmentBean.subsegment()
-        AWSXRay.endSegment()
+        AWSXRay.createSegment("segment 1", () -> segmentBean.subsegment())
 
         then:
         testEmitter.segments
@@ -66,9 +90,7 @@ class AwsXraySegmentInterceptorSpec extends Specification {
         testEmitter.reset()
 
         when:
-        AWSXRay.beginSegment("segment 2")
-        segmentBean.customSubsegment()
-        AWSXRay.endSegment()
+        AWSXRay.createSegment("segment 2", () -> segmentBean.customSubsegment())
 
         then:
         testEmitter.segments

@@ -1,11 +1,23 @@
 The module `micronaut-aws-xray` produces two essential beans:
 
-* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorderBuilder.html[AWSXRayRecorderBuilder]
-* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[AWSXRayRecorder]
+* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorderBuilder.html[com.amazonaws.xray.AWSXRayRecorderBuilder]
+* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[com.amazonaws.xray.AWSXRayRecorder]
 
-The `AWSXRayRecorderBuilder` bean allows you to adjust the configuration of the `AWSXRayRecorder`. Note that the beans of type https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/plugins/Plugin.html[Plugin] and https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/listeners/SegmentListener.html[SegmentListener] are automatically configured. For all other custom configuration use https://docs.micronaut.io/latest/api/io/micronaut/context/event/BeanCreatedEventListener.html[BeanCreatedEventListener<AWSXRayRecorderBuilder>].
+The `AWSXRayRecorderBuilder` bean allows you to adjust the behaviour of the `AWSXRayRecorder`. Note that the beans of type https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/plugins/Plugin.html[com.amazonaws.xray.Plugin] and https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/listeners/SegmentListener.html[com.amazonaws.xray.SegmentListener] are automatically configured.
 
-By injecting the `AWSXRayRecorder` you can directly instrument the AWS X-Ray SDK to create new Segment or Subsegments.
+For advanced configuration options that are not suitable to provide via `application.yml`, you can declare a
+`BeanCreatedEventListener` bean that listens for builder bean creations, and apply any further customisation there:
+
+```java
+@Singleton
+class XRayRecorderBuilderBeanListener implements BeanCreatedEventListener<AWSXRayRecorderBuilder> {
+
+    @Override
+    public AWSXRayRecorderBuilder onCreated(BeanCreatedEvent<AWSXRayRecorderBuilder> event) {
+        return event.getBean().withContextMissingStrategy(new LogErrorContextMissingStrategy());
+    }
+}
+```
 
 Finally you can configure https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html[the sampling rule] definition file using the configuration property `aws.xray.samplingRule`.
 
@@ -18,25 +30,3 @@ aws:
   xray:
     enabled: false
 ----
-
-=== Interaction with AWSXRayRecorder
-You can access current https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Segment.html[Segment] or https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Subsegment.html[Subsegment] by injecting the `AWSXRayRecorder` bean:
-
-```java
-@Singleton
-public class BookService {
-
-    private final AWSXRayRecorder recorder;
-
-    public SampleRequestHandler(AWSXRayRecorder recorder) {
-        this.recorder = recorder;
-    }
-
-    public Book getBook(String name) {
-        recorder.beginSubsegment("listBooks");
-        // get book
-        recorder.endSubsegment();
-        return book;
-    }
-}
-```

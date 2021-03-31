@@ -39,6 +39,11 @@ public class SegmentBean {
         return "method name as segment name";
     }
 
+    @AwsXraySegment(name = "bar", namespace = "namespace")
+    public String customSegmentWithNamespace() {
+        return "method name as segment name";
+    }
+
     @AwsXraySubsegment(name = "foo")
     public String customSubsegment() {
         return "method name as subsegment name";

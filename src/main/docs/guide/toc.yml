@@ -41,6 +41,7 @@ parametersStore: Parameter Store as Cloud Configuration
 xray:
   title: AWS X-Ray Support
   xrayrecorder: XRayRecorder configuration
+  annotations: Tracing using annotations
   metrics: Pushing unsampled segments to AWS CloudWatch
   sdkclients: Tracing AWS SDK clients request
   httpfilter: Tracing http requests

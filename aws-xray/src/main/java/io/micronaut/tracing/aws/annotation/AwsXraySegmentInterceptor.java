@@ -15,9 +15,7 @@
  */
 package io.micronaut.tracing.aws.annotation;
 
-import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
 import io.micronaut.aop.InterceptPhase;
@@ -33,12 +31,12 @@ import javax.inject.Singleton;
 import java.util.Optional;
 
 /**
- * {@link MethodInterceptor} that intercepts {@link AwsXraySegment} io.micronaut.tracing.aws.annotation.
+ * {@link MethodInterceptor} that instruments {@link AwsXraySegment} and {@link AwsXraySubsegment}
  *
  * @author Pavol Gressa
  * @since 2.5
  */
-@Requires(classes = AWSXRay.class)
+@Requires(beans = AWSXRayRecorder.class)
 @BootstrapContextCompatible
 @Singleton
 public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Object> {
@@ -63,6 +61,7 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
         } else {
             segment = awsxRayRecorder.beginSegment(name);
         }
+        LOG.trace(String.format("Created segment '%s'", name));
 
         Optional<String> namespace = annotation.stringValue("namespace");
         namespace.ifPresent(segment::setNamespace);
@@ -72,14 +71,25 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
             segment.addException(e);
             throw e;
         } finally {
-            segment.end();
+            awsxRayRecorder.endSegment();
+            LOG.trace(String.format("Closed segment '%s'", name));
         }
     }
 
     private Object handleNewSubsegment(MethodInvocationContext<Object, Object> context) {
         AnnotationValue<AwsXraySubsegment> annotation = context.getAnnotation(AwsXraySubsegment.class);
         String name = annotation.stringValue("name").orElse(context.getMethodName());
-        return awsxRayRecorder.createSubsegment(name, () -> context.proceed());
+        Subsegment subsegment = awsxRayRecorder.beginSubsegment(name);
+        LOG.trace(String.format("Created subsegment '%s'", name));
+        try {
+            return context.proceed();
+        } catch (Exception e) {
+            subsegment.addException(e);
+            throw e;
+        } finally {
+            awsxRayRecorder.endSubsegment();
+            LOG.trace(String.format("Closed subsegment '%s'", name));
+        }
     }
 
     @Override
