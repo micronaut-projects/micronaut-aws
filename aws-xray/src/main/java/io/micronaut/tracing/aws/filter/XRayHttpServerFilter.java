@@ -54,7 +54,6 @@ import javax.annotation.Nullable;
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(classes = AWSXRayServletFilter.class)
 @Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
-// TODO: make it configurable
 @Filter("/**")
 public class XRayHttpServerFilter implements HttpServerFilter {
     private static final Logger LOG = LoggerFactory.getLogger(XRayHttpServerFilter.class);

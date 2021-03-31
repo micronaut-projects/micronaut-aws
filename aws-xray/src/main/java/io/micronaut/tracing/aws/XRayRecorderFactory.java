@@ -20,7 +20,6 @@ import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
-import com.amazonaws.xray.strategy.LogErrorContextMissingStrategy;
 import com.amazonaws.xray.strategy.sampling.CentralizedSamplingStrategy;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;

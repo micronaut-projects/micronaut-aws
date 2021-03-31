@@ -37,7 +37,6 @@ import javax.validation.constraints.NotNull;
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpClientFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
-// TODO: make it configurable
 @Filter("/**")
 public class XRayHttpClientFilter implements HttpClientFilter {
     private final AWSXRayRecorder recorder;
