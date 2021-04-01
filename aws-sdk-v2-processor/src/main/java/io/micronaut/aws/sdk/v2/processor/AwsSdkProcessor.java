@@ -104,21 +104,16 @@ public class AwsSdkProcessor extends AbstractProcessor {
 
         final Map<? extends ExecutableElement, ? extends AnnotationValue> values = annotationMirror.getElementValues();
         for (Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : values.entrySet()) {
-            final Name elementName = entry.getKey().getSimpleName();
+            final String elementName = entry.getKey().getSimpleName().toString();
 
-            switch (elementName.toString()) {
-                case "client":
-                    clientClass = getTypeValue(entry.getValue());
-                    break;
-                case "clientBuilder":
-                    clientBuilderClass = getTypeValue(entry.getValue());
-                    break;
-                case "asyncClient":
-                    clientAsyncClass = getTypeValue(entry.getValue());
-                    break;
-                case "asyncClientBuilder":
-                    clientAsyncBuilderClass = getTypeValue(entry.getValue());
-                    break;
+            if (elementName.equals("client")) {
+                clientClass = getTypeValue(entry.getValue());
+            } else if (elementName.equals("clientBuilder")) {
+                clientBuilderClass = getTypeValue(entry.getValue());
+            } else if (elementName.equals("asyncClient")) {
+                clientAsyncClass = getTypeValue(entry.getValue());
+            } else if (elementName.equals("asyncClientBuilder")) {
+                clientAsyncBuilderClass = getTypeValue(entry.getValue());
             }
         }
 
