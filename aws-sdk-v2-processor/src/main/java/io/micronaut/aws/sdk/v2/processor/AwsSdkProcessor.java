@@ -23,7 +23,6 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
-import com.sun.tools.javac.code.Attribute;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
@@ -52,7 +51,6 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +76,6 @@ public class AwsSdkProcessor extends AbstractProcessor {
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        System.out.println("HOVNO");
         this.filer = processingEnv.getFiler();
         this.messager = processingEnv.getMessager();
         this.elements = processingEnv.getElementUtils();
@@ -123,7 +120,6 @@ public class AwsSdkProcessor extends AbstractProcessor {
                     clientAsyncBuilderClass = getTypeValue(entry.getValue());
                     break;
             }
-            System.out.println("DONE FOR " + elementName.toString() + " " + getTypeValue(entry.getValue()));
         }
 
         if (clientClass != null && clientBuilderClass != null && clientAsyncClass != null && clientAsyncBuilderClass != null) {
@@ -149,8 +145,6 @@ public class AwsSdkProcessor extends AbstractProcessor {
 
         final String factoryName = clientClassName + "Factory";
         final String factoryPackageName = packageName.replace("software.amazon.awssdk.services", CLIENT_PACKAGE);
-
-        System.out.println("WRITING FACTORY " + factoryName + " " + factoryPackageName);
 
         final TypeSpec.Builder builder = defineSuperclass(factoryName, packageName, clientClassName, clientBuilderClassName, clientAsyncClassName, clientAsyncBuilderClassName);
         final MethodSpec.Builder constructor = buildConstructor(builder);
@@ -206,7 +200,7 @@ public class AwsSdkProcessor extends AbstractProcessor {
                 .addAnnotation(Override.class)
                 .addAnnotation(Singleton.class)
                 .addAnnotation(AnnotationSpec.builder(Requires.class)
-                        .addMember("beans","SdkAsyncHttpClient.class")
+                        .addMember("beans", "SdkAsyncHttpClient.class")
                         .build())
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(ParameterSpec.builder(ClassName.get("software.amazon.awssdk.http.async", "SdkAsyncHttpClient"), "httpClient")
@@ -220,7 +214,7 @@ public class AwsSdkProcessor extends AbstractProcessor {
                 .addAnnotation(Override.class)
                 .addAnnotation(Singleton.class)
                 .addAnnotation(AnnotationSpec.builder(Requires.class)
-                        .addMember("beans","SdkAsyncHttpClient.class")
+                        .addMember("beans", "SdkAsyncHttpClient.class")
                         .build())
                 .addAnnotation(AnnotationSpec.builder(Bean.class)
                         .addMember("preDestroy", "\"close\"")
@@ -258,9 +252,9 @@ public class AwsSdkProcessor extends AbstractProcessor {
         final MethodSpec.Builder constructor = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PROTECTED)
                 .addParameter(ParameterSpec.builder(ClassName.get("software.amazon.awssdk.auth.credentials", "AwsCredentialsProviderChain"), "credentialsProvider")
-                                .build())
+                        .build())
                 .addParameter(ParameterSpec.builder(ClassName.get("software.amazon.awssdk.regions.providers", "AwsRegionProviderChain"), "regionProvider")
-                                .build())
+                        .build())
                 .addCode(CodeBlock.builder()
                         .addStatement("super(credentialsProvider, regionProvider)")
                         .build());
