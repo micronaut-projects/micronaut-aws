@@ -120,9 +120,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>6.6</strong><span>SSM</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>6.7</strong><span>Advanced configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>6.7</strong><span>Secrets Manager</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>6.8</strong><span>Other services</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>6.8</strong><span>Advanced configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>6.9</strong><span>Other services</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>7</strong><span>AWS Lambda Support</span></a></div>
         
@@ -1195,7 +1197,67 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>6.7 Advanced configuration</h2>
+<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>6.7 Secrets Manager</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
+/src/main/docs/guide/sdkv2/secretsmanager.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:secretsmanager")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;secretsmanager&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.secretsmanager.SecretsManagerClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.secretsmanager.SecretsManagerClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.secretsmanager.SecretsManagerAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.secretsmanager.SecretsManagerAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>6.8 Advanced configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
@@ -1225,7 +1287,7 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 </div>
 </div>
 
-<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>6.8 Other services</h2>
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>6.9 Other services</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master
