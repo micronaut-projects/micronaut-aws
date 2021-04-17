@@ -19,10 +19,10 @@ import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
-import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -48,7 +48,7 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param regionProvider The region provider
      * @param configuration The service configuration
      */
-    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+    public S3ClientFactory(AwsCredentialsProvider credentialsProvider, AwsRegionProvider regionProvider,
                            S3ConfigurationProperties configuration) {
         super(credentialsProvider, regionProvider);
         this.configuration = configuration;

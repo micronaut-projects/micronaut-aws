@@ -20,10 +20,10 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
-import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerAsyncClient;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerAsyncClientBuilder;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
@@ -46,7 +46,7 @@ public class SecretsManagerClientFactory extends AwsClientFactory<SecretsManager
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected SecretsManagerClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+    protected SecretsManagerClientFactory(AwsCredentialsProvider credentialsProvider, AwsRegionProvider regionProvider) {
         super(credentialsProvider, regionProvider);
     }
 

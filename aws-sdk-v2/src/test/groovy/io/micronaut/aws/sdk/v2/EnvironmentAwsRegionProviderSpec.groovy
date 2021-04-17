@@ -2,7 +2,7 @@ package io.micronaut.aws.sdk.v2
 
 import io.micronaut.context.ApplicationContext
 import software.amazon.awssdk.regions.Region
-import software.amazon.awssdk.regions.providers.AwsRegionProviderChain
+import software.amazon.awssdk.regions.providers.AwsRegionProvider
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
@@ -17,7 +17,7 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
         ])
 
         when:
-        Region region = applicationContext.getBean(AwsRegionProviderChain).region
+        Region region = applicationContext.getBean(AwsRegionProvider).region
 
         then:
         region.toString() == TEST_REGION
@@ -31,7 +31,7 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
         ApplicationContext applicationContext = ApplicationContext.run("yaml")
 
         when:
-        Region region = applicationContext.getBean(AwsRegionProviderChain).region
+        Region region = applicationContext.getBean(AwsRegionProvider).region
 
         then:
         region.toString() == TEST_REGION
@@ -47,7 +47,7 @@ class EnvironmentAwsRegionProviderSpec extends Specification {
         ApplicationContext applicationContext = ApplicationContext.run()
 
         when:
-        Region region = applicationContext.getBean(AwsRegionProviderChain).region
+        Region region = applicationContext.getBean(AwsRegionProvider).region
 
         then:
         region.toString() == TEST_REGION
