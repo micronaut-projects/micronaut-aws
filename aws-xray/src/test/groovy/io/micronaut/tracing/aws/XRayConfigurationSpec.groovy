@@ -30,7 +30,7 @@ class XRayConfigurationSpec extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
-                "aws.xray.samplingRule": "rule"
+                "aws.xray.sampling-rule": "rule"
         ], Environment.AMAZON_EC2)
 
         when:

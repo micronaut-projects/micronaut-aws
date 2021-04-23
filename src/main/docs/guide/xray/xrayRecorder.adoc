@@ -19,7 +19,7 @@ class XRayRecorderBuilderBeanListener implements BeanCreatedEventListener<AWSXRa
 }
 ```
 
-Finally you can configure https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html[the sampling rule] definition file using the configuration property `aws.xray.samplingRule`.
+Finally you can configure https://docs.aws.amazon.com/xray/latest/devguide/xray-console-sampling.html[the sampling rule] definition file using the configuration property `aws.xray.sampling-rule`.
 
 Note that you can disable the AWS X-Ray Micronaut integration by:
 
