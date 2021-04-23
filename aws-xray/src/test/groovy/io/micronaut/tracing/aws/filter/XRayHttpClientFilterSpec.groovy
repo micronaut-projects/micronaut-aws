@@ -22,7 +22,7 @@ class XRayHttpClientFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.server.enabled": "false",
-                "specName"                          : "XRayHttpClientFilterSpec"
+                "spec.name"                          : "XRayHttpClientFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -53,7 +53,7 @@ class XRayHttpClientFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.server.enabled": "false",
-                "specName"                          : "XRayHttpClientFilterSpec"
+                "spec.name"                          : "XRayHttpClientFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -90,7 +90,7 @@ class XRayHttpClientFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.server.enabled": "false",
-                "specName"                          : "XRayHttpClientFilterSpec"
+                "spec.name"                          : "XRayHttpClientFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -109,8 +109,7 @@ class XRayHttpClientFilterSpec extends Specification {
         embeddedServer.stop()
     }
 
-
-    @Requires(property = "specName", value = "XRayHttpClientFilterSpec")
+    @Requires(property = "spec.name", value = "XRayHttpClientFilterSpec")
     @Controller
     @ExecuteOn(TaskExecutors.IO)
     static class TestController {

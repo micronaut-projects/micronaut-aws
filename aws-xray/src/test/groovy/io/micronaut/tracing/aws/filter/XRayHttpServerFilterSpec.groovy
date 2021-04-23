@@ -20,7 +20,7 @@ class XRayHttpServerFilterSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "aws.xray.httpfilter.client.enabled": "false",
-                "specName": "XRayHttpServerFilterSpec"
+                "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -45,7 +45,7 @@ class XRayHttpServerFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.client.enabled": "false",
-                "specName": "XRayHttpServerFilterSpec"
+                "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -68,7 +68,7 @@ class XRayHttpServerFilterSpec extends Specification {
                 "micronaut.application.name"                 : "test-application",
                 "aws.xray.httpfilter.server.fixedSegmentName": "fixed-segment-name",
                 "aws.xray.httpfilter.client.enabled"         : "false",
-                "specName": "XRayHttpServerFilterSpec"
+                "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -90,7 +90,7 @@ class XRayHttpServerFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.client.enabled": "false",
-                "specName": "XRayHttpServerFilterSpec"
+                "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -113,7 +113,7 @@ class XRayHttpServerFilterSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
                 "aws.xray.httpfilter.client.enabled": "false",
-                "specName": "XRayHttpServerFilterSpec"
+                "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
@@ -133,7 +133,7 @@ class XRayHttpServerFilterSpec extends Specification {
         embeddedServer.stop()
     }
 
-    @Requires(property = "specName", value = "XRayHttpServerFilterSpec")
+    @Requires(property = "spec.name", value = "XRayHttpServerFilterSpec")
     @Controller
     static class TestController {
 
