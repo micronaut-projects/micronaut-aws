@@ -1,0 +1,6 @@
+The HttpClient filter intercepts all outgoing http calls and creates new https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Subsegment.html[Subsegment]. The subsegment name is derived from the outgoing hostname.
+
+
+Use the following configuration to disable tracing of outgoing requests.
+
+include::{includedir}configurationProperties/io.micronaut.tracing.aws.configuration.XRayHttpClientFilterConfigurationProperties.adoc[]

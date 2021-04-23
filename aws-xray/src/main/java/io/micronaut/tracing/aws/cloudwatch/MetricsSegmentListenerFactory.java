@@ -20,7 +20,7 @@ import com.amazonaws.xray.metrics.MetricsSegmentListener;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.tracing.aws.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfigurationProperties;
 
 import javax.inject.Singleton;
 
@@ -33,7 +33,7 @@ import javax.inject.Singleton;
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(classes = MetricsSegmentListener.class)
-@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayCloudWatchMetricsConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfigurationProperties.PREFIX + ".cloud-watch-metrics.enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Factory
 public class MetricsSegmentListenerFactory {
 
@@ -44,5 +44,4 @@ public class MetricsSegmentListenerFactory {
     public MetricsSegmentListener build() {
         return new MetricsSegmentListener();
     }
-
 }

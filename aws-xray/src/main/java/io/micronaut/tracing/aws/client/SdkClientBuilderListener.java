@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.tracing.aws.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfigurationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.client.builder.SdkClientBuilder;
@@ -36,7 +36,7 @@ import javax.inject.Singleton;
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(classes = TracingInterceptor.class)
-@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.SdkClientsConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfigurationProperties.PREFIX + ".sdk-clients.enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Singleton
 public class SdkClientBuilderListener implements BeanCreatedEventListener<SdkClientBuilder<?, ?>> {
     private static final Logger LOG = LoggerFactory.getLogger(SdkClientBuilderListener.class);

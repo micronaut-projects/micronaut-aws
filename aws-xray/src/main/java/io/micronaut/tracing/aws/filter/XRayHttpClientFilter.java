@@ -24,7 +24,7 @@ import io.micronaut.http.annotation.Filter;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import io.micronaut.http.filter.ServerFilterPhase;
-import io.micronaut.tracing.aws.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfigurationProperties;
 import org.reactivestreams.Publisher;
 
 import javax.validation.constraints.NotNull;
@@ -36,7 +36,7 @@ import javax.validation.constraints.NotNull;
  * @since 2.5
  */
 @Requires(beans = AWSXRayRecorder.class)
-@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpClientFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfigurationProperties.PREFIX + ".http-filter.client.enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Filter("/**")
 public class XRayHttpClientFilter implements HttpClientFilter {
     private final AWSXRayRecorder recorder;

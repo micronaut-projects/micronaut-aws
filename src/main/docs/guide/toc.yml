@@ -44,6 +44,9 @@ xray:
   annotations: Tracing using annotations
   metrics: Pushing unsampled segments to AWS CloudWatch
   sdkclients: Tracing AWS SDK clients request
-  httpfilter: Tracing http requests
+  httpfilter:
+    title: Tracing http requests
+    xrayHttpFilterIncoming: Incoming requests
+    xrayHttpFilterOutgoing: Outgoing http calls
 repository: Repository
 breaks: Breaking Changes

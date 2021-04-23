@@ -25,6 +25,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.tracing.aws.configuration.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfigurationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +43,7 @@ import java.util.Optional;
  * @since 2.3
  */
 @Requires(env = Environment.AMAZON_EC2)
-@Requires(property = XRayConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfigurationProperties.PREFIX + ".enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Factory
 public class XRayRecorderFactory {
 

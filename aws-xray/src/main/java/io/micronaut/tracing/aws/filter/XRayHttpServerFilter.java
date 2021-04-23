@@ -30,12 +30,15 @@ import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.filter.ServerFilterPhase;
 import io.micronaut.runtime.ApplicationConfiguration;
-import io.micronaut.tracing.aws.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfiguration;
+import io.micronaut.tracing.aws.configuration.XRayConfigurationProperties;
+import io.micronaut.tracing.aws.configuration.XRayHttpServerFilterConfiguration;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Micronaut AWS XRAY {@link HttpServerFilter} that forwards request to the {@link AWSXRayServletFilter}.
@@ -53,7 +56,7 @@ import javax.annotation.Nullable;
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.PREFIX + "." + XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration.PREFIX + ".enabled", notEquals = StringUtils.FALSE)
+@Requires(property = XRayConfigurationProperties.PREFIX + ".http-filter.server.enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Filter("/**")
 public class XRayHttpServerFilter implements HttpServerFilter {
     private static final Logger LOG = LoggerFactory.getLogger(XRayHttpServerFilter.class);
@@ -68,26 +71,31 @@ public class XRayHttpServerFilter implements HttpServerFilter {
 
     public XRayHttpServerFilter(
             ApplicationConfiguration applicationConfiguration,
-            XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration httpFilterConfiguration,
+            XRayHttpServerFilterConfiguration xRayHttpServerFilterConfiguration,
             AWSXRayRecorder recorder,
             ConversionService<?> conversionService,
             @Nullable SegmentNamingStrategy segmentNamingStrategy) {
 
         if (segmentNamingStrategy == null) {
-            String fixedSegmentName;
-            if (httpFilterConfiguration.getFixedSegmentName().isPresent()) {
-                fixedSegmentName = httpFilterConfiguration.getFixedSegmentName().get();
-            } else if (applicationConfiguration.getName().isPresent()) {
-                fixedSegmentName = applicationConfiguration.getName().get();
-            } else {
-                fixedSegmentName = DEFAULT_FIXED_SEGMENT_NAME;
-            }
-
+            String fixedSegmentName = resolveFixedSegmentName(applicationConfiguration, xRayHttpServerFilterConfiguration);
             segmentNamingStrategy = SegmentNamingStrategy.fixed(fixedSegmentName);
         }
 
         delegate = new AWSXRayServletFilter(segmentNamingStrategy, recorder);
         this.conversionService = conversionService;
+    }
+
+    @NonNull
+    private String resolveFixedSegmentName(@NonNull ApplicationConfiguration applicationConfiguration,
+                                           @NonNull XRayHttpServerFilterConfiguration xRayHttpServerFilterConfiguration) {
+        Optional<String> fixedSegmentNameOptional = xRayHttpServerFilterConfiguration.getFixedSegmentName();
+        if (fixedSegmentNameOptional.isPresent()) {
+            return fixedSegmentNameOptional.get();
+        } else if (applicationConfiguration.getName().isPresent()) {
+            return applicationConfiguration.getName().get();
+        } else {
+            return DEFAULT_FIXED_SEGMENT_NAME;
+        }
     }
 
     /**

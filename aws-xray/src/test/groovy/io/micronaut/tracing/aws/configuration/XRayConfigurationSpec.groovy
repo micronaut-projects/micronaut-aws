@@ -1,9 +1,15 @@
-package io.micronaut.tracing.aws
+package io.micronaut.tracing.aws.configuration
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
+import io.micronaut.tracing.aws.XRayRecorderFactory
 import io.micronaut.tracing.aws.client.SdkClientBuilderListener
 import io.micronaut.tracing.aws.cloudwatch.MetricsSegmentListenerFactory
+import io.micronaut.tracing.aws.configuration.XRayCloudWatchMetricsConfiguration
+import io.micronaut.tracing.aws.configuration.XRayConfiguration
+import io.micronaut.tracing.aws.configuration.XRayHttpFilterConfiguration
+import io.micronaut.tracing.aws.configuration.XRayHttpServerFilterConfiguration
+import io.micronaut.tracing.aws.configuration.XRaySdkClientsConfiguration
 import io.micronaut.tracing.aws.filter.XRayHttpServerFilter
 import spock.lang.Specification
 
@@ -16,9 +22,9 @@ class XRayConfigurationSpec extends Specification {
         ], Environment.AMAZON_EC2)
 
         when:
-        XRayConfiguration.XRayHttpFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayConfiguration.XRayHttpFilterConfiguration)
-        XRayConfiguration.SdkClientsConfiguration sdkClientsConfiguration = applicationContext.getBean(XRayConfiguration.SdkClientsConfiguration)
-        XRayConfiguration.XRayCloudWatchMetricsConfiguration cloudWatchMetricsConfiguration = applicationContext.getBean(XRayConfiguration.XRayCloudWatchMetricsConfiguration)
+        XRayHttpFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayHttpFilterConfiguration)
+        XRaySdkClientsConfiguration sdkClientsConfiguration = applicationContext.getBean(XRaySdkClientsConfiguration)
+        XRayCloudWatchMetricsConfiguration cloudWatchMetricsConfiguration = applicationContext.getBean(XRayCloudWatchMetricsConfiguration)
 
         then:
         httpFilterConfiguration.isEnabled()
@@ -45,11 +51,11 @@ class XRayConfigurationSpec extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
-                "aws.xray.httpfilter.server.fixedSegmentName": "fixed segment name",
+                "aws.xray.http-filter.server.fixedSegmentName": "fixed segment name",
         ], Environment.AMAZON_EC2)
 
         when:
-        XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayConfiguration.XRayHttpFilterConfiguration.XRayHttpServerFilterConfiguration)
+        XRayHttpServerFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayHttpServerFilterConfiguration)
 
         then:
         httpFilterConfiguration.isEnabled()
@@ -62,16 +68,16 @@ class XRayConfigurationSpec extends Specification {
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
                 "aws.xray.enabled": false,
-                "aws.xray.sdkclients.enabled": false,
-                "aws.xray.httpfilter.enabled": false,
-                "aws.xray.cloudwatch.enabled": false
+                "aws.xray.sdk-clients.enabled": false,
+                "aws.xray.http-filter.enabled": false,
+                "aws.xray.cloud-watch-metrics.enabled": false
         ], Environment.AMAZON_EC2)
 
         when:
         XRayConfiguration xRayConfiguration = applicationContext.getBean(XRayConfiguration)
-        XRayConfiguration.XRayHttpFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayConfiguration.XRayHttpFilterConfiguration)
-        XRayConfiguration.SdkClientsConfiguration sdkClientsConfiguration = applicationContext.getBean(XRayConfiguration.SdkClientsConfiguration)
-        XRayConfiguration.XRayCloudWatchMetricsConfiguration cloudWatchMetricsConfiguration = applicationContext.getBean(XRayConfiguration.XRayCloudWatchMetricsConfiguration)
+        XRayHttpFilterConfiguration httpFilterConfiguration = applicationContext.getBean(XRayHttpFilterConfiguration)
+        XRaySdkClientsConfiguration sdkClientsConfiguration = applicationContext.getBean(XRaySdkClientsConfiguration)
+        XRayCloudWatchMetricsConfiguration cloudWatchMetricsConfiguration = applicationContext.getBean(XRayCloudWatchMetricsConfiguration)
 
         then:
         !xRayConfiguration.isEnabled()
@@ -85,8 +91,8 @@ class XRayConfigurationSpec extends Specification {
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
                 "aws.xray.enabled": false,
-                "aws.xray.sdkclients.enabled": true,
-                "aws.xray.httpfilter.enabled": true,
+                "aws.xray.sdk-clients.enabled": true,
+                "aws.xray.http-filter.enabled": true,
                 "aws.xray.cloudwatch.enabled": true
         ], Environment.AMAZON_EC2)
 

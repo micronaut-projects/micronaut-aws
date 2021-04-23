@@ -19,7 +19,7 @@ class XRayHttpServerFilterSpec extends Specification {
     def "it creates segment with fallback segment name"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
-                "aws.xray.httpfilter.client.enabled": "false",
+                "aws.xray.http-filter.client.enabled": "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
@@ -44,7 +44,7 @@ class XRayHttpServerFilterSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
-                "aws.xray.httpfilter.client.enabled": "false",
+                "aws.xray.http-filter.client.enabled": "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
@@ -66,8 +66,8 @@ class XRayHttpServerFilterSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"                 : "test-application",
-                "aws.xray.httpfilter.server.fixedSegmentName": "fixed-segment-name",
-                "aws.xray.httpfilter.client.enabled"         : "false",
+                "aws.xray.http-filter.server.fixed-segment-name": "fixed-segment-name",
+                "aws.xray.http-filter.client.enabled"         : "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
@@ -89,7 +89,7 @@ class XRayHttpServerFilterSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
-                "aws.xray.httpfilter.client.enabled": "false",
+                "aws.xray.http-filter.client.enabled": "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
@@ -112,7 +112,7 @@ class XRayHttpServerFilterSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "micronaut.application.name"        : "test-application",
-                "aws.xray.httpfilter.client.enabled": "false",
+                "aws.xray.http-filter.client.enabled": "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ], Environment.AMAZON_EC2)
         ApplicationContext context = embeddedServer.getApplicationContext()
