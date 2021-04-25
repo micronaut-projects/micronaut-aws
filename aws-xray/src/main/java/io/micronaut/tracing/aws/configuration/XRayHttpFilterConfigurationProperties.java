@@ -62,5 +62,4 @@ public class XRayHttpFilterConfigurationProperties implements XRayHttpFilterConf
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
 }
