@@ -3,7 +3,7 @@ The HttpServer filter uses provided https://docs.aws.amazon.com/xray-sdk-for-jav
 The filter creates new segment that name resolves in this order:
 
 1. Bean of https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/SegmentNamingStrategy.html[SegmentNamingStrategy] type.
-2. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `aws.xray.httpfilter.server.fixedSegmentName` property.
+2. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `aws.xray.httpfilter.server.fixed-segment-name` property.
 3. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `micronaut.application.name` property.
 4. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] with default of `code micronaut.xray-http-filter`.
 

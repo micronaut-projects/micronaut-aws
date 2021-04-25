@@ -51,7 +51,7 @@ class XRayConfigurationSpec extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
-                "aws.xray.http-filter.server.fixedSegmentName": "fixed segment name",
+                "aws.xray.http-filter.server.fixed-segment-name": "fixed segment name",
         ], Environment.AMAZON_EC2)
 
         when:

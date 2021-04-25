@@ -46,7 +46,7 @@ import java.util.Optional;
  * The {@link SegmentNamingStrategy} is evaluated in this order:
  * <ol>
  *  <li>Bean of {@link SegmentNamingStrategy} type.</li>
- *  <li>{@link  SegmentNamingStrategy#fixed(String)} configured by {@code aws.xray.httpfilter.server.fixedSegmentName} property.</li>
+ *  <li>{@link  SegmentNamingStrategy#fixed(String)} configured by {@code aws.xray.httpfilter.server.fixed-segment-name} property.</li>
  *  <li>{@link  SegmentNamingStrategy#fixed(String)} configured by {@code micronaut.application.name} property.</li>
  *  <li>{@link  SegmentNamingStrategy#fixed(String)} with default of {@code micronaut.xray-http-filter}.</li>
  * </ol>
