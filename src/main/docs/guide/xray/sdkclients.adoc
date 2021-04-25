@@ -6,9 +6,7 @@ Dependency contains the https://docs.aws.amazon.com/xray-sdk-for-java/latest/jav
 
 Micronaut will automatically configure the https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/interceptors/TracingInterceptor.html[TracingInterceptor] while creation AWS SDK client beans.
 
-You can disable AWS SDK beans automatic configuration with the following configuration:
-
-include::{includedir}configurationProperties/io.micronaut.tracing.aws.configuration.XRaySdkClientsConfigurationProperties.adoc[]
+You can disable AWS SDK beans automatic configuration with `tracing.aws.sdk-clients`.
 
 If you want to automatically instrument *all* AWS SDK clients add depenency:
 dependency:aws-xray-recorder-sdk-aws-sdk-v2-instrumentor[groupId="com.amazonaws"]

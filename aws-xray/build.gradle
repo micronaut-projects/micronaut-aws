@@ -15,9 +15,11 @@ dependencies {
 
     // cloudwatch metrics
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-metrics")
+    testImplementation("com.amazonaws:aws-xray-recorder-sdk-metrics")
 
     // aws sdk v2
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2")
+    testImplementation("com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2")
 
     // for testing sdk tracer injection
     testImplementation project(":aws-sdk-v2")

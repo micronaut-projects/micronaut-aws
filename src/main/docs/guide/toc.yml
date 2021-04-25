@@ -41,6 +41,7 @@ alexa:
 parametersStore: Parameter Store as Cloud Configuration
 xray:
   title: AWS X-Ray Support
+  xrayconfiguration: X-Ray Configuration
   xrayrecorder: XRayRecorder configuration
   annotations: Tracing using annotations
   metrics: Pushing unsampled segments to AWS CloudWatch

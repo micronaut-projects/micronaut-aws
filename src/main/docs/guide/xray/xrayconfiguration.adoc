@@ -1,0 +1,3 @@
+The following configuration is available:
+
+include::{includedir}configurationProperties/io.micronaut.aws.xray.XRayConfigurationProperties.adoc[]

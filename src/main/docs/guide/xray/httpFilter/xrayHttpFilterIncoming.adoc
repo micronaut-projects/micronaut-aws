@@ -3,12 +3,11 @@ The HttpServer filter uses provided https://docs.aws.amazon.com/xray-sdk-for-jav
 The filter creates new segment that name resolves in this order:
 
 1. Bean of https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/SegmentNamingStrategy.html[SegmentNamingStrategy] type.
-2. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `aws.xray.httpfilter.server.fixed-segment-name` property.
+2. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `tracing.xray.segment-name` property.
 3. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] configured by `micronaut.application.name` property.
-4. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] with default of `code micronaut.xray-http-filter`.
+4. https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/strategy/FixedSegmentNamingStrategy.html[FixedSegmentNamingStrategy] with default of `micronaut.xray-http-filter`.
 
 Note that all incoming requests are traced and new https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Segment.html[Segment] is created.
 
-Use the following configuration to disable tracing of incoming requests.
+To disable tracing of incoming requests set `tracing.aws.server-filter` to `false`.
 
-include::{includedir}configurationProperties/io.micronaut.tracing.aws.configuration.XRayHttpServerFilterConfigurationProperties.adoc[]
