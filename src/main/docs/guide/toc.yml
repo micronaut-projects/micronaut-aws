@@ -13,6 +13,7 @@ sdkv2:
   sns: SNS
   sqs: SQS
   ssm: SSM
+  secretsmanager: Secrets Manager
   advancedConfiguration: Advanced configuration
   otherServices: Other services
 lambda:
