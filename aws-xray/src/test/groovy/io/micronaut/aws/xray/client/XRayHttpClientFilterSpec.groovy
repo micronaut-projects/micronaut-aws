@@ -20,7 +20,6 @@ class XRayHttpClientFilterSpec extends Specification {
     def "it creates subsegment when segment configured"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
-                "micronaut.application.name"        : "test-application",
                 "tracing.xray.server-filter.enabled": "false",
                 "spec.name"                          : "XRayHttpClientFilterSpec"
         ])
@@ -45,7 +44,7 @@ class XRayHttpClientFilterSpec extends Specification {
         emitter.segments[0].subsegments[0].name.startsWith("localhost")
 
         cleanup:
-        embeddedServer.stop()
+        embeddedServer.close()
     }
 
     def "it creates subsegment with exception when segment configured"() {
@@ -82,7 +81,7 @@ class XRayHttpClientFilterSpec extends Specification {
         emitter.segments[0].subsegments[0].cause.exceptions
 
         cleanup:
-        embeddedServer.stop()
+        embeddedServer.close()
     }
 
     def "it fails to create subsegment when segment not configure"() {
@@ -106,7 +105,7 @@ class XRayHttpClientFilterSpec extends Specification {
         !emitter.segments
 
         cleanup:
-        embeddedServer.stop()
+        embeddedServer.close()
     }
 
     @Requires(property = "spec.name", value = "XRayHttpClientFilterSpec")

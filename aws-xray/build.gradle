@@ -12,6 +12,7 @@ dependencies {
     implementation("com.amazonaws:aws-xray-recorder-sdk-core")
 
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-slf4j")
+    testImplementation("com.amazonaws:aws-xray-recorder-sdk-slf4j")
 
     // http client
     api "javax.servlet:javax.servlet-api:4.0.1"
