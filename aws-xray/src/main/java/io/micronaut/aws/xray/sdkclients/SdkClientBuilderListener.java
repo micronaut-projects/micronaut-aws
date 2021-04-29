@@ -15,9 +15,14 @@
  */
 package io.micronaut.aws.xray.sdkclients;
 
+import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.interceptors.TracingInterceptor;
+import io.micronaut.aws.xray.server.XRayHttpServerFilter;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
+import io.micronaut.http.context.ServerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.client.builder.SdkClientBuilder;
@@ -30,6 +35,7 @@ import javax.inject.Singleton;
  * @author Pavol Gressa
  * @since 2.7.0
  */
+@Requires(classes = SdkClientBuilder.class)
 @Singleton
 public class SdkClientBuilderListener implements BeanCreatedEventListener<SdkClientBuilder<?, ?>> {
     private static final Logger LOG = LoggerFactory.getLogger(SdkClientBuilderListener.class);
@@ -46,6 +52,6 @@ public class SdkClientBuilderListener implements BeanCreatedEventListener<SdkCli
             LOG.trace("Registering x-ray tracing interceptor to {}", event.getBean().getClass().getSimpleName());
         }
         return event.getBean().overrideConfiguration(builder ->
-                builder.addExecutionInterceptor(new TracingInterceptor()));
+                builder.addExecutionInterceptor(new RequestAttributeTracingInterceptor()));
     }
 }

@@ -11,8 +11,10 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.aws.xray.TestEmitter
 import io.reactivex.Flowable
+import spock.lang.Ignore
 import spock.lang.Specification
 
+@Ignore
 class XRayHttpServerFilterSpec extends Specification {
 
     def "it creates segment with fallback segment name"() {

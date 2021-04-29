@@ -1,13 +1,10 @@
 package io.micronaut.aws.xray.configuration
 
 import com.amazonaws.xray.AWSXRayRecorder
-import io.micronaut.aws.xray.XRayConfiguration
 import io.micronaut.aws.xray.XRayRecorderFactory
 
 import io.micronaut.aws.xray.sdkclients.SdkClientBuilderListener
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.env.Environment
-
 import io.micronaut.aws.xray.cloudwatch.MetricsSegmentListenerFactory
 
 import spock.lang.Specification
@@ -56,7 +53,7 @@ class XRayConfigurationSpec extends Specification {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
                 "micronaut.application.name" : "test-application",
-                "tracing.xray.segment-name": "fixed segment name",
+                "tracing.xray.fixed-name": "fixed segment name",
         ])
 
         when:
@@ -64,8 +61,8 @@ class XRayConfigurationSpec extends Specification {
 
         then:
         xRayConfiguration.isServerFilter()
-        xRayConfiguration.getSegmentName().isPresent()
-        xRayConfiguration.getSegmentName().get() == "fixed segment name"
+        xRayConfiguration.getFixedName().isPresent()
+        xRayConfiguration.getFixedName().get() == "fixed segment name"
     }
 
     def "it disables clients"() {

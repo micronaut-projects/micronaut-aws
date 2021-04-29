@@ -27,4 +27,4 @@ import com.amazonaws.xray.metrics.MetricsSegmentListener;
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.XRayConfigurationProperties;
+import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;

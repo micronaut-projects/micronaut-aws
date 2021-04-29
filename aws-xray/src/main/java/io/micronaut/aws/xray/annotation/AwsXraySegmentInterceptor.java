@@ -60,7 +60,9 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
         } else {
             segment = awsxRayRecorder.beginSegment(name);
         }
-        LOG.trace(String.format("Created segment '%s'", name));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Created segment {}", name);
+        }
 
         Optional<String> namespace = annotation.stringValue("namespace");
         namespace.ifPresent(segment::setNamespace);
@@ -71,7 +73,9 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
             throw e;
         } finally {
             awsxRayRecorder.endSegment();
-            LOG.trace(String.format("Closed segment '%s'", name));
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Closed segment {}", name);
+            }
         }
     }
 
@@ -79,7 +83,9 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
         AnnotationValue<AwsXraySubsegment> annotation = context.getAnnotation(AwsXraySubsegment.class);
         String name = annotation.stringValue("name").orElse(context.getMethodName());
         Subsegment subsegment = awsxRayRecorder.beginSubsegment(name);
-        LOG.trace(String.format("Created subsegment '%s'", name));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Created subsegment {}", name);
+        }
         try {
             return context.proceed();
         } catch (Exception e) {
@@ -87,7 +93,9 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
             throw e;
         } finally {
             awsxRayRecorder.endSubsegment();
-            LOG.trace(String.format("Closed subsegment '%s'", name));
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Closed subsegment {}", name);
+            }
         }
     }
 

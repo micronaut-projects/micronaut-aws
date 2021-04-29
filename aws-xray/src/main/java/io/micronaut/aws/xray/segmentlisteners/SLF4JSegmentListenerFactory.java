@@ -13,19 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.aws.xray.segmentlisteners;
+
+import com.amazonaws.xray.slf4j.SLF4JSegmentListener;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 /**
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
+@Requires(classes = SLF4JSegmentListener.class)
+@Factory
+public class SLF4JSegmentListenerFactory {
 
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+    @Singleton
+    @Named("slf4j")
+    public SLF4JSegmentListener buildSegmentListener() {
+        return new SLF4JSegmentListener();
+    }
+}

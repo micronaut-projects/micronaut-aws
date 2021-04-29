@@ -13,19 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.aws.xray.decorators;
+
+import com.amazonaws.xray.entities.Segment;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.http.HttpRequest;
+
+import javax.inject.Singleton;
+import java.security.Principal;
+
 /**
+ * Sets {@link Segment#setUser(String)} with the principal.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
+@Singleton
+public class UserSegmentDecorator implements SegmentDecorator {
 
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+    @Override
+    public void decorate(@NonNull Segment segment, @NonNull HttpRequest<?> request) {
+        request.getUserPrincipal().map(Principal::getName).ifPresent(segment::setUser);
+    }
+}

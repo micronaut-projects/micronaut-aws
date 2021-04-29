@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.xray;
+package io.micronaut.aws.xray.configuration;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.core.util.Toggleable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Configuration for AWS X-Ray.
  *
  * @author Pavol Gressa
+ * @author Sergio del Amo
  * @since 2.7.0
  */
 
 public interface XRayConfiguration extends Toggleable {
+
+    @NonNull
+    Optional<List<String>> getExcludes();
 
     /**
      *
@@ -35,13 +41,6 @@ public interface XRayConfiguration extends Toggleable {
      */
     @NonNull
     Optional<String> getSamplingRule();
-
-    /**
-     *
-     * @return Segment Name
-     */
-    @NonNull
-    Optional<String> getSegmentName();
 
     /**
      *
@@ -66,4 +65,12 @@ public interface XRayConfiguration extends Toggleable {
      * @return Whether X-Ray Tracing Interceptor should be configured for every AWS SDK Client builder.
      */
     boolean isSdkClients();
+
+    /**
+     *
+     * @return A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
+     */
+    @NonNull
+    Optional<String> getFixedName();
 }
+

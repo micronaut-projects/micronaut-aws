@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 /**
+ * Segment Listeners.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
-
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+package io.micronaut.aws.xray.segmentlisteners;

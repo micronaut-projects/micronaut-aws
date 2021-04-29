@@ -20,6 +20,7 @@
 @Requires(property = XRayConfigurationProperties.PREFIX + ".enabled", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
 @Configuration
 package io.micronaut.aws.xray;
+import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;

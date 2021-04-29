@@ -21,8 +21,8 @@ import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
 import com.amazonaws.xray.strategy.sampling.CentralizedSamplingStrategy;
+import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.env.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +31,7 @@ import java.net.URL;
 import java.util.Collection;
 
 /**
- * The factory configures and creates the {@link AWSXRayRecorder}. Based on the configured
- * {@link Environment} respective {@link Plugin}s are configured to the {@link AWSXRayRecorder}.
+ * The factory configures and creates the {@link AWSXRayRecorder}.
  *
  * @author Pavol Gressa
  * @since 2.7.0
@@ -42,31 +41,25 @@ public class XRayRecorderFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(XRayRecorderFactory.class);
 
-    /**
-     * Create the {@link AWSXRayRecorderBuilder}. For additional configuration register {@link io.micronaut.context.event.BeanCreatedEventListener}.
-     *
-     * @return aws xray recorder builder
-     */
-    @Singleton
-    public AWSXRayRecorderBuilder builder() {
-        return AWSXRayRecorderBuilder.standard();
+    private final XRayConfiguration awsxRayConfiguration;
+    private final Collection<Plugin> plugins;
+    private final Collection<SegmentListener> segmentListeners;
+
+    public XRayRecorderFactory(XRayConfiguration awsxRayConfiguration,
+                               Collection<Plugin> plugins,
+                               Collection<SegmentListener> segmentListeners) {
+        this.awsxRayConfiguration = awsxRayConfiguration;
+        this.plugins = plugins;
+        this.segmentListeners = segmentListeners;
     }
 
     /**
-     * Creates {@link AWSXRayRecorder} singleton bean.
-     *
-     * @param builder              The builder
-     * @param awsxRayConfiguration The recorder configuration
-     * @param plugins              The {@link Plugin}s to configure
-     * @param segmentListeners     The {@link SegmentListener}s to configure
-     * @return built {@link AWSXRayRecorder}
+     * Builds a {@link AWSXRayRecorder} and sets the recorder as Global Recorder {@link AWSXRay#setGlobalRecorder(AWSXRayRecorder)}
+     * @return A {@link AWSXRayRecorder} singleton.
      */
     @Singleton
-    public AWSXRayRecorder build(AWSXRayRecorderBuilder builder,
-                                 XRayConfiguration awsxRayConfiguration,
-                                 Collection<Plugin> plugins,
-                                 Collection<SegmentListener> segmentListeners
-    ) {
+    public AWSXRayRecorder build() {
+        AWSXRayRecorderBuilder builder = builder();
         if (awsxRayConfiguration.getSamplingRule().isPresent()) {
             String sampligRule = awsxRayConfiguration.getSamplingRule().get();
             try {
@@ -78,18 +71,34 @@ public class XRayRecorderFactory {
                 }
             }
         }
-
-        builder.withDefaultPlugins();
-
-        for (Plugin plugin : plugins) {
-            builder.withPlugin(plugin);
-        }
-        for (SegmentListener segmentListener : segmentListeners) {
-            builder.withSegmentListener(segmentListener);
-        }
-
         AWSXRayRecorder awsxRayRecorder = builder.build();
         AWSXRay.setGlobalRecorder(awsxRayRecorder);
         return awsxRayRecorder;
+    }
+
+
+    /**
+     * Creates a standard {@link AWSXRayRecorderBuilder} and registers the following plugins:
+     * - The default plugins ({@link com.amazonaws.xray.plugins.EC2Plugin}, {@link com.amazonaws.xray.plugins.ECSPlugin}, {@link com.amazonaws.xray.plugins.EKSPlugin}, {@link com.amazonaws.xray.plugins.ElasticBeanstalkPlugin})
+     * - The beans to type {@link Plugin}.
+     * It registers the beans of type {@link SegmentListener} as segments listeners.
+     * A {@link AWSXRayRecorderBuilder}
+     */
+    protected AWSXRayRecorderBuilder builder() {
+        AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard()
+                .withDefaultPlugins();
+        for (Plugin plugin : plugins) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Adding plugin {} to AWS X-Ray Recorder builder", plugin.getClass().getSimpleName());
+            }
+            builder.withPlugin(plugin);
+        }
+        for (SegmentListener segmentListener : segmentListeners) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Adding segment Listener {} to AWS X-Ray Recorder builder", segmentListener.getClass().getSimpleName());
+            }
+            builder.withSegmentListener(segmentListener);
+        }
+        return builder;
     }
 }

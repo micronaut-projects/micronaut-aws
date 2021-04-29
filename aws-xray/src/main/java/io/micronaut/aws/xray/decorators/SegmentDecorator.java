@@ -13,19 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.aws.xray.decorators;
+
+import com.amazonaws.xray.entities.Segment;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.http.HttpRequest;
+
 /**
+ * Contract to decorate segments being created by the {@link io.micronaut.aws.xray.server.XRayHttpServerFilter}.
+ * Useful to add custom annotations.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
+@FunctionalInterface
+public interface SegmentDecorator {
 
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+    /**
+     *
+     * @param segment The X-Ray Segment
+     * @param request The HTTP Requests
+     */
+    void decorate(@NonNull Segment segment, @NonNull HttpRequest<?> request);
+}

@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.xray;
+package io.micronaut.aws.xray.configuration;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.context.annotation.ConfigurationProperties;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,10 +62,10 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     public static final boolean DEFAULT_SDK_CLIENTS = true;
 
     @Nullable
-    private String samplingRule;
+    private List<String> excludes;
 
     @Nullable
-    private String segmentName;
+    private String samplingRule;
 
     private boolean enabled = DEFAULT_ENABLED;
 
@@ -75,21 +77,36 @@ public class XRayConfigurationProperties implements XRayConfiguration {
 
     private boolean sdkClients = DEFAULT_SDK_CLIENTS;
 
-    /**
-     * @return Segment Name
-     */
-    @NonNull
+    @Nullable
+    private String fixedName;
+
+    @Nullable
+    private String dynamicNamingFallbackName;
+
+    @Nullable
+    private String dynamicNamingRecognizedHosts;
+
     @Override
-    public Optional<String> getSegmentName() {
-        return Optional.ofNullable(segmentName);
+    @NonNull
+    public Optional<String> getFixedName() {
+        return Optional.ofNullable(fixedName);
+    }
+
+    @NonNull
+    public Optional<List<String>> getExcludes() {
+        return Optional.ofNullable(excludes);
+    }
+
+    public void setExcludes(@Nullable List<String> excludes) {
+        this.excludes = excludes;
     }
 
     /**
-     * Segment name. Not set by default.
-     * @param segmentName Segment Name
+     * A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
+     * @param fixedName A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
      */
-    public void setSegmentName(@Nullable String segmentName) {
-        this.segmentName = segmentName;
+    public void setFixedName(String fixedName) {
+        this.fixedName = fixedName;
     }
 
     @Override

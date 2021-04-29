@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.aws.xray.strategy;
+
+import io.micronaut.context.condition.Condition;
+import io.micronaut.context.condition.ConditionContext;
+
 /**
+ * Evaluates to true if the system property {@link SystemPropertySegmentNamingStrategy#SYSTEM_PROPERTY_KEY_TRACING_NAME} is present.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
-
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+public class SystemPropertySegmentNamingStrategyCondition implements Condition {
+    @Override
+    public boolean matches(ConditionContext context) {
+        return System.getenv(EnvironmentVariableSegmentNamingStrategy.ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME) != null;
+    }
+}

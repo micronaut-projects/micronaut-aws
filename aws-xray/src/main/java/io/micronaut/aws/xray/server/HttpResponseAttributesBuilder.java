@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.micronaut.aws.xray.server;
+
+import com.amazonaws.xray.entities.Entity;
+import io.micronaut.context.annotation.DefaultImplementation;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.http.HttpResponse;
 /**
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Requires(beans = AWSXRayRecorder.class)
-@Requires(classes = AWSXRayServletFilter.class)
-@Requires(property = XRayConfigurationProperties.PREFIX + ".server-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)
-@Configuration
-package io.micronaut.aws.xray.server;
+@DefaultImplementation(DefaultHttpResponseAttributesBuilder.class)
+@FunctionalInterface
+public interface HttpResponseAttributesBuilder {
 
-import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
-import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+    /**
+     *
+     * @param entity The X-Ray Entity (E.g. a Segment or Subsegment)
+     * @param response The HTTP Response from which some information will be extracted
+     */
+    void putHttpResponseInformation(@NonNull Entity entity, @NonNull HttpResponse<?> response);
+}

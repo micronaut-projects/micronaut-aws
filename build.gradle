@@ -24,6 +24,8 @@ subprojects { Project subproject ->
             }
             testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
         }
+
+
     } else {
         apply plugin: "java-platform"
         version projectVersion
