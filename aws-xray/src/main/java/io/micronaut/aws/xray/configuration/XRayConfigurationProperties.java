@@ -80,12 +80,6 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     @Nullable
     private String fixedName;
 
-    @Nullable
-    private String dynamicNamingFallbackName;
-
-    @Nullable
-    private String dynamicNamingRecognizedHosts;
-
     @Override
     @NonNull
     public Optional<String> getFixedName() {

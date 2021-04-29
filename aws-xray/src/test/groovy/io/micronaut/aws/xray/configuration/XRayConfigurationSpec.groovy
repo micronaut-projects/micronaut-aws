@@ -2,20 +2,21 @@ package io.micronaut.aws.xray.configuration
 
 import com.amazonaws.xray.AWSXRayRecorder
 import io.micronaut.aws.xray.XRayRecorderFactory
-
+import io.micronaut.aws.xray.client.XRayHttpClientFilter
+import io.micronaut.aws.xray.decorators.SegmentDecorator
 import io.micronaut.aws.xray.sdkclients.SdkClientBuilderListener
+import io.micronaut.aws.xray.server.XRayHttpServerFilter
+import io.micronaut.aws.xray.strategy.SegmentNamingStrategy
 import io.micronaut.context.ApplicationContext
 import io.micronaut.aws.xray.cloudwatch.MetricsSegmentListenerFactory
-
+import io.micronaut.core.util.StringUtils
 import spock.lang.Specification
 
 class XRayConfigurationSpec extends Specification {
 
     def "all integrations are enabled"() {
         given:
-        ApplicationContext applicationContext = ApplicationContext.run([
-                "micronaut.application.name": "test-application",
-        ])
+        ApplicationContext applicationContext = ApplicationContext.run()
 
         expect:
         applicationContext.containsBean(AWSXRayRecorder)
@@ -24,11 +25,13 @@ class XRayConfigurationSpec extends Specification {
         XRayConfiguration xRayConfiguration = applicationContext.getBean(XRayConfiguration)
 
         then:
-        xRayConfiguration.isEnabled()
-        xRayConfiguration.isClientFilter()
+        !xRayConfiguration.getExcludes().isPresent()
+        !xRayConfiguration.getSamplingRule().isPresent()
         xRayConfiguration.isServerFilter()
-        xRayConfiguration.isSdkClients()
+        xRayConfiguration.isClientFilter()
         xRayConfiguration.isCloudWatchMetrics()
+        xRayConfiguration.isSdkClients()
+        !xRayConfiguration.getFixedName().isPresent()
 
         cleanup:
         applicationContext.close()
@@ -37,57 +40,35 @@ class XRayConfigurationSpec extends Specification {
     def "it configures sampling rule"(){
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
-                "micronaut.application.name" : "test-application",
-                "tracing.xray.sampling-rule": "rule"
-        ])
-
-        when:
-        XRayConfiguration configuration = applicationContext.getBean(XRayConfiguration)
-
-        then:
-        configuration.samplingRule.isPresent()
-        configuration.samplingRule.get() == "rule"
-    }
-
-    def "it configures fixed segment for http filter"(){
-        given:
-        ApplicationContext applicationContext = ApplicationContext.run([
-                "micronaut.application.name" : "test-application",
-                "tracing.xray.fixed-name": "fixed segment name",
+                "tracing.xray.sampling-rule": "rule",
+                "tracing.xray.excludes": ["/health", "/assets/**"],
+                "tracing.xray.server-filter": StringUtils.FALSE,
+                "tracing.xray.client-filter": StringUtils.FALSE,
+                "tracing.xray.cloud-watch-metrics": StringUtils.FALSE,
+                "tracing.xray.sdk-clients": StringUtils.FALSE,
+                "tracing.xray.fixed-name": 'micronautapp',
         ])
 
         when:
         XRayConfiguration xRayConfiguration = applicationContext.getBean(XRayConfiguration)
 
         then:
-        xRayConfiguration.isServerFilter()
-        xRayConfiguration.getFixedName().isPresent()
-        xRayConfiguration.getFixedName().get() == "fixed segment name"
-    }
-
-    def "it disables clients"() {
-        given:
-        ApplicationContext applicationContext = ApplicationContext.run([
-                "micronaut.application.name" : "test-application",
-                "tracing.xray.enabled": false,
-                "tracing.xray.sdk-clients": false,
-                "tracing.xray.cloud-watch-metrics": false
-        ])
-
-        expect:
-        !applicationContext.containsBean(XRayConfiguration)
-        !applicationContext.containsBean(XRayRecorderFactory)
-        !applicationContext.containsBean(SdkClientBuilderListener)
-        !applicationContext.containsBean(MetricsSegmentListenerFactory)
+        xRayConfiguration.getExcludes().isPresent()
+        xRayConfiguration.getExcludes().get() == ["/health", "/assets/**"]
+        xRayConfiguration.getSamplingRule().isPresent()
+        !xRayConfiguration.isServerFilter()
+        !xRayConfiguration.isClientFilter()
+        !xRayConfiguration.isCloudWatchMetrics()
+        !xRayConfiguration.isSdkClients()
+        xRayConfiguration.getFixedName().get() == 'micronautapp'
 
         cleanup:
         applicationContext.close()
     }
 
-    def "it globally disables features"() {
+    def "if you set tracing.xray.enabled: false no beans are loaded"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run([
-                "micronaut.application.name" : "test-application",
                 "tracing.xray.enabled": false,
                 "tracing.xray.sdk-clients": true,
                 "tracing.xray.cloud-watch-metrics": true
@@ -96,7 +77,11 @@ class XRayConfigurationSpec extends Specification {
         expect:
         !applicationContext.containsBean(XRayConfiguration)
         !applicationContext.containsBean(XRayRecorderFactory)
+        !applicationContext.containsBean(XRayHttpServerFilter)
+        !applicationContext.containsBean(XRayHttpClientFilter)
+        !applicationContext.containsBean(SegmentNamingStrategy)
         !applicationContext.containsBean(SdkClientBuilderListener)
+        !applicationContext.containsBean(SegmentDecorator)
         !applicationContext.containsBean(MetricsSegmentListenerFactory)
 
         cleanup:

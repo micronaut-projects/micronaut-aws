@@ -26,6 +26,6 @@ import io.micronaut.context.condition.ConditionContext;
 public class SystemPropertySegmentNamingStrategyCondition implements Condition {
     @Override
     public boolean matches(ConditionContext context) {
-        return System.getenv(EnvironmentVariableSegmentNamingStrategy.ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME) != null;
+        return System.getProperty(SystemPropertySegmentNamingStrategy.SYSTEM_PROPERTY_KEY_TRACING_NAME) != null;
     }
 }

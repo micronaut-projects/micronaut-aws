@@ -15,6 +15,8 @@
  */
 package io.micronaut.aws.xray.strategy;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 
@@ -27,6 +29,16 @@ public class EnvironmentVariableSegmentNamingStrategyCondition  implements Condi
 
     @Override
     public boolean matches(ConditionContext context) {
-        return System.getenv(EnvironmentVariableSegmentNamingStrategy.ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME) != null;
+        return getEnv(EnvironmentVariableSegmentNamingStrategy.ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME) != null;
+    }
+
+    /**
+     *
+     * @param name Environment variable name
+     * @return Environment variable value or null
+     */
+    @Nullable
+    protected String getEnv(@NonNull String name) {
+        return System.getenv(name);
     }
 }

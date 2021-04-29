@@ -18,11 +18,9 @@ package io.micronaut.aws.xray.strategy;
 import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.annotation.Secondary;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
-
 import javax.inject.Singleton;
 
 /**
@@ -34,11 +32,11 @@ import javax.inject.Singleton;
  *
  * @since 2.7.0
  */
-@Requires(property = XRayConfigurationProperties.PREFIX + ".fixed-name")
-@Secondary
+@Requires(property = FixedSegmentNamingStrategy.PROPERTY)
 @Singleton
 public class FixedSegmentNamingStrategy implements SegmentNamingStrategy {
     public static final int ORDER = SystemPropertySegmentNamingStrategy.ORDER + 100;
+    public static final String PROPERTY = XRayConfigurationProperties.PREFIX + ".fixed-name";
 
     private final String fixedName;
 
@@ -48,7 +46,7 @@ public class FixedSegmentNamingStrategy implements SegmentNamingStrategy {
      */
     public FixedSegmentNamingStrategy(XRayConfiguration xRayConfiguration) {
         if (!xRayConfiguration.getFixedName().isPresent()) {
-            throw new ConfigurationException("tracing.xray.fixed-name is not present");
+            throw new ConfigurationException(FixedSegmentNamingStrategy.PROPERTY + " not present");
         }
         this.fixedName = xRayConfiguration.getFixedName().get();
     }

@@ -32,6 +32,10 @@ import java.util.regex.Pattern;
 
 public interface XRayConfiguration extends Toggleable {
 
+    /**
+     *
+     * @return A list of paths which should not be filter by {@link io.micronaut.aws.xray.server.XRayHttpServerFilter}.
+     */
     @NonNull
     Optional<List<String>> getExcludes();
 

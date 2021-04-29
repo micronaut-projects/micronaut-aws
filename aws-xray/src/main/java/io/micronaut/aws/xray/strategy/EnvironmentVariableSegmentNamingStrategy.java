@@ -23,16 +23,13 @@ import io.micronaut.http.HttpRequest;
 import javax.inject.Singleton;
 
 /**
+ * If Environment variable AWS_XRAY_TRACING_NAME is set, it returns its value as the segment name.
  * @author Sergio del Amo
  * @since 2.7.0
  */
 @Requires(condition = EnvironmentVariableSegmentNamingStrategyCondition.class)
 @Singleton
 public class EnvironmentVariableSegmentNamingStrategy implements SegmentNamingStrategy {
-    /**
-     * Environment variable key used to override the default segment name used by implementors of {@code SegmentNamingStrategy}.
-     * Takes precedence over any system property, web.xml configuration value, or constructor value used for a fixed segment name.
-     */
     public static final String ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME = "AWS_XRAY_TRACING_NAME";
 
     @Override
