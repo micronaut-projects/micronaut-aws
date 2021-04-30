@@ -37,7 +37,7 @@ class XRayHttpServerFilterSpec extends Specification {
         response
         response.code() == 200
         response.body() == "pong"
-        emitter.segments
+        !emitter.segments.isEmpty()
         emitter.segments[0].name.startsWith('http://localhost')
 
         cleanup:

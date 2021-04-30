@@ -101,8 +101,7 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     }
 
     /**
-     * A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
-     * @param fixedName A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
+     * A String value used as the segment name.
      */
     public void setFixedName(String fixedName) {
         this.fixedName = fixedName;
@@ -115,7 +114,7 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     }
 
     /**
-     * Sampling Rule. Not set by default.
+     * A path either starting with `classpath:` or `file:` to sampling-rules file. You can serve files from anywhere on disk or the classpath. For example to serve a static resources from `src/main/resources/sampling-rules.json`, you would use `classpath:sampling-rules.json`.
      * @param samplingRule Sampling rule
      */
     public void setSamplingRule(@Nullable String samplingRule) {

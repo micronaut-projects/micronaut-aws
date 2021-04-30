@@ -70,7 +70,7 @@ public interface XRayConfiguration extends Toggleable {
 
     /**
      *
-     * @return A String value used as the fixedName parameter for a created {@link io.micronaut.aws.xray.strategy.FixedSegmentNamingStrategy}. Used only if the {@code dynamicNamingFallbackName} is not set.
+     * @return A String value used as the segment name.
      */
     @NonNull
     Optional<String> getFixedName();

@@ -17,7 +17,6 @@ package io.micronaut.aws.xray.filters.client;
 
 import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
-import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
 import com.amazonaws.xray.entities.TraceHeader;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
@@ -64,27 +63,17 @@ public class XRayHttpClientFilter implements HttpClientFilter {
 
     @Override
     public Publisher<? extends HttpResponse<?>> doFilter(MutableHttpRequest<?> request, ClientFilterChain chain) {
-        Optional<Segment> segmentOptional = recorder.getCurrentSegmentOptional();
-        Optional<Entity> contextOptional = null;
-        if (!segmentOptional.isPresent()) {
+        Optional<Entity> contextOptional = ServerRequestContext.currentRequest()
+                .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class));
+        if (!contextOptional.isPresent()) {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("current segment not found");
+                LOG.trace("attribute {} not found in current request", XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY);
             }
-            contextOptional = ServerRequestContext.currentRequest()
-                    .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class));
-            if (!contextOptional.isPresent()) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("attribute {} not found in current request", XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY);
-                }
-                return chain.proceed(request);
-            }
+            return chain.proceed(request);
         }
-
         Entity currentContext = recorder.getTraceEntity();
-        final Entity context = !segmentOptional.isPresent() ? contextOptional.get() : null;
-        if (context != null) {
-            recorder.setTraceEntity(context);
-        }
+        final Entity context = contextOptional.get();
+        recorder.setTraceEntity(context);
         if (!recorder.getCurrentSegmentOptional().isPresent()) {
             if (LOG.isTraceEnabled()) {
                 LOG.trace("current segment not found using {} context", XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY);
@@ -110,9 +99,7 @@ public class XRayHttpClientFilter implements HttpClientFilter {
                     return mutableHttpResponse;
                 }).doFinally(() -> {
                     endSubsegmentSafe(subsegment);
-                    if (context != null) {
-                        recorder.setTraceEntity(currentContext);
-                    }
+                    recorder.setTraceEntity(currentContext);
                 }).doOnError(t -> {
                     if (subsegment != null) {
                         subsegment.addException(t);

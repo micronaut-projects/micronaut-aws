@@ -10,11 +10,20 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
+import io.micronaut.core.convert.value.MutableConvertibleValues
 import io.micronaut.core.util.StringUtils
+import io.micronaut.http.HttpMethod
+import io.micronaut.http.HttpRequest
 import io.micronaut.http.MediaType
+import io.micronaut.http.MutableHttpHeaders
+import io.micronaut.http.MutableHttpParameters
+import io.micronaut.http.MutableHttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.context.ServerRequestContext
+import io.micronaut.http.cookie.Cookie
+import io.micronaut.http.cookie.Cookies
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.scheduling.annotation.ExecuteOn
@@ -39,6 +48,10 @@ class XRayHttpClientFilterSpec extends Specification {
 
         when:
         AWSXRay.beginSegment("test-segment")
+        def httpRequest = Stub(HttpRequest) {
+            getAttribute(_, _) >> Optional.of(AWSXRay.getTraceEntity())
+        }
+        ServerRequestContext.set(httpRequest)
         def response = client.toBlocking().exchange("${embeddedServer.getURL()}/success", String)
         AWSXRay.endSegment()
 
@@ -74,6 +87,10 @@ class XRayHttpClientFilterSpec extends Specification {
         when:
         try {
             AWSXRay.beginSegment("test-segment")
+            def httpRequest = Stub(HttpRequest) {
+                getAttribute(_, _) >> Optional.of(AWSXRay.getTraceEntity())
+            }
+            ServerRequestContext.set(httpRequest)
             client.toBlocking().exchange("${embeddedServer.getURL()}/fail", String)
         } catch (Exception e) {
             // no-op

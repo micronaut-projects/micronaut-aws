@@ -21,10 +21,10 @@ import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
 import io.micronaut.aop.InterceptPhase;
+import io.micronaut.aop.InterceptorBean;
 import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
-import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.annotation.NonNull;
@@ -41,8 +41,8 @@ import java.util.Optional;
  * @since 2.7.0
  */
 @Requires(beans = AWSXRayRecorder.class)
-@BootstrapContextCompatible
 @Singleton
+@InterceptorBean(AwsXraySubsegment.class)
 public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Object> {
     private static final Logger LOG = LoggerFactory.getLogger(AwsXraySegmentInterceptor.class);
 
@@ -54,30 +54,32 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
 
     @Override
     public Object intercept(MethodInvocationContext<Object, Object> context) {
-        AnnotationValue<AwsXraySubsegment> annotation = context.getAnnotation(AwsXraySubsegment.class);
-        if (annotation != null) {
-            String name = annotation.stringValue("name").orElse(context.getMethodName());
+        Optional<AnnotationValue<AwsXraySubsegment>> opt = context.findAnnotation(AwsXraySubsegment.class);
+        if (!opt.isPresent()) {
+            return context.proceed();
+        }
 
-            Optional<Segment> segmentOptional = recorder.getCurrentSegmentOptional();
-            if (segmentOptional.isPresent()) {
-                return wrapContextInSubsegment(context, name);
-            }
-            Entity currentContext = recorder.getTraceEntity();
-            ServerRequestContext.currentRequest()
-                        .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class))
-                        .ifPresent(AWSXRay::setTraceEntity);
-            segmentOptional = recorder.getCurrentSegmentOptional();
-            if (segmentOptional.isPresent()) {
-                Object result = wrapContextInSubsegment(context, name);
-                recorder.setTraceEntity(currentContext);
-                return result;
-            }
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Could not created subsegment {}. No segment found", name);
-            }
+        AnnotationValue<AwsXraySubsegment> annotation = opt.get();
+        String name = annotation.stringValue("name").orElse(context.getMethodName());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Annotation AwsXraySubsegment name {}. ", name);
+        }
+        Entity currentContext = recorder.getTraceEntity();
+        ServerRequestContext.currentRequest()
+                .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class))
+                .ifPresent(AWSXRay::setTraceEntity);
+        Optional<Segment> segmentOptional = recorder.getCurrentSegmentOptional();
+        if (segmentOptional.isPresent()) {
+            Object result = wrapContextInSubsegment(context, name);
+            recorder.setTraceEntity(currentContext);
+            return result;
+        }
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Could not created subsegment {}. No segment found", name);
         }
         return context.proceed();
     }
+
 
     /**
      *
