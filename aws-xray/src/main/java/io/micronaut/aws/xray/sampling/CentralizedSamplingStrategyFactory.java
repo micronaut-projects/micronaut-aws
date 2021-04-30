@@ -22,9 +22,7 @@ import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.DisabledBeanException;
-import io.micronaut.core.io.ResourceLoader;
 import io.micronaut.core.io.ResourceResolver;
-
 import javax.inject.Singleton;
 import java.net.URL;
 import java.util.Optional;
