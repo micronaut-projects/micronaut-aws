@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * Configuration.
+ * X-Ray Configuration classes.
  * @author Sergio del Amo
  * @since 2.7.0
  */

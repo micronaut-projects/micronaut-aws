@@ -30,6 +30,10 @@ import javax.inject.Singleton;
 @Factory
 public class SLF4JSegmentListenerFactory {
 
+    /**
+     *
+     * @return A SLF4J Segement Listener
+     */
     @Singleton
     @Named("slf4j")
     public SLF4JSegmentListener buildSegmentListener() {

@@ -17,7 +17,6 @@ package io.micronaut.aws.xray.strategy;
 
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.order.Ordered;
 import io.micronaut.http.HttpRequest;
 
 import javax.inject.Singleton;

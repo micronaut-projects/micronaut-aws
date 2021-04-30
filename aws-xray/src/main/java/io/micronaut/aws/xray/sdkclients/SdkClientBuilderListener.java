@@ -15,17 +15,13 @@
  */
 package io.micronaut.aws.xray.sdkclients;
 
-import com.amazonaws.xray.AWSXRay;
-import com.amazonaws.xray.entities.Entity;
-import com.amazonaws.xray.interceptors.TracingInterceptor;
-import io.micronaut.aws.xray.server.XRayHttpServerFilter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
 import io.micronaut.context.event.BeanCreatedEventListener;
-import io.micronaut.http.context.ServerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.client.builder.SdkClientBuilder;
+
 import javax.inject.Singleton;
 
 /**
@@ -41,7 +37,7 @@ public class SdkClientBuilderListener implements BeanCreatedEventListener<SdkCli
     private static final Logger LOG = LoggerFactory.getLogger(SdkClientBuilderListener.class);
 
     /**
-     * Add {@link TracingInterceptor} to {@link SdkClientBuilder}.
+     * Add {@link com.amazonaws.xray.interceptors.TracingInterceptor} to {@link SdkClientBuilder}.
      *
      * @param event bean created event
      * @return sdk client builder

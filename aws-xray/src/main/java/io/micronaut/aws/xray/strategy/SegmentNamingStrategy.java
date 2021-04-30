@@ -17,10 +17,7 @@ package io.micronaut.aws.xray.strategy;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.order.Ordered;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
-
-import java.util.Optional;
 
 /**
  * Resolves how to name the X-Ray segment for a given HTTP Request.

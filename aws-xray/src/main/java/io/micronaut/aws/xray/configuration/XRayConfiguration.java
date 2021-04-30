@@ -17,10 +17,8 @@ package io.micronaut.aws.xray.configuration;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.core.util.Toggleable;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 /**
  * Configuration for AWS X-Ray.
@@ -34,7 +32,7 @@ public interface XRayConfiguration extends Toggleable {
 
     /**
      *
-     * @return A list of paths which should not be filter by {@link io.micronaut.aws.xray.server.XRayHttpServerFilter}.
+     * @return A list of paths which should not be filter by {@link io.micronaut.aws.xray.filters.server.XRayHttpServerFilter}.
      */
     @NonNull
     Optional<List<String>> getExcludes();

@@ -31,13 +31,12 @@ import javax.inject.Singleton;
 @Singleton
 public class EnvironmentVariableSegmentNamingStrategy implements SegmentNamingStrategy {
     public static final String ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME = "AWS_XRAY_TRACING_NAME";
+    public static final int ORDER = Ordered.HIGHEST_PRECEDENCE + 100;
 
     @Override
     public int getOrder() {
         return ORDER;
     }
-
-    public static final int ORDER = Ordered.HIGHEST_PRECEDENCE + 100;
 
     @Override
     @NonNull

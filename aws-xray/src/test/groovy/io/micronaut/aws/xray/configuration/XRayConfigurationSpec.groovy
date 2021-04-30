@@ -1,11 +1,11 @@
 package io.micronaut.aws.xray.configuration
 
 import com.amazonaws.xray.AWSXRayRecorder
-import io.micronaut.aws.xray.XRayRecorderFactory
-import io.micronaut.aws.xray.client.XRayHttpClientFilter
+import io.micronaut.aws.xray.recorder.XRayRecorderFactory
+import io.micronaut.aws.xray.filters.client.XRayHttpClientFilter
 import io.micronaut.aws.xray.decorators.SegmentDecorator
 import io.micronaut.aws.xray.sdkclients.SdkClientBuilderListener
-import io.micronaut.aws.xray.server.XRayHttpServerFilter
+import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter
 import io.micronaut.aws.xray.strategy.SegmentNamingStrategy
 import io.micronaut.context.ApplicationContext
 import io.micronaut.aws.xray.cloudwatch.MetricsSegmentListenerFactory

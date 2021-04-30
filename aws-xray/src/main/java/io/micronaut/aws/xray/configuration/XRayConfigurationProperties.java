@@ -86,11 +86,16 @@ public class XRayConfigurationProperties implements XRayConfiguration {
         return Optional.ofNullable(fixedName);
     }
 
+    @Override
     @NonNull
     public Optional<List<String>> getExcludes() {
         return Optional.ofNullable(excludes);
     }
 
+    /**
+     *
+     * @param excludes A list of paths which should not be filter by {@link io.micronaut.aws.xray.filters.server.XRayHttpServerFilter}.
+     */
     public void setExcludes(@Nullable List<String> excludes) {
         this.excludes = excludes;
     }

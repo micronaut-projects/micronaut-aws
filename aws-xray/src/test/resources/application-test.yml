@@ -1,5 +1,0 @@
-aws:
-  accessKeyId: testAccessKeyId
-  secretKey: testSecretKey
-  sessionToken: testSessionToken
-  region: eu-west-1
