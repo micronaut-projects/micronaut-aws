@@ -21,7 +21,9 @@ import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.exceptions.DisabledBeanException;
 import io.micronaut.core.io.ResourceLoader;
+import io.micronaut.core.io.ResourceResolver;
 
 import javax.inject.Singleton;
 import java.net.URL;
@@ -38,19 +40,21 @@ public class CentralizedSamplingStrategyFactory {
 
     /**
      *
-     * @param resourceLoader Resource Loader
+     * @param resourceResolver Resource Resolver
      * @param xRayConfiguration X-Ray Configuration
      * @return a {@link CentralizedSamplingStrategy}.
      */
     @Singleton
-    public SamplingStrategy buildSamplingStrategy(ResourceLoader resourceLoader,
+    public SamplingStrategy buildSamplingStrategy(ResourceResolver resourceResolver,
                                                   XRayConfiguration xRayConfiguration) {
         if (xRayConfiguration.getSamplingRule().isPresent()) {
-            Optional<URL> urlOptional = resourceLoader.getResource(xRayConfiguration.getSamplingRule().get());
+            Optional<URL> urlOptional = resourceResolver.getResource(xRayConfiguration.getSamplingRule().get());
             if (urlOptional.isPresent()) {
                 return new CentralizedSamplingStrategy(urlOptional.get());
             }
+            throw new DisabledBeanException("could not load resource for " + xRayConfiguration.getSamplingRule());
         }
-        return null;
+        throw new DisabledBeanException("could not load CentralizedSamplingStrategy for tracing.xray.sampling-rule");
+
     }
 }
