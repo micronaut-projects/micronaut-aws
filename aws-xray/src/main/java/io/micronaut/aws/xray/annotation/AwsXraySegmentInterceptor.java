@@ -80,7 +80,6 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
         return context.proceed();
     }
 
-
     /**
      *
      * @param context The context

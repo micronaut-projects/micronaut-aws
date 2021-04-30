@@ -101,7 +101,7 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     }
 
     /**
-     * A String value used as the segment name.
+     * Fixed segment name.
      */
     public void setFixedName(String fixedName) {
         this.fixedName = fixedName;
