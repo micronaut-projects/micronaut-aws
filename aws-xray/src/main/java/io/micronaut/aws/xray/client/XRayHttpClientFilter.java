@@ -20,8 +20,8 @@ import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Subsegment;
 import com.amazonaws.xray.entities.TraceHeader;
-import io.micronaut.aws.xray.server.HttpRequestAttributesBuilder;
-import io.micronaut.aws.xray.server.HttpResponseAttributesBuilder;
+import io.micronaut.aws.xray.server.HttpRequestAttributesCollector;
+import io.micronaut.aws.xray.server.HttpResponseAttributesCollector;
 import io.micronaut.aws.xray.server.XRayHttpServerFilter;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -49,15 +49,15 @@ import io.micronaut.http.HttpAttributes;
 public class XRayHttpClientFilter implements HttpClientFilter {
     private static final Logger LOG = LoggerFactory.getLogger(XRayHttpClientFilter.class);
     private final AWSXRayRecorder recorder;
-    private final HttpResponseAttributesBuilder httpResponseAttributesBuilder;
-    private final HttpRequestAttributesBuilder httpRequestAttributesBuilder;
+    private final HttpResponseAttributesCollector httpResponseAttributesCollector;
+    private final HttpRequestAttributesCollector httpRequestAttributesCollector;
 
     public XRayHttpClientFilter(AWSXRayRecorder recorder,
-                                HttpResponseAttributesBuilder httpResponseAttributesBuilder,
-                                HttpRequestAttributesBuilder httpRequestAttributesBuilder) {
+                                HttpResponseAttributesCollector httpResponseAttributesCollector,
+                                HttpRequestAttributesCollector httpRequestAttributesCollector) {
         this.recorder = recorder;
-        this.httpResponseAttributesBuilder = httpResponseAttributesBuilder;
-        this.httpRequestAttributesBuilder = httpRequestAttributesBuilder;
+        this.httpResponseAttributesCollector = httpResponseAttributesCollector;
+        this.httpRequestAttributesCollector = httpRequestAttributesCollector;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class XRayHttpClientFilter implements HttpClientFilter {
         return Flowable.fromPublisher(chain.proceed(request)).map(mutableHttpResponse -> {
             try {
                 if (subsegment != null) {
-                    httpResponseAttributesBuilder.putHttpResponseInformation(subsegment, mutableHttpResponse);
+                    httpResponseAttributesCollector.populateEntityWithResponse(subsegment, mutableHttpResponse);
                 }
             } catch (Exception e) {
                 if (subsegment != null) {
@@ -147,7 +147,7 @@ public class XRayHttpClientFilter implements HttpClientFilter {
                 isSampled ? TraceHeader.SampleDecision.SAMPLED : TraceHeader.SampleDecision.NOT_SAMPLED
         );
         request.header(TraceHeader.HEADER_KEY, header.toString());
-        Map<String, Object> requestInformation = httpRequestAttributesBuilder.requestAttributes(request);
+        Map<String, Object> requestInformation = httpRequestAttributesCollector.requestAttributes(request);
         subsegment.putHttp("request", requestInformation);
     }
 }

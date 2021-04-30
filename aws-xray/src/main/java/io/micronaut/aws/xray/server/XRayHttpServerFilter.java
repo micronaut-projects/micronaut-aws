@@ -70,9 +70,9 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
 
     private final AWSXRayRecorder recorder;
 
-    private final HttpRequestAttributesBuilder httpRequestAttributesBuilder;
+    private final HttpRequestAttributesCollector httpRequestAttributesCollector;
 
-    private final HttpResponseAttributesBuilder httpResponseAttributesBuilder;
+    private final HttpResponseAttributesCollector httpResponseAttributesCollector;
 
     private final SegmentNamingStrategy segmentNamingStrategy;
 
@@ -81,13 +81,13 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
 
     public XRayHttpServerFilter(@NonNull XRayConfiguration xRayConfiguration,
                                 @NonNull AWSXRayRecorder awsxRayRecorder,
-                                @NonNull HttpResponseAttributesBuilder httpResponseAttributesBuilder,
-                                @NonNull HttpRequestAttributesBuilder httpRequestAttributesBuilder,
+                                @NonNull HttpResponseAttributesCollector httpResponseAttributesCollector,
+                                @NonNull HttpRequestAttributesCollector httpRequestAttributesCollector,
                                 SegmentNamingStrategy segmentNamingStrategy) {
         this.excludes = xRayConfiguration.getExcludes().orElse(Collections.emptyList());
         this.recorder = awsxRayRecorder;
-        this.httpResponseAttributesBuilder = httpResponseAttributesBuilder;
-        this.httpRequestAttributesBuilder = httpRequestAttributesBuilder;
+        this.httpResponseAttributesCollector = httpResponseAttributesCollector;
+        this.httpRequestAttributesCollector = httpRequestAttributesCollector;
         this.segmentNamingStrategy = segmentNamingStrategy;
         this.pathMatcher = PathMatcher.ANT;
     }
@@ -118,7 +118,7 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
         TraceHeader.SampleDecision sampleDecision = sampleDecision(request, samplingResponse);
         Optional<TraceHeader> incomingTraceHeaderOptional = getTraceHeader(request);
         TraceHeader incomingTraceHeader = incomingTraceHeaderOptional.orElse(null);
-        Map<String, Object>  requestAttributes = httpRequestAttributesBuilder.requestAttributes(request);
+        Map<String, Object>  requestAttributes = httpRequestAttributesCollector.requestAttributes(request);
 
         final Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
         final Entity context = recorder.getTraceEntity();
@@ -150,7 +150,7 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
                     TraceHeader responseTraceHeader = createResponseTraceHeader(incomingTraceHeader, segment);
                     final String traceHeader = responseTraceHeader.toString();
                     mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, traceHeader);
-                    httpResponseAttributesBuilder.putHttpResponseInformation(segment, mutableHttpResponse);
+                    httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
                     return mutableHttpResponse;
                 });
     }

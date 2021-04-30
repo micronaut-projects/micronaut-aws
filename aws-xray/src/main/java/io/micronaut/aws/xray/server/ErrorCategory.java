@@ -15,18 +15,13 @@
  */
 package io.micronaut.aws.xray.server;
 
-import io.micronaut.context.annotation.DefaultImplementation;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.http.HttpRequest;
-import java.util.Map;
-
 /**
+ * Error Categories of X-Ray.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@DefaultImplementation(DefaultHttpRequestAttributesBuilder.class)
-@FunctionalInterface
-public interface HttpRequestAttributesBuilder {
-    @NonNull
-    Map<String, Object> requestAttributes(@NonNull HttpRequest<?> request);
+public enum ErrorCategory {
+    ERROR,
+    FAULT,
+    THROTTLE
 }

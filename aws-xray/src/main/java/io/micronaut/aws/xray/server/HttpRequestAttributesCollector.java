@@ -15,22 +15,24 @@
  */
 package io.micronaut.aws.xray.server;
 
-import com.amazonaws.xray.entities.Entity;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpRequest;
+import java.util.Map;
+
 /**
+ * Collects the attributes from an HTTP Request to include in an X-Ray segment.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@DefaultImplementation(DefaultHttpResponseAttributesBuilder.class)
+@DefaultImplementation(DefaultHttpRequestAttributesCollector.class)
 @FunctionalInterface
-public interface HttpResponseAttributesBuilder {
-
+public interface HttpRequestAttributesCollector {
     /**
      *
-     * @param entity The X-Ray Entity (E.g. a Segment or Subsegment)
-     * @param response The HTTP Response from which some information will be extracted
+     * @param request HTTP Request
+     * @return Attributes
      */
-    void putHttpResponseInformation(@NonNull Entity entity, @NonNull HttpResponse<?> response);
+    @NonNull
+    Map<String, Object> requestAttributes(@NonNull HttpRequest<?> request);
 }
