@@ -62,7 +62,7 @@ public class DefaultHttpResponseAttributesCollector implements HttpResponseAttri
     @NonNull
     public Map<String, Object> responseAttributes(@NonNull HttpResponse<?> httpResponse) {
         Map<String, Object> responseAttributes = new HashMap<>();
-        int responseCode = httpResponse.getStatus().getCode();
+        int responseCode = httpResponse.status().getCode();
         responseAttributes.put("status", responseCode);
         long contentLength = httpResponse.getContentLength();
         if (contentLength != -1L) {

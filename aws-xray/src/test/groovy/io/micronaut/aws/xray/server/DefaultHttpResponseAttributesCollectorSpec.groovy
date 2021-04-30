@@ -11,6 +11,29 @@ class DefaultHttpResponseAttributesCollectorSpec extends Specification {
     @Shared
     DefaultHttpResponseAttributesCollector httpResponseAttributesCollector = new DefaultHttpResponseAttributesCollector()
 
+    void 'DefaultHttpResponseAttributesCollector::responseAttributes extracts attributes from response'() {
+        given:
+        def response = Stub(HttpResponse) {
+            status() >> HttpStatus.TOO_MANY_REQUESTS
+            getContentLength() >> -1
+        }
+        when:
+        Map<String, Object> attributes = httpResponseAttributesCollector.responseAttributes(response)
+
+        then:
+        attributes == [status: 429]
+
+        when:
+        response = Stub(HttpResponse) {
+            status() >> HttpStatus.TOO_MANY_REQUESTS
+            getContentLength() >> 10000
+        }
+        attributes = httpResponseAttributesCollector.responseAttributes(response)
+
+        then:
+        attributes == [status: 429, content_length: 10000]
+
+    }
     @Unroll
     void 'DefaultHttpResponseAttributesCollector::parseErrorCategory'(HttpStatus httpStatus, ErrorCategory expected) {
         given:
