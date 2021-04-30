@@ -16,6 +16,17 @@ sdkv2:
   secretsmanager: Secrets Manager
   advancedConfiguration: Advanced configuration
   otherServices: Other services
+xray:
+  title: AWS X-Ray Support
+  xrayconfiguration: X-Ray Configuration
+  xrayrecorder: XRayRecorder configuration
+  annotations: Tracing using annotations
+  metrics: Pushing unsampled segments to AWS CloudWatch
+  sdkclients: Tracing AWS SDK clients request
+  httpfilter:
+    title: Tracing http requests
+    xrayHttpFilterIncoming: Incoming requests
+    xrayHttpFilterOutgoing: Outgoing http calls
 lambda:
   title: AWS Lambda Support
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda
@@ -39,16 +50,6 @@ alexa:
   ssmlbuilder: SSML Builder
   flashbriefings: Flash Briefings
 parametersStore: Parameter Store as Cloud Configuration
-xray:
-  title: AWS X-Ray Support
-  xrayconfiguration: X-Ray Configuration
-  xrayrecorder: XRayRecorder configuration
-  annotations: Tracing using annotations
-  metrics: Pushing unsampled segments to AWS CloudWatch
-  sdkclients: Tracing AWS SDK clients request
-  httpfilter:
-    title: Tracing http requests
-    xrayHttpFilterIncoming: Incoming requests
-    xrayHttpFilterOutgoing: Outgoing http calls
+
 repository: Repository
 breaks: Breaking Changes
