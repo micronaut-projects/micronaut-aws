@@ -1,0 +1,17 @@
+Micronaut X-Ray module ships with several built-in beans of type api:aws.xray.strategy.SegmentNamingStrategy[] which determine X-Ray segment's name.
+
+[%header,cols=2*]
+|===
+| Bean
+| Description
+| api:aws.xray.strategy.EnvironmentVariableSegmentNamingStrategy[]
+| If the environment variable `AWS_XRAY_TRACING_NAME` is present, its value is used as the segment name.
+| api:aws.xray.strategy.SystemPropertySegmentNamingStrategy[]
+| If the system property `com.amazonaws.xray.strategy.tracingName` is present, its value is used as the segment name.
+| api:aws.xray.strategy.FixedSegmentNamingStrategy[]
+| You can provide a fix name by setting the property `tracing.xray.fixed-name`
+| api:aws.xray.strategy.HttpHostNamingStrategy[]
+| The resolved host is used as the segment name.
+|===
+
+If none of the built-in implementations fulfill your needs, you can always provide your bean of type api:aws.xray.strategy.SegmentNamingStrategy[] and override its order to take precedence.

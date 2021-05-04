@@ -27,7 +27,6 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 2.7.0
  */
-
 public interface XRayConfiguration extends Toggleable {
 
     /**
@@ -74,5 +73,16 @@ public interface XRayConfiguration extends Toggleable {
      */
     @NonNull
     Optional<String> getFixedName();
+
+    /**
+     *
+     * @return Whether {@link io.micronaut.aws.xray.decorators.UserSegmentDecorator} should be loaded.
+     */
+    boolean isUserSegmentDecorator();
+
+    /**
+     * @return Whether it should accept the header {@code X-Amzn-Trace-Id} from incoming requests. For gateway services you should not accept it to avoid issues caused by users adding trace IDs or sampling decisions to their request.
+     */
+    boolean acceptTraceIdHeaders();
 }
 

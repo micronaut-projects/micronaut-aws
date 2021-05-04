@@ -17,35 +17,40 @@ package io.micronaut.aws.xray.sampling;
 
 import com.amazonaws.xray.entities.TraceHeader;
 import com.amazonaws.xray.strategy.sampling.SamplingResponse;
-import io.micronaut.aws.xray.tracing.TraceHeaderUtils;
+import io.micronaut.aws.xray.tracing.TraceHeaderParser;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
 import java.util.Optional;
 
 /**
- * Utility methods around Sample decisions.
+ * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link SampleDecisionParser} which retrieves the Sample Decision from either the Trace Header of the request or the sampling response.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-public final class SampleDecisionUtils {
+@Singleton
+public final class DefaultSampleDecisionParser implements SampleDecisionParser {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SampleDecisionUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultSampleDecisionParser.class);
 
-    SampleDecisionUtils() {
-    }
+    private final TraceHeaderParser traceHeaderParser;
 
     /**
      *
-     * @param request HTTP Request
-     * @param samplingResponse Sampling response
-     * @return Sample decision
+     * @param traceHeaderParser Trace Header Parser
      */
+    public DefaultSampleDecisionParser(TraceHeaderParser traceHeaderParser) {
+        this.traceHeaderParser = traceHeaderParser;
+    }
+
+    @Override
     @NonNull
-    public static TraceHeader.SampleDecision sampleDecision(@NonNull HttpRequest<?> request,
-                                                            @NonNull SamplingResponse samplingResponse) {
-        Optional<TraceHeader> incomingHeader = TraceHeaderUtils.getTraceHeader(request);
+    public TraceHeader.SampleDecision sampleDecision(@NonNull HttpRequest<?> request,
+                                                     @NonNull SamplingResponse samplingResponse) {
+        Optional<TraceHeader> incomingHeader = traceHeaderParser.parseTraceHeader(request);
         TraceHeader.SampleDecision sampleDecision = incomingHeader.map(TraceHeader::getSampled)
                 .orElseGet(() -> getSampleDecision(samplingResponse));
         if (TraceHeader.SampleDecision.REQUESTED.equals(sampleDecision) || TraceHeader.SampleDecision.UNKNOWN.equals(sampleDecision)) {

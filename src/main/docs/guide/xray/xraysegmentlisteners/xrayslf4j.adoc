@@ -1,0 +1,25 @@
+Add the following dependency to inject X-Ray Trace ID injection into the logs:
+
+dependency:aws-xray-recorder-sdk-slf4j[groupId="com.amazonaws"]
+
+In your log pattern you can use `AWS-XRAY-TRACE-ID`. For example:
+
+[source, xml]
+.src/main/resources/logback.xml
+----
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>false</withJansi>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWS-XRAY-TRACE-ID} %-5p %c{1} - %m%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
+----
+
+When the https://mvnrepository.com/artifact/com.amazonaws/aws-xray-recorder-sdk-slf4j[AWS X-Ray Recorder SDK from Java SLF4J Trace ID injection] dependency is in the classpath, the factory api:io.micronaut.aws.xray.segmentlisteners.SLF4JSegmentListenerFactory[] registers a  a `SLF4JSegmentListener` singleton.  `SLF4JSegmentListener` automatically injects new trace IDs into the SLF4J MDC.
+
+Check the https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html#xray-sdk-java-configuration-logging)[Trace ID injection into logs] section of AWS X-Ray Logging documentation for more information.

@@ -1,0 +1,17 @@
+Micronaut X-Ray Module ships with api:aws.xray.filters.server.XRayHttpServerFilter[], a server filter which instruments incoming HTTP requests. Micronaut X-Ray sever filter it is a port of https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/javax/servlet/AWSXRayServletFilter.html[AWSXRayServletFilter] the Servlet filter provided by X-Ray SDK for Java and described in https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-filters.html[Tracing incoming requests with the X-Ray SDK for Java].
+
+The server filter uses several key beans:
+
+* api:aws.xray.recorder.XRayRecorderFactory[] creates a https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorderBuilder.html[AWSXRayRecorderBuilder]. Moreover, https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorderBuilder.html[AWSXRayRecorderBuilder] is configured with any beans of type https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/listeners/SegmentListener.html[com.amazonaws.xray.SegmentListener] or type https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/plugins/Plugin.html[com.amazonaws.xray.Plugin].
+
+For advanced configuration options that are not suitable to provide via `application.yml`, you can declare a
+`BeanCreatedEventListener` bean that listens for builder bean creations, and apply any further customisation there:
+
+[source,groovy]
+----
+include::aws-xray/src/test/groovy/io/micronaut/aws/xray/XRayRecorderBuilderBeanListener.groovy[tag=clazz]
+----
+
+* https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[AWSXRayRecorder] is built via api:aws.xray.recorder.XRayRecorderFactory[] using `AWSXRayRecorderBuilder`. It is set as the global recorder.
+* api:aws.xray.filters.HttpRequestAttributesCollector[] collects information from a HTTP request. That information is added to the X-Ray Segment. Micronaut ships with a default implementation api:aws.xray.filters.DefaultHttpRequestAttributesCollector[].
+* api:aws.xray.filters.HttpResponseAttributesCollector[] collects information from a HTTP response. That information is added to the X-Ray Segment. Micronaut ships with a default implementation api:aws.xray.filters.DefaultHttpResponseAttributesCollector[]. If you need to customize how X-Ray defines https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html[Errors, faults and exception] you will replace this bean.

@@ -5,4 +5,4 @@ dependency:aws-xray-recorder-sdk-metrics[groupId="com.amazonaws"]
 
 Depedency contains https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/metrics/MetricsSegmentListener.html[MetricsSegmentListener] that will be automatically configured to the https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/AWSXRayRecorder.html[AWSXRayRecorder].
 
-Use the following configuration to disable `MetricSegmentListener` automatic configuration with `tracing.aws.cloud-watch-metrics`.
+Use the following configuration to disable `MetricSegmentListener` automatic configuration with `tracing.xray.cloud-watch-metrics`.

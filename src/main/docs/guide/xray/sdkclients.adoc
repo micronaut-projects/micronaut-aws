@@ -1,14 +1,7 @@
-To trace https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-awssdkclients.html[AWS SDK clients outgoing requests] you have to start by adding dependency:
+To trace https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-awssdkclients.html[AWS SDK clients outgoing requests] add the dependency:
 
 dependency:aws-xray-recorder-sdk-aws-sdk-v2[groupId="com.amazonaws"]
 
-Dependency contains the https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/interceptors/TracingInterceptor.html[TracingInterceptor] that must be configured while building the AWS SDK clients.
+Micronaut X-Ray Modules adds a custom https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/interceptors/TracingInterceptor.html[TracingInterceptor] api:aws.xray.sdkclients.RequestAttributeTracingInterceptor[] to every bean of type `SdkClientBuilder`.
 
-Micronaut will automatically configure the https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/interceptors/TracingInterceptor.html[TracingInterceptor] while creation AWS SDK client beans.
-
-You can disable AWS SDK beans automatic configuration with `tracing.aws.sdk-clients`.
-
-If you want to automatically instrument *all* AWS SDK clients add depenency:
-dependency:aws-xray-recorder-sdk-aws-sdk-v2-instrumentor[groupId="com.amazonaws"]
-
-That depedency causes that *all* AWS SDK clients are automatically instrumented by the `TracingInterceptor` without any additional configuration needed. This approach disadvantage is that you can't control the client's instrumentation with respect to the environment where the application runs.
+WARNING: Automatic instrumentation of *all* AWS SDK clients via the dependency `com.amazonaws:aws-xray-recorder-sdk-aws-sdk-v2-instrumentor` will not work since https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/interceptors/TracingInterceptor.html[TracingInterceptor] does not resolve the current segment correctly.

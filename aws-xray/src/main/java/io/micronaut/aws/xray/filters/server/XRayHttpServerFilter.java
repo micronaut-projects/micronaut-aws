@@ -28,9 +28,9 @@ import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.aws.xray.decorators.SegmentDecorator;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
 import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
-import io.micronaut.aws.xray.sampling.SampleDecisionUtils;
+import io.micronaut.aws.xray.sampling.SampleDecisionParser;
 import io.micronaut.aws.xray.strategy.SegmentNamingStrategy;
-import io.micronaut.aws.xray.tracing.TraceHeaderUtils;
+import io.micronaut.aws.xray.tracing.TraceHeaderParser;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
@@ -84,6 +84,10 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
 
     private final List<SegmentDecorator> segmentDecorators;
 
+    private final TraceHeaderParser traceHeaderParser;
+
+    private final SampleDecisionParser sampleDecisionParser;
+
     @Nullable
     private final List<String> excludes;
 
@@ -92,11 +96,15 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
                                 HttpResponseAttributesCollector httpResponseAttributesCollector,
                                 HttpRequestAttributesCollector httpRequestAttributesCollector,
                                 List<SegmentNamingStrategy> segmentNamingStrategies,
-                                List<SegmentDecorator> segmentDecorators) {
+                                List<SegmentDecorator> segmentDecorators,
+                                TraceHeaderParser traceHeaderParser,
+                                SampleDecisionParser sampleDecisionParser) {
         this.excludes = xRayConfiguration.getExcludes().orElse(Collections.emptyList());
         this.recorder = awsxRayRecorder;
         this.httpResponseAttributesCollector = httpResponseAttributesCollector;
         this.httpRequestAttributesCollector = httpRequestAttributesCollector;
+        this.traceHeaderParser = traceHeaderParser;
+        this.sampleDecisionParser = sampleDecisionParser;
         this.segmentNamingStrategy = segmentNamingStrategies.stream().findFirst()
                 .orElseThrow(() -> new ConfigurationException("No bean of type SegmentNamingStrategy found"));
         this.segmentDecorators = segmentDecorators;
@@ -110,6 +118,7 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
 
     @Override
     protected Publisher<MutableHttpResponse<?>> doFilterOnce(HttpRequest<?> request, ServerFilterChain chain) {
+
         if (CollectionUtils.isNotEmpty(excludes)) {
             final String path = request.getUri().getPath();
             if (excludes.stream().anyMatch(exclude -> pathMatcher.matches(exclude, path))) {
@@ -126,12 +135,12 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
         SamplingRequest samplingRequest = createSamplingRequest(request, segmentName);
         SamplingStrategy samplingStrategy = recorder.getSamplingStrategy();
         SamplingResponse samplingResponse = samplingStrategy.shouldTrace(samplingRequest);
-        TraceHeader.SampleDecision sampleDecision = SampleDecisionUtils.sampleDecision(request, samplingResponse);
-        Optional<TraceHeader> incomingTraceHeaderOptional = TraceHeaderUtils.getTraceHeader(request);
+        TraceHeader.SampleDecision sampleDecision = sampleDecisionParser.sampleDecision(request, samplingResponse);
+        Optional<TraceHeader> incomingTraceHeaderOptional = traceHeaderParser.parseTraceHeader(request);
         TraceHeader incomingTraceHeader = incomingTraceHeaderOptional.orElse(null);
         Map<String, Object>  requestAttributes = httpRequestAttributesCollector.requestAttributes(request);
         Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
-        TraceHeader responseTraceHeader = TraceHeaderUtils.createResponseTraceHeader(segment, incomingTraceHeader);
+        TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader(segment, incomingTraceHeader);
         String responseTraceHeaderString = responseTraceHeader.toString();
 
         Entity context = recorder.getTraceEntity();

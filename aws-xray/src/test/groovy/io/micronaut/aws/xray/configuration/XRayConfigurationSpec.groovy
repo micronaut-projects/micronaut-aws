@@ -1,6 +1,7 @@
 package io.micronaut.aws.xray.configuration
 
 import com.amazonaws.xray.AWSXRayRecorder
+import io.micronaut.aws.xray.decorators.UserSegmentDecorator
 import io.micronaut.aws.xray.recorder.XRayRecorderFactory
 import io.micronaut.aws.xray.filters.client.XRayHttpClientFilter
 import io.micronaut.aws.xray.decorators.SegmentDecorator
@@ -28,6 +29,8 @@ class XRayConfigurationSpec extends Specification {
         !xRayConfiguration.getExcludes().isPresent()
         !xRayConfiguration.getSamplingRule().isPresent()
         xRayConfiguration.isServerFilter()
+        xRayConfiguration.isUserSegmentDecorator()
+        applicationContext.containsBean(UserSegmentDecorator)
         xRayConfiguration.isClientFilter()
         xRayConfiguration.isCloudWatchMetrics()
         xRayConfiguration.isSdkClients()

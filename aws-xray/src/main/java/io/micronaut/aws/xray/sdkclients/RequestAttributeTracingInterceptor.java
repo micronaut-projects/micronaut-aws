@@ -26,7 +26,8 @@ import software.amazon.awssdk.core.interceptor.Context;
 import software.amazon.awssdk.core.interceptor.ExecutionAttributes;
 
 /**
- * Sets the Trace Entity context before executing the interceptor.
+ * An extension of {@link TracingInterceptor} which set the trace entity context before executing the interceptor.
+ * It obtains the trace entity context from the HTTP Request {@link XRayHttpServerFilter#ATTRIBUTE_X_RAY_TRACE_ENTITY} attribute.
  *
  * @author Sergio del Amo
  * @since 2.7.0

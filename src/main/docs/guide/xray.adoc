@@ -1,9 +1,7 @@
-The Micronaut's `aws-xray` module integrates the https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java.html[AWS X-Ray java sdk].
+Use Micronaut X-Ray module to trace your application with https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html[AWS X-Ray]:
 
-With module you can automatically:
+________
+ AWS X-Ray helps developers analyze and debug distributed applications. With X-Ray, you can understand how your application and its underlying services are performing to identify and troubleshoot the root cause of performance issues and errors.
+________
 
-* trace incoming and outgoing http requests (LINK NA DOC),
-* trace AWS SDK client request (LINK NA DOC)
-* send unsampled segments to the AWS CloudWatch service (LINK NA DOC)
-
-
+It integrates with https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java.html[X-Ray Java SDK].

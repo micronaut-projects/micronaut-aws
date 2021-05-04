@@ -1,1 +1,0 @@
-The module `micronaut-aws-xray` introduces HttpServer and HttpClient filters that intercepts the requests and are instrumenting the X-Ray.

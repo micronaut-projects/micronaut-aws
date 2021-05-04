@@ -17,49 +17,35 @@ package io.micronaut.aws.xray.tracing;
 
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.TraceHeader;
+import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;
+
 import java.util.Optional;
 
 /**
- * Utility methods for {@link TraceHeader}.
+ * Parses a {@link TraceHeader} from {@link HttpRequest}.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-public final class TraceHeaderUtils {
-
-    TraceHeaderUtils() {
-    }
+@DefaultImplementation(DefaultTraceHeaderParser.class)
+public interface TraceHeaderParser {
 
     /**
-     *
+     * Parses a {@link TraceHeader} from {@link HttpRequest}.
      * @param request HTTP Request
-     * @return Trace Header
+     * @return A {@link TraceHeader}
      */
     @NonNull
-    public static Optional<TraceHeader> getTraceHeader(@NonNull HttpRequest<?> request) {
-        String traceHeaderString = request.getHeaders().get(TraceHeader.HEADER_KEY);
-        if (null != traceHeaderString) {
-            return Optional.of(TraceHeader.fromString(traceHeaderString));
-        }
-        return Optional.empty();
-    }
+    Optional<TraceHeader> parseTraceHeader(@NonNull HttpRequest<?> request);
 
     /**
      *
-     * @param segment Segment
+     * @param segment X-Ray Segement
      * @param incomingHeader Incoming Tracing Header
-     * @return Trace Header
+     * @return Create a TraceHeader for the HTTP Response
      */
     @NonNull
-    public static TraceHeader createResponseTraceHeader(@NonNull Segment segment, @Nullable TraceHeader incomingHeader) {
-        final TraceHeader responseHeader = new TraceHeader(segment.getTraceId());
-        if (incomingHeader != null) {
-            if (TraceHeader.SampleDecision.REQUESTED == incomingHeader.getSampled()) {
-                responseHeader.setSampled(segment.isSampled() ? TraceHeader.SampleDecision.SAMPLED : TraceHeader.SampleDecision.NOT_SAMPLED);
-            }
-        }
-        return responseHeader;
-    }
+    TraceHeader createResponseTraceHeader(@NonNull Segment segment, @Nullable TraceHeader incomingHeader);
 }

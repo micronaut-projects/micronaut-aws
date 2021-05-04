@@ -1,0 +1,3 @@
+Micronaut X-Ray Module ships with a https://docs.micronaut.io/latest/guide/#clientFilter[HTTP Client Filter] api:aws.xray.filters.client.XRayHttpClientFilter[] which intercepts all outgoing http calls and creates new https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/entities/Subsegment.html[Subsegment]. The subsegment name is derived from HTTP Client id or request uri.
+
+You can disable it if you set `tracing.xray.client-filter` to `false`.

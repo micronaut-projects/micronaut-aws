@@ -1,0 +1,21 @@
+To control X-Ray Sampling Strategy provide a bean of type `com.amazonaws.xray.strategy.sampling.SamplingStrategy`
+
+Micronaut X-Ray module ships with built-in support for loading sampling rules from a JSON Document. For example:
+
+[source,yaml]
+.src/test/resources/application.yml
+----
+tracing:
+    xray:
+        sampling-rule: 'classpath:sampling-rules.json'
+----
+
+and include a Sampling Rules JSON Document in your classpath:
+
+[source,json]
+.src/test/resources/sampling-rules.json
+----
+include::aws-xray/src/test/resources/sampling-rules.json[]
+----
+
+Read more about https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html#xray-sdk-java-configuration-listeners[Sampling Rules] in AWS X-Ray documentation.

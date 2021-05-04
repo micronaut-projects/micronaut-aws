@@ -44,6 +44,7 @@ import io.micronaut.http.HttpAttributes;
  * {@link HttpClientFilter} that handles creation of AWX x-ray subsegment.
  *
  * @author Pavol Gressa
+ * @author Sergio del Amo
  * @since 2.7.0
  */
 @Filter("/**")

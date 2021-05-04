@@ -16,7 +16,10 @@
 package io.micronaut.aws.xray.decorators;
 
 import com.amazonaws.xray.entities.Segment;
+import io.micronaut.aws.xray.configuration.XRayConfigurationProperties;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpRequest;
 
 import javax.inject.Singleton;
@@ -27,6 +30,7 @@ import java.security.Principal;
  * @author Sergio del Amo
  * @since 2.7.0
  */
+@Requires(property = XRayConfigurationProperties.PREFIX + ".user-segment-decorator", notEquals = StringUtils.FALSE,  defaultValue = StringUtils.TRUE)
 @Singleton
 public class UserSegmentDecorator implements SegmentDecorator {
 

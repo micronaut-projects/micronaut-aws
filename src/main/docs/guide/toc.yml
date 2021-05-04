@@ -19,16 +19,19 @@ sdkv2:
 xray:
   title: AWS X-Ray Support
   xrayinstallation: X-Ray Installation
-  xraytoggle: Toggle X-Ray Tracing
   xrayconfiguration: X-Ray Configuration
-  xrayrecorder: XRayRecorder configuration
-  annotations: Tracing using annotations
-  metrics: Pushing unsampled segments to AWS CloudWatch
+  xrayserverfilter: X-Ray Server filter
+  xraytoggle: Toggle X-Ray Tracing
+  xraynamingstrategy: Segment Naming Strategy
+  xraysamplingstrategy: Sampling Strategy
   sdkclients: Tracing AWS SDK clients request
-  httpfilter:
-    title: Tracing http requests
-    xrayHttpFilterIncoming: Incoming requests
-    xrayHttpFilterOutgoing: Outgoing http calls
+  xraymicronauthttpclientfilter: Tracing Micronaut HTTP Client requests
+  subsegments: Creating subsegments via Annotations
+  xraysegmentdecorator: Segment decorators
+  xraysegmentlisteners:
+    title: Segment Listeners
+    xrayslf4j: Trace ID injection into logs
+    metrics: Pushing unsampled segments to AWS CloudWatch
 lambda:
   title: AWS Lambda Support
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda

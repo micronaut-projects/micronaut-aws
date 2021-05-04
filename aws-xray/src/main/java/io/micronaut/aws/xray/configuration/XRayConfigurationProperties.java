@@ -61,6 +61,18 @@ public class XRayConfigurationProperties implements XRayConfiguration {
     @SuppressWarnings("WeakerAccess")
     public static final boolean DEFAULT_SDK_CLIENTS = true;
 
+    /**
+     * The default user segment decorator value.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static final boolean DEFAULT_USER_SEGMENT_DECORATOR = true;
+
+    /**
+     * The default remove trace id headers value value.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static final boolean  DEFAULT_ACCEPT_TRACE_ID_HEADERS = true;
+
     @Nullable
     private List<String> excludes;
 
@@ -77,8 +89,12 @@ public class XRayConfigurationProperties implements XRayConfiguration {
 
     private boolean sdkClients = DEFAULT_SDK_CLIENTS;
 
+    private boolean userSegmentDecorator = DEFAULT_USER_SEGMENT_DECORATOR;
+
     @Nullable
     private String fixedName;
+
+    private boolean acceptTraceIdHeaders = DEFAULT_ACCEPT_TRACE_ID_HEADERS;
 
     @Override
     @NonNull
@@ -185,5 +201,39 @@ public class XRayConfigurationProperties implements XRayConfiguration {
      */
     public void setSdkClients(boolean sdkClients) {
         this.sdkClients = sdkClients;
+    }
+
+    @Override
+    public boolean isUserSegmentDecorator() {
+        return userSegmentDecorator;
+    }
+
+    @Override
+    public boolean acceptTraceIdHeaders() {
+        return acceptTraceIdHeaders;
+    }
+
+    /**
+     * Whether {@link io.micronaut.aws.xray.decorators.UserSegmentDecorator} should be loaded. Default {@value #DEFAULT_USER_SEGMENT_DECORATOR}.
+     * @param userSegmentDecorator Whether {@link io.micronaut.aws.xray.decorators.UserSegmentDecorator} should be loaded.
+     */
+    public void setUserSegmentDecorator(boolean userSegmentDecorator) {
+        this.userSegmentDecorator = userSegmentDecorator;
+    }
+
+    /**
+     *
+     * @return Whether the header {@code X-Amzn-Trace-Id} should be removed from incoming requests to avoid issues caused by users adding trace IDs or sampling decisions to their request.
+     */
+    public boolean isAcceptTraceIdHeaders() {
+        return acceptTraceIdHeaders;
+    }
+
+    /**
+     * Whether it should accept the HTTP header X-Amzn-Trace-Id from incoming requests. As a security measurement, you may choose not to accept incoming Trace ID Headers in gateway services to avoid issues caused by users adding trace IDs or sampling decisions to their request. Default value {@value #DEFAULT_ACCEPT_TRACE_ID_HEADERS}.
+     * @param acceptTraceIdHeaders Whether the header {@code X-Amzn-Trace-Id} should be removed from incoming requests to avoid issues caused by users adding trace IDs or sampling decisions to their request.
+     */
+    public void setAcceptTraceIdHeaders(boolean acceptTraceIdHeaders) {
+        this.acceptTraceIdHeaders = acceptTraceIdHeaders;
     }
 }

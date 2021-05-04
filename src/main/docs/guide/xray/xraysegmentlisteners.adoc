@@ -1,0 +1,1 @@
+Every bean of type `SegmentListener` is added as a segment listener of the `AWSXRayRecorder`.
