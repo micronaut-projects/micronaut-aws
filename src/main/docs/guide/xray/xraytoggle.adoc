@@ -1,0 +1,19 @@
+Often, you wish to trace your application when it runs in the EC2 environment but skip tracing for other environments (local development or test).
+
+_src/main/resources/application.yml_
+[source,yaml]
+----
+tracing:
+    aws:
+        enable: false
+----
+
+_src/main/resources/application-ec2.yml_
+[source,yaml]
+----
+tracing:
+    aws:
+        enable: true
+----
+
+Read more about https://docs.micronaut.io/latest/guide/#environments[Micronaut Environments].

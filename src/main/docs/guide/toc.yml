@@ -18,6 +18,7 @@ sdkv2:
   otherServices: Other services
 xray:
   title: AWS X-Ray Support
+  xraytoggle: Toggle X-Ray Tracing
   xrayconfiguration: X-Ray Configuration
   xrayrecorder: XRayRecorder configuration
   annotations: Tracing using annotations
