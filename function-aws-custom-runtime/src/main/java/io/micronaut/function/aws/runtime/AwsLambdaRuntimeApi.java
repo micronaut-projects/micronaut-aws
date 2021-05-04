@@ -18,8 +18,8 @@ package io.micronaut.function.aws.runtime;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.uri.UriTemplate;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import java.util.Collections;
 
 /**
@@ -41,8 +41,8 @@ public interface AwsLambdaRuntimeApi {
      * @param requestId AWS Lambda Request ID
      * @return invocation response path for given request
      */
-    @Nonnull
-    default String responseUri(@Nonnull String requestId) {
+    @NonNull
+    default String responseUri(@NonNull String requestId) {
         return INVOCATION_TEMPLATE.expand(Collections.singletonMap(PATH_REQUEST_ID, requestId));
     }
 
@@ -51,8 +51,8 @@ public interface AwsLambdaRuntimeApi {
      * @param requestId AWS Lambda Request ID
      * @return invocation error path for given request
      */
-    @Nonnull
-    default String errorUri(@Nonnull String requestId) {
+    @NonNull
+    default String errorUri(@NonNull String requestId) {
         return ERROR_TEMPLATE.expand(Collections.singletonMap(PATH_REQUEST_ID, requestId));
     }
 
@@ -62,7 +62,7 @@ public interface AwsLambdaRuntimeApi {
      * @param body The body of the request
      * @return Invocation Response Request
      */
-    default HttpRequest invocationResponseRequest(@Nonnull String requestId, Object body) {
+    default HttpRequest invocationResponseRequest(@NonNull String requestId, Object body) {
         return HttpRequest.POST(responseUri(requestId), body);
     }
 
@@ -74,7 +74,7 @@ public interface AwsLambdaRuntimeApi {
      * @param lambdaFunctionErrorType Lambda Function Error Type
      * @return A request to the invocation error path to inform in JSON format about the error which was thrown during the function execution.
      */
-    default HttpRequest<AwsLambdaRuntimeApiError> invocationErrorRequest(@Nonnull String requestId,
+    default HttpRequest<AwsLambdaRuntimeApiError> invocationErrorRequest(@NonNull String requestId,
                                                                         @Nullable String errorMessage,
                                                                         @Nullable String errorType,
                                                                         @Nullable String lambdaFunctionErrorType) {

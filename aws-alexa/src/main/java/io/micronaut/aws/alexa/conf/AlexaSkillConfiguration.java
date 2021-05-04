@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.alexa.conf;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.naming.Named;
 import io.micronaut.core.order.Ordered;
 import io.micronaut.core.util.Toggleable;

@@ -1,7 +1,7 @@
 package io.micronaut.function.aws
 
 import com.amazonaws.services.lambda.runtime.Context
-import edu.umd.cs.findbugs.annotations.NonNull
+import io.micronaut.core.annotation.NonNull
 import io.micronaut.context.ApplicationContextBuilder
 import spock.lang.Specification
 

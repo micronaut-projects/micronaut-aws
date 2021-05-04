@@ -25,8 +25,8 @@ import io.micronaut.discovery.aws.route53.client.Route53AutoNamingClient;
 import io.micronaut.discovery.client.DiscoveryClientConfiguration;
 import io.micronaut.discovery.registration.RegistrationConfiguration;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 
 /**
  * Configuration for AWS Route 53 discovery.

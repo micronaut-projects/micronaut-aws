@@ -28,8 +28,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.order.OrderUtil;
 import io.micronaut.inject.qualifiers.Qualifiers;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -113,9 +113,9 @@ public class DefaultAlexaSkillBuilder implements AlexaSkillBuilder<RequestEnvelo
                 unqualifiedResponseInterceptors);
     }
 
-    @Nonnull
+    @NonNull
     @Override
-     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@Nonnull @NotNull SkillBuilder<?> skillBuilder,
+     public AlexaSkill<RequestEnvelope, ResponseEnvelope> buildSkill(@NonNull @NotNull SkillBuilder<?> skillBuilder,
                                                                      @Nullable AlexaSkillConfiguration alexaSkillConfiguration) {
 
         SkillBeans skillBeans = alexaSkillConfiguration == null ? unqualifiedSkillBeans : this.skillBeans.get(alexaSkillConfiguration.getName());

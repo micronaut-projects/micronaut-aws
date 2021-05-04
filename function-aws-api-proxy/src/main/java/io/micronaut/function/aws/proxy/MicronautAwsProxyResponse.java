@@ -19,7 +19,7 @@ import com.amazonaws.serverless.exceptions.InvalidResponseObjectException;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.Headers;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
@@ -35,7 +35,7 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.cookie.Cookie;
 
-import javax.annotation.Nonnull;
+import io.micronaut.core.annotation.NonNull;
 import java.io.Closeable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -81,13 +81,13 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public MutableConvertibleValues<Object> getAttributes() {
         return attributes;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Optional<T> getBody() {
         return Optional.ofNullable(body);
     }
@@ -106,7 +106,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public MutableHttpHeaders getHeaders() {
         return awsHeaders;
     }

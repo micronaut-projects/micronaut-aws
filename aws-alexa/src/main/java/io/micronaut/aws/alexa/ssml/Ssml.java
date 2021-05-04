@@ -15,10 +15,8 @@
  */
 package io.micronaut.aws.alexa.ssml;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
-
-import javax.annotation.Nonnull;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -162,7 +160,7 @@ public class Ssml {
      * @param lang specify the language model and rules to speak the tagged content
      * @return SSML Builder
      */
-    public Ssml lang(@Nonnull String text,
+    public Ssml lang(@NonNull String text,
                      @NonNull SupportedLang lang) {
         StringBuffer sb = new StringBuffer();
         sb.append(openTag(TAG_LANG, Collections.singletonMap(XML_LANG, lang.toString())));
@@ -177,7 +175,7 @@ public class Ssml {
      * @param text text to be wrapped in a paragraph
      * @return SSML builder
      */
-    public Ssml paragraph(@Nonnull String text) {
+    public Ssml paragraph(@NonNull String text) {
         return p(text);
     }
 
@@ -189,7 +187,7 @@ public class Ssml {
      * @param volume Volume of the Speech
      * @return SSML Builder
      */
-    public Ssml prosody(@Nonnull String text,
+    public Ssml prosody(@NonNull String text,
                         @Nullable ProsodyRate rate,
                         @Nullable ProsodyPitch pitch,
                         @Nullable ProsodyVolume volume) {
@@ -217,7 +215,7 @@ public class Ssml {
      * @param text Text to be wrapped in a sentence tag (s)
      * @return SSML builder
      */
-    public Ssml sentence(@Nonnull String text) {
+    public Ssml sentence(@NonNull String text) {
         return s(text);
     }
 
@@ -226,7 +224,7 @@ public class Ssml {
      * @param text Text to be wrapped in speak tag
      * @return SSML Builder
      */
-    public Ssml speak(@Nonnull String text) {
+    public Ssml speak(@NonNull String text) {
         StringBuffer sb = new StringBuffer();
         sb.append(openTag(TAG_SPEAK, null));
         sb.append(text);
@@ -240,7 +238,7 @@ public class Ssml {
      * @param text Text to be wrapped in a sentence tag (s)
      * @return SSML builder
      */
-    public Ssml s(@Nonnull String text) {
+    public Ssml s(@NonNull String text) {
         StringBuffer sb = new StringBuffer();
         sb.append(openTag(TAG_S, null));
         sb.append(text);
@@ -254,7 +252,7 @@ public class Ssml {
      * @param text Text to be wrapped in a paragraph tag
      * @return SSML builder
      */
-    public Ssml p(@Nonnull String text) {
+    public Ssml p(@NonNull String text) {
         StringBuffer sb = new StringBuffer();
         sb.append(openTag(TAG_P, null));
         sb.append(text);
@@ -270,7 +268,7 @@ public class Ssml {
      * @param interpretAsDateFormat Format to be used when interpret-as is set to date.
      * @return SSML Builder
      */
-    public Ssml sayAs(@Nonnull String text,
+    public Ssml sayAs(@NonNull String text,
                       @NonNull InterpretAs interpretAs,
                       @Nullable InterpretAsDateFormat interpretAsDateFormat) {
         Map<String, String> attributes = new HashMap<>();
@@ -293,7 +291,7 @@ public class Ssml {
      * @param role Specify role of the word
      * @return SSML builder
      */
-    public Ssml w(@Nonnull String text, @NonNull WordRole role) {
+    public Ssml w(@NonNull String text, @NonNull WordRole role) {
         StringBuffer sb = new StringBuffer();
         sb.append(openTag(TAG_W, Collections.singletonMap("role", role.toString())));
         sb.append(text);
@@ -308,7 +306,7 @@ public class Ssml {
      * @param emphasisLevel Emphasis level
      * @return SSML builder
      */
-    public Ssml emphasis(@Nonnull String text, @Nullable EmphasisLevel emphasisLevel) {
+    public Ssml emphasis(@NonNull String text, @Nullable EmphasisLevel emphasisLevel) {
         StringBuffer sb = new StringBuffer();
         if (emphasisLevel == null) {
             sb.append(openTag(TAG_EMPHASIS, null));

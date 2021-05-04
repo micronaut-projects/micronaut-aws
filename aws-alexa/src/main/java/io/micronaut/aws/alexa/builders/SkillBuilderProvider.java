@@ -16,7 +16,7 @@
 package io.micronaut.aws.alexa.builders;
 
 import com.amazon.ask.builder.SkillBuilder;
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 
 /**
  * {@link FunctionalInterface} to create a {@link SkillBuilder}.

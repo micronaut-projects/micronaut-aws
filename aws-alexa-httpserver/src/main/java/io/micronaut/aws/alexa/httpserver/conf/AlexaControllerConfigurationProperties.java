@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.alexa.httpserver.conf;
 
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
