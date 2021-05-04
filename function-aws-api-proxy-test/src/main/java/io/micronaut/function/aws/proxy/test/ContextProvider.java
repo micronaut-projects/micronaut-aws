@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.proxy.test;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 
 /**

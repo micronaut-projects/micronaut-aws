@@ -17,8 +17,8 @@ package io.micronaut.function.aws.proxy.test;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.Headers;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpMethod;
 
 import javax.inject.Singleton;

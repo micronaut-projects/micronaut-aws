@@ -16,7 +16,7 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.core.convert.ArgumentConversionContext;
@@ -26,8 +26,7 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.MDC;
-
-import javax.annotation.Nonnull;
+import io.micronaut.core.annotation.NonNull;
 import java.util.Optional;
 
 /**
@@ -165,8 +164,8 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     }
 
     @SuppressWarnings("unchecked")
-    @Nonnull
     @Override
+    @NonNull
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         return new LambdaApplicationContextBuilder();
     }

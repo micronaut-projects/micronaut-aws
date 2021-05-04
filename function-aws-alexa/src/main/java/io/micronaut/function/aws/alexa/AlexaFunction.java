@@ -19,7 +19,7 @@ import com.amazon.ask.AlexaSkill;
 import com.amazon.ask.SkillStreamHandler;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.aws.alexa.conf.AlexaEnvironment;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
