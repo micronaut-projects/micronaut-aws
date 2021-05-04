@@ -24,8 +24,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
@@ -48,7 +48,7 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
 
-import javax.annotation.Nonnull;
+import io.micronaut.core.annotation.NonNull;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -306,8 +306,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param loopUntil                 A predicate that allows controlling when the event loop should exit
      * @param args                      Command Line arguments
      */
-    protected void startRuntimeApiEventLoop(@Nonnull URL runtimeApiURL,
-                                            @Nonnull Predicate<URL> loopUntil,
+    protected void startRuntimeApiEventLoop(@NonNull URL runtimeApiURL,
+                                            @NonNull Predicate<URL> loopUntil,
                                             String... args) {
         try {
             handler = createHandler(args);

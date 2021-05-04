@@ -30,7 +30,7 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.annotation.Nullable
+import io.micronaut.core.annotation.Nullable;
 import javax.inject.Singleton
 
 class FiltersSpec extends Specification {

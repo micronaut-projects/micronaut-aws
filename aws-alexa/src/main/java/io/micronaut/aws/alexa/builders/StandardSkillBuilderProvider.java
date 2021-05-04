@@ -17,7 +17,7 @@ package io.micronaut.aws.alexa.builders;
 
 import com.amazon.ask.Skills;
 import com.amazon.ask.builder.SkillBuilder;
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Secondary;
 

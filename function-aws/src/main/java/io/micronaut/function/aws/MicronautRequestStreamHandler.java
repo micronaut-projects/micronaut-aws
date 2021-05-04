@@ -21,8 +21,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
 import io.micronaut.function.executor.StreamFunctionExecutor;
-
-import javax.annotation.Nonnull;
+import io.micronaut.core.annotation.NonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -73,7 +72,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         return applicationContext;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         return new LambdaApplicationContextBuilder();

@@ -34,8 +34,8 @@ import io.micronaut.http.simple.SimpleHttpParameters;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -139,7 +139,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Cookies getCookies() {
         if (cookies == null) {
             SimpleCookies simpleCookies = new SimpleCookies(ConversionService.SHARED);
@@ -160,19 +160,19 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public HttpParameters getParameters() {
         return parameters;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public HttpMethod getMethod() {
         return httpMethod;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public URI getUri() {
         String region = System.getenv("AWS_REGION");
         if (region == null) {
@@ -194,7 +194,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         return URI.create(getScheme() + "://" + hostHeader + path);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public InetSocketAddress getRemoteAddress() {
         AwsProxyRequestContext requestContext = this.awsProxyRequest.getRequestContext();
@@ -223,7 +223,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Optional<MediaType> getContentType() {
         Optional<MediaType> specifiedType = HttpRequest.super.getContentType();
@@ -235,20 +235,20 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public HttpHeaders getHeaders() {
         return headers;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public MutableConvertibleValues<Object> getAttributes() {
         return attributes;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    @Nonnull
+    @NonNull
     public Optional<T> getBody() {
         if (decodedBody != null) {
             return Optional.of(decodedBody);
@@ -261,7 +261,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public <T1> Optional<T1> getBody(Argument<T1> type) {
         if (decodedBody != null) {
             return ConversionService.SHARED.convert(decodedBody, type);

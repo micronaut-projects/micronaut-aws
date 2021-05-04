@@ -20,8 +20,8 @@ import com.amazon.ask.builder.SkillBuilder;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.context.annotation.DefaultImplementation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -40,7 +40,7 @@ public interface AlexaSkillBuilder<Request, Response> {
      * @param alexaSkillConfiguration Alexa Skill Configuration
      * @return An Alexa skill.
      */
-    @Nonnull
-    AlexaSkill<Request, Response> buildSkill(@NotNull @Nonnull SkillBuilder<?> skillBuilder,
+    @NonNull
+    AlexaSkill<Request, Response> buildSkill(@NotNull @NonNull SkillBuilder<?> skillBuilder,
                                              @Nullable AlexaSkillConfiguration alexaSkillConfiguration);
 }

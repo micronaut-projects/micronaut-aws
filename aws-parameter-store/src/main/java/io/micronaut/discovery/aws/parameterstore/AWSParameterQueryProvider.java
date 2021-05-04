@@ -15,7 +15,7 @@
  */
 package io.micronaut.discovery.aws.parameterstore;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.context.env.Environment;
 
