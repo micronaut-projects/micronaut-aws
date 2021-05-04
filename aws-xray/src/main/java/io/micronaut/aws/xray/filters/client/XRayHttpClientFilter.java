@@ -47,7 +47,7 @@ import io.micronaut.http.HttpAttributes;
  * @author Sergio del Amo
  * @since 2.7.0
  */
-@Filter("/**")
+@Filter(Filter.MATCH_ALL_PATTERN)
 public class XRayHttpClientFilter implements HttpClientFilter {
     private static final Logger LOG = LoggerFactory.getLogger(XRayHttpClientFilter.class);
     private final AWSXRayRecorder recorder;

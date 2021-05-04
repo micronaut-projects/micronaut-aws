@@ -3,20 +3,16 @@ dependencies {
     api "io.micronaut:micronaut-runtime"
     api("io.micronaut:micronaut-http")
 
+    // HttpHostNamingStrategy
     compileOnly("io.micronaut:micronaut-http-server")
 
     // core for manual instrumentation
     api platform("com.amazonaws:aws-xray-recorder-sdk-bom:${awsXRayVersion}")
-    implementation project(":aws-common")
-    implementation project(":aws-sdk-v2")
-    implementation("com.amazonaws:aws-xray-recorder-sdk-core")
+    api("com.amazonaws:aws-xray-recorder-sdk-core")
 
+    // slf4j segment listener
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-slf4j")
     testImplementation("com.amazonaws:aws-xray-recorder-sdk-slf4j")
-
-    // http client
-    api "javax.servlet:javax.servlet-api:4.0.1"
-    compileOnly("com.amazonaws:aws-xray-recorder-sdk-apache-http")
 
     // cloudwatch metrics
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-metrics")
@@ -29,12 +25,8 @@ dependencies {
     // for testing sdk tracer injection
     testImplementation project(":aws-sdk-v2")
     testImplementation "software.amazon.awssdk:s3"
-    testImplementation "software.amazon.awssdk:ses"
-    testImplementation "software.amazon.awssdk:sns"
-    testImplementation "software.amazon.awssdk:sqs"
 
     // for testing http filter
-    testImplementation "io.micronaut:micronaut-runtime"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
