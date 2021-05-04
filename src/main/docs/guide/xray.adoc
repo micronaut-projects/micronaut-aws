@@ -6,7 +6,4 @@ With module you can automatically:
 * trace AWS SDK client request (LINK NA DOC)
 * send unsampled segments to the AWS CloudWatch service (LINK NA DOC)
 
-Start by simply adding the dependency:
-
-dependency:micronaut-aws-xray[groupId="io.micronaut.aws"]
 
