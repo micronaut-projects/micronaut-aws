@@ -3,7 +3,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.micronaut.aws/micronaut-aws-common.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.micronaut.aws%22%20AND%20a:%22micronaut-aws-common%22)
 [![Build Status](https://github.com/micronaut-projects/micronaut-aws/workflows/Java%20CI/badge.svg)](https://github.com/micronaut-projects/micronaut-aws/actions)
 
-This project includes integration between [Micronaut](http://micronaut.io) and AWS.
+This project includes integration between [Micronaut](https://micronaut.io) and AWS.
 
 ## Examples
 
