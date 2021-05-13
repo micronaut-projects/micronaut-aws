@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,20 +26,15 @@ import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 import javax.inject.Singleton;
 
 /**
- * Factory that creates a Netty client.
+ * A {@link BootstrapContextCompatible} Factory that creates a Netty client.
  *
- * @author Álvaro Sánchez-Mariscal
- * @since 2.0.0
+ * @author Sergio del Amo
+ * @since 2.7.0
  */
-
-@Factory
 @BootstrapContextCompatible
-@Requires(property = SdkHttpClientConfigurationProperties.PREFIX + ".bootstrap", value = StringUtils.FALSE, defaultValue = StringUtils.FALSE)
-public class NettyClientFactory {
-
-    public static final String ASYNC_SERVICE_IMPL = "software.amazon.awssdk.http.async.service.impl";
-    public static final String NETTY_SDK_ASYNC_HTTP_SERVICE = "software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService";
-
+@Factory
+@Requires(property = SdkHttpClientConfigurationProperties.PREFIX + ".bootstrap", value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
+public class BootstrapNettyClientFactory {
     /**
      * @param configuration The Netty client configuration
      * @return an instance of {@link SdkAsyncHttpClient}
@@ -56,7 +51,7 @@ public class NettyClientFactory {
      */
     @Bean(preDestroy = "close")
     @Singleton
-    @Requires(property = ASYNC_SERVICE_IMPL, value = NETTY_SDK_ASYNC_HTTP_SERVICE)
+    @Requires(property = NettyClientFactory.ASYNC_SERVICE_IMPL, value = NettyClientFactory.NETTY_SDK_ASYNC_HTTP_SERVICE)
     public SdkAsyncHttpClient systemPropertyClient(NettyClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
@@ -64,5 +59,4 @@ public class NettyClientFactory {
     private SdkAsyncHttpClient doCreateClient(NettyClientConfiguration configuration) {
         return configuration.getBuilder().build();
     }
-
 }
