@@ -1,0 +1,5 @@
+dependencies {
+    api project(":aws-sdk-v2")
+    api project(":aws-distributed-configuration")
+    api 'software.amazon.awssdk:secretsmanager'
+}
