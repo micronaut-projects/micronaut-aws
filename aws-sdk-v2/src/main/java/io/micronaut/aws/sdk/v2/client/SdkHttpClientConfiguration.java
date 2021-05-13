@@ -13,21 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.client.urlConnection;
-
-import io.micronaut.aws.AWSConfiguration;
-import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
+package io.micronaut.aws.sdk.v2.client;
 
 /**
- * Configuration properties for the {@link UrlConnectionHttpClient}.
+ * Configuration about {@link software.amazon.awssdk.http.SdkHttpClient}.
  * @author Sergio del Amo
  * @since 2.7.0
  */
-public interface UrlConnectionClientConfiguration {
-    String PREFIX = AWSConfiguration.PREFIX + ".url-connection-client";
+public interface SdkHttpClientConfiguration {
 
     /**
-     * @return The builder for {@link UrlConnectionHttpClient}
+     *
+     * @return Whether the sdk http client should be loaded into the Bootstrap Context.
      */
-    UrlConnectionHttpClient.Builder getBuilder();
+    boolean getBootstrap();
 }

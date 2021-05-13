@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,49 +16,25 @@
 package io.micronaut.aws.sdk.v2.client.netty;
 
 import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.context.annotation.BootstrapContextCompatible;
-import io.micronaut.context.annotation.ConfigurationBuilder;
-import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
 import software.amazon.awssdk.http.nio.netty.ProxyConfiguration;
 
 /**
  * Configuration properties for the Netty async client.
- *
- * @author Álvaro Sánchez-Mariscal
- * @since 2.0.0
+ * @author Sergio del Amo
+ * @since 2.7.0
  */
-@ConfigurationProperties(NettyClientConfiguration.PREFIX)
-@BootstrapContextCompatible
-public class NettyClientConfiguration extends AWSConfiguration {
+public interface NettyClientConfiguration {
 
-    public static final String PREFIX = "netty-client";
-
-    @ConfigurationBuilder(prefixes = {""}, excludes = {"eventLoopGroup", "eventLoopGroupBuilder", "sslProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "proxyConfiguration", "http2Configuration", "buildWithDefaults", "applyMutation"})
-    private NettyNioAsyncHttpClient.Builder builder = NettyNioAsyncHttpClient.builder();
-
-    @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
-    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
+    String PREFIX = AWSConfiguration.PREFIX + ".netty-client";
 
     /**
      * @return The builder for {@link NettyNioAsyncHttpClient}
      */
-    public NettyNioAsyncHttpClient.Builder getBuilder() {
-        ProxyConfiguration proxyConfig = proxy.build();
-        if (proxyConfig.scheme() == null &&
-                proxyConfig.host() == null &&
-                proxyConfig.nonProxyHosts().isEmpty()
-        ) {
-            return builder;
-        } else {
-            return builder.proxyConfiguration(proxyConfig);
-        }
-    }
+    NettyNioAsyncHttpClient.Builder getBuilder();
 
     /**
      * @return The builder for {@link ProxyConfiguration}
      */
-    public ProxyConfiguration.Builder getProxy() {
-        return proxy;
-    }
+    ProxyConfiguration.Builder getProxy();
 }
