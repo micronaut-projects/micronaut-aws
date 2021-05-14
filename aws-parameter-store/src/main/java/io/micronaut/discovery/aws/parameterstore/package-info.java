@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2021 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 /**
- * Integration with AWS ParameterStore.
+ * Classes related with the integration with AWS System Manager Parameter Store.
  *
- * @author graemerocher
- * @since 1.0
+ * @author Sergio del Amo
+ * @since 3.0.0
  */
+
+@Requires(property = AWSParameterStoreConfigurationProperties.PREFIX + ".enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
+@Configuration
 package io.micronaut.discovery.aws.parameterstore;
+
+import io.micronaut.context.annotation.Configuration;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
