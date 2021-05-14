@@ -7,6 +7,13 @@ sdkv1:
   awsCredentialsProvider: AWS Credentials Provider
 sdkv2:
   title: AWS SDK v2
+  sdkHttpClient:
+    title: SDK HTTP Client
+    urlConnection: URLConnection client
+    apacheHttpClient: Apache HTTP client
+    nettyClient: Netty client
+  awsCredentials: Supplying AWS credentials
+  awsRegionSelection: AWS region selection
   s3: S3
   dynamodb: Dynamo DB
   ses: SES
@@ -41,3 +48,4 @@ alexa:
 parametersStore: Parameter Store as Cloud Configuration
 repository: Repository
 breaks: Breaking Changes
+thirdPartyLibraries: Third-party libraries
