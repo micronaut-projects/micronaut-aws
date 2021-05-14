@@ -1,0 +1,47 @@
+To use the `URLConnection`-based client, you should exclude the other clients from the classpath:
+
+.Maven
+[source, xml]
+----
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>s3</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache-client</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>netty-nio-client</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>software.amazon.awssdk</groupId>
+    <artifactId>url-connection-client</artifactId>
+</dependency>
+----
+
+.Gradle
+[source,groovy]
+----
+implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache-client"
+    exclude group: "software.amazon.awssdk", module: "netty-nio-client"
+}
+implementation "software.amazon.awssdk:url-connection-client"
+----
+
+Then, you can configure it with the following configuration properties:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration.adoc[]
+
+If you don't exclude the other clients from the classpath, you still can configure which one is used by setting the
+following JVM system properties:
+
+* `software.amazon.awssdk.http.service.impl`. Possible values:
+** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` for the `URLConnection` based client.
+** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` for the Apache HTTP client (if in the classpath).
+* `software.amazon.awssdk.http.async.service.impl`. Possible values:
+** `software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService` for the Netty client (if in the classpath).

@@ -1,0 +1,3 @@
+The Netty client can be configured with the following options:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration.adoc[]
