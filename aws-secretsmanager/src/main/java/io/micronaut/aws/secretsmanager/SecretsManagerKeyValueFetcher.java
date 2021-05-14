@@ -146,31 +146,31 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
             return Optional.of(secretsClient.getSecretValue(getSecretValueRequest));
         } catch (DecryptionFailureException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.error("Secrets Manager can't decrypt the protected secret ({}) text using the provided KMS key.",
+                LOG.warn("Secrets Manager can't decrypt the protected secret ({}) text using the provided KMS key.",
                         getSecretValueRequest.secretId());
             }
             return Optional.empty();
         } catch (InternalServiceErrorException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.error("An error occurred on the server side getting secret ({}) value",
+                LOG.warn("An error occurred on the server side getting secret ({}) value",
                         getSecretValueRequest.secretId());
             }
             return Optional.empty();
         } catch (InvalidParameterException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.error("You provided an invalid value for a parameter while getting secret ({}) value",
+                LOG.warn("You provided an invalid value for a parameter while getting secret ({}) value",
                         getSecretValueRequest.secretId());
             }
             return Optional.empty();
         } catch (InvalidRequestException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.error("While getting the secret value, you provided a parameter value that is not valid for the current state of the secret ({})",
+                LOG.warn("While getting the secret value, you provided a parameter value that is not valid for the current state of the secret ({})",
                         getSecretValueRequest.secretId());
             }
             return Optional.empty();
         } catch (ResourceNotFoundException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.error("Could not find the resource for secret ({})", getSecretValueRequest.secretId());
+                LOG.warn("Could not find the resource for secret ({})", getSecretValueRequest.secretId());
             }
             return Optional.empty();
         }
