@@ -1,0 +1,2 @@
+If you are looking for a higher-level API, check out
+https://github.com/agorapulse/micronaut-aws-sdk[Agorapulse's AWS SDK for Micronaut].
