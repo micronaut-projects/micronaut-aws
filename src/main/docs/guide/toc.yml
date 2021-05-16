@@ -45,7 +45,10 @@ alexa:
   webservice: Alexa Skill as a Web Service
   ssmlbuilder: SSML Builder
   flashbriefings: Flash Briefings
-parametersStore: Parameter Store as Cloud Configuration
+distributedconfiguration:
+  title: Distributed Configuration
+  distributedconfigurationsecretsmanager: AWS Secrets Manager
+  parametersStore: AWS System Manager Parameter Store
 repository: Repository
 breaks: Breaking Changes
 thirdPartyLibraries: Third-party libraries

@@ -141,7 +141,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
 
     /**
      * Search additional paths suffixed with each active environment.
-     * e.g. /config/application_EC2
+     * e.g. /config/application_ec2
      * Default value ({@value #DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS}).
      *
      * @param searchActiveEnvironments True if paths suffixed with micronaut environments should be searched
