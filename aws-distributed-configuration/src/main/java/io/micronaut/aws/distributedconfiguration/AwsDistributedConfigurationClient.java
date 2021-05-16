@@ -113,6 +113,11 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
         if (LOG.isDebugEnabled()) {
             LOG.debug("Property source {} with #{} items", propertySourceName, result.size());
         }
+        if (LOG.isTraceEnabled()) {
+            for (String k : result.keySet()) {
+                LOG.trace("property {} resolved", k);
+            }
+        }
         return Publishers.just(new MapPropertySource(propertySourceName, result));
     }
 
