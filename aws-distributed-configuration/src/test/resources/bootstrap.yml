@@ -1,3 +1,0 @@
-micronaut:
-  config-client:
-    enabled: true

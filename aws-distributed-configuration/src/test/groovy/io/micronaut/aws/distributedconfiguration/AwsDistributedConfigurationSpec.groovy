@@ -4,10 +4,12 @@ import edu.umd.cs.findbugs.annotations.NonNull
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.context.annotation.Requires
+import io.micronaut.context.env.Environment
 import io.micronaut.core.util.StringUtils
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
+import spock.util.environment.RestoreSystemProperties
 
 import javax.inject.Singleton
 
@@ -58,13 +60,16 @@ class AwsDistributedConfigurationSpec extends Specification {
         context.close()
     }
 
+    @RestoreSystemProperties
     void "configuration resolution precedence appname_env => appname => application_dev => application"(String appName,
                                                                                                          String env,
                                                                                                          String expected) {
         given:
+        System.setProperty(Environment.BOOTSTRAP_CONTEXT_PROPERTY, StringUtils.TRUE)
         Map<String, Object> properties = [
                 'spec.name': 'AwsDistributedConfigurationSpec',
                 'micronaut.application.name': appName,
+                'micronaut.config-client.enabled': true,
         ]
 
         when:
