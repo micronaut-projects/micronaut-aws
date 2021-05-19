@@ -17,6 +17,7 @@ dependencies {
     compileOnly "software.amazon.awssdk:sqs"
     compileOnly "software.amazon.awssdk:ssm"
     compileOnly 'software.amazon.awssdk:secretsmanager'
+    compileOnly 'software.amazon.awssdk:servicediscovery'
 
     // Tests
     testImplementation "software.amazon.awssdk:url-connection-client"
