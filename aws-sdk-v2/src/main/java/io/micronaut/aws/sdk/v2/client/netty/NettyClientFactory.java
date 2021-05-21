@@ -15,12 +15,10 @@
  */
 package io.micronaut.aws.sdk.v2.client.netty;
 
-import io.micronaut.aws.sdk.v2.client.SdkHttpClientConfigurationProperties;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.util.StringUtils;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
 import javax.inject.Singleton;
@@ -31,10 +29,8 @@ import javax.inject.Singleton;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-
 @Factory
 @BootstrapContextCompatible
-@Requires(property = SdkHttpClientConfigurationProperties.PREFIX + ".bootstrap", value = StringUtils.FALSE, defaultValue = StringUtils.FALSE)
 public class NettyClientFactory {
 
     public static final String ASYNC_SERVICE_IMPL = "software.amazon.awssdk.http.async.service.impl";

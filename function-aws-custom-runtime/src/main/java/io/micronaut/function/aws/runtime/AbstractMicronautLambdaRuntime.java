@@ -48,7 +48,6 @@ import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
 
-import io.micronaut.core.annotation.NonNull;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.io.StringWriter;

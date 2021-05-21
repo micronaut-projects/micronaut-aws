@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,49 @@
 package io.micronaut.aws.sdk.v2.client.netty;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
+import io.micronaut.context.annotation.ConfigurationBuilder;
+import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient;
 import software.amazon.awssdk.http.nio.netty.ProxyConfiguration;
 
 /**
  * Configuration properties for the Netty async client.
- * @author Sergio del Amo
- * @since 2.7.0
+ *
+ * @author Álvaro Sánchez-Mariscal
+ * @since 2.0.0
  */
-public interface NettyClientConfiguration {
+@ConfigurationProperties(NettyClientConfiguration.PREFIX)
+@BootstrapContextCompatible
+public class NettyClientConfiguration extends AWSConfiguration {
 
-    String PREFIX = AWSConfiguration.PREFIX + ".netty-client";
+    public static final String PREFIX = "netty-client";
+
+    @ConfigurationBuilder(prefixes = {""}, excludes = {"eventLoopGroup", "eventLoopGroupBuilder", "sslProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "proxyConfiguration", "http2Configuration", "buildWithDefaults", "applyMutation"})
+    private NettyNioAsyncHttpClient.Builder builder = NettyNioAsyncHttpClient.builder();
+
+    @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
+    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
 
     /**
      * @return The builder for {@link NettyNioAsyncHttpClient}
      */
-    NettyNioAsyncHttpClient.Builder getBuilder();
+    public NettyNioAsyncHttpClient.Builder getBuilder() {
+        ProxyConfiguration proxyConfig = proxy.build();
+        if (proxyConfig.scheme() == null &&
+                proxyConfig.host() == null &&
+                proxyConfig.nonProxyHosts().isEmpty()
+        ) {
+            return builder;
+        } else {
+            return builder.proxyConfiguration(proxyConfig);
+        }
+    }
 
     /**
      * @return The builder for {@link ProxyConfiguration}
      */
-    ProxyConfiguration.Builder getProxy();
+    public ProxyConfiguration.Builder getProxy() {
+        return proxy;
+    }
 }

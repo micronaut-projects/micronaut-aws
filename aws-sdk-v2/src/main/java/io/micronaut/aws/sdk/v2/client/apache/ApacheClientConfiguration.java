@@ -16,6 +16,9 @@
 package io.micronaut.aws.sdk.v2.client.apache;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
+import io.micronaut.context.annotation.ConfigurationBuilder;
+import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.http.apache.ProxyConfiguration;
 
@@ -25,14 +28,29 @@ import software.amazon.awssdk.http.apache.ProxyConfiguration;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-public interface ApacheClientConfiguration {
+@BootstrapContextCompatible
+@ConfigurationProperties(ApacheClientConfiguration.PREFIX)
+public class ApacheClientConfiguration extends AWSConfiguration {
 
-    String PREFIX = AWSConfiguration.PREFIX + ".apache-client";
+    public static final String PREFIX = "apache-client";
 
-    ApacheHttpClient.Builder getBuilder();
+    @ConfigurationBuilder(prefixes = {""}, excludes = {"applyMutation", "proxyConfiguration", "httpRoutePlanner", "credentialsProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "buildWithDefaults"})
+    private ApacheHttpClient.Builder builder = ApacheHttpClient.builder();
+
+    @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
+    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
+
+    /**
+     * @return The builder for {@link ApacheHttpClient}
+     */
+    public ApacheHttpClient.Builder getBuilder() {
+        return builder.proxyConfiguration(proxy.build());
+    }
 
     /**
      * @return The builder for {@link ProxyConfiguration}
      */
-    ProxyConfiguration.Builder getProxy();
+    public ProxyConfiguration.Builder getProxy() {
+        return proxy;
+    }
 }

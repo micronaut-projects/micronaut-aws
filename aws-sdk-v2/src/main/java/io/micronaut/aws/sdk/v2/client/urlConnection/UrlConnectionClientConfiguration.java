@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,29 @@
 package io.micronaut.aws.sdk.v2.client.urlConnection;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
+import io.micronaut.context.annotation.ConfigurationBuilder;
+import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 
 /**
  * Configuration properties for the {@link UrlConnectionHttpClient}.
- * @author Sergio del Amo
- * @since 2.7.0
+ *
+ * @author Álvaro Sánchez-Mariscal
+ * @since 2.0.0
  */
-public interface UrlConnectionClientConfiguration {
-    String PREFIX = AWSConfiguration.PREFIX + ".url-connection-client";
+@ConfigurationProperties(UrlConnectionClientConfiguration.PREFIX)
+@BootstrapContextCompatible
+public class UrlConnectionClientConfiguration extends AWSConfiguration {
+    public static final String PREFIX = "url-connection-client";
+
+    @ConfigurationBuilder(prefixes = {""}, excludes = {"applyMutation", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "buildWithDefaults"})
+    private UrlConnectionHttpClient.Builder builder = UrlConnectionHttpClient.builder();
 
     /**
      * @return The builder for {@link UrlConnectionHttpClient}
      */
-    UrlConnectionHttpClient.Builder getBuilder();
+    public UrlConnectionHttpClient.Builder getBuilder() {
+        return builder;
+    }
 }
