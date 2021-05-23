@@ -20,10 +20,8 @@ class AwsDistributedConfigurationSpec extends Specification {
         Map<String, Object> properties = [
                 'spec.name': 'AwsDistributedConfigurationSpec',
                 'aws.distributed-configuration.delimiter': '-',
-                'aws.distributed-configuration.leading-delimiter': '#',
-                'aws.distributed-configuration.trailing-delimiter': '*',
                 'aws.distributed-configuration.prefix': 'foo',
-                'aws.distributed-configuration.shared-configuration-name': 'bar',
+                'aws.distributed-configuration.common-application-name': 'bar',
         ]
         when:
         ApplicationContext context = ApplicationContext.run(properties)
@@ -31,10 +29,8 @@ class AwsDistributedConfigurationSpec extends Specification {
 
         then:
         awsDistributedConfiguration.delimiter == '-'
-        awsDistributedConfiguration.leadingDelimiter == '#'
-        awsDistributedConfiguration.trailingDelimiter == '*'
         awsDistributedConfiguration.prefix == 'foo'
-        awsDistributedConfiguration.sharedConfigurationName == 'bar'
+        awsDistributedConfiguration.commonApplicationName == 'bar'
 
         cleanup:
         context.close()
@@ -51,10 +47,8 @@ class AwsDistributedConfigurationSpec extends Specification {
 
         then:
         awsDistributedConfiguration.delimiter == '/'
-        awsDistributedConfiguration.leadingDelimiter == '/'
-        awsDistributedConfiguration.trailingDelimiter == '/'
-        awsDistributedConfiguration.prefix == 'config'
-        awsDistributedConfiguration.sharedConfigurationName == 'application'
+        awsDistributedConfiguration.prefix == '/config/'
+        awsDistributedConfiguration.commonApplicationName == 'application'
 
         cleanup:
         context.close()

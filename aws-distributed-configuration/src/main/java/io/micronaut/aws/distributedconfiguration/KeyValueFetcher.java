@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.distributedconfiguration;
 
+import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
 
 import java.util.Map;
@@ -26,11 +27,12 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 2.7.0
  */
+@Experimental
 @FunctionalInterface
 public interface KeyValueFetcher {
     /**
      *
-     * @param prefix AWS Distributed Configuration Resource's name prefix
+     * @param prefix AWS Distributed Configuration Resource's name prefix. E.g. /config/application_dev/
      * @return A Map of configuration properties
      */
     @NonNull

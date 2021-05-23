@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +50,7 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 2.7.0
  */
+@Experimental
 @Requires(beans = {SecretsManagerClient.class})
 @BootstrapContextCompatible
 @Singleton
@@ -157,30 +159,27 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
                 LOG.warn("Secrets Manager can't decrypt the protected secret ({}) text using the provided KMS key.",
                         getSecretValueRequest.secretId());
             }
-            return Optional.empty();
         } catch (InternalServiceErrorException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("An error occurred on the server side getting secret ({}) value",
                         getSecretValueRequest.secretId());
             }
-            return Optional.empty();
         } catch (InvalidParameterException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("You provided an invalid value for a parameter while getting secret ({}) value",
                         getSecretValueRequest.secretId());
             }
-            return Optional.empty();
         } catch (InvalidRequestException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("While getting the secret value, you provided a parameter value that is not valid for the current state of the secret ({})",
                         getSecretValueRequest.secretId());
             }
-            return Optional.empty();
         } catch (ResourceNotFoundException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("Could not find the resource for secret ({})", getSecretValueRequest.secretId());
             }
-            return Optional.empty();
         }
+        return Optional.empty();
+
     }
 }

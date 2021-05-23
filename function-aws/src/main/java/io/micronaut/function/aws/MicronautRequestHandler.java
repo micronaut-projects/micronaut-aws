@@ -26,7 +26,6 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.MDC;
-import io.micronaut.core.annotation.NonNull;
 import java.util.Optional;
 
 /**

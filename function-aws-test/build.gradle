@@ -4,5 +4,5 @@ dependencies {
     api project(":function-aws")
     api "io.micronaut:micronaut-function:$micronautVersion"
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 }

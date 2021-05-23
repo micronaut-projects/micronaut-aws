@@ -26,9 +26,7 @@ import io.micronaut.runtime.ApplicationConfiguration;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -136,21 +134,35 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     @NonNull
     private List<String> generateConfigurationResolutionPrefixes(@NonNull Environment environment) {
         List<String> configurationResolutionPrefixes = new ArrayList<>();
-        if (applicationName != null && awsDistributedConfiguration.isSearchActiveEnvironments()) {
-            for (String name : environment.getActiveNames()) {
-                configurationResolutionPrefixes.add(awsDistributedConfiguration.getLeadingDelimiter() + String.join(awsDistributedConfiguration.getDelimiter(), Arrays.asList(awsDistributedConfiguration.getPrefix(), applicationName + UNDERSCORE + name)) + awsDistributedConfiguration.getTrailingDelimiter());
-            }
-        }
         if (applicationName != null) {
-            configurationResolutionPrefixes.add(awsDistributedConfiguration.getLeadingDelimiter() + String.join(awsDistributedConfiguration.getDelimiter(), Arrays.asList(awsDistributedConfiguration.getPrefix(), applicationName)) + awsDistributedConfiguration.getTrailingDelimiter());
-        }
-        if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
-            for (String name : environment.getActiveNames()) {
-                configurationResolutionPrefixes.add(awsDistributedConfiguration.getLeadingDelimiter() + String.join(awsDistributedConfiguration.getDelimiter(), Arrays.asList(awsDistributedConfiguration.getPrefix(), awsDistributedConfiguration.getSharedConfigurationName() + UNDERSCORE + name)) + awsDistributedConfiguration.getTrailingDelimiter());
+            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
+                for (String name : environment.getActiveNames()) {
+                    configurationResolutionPrefixes.add(prefix(applicationName, name));
+               }
             }
+            configurationResolutionPrefixes.add(prefix(applicationName));
         }
-        configurationResolutionPrefixes.add(awsDistributedConfiguration.getLeadingDelimiter() + String.join(awsDistributedConfiguration.getDelimiter(), Arrays.asList(awsDistributedConfiguration.getPrefix(), awsDistributedConfiguration.getSharedConfigurationName())) + awsDistributedConfiguration.getTrailingDelimiter());
-
+        if (awsDistributedConfiguration.isSearchCommonApplication()) {
+            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
+                for (String name : environment.getActiveNames()) {
+                    configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
+                }
+            }
+            configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName()));
+        }
         return configurationResolutionPrefixes;
+    }
+
+    @NonNull
+    private String prefix(@NonNull String appName) {
+        return prefix(appName, null);
+    }
+
+    @NonNull
+    private String prefix(@NonNull String appName, @Nullable String envName) {
+        if (envName != null) {
+            return awsDistributedConfiguration.getPrefix() +  appName + UNDERSCORE + envName + awsDistributedConfiguration.getDelimiter();
+        }
+        return awsDistributedConfiguration.getPrefix() +  appName + awsDistributedConfiguration.getDelimiter();
     }
 }

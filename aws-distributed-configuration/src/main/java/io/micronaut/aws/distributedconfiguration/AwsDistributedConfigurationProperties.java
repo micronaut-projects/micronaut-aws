@@ -18,6 +18,7 @@ package io.micronaut.aws.distributedconfiguration;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
 
 /**
@@ -28,66 +29,33 @@ import io.micronaut.core.annotation.NonNull;
  */
 @BootstrapContextCompatible
 @ConfigurationProperties(AwsDistributedConfigurationProperties.PREFIX)
+@Experimental
 public class AwsDistributedConfigurationProperties implements AwsDistributedConfiguration {
 
     public static final String PREFIX = AWSConfiguration.PREFIX + ".distributed-configuration";
 
-    public static final String DEFAULT_PREFIX = "config";
+    public static final String DEFAULT_PREFIX = "/config/";
 
-    public static final String DEFAULT_SHARED_CONFIGURATION_NAME = "application";
+    public static final String DEFAULT_COMMON_APPLICATION_NAME = "application";
 
     public static final String DEFAULT_DELIMETER = "/";
 
-    public static final String DEFAULT_LEADING_DELIMETER = "/";
-
-    public static final String DEFAULT_TRAILING_DELIMETER = "/";
+    public static final boolean DEFAULT_SEARCH_COMMON_APPLICATION = true;
 
     public static final boolean DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS = true;
 
     private boolean searchActiveEnvironments = DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS;
 
+    private boolean searchCommonApplication = DEFAULT_SEARCH_COMMON_APPLICATION;
+
     @NonNull
     String prefix = DEFAULT_PREFIX;
 
     @NonNull
-    private String sharedConfigurationName = DEFAULT_SHARED_CONFIGURATION_NAME;
+    private String commonApplicationName = DEFAULT_COMMON_APPLICATION_NAME;
 
     @NonNull
     private String delimiter = DEFAULT_DELIMETER;
-
-    @NonNull
-    private String leadingDelimiter = DEFAULT_LEADING_DELIMETER;
-
-    @NonNull
-    private String trailingDelimiter = DEFAULT_TRAILING_DELIMETER;
-
-    @Override
-    @NonNull
-    public String getPrefix() {
-        return prefix;
-    }
-
-    /**
-     * Prefix for AWS Distributed Configuration resources names. Default value ({@value #DEFAULT_PREFIX}).
-     * @param prefix Prefix for AWS Distributed Configuration resources names.
-     */
-    public void setPrefix(@NonNull String prefix) {
-        this.prefix = prefix;
-    }
-
-    @Override
-    @NonNull
-    public String getSharedConfigurationName() {
-        return sharedConfigurationName;
-    }
-
-    /**
-     * Default shared configuration name. Default value ({@value #DEFAULT_SHARED_CONFIGURATION_NAME}).
-     * @param sharedConfigurationName shared configuration name.
-     */
-    public void setSharedConfigurationName(@NonNull String sharedConfigurationName) {
-        this.sharedConfigurationName = sharedConfigurationName;
-    }
 
     @Override
     @NonNull
@@ -101,34 +69,6 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
      */
     public void setDelimiter(@NonNull String delimiter) {
         this.delimiter = delimiter;
-    }
-
-    @Override
-    @NonNull
-    public String getLeadingDelimiter() {
-        return leadingDelimiter;
-    }
-
-    /**
-     * Leading delimiter for AWS Distributed Configuration resources names. Default value ({@value #DEFAULT_LEADING_DELIMETER}).
-     * @param leadingDelimiter  Leading Delimiter for AWS Distributed Configuration resources names.
-     */
-    public void setLeadingDelimiter(@NonNull String leadingDelimiter) {
-        this.leadingDelimiter = leadingDelimiter;
-    }
-
-    @Override
-    @NonNull
-    public String getTrailingDelimiter() {
-        return trailingDelimiter;
-    }
-
-    /**
-     * Trailing delimiter for AWS Distributed Configuration resources names. Default value ({@value #DEFAULT_TRAILING_DELIMETER}).
-     * @param trailingDelimiter  Trailing Delimiter for AWS Distributed Configuration resources names.
-     */
-    public void setTrailingDelimiter(@NonNull String trailingDelimiter) {
-        this.trailingDelimiter = trailingDelimiter;
     }
 
     /**
@@ -148,5 +88,50 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
      */
     public void setSearchActiveEnvironments(boolean searchActiveEnvironments) {
         this.searchActiveEnvironments = searchActiveEnvironments;
+    }
+
+    /**
+     *
+     * @return Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not.
+     */
+    @Override
+    public boolean isSearchCommonApplication() {
+        return searchCommonApplication;
+    }
+
+    /**
+     * Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not. Default value ({@value #DEFAULT_SEARCH_COMMON_APPLICATION}).
+     * @param searchCommonApplication Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not.
+     */
+    public void setSearchCommonApplication(boolean searchCommonApplication) {
+        this.searchCommonApplication = searchCommonApplication;
+    }
+
+    @Override
+    @NonNull
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * Prefix for AWS Distributed Configuration resources names. Default ({@value #DEFAULT_PREFIX})
+     * @param prefix Prefix for AWS Distributed Configuration resources names. For example `/config/`
+     */
+    public void setPrefix(@NonNull String prefix) {
+        this.prefix = prefix;
+    }
+
+    @Override
+    @NonNull
+    public String getCommonApplicationName() {
+        return commonApplicationName;
+    }
+
+    /**
+     * Default Application name. Default value ({@value #DEFAULT_COMMON_APPLICATION_NAME}.
+     * @param commonApplicationName Default Application name. e.g. application
+     */
+    public void setCommonApplicationName(@NonNull String commonApplicationName) {
+        this.commonApplicationName = commonApplicationName;
     }
 }

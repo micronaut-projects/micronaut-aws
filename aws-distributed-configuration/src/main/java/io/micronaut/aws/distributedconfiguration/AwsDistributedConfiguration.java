@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.distributedconfiguration;
 
+import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
 
 /**
@@ -23,46 +24,40 @@ import io.micronaut.core.annotation.NonNull;
  * @author Sergio del Amo
  * @since 2.7.0
  */
+@Experimental
 public interface AwsDistributedConfiguration {
 
     /**
      *
-     * @return Prefix for AWS Distributed Configuration resources names.
+     * @return Prefix for AWS Distributed Configuration resources names. For example `/config/`
      */
     @NonNull
     String getPrefix();
 
     /**
-     *
-     * @return Delimiter for AWS Distributed Configuration resources names.
+     * Delimiter after prefix and application name. For /config/application_dev/micronaut.security.oauth2.clients.mycompanyauth.client-secret
+     * delimiter will be / The character between  /config/application_dev and micronaut.security.oauth2.clients.mycompanyauth.client-secret
+     * @return Delimiter after {@link AwsDistributedConfiguration#getPrefix} and application name for AWS Distributed Configuration resources names.
      */
     @NonNull
     String getDelimiter();
 
     /**
      *
-     * @return Leading Delimiter for AWS Distributed Configuration resources names.
+     * @return Default Application name. e.g. application
      */
     @NonNull
-    String getLeadingDelimiter();
+    String getCommonApplicationName();
 
     /**
      *
-     * @return Trailing Delimiter for AWS Distributed Configuration resources names.
+     * @return Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not.
      */
-    @NonNull
-    String getTrailingDelimiter();
+    boolean isSearchCommonApplication();
 
     /**
      *
-     * @return Default shared configuration name.
-     */
-    @NonNull
-    String getSharedConfigurationName();
-
-    /**
-     *
-     * @return Weather paths with active environment names should be searched or not.
+     * @return Whether paths with active environment names should be searched or not.
      */
     boolean isSearchActiveEnvironments();
 }
