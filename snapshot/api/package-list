@@ -20,6 +20,7 @@ io.micronaut.aws.sdk.v2.service
 io.micronaut.aws.sdk.v2.service.dynamodb
 io.micronaut.aws.sdk.v2.service.s3
 io.micronaut.aws.sdk.v2.service.secretsmanager
+io.micronaut.aws.sdk.v2.service.servicediscovery
 io.micronaut.aws.sdk.v2.service.ses
 io.micronaut.aws.sdk.v2.service.sns
 io.micronaut.aws.sdk.v2.service.sqs
