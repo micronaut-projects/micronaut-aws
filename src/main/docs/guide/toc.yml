@@ -21,6 +21,7 @@ sdkv2:
   sqs: SQS
   ssm: SSM
   secretsmanager: Secrets Manager
+  servicediscovery: Service discovery
   advancedConfiguration: Advanced configuration
   otherServices: Other services
 lambda:
@@ -45,7 +46,9 @@ alexa:
   webservice: Alexa Skill as a Web Service
   ssmlbuilder: SSML Builder
   flashbriefings: Flash Briefings
-parametersStore: Parameter Store as Cloud Configuration
+distributedconfiguration:
+  title: Distributed Configuration
+  parametersStore: AWS System Manager Parameter Store
 repository: Repository
 breaks: Breaking Changes
 thirdPartyLibraries: Third-party libraries
