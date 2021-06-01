@@ -20,6 +20,7 @@ dependencies {
     compileOnly 'software.amazon.awssdk:servicediscovery'
 
     // Tests
+    testImplementation 'software.amazon.awssdk:servicediscovery'
     testImplementation "software.amazon.awssdk:url-connection-client"
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
