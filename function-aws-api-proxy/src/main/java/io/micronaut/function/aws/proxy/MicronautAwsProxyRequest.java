@@ -114,7 +114,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
      * @param securityContext Security Context
      * @return returns false if the security context is not present, the associated event is null or the event's request context is null
      */
-    public static boolean isSecurityContextPresent(@Nullable SecurityContext securityContext) {
+    static boolean isSecurityContextPresent(@Nullable SecurityContext securityContext) {
         if (securityContext == null) {
             return false;
         }
