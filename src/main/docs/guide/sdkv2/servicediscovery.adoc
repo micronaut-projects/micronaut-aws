@@ -1,0 +1,15 @@
+To use Service discovery, the AWS Java SDK for Amazon Route 53 Auto Naming module, add the following dependency:
+
+dependency:servicediscovery[groupId="software.amazon.awssdk"]
+
+Then, the following beans will be created:
+
+* `software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClientBuilder`
+* `software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient`
+
+And:
+
+* `software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClient`
+* `software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClientBuilder`.
+
+The HTTP client, credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.
