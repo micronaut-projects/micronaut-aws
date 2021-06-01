@@ -16,6 +16,7 @@
 package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
+import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
 import com.amazonaws.serverless.proxy.model.*;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
@@ -103,9 +104,29 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
         setAttribute(LAMBDA_CONTEXT_PROPERTY, lambdaContext);
         setAttribute(JAX_SECURITY_CONTEXT_PROPERTY, config);
-        if (securityContext != null && requestContext != null) {
+        if (isSecurityContextPresent (securityContext)) {
             setAttribute("micronaut.AUTHENTICATION", securityContext.getUserPrincipal());
         }
+    }
+
+    /**
+     *
+     * @param securityContext Security Context
+     * @return returns false if the security context is not present, the associated event is null or the event's request context is null
+     */
+    public static boolean isSecurityContextPresent(@Nullable SecurityContext securityContext) {
+        if (securityContext == null) {
+            return false;
+        }
+        if (securityContext instanceof AwsProxySecurityContext) {
+            AwsProxySecurityContext awsProxySecurityContext = (AwsProxySecurityContext) securityContext;
+            if (awsProxySecurityContext.getEvent() == null ||
+                    awsProxySecurityContext.getEvent().getRequestContext() == null ||
+                    awsProxySecurityContext.getEvent().getRequestContext().getIdentity() == null) {
+                           return false;
+            }
+        }
+        return true;
     }
 
     /**
