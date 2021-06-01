@@ -38,6 +38,7 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
+import io.micronaut.function.aws.MicronautRequestHandler;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -392,7 +393,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            //TODO Set Env.variable _X_AMZN_TRACE_ID with value traceId
+            System.setProperty(MicronautRequestHandler.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 

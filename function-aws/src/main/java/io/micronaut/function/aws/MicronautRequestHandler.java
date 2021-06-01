@@ -24,6 +24,7 @@ import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.MDC;
 import java.util.Optional;
@@ -39,6 +40,10 @@ import java.util.Optional;
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
 
     public static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
+
+    // See: https://github.com/aws/aws-xray-sdk-java/issues/251
+    public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
+
     public static final String MDC_DEFAULT_AWS_REQUEST_ID = "AWSRequestId";
     public static final String MDC_DEFAULT_FUNCTION_NAME = "AWSFunctionName";
     public static final String MDC_DEFAULT_FUNCTION_VERSION = "AWSFunctionVersion";
@@ -130,9 +135,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     @NonNull
     protected static Optional<String> parseXrayTraceId() {
-        final String X_AMZN_TRACE_ID = System.getenv(ENV_X_AMZN_TRACE_ID);
-        if (X_AMZN_TRACE_ID != null) {
-            return Optional.of(X_AMZN_TRACE_ID.split(";")[0].replace("Root=", ""));
+        String lambdaTraceHeaderKey = System.getenv(ENV_X_AMZN_TRACE_ID);
+        lambdaTraceHeaderKey = StringUtils.isNotEmpty(lambdaTraceHeaderKey) ? lambdaTraceHeaderKey
+                : System.getProperty(LAMBDA_TRACE_HEADER_PROP);
+        if (lambdaTraceHeaderKey != null) {
+            String[] arr = lambdaTraceHeaderKey.split(";");
+            if (arr.length >= 1) {
+                return Optional.of(arr[0].replace("Root=", ""));
+            }
         }
         return Optional.empty();
     }
