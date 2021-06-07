@@ -11,7 +11,6 @@ io.micronaut.aws.alexa.httpserver.exceptions
 io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
 io.micronaut.aws.alexa.ssml
-io.micronaut.aws.distributedconfiguration
 io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
 io.micronaut.aws.sdk.v2.client.apache
@@ -21,12 +20,10 @@ io.micronaut.aws.sdk.v2.service
 io.micronaut.aws.sdk.v2.service.dynamodb
 io.micronaut.aws.sdk.v2.service.s3
 io.micronaut.aws.sdk.v2.service.secretsmanager
-io.micronaut.aws.sdk.v2.service.servicediscovery
 io.micronaut.aws.sdk.v2.service.ses
 io.micronaut.aws.sdk.v2.service.sns
 io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
-io.micronaut.aws.secretsmanager
 io.micronaut.discovery.aws.parameterstore
 io.micronaut.discovery.aws.route53
 io.micronaut.discovery.aws.route53.client
