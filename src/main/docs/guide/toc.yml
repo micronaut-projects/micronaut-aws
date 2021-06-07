@@ -48,6 +48,7 @@ alexa:
   flashbriefings: Flash Briefings
 distributedconfiguration:
   title: Distributed Configuration
+  distributedconfigurationsecretsmanager: AWS Secrets Manager
   parametersStore: AWS System Manager Parameter Store
 repository: Repository
 breaks: Breaking Changes

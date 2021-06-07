@@ -1,4 +1,4 @@
-Micronaut AWS supports distributed configuration via services such as https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS System Manager Parameter Store].
+Micronaut AWS supports distributed configuration via services such as https://aws.amazon.com/secrets-manager/[AWS Secrets Manager] and https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS System Manager Parameter Store].
 
 You can create environment-specific configurations as well by including the environment name after an underscore `_`. For example if `micronaut.application.name` is set to `helloworld`, specifying configuration values under `helloworld_test` will be applied only to the `test` environment.
 
@@ -25,3 +25,5 @@ You can create environment-specific configurations as well by including the envi
 |===
 
 For example, if the configuration name `/config/application_test/server.url` is configured in AWS Parameter Store, any application connecting to that parameter store can retrieve the value using `server.url`. If the application has `micronaut.application.name` configured to be `myapp`, a value with the name `/config/myapp_test/server.url` overrides the value just for that application.
+
+include::{includedir}configurationProperties/io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties.adoc[]
