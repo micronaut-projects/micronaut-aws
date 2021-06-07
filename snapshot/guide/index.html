@@ -184,7 +184,9 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-distributedconfiguration"><a href="#distributedconfiguration"><strong>9</strong><span>Distributed Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>9.1</strong><span>AWS System Manager Parameter Store</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-distributedconfigurationsecretsmanager"><a href="#distributedconfigurationsecretsmanager"><strong>9.1</strong><span>AWS Secrets Manager</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>9.2</strong><span>AWS System Manager Parameter Store</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
         
@@ -2430,7 +2432,7 @@ public class FlashBriefingsController {
 
 
 <div class="paragraph">
-<p>Micronaut AWS supports distributed configuration via services such as <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>.</p>
+<p>Micronaut AWS supports distributed configuration via services such as <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> and <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>.</p>
 </div>
 <div class="paragraph">
 <p>You can create environment-specific configurations as well by including the environment name after an underscore <code>_</code>. For example if <code>micronaut.application.name</code> is set to <code>helloworld</code>, specifying configuration values under <code>helloworld_test</code> will be applied only to the <code>test</code> environment.</p>
@@ -2475,8 +2477,128 @@ public class FlashBriefingsController {
 <div class="paragraph">
 <p>For example, if the configuration name <code>/config/application_test/server.url</code> is configured in AWS Parameter Store, any application connecting to that parameter store can retrieve the value using <code>server.url</code>. If the application has <code>micronaut.application.name</code> configured to be <code>myapp</code>, a value with the name <code>/config/myapp_test/server.url</code> overrides the value just for that application.</p>
 </div>
+<a id="io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties" href="#io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html">AwsDistributedConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.search-active-environments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search additional paths suffixed with each active environment.
+ e.g. /config/application_ec2
+ Default value (true).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.search-common-application</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not. Default value (true).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prefix for AWS Distributed Configuration resources names. Default ("/config/")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.common-application-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Application name. Default value ("application".</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.delimiter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delimiter for AWS Distributed Configuration resources names. Default value ("/").</p></td>
+</tr>
+</tbody>
+</table>
 
-<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>9.1 AWS System Manager Parameter Store</h2>
+<h2 id="distributedconfigurationsecretsmanager"><a class="anchor" href="#distributedconfigurationsecretsmanager"></a>9.1 AWS Secrets Manager</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/distributedconfigurationsecretsmanager.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> as distributed configuration include the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-secretsmanager")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-secretsmanager&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>To enable distributed configuration, create a <code>src/main/resources/bootstrap.yml</code> file and enable the configuration client:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/bootstrap.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  config-client:
+    enabled: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="paragraph">
+<p>If you add <code>micronaut.application.name: myapp</code> to <code>bootstrap.yml</code> and you start your app in the <code>dev</code> <a href="https://docs.micronaut.io/latest/guide/index.html#environments">Micronaut environment</a> the secret shown in the following image is read and two properties <code>micronaut.security.oauth2.clients.companyauthserver.client-id</code> and <code>micronaut.security.oauth2.clients.companyauthserver.client-secret</code> are exposed to your application:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../img/secretsmanager.png" alt="AWS Secrets Manager">
+</div>
+</div>
+<a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html">SecretsManagerConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secretsmanager.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default value (true).</p></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>9.2 AWS System Manager Parameter Store</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/parametersStore.adoc"'>

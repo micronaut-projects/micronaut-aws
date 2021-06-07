@@ -67,7 +67,7 @@
 <!--   -->
 </a></div>
 <!-- ========= END OF TOP NAVBAR ========= -->
-<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Z">Z</a>&nbsp;<a name="I:A">
+<div class="contentContainer"><a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Z">Z</a>&nbsp;<a name="I:A">
 <!--   -->
 </a>
 <h2 class="title">A</h2>
@@ -402,6 +402,22 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/CredentialsAndRegionFactory.html#awsCredentialsProvider-io.micronaut.context.env.Environment-">awsCredentialsProvider(Environment)</a></span> - Method in class io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/CredentialsAndRegionFactory.html" title="class in io.micronaut.aws.sdk.v2">CredentialsAndRegionFactory</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfiguration</span></a> - Interface in <a href="io/micronaut/aws/distributedconfiguration/package-summary.html">io.micronaut.aws.distributedconfiguration</a></dt>
+<dd>
+<div class="block">Configuration for Distributed Configuration using AWS services such as AWS Parameter Store or Secrets Manager.</div>
+</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfigurationClient</span></a> - Class in <a href="io/micronaut/aws/distributedconfiguration/package-summary.html">io.micronaut.aws.distributedconfiguration</a></dt>
+<dd>
+<div class="block">Base implementation for AWS services contributing distributed configuration.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html#AwsDistributedConfigurationClient-io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration-io.micronaut.aws.distributedconfiguration.KeyValueFetcher-io.micronaut.runtime.ApplicationConfiguration-">AwsDistributedConfigurationClient(AwsDistributedConfiguration, KeyValueFetcher, ApplicationConfiguration)</a></span> - Constructor for class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationClient</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfigurationProperties</span></a> - Class in <a href="io/micronaut/aws/distributedconfiguration/package-summary.html">io.micronaut.aws.distributedconfiguration</a></dt>
+<dd>
+<div class="block"><code>ConfigurationProperties</code> implementation of <a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration"><code>AwsDistributedConfiguration</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#AwsDistributedConfigurationProperties--">AwsDistributedConfigurationProperties()</a></span> - Constructor for class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSInvokeRequestDefinition</span></a> - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
 <dd>
 <div class="block">Builds an <code>InvokeRequest</code> for each definition under <code>aws.lambda.functions</code>.</div>
@@ -711,11 +727,25 @@
 </a>
 <h2 class="title">D</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#DEFAULT_COMMON_APPLICATION_NAME">DEFAULT_COMMON_APPLICATION_NAME</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#DEFAULT_DELIMETER">DEFAULT_DELIMETER</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#DEFAULT_ENABLED">DEFAULT_ENABLED</a></span> - Static variable in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationProperties</a></dt>
+<dd>
+<div class="block">The default enable value.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#DEFAULT_ENABLED">DEFAULT_ENABLED</a></span> - Static variable in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
 <dd>
 <div class="block">The default enable value.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#DEFAULT_PATH">DEFAULT_PATH</a></span> - Static variable in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#DEFAULT_PREFIX">DEFAULT_PREFIX</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS">DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#DEFAULT_SEARCH_COMMON_APPLICATION">DEFAULT_SEARCH_COMMON_APPLICATION</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/AskHttpServerConstants.html#DEFAULT_TOLERANCE_MILLIS">DEFAULT_TOLERANCE_MILLIS</a></span> - Static variable in class io.micronaut.aws.alexa.httpserver.<a href="io/micronaut/aws/alexa/httpserver/AskHttpServerConstants.html" title="class in io.micronaut.aws.alexa.httpserver">AskHttpServerConstants</a></dt>
 <dd>
@@ -967,6 +997,10 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getClientContext--">getClientContext()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#getCommonApplicationName--">getCommonApplicationName()</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#getCommonApplicationName--">getCommonApplicationName()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html#getComputePlatform--">getComputePlatform()</a></span> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonEC2InstanceMetadata.html" title="class in io.micronaut.discovery.cloud.aws">AmazonEC2InstanceMetadata</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html#getConnectionPoolConfiguration--">getConnectionPoolConfiguration()</a></span> - Method in class io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html" title="class in io.micronaut.discovery.aws.route53">Route53ClientDiscoveryConfiguration</a></dt>
@@ -990,6 +1024,14 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getCookies--">getCookies()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html#getCredentials--">getCredentials()</a></span> - Method in class io.micronaut.aws.sdk.v1.<a href="io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html" title="class in io.micronaut.aws.sdk.v1">EnvironmentAWSCredentialsProvider</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#getDelimiter--">getDelimiter()</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
+<dd>
+<div class="block">Delimiter after prefix and application name.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#getDelimiter--">getDelimiter()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html#getDescription--">getDescription()</a></span> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationClient</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#getDescription--">getDescription()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>
@@ -1112,9 +1154,19 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/ServerPort.html#getPort--">getPort()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/ServerPort.html" title="class in io.micronaut.function.aws.proxy.test">ServerPort</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#getPrefix--">getPrefix()</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#getPrefix--">getPrefix()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html#getPriority--">getPriority()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html" title="class in io.micronaut.discovery.aws.parameterstore">ParameterQuery</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html#getPropertySourceName--">getPropertySourceName()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationClient</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html#getPropertySourceName--">getPropertySourceName()</a></span> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationClient</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html#getPropertySourceName--">getPropertySourceName()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html" title="class in io.micronaut.discovery.aws.parameterstore">ParameterQuery</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html#getPropertySources-io.micronaut.context.env.Environment-">getPropertySources(Environment)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationClient</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#getPropertySources-io.micronaut.context.env.Environment-">getPropertySources(Environment)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>
@@ -1374,6 +1426,10 @@
 <dd>
 <div class="block">Classes to support building Speech Synthesis Markup Language (SSML)</div>
 </dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/package-summary.html">io.micronaut.aws.distributedconfiguration</a> - package io.micronaut.aws.distributedconfiguration</dt>
+<dd>
+<div class="block">Classes related to distributed configuration coming from AWS Services.</div>
+</dd>
 <dt><a href="io/micronaut/aws/sdk/v1/package-summary.html">io.micronaut.aws.sdk.v1</a> - package io.micronaut.aws.sdk.v1</dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/sdk/v2/package-summary.html">io.micronaut.aws.sdk.v2</a> - package io.micronaut.aws.sdk.v2</dt>
@@ -1423,6 +1479,10 @@
 <dt><a href="io/micronaut/aws/sdk/v2/service/ssm/package-summary.html">io.micronaut.aws.sdk.v2.service.ssm</a> - package io.micronaut.aws.sdk.v2.service.ssm</dt>
 <dd>
 <div class="block">SSM client factory.</div>
+</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/package-summary.html">io.micronaut.aws.secretsmanager</a> - package io.micronaut.aws.secretsmanager</dt>
+<dd>
+<div class="block">Integration classes for AWS Secrets Manager.</div>
 </dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/package-summary.html">io.micronaut.discovery.aws.parameterstore</a> - package io.micronaut.discovery.aws.parameterstore</dt>
 <dd>
@@ -1478,6 +1538,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#isEnabled--">isEnabled()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
 <dd>
 <div class="block">Enable or disable this feature.</div>
@@ -1494,9 +1556,31 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html#isRunning--">isRunning()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/AwsApiProxyTestServer.html" title="class in io.micronaut.function.aws.proxy.test">AwsApiProxyTestServer</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#isSearchActiveEnvironments--">isSearchActiveEnvironments()</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#isSearchActiveEnvironments--">isSearchActiveEnvironments()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#isSearchActiveEnvironments--">isSearchActiveEnvironments()</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#isSearchCommonApplication--">isSearchCommonApplication()</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#isSearchCommonApplication--">isSearchCommonApplication()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#isSharedObjectMapper--">isSharedObjectMapper()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
+<dd>&nbsp;</dd>
+</dl>
+<a name="I:K">
+<!--   -->
+</a>
+<h2 class="title">K</h2>
+<dl>
+<dt><a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html" title="interface in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">KeyValueFetcher</span></a> - Interface in <a href="io/micronaut/aws/distributedconfiguration/package-summary.html">io.micronaut.aws.distributedconfiguration</a></dt>
+<dd>
+<div class="block">Fetches a Map of properties for a given prefix.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html#keyValuesByPrefix-java.lang.String-">keyValuesByPrefix(String)</a></span> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html" title="interface in io.micronaut.aws.distributedconfiguration">KeyValueFetcher</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html#keyValuesByPrefix-java.lang.String-">keyValuesByPrefix(String)</a></span> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerKeyValueFetcher</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:L">
@@ -1858,12 +1942,18 @@
 <dd>
 <div class="block">Prefix for all AWS settings.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.sdk.v2.client.apache.<a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.apache">ApacheClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.sdk.v2.client.netty.<a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.netty">NettyClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.sdk.v2.client.urlConnection.<a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.urlConnection">UrlConnectionClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationProperties</a></dt>
+<dd>
+<div class="block">Prefix for Amazon EC2 configuration metadata.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/Route53AutoRegistrationConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/Route53AutoRegistrationConfiguration.html" title="class in io.micronaut.discovery.aws.route53">Route53AutoRegistrationConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html#PREFIX">PREFIX</a></span> - Static variable in class io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/Route53ClientDiscoveryConfiguration.html" title="class in io.micronaut.discovery.aws.route53">Route53ClientDiscoveryConfiguration</a></dt>
@@ -2068,6 +2158,28 @@
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfiguration.html" title="interface in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfiguration</span></a> - Interface in <a href="io/micronaut/aws/secretsmanager/package-summary.html">io.micronaut.aws.secretsmanager</a></dt>
+<dd>
+<div class="block">Configuration for Secrets Manager.</div>
+</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfigurationClient</span></a> - Class in <a href="io/micronaut/aws/secretsmanager/package-summary.html">io.micronaut.aws.secretsmanager</a></dt>
+<dd>
+<div class="block">Distributed configuration client for AWS Secrets Manager.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html#SecretsManagerConfigurationClient-io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration-io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher-io.micronaut.runtime.ApplicationConfiguration-">SecretsManagerConfigurationClient(AwsDistributedConfiguration, SecretsManagerKeyValueFetcher, ApplicationConfiguration)</a></span> - Constructor for class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationClient</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfigurationProperties</span></a> - Class in <a href="io/micronaut/aws/secretsmanager/package-summary.html">io.micronaut.aws.secretsmanager</a></dt>
+<dd>
+<div class="block"><code>ConfigurationProperties</code> implementation of <a href="io/micronaut/aws/secretsmanager/SecretsManagerConfiguration.html" title="interface in io.micronaut.aws.secretsmanager"><code>SecretsManagerConfiguration</code></a>.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#SecretsManagerConfigurationProperties--">SecretsManagerConfigurationProperties()</a></span> - Constructor for class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationProperties</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerKeyValueFetcher</span></a> - Class in <a href="io/micronaut/aws/secretsmanager/package-summary.html">io.micronaut.aws.secretsmanager</a></dt>
+<dd>
+<div class="block"><a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html" title="interface in io.micronaut.aws.distributedconfiguration"><code>KeyValueFetcher</code></a> implementations for AWS Secrets Manager.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html#SecretsManagerKeyValueFetcher-software.amazon.awssdk.services.secretsmanager.SecretsManagerClient-com.fasterxml.jackson.databind.ObjectMapper-">SecretsManagerKeyValueFetcher(SecretsManagerClient, ObjectMapper)</a></span> - Constructor for class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerKeyValueFetcher</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/httpserver/exceptions/SecurityExceptionHandler.html" title="class in io.micronaut.aws.alexa.httpserver.exceptions"><span class="typeNameLink">SecurityExceptionHandler</span></a> - Class in <a href="io/micronaut/aws/alexa/httpserver/exceptions/package-summary.html">io.micronaut.aws.alexa.httpserver.exceptions</a></dt>
 <dd>
 <div class="block"><code>ExceptionHandler</code> to handle <code>SecurityException</code>.</div>
@@ -2130,6 +2242,14 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#setClient-software.amazon.awssdk.services.ssm.SsmAsyncClient-">setClient(SsmAsyncClient)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setCommonApplicationName-java.lang.String-">setCommonApplicationName(String)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>
+<div class="block">Default Application name.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setDelimiter-java.lang.String-">setDelimiter(String)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>
+<div class="block">Delimiter for AWS Distributed Configuration resources names.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/route53/registration/Route53AutoNamingRegistrationClient.html#setDiscoveryService-com.amazonaws.services.servicediscovery.model.Service-">setDiscoveryService(Service)</a></span> - Method in class io.micronaut.discovery.aws.route53.registration.<a href="io/micronaut/discovery/aws/route53/registration/Route53AutoNamingRegistrationClient.html" title="class in io.micronaut.discovery.aws.route53.registration">Route53AutoNamingRegistrationClient</a></dt>
 <dd>
 <div class="block">Used for testing.</div>
@@ -2141,6 +2261,10 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html#setEnabled-boolean-">setEnabled(boolean)</a></span> - Method in class io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfigurationProperties.html" title="class in io.micronaut.aws.alexa.httpserver.conf">AlexaControllerConfigurationProperties</a></dt>
 <dd>
 <div class="block">Sets whether this configuration is enabled.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#setEnabled-boolean-">setEnabled(boolean)</a></span> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationProperties</a></dt>
+<dd>
+<div class="block">Default value (<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html#DEFAULT_ENABLED">true</a>).</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#setEnabled-boolean-">setEnabled(boolean)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
 <dd>
@@ -2184,6 +2308,10 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/ServerPort.html#setPort-java.lang.Integer-">setPort(Integer)</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/ServerPort.html" title="class in io.micronaut.function.aws.proxy.test">ServerPort</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setPrefix-java.lang.String-">setPrefix(String)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>
+<div class="block">Prefix for AWS Distributed Configuration resources names.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#setQueryProvider-io.micronaut.discovery.aws.parameterstore.AWSParameterQueryProvider-">setQueryProvider(AWSParameterQueryProvider)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/ServerPort.html#setRandom-boolean-">setRandom(boolean)</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/ServerPort.html" title="class in io.micronaut.function.aws.proxy.test">ServerPort</a></dt>
@@ -2200,9 +2328,17 @@
 <dd>
 <div class="block">Used to help with testing.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setSearchActiveEnvironments-boolean-">setSearchActiveEnvironments(boolean)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>
+<div class="block">Search additional paths suffixed with each active environment.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html#setSearchActiveEnvironments-boolean-">setSearchActiveEnvironments(boolean)</a></span> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfiguration.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfiguration</a></dt>
 <dd>
 <div class="block">Search additional paths suffixed with each active environment.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setSearchCommonApplication-boolean-">setSearchCommonApplication(boolean)</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
+<dd>
+<div class="block">Whether paths for the <a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#getCommonApplicationName--"><code>AwsDistributedConfiguration.getCommonApplicationName()</code></a> should be searched or not.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#setSharedObjectMapper-boolean-">setSharedObjectMapper(boolean)</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -2771,7 +2907,7 @@ the order they are declared.</div>
 <div class="block">The availablity zone of instance.</div>
 </dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Z">Z</a>&nbsp;</div>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Z">Z</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->
 <div class="bottomNav"><a name="navbar.bottom">
 <!--   -->

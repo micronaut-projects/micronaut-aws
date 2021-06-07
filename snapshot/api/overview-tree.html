@@ -84,6 +84,7 @@
 <li><a href="io/micronaut/aws/alexa/httpserver/services/package-tree.html">io.micronaut.aws.alexa.httpserver.services</a>, </li>
 <li><a href="io/micronaut/aws/alexa/httpserver/verifiers/package-tree.html">io.micronaut.aws.alexa.httpserver.verifiers</a>, </li>
 <li><a href="io/micronaut/aws/alexa/ssml/package-tree.html">io.micronaut.aws.alexa.ssml</a>, </li>
+<li><a href="io/micronaut/aws/distributedconfiguration/package-tree.html">io.micronaut.aws.distributedconfiguration</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v1/package-tree.html">io.micronaut.aws.sdk.v1</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/package-tree.html">io.micronaut.aws.sdk.v2</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/client/apache/package-tree.html">io.micronaut.aws.sdk.v2.client.apache</a>, </li>
@@ -98,6 +99,7 @@
 <li><a href="io/micronaut/aws/sdk/v2/service/sns/package-tree.html">io.micronaut.aws.sdk.v2.service.sns</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/sqs/package-tree.html">io.micronaut.aws.sdk.v2.service.sqs</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/ssm/package-tree.html">io.micronaut.aws.sdk.v2.service.ssm</a>, </li>
+<li><a href="io/micronaut/aws/secretsmanager/package-tree.html">io.micronaut.aws.secretsmanager</a>, </li>
 <li><a href="io/micronaut/discovery/aws/parameterstore/package-tree.html">io.micronaut.discovery.aws.parameterstore</a>, </li>
 <li><a href="io/micronaut/discovery/aws/route53/package-tree.html">io.micronaut.discovery.aws.route53</a>, </li>
 <li><a href="io/micronaut/discovery/aws/route53/client/package-tree.html">io.micronaut.discovery.aws.route53.client</a>, </li>
@@ -205,6 +207,12 @@
 <li type="circle">io.micronaut.aws.sdk.v2.client.urlConnection.<a href="io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.urlConnection"><span class="typeNameLink">UrlConnectionClientConfiguration</span></a></li>
 </ul>
 </li>
+<li type="circle">io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfigurationClient</span></a> (implements io.micronaut.discovery.config.ConfigurationClient)
+<ul>
+<li type="circle">io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfigurationClient</span></a></li>
+</ul>
+</li>
+<li type="circle">io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfigurationProperties</span></a> (implements io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a>)</li>
 <li type="circle">io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSInvokeRequestDefinition</span></a> (implements io.micronaut.function.client.FunctionDefinition)</li>
 <li type="circle">io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaAsyncClientFactory.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSLambdaAsyncClientFactory</span></a></li>
 <li type="circle">io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws"><span class="typeNameLink">AWSLambdaConfiguration</span></a></li>
@@ -271,6 +279,8 @@
 </li>
 <li type="circle">io.micronaut.discovery.aws.route53.client.<a href="io/micronaut/discovery/aws/route53/client/Route53AutoNamingClient.html" title="class in io.micronaut.discovery.aws.route53.client"><span class="typeNameLink">Route53AutoNamingClient</span></a> (implements io.micronaut.discovery.DiscoveryClient)</li>
 <li type="circle">io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime"><span class="typeNameLink">RuntimeContext</span></a> (implements com.amazonaws.services.lambda.runtime.Context)</li>
+<li type="circle">io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfigurationProperties</span></a> (implements io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfiguration.html" title="interface in io.micronaut.aws.secretsmanager">SecretsManagerConfiguration</a>)</li>
+<li type="circle">io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html" title="class in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerKeyValueFetcher</span></a> (implements io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html" title="interface in io.micronaut.aws.distributedconfiguration">KeyValueFetcher</a>)</li>
 <li type="circle">io.micronaut.aws.alexa.httpserver.exceptions.<a href="io/micronaut/aws/alexa/httpserver/exceptions/SecurityExceptionHandler.html" title="class in io.micronaut.aws.alexa.httpserver.exceptions"><span class="typeNameLink">SecurityExceptionHandler</span></a> (implements io.micronaut.http.server.exceptions.ExceptionHandler&lt;T,R&gt;)</li>
 <li type="circle">io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/ServerPort.html" title="class in io.micronaut.function.aws.proxy.test"><span class="typeNameLink">ServerPort</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.httpserver.controllers.<a href="io/micronaut/aws/alexa/httpserver/controllers/SkillController.html" title="class in io.micronaut.aws.alexa.httpserver.controllers"><span class="typeNameLink">SkillController</span></a></li>
@@ -299,6 +309,7 @@
 <li type="circle">io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy"><span class="typeNameLink">MicronautLambdaContainerContext</span></a> (also extends io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautLambdaContext.html" title="interface in io.micronaut.function.aws">MicronautLambdaContext</a>)</li>
 </ul>
 </li>
+<li type="circle">io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">AwsDistributedConfiguration</span></a></li>
 <li type="circle">io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime"><span class="typeNameLink">AwsLambdaRuntimeApi</span></a></li>
 <li type="circle">io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterQueryProvider.html" title="interface in io.micronaut.discovery.aws.parameterstore"><span class="typeNameLink">AWSParameterQueryProvider</span></a></li>
 <li type="circle">io.micronaut.discovery.aws.route53.<a href="io/micronaut/discovery/aws/route53/AWSServiceDiscoveryResolver.html" title="interface in io.micronaut.discovery.aws.route53"><span class="typeNameLink">AWSServiceDiscoveryResolver</span></a></li>
@@ -312,6 +323,7 @@
 </li>
 </ul>
 </li>
+<li type="circle">io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/KeyValueFetcher.html" title="interface in io.micronaut.aws.distributedconfiguration"><span class="typeNameLink">KeyValueFetcher</span></a></li>
 <li type="circle">io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/LambdaRuntimeInvocationResponseHeaders.html" title="interface in io.micronaut.function.aws.runtime"><span class="typeNameLink">LambdaRuntimeInvocationResponseHeaders</span></a></li>
 <li type="circle">io.micronaut.function.aws.<a href="io/micronaut/function/aws/MicronautLambdaContext.html" title="interface in io.micronaut.function.aws"><span class="typeNameLink">MicronautLambdaContext</span></a>
 <ul>
@@ -339,6 +351,7 @@
 <ul>
 <li type="circle">io.micronaut.aws.alexa.httpserver.conf.<a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfiguration.html" title="interface in io.micronaut.aws.alexa.httpserver.conf"><span class="typeNameLink">AlexaControllerConfiguration</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html" title="interface in io.micronaut.aws.alexa.conf"><span class="typeNameLink">AlexaSkillConfiguration</span></a> (also extends io.micronaut.core.naming.Named, io.micronaut.core.order.Ordered)</li>
+<li type="circle">io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfiguration.html" title="interface in io.micronaut.aws.secretsmanager"><span class="typeNameLink">SecretsManagerConfiguration</span></a></li>
 </ul>
 </li>
 </ul>
