@@ -38,7 +38,7 @@ import java.util.Set;
  * Base implementation for AWS services contributing distributed configuration.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 public abstract class AwsDistributedConfigurationClient implements ConfigurationClient {
     private static final Logger LOG = LoggerFactory.getLogger(AwsDistributedConfigurationClient.class);

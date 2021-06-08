@@ -48,7 +48,7 @@ import java.util.Optional;
 /**
  * {@link KeyValueFetcher} implementations for AWS Secrets Manager.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @Experimental
 @Requires(beans = {SecretsManagerClient.class})

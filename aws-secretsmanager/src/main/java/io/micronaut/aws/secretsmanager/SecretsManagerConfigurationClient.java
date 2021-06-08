@@ -29,7 +29,7 @@ import javax.inject.Singleton;
  * Distributed configuration client for AWS Secrets Manager.
  * @see <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a>
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @Requires(beans = {
         AwsDistributedConfiguration.class,

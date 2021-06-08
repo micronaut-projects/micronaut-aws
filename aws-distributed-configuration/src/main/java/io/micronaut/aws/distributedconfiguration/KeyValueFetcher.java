@@ -25,7 +25,7 @@ import java.util.Optional;
  * Fetches a Map of properties for a given prefix.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @Experimental
 @FunctionalInterface

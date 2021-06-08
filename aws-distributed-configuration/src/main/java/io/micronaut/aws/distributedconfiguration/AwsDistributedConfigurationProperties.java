@@ -25,7 +25,7 @@ import io.micronaut.core.annotation.NonNull;
  * {@link ConfigurationProperties} implementation of {@link AwsDistributedConfiguration}.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @BootstrapContextCompatible
 @ConfigurationProperties(AwsDistributedConfigurationProperties.PREFIX)

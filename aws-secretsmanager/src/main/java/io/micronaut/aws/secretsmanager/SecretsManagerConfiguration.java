@@ -20,7 +20,7 @@ import io.micronaut.core.util.Toggleable;
 /**
  * Configuration for Secrets Manager.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 public interface SecretsManagerConfiguration extends Toggleable  {
 }

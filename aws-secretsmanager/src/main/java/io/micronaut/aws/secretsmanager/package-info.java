@@ -16,7 +16,7 @@
 /**
  * Integration classes for AWS Secrets Manager.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @Requires(property = SecretsManagerConfigurationProperties.PREFIX + ".enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Configuration

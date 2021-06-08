@@ -22,7 +22,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
 /**
  * {@link ConfigurationProperties} implementation of {@link SecretsManagerConfiguration}.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @BootstrapContextCompatible
 @ConfigurationProperties(SecretsManagerConfigurationProperties.PREFIX)

@@ -22,7 +22,7 @@ import io.micronaut.core.annotation.NonNull;
  * Configuration for Distributed Configuration using AWS services such as AWS Parameter Store or Secrets Manager.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 @Experimental
 public interface AwsDistributedConfiguration {

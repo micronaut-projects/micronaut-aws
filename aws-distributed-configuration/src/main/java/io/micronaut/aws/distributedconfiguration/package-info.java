@@ -16,6 +16,6 @@
 /**
  * Classes related to distributed configuration coming from AWS Services.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 2.8.0
  */
 package io.micronaut.aws.distributedconfiguration;
