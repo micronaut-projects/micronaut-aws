@@ -22,5 +22,5 @@ dependencies {
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:$askVersion"
 
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
 }
