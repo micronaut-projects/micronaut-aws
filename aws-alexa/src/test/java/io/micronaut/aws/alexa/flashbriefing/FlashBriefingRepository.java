@@ -1,6 +1,6 @@
 package io.micronaut.aws.alexa.flashbriefing;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

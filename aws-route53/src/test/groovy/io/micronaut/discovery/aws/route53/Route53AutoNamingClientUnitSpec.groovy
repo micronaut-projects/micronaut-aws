@@ -33,7 +33,7 @@ import io.micronaut.discovery.cloud.NetworkInterface
 import io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver
 import io.micronaut.discovery.cloud.aws.AmazonEC2InstanceMetadata
 import io.micronaut.runtime.server.EmbeddedServer
-import io.reactivex.Flowable
+import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -119,10 +119,10 @@ class Route53AutoNamingClientUnitSpec extends Specification {
         ServiceInstance serviceInstance = builder.build()
         client.register(serviceInstance)
 
-        List<String> serviceIds = Flowable.fromPublisher(discoveryClient.getServiceIds()).blockingFirst()
+        List<String> serviceIds = Flux.from(discoveryClient.getServiceIds()).blockFirst()
         assert serviceIds != null
 
-        List<ServiceInstance> instances = Flowable.fromPublisher(discoveryClient.getInstances(serviceIds.get(0))).blockingFirst()
+        List<ServiceInstance> instances = Flux.from(discoveryClient.getInstances(serviceIds.get(0))).blockFirst()
 
         instances.size() == 1
         instances != null
@@ -130,8 +130,6 @@ class Route53AutoNamingClientUnitSpec extends Specification {
 
         then:
         client.deregister(serviceInstance)
-
-
     }
 
     /**

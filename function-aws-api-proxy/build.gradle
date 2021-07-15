@@ -2,6 +2,7 @@ dependencies {
     compileOnly "io.micronaut.security:micronaut-security:$micronautSecurity"
 
     implementation "io.micronaut:micronaut-http-netty"
+    implementation "io.projectreactor:reactor-core"
     api "io.micronaut:micronaut-http-server"
     api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5.2', {
         exclude group:'javax.servlet', module:'javax.servlet-api'

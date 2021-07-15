@@ -24,7 +24,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpMethod;
 import org.apache.commons.io.IOUtils;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;

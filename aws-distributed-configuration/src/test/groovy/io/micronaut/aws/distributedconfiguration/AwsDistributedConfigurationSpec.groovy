@@ -1,17 +1,17 @@
 package io.micronaut.aws.distributedconfiguration
 
-import edu.umd.cs.findbugs.annotations.NonNull
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
+import io.micronaut.core.annotation.NonNull
 import io.micronaut.core.util.StringUtils
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class AwsDistributedConfigurationSpec extends Specification {
 

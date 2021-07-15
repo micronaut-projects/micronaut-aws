@@ -3,6 +3,7 @@ dependencies {
     api project(":aws-route53")
     api project(":aws-sdk-v2")
     implementation 'software.amazon.awssdk:ssm'
+    implementation "io.projectreactor:reactor-core"
 
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }

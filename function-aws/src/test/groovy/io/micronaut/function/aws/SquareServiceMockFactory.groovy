@@ -4,7 +4,7 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import spock.mock.DetachedMockFactory
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Factory
 class SquareServiceMockFactory {

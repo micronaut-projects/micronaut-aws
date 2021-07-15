@@ -9,6 +9,7 @@ import delight.fileupload.FileUpload
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
+import io.micronaut.core.async.annotation.SingleResult
 import io.micronaut.core.io.Writable
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
@@ -23,8 +24,8 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
-import io.reactivex.Single
 import org.apache.commons.fileupload.FileItem
+import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -187,7 +188,8 @@ class BodySpec extends Specification {
 
         @Post(uri = "/pojo-reactive")
         @Status(HttpStatus.CREATED)
-        Single<Point> post(@Body Single<Point> data) {
+        @SingleResult
+        Publisher<Point> post(@Body Publisher<Point> data) {
             return data
         }
 

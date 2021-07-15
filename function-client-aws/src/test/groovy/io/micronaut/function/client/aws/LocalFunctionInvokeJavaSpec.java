@@ -3,7 +3,7 @@ package io.micronaut.function.client.aws;
 //tag::import[]
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.client.FunctionClient;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,8 +11,9 @@ import static org.junit.Assert.assertEquals;
 //end::import[]
 
 import io.micronaut.runtime.server.EmbeddedServer;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Mono;
 //tag::rxImport[]
-import io.reactivex.Single;
 
 public class LocalFunctionInvokeJavaSpec {
 
@@ -41,11 +42,11 @@ public class LocalFunctionInvokeJavaSpec {
         sum.setB(10);
 
         EmbeddedServer server = ApplicationContext.run(EmbeddedServer.class);
-        RxMathClient mathClient = server.getApplicationContext().getBean(RxMathClient.class);
+        ReactiveMathClient mathClient = server.getApplicationContext().getBean(ReactiveMathClient.class);
 
-        assertEquals(Long.valueOf(Integer.MAX_VALUE), mathClient.max().blockingGet());
-        assertEquals(2, mathClient.rnd(1.6f).blockingGet().longValue());
-        assertEquals(15, mathClient.sum(sum).blockingGet().longValue());
+        assertEquals(Long.valueOf(Integer.MAX_VALUE), mathClient.max().block());
+        assertEquals(2, mathClient.rnd(1.6f).block().longValue());
+        assertEquals(15, mathClient.sum(sum).block().longValue());
 
     }
     //end::invokeRxLocalFunction[]
@@ -72,13 +73,13 @@ public class LocalFunctionInvokeJavaSpec {
 
     //tag::rxFunctionClient[]
     @FunctionClient
-    interface RxMathClient {
-        Single<Long> max();
+    interface ReactiveMathClient {
+        Mono<Long> max();
 
         @Named("round")
-        Single<Integer> rnd(float value);
+        Mono<Integer> rnd(float value);
 
-        Single<Long> sum(Sum sum);
+        Mono<Long> sum(Sum sum);
     }
     //end::rxFunctionClient[]
 }

@@ -15,6 +15,7 @@
  */
 package io.micronaut.discovery.aws.route53.registration;
 
+import com.amazonaws.handlers.AsyncHandler;
 import com.amazonaws.services.servicediscovery.AWSServiceDiscovery;
 import com.amazonaws.services.servicediscovery.AWSServiceDiscoveryAsync;
 import com.amazonaws.services.servicediscovery.AWSServiceDiscoveryClient;
@@ -24,6 +25,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.discovery.EmbeddedServerInstance;
 import io.micronaut.discovery.ServiceInstance;
 import io.micronaut.discovery.aws.route53.AWSServiceDiscoveryResolver;
 import io.micronaut.discovery.aws.route53.Route53AutoRegistrationConfiguration;
@@ -32,15 +34,15 @@ import io.micronaut.discovery.cloud.ComputeInstanceMetadata;
 import io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver;
 import io.micronaut.health.HealthStatus;
 import io.micronaut.runtime.ApplicationConfiguration;
-import io.micronaut.runtime.server.EmbeddedServerInstance;
 import io.micronaut.scheduling.TaskExecutors;
-import io.reactivex.Flowable;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
+import reactor.core.publisher.Mono;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -247,12 +249,23 @@ public class Route53AutoNamingRegistrationClient extends DiscoveryServiceAutoReg
         RegisterInstanceRequest instanceRequest = new RegisterInstanceRequest().withServiceId(route53AutoRegistrationConfiguration.getAwsServiceId())
                 .withInstanceId(instanceId).withCreatorRequestId(Long.toString(System.nanoTime())).withAttributes(instanceAttributes);
 
-        Future<RegisterInstanceResult> instanceResult = getDiscoveryClient().registerInstanceAsync(instanceRequest);
-        Flowable<RegisterInstanceResult> flowableResult = Flowable.fromFuture(instanceResult);
+        Mono<RegisterInstanceResult> result = Mono.create(emitter -> {
+            getDiscoveryClient().registerInstanceAsync(instanceRequest, new AsyncHandler<RegisterInstanceRequest, RegisterInstanceResult>() {
+                @Override
+                public void onError(Exception exception) {
+                    emitter.error(exception);
+                }
+
+                @Override
+                public void onSuccess(RegisterInstanceRequest request, RegisterInstanceResult registerInstanceResult) {
+                    emitter.success(registerInstanceResult);
+                }
+            });
+        });
 
 
         //noinspection SubscriberImplementation
-        flowableResult.subscribe(new Subscriber<RegisterInstanceResult>() {
+        result.subscribe(new Subscriber<RegisterInstanceResult>() {
 
             @Override
             public void onNext(RegisterInstanceResult registerInstanceResult) {

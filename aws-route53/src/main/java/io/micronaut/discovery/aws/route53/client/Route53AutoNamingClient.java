@@ -15,11 +15,11 @@
  */
 package io.micronaut.discovery.aws.route53.client;
 
+import com.amazonaws.handlers.AsyncHandler;
 import com.amazonaws.services.servicediscovery.AWSServiceDiscoveryAsync;
 import com.amazonaws.services.servicediscovery.model.*;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.discovery.DiscoveryClient;
 import io.micronaut.discovery.ServiceInstance;
@@ -27,14 +27,14 @@ import io.micronaut.discovery.aws.route53.AWSServiceDiscoveryResolver;
 import io.micronaut.discovery.aws.route53.Route53ClientDiscoveryConfiguration;
 import io.micronaut.discovery.aws.route53.Route53DiscoveryConfiguration;
 import io.micronaut.discovery.aws.route53.registration.EC2ServiceInstance;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
+import reactor.core.publisher.Mono;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
 
 /**
  * An implementation of the {@link DiscoveryClient} interface for AWS Route53.
@@ -101,25 +101,6 @@ public class Route53AutoNamingClient implements DiscoveryClient {
     }
 
     /**
-     * transforms an aws result into a list of service instances.
-     * @param instancesResult instance result list of a service from aws route 53
-     * @return serviceInstance list that micronaut wants
-     */
-    private Flowable<List<ServiceInstance>> convertInstancesResulttoServiceInstances(ListInstancesResult instancesResult) {
-        List<ServiceInstance> serviceInstances = new ArrayList<>();
-        for (InstanceSummary instanceSummary : instancesResult.getInstances()) {
-            try {
-                String uri = "http://" + instanceSummary.getAttributes().get("URI");
-                ServiceInstance serviceInstance = new EC2ServiceInstance(instanceSummary.getId(), new URI(uri)).metadata(instanceSummary.getAttributes()).build();
-                serviceInstances.add(serviceInstance);
-            } catch (URISyntaxException e) {
-                return Flowable.error(e);
-            }
-        }
-        return Flowable.just(serviceInstances);
-    }
-
-    /**
      * Gets a list of instances registered with Route53 given a service ID.
      * @param serviceId The service id
      * @return list of serviceInstances usable by MN.
@@ -130,9 +111,30 @@ public class Route53AutoNamingClient implements DiscoveryClient {
             serviceId = getRoute53ClientDiscoveryConfiguration().getAwsServiceId();  // we can default to the config file
         }
         ListInstancesRequest instancesRequest = new ListInstancesRequest().withServiceId(serviceId);
-        Future<ListInstancesResult> instanceResult = getDiscoveryClient().listInstancesAsync(instancesRequest);
-        Flowable<ListInstancesResult> observableInstanceResult = Flowable.fromFuture(instanceResult);
-        return observableInstanceResult.flatMap(this::convertInstancesResulttoServiceInstances);
+        return Mono.create(emitter -> {
+            getDiscoveryClient().listInstancesAsync(instancesRequest, new AsyncHandler<ListInstancesRequest, ListInstancesResult>() {
+                @Override
+                public void onError(Exception exception) {
+                    emitter.error(exception);
+                }
+
+                @Override
+                public void onSuccess(ListInstancesRequest request, ListInstancesResult listInstancesResult) {
+                    List<ServiceInstance> serviceInstances = new ArrayList<>();
+                    for (InstanceSummary instanceSummary : listInstancesResult.getInstances()) {
+                        try {
+                            String uri = "http://" + instanceSummary.getAttributes().get("URI");
+                            ServiceInstance serviceInstance = new EC2ServiceInstance(instanceSummary.getId(), new URI(uri)).metadata(instanceSummary.getAttributes()).build();
+                            serviceInstances.add(serviceInstance);
+                        } catch (URISyntaxException e) {
+                            emitter.error(e);
+                            return;
+                        }
+                    }
+                    emitter.success(serviceInstances);
+                }
+            });
+        });
     }
 
     /**
@@ -143,9 +145,25 @@ public class Route53AutoNamingClient implements DiscoveryClient {
     public Publisher<List<String>> getServiceIds() {
         ServiceFilter serviceFilter = new ServiceFilter().withName("NAMESPACE_ID").withValues(getRoute53ClientDiscoveryConfiguration().getNamespaceId());
         ListServicesRequest listServicesRequest = new ListServicesRequest().withFilters(serviceFilter);
-        Future<ListServicesResult> response = getDiscoveryClient().listServicesAsync(listServicesRequest);
-        Flowable<ListServicesResult> flowableList = Flowable.fromFuture(response);
-        return flowableList.flatMap(this::convertServiceIds);
+        return Mono.create(emitter -> {
+            getDiscoveryClient().listServicesAsync(listServicesRequest, new AsyncHandler<ListServicesRequest, ListServicesResult>() {
+                @Override
+                public void onError(Exception exception) {
+                    emitter.error(exception);
+                }
+
+                @Override
+                public void onSuccess(ListServicesRequest request, ListServicesResult listServicesResult) {
+                    List<ServiceSummary> services = listServicesResult.getServices();
+                    List<String> serviceIds = new ArrayList<>();
+
+                    for (ServiceSummary service : services) {
+                        serviceIds.add(service.getId());
+                    }
+                    emitter.success(serviceIds);
+                }
+            });
+        });
     }
 
     /**
@@ -154,24 +172,6 @@ public class Route53AutoNamingClient implements DiscoveryClient {
     @Override
     public void close() {
         getDiscoveryClient().shutdown();
-    }
-
-    /**
-     * Converts the services IDs returned for usage in MN.
-     * @param listServicesResult service result returned from AWS
-     * @return RXJava publisher of the service list
-     */
-    private Publisher<List<String>> convertServiceIds(ListServicesResult listServicesResult) {
-        List<ServiceSummary> services = listServicesResult.getServices();
-        List<String> serviceIds = new ArrayList<>();
-
-        for (ServiceSummary service : services) {
-            serviceIds.add(service.getId());
-        }
-        return Publishers.just(
-                serviceIds
-        );
-
     }
 
     /**

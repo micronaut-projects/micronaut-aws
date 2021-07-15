@@ -28,7 +28,7 @@ import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncCli
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient;
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClientBuilder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates service discovery clients.

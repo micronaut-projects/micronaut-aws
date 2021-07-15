@@ -21,7 +21,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.annotation.Secondary;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Creates a builder used to construct a new {@link com.amazon.ask.Skill} using the default
