@@ -66,33 +66,22 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
         client.client.getParametersByPath(_) >> { GetParametersByPathRequest getRequest ->
 
-            CompletableFuture<GetParametersByPathResponse> futureTask = Mock(CompletableFuture)
-            futureTask.isDone() >> { return true }
-            futureTask.get() >> {
-                ArrayList<Parameter> parameters = new ArrayList<Parameter>()
-                if (getRequest.path() == "/config/application") {
-                    Parameter parameter = Parameter.builder()
-                            .name("/config/application/pets")
-                            .value("dino,marty")
-                            .type("StringList")
-                            .build()
-                    parameters.add(parameter)
-                }
-                GetParametersByPathResponse.builder().parameters(parameters).build()
+            ArrayList<Parameter> parameters = new ArrayList<Parameter>()
+            if (getRequest.path() == "/config/application") {
+                Parameter parameter = Parameter.builder()
+                        .name("/config/application/pets")
+                        .value("dino,marty")
+                        .type("StringList")
+                        .build()
+                parameters.add(parameter)
             }
-            return futureTask
+            def resp = GetParametersByPathResponse.builder().parameters(parameters).build()
+            return CompletableFuture.completedFuture(resp)
         }
 
         client.client.getParameters(_) >> { GetParametersRequest getRequest ->
-
-            CompletableFuture<GetParametersResponse> futureTask = Mock(CompletableFuture)
-            futureTask.isDone() >> { return true }
-            futureTask.get() >> {
-                GetParametersResponse.builder().build()
-            }
-            return futureTask
+            return CompletableFuture.completedFuture(GetParametersResponse.builder().build())
         }
-
 
         when:
         def env = Mock(Environment)
