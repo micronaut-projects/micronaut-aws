@@ -2,6 +2,7 @@ package io.micronaut.function.aws.proxy
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.exceptions.NoSuchBeanException
@@ -62,7 +63,8 @@ class ObjectMapperSpec extends Specification {
         ObjectMapper aws = handler.applicationContext.getBean(ObjectMapper, Qualifiers.byName("aws"))
 
         then:
-        global.deserializationConfig.propertyNamingStrategy == PropertyNamingStrategy.SNAKE_CASE
+        global.deserializationConfig.propertyNamingStrategy == PropertyNamingStrategies.SNAKE_CASE ||
+                global.deserializationConfig.propertyNamingStrategy == PropertyNamingStrategy.SNAKE_CASE
         aws.deserializationConfig.propertyNamingStrategy == null
     }
 
