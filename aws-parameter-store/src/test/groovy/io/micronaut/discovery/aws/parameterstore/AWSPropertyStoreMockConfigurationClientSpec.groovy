@@ -310,7 +310,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['first', 'second'] as Set)
-        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify that active environment paths are not searched"
         propertySources.size() == 1
@@ -359,7 +359,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
         when:
         def env = Mock(Environment)
-        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify that the custom paths were searched"
         propertySources.size() == 1
