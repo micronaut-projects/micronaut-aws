@@ -12,8 +12,6 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Consumes
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -21,7 +19,8 @@ import spock.lang.Specification
 class ConsumesSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'ConsumesSpec'
             ])
     )
@@ -43,7 +42,6 @@ class ConsumesSpec extends Specification {
 
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/consumes-test')
     @Requires(property = 'spec.name', value = 'ConsumesSpec')
     static class ConsumesController {

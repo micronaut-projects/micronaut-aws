@@ -15,7 +15,6 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
 import io.micronaut.http.server.exceptions.ExceptionHandler
-import io.micronaut.security.config.SecurityConfigurationProperties
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -27,7 +26,7 @@ import static io.micronaut.http.HttpMethod.GET
 
 class RemoteAddressSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build((SecurityConfigurationProperties.PREFIX + ".enabled"):false)
+            ApplicationContext.builder('micronaut.security.enabled':false)
     )
     @Shared Context lambdaContext = new MockLambdaContext()
 

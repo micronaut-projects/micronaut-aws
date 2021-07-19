@@ -14,7 +14,7 @@ class ObjectMapperSpec extends Specification {
 
     void "by default, the object mapper is shared" () {
         given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(ApplicationContext.build())
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(ApplicationContext.builder())
 
         when:
         ObjectMapper objectMapper = handler.applicationContext.getBean(ObjectMapper)
@@ -32,7 +32,7 @@ class ObjectMapperSpec extends Specification {
     void "when changing the global object mapper configuration, by default it is still shared"() {
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'jackson.property-naming-strategy': 'SNAKE_CASE'
                 ])
         )
@@ -51,7 +51,7 @@ class ObjectMapperSpec extends Specification {
     void "when changing global object mapper configuration, it can be configured to create a new one for aws" () {
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'jackson.property-naming-strategy': 'SNAKE_CASE',
                         'aws.proxy.shared-object-mapper': false
                 ])

@@ -8,8 +8,6 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import reactor.core.publisher.Flux
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -18,7 +16,8 @@ import spock.lang.Specification
 class FluxSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'FluxSpec'
             ])
     )
@@ -36,7 +35,6 @@ class FluxSpec extends Specification {
         response.body == '["Joe","Lewis"]'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/users")
     @Requires(property = 'spec.name', value = 'FluxSpec')
     static class UserController {

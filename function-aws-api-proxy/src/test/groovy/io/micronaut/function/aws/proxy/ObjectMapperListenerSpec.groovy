@@ -19,7 +19,7 @@ class ObjectMapperListenerSpec extends Specification {
     void "the aws object mapper can be customised" () {
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ObjectMapperListenerSpec',
                         'jackson.property-naming-strategy': 'SNAKE_CASE',
                         'aws.proxy.shared-object-mapper': false
