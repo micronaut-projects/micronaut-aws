@@ -10,8 +10,6 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.CookieValue
 import io.micronaut.http.annotation.Get
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -19,6 +17,7 @@ import spock.lang.Specification
 class CookiesSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'CookiesSpec'
             ])
     )
@@ -64,7 +63,6 @@ class CookiesSpec extends Specification {
         response.body == '{"one":"foo","two":"bar"}'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/cookies-test')
     @Requires(property = 'spec.name', value = 'CookiesSpec')
     static class CookieController {

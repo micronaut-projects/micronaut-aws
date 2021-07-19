@@ -32,8 +32,6 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.cookie.Cookie;
-import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.rules.SecurityRule;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -172,7 +170,6 @@ public class HelloWorldMicronautTest {
         assertEquals(expectedResult, response.getBody());
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/")
     @Requires(property = "spec.name", value = "HelloWorldMicronautTest")
     public static class HelloController {

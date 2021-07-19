@@ -21,8 +21,6 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import io.reactivex.Single
 import org.apache.commons.fileupload.FileItem
 import spock.lang.AutoCleanup
@@ -40,6 +38,7 @@ class BodySpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'BodySpec'
             ])
     )
@@ -167,7 +166,6 @@ class BodySpec extends Specification {
         response.body == '{"x":10,"y":20}'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-body')
     @Requires(property = 'spec.name', value = 'BodySpec')
     static class BodyController {
