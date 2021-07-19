@@ -5,7 +5,7 @@ import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.inject.BeanDefinition
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class SecretsManagerConfigurationClientSpec extends ApplicationContextSpecification {
 

@@ -15,7 +15,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class SkillsControllerAskExceptionSpec extends EmbeddedServerSpecification implements RequestEnvelopFixture {
 

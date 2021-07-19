@@ -17,7 +17,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class SkillControllerPathSpec extends EmbeddedServerSpecification implements RequestEnvelopFixture {
 

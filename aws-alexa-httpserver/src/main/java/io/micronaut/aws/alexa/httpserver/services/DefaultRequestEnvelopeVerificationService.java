@@ -22,7 +22,7 @@ import io.micronaut.aws.alexa.httpserver.verifiers.HttpServerAlexaHttpRequest;
 import io.micronaut.aws.alexa.httpserver.verifiers.SkillServletVerifier;
 import io.micronaut.http.HttpHeaders;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.List;
 
 /**

@@ -26,7 +26,7 @@ import io.micronaut.security.filters.AuthenticationFetcher;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;

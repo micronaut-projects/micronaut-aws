@@ -29,7 +29,7 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerAsyncClientB
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClientBuilder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a Secrets Manager client.

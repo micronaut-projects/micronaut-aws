@@ -32,7 +32,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @MicronautLambdaTest
 public class RequestHandlerTest {
