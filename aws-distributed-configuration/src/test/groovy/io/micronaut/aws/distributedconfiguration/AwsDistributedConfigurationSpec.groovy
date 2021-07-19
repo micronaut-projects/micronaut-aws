@@ -1,6 +1,6 @@
 package io.micronaut.aws.distributedconfiguration
 
-import edu.umd.cs.findbugs.annotations.NonNull
+import io.micronaut.core.annotation.NonNull
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.context.annotation.Requires
