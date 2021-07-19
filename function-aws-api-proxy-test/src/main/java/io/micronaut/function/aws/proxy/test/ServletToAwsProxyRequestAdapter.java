@@ -18,7 +18,7 @@ package io.micronaut.function.aws.proxy.test;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Adapts from {@link HttpServletRequest} to {@link AwsProxyRequest}.
