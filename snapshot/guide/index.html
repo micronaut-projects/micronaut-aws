@@ -1817,11 +1817,11 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 
 
 <div class="paragraph">
-<p>Instances of Lambdas are added and removed dynamically.
-When a new instance handles its first request, the response time increases, which is called a cold start. After that request is processed, the instance stays alive (≈10 m) to be reused for subsequent requests.</p>
+<p>Instances of Lambda functions are automatically added as request concurrency increases.
+When a new instance handles its first request it has to start the JVM and load your code, this one time process is called a cold start. The request is then processed, and the instance stays alive to be reused for subsequent requests. Lambda instances can be replaced over time and there is no way to determine how long a Lambda instance will live for.</p>
 </div>
 <div class="paragraph">
-<p>Lambdas execution have different phases (Initialization, Invocation&#8230;&#8203;).</p>
+<p>Lambda function executions have different phases (Initialization, Invocation&#8230;&#8203;).</p>
 </div>
 <div class="paragraph">
 <p>During the initialization phase:</p>
@@ -1834,13 +1834,10 @@ When a new instance handles its first request, the response time increases, whic
 <li>
 <p>Java runtime loads and initializes handler class.</p>
 </li>
-<li>
-<p>Lambda calls the handler method.</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The intialization phase has access to more CPU because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
+<p>The intialization phase has access to more CPU, because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
 </div>
 
 <h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>7.8 GraalVM and AWS Custom runtimes</h2>
