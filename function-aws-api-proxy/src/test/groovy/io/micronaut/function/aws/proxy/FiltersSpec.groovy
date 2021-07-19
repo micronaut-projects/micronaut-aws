@@ -31,7 +31,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import io.micronaut.core.annotation.Nullable;
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class FiltersSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(

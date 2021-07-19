@@ -11,7 +11,7 @@ import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class AwsDistributedConfigurationSpec extends Specification {
 

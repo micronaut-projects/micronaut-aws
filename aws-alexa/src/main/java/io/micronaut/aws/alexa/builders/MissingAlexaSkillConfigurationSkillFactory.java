@@ -20,7 +20,7 @@ import com.amazon.ask.Skill;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Creates an Alexa Skill only if no AlexaSkillConfiguration is present.

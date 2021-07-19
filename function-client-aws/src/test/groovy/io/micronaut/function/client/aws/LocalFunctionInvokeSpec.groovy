@@ -19,7 +19,7 @@ import io.micronaut.context.ApplicationContext
 
 //tag::import[]
 import io.micronaut.function.client.FunctionClient
-import javax.inject.Named
+import jakarta.inject.Named
 //end::import[]
 
 import io.micronaut.runtime.server.EmbeddedServer

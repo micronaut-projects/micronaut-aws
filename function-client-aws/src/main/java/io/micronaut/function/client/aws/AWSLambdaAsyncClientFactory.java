@@ -20,7 +20,7 @@ import com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * @author graemerocher

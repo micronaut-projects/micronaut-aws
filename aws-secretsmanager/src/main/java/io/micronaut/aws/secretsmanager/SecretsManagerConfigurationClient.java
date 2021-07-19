@@ -23,7 +23,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.runtime.ApplicationConfiguration;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Distributed configuration client for AWS Secrets Manager.

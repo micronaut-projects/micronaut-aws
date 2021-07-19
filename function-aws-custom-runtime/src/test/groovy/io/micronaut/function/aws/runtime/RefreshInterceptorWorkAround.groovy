@@ -6,7 +6,7 @@ import io.micronaut.context.annotation.Replaces
 import io.micronaut.runtime.context.scope.refresh.RefreshInterceptor
 import spock.lang.Issue
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 //TODO delete once Micronaut 2.0.0.M3 is released
 @Issue("https://github.com/micronaut-projects/micronaut-core/issues/3072")

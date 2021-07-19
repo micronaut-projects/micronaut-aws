@@ -27,7 +27,7 @@ import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Specification
 
-import javax.inject.Named
+import jakarta.inject.Named
 
 /**
  * @author graemerocher

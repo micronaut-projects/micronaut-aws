@@ -20,7 +20,7 @@ import io.micronaut.aws.alexa.httpserver.AskHttpServerConstants;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;

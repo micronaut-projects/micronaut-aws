@@ -20,8 +20,8 @@ import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 /**
  * Factory class that creates an object mapper if the property "aws.proxy.shared-object-mapper" is set to true.

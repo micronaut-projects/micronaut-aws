@@ -19,7 +19,7 @@ import software.amazon.awssdk.services.secretsmanager.model.ListSecretsResponse
 import software.amazon.awssdk.services.secretsmanager.model.ResourceNotFoundException
 import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry
 import software.amazon.awssdk.services.secretsmanager.model.SecretsManagerException
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification {
 

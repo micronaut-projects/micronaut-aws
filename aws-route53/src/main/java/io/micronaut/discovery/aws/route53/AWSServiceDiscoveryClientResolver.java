@@ -22,7 +22,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.discovery.aws.route53.client.Route53AutoNamingClient;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * This gets a real amazon service discovery client. It is abstracted to allow for it to be replaced easier during testing.

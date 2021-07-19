@@ -3,7 +3,7 @@ package io.micronaut.function.client.aws;
 //tag::import[]
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.client.FunctionClient;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
