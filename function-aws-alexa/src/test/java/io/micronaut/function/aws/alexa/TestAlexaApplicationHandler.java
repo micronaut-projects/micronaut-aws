@@ -16,22 +16,26 @@
 package io.micronaut.function.aws.alexa;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
+import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
-import io.micronaut.aws.alexa.annotation.IntentHandler;
-
+import com.amazon.ask.request.Predicates;
 import jakarta.inject.Singleton;
 import java.util.Optional;
 
 @Singleton
-public class TestAlexApplication {
+public class TestAlexaApplicationHandler implements RequestHandler {
 
-    @IntentHandler("HelloWorldIntent")
-    public Optional<Response> greet(HandlerInput input) {
+    @Override
+    public boolean canHandle(HandlerInput handlerInput) {
+        return handlerInput.matches(Predicates.intentName("HelloWorldIntent"));
+    }
+
+    @Override
+    public Optional<Response> handle(HandlerInput handlerInput) {
         String speechText = "Hello World";
-        return input.getResponseBuilder()
+        return handlerInput.getResponseBuilder()
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .build();
     }
-
 }
