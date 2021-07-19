@@ -1,5 +1,5 @@
 dependencies {
-    api platform("software.amazon.awssdk:bom:2.16.88")
+    api platform("software.amazon.awssdk:bom:2.16.100")
     api project(":aws-common")
 
     compileOnly "org.graalvm.nativeimage:svm"
@@ -32,6 +32,6 @@ dependencies {
     testImplementation "software.amazon.awssdk:sqs"
     testImplementation "software.amazon.awssdk:ssm"
     testImplementation "software.amazon.awssdk:rekognition"
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
 }
