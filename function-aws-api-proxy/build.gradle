@@ -18,6 +18,7 @@ dependencies {
 
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
     testImplementation 'io.micronaut.views:micronaut-views-handlebars'
     testImplementation "io.projectreactor:reactor-core"
