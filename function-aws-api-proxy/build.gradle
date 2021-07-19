@@ -20,7 +20,9 @@ dependencies {
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
-    testImplementation 'io.micronaut.views:micronaut-views-handlebars'
+
+    testImplementation "io.micronaut.views:micronaut-views-handlebars:$micronautViewsVersion"
+
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
     testImplementation 'javax.servlet:servlet-api:2.5'
     testImplementation 'org.javadelight:delight-fileupload:0.0.5'
