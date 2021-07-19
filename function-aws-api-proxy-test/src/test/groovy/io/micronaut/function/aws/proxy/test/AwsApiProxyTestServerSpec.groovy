@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Specification
@@ -18,11 +18,11 @@ import javax.inject.Inject
 class AwsApiProxyTestServerSpec extends Specification {
     @Inject
     @Client('/')
-    RxHttpClient client
+    HttpClient client
 
     void 'test invoke function via server'() {
         when:
-        String result = client.retrieve('/test').blockingFirst()
+        String result = client.toBlocking().retrieve('/test')
 
         then:
         result == 'good'
@@ -30,8 +30,8 @@ class AwsApiProxyTestServerSpec extends Specification {
     
     void 'test invoke post via server'() {
         when:
-        String result = client.retrieve(HttpRequest.POST('/test', "body")
-                                        .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
+        String result = client.toBlocking().retrieve(HttpRequest.POST('/test', "body")
+                                        .contentType(MediaType.TEXT_PLAIN), String)
 
         then:
         result == 'goodbody'
@@ -39,8 +39,8 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'query values are picked up'() {
         when:
-        String result = client.retrieve(HttpRequest.GET('/test-param?foo=bar')
-                                        .contentType(MediaType.TEXT_PLAIN), String).blockingFirst()
+        String result = client.toBlocking().retrieve(HttpRequest.GET('/test-param?foo=bar')
+                                        .contentType(MediaType.TEXT_PLAIN), String)
 
         then:
         result == 'get:bar'
