@@ -18,7 +18,6 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
 import io.micronaut.http.server.exceptions.ExceptionHandler
-import io.micronaut.validation.Validated
 import io.micronaut.web.router.RouteMatch
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
@@ -93,7 +92,6 @@ class FiltersSpec extends Specification {
     }
 
     @Controller("/filter-test")
-    @Validated
     @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class TestController {
         @Get("/ok")
