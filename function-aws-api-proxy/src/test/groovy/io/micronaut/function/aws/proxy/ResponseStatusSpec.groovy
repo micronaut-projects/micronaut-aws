@@ -25,7 +25,7 @@ class ResponseStatusSpec extends Specification {
         given:
 
         def handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -49,7 +49,7 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -71,7 +71,7 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -93,7 +93,7 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -115,7 +115,7 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec',
                         (SecurityConfigurationProperties.PREFIX + ".enabled"):false
                 ])

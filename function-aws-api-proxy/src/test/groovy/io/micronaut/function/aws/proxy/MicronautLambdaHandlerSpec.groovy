@@ -23,7 +23,7 @@ class MicronautLambdaHandlerSpec extends Specification {
      */
     void "injected ApplicationContext preserves behaviour"() {
         given:
-        MicronautLambdaHandler handler = new MicronautLambdaHandler(ApplicationContext.build().properties([
+        MicronautLambdaHandler handler = new MicronautLambdaHandler(ApplicationContext.builder().properties([
                 'spec.name': 'MicronautLambdaHandlerSpec'
         ]))
         ApplicationContext context = new LambdaApplicationContextBuilder()
@@ -56,7 +56,7 @@ class MicronautLambdaHandlerSpec extends Specification {
     void "test selected route reflects accept header"(){
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'MicronautLambdaHandlerSpec',
                 ])
         )

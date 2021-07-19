@@ -121,7 +121,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler() throws ContainerInitializationException {
-        this(new LambdaContainerState(), ApplicationContext.build(), null);
+        this(new LambdaContainerState(), ApplicationContext.builder(), null);
     }
 
     /**
@@ -131,7 +131,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler(ApplicationContext applicationContext) throws ContainerInitializationException {
-        this(new LambdaContainerState(), ApplicationContext.build(), applicationContext);
+        this(new LambdaContainerState(), ApplicationContext.builder(), applicationContext);
     }
 
     /**
@@ -173,7 +173,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException if the container couldn't be started
      */
     private MicronautLambdaContainerHandler(LambdaContainerState lambdaContainerEnvironment) throws ContainerInitializationException {
-        this(lambdaContainerEnvironment, ApplicationContext.build(), null);
+        this(lambdaContainerEnvironment, ApplicationContext.builder(), null);
     }
 
     /**

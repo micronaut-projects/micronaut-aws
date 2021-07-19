@@ -18,7 +18,7 @@ import spock.lang.Specification
 class ParametersSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
                     'spec.name': 'ParametersSpec'
             ])
     )

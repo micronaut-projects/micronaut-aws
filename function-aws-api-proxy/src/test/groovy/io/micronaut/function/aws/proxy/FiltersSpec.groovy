@@ -35,7 +35,7 @@ import javax.inject.Singleton
 
 class FiltersSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
                     'spec.name': 'FiltersSpec',
                     'micronaut.server.cors.enabled': true
             ])

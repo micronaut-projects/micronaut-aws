@@ -39,7 +39,7 @@ import java.util.zip.ZipOutputStream
 class BodySpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
                     'spec.name': 'BodySpec'
             ])
     )

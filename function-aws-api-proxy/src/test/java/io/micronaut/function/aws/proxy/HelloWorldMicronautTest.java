@@ -87,7 +87,7 @@ public class HelloWorldMicronautTest {
     public static void initializeServer() throws ContainerInitializationException {
         try {
             handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build()
+                    ApplicationContext.builder()
                             .properties(Collections.singletonMap(
                                     "spec.name", "HelloWorldMicronautTest"
                             ))

@@ -25,7 +25,7 @@ class VersionSpec extends Specification {
     @Shared
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-        ApplicationContext.build().properties([
+        ApplicationContext.builder().properties([
             'spec.name'                                 : 'VersionSpec',
             'micronaut.router.versioning.enabled'       : true,
             'micronaut.router.versioning.header.enabled': true,
