@@ -17,11 +17,8 @@ package io.micronaut.function.aws.alexa;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.Request;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
-import io.micronaut.aws.alexa.annotation.IntentHandler;
-
 import jakarta.inject.Singleton;
 import java.util.Optional;
 
