@@ -156,7 +156,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     public ApplicationContextBuilder createApplicationContextBuilderWithArgs(String... args) {
         CommandLine commandLine = CommandLine.parse(args);
-        return ApplicationContext.build()
+        return ApplicationContext.builder()
                 .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
                 .propertySources(new CommandLinePropertySource(commandLine));
     }

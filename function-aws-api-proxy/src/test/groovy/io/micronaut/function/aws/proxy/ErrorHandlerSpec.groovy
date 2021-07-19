@@ -32,7 +32,7 @@ class ErrorHandlerSpec extends Specification {
     @Shared
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
                     'spec.name': 'ErrorHandlerSpec',
                     'micronaut.server.cors.enabled': true,
                     'micronaut.server.cors.configurations.web.allowedOrigins': ['http://localhost:8080']
