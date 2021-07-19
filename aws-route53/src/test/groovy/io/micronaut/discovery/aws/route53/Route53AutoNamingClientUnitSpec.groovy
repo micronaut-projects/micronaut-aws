@@ -48,7 +48,6 @@ import spock.util.concurrent.PollingConditions
 @Stepwise
 class Route53AutoNamingClientUnitSpec extends Specification {
 
-
     @AutoCleanup
     @Shared
     EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer,
@@ -60,29 +59,32 @@ class Route53AutoNamingClientUnitSpec extends Specification {
              "spec.name"                            : getClass().simpleName],
             Environment.AMAZON_EC2
     )
+
     @Shared
     Route53AutoNamingRegistrationClient client = embeddedServer.applicationContext.getBean(Route53AutoNamingRegistrationClient)
+
     @Shared
     DiscoveryClient discoveryClient = embeddedServer.applicationContext.getBean(DiscoveryClient)
+
     @Shared
     Route53AutoNamingClient route53AutoNamingClient = embeddedServer.applicationContext.getBean(Route53AutoNamingClient)
+
     @Shared
     String namespaceId
+
     @Shared
     String serviceId
+
     @Shared
     String createdInstanceId
 
     def setupSpec() {
-
         // replace bean for testing
-
         namespaceId = "asdb123"
         serviceId = "123abcdf"
         //client.route53AutoRegistrationConfiguration.setAwsServiceId(serviceId)
 
         createdInstanceId = "i-12123321"
-
 
         route53AutoNamingClient.route53ClientDiscoveryConfiguration.awsServiceId = serviceId
         route53AutoNamingClient.route53ClientDiscoveryConfiguration.namespaceId = namespaceId
@@ -93,40 +95,37 @@ class Route53AutoNamingClientUnitSpec extends Specification {
         client.discoveryService.id = serviceId
         client.discoveryService.name = namespaceId
         client.discoveryService.instanceCount = 1
-
     }
 
     void "test is a discovery client"() {
         expect:
         discoveryClient instanceof CompositeDiscoveryClient
         client instanceof DiscoveryServiceAutoRegistration
-
     }
 
-
     void "test register and de-register instance"() {
-
-
         given:
         PollingConditions conditions = new PollingConditions(timeout: 10)
         createdInstanceId = "i-12123321"
         // we will need to call our getInstance Details since we are not running this on a real aws server and trick the resolver for the test
 
         when:
-        def instanceId = createdInstanceId
-        def appId = "myapp"
-        def builder = ServiceInstance.builder("test", new URI("/v1")).instanceId(instanceId)
-        ServiceInstance serviceInstance = builder.build()
+        String instanceId = createdInstanceId
+        String appId = "myapp"
+        ServiceInstance serviceInstance = ServiceInstance.builder("test", new URI("/v1"))
+                .instanceId(instanceId)
+                .build()
         client.register(serviceInstance)
-
         List<String> serviceIds = Flux.from(discoveryClient.getServiceIds()).blockFirst()
-        assert serviceIds != null
 
+        then:
+        serviceIds
+
+        when:
         List<ServiceInstance> instances = Flux.from(discoveryClient.getInstances(serviceIds.get(0))).blockFirst()
 
-        instances.size() == 1
-        instances != null
-        serviceIds != null
+        then:
+        instances
 
         then:
         client.deregister(serviceInstance)
@@ -166,10 +165,8 @@ class Route53AutoNamingClientUnitSpec extends Specification {
             metadata.publicIpV4 = "10.0.0.2"
             metadata.privateIpV4 = "10.0.0.3"
 
-
             metadata.machineType = "t2.nano"
             metadata.localHostname = "i12123321.ec2.internal"
-
 
             NetworkInterface micronautNetworkInterface = new NetworkInterface()
             micronautNetworkInterface.ipv4 = "10.0.0.3"
@@ -183,5 +180,4 @@ class Route53AutoNamingClientUnitSpec extends Specification {
             Optional.of(metadata)
         }
     }
-
 }
