@@ -3,7 +3,10 @@ releases: Release History
 mnawsthree:
   title: Micronaut AWS 3.0
   mnawsthreeBreaks: Breaking Changes in Micronaut AWS 3.0
-whatsNew: What's new?
+mnawstwo:
+  title: Micronaut AWS 2.0
+  mnawstwoWhatsNew: What's new in Micronaut AWS 2.0 ?
+  mnawstwoBreaks: Breaking Changes in Micronaut AWS 2.0
 corretto: Amazon Correto
 sdkv1:
   title: AWS SDK v1
@@ -54,5 +57,4 @@ distributedconfiguration:
   distributedconfigurationsecretsmanager: AWS Secrets Manager
   parametersStore: AWS System Manager Parameter Store
 repository: Repository
-breaks: Breaking Changes
 thirdPartyLibraries: Third-party libraries
