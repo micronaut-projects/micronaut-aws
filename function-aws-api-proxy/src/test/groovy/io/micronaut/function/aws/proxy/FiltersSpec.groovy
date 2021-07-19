@@ -23,7 +23,6 @@ import io.micronaut.security.rules.AbstractSecurityRule
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.security.rules.SecurityRuleResult
 import io.micronaut.security.token.RolesFinder
-import io.micronaut.validation.Validated
 import io.micronaut.web.router.RouteMatch
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
@@ -98,7 +97,6 @@ class FiltersSpec extends Specification {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/filter-test")
-    @Validated
     @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class TestController {
         @Get("/ok")
