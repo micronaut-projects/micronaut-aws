@@ -1,5 +1,8 @@
 introduction: Introduction
 releases: Release History
+mnawsthree:
+  title: Micronaut AWS 3.0
+  mnawsthreeBreaks: Breaking Changes in Micronaut AWS 3.0
 whatsNew: What's new?
 corretto: Amazon Correto
 sdkv1:

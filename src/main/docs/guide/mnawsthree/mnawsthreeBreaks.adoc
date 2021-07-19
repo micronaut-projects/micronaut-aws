@@ -1,0 +1,10 @@
+`@IntentHandler` annotation has been removed. `@IntentHandler` helped to implement automatically the method `canHandler` of an Alexa's handler.
+If you had code, such as `@IntentHandler("HelloWorldIntent")`, you need to implement `canHandle` method. For example:
+
+[source, java]
+----
+@Override
+public boolean canHandle(HandlerInput handlerInput) {
+return handlerInput.matches(Predicates.intentName("HelloWorldIntent"));
+}
+----
