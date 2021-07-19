@@ -55,10 +55,10 @@ class ObjectMapperListenerSpec extends Specification {
         }
 
         private Optional<String> getNamedValue(BeanDefinition<?> beanDefinition) {
-            if (beanDefinition.getAnnotation("javax.inject.Named") == null) {
+            if (beanDefinition.getAnnotation(AnnotationUtil.NAMED) == null) {
                 return Optional.empty();
             }
-            beanDefinition.getAnnotation("javax.inject.Named").getValue(String.class);
+            beanDefinition.getAnnotation(AnnotationUtil.NAMED).getValue(String.class);
         }
     }
 
