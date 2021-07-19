@@ -14,8 +14,6 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -26,9 +24,10 @@ class VersionSpec extends Specification {
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
         ApplicationContext.builder().properties([
-            'spec.name'                                 : 'VersionSpec',
-            'micronaut.router.versioning.enabled'       : true,
-            'micronaut.router.versioning.header.enabled': true,
+                'micronaut.security.enabled': false,
+                'spec.name'                                 : 'VersionSpec',
+                'micronaut.router.versioning.enabled'       : true,
+                'micronaut.router.versioning.header.enabled': true,
         ])
     )
 
@@ -64,7 +63,6 @@ class VersionSpec extends Specification {
         response.body == 'pong v2'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/version')
     @Requires(property = 'spec.name', value = 'VersionSpec')
     static class ConsumesController {

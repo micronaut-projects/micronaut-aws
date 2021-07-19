@@ -18,11 +18,6 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
 import io.micronaut.http.server.exceptions.ExceptionHandler
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.AbstractSecurityRule
-import io.micronaut.security.rules.SecurityRule
-import io.micronaut.security.rules.SecurityRuleResult
-import io.micronaut.security.token.RolesFinder
 import io.micronaut.validation.Validated
 import io.micronaut.web.router.RouteMatch
 import org.reactivestreams.Publisher
@@ -36,6 +31,7 @@ import javax.inject.Singleton
 class FiltersSpec extends Specification {
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'FiltersSpec',
                     'micronaut.server.cors.enabled': true
             ])
@@ -96,7 +92,6 @@ class FiltersSpec extends Specification {
         response.multiValueHeaders.getFirst('X-Test-Filter') == 'true'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/filter-test")
     @Validated
     @Requires(property = 'spec.name', value = 'FiltersSpec')
@@ -112,7 +107,6 @@ class FiltersSpec extends Specification {
         }
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Filter("/filter-test/**")
     @Requires(property = 'spec.name', value = 'FiltersSpec')
     static class TestFilter implements HttpServerFilter {
@@ -138,20 +132,4 @@ class FiltersSpec extends Specification {
             return HttpResponse.ok("Exception Handled")
         }
     }
-
-    @Singleton
-    @Requires(property = 'spec.name', value = 'FiltersSpec')
-    static class NoRouteRule extends AbstractSecurityRule {
-
-        NoRouteRule(RolesFinder rolesFinder) {
-            super(rolesFinder)
-        }
-
-        @Override
-        SecurityRuleResult check(HttpRequest<?> request, @Nullable RouteMatch<?> routeMatch, @Nullable Map<String, Object> claims) {
-            return routeMatch == null ? SecurityRuleResult.ALLOWED : SecurityRuleResult.UNKNOWN
-        }
-
-    }
-
 }
