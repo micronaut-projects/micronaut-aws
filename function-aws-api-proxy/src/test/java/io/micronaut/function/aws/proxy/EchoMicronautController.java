@@ -22,8 +22,6 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
-import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.views.ModelAndView;
 
 import javax.ws.rs.core.Response;
@@ -34,9 +32,7 @@ import java.util.Set;
 
 import static io.micronaut.function.aws.proxy.MicronautAwsProxyTest.SERVLET_RESP_HEADER_KEY;
 
-
 @Controller("/echo")
-@Secured(SecurityRule.IS_ANONYMOUS)
 @Requires(property = "spec.name", value = "MicronautAwsProxyTest")
 public class EchoMicronautController {
     @Get("/encoded-param")

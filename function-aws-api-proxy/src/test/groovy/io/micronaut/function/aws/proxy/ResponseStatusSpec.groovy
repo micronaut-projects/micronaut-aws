@@ -10,9 +10,6 @@ import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.config.SecurityConfigurationProperties
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolationException
@@ -25,7 +22,8 @@ class ResponseStatusSpec extends Specification {
         given:
 
         def handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -49,7 +47,8 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -69,9 +68,9 @@ class ResponseStatusSpec extends Specification {
 
     void "test null causes 404"() {
         given:
-
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -93,7 +92,8 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
                         'spec.name': 'ResponseStatusSpec'
                 ])
         )
@@ -115,9 +115,9 @@ class ResponseStatusSpec extends Specification {
         given:
 
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
                         'spec.name': 'ResponseStatusSpec',
-                        (SecurityConfigurationProperties.PREFIX + ".enabled"):false
+                        'micronaut.security.enabled':false
                 ])
         )
 
@@ -134,7 +134,6 @@ class ResponseStatusSpec extends Specification {
         handler.close()
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/response-status')
     @Requires(property = 'spec.name', value = 'ResponseStatusSpec')
     static class StatusController {
