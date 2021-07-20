@@ -33,7 +33,7 @@ import io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver
 import io.micronaut.discovery.cloud.aws.AmazonEC2InstanceMetadata
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
-import io.reactivex.Flowable
+import reactor.core.publisher.Flux
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClient
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient
 import software.amazon.awssdk.services.servicediscovery.model.GetOperationResponse
@@ -50,8 +50,8 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -59,7 +59,6 @@ import java.util.concurrent.CompletableFuture
  * @author Denis Stepanov
  * @since 1.0
  */
-
 @MicronautTest(environments = Environment.AMAZON_EC2)
 class AwsServiceDiscoverySpec extends Specification implements TestPropertyProvider {
 
@@ -168,10 +167,10 @@ class AwsServiceDiscoverySpec extends Specification implements TestPropertyProvi
             ServiceInstance serviceInstance = builder.build()
             client.register(serviceInstance)
 
-            List<String> serviceIds = Flowable.fromPublisher(discoveryClient.getServiceIds()).blockingFirst()
+            List<String> serviceIds = Flux.from(discoveryClient.getServiceIds()).blockFirst()
             assert serviceIds != null
 
-            List<ServiceInstance> instances = Flowable.fromPublisher(discoveryClient.getInstances(serviceIds.get(0))).blockingFirst()
+            List<ServiceInstance> instances = Flux.from(discoveryClient.getInstances(serviceIds.get(0))).blockFirst()
 
             instances.size() == 1
             instances != null
