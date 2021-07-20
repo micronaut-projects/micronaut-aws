@@ -1,5 +1,8 @@
 introduction: Introduction
 releases: Release History
+mnawsthree:
+  title: Micronaut AWS 3.0
+  mnawsthreeBreaks: Breaking Changes in Micronaut AWS 3.0
 mnawstwo:
   title: Micronaut AWS 2.0
   mnawstwoWhatsNew: What's new in Micronaut AWS 2.0 ?

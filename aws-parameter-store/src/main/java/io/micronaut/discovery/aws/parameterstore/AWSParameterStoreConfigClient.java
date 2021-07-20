@@ -15,14 +15,14 @@
  */
 package io.micronaut.discovery.aws.parameterstore;
 
-import com.amazonaws.SdkClientException;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
-import io.micronaut.discovery.aws.route53.Route53ClientDiscoveryConfiguration;
+import io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration;
+import io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration;
 import io.micronaut.discovery.client.ClientUtil;
 import io.micronaut.discovery.config.ConfigurationClient;
 import io.micronaut.runtime.ApplicationConfiguration;
@@ -33,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.ssm.SsmAsyncClient;
 import software.amazon.awssdk.services.ssm.model.*;
 
@@ -71,18 +72,17 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
      * @param awsParameterStoreConfiguration      configuration for the parameter store
      * @param applicationConfiguration            the application configuration
      * @param queryProvider                       the query provider that will help find configuration values
-     * @param route53ClientDiscoveryConfiguration configuration for route53 service discovery, if you are using this (not required)
-     * @throws SdkClientException If the aws sdk client could not be created
+     * @param serviceDiscoveryConfiguration       configuration for route53 service discovery, if you are using this (not required)
      */
     AWSParameterStoreConfigClient(
             SsmAsyncClient asyncClient,
             AWSParameterStoreConfiguration awsParameterStoreConfiguration,
             ApplicationConfiguration applicationConfiguration,
             AWSParameterQueryProvider queryProvider,
-            @Nullable Route53ClientDiscoveryConfiguration route53ClientDiscoveryConfiguration) throws SdkClientException {
+            @Nullable AwsServiceDiscoveryConfiguration serviceDiscoveryConfiguration) {
         this.awsParameterStoreConfiguration = awsParameterStoreConfiguration;
         this.client = asyncClient;
-        this.serviceId = route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId().orElse(null) : applicationConfiguration.getName().orElse(null);
+        this.serviceId = serviceDiscoveryConfiguration != null ? serviceDiscoveryConfiguration.getAwsServiceId() : applicationConfiguration.getName().orElse(null);
         this.queryProvider = queryProvider;
     }
 
@@ -325,7 +325,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         return Flowable.fromIterable(localSourceMap.values())
                 .map(localSource -> {
                     LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
-                    return PropertySource.of(Route53ClientDiscoveryConfiguration.SERVICE_ID
+                    return PropertySource.of(AwsServiceDiscoveryClientConfiguration.SERVICE_ID
                             + '-' + localSource.name, localSource.values, localSource.priority);
                 });
     }
