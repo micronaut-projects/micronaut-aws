@@ -35,8 +35,7 @@ import software.amazon.awssdk.services.servicediscovery.model.ListServicesRespon
 import software.amazon.awssdk.services.servicediscovery.model.ServiceFilter;
 import software.amazon.awssdk.services.servicediscovery.model.ServiceFilterName;
 import software.amazon.awssdk.services.servicediscovery.model.ServiceSummary;
-
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
