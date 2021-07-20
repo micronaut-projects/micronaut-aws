@@ -45,7 +45,6 @@ import spock.util.concurrent.PollingConditions
  * @author Rvanderwerf
  * @since 1.0
  */
-
 @Stepwise
 class Route53AutoNamingClientUnitSpec extends Specification {
 
@@ -106,13 +105,11 @@ class Route53AutoNamingClientUnitSpec extends Specification {
 
     void "test register and de-register instance"() {
         given:
-        PollingConditions conditions = new PollingConditions(timeout: 10)
         createdInstanceId = "i-12123321"
         // we will need to call our getInstance Details since we are not running this on a real aws server and trick the resolver for the test
 
         when:
         String instanceId = createdInstanceId
-        String appId = "myapp"
         ServiceInstance serviceInstance = ServiceInstance.builder("test", new URI("/v1"))
                 .instanceId(instanceId)
                 .build()
