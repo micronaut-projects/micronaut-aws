@@ -40,7 +40,7 @@ import io.micronaut.discovery.registration.RegistrationConfiguration;
 @ConfigurationProperties(AwsServiceDiscoveryClientConfiguration.PREFIX)
 @BootstrapContextCompatible
 public class AwsServiceDiscoveryClientConfiguration extends DiscoveryClientConfiguration {
-
+    public static final String SERVICE_ID = "route53";
     public static final String PREFIX = AwsServiceDiscoveryConfiguration.PREFIX + ".client";
 
     private String awsServiceId; //ID of the service - required to find it

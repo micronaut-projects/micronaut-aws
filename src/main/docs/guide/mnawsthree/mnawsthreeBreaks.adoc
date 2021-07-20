@@ -1,0 +1,1 @@
+Module `micronaut-aws-route53` which used AWS SDK V1 has been removed. Instead, you can use `micronaut-aws-service-discovery` module which provides the same functionality but it uses AWS SDK V2.
