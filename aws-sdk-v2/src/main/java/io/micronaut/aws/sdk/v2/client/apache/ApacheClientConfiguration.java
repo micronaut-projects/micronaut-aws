@@ -16,6 +16,7 @@
 package io.micronaut.aws.sdk.v2.client.apache;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
@@ -27,6 +28,7 @@ import software.amazon.awssdk.http.apache.ProxyConfiguration;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
+@BootstrapContextCompatible
 @ConfigurationProperties(ApacheClientConfiguration.PREFIX)
 public class ApacheClientConfiguration extends AWSConfiguration {
 

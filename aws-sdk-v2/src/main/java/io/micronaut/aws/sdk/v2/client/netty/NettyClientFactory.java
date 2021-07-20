@@ -29,7 +29,6 @@ import javax.inject.Singleton;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-
 @Factory
 @BootstrapContextCompatible
 public class NettyClientFactory {

@@ -38,17 +38,17 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
+import io.micronaut.function.aws.MicronautRequestHandler;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
-import io.micronaut.http.client.RxHttpClient;
+import io.micronaut.http.client.HttpClient;
 import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
 
-import io.micronaut.core.annotation.NonNull;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -156,7 +156,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     public ApplicationContextBuilder createApplicationContextBuilderWithArgs(String... args) {
         CommandLine commandLine = CommandLine.parse(args);
-        return ApplicationContext.build()
+        return ApplicationContext.builder()
                 .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
                 .propertySources(new CommandLinePropertySource(commandLine));
     }
@@ -320,8 +320,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             config.setReadIdleTimeout(null);
             config.setReadTimeout(null);
             config.setConnectTimeout(null);
-            final RxHttpClient endpointClient = applicationContext.createBean(
-                    RxHttpClient.class,
+            final HttpClient endpointClient = applicationContext.createBean(
+                    HttpClient.class,
                     runtimeApiURL,
                     config);
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
@@ -349,7 +349,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                                 log(LogLevel.TRACE, "handler response received\n");
                                 final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
                                 log(LogLevel.TRACE, "sending function response\n");
-                                endpointClient.exchange(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)).blockingSubscribe();
+                                blockingHttpClient.exchange(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse));
                             } else {
                                 log(LogLevel.WARN, "request id is empty\n");
                             }
@@ -392,7 +392,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            //TODO Set Env.variable _X_AMZN_TRACE_ID with value traceId
+            System.setProperty(MicronautRequestHandler.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 
@@ -402,7 +402,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param e Exception thrown
      */
     protected void reportInitializationError(URL runtimeApiURL, Throwable e) {
-        try (RxHttpClient endpointClient = RxHttpClient.create(runtimeApiURL)) {
+        try (HttpClient endpointClient = HttpClient.create(runtimeApiURL)) {
             endpointClient.toBlocking().exchange(initializationErrorRequest(e.getMessage(), null, null));
         } catch (Throwable e2) {
             // swallow, nothing we can do...

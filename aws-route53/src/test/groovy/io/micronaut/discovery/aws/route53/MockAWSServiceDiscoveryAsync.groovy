@@ -64,8 +64,14 @@ import com.amazonaws.services.servicediscovery.model.TagResourceRequest
 import com.amazonaws.services.servicediscovery.model.TagResourceResult
 import com.amazonaws.services.servicediscovery.model.UntagResourceRequest
 import com.amazonaws.services.servicediscovery.model.UntagResourceResult
+import com.amazonaws.services.servicediscovery.model.UpdateHttpNamespaceRequest
+import com.amazonaws.services.servicediscovery.model.UpdateHttpNamespaceResult
 import com.amazonaws.services.servicediscovery.model.UpdateInstanceCustomHealthStatusRequest
 import com.amazonaws.services.servicediscovery.model.UpdateInstanceCustomHealthStatusResult
+import com.amazonaws.services.servicediscovery.model.UpdatePrivateDnsNamespaceRequest
+import com.amazonaws.services.servicediscovery.model.UpdatePrivateDnsNamespaceResult
+import com.amazonaws.services.servicediscovery.model.UpdatePublicDnsNamespaceRequest
+import com.amazonaws.services.servicediscovery.model.UpdatePublicDnsNamespaceResult
 import com.amazonaws.services.servicediscovery.model.UpdateServiceRequest
 import com.amazonaws.services.servicediscovery.model.UpdateServiceResult
 import io.micronaut.context.annotation.Requires
@@ -79,10 +85,10 @@ import java.util.function.Supplier
 class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
 
 
-        String namespaceId = "asdb123"
-        String serviceId = "123abcdf"
-        String createdInstanceId = "i-12123321"
-        DetachedMockFactory mockFactory = new DetachedMockFactory()
+    String namespaceId = "asdb123"
+    String serviceId = "123abcdf"
+    String createdInstanceId = "i-12123321"
+    DetachedMockFactory mockFactory = new DetachedMockFactory()
 
     @Override
     Future<CreateHttpNamespaceResult> createHttpNamespaceAsync(CreateHttpNamespaceRequest createHttpNamespaceRequest) {
@@ -95,79 +101,79 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        Future<CreatePrivateDnsNamespaceResult> createPrivateDnsNamespaceAsync(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest) {
-            return null
-        }
+    Future<CreatePrivateDnsNamespaceResult> createPrivateDnsNamespaceAsync(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        Future<CreatePrivateDnsNamespaceResult> createPrivateDnsNamespaceAsync(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest, AsyncHandler<CreatePrivateDnsNamespaceRequest, CreatePrivateDnsNamespaceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<CreatePrivateDnsNamespaceResult> createPrivateDnsNamespaceAsync(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest, AsyncHandler<CreatePrivateDnsNamespaceRequest, CreatePrivateDnsNamespaceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<CreatePublicDnsNamespaceResult> createPublicDnsNamespaceAsync(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest) {
-            return null
-        }
+    @Override
+    Future<CreatePublicDnsNamespaceResult> createPublicDnsNamespaceAsync(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        Future<CreatePublicDnsNamespaceResult> createPublicDnsNamespaceAsync(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest, AsyncHandler<CreatePublicDnsNamespaceRequest, CreatePublicDnsNamespaceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<CreatePublicDnsNamespaceResult> createPublicDnsNamespaceAsync(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest, AsyncHandler<CreatePublicDnsNamespaceRequest, CreatePublicDnsNamespaceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<CreateServiceResult> createServiceAsync(CreateServiceRequest createServiceRequest) {
-            return null
-        }
+    @Override
+    Future<CreateServiceResult> createServiceAsync(CreateServiceRequest createServiceRequest) {
+        return null
+    }
 
-        @Override
-        Future<CreateServiceResult> createServiceAsync(CreateServiceRequest createServiceRequest, AsyncHandler<CreateServiceRequest, CreateServiceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<CreateServiceResult> createServiceAsync(CreateServiceRequest createServiceRequest, AsyncHandler<CreateServiceRequest, CreateServiceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<DeleteNamespaceResult> deleteNamespaceAsync(DeleteNamespaceRequest deleteNamespaceRequest) {
-            return null
-        }
+    @Override
+    Future<DeleteNamespaceResult> deleteNamespaceAsync(DeleteNamespaceRequest deleteNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        Future<DeleteNamespaceResult> deleteNamespaceAsync(DeleteNamespaceRequest deleteNamespaceRequest, AsyncHandler<DeleteNamespaceRequest, DeleteNamespaceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<DeleteNamespaceResult> deleteNamespaceAsync(DeleteNamespaceRequest deleteNamespaceRequest, AsyncHandler<DeleteNamespaceRequest, DeleteNamespaceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<DeleteServiceResult> deleteServiceAsync(DeleteServiceRequest deleteServiceRequest) {
-            return null
-        }
+    @Override
+    Future<DeleteServiceResult> deleteServiceAsync(DeleteServiceRequest deleteServiceRequest) {
+        return null
+    }
 
-        @Override
-        Future<DeleteServiceResult> deleteServiceAsync(DeleteServiceRequest deleteServiceRequest, AsyncHandler<DeleteServiceRequest, DeleteServiceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<DeleteServiceResult> deleteServiceAsync(DeleteServiceRequest deleteServiceRequest, AsyncHandler<DeleteServiceRequest, DeleteServiceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<DeregisterInstanceResult> deregisterInstanceAsync(DeregisterInstanceRequest deregisterInstanceRequest) {
-            return CompletableFuture.supplyAsync(new Supplier<DeregisterInstanceResult>() {
-                @Override
-                public DeregisterInstanceResult get() {
-                    try {
-                        DeregisterInstanceResult deregisterInstanceResult = new DeregisterInstanceResult()
-                        deregisterInstanceResult.operationId = "123123123213"
-                        return deregisterInstanceResult
-                    } catch (InterruptedException e) {
-                        throw new IllegalStateException(e)
-                    }
-
+    @Override
+    Future<DeregisterInstanceResult> deregisterInstanceAsync(DeregisterInstanceRequest deregisterInstanceRequest) {
+        return CompletableFuture.supplyAsync(new Supplier<DeregisterInstanceResult>() {
+            @Override
+            public DeregisterInstanceResult get() {
+                try {
+                    DeregisterInstanceResult deregisterInstanceResult = new DeregisterInstanceResult()
+                    deregisterInstanceResult.operationId = "123123123213"
+                    return deregisterInstanceResult
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException(e)
                 }
 
-            })
+            }
 
-        }
+        })
+
+    }
 
 
-        @Override
-        Future<DeregisterInstanceResult> deregisterInstanceAsync(DeregisterInstanceRequest deregisterInstanceRequest, AsyncHandler<DeregisterInstanceRequest, DeregisterInstanceResult> asyncHandler) {
-            return deregisterInstanceAsync(deregisterInstanceRequest)
-        }
+    @Override
+    Future<DeregisterInstanceResult> deregisterInstanceAsync(DeregisterInstanceRequest deregisterInstanceRequest, AsyncHandler<DeregisterInstanceRequest, DeregisterInstanceResult> asyncHandler) {
+        return deregisterInstanceAsync(deregisterInstanceRequest)
+    }
 
     @Override
     Future<DiscoverInstancesResult> discoverInstancesAsync(DiscoverInstancesRequest discoverInstancesRequest) {
@@ -180,151 +186,151 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        Future<GetInstanceResult> getInstanceAsync(GetInstanceRequest getInstanceRequest) {
-            return null
-        }
+    Future<GetInstanceResult> getInstanceAsync(GetInstanceRequest getInstanceRequest) {
+        return null
+    }
 
-        @Override
-        Future<GetInstanceResult> getInstanceAsync(GetInstanceRequest getInstanceRequest, AsyncHandler<GetInstanceRequest, GetInstanceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<GetInstanceResult> getInstanceAsync(GetInstanceRequest getInstanceRequest, AsyncHandler<GetInstanceRequest, GetInstanceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<GetInstancesHealthStatusResult> getInstancesHealthStatusAsync(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest) {
-            return null
-        }
+    @Override
+    Future<GetInstancesHealthStatusResult> getInstancesHealthStatusAsync(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest) {
+        return null
+    }
 
-        @Override
-        Future<GetInstancesHealthStatusResult> getInstancesHealthStatusAsync(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest, AsyncHandler<GetInstancesHealthStatusRequest, GetInstancesHealthStatusResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<GetInstancesHealthStatusResult> getInstancesHealthStatusAsync(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest, AsyncHandler<GetInstancesHealthStatusRequest, GetInstancesHealthStatusResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<GetNamespaceResult> getNamespaceAsync(GetNamespaceRequest getNamespaceRequest) {
-            return null
-        }
+    @Override
+    Future<GetNamespaceResult> getNamespaceAsync(GetNamespaceRequest getNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        Future<GetNamespaceResult> getNamespaceAsync(GetNamespaceRequest getNamespaceRequest, AsyncHandler<GetNamespaceRequest, GetNamespaceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<GetNamespaceResult> getNamespaceAsync(GetNamespaceRequest getNamespaceRequest, AsyncHandler<GetNamespaceRequest, GetNamespaceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<GetOperationResult> getOperationAsync(GetOperationRequest getOperationRequest) {
+    @Override
+    Future<GetOperationResult> getOperationAsync(GetOperationRequest getOperationRequest) {
 
-            return CompletableFuture.supplyAsync(new Supplier<GetOperationResult>() {
-                @Override
-                public GetOperationResult get() {
-                    try {
-                        GetOperationResult operationResult = new GetOperationResult()
-                        Operation operation = new Operation()
-                        operation.id = "123456"
-                        operation.status = "SUCCESS"
-                        operationResult.operation = operation
-                        return operationResult
-                    } catch (InterruptedException e) {
-                        throw new IllegalStateException(e)
-                    }
-
+        return CompletableFuture.supplyAsync(new Supplier<GetOperationResult>() {
+            @Override
+            public GetOperationResult get() {
+                try {
+                    GetOperationResult operationResult = new GetOperationResult()
+                    Operation operation = new Operation()
+                    operation.id = "123456"
+                    operation.status = "SUCCESS"
+                    operationResult.operation = operation
+                    return operationResult
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException(e)
                 }
 
-            })
+            }
+
+        })
 
 
-        }
+    }
 
-        @Override
-        Future<GetOperationResult> getOperationAsync(GetOperationRequest getOperationRequest, AsyncHandler<GetOperationRequest, GetOperationResult> asyncHandler) {
-            return getOperationAsync(getOperationRequest)
-        }
+    @Override
+    Future<GetOperationResult> getOperationAsync(GetOperationRequest getOperationRequest, AsyncHandler<GetOperationRequest, GetOperationResult> asyncHandler) {
+        return getOperationAsync(getOperationRequest)
+    }
 
-        @Override
-        Future<GetServiceResult> getServiceAsync(GetServiceRequest getServiceRequest) {
-            return null
-        }
+    @Override
+    Future<GetServiceResult> getServiceAsync(GetServiceRequest getServiceRequest) {
+        return null
+    }
 
-        @Override
-        Future<GetServiceResult> getServiceAsync(GetServiceRequest getServiceRequest, AsyncHandler<GetServiceRequest, GetServiceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<GetServiceResult> getServiceAsync(GetServiceRequest getServiceRequest, AsyncHandler<GetServiceRequest, GetServiceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<ListInstancesResult> listInstancesAsync(ListInstancesRequest listInstancesRequest) {
-            return listInstancesAsync(listInstancesRequest,null)
-        }
+    @Override
+    Future<ListInstancesResult> listInstancesAsync(ListInstancesRequest listInstancesRequest) {
+        return listInstancesAsync(listInstancesRequest,null)
+    }
 
-        @Override
-        Future<ListInstancesResult> listInstancesAsync(ListInstancesRequest listInstancesRequest, AsyncHandler<ListInstancesRequest, ListInstancesResult> asyncHandler) {
+    @Override
+    Future<ListInstancesResult> listInstancesAsync(ListInstancesRequest listInstancesRequest, AsyncHandler<ListInstancesRequest, ListInstancesResult> asyncHandler) {
 
-            return CompletableFuture.supplyAsync(new Supplier<ListInstancesResult>() {
-                @Override
-                public ListInstancesResult get() {
-                    try {
-                        ListInstancesResult listInstancesResult = new ListInstancesResult()
-                        InstanceSummary instanceSummary = new InstanceSummary()
-                        instanceSummary.id = createdInstanceId
-                        instanceSummary.addAttributesEntry(("URI"), "/v1")
-                        listInstancesResult.instances = [instanceSummary] as List<InstanceSummary>
-                        return listInstancesResult
-                    } catch (InterruptedException e) {
-                        throw new IllegalStateException(e)
-                    }
-
+        return CompletableFuture.supplyAsync(new Supplier<ListInstancesResult>() {
+            @Override
+            public ListInstancesResult get() {
+                try {
+                    ListInstancesResult listInstancesResult = new ListInstancesResult()
+                    InstanceSummary instanceSummary = new InstanceSummary()
+                    instanceSummary.id = createdInstanceId
+                    instanceSummary.addAttributesEntry(("URI"), "/v1")
+                    listInstancesResult.instances = [instanceSummary] as List<InstanceSummary>
+                    return listInstancesResult
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException(e)
                 }
 
-            })
+            }
+
+        })
 
 
-        }
+    }
 
-        @Override
-        Future<ListNamespacesResult> listNamespacesAsync(ListNamespacesRequest listNamespacesRequest) {
-            return null
-        }
+    @Override
+    Future<ListNamespacesResult> listNamespacesAsync(ListNamespacesRequest listNamespacesRequest) {
+        return null
+    }
 
-        @Override
-        Future<ListNamespacesResult> listNamespacesAsync(ListNamespacesRequest listNamespacesRequest, AsyncHandler<ListNamespacesRequest, ListNamespacesResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<ListNamespacesResult> listNamespacesAsync(ListNamespacesRequest listNamespacesRequest, AsyncHandler<ListNamespacesRequest, ListNamespacesResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<ListOperationsResult> listOperationsAsync(ListOperationsRequest listOperationsRequest) {
-            return null
-        }
+    @Override
+    Future<ListOperationsResult> listOperationsAsync(ListOperationsRequest listOperationsRequest) {
+        return null
+    }
 
-        @Override
-        Future<ListOperationsResult> listOperationsAsync(ListOperationsRequest listOperationsRequest, AsyncHandler<ListOperationsRequest, ListOperationsResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<ListOperationsResult> listOperationsAsync(ListOperationsRequest listOperationsRequest, AsyncHandler<ListOperationsRequest, ListOperationsResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<ListServicesResult> listServicesAsync(ListServicesRequest listServicesRequest) {
+    @Override
+    Future<ListServicesResult> listServicesAsync(ListServicesRequest listServicesRequest) {
 
-            return CompletableFuture.supplyAsync(new Supplier<ListServicesResult>() {
-                @Override
-                public ListServicesResult get() {
-                    try {
-                        ListServicesResult listServicesResult = new ListServicesResult()
-                        ServiceSummary serviceSummary = new ServiceSummary()
-                        serviceSummary.instanceCount = 1
-                        serviceSummary.name = "123456"
-                        serviceSummary.id = serviceId
-                        listServicesResult.services = [serviceSummary] as List<ServiceSummary>
-                        listServicesResult
-                        return listServicesResult
-                    } catch (InterruptedException e) {
-                        throw new IllegalStateException(e)
-                    }
-
+        return CompletableFuture.supplyAsync(new Supplier<ListServicesResult>() {
+            @Override
+            public ListServicesResult get() {
+                try {
+                    ListServicesResult listServicesResult = new ListServicesResult()
+                    ServiceSummary serviceSummary = new ServiceSummary()
+                    serviceSummary.instanceCount = 1
+                    serviceSummary.name = "123456"
+                    serviceSummary.id = serviceId
+                    listServicesResult.services = [serviceSummary] as List<ServiceSummary>
+                    listServicesResult
+                    return listServicesResult
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException(e)
                 }
 
-            })
-        }
+            }
 
-        @Override
-        Future<ListServicesResult> listServicesAsync(ListServicesRequest listServicesRequest, AsyncHandler<ListServicesRequest, ListServicesResult> asyncHandler) {
-            return listServicesAsync(listServicesRequest)
-        }
+        })
+    }
+
+    @Override
+    Future<ListServicesResult> listServicesAsync(ListServicesRequest listServicesRequest, AsyncHandler<ListServicesRequest, ListServicesResult> asyncHandler) {
+        return listServicesAsync(listServicesRequest)
+    }
 
     @Override
     Future<ListTagsForResourceResult> listTagsForResourceAsync(ListTagsForResourceRequest listTagsForResourceRequest) {
@@ -337,28 +343,28 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        Future<RegisterInstanceResult> registerInstanceAsync(RegisterInstanceRequest registerInstanceRequest) {
+    Future<RegisterInstanceResult> registerInstanceAsync(RegisterInstanceRequest registerInstanceRequest) {
 
-            return CompletableFuture.supplyAsync(new Supplier<RegisterInstanceResult>() {
-                @Override
-                public RegisterInstanceResult get() {
-                    try {
-                        RegisterInstanceResult registerInstanceResult = new RegisterInstanceResult()
-                        registerInstanceResult.operationId = "adslkdfaskljfdsaklj"
-                        return registerInstanceResult
-                    } catch (InterruptedException e) {
-                        throw new IllegalStateException(e)
-                    }
-
+        return CompletableFuture.supplyAsync(new Supplier<RegisterInstanceResult>() {
+            @Override
+            public RegisterInstanceResult get() {
+                try {
+                    RegisterInstanceResult registerInstanceResult = new RegisterInstanceResult()
+                    registerInstanceResult.operationId = "adslkdfaskljfdsaklj"
+                    return registerInstanceResult
+                } catch (InterruptedException e) {
+                    throw new IllegalStateException(e)
                 }
 
-            })
-        }
+            }
 
-        @Override
-        Future<RegisterInstanceResult> registerInstanceAsync(RegisterInstanceRequest registerInstanceRequest, AsyncHandler<RegisterInstanceRequest, RegisterInstanceResult> asyncHandler) {
-            return registerInstanceAsync(registerInstanceRequest)
-        }
+        })
+    }
+
+    @Override
+    Future<RegisterInstanceResult> registerInstanceAsync(RegisterInstanceRequest registerInstanceRequest, AsyncHandler<RegisterInstanceRequest, RegisterInstanceResult> asyncHandler) {
+        return registerInstanceAsync(registerInstanceRequest)
+    }
 
     @Override
     Future<TagResourceResult> tagResourceAsync(TagResourceRequest tagResourceRequest) {
@@ -381,24 +387,54 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        Future<UpdateInstanceCustomHealthStatusResult> updateInstanceCustomHealthStatusAsync(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
-            return null
-        }
+    Future<UpdateHttpNamespaceResult> updateHttpNamespaceAsync(UpdateHttpNamespaceRequest updateHttpNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        Future<UpdateInstanceCustomHealthStatusResult> updateInstanceCustomHealthStatusAsync(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest, AsyncHandler<UpdateInstanceCustomHealthStatusRequest, UpdateInstanceCustomHealthStatusResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<UpdateHttpNamespaceResult> updateHttpNamespaceAsync(UpdateHttpNamespaceRequest updateHttpNamespaceRequest, AsyncHandler<UpdateHttpNamespaceRequest, UpdateHttpNamespaceResult> asyncHandler) {
+        return null
+    }
 
-        @Override
-        Future<UpdateServiceResult> updateServiceAsync(UpdateServiceRequest updateServiceRequest) {
-            return null
-        }
+    @Override
+    Future<UpdateInstanceCustomHealthStatusResult> updateInstanceCustomHealthStatusAsync(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
+        return null
+    }
 
-        @Override
-        Future<UpdateServiceResult> updateServiceAsync(UpdateServiceRequest updateServiceRequest, AsyncHandler<UpdateServiceRequest, UpdateServiceResult> asyncHandler) {
-            return null
-        }
+    @Override
+    Future<UpdateInstanceCustomHealthStatusResult> updateInstanceCustomHealthStatusAsync(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest, AsyncHandler<UpdateInstanceCustomHealthStatusRequest, UpdateInstanceCustomHealthStatusResult> asyncHandler) {
+        return null
+    }
+
+    @Override
+    Future<UpdatePrivateDnsNamespaceResult> updatePrivateDnsNamespaceAsync(UpdatePrivateDnsNamespaceRequest updatePrivateDnsNamespaceRequest) {
+        return null
+    }
+
+    @Override
+    Future<UpdatePrivateDnsNamespaceResult> updatePrivateDnsNamespaceAsync(UpdatePrivateDnsNamespaceRequest updatePrivateDnsNamespaceRequest, AsyncHandler<UpdatePrivateDnsNamespaceRequest, UpdatePrivateDnsNamespaceResult> asyncHandler) {
+        return null
+    }
+
+    @Override
+    Future<UpdatePublicDnsNamespaceResult> updatePublicDnsNamespaceAsync(UpdatePublicDnsNamespaceRequest updatePublicDnsNamespaceRequest) {
+        return null
+    }
+
+    @Override
+    Future<UpdatePublicDnsNamespaceResult> updatePublicDnsNamespaceAsync(UpdatePublicDnsNamespaceRequest updatePublicDnsNamespaceRequest, AsyncHandler<UpdatePublicDnsNamespaceRequest, UpdatePublicDnsNamespaceResult> asyncHandler) {
+        return null
+    }
+
+    @Override
+    Future<UpdateServiceResult> updateServiceAsync(UpdateServiceRequest updateServiceRequest) {
+        return null
+    }
+
+    @Override
+    Future<UpdateServiceResult> updateServiceAsync(UpdateServiceRequest updateServiceRequest, AsyncHandler<UpdateServiceRequest, UpdateServiceResult> asyncHandler) {
+        return null
+    }
 
     @Override
     CreateHttpNamespaceResult createHttpNamespace(CreateHttpNamespaceRequest createHttpNamespaceRequest) {
@@ -406,34 +442,34 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        CreatePrivateDnsNamespaceResult createPrivateDnsNamespace(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest) {
-            return null
-        }
+    CreatePrivateDnsNamespaceResult createPrivateDnsNamespace(CreatePrivateDnsNamespaceRequest createPrivateDnsNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        CreatePublicDnsNamespaceResult createPublicDnsNamespace(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest) {
-            return null
-        }
+    @Override
+    CreatePublicDnsNamespaceResult createPublicDnsNamespace(CreatePublicDnsNamespaceRequest createPublicDnsNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        CreateServiceResult createService(CreateServiceRequest createServiceRequest) {
-            return null
-        }
+    @Override
+    CreateServiceResult createService(CreateServiceRequest createServiceRequest) {
+        return null
+    }
 
-        @Override
-        DeleteNamespaceResult deleteNamespace(DeleteNamespaceRequest deleteNamespaceRequest) {
-            return null
-        }
+    @Override
+    DeleteNamespaceResult deleteNamespace(DeleteNamespaceRequest deleteNamespaceRequest) {
+        return null
+    }
 
-        @Override
-        DeleteServiceResult deleteService(DeleteServiceRequest deleteServiceRequest) {
-            return null
-        }
+    @Override
+    DeleteServiceResult deleteService(DeleteServiceRequest deleteServiceRequest) {
+        return null
+    }
 
-        @Override
-        DeregisterInstanceResult deregisterInstance(DeregisterInstanceRequest deregisterInstanceRequest) {
-            return null
-        }
+    @Override
+    DeregisterInstanceResult deregisterInstance(DeregisterInstanceRequest deregisterInstanceRequest) {
+        return null
+    }
 
     @Override
     DiscoverInstancesResult discoverInstances(DiscoverInstancesRequest discoverInstancesRequest) {
@@ -441,59 +477,59 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        GetInstanceResult getInstance(GetInstanceRequest getInstanceRequest) {
-            return null
+    GetInstanceResult getInstance(GetInstanceRequest getInstanceRequest) {
+        return null
+    }
+
+    @Override
+    GetInstancesHealthStatusResult getInstancesHealthStatus(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest) {
+        return null
+    }
+
+    @Override
+    GetNamespaceResult getNamespace(GetNamespaceRequest getNamespaceRequest) {
+        return null
+    }
+
+    @Override
+    GetOperationResult getOperation(GetOperationRequest getOperationRequest) {
+        try {
+            GetOperationResult operationResult = new GetOperationResult()
+            Operation operation = new Operation()
+            operation.id = "123456"
+            operation.status = "SUCCESS"
+            operationResult.operation = operation
+            return operationResult
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e)
         }
 
-        @Override
-        GetInstancesHealthStatusResult getInstancesHealthStatus(GetInstancesHealthStatusRequest getInstancesHealthStatusRequest) {
-            return null
-        }
+    }
 
-        @Override
-        GetNamespaceResult getNamespace(GetNamespaceRequest getNamespaceRequest) {
-            return null
-        }
+    @Override
+    GetServiceResult getService(GetServiceRequest getServiceRequest) {
+        return null
+    }
 
-        @Override
-        GetOperationResult getOperation(GetOperationRequest getOperationRequest) {
-            try {
-                GetOperationResult operationResult = new GetOperationResult()
-                Operation operation = new Operation()
-                operation.id = "123456"
-                operation.status = "SUCCESS"
-                operationResult.operation = operation
-                return operationResult
-            } catch (InterruptedException e) {
-                throw new IllegalStateException(e)
-            }
+    @Override
+    ListInstancesResult listInstances(ListInstancesRequest listInstancesRequest) {
+        return null
+    }
 
-        }
+    @Override
+    ListNamespacesResult listNamespaces(ListNamespacesRequest listNamespacesRequest) {
+        return null
+    }
 
-        @Override
-        GetServiceResult getService(GetServiceRequest getServiceRequest) {
-            return null
-        }
+    @Override
+    ListOperationsResult listOperations(ListOperationsRequest listOperationsRequest) {
+        return null
+    }
 
-        @Override
-        ListInstancesResult listInstances(ListInstancesRequest listInstancesRequest) {
-            return null
-        }
-
-        @Override
-        ListNamespacesResult listNamespaces(ListNamespacesRequest listNamespacesRequest) {
-            return null
-        }
-
-        @Override
-        ListOperationsResult listOperations(ListOperationsRequest listOperationsRequest) {
-            return null
-        }
-
-        @Override
-        ListServicesResult listServices(ListServicesRequest listServicesRequest) {
-            return null
-        }
+    @Override
+    ListServicesResult listServices(ListServicesRequest listServicesRequest) {
+        return null
+    }
 
     @Override
     ListTagsForResourceResult listTagsForResource(ListTagsForResourceRequest listTagsForResourceRequest) {
@@ -501,9 +537,9 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        RegisterInstanceResult registerInstance(RegisterInstanceRequest registerInstanceRequest) {
-            return null
-        }
+    RegisterInstanceResult registerInstance(RegisterInstanceRequest registerInstanceRequest) {
+        return null
+    }
 
     @Override
     TagResourceResult tagResource(TagResourceRequest tagResourceRequest) {
@@ -516,23 +552,38 @@ class MockAWSServiceDiscoveryAsync implements AWSServiceDiscoveryAsync {
     }
 
     @Override
-        UpdateInstanceCustomHealthStatusResult updateInstanceCustomHealthStatus(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
-            return null
-        }
-
-        @Override
-        UpdateServiceResult updateService(UpdateServiceRequest updateServiceRequest) {
-            return null
-        }
-
-        @Override
-        void shutdown() {
-
-        }
-
-        @Override
-        ResponseMetadata getCachedResponseMetadata(AmazonWebServiceRequest request) {
-            return null
-        }
+    UpdateHttpNamespaceResult updateHttpNamespace(UpdateHttpNamespaceRequest updateHttpNamespaceRequest) {
+        return null
     }
+
+    @Override
+    UpdateInstanceCustomHealthStatusResult updateInstanceCustomHealthStatus(UpdateInstanceCustomHealthStatusRequest updateInstanceCustomHealthStatusRequest) {
+        return null
+    }
+
+    @Override
+    UpdatePrivateDnsNamespaceResult updatePrivateDnsNamespace(UpdatePrivateDnsNamespaceRequest updatePrivateDnsNamespaceRequest) {
+        return null
+    }
+
+    @Override
+    UpdatePublicDnsNamespaceResult updatePublicDnsNamespace(UpdatePublicDnsNamespaceRequest updatePublicDnsNamespaceRequest) {
+        return null
+    }
+
+    @Override
+    UpdateServiceResult updateService(UpdateServiceRequest updateServiceRequest) {
+        return null
+    }
+
+    @Override
+    void shutdown() {
+
+    }
+
+    @Override
+    ResponseMetadata getCachedResponseMetadata(AmazonWebServiceRequest request) {
+        return null
+    }
+}
 

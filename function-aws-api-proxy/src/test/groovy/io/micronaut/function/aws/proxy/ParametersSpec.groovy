@@ -9,8 +9,6 @@ import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -18,7 +16,8 @@ import spock.lang.Specification
 class ParametersSpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'ParametersSpec'
             ])
     )
@@ -38,7 +37,6 @@ class ParametersSpec extends Specification {
         response.body == '["one","two"]'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/parameters-test')
     @Requires(property = 'spec.name', value = 'ParametersSpec')
     static class BodyController {
