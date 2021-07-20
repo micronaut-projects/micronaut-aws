@@ -28,9 +28,6 @@ io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
 io.micronaut.aws.secretsmanager
 io.micronaut.discovery.aws.parameterstore
-io.micronaut.discovery.aws.route53
-io.micronaut.discovery.aws.route53.client
-io.micronaut.discovery.aws.route53.registration
 io.micronaut.discovery.aws.servicediscovery
 io.micronaut.discovery.aws.servicediscovery.client
 io.micronaut.discovery.aws.servicediscovery.registration
