@@ -1,3 +1,4 @@
+== @IntentHandler removal
 `@IntentHandler` annotation has been removed. `@IntentHandler` helped to implement automatically the method `canHandle` of an Alexa's handler.
 If you had code, such as `@IntentHandler("HelloWorldIntent")`, you need to implement `canHandle` method. For example:
 
@@ -8,3 +9,7 @@ public boolean canHandle(HandlerInput handlerInput) {
 return handlerInput.matches(Predicates.intentName("HelloWorldIntent"));
 }
 ----
+
+== micronaut-aws-route53 removal
+
+Module `micronaut-aws-route53` which used AWS SDK V1 has been removed. Instead, you can use `micronaut-aws-service-discovery` module which provides the same functionality but it uses AWS SDK V2.
