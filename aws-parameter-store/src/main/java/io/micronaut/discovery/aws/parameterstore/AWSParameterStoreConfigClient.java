@@ -59,7 +59,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(AWSParameterStoreConfigClient.class);
     private final AWSParameterStoreConfiguration awsParameterStoreConfiguration;
-    private final Optional<String> serviceId;
+    private final String serviceId;
     private SsmAsyncClient client;
     private ExecutorService executorService;
     private AWSParameterQueryProvider queryProvider;
@@ -82,7 +82,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
             @Nullable Route53ClientDiscoveryConfiguration route53ClientDiscoveryConfiguration) throws SdkClientException {
         this.awsParameterStoreConfiguration = awsParameterStoreConfiguration;
         this.client = asyncClient;
-        this.serviceId = route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId() : applicationConfiguration.getName();
+        this.serviceId = route53ClientDiscoveryConfiguration != null ? route53ClientDiscoveryConfiguration.getServiceId().orElse(null) : applicationConfiguration.getName().orElse(null);
         this.queryProvider = queryProvider;
     }
 

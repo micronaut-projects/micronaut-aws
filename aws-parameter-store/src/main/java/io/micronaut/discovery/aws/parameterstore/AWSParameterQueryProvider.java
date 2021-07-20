@@ -18,9 +18,8 @@ package io.micronaut.discovery.aws.parameterstore;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.context.env.Environment;
-
+import io.micronaut.core.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Definition of a service that provides a list of {@link ParameterQuery} objects
@@ -53,6 +52,6 @@ public interface AWSParameterQueryProvider {
      * to the Parameter Store
      */
     @NonNull List<ParameterQuery> getParameterQueries(@NonNull Environment environment,
-                                                      @NonNull Optional<String> serviceId,
+                                                      @Nullable String serviceId,
                                                       @NonNull AWSParameterStoreConfiguration configuration);
 }
