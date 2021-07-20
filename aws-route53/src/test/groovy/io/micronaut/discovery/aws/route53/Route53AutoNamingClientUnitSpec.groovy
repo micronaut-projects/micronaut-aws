@@ -34,6 +34,7 @@ import io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver
 import io.micronaut.discovery.cloud.aws.AmazonEC2InstanceMetadata
 import io.micronaut.runtime.server.EmbeddedServer
 import reactor.core.publisher.Flux
+import jakarta.inject.Singleton
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -135,6 +136,7 @@ class Route53AutoNamingClientUnitSpec extends Specification {
      * these are excluded if you are running the integration test as you can't do both at once
      */
     @Replaces(AWSServiceDiscoveryClientResolver)
+    @Singleton
     @Requires(property = 'spec.name', value = 'Route53AutoNamingClientUnitSpec')
     static class AWSServiceDiscoveryAsyncMock extends AWSServiceDiscoveryClientResolver implements AWSServiceDiscoveryResolver {
 
@@ -153,6 +155,7 @@ class Route53AutoNamingClientUnitSpec extends Specification {
      * these are excluded if you are running the integration test as you can't do both at once
      */
     @Replaces(AmazonComputeInstanceMetadataResolver)
+    @Singleton
     @Requires(property = 'spec.name', value = 'Route53AutoNamingClientUnitSpec')
     static class AmazonComputeInstanceMetadataResolverMock extends AmazonComputeInstanceMetadataResolver implements ComputeInstanceMetadataResolver {
 
