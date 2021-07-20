@@ -20,8 +20,8 @@ import groovy.transform.Canonical
 import io.micronaut.context.env.Environment
 import spock.lang.Specification
 
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
 /**
  * @author Graeme Rocher

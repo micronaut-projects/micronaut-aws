@@ -22,7 +22,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 import io.micronaut.security.authentication.PrincipalArgumentBinder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.security.Principal;
 
 /**

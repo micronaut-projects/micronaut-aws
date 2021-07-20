@@ -20,7 +20,7 @@ import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import javax.validation.Valid
 import javax.validation.constraints.Min
 import javax.ws.rs.core.MediaType

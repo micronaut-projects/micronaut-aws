@@ -22,7 +22,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Allows binding the {@link com.amazonaws.serverless.proxy.model.AwsProxyRequest} object to a method argument.

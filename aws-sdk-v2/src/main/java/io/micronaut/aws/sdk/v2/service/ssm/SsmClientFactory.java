@@ -29,7 +29,7 @@ import software.amazon.awssdk.services.ssm.SsmAsyncClientBuilder;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.SsmClientBuilder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a SSM client.

@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.rekognition.RekognitionAsyncClientBuilder
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
 import software.amazon.awssdk.services.rekognition.RekognitionClientBuilder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Requires(property = "spec.name", value = "AwsClientFactorySpec")
 //tag::class[]

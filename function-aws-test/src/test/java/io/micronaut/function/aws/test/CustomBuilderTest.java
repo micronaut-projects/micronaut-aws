@@ -5,7 +5,7 @@ import io.micronaut.context.DefaultApplicationContextBuilder;
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

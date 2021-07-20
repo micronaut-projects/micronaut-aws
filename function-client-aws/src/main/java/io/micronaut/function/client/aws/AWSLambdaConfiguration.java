@@ -34,7 +34,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.annotation.Nullable;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * Configuration options for AWS Lambda.

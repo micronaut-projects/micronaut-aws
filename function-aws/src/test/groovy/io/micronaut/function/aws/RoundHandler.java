@@ -16,7 +16,7 @@
 package io.micronaut.function.aws;
 // tag::imports[]
 import io.micronaut.context.env.Environment;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 // end::imports[]
 
 // tag::class[]

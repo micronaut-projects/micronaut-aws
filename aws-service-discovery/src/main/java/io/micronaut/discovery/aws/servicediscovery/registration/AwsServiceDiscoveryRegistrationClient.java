@@ -39,9 +39,8 @@ import software.amazon.awssdk.services.servicediscovery.model.RegisterInstanceRe
 import software.amazon.awssdk.services.servicediscovery.model.RegisterInstanceResponse;
 import software.amazon.awssdk.services.servicediscovery.model.Service;
 import software.amazon.awssdk.services.servicediscovery.model.UpdateInstanceCustomHealthStatusRequest;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

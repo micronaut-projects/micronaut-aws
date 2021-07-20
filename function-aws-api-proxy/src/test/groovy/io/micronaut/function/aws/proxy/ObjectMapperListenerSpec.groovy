@@ -13,8 +13,8 @@ import io.micronaut.inject.qualifiers.Qualifiers
 import spock.lang.Issue
 import spock.lang.Specification
 
-import javax.inject.Named
-import javax.inject.Singleton
+import jakarta.inject.Named
+import jakarta.inject.Singleton
 
 @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/186")
 class ObjectMapperListenerSpec extends Specification {

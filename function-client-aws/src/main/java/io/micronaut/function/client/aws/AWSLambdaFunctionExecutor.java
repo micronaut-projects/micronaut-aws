@@ -32,8 +32,8 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;

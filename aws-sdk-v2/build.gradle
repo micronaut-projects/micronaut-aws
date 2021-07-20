@@ -19,6 +19,8 @@ dependencies {
     compileOnly 'software.amazon.awssdk:secretsmanager'
     compileOnly 'software.amazon.awssdk:servicediscovery'
 
+    implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
+
     // Tests
     testImplementation 'software.amazon.awssdk:servicediscovery'
     testImplementation "software.amazon.awssdk:url-connection-client"

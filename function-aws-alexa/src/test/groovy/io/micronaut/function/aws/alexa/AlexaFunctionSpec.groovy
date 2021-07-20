@@ -29,7 +29,7 @@ import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class AlexaFunctionSpec extends Specification {
 

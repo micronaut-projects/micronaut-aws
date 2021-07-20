@@ -21,7 +21,7 @@ import io.micronaut.context.env.EnvironmentPropertySource;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
