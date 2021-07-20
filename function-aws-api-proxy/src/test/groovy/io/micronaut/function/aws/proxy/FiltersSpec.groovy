@@ -22,6 +22,7 @@ import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
+import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Singleton
 
 class FiltersSpec extends Specification {

@@ -30,13 +30,11 @@ import io.micronaut.function.client.FunctionInvokerChooser;
 import io.micronaut.function.client.exceptions.FunctionExecutionException;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.scheduling.TaskExecutors;
-
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
