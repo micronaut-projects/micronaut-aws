@@ -26,7 +26,6 @@ import io.micronaut.runtime.server.EmbeddedServer
 //tag::rxImport[]
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
-import spock.lang.PendingFeature
 
 //end::rxImport[]
 import spock.lang.Specification
@@ -37,7 +36,6 @@ import spock.lang.Specification
  */
 class LocalFunctionInvokeSpec extends Specification {
 
-    @PendingFeature
     //tag::invokeLocalFunction[]
     void "test invoking a local function"() {
         given:
@@ -52,7 +50,6 @@ class LocalFunctionInvokeSpec extends Specification {
     }
     //end::invokeLocalFunction[]
 
-    @PendingFeature
     //tag::invokeRxLocalFunction[]
     void "test invoking a local function - rx"() {
         given:
