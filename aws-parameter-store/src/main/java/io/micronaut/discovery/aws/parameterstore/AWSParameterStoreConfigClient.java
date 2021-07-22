@@ -27,9 +27,9 @@ import io.micronaut.discovery.client.ClientUtil;
 import io.micronaut.discovery.config.ConfigurationClient;
 import io.micronaut.runtime.ApplicationConfiguration;
 import io.micronaut.scheduling.TaskExecutors;
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.schedulers.Schedulers;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,6 @@ import jakarta.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 /**
  * A {@link ConfigurationClient} implementation for AWS ParameterStore.
@@ -99,21 +98,21 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
     @Override
     public Publisher<PropertySource> getPropertySources(Environment environment) {
         if (!awsParameterStoreConfiguration.isEnabled()) {
-            return Flowable.empty();
+            return Flux.empty();
         }
 
         List<ParameterQuery> queries = queryProvider.getParameterQueries(environment, serviceId, awsParameterStoreConfiguration);
-        Flowable<ParameterQueryResult> queryResults =
-                Flowable.concat(
-                        Flowable.fromIterable(queries)
+        Flux<ParameterQueryResult> queryResults =
+                Flux.concat(
+                        Flux.fromIterable(queries)
                                 .map(this::getParameters));
-        Flowable<PropertySource> propertySourceFlowable =
+        Flux<PropertySource> propertySourceFlowable =
                 queryResults
-                        .flatMapMaybe(this::buildLocalSource)
+                        .flatMap(this::buildLocalSource)
                         .reduce(new HashMap<>(), AWSParameterStoreConfigClient::mergeLocalSources)
-                        .flatMapPublisher(AWSParameterStoreConfigClient::toPropertySourcePublisher);
+                        .flatMapMany(AWSParameterStoreConfigClient::toPropertySourcePublisher);
 
-        return propertySourceFlowable.onErrorResumeNext(AWSParameterStoreConfigClient::onPropertySourceError);
+        return propertySourceFlowable.onErrorResume(AWSParameterStoreConfigClient::onPropertySourceError);
 
     }
 
@@ -129,40 +128,40 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
     private static Publisher<? extends PropertySource> onPropertySourceError(Throwable throwable) {
         if (throwable instanceof ConfigurationException) {
-            return Flowable.error(throwable);
+            return Flux.error(throwable);
         } else {
-            return Flowable.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
+            return Flux.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
         }
     }
 
-    private static Publisher<? extends GetParametersResponse> onGetParametersError(Throwable throwable) {
+    private static Mono<? extends GetParametersResponse> onGetParametersError(Throwable throwable) {
         if (throwable instanceof SdkClientException) {
-            return Flowable.error(throwable);
+            return Mono.error(throwable);
         } else {
-            return Flowable.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
+            return Mono.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
         }
     }
 
-    private static Publisher<? extends GetParametersByPathResponse> onGetParametersByPathResult(Throwable throwable) {
+    private static Mono<? extends GetParametersByPathResponse> onGetParametersByPathResult(Throwable throwable) {
         if (throwable instanceof SdkClientException) {
-            return Flowable.error(throwable);
+            return Mono.error(throwable);
         } else {
-            return Flowable.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
+            return Mono.error(new ConfigurationException("Error reading distributed configuration from AWS Parameter Store: " + throwable.getMessage(), throwable));
         }
     }
 
     private Publisher<ParameterQueryResult> getParameters(ParameterQuery query) {
         String path = query.getPath();
         return query.isName()
-                ? Flowable.fromPublisher(getParameters(path)).map(r -> new ParameterQueryResult(query, r.parameters()))
-                : Flowable.fromPublisher(getHierarchy(path, new ArrayList<>(), null)).map(r -> new ParameterQueryResult(query, r));
+                ? Flux.from(getParameters(path)).map(r -> new ParameterQueryResult(query, r.parameters()))
+                : Flux.from(getHierarchy(path, new ArrayList<>(), null)).map(r -> new ParameterQueryResult(query, r));
     }
 
-    private Maybe<LocalSource> buildLocalSource(ParameterQueryResult queryResult) {
+    private Flux<LocalSource> buildLocalSource(ParameterQueryResult queryResult) {
         String key = queryResult.query.getPath();
         if (queryResult.parameters.isEmpty()) {
             LOG.trace("parameterBasePath={} no parameters found", key);
-            return Maybe.empty();
+            return Flux.empty();
         }
         Map<String, Object> properties = convertParametersToMap(queryResult);
         String propertySourceName = queryResult.query.getPropertySourceName();
@@ -172,24 +171,24 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         }
         LocalSource localSource = new LocalSource(queryResult.query.getPriority(), propertySourceName);
         localSource.putAll(properties);
-        return Maybe.just(localSource);
+        return Flux.just(localSource);
     }
 
-    private Flowable<List<Parameter>> getHierarchy(final String path, final List<Parameter> parameters, final String nextToken) {
-        Flowable<GetParametersByPathResponse> paramPage = Flowable.fromPublisher(getHierarchy(path, nextToken));
+    private Flux<List<Parameter>> getHierarchy(final String path, final List<Parameter> parameters, final String nextToken) {
+        Flux<GetParametersByPathResponse> paramPage = Flux.from(getHierarchy(path, nextToken));
 
         return paramPage.flatMap(getParametersByPathResult -> {
             List<Parameter> params = getParametersByPathResult.parameters();
 
             if (getParametersByPathResult.nextToken() != null) {
-                return Flowable.merge(
-                        Flowable.just(parameters),
+                return Flux.merge(
+                        Flux.just(parameters),
                         getHierarchy(path, params, getParametersByPathResult.nextToken())
                 );
             } else {
-                return Flowable.merge(
-                        Flowable.just(parameters),
-                        Flowable.just(params)
+                return Flux.merge(
+                        Flux.just(parameters),
+                        Flux.just(params)
                 );
             }
         });
@@ -212,16 +211,14 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
                 .nextToken(nextToken)
                 .build();
 
-        Future<GetParametersByPathResponse> future = client.getParametersByPath(getRequest);
+        CompletableFuture<GetParametersByPathResponse> future = client.getParametersByPath(getRequest);
 
-        Flowable<GetParametersByPathResponse> invokeFlowable;
+        Mono<GetParametersByPathResponse> invokeFlowable = Mono.fromFuture(future);
         if (executorService != null) {
-            invokeFlowable = Flowable.fromFuture(future, Schedulers.from(executorService));
-        } else {
-            invokeFlowable = Flowable.fromFuture(future);
+            invokeFlowable = invokeFlowable.subscribeOn(Schedulers.fromExecutor(executorService));
         }
 
-        return invokeFlowable.onErrorResumeNext(AWSParameterStoreConfigClient::onGetParametersByPathResult);
+        return invokeFlowable.onErrorResume(AWSParameterStoreConfigClient::onGetParametersByPathResult);
     }
 
     /**
@@ -239,14 +236,12 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
 
         CompletableFuture<GetParametersResponse> future = client.getParameters(getRequest);
 
-        Flowable<GetParametersResponse> invokeFlowable;
+        Mono<GetParametersResponse> invokeFlowable = Mono.fromFuture(future);
         if (executorService != null) {
-            invokeFlowable = Flowable.fromFuture(future, Schedulers.from(executorService));
-        } else {
-            invokeFlowable = Flowable.fromFuture(future);
+            invokeFlowable = invokeFlowable.subscribeOn(Schedulers.fromExecutor(executorService));
         }
 
-        return invokeFlowable.onErrorResumeNext(AWSParameterStoreConfigClient::onGetParametersError);
+        return invokeFlowable.onErrorResume(AWSParameterStoreConfigClient::onGetParametersError);
     }
 
     /**
@@ -321,8 +316,8 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         return accumulator;
     }
 
-    private static Flowable<PropertySource> toPropertySourcePublisher(Map<String, LocalSource> localSourceMap) {
-        return Flowable.fromIterable(localSourceMap.values())
+    private static Flux<PropertySource> toPropertySourcePublisher(Map<String, LocalSource> localSourceMap) {
+        return Flux.fromIterable(localSourceMap.values())
                 .map(localSource -> {
                     LOG.trace("source={} got priority={}", localSource.name, localSource.priority);
                     return PropertySource.of(AwsServiceDiscoveryClientConfiguration.SERVICE_ID

@@ -9,7 +9,6 @@ dependencies {
     testImplementation project(":function-aws-api-proxy"), {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
-    testImplementation 'jakarta.inject:jakarta.inject-api:2.0.0'
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-inject-groovy"

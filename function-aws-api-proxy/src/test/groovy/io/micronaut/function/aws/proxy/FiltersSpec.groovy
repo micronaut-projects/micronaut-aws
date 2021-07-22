@@ -18,12 +18,10 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
 import io.micronaut.http.server.exceptions.ExceptionHandler
-import io.micronaut.web.router.RouteMatch
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
-
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Singleton
 

@@ -4,6 +4,5 @@ dependencies {
     api project(":function-aws")
     api "io.micronaut:micronaut-function:$micronautVersion"
 
-    testImplementation 'jakarta.inject:jakarta.inject-api:2.0.0'
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
 }

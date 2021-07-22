@@ -15,14 +15,17 @@
  */
 package io.micronaut.function.client.aws
 
-import io.reactivex.Single
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.async.annotation.SingleResult
 import io.micronaut.core.type.Argument
 import io.micronaut.function.client.FunctionClient
 import io.micronaut.function.client.FunctionDefinition
 import io.micronaut.function.client.FunctionInvoker
 import io.micronaut.function.client.FunctionInvokerChooser
 import io.micronaut.http.annotation.Body
+import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Specification
@@ -46,9 +49,9 @@ class AwsLambdaInvokeSpec extends Specification {
                 'aws.lambda.functions.test.functionName':'micronaut-function',
                 'aws.lambda.functions.test.qualifier':'something'
         )
-        
+
         Collection<FunctionDefinition> definitions = applicationContext.getBeansOfType(FunctionDefinition)
-        
+
         expect:
         definitions.size() == 1
         definitions.first() instanceof AWSInvokeRequestDefinition
@@ -124,7 +127,7 @@ class AwsLambdaInvokeSpec extends Specification {
         book.title == "THE STAND"
 
         when:
-        book = myClient.reactiveInvoke( "The Stand" ).blockingGet()
+        book = Flux.from(myClient.reactiveInvoke( "The Stand" )).blockFirst()
 
         then:
         book != null
@@ -145,7 +148,8 @@ class AwsLambdaInvokeSpec extends Specification {
         Book someOtherName(String title)
 
         @Named('micronaut-function')
-        Single<Book> reactiveInvoke(String title)
+        @SingleResult
+        Publisher<Book> reactiveInvoke(String title)
     }
     //end::functionClient[]
 }

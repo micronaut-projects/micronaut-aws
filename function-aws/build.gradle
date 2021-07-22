@@ -4,7 +4,5 @@ dependencies {
     api "io.micronaut:micronaut-function:$micronautVersion"
     api "com.amazonaws:aws-lambda-java-core:1.2.1"
 
-    testImplementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-
     testImplementation "io.micronaut:micronaut-inject-groovy"
 }

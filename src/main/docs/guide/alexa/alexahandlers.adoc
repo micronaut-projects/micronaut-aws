@@ -1,7 +1,7 @@
 To create the sample skill described in
 https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html[Amazon Documentation - Develop your first skill] with Micronaut's Alexa you will write the same https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#launchrequest-handler[LaunchRequestHandler], https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helloworldintent-handler[HelloWorldIntent], https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helpintent-handler[HelpIntent], https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#cancelandstopintent-handler[CancelandStopHandler], https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#fallbackintent-handler[FallbackIntentHandler], https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#sessionendedrequest-handler[SessionEndedRequestHandler] handlers.
 
-You will do just one change, you will annotate those handlers with `javax.inject.Singleton`.
+You will do just one change, you will annotate those handlers with `jakarta.inject.Singleton`.
 
 [source, java]
 ----

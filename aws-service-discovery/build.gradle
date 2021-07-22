@@ -2,9 +2,8 @@ dependencies {
     api 'io.micronaut.discovery:micronaut-discovery-client:2.4.0'
     api project(":aws-sdk-v2")
 
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-
     implementation 'software.amazon.awssdk:servicediscovery'
 
+    testImplementation "io.projectreactor:reactor-core"
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }

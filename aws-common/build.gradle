@@ -2,8 +2,6 @@ dependencies {
     api "io.micronaut:micronaut-inject:$micronautVersion"
     compileOnly "io.micronaut:micronaut-runtime:$micronautVersion"
 
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-runtime:$micronautVersion"
 }

@@ -22,7 +22,7 @@ import io.micronaut.context.env.PropertySource
 import io.micronaut.context.env.PropertySourcePropertyResolver
 import io.micronaut.core.order.OrderUtil
 import io.micronaut.runtime.server.EmbeddedServer
-import io.reactivex.Flowable
+import reactor.core.publisher.Flux
 import software.amazon.awssdk.services.ssm.SsmAsyncClient
 import software.amazon.awssdk.services.ssm.model.*
 import spock.lang.AutoCleanup
@@ -86,7 +86,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['first', 'second'] as Set)
-        List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
         propertySources.sort(OrderUtil.COMPARATOR)
         PropertySourcePropertyResolver resolver = new PropertySourcePropertyResolver(propertySources as PropertySource[])
 
@@ -131,7 +131,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['test'] as Set)
-        List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify property source characteristics"
         propertySources.size() == 2
@@ -179,7 +179,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['test'] as Set)
-        List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify property source characteristics"
         propertySources.size() == 2
@@ -256,7 +256,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['test'] as Set)
-        List<PropertySource> propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify property source characteristics"
         propertySources.size() == 2
@@ -310,7 +310,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
         when:
         def env = Mock(Environment)
         env.getActiveNames() >> (['first', 'second'] as Set)
-        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify that active environment paths are not searched"
         propertySources.size() == 1
@@ -359,7 +359,7 @@ class AWSPropertyStoreMockConfigurationClientSpec extends Specification {
 
         when:
         def env = Mock(Environment)
-        def propertySources = Flowable.fromPublisher(client.getPropertySources(env)).toList().blockingGet()
+        List<PropertySource> propertySources = Flux.from(client.getPropertySources(env)).collectList().block()
 
         then: "verify that the custom paths were searched"
         propertySources.size() == 1

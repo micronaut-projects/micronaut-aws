@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.client.aws;
 
+import com.amazonaws.handlers.AsyncHandler;
 import com.amazonaws.services.lambda.AWSLambdaAsync;
 import com.amazonaws.services.lambda.model.InvokeRequest;
 import com.amazonaws.services.lambda.model.InvokeResult;
@@ -29,15 +30,13 @@ import io.micronaut.function.client.FunctionInvokerChooser;
 import io.micronaut.function.client.exceptions.FunctionExecutionException;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.scheduling.TaskExecutors;
-import io.reactivex.Flowable;
-import io.reactivex.schedulers.Schedulers;
-
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 /**
  * A {@link FunctionInvoker} for invoking functions on AWS.
@@ -84,18 +83,25 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         InvokeRequest invokeRequest = ((AWSInvokeRequestDefinition) definition).getInvokeRequest().clone();
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
         if (isReactiveType) {
-            Flowable<Object> invokeFlowable = Flowable.just(invokeRequest)
-                .flatMap(req -> {
-                    encodeInput(input, invokeRequest);
+            final Mono<Object> invokeFlowable = Mono.<InvokeResult>create(emitter -> {
+                encodeInput(input, invokeRequest);
 
-                    Future<InvokeResult> future = asyncClient.invokeAsync(req);
-                    return Flowable.fromFuture(future, Schedulers.from(ioExecutor));
-                })
-                .map(invokeResult -> decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult));
+                asyncClient.invokeAsync(invokeRequest, new AsyncHandler<InvokeRequest, InvokeResult>() {
+                    @Override
+                    public void onError(Exception exception) {
+                        emitter.error(exception);
+                    }
 
-            invokeFlowable = invokeFlowable.onErrorResumeNext(throwable -> {
-                return Flowable.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable));
-            });
+                    @Override
+                    public void onSuccess(InvokeRequest request, InvokeResult invokeResult) {
+                        emitter.success(invokeResult);
+                    }
+                });
+            })
+                    .map(invokeResult ->
+                            decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
+                    .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
+                    .subscribeOn(Schedulers.fromExecutor(ioExecutor));
 
             return ConversionService.SHARED.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
 

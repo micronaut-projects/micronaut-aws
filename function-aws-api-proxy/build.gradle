@@ -2,7 +2,9 @@ dependencies {
     compileOnly "io.micronaut.security:micronaut-security:$micronautSecurity"
 
     implementation "io.micronaut:micronaut-http-netty"
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
+
+    implementation "io.projectreactor:reactor-core"
+
     api "io.micronaut:micronaut-http-server"
     api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5.2', {
         exclude group:'javax.servlet', module:'javax.servlet-api'
@@ -18,9 +20,11 @@ dependencies {
 
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
-    testImplementation 'io.micronaut.views:micronaut-views-handlebars'
-    testImplementation "io.projectreactor:reactor-core"
+
+    testImplementation "io.micronaut.views:micronaut-views-handlebars:$micronautViewsVersion"
+
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
     testImplementation 'javax.servlet:servlet-api:2.5'
     testImplementation 'org.javadelight:delight-fileupload:0.0.5'

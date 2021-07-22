@@ -17,8 +17,6 @@ dependencies {
 
     runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
 
-    testImplementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
         transitive(false)
     }

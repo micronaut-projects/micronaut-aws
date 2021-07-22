@@ -10,8 +10,6 @@ dependencies {
     implementation "io.micronaut:micronaut-validation"
     implementation 'com.github.spotbugs:spotbugs-annotations'
 
-    implementation 'jakarta.inject:jakarta.inject-api:2.0.0'
-
     api project(":aws-alexa")
     implementation "io.micronaut:micronaut-http-server"
     api ("com.amazon.alexa:ask-sdk-core:$askVersion")

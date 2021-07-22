@@ -1,7 +1,5 @@
 dependencies {
     api project(":aws-common")
-    api('io.micronaut.discovery:micronaut-discovery-client')
+    api('io.micronaut.discovery:micronaut-discovery-client:3.0.0-SNAPSHOT')
     testImplementation "io.micronaut:micronaut-http-server-netty"
-
-    testImplementation 'jakarta.inject:jakarta.inject-api:2.0.0'
 }

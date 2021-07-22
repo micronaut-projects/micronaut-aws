@@ -18,12 +18,12 @@ package io.micronaut.function.aws.proxy.security;
 import com.amazonaws.serverless.proxy.model.ApiGatewayAuthorizerContext;
 import com.amazonaws.serverless.proxy.model.CognitoAuthorizerClaims;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.function.aws.proxy.MicronautAwsProxyRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.DefaultAuthentication;
 import io.micronaut.security.filters.AuthenticationFetcher;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import jakarta.inject.Singleton;
@@ -92,7 +92,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
 
             if (authorizer != null) {
                 final CognitoAuthorizerClaims claims = authorizer.getClaims();
-                return Flowable.just(
+                return Publishers.just(
                         new DefaultAuthentication(
                                 authorizer.getPrincipalId(),
                                 attributesOfClaims(claims)
@@ -101,7 +101,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             } else {
                 final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
                 if (v != null) {
-                    return Flowable.just(
+                    return Publishers.just(
                             new DefaultAuthentication(
                                     v,
                                     Collections.emptyMap()
@@ -110,7 +110,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                 }
             }
         }
-        return Flowable.empty();
+        return Publishers.empty();
     }
 
     /**
@@ -144,7 +144,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                 attributes.putIfAbsent(claim, value);
             }
         }
-        
+
         return Collections.unmodifiableMap(attributes);
     }
 
