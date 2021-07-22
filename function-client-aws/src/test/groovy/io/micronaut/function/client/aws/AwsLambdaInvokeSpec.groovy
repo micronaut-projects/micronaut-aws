@@ -16,6 +16,7 @@
 package io.micronaut.function.client.aws
 
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.async.annotation.SingleResult
 import io.micronaut.core.type.Argument
 import io.micronaut.function.client.FunctionClient
 import io.micronaut.function.client.FunctionDefinition
@@ -23,6 +24,7 @@ import io.micronaut.function.client.FunctionInvoker
 import io.micronaut.function.client.FunctionInvokerChooser
 import io.micronaut.http.annotation.Body
 import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
@@ -125,7 +127,7 @@ class AwsLambdaInvokeSpec extends Specification {
         book.title == "THE STAND"
 
         when:
-        book = myClient.reactiveInvoke( "The Stand" ).block()
+        book = Flux.from(myClient.reactiveInvoke( "The Stand" )).blockFirst()
 
         then:
         book != null
@@ -146,7 +148,8 @@ class AwsLambdaInvokeSpec extends Specification {
         Book someOtherName(String title)
 
         @Named('micronaut-function')
-        Mono<Book> reactiveInvoke(String title)
+        @SingleResult
+        Publisher<Book> reactiveInvoke(String title)
     }
     //end::functionClient[]
 }
