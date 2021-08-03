@@ -177,31 +177,6 @@ public final class MicronautLambdaContainerHandler
     }
 
     /**
-     * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
-     *
-     * @return The {@link MicronautLambdaContainerHandler}
-     * @throws ContainerInitializationException if the container couldn't be started
-     */
-    @Deprecated
-    public static MicronautLambdaContainerHandler getAwsProxyHandler() throws ContainerInitializationException {
-        return new MicronautLambdaContainerHandler(new LambdaContainerState());
-    }
-
-    /**
-     * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
-     *
-     * @param builder The builder to customize the context creation
-     * @return The {@link MicronautLambdaContainerHandler}
-     * @throws ContainerInitializationException if the container couldn't be started
-     * @deprecated Use {@link #MicronautLambdaContainerHandler(ApplicationContextBuilder)} instead
-     */
-    @Deprecated
-    public static MicronautLambdaContainerHandler getAwsProxyHandler(ApplicationContextBuilder builder) throws ContainerInitializationException {
-        ArgumentUtils.requireNonNull("builder", builder);
-        return new MicronautLambdaContainerHandler(new LambdaContainerState(), builder, null);
-    }
-
-    /**
      * @return The underlying application context
      */
     @Override
