@@ -16,11 +16,11 @@ You can create environment-specific configurations as well by including the envi
 
 |🔝🔝🔝
 |`/config/application_prod`
-|Configuration shared by all applications for the `prod` api:context.env.Environment[]
+|Configuration shared by all applications for the `prod` https://docs.micronaut.io/latest/guide/#environments[Environment]
 
 |🔝🔝🔝🔝
 |`/config/[APPLICATION_NAME]_prod`
-|Application-specific configuration for an active api:context.env.Environment[]
+|Application-specific configuration for an active https://docs.micronaut.io/latest/guide/#environments[Environment]
 
 |===
 
