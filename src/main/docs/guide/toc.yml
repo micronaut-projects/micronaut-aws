@@ -43,6 +43,7 @@ lambda:
   mdc: MDC Logging
   lambdaTutorials: Micronaut AWS Lambda Tutorials
   lambdaTesting: Testing Lambda Handlers
+  objectmapperconfiguration: Object Mapper Configuration
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration
