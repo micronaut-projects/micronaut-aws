@@ -4,7 +4,7 @@ Module `micronaut-aws-route53` which used AWS SDK V1 has been removed. Instead, 
 
 == @IntentHandler removal
 
-`@IntentHandler` annotation has been removed. `@IntentHandler` helped to implement automatically the method `canHandle` of an Alexa's handler.
+The `@IntentHandler` annotation and the associated `AnnotatedRequestHandler` have been removed. `@IntentHandler` helped to implement automatically the method `canHandle` of an Alexa's handler.
 If you had code, such as `@IntentHandler("HelloWorldIntent")`, you need to implement `canHandle` method. For example:
 
 [source, java]
