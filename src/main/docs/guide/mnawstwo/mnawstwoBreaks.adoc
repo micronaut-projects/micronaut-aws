@@ -13,11 +13,11 @@ api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
 |===
 | Class Name | Old Package | New Package
 
-| api:io.micronaut.aws.alexa.annotation.IntentHandler[]
+| `IntentHandler`[]
 | `io.micronaut.function.aws.alexa.annotation`
 | `io.micronaut.aws.alexa.annotation`
 
-| api:io.micronaut.aws.alexa.handlers.AnnotatedRequestHandler[]
+| `AnnotatedRequestHandler`[]
 | `io.micronaut.function.aws.alexa.handlers`
 | `io.micronaut.aws.alexa.handlers`
 
