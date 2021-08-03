@@ -174,6 +174,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>8.11</strong><span>Testing Lambda Handlers</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-objectmapperconfiguration"><a href="#objectmapperconfiguration"><strong>8.12</strong><span>Object Mapper Configuration</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>9</strong><span>Alexa Support</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-alexaskillconfiguration"><a href="#alexaskillconfiguration"><strong>9.1</strong><span>Alexa Skill Configuration</span></a></div>
@@ -2268,6 +2270,23 @@ public class RequestHandlerTest {
 <div class="paragraph">
 <p>The annotation supports the same options as <code>@MicronautTest</code>. Please note that regardless of whether or not you provide
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).</p>
+</div>
+
+<h2 id="objectmapperconfiguration"><a class="anchor" href="#objectmapperconfiguration"></a>8.12 Object Mapper Configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/objectmapperconfiguration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>By default, for efficiency reasons, Micronaut uses the default Jackson <code>ObjectMapper</code> to communicate with the AWS API proxy. However, if you have configured it for your application (for example, setting <code>jackson.propertyNamingStrategy: SNAKE_CASE</code>)
+ in a way that it would be incompatible with the API proxy, you can set <code>aws.proxy.shared-object-mapper: false</code>, and Micronaut will create a brand new <code>ObjectMapper</code> for the API proxy.</p>
+</div>
+<div class="paragraph">
+<p>If you wish to further configure this <code>ObjectMapper</code>, you can register a <code>BeanCreatedEventListener&lt;ObjectMapper&gt;</code> and filter based on <code>event.getBeanDefinition()</code> having an annotation like <code>@Named("aws")</code>.</p>
 </div>
 
 <h1 id="alexa"><a class="anchor" href="#alexa"></a>9 Alexa Support</h1>
