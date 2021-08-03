@@ -1,0 +1,4 @@
+By default, for efficiency reasons, Micronaut uses the default Jackson `ObjectMapper` to communicate with the AWS API proxy. However, if you have configured it for your application (for example, setting `jackson.propertyNamingStrategy: SNAKE_CASE`)
+ in a way that it would be incompatible with the API proxy, you can set `aws.proxy.shared-object-mapper: false`, and Micronaut will create a brand new `ObjectMapper` for the API proxy.
+
+If you wish to further configure this `ObjectMapper`, you can register a `BeanCreatedEventListener<ObjectMapper>` and filter based on `event.getBeanDefinition()` having an annotation like `@Named("aws")`.
