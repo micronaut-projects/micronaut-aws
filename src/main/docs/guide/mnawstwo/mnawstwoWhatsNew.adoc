@@ -8,4 +8,4 @@ Micronaut AWS 2.0.0 contains improvements to ease the creation of Alexa Skills w
 
 Check the <<alexa, Alexa>> section to learn more. 
 
-See the section <<breaks, Breaking Changes>> to ease into the migration to Micronaut AWS 2.x
+See the section <<mnawstwoBreaks, Breaking Changes>> to ease into the migration to Micronaut AWS 2.x
