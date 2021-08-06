@@ -74,7 +74,7 @@ public class MicronautAwsProxyTest {
     public static void initHandler() {
         try {
             handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.build(CollectionUtils.mapOf(
+                    ApplicationContext.builder(CollectionUtils.mapOf(
                             "spec.name", "MicronautAwsProxyTest",
                             "micronaut.security.enabled", true,
                             "micronaut.views.handlebars.enabled", true,
@@ -219,7 +219,7 @@ public class MicronautAwsProxyTest {
     @Test
     public void errors_unknownRoute_expect404() throws ContainerInitializationException {
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build(CollectionUtils.mapOf(
+                ApplicationContext.builder(CollectionUtils.mapOf(
                         "spec.name", "MicronautAwsProxyTest",
                         "micronaut.security.enabled", false,
                         "micronaut.views.handlebars.enabled", true,
@@ -236,7 +236,7 @@ public class MicronautAwsProxyTest {
     @Test
     public void error_statusCode_methodNotAllowed() throws ContainerInitializationException {
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build(CollectionUtils.mapOf(
+                ApplicationContext.builder(CollectionUtils.mapOf(
                         "spec.name", "MicronautAwsProxyTest",
                         "micronaut.security.enabled", false,
                         "micronaut.views.handlebars.enabled", true,
@@ -359,7 +359,7 @@ public class MicronautAwsProxyTest {
     @Test
     public void stripBasePath_route_shouldReturn404() throws ContainerInitializationException {
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build(CollectionUtils.mapOf(
+                ApplicationContext.builder(CollectionUtils.mapOf(
                         "spec.name", "MicronautAwsProxyTest",
                         "micronaut.security.enabled", false,
                         "micronaut.views.handlebars.enabled", true,
