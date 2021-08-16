@@ -23,6 +23,10 @@ include 'aws-sdk-v1'
 include 'aws-sdk-v2'
 include 'function-aws-test'
 
+include 'test-suite'
+include 'test-suite-groovy'
+include 'test-suite-kotline'
+
 gradleEnterprise {
     buildScan {
         termsOfServiceUrl = "https://gradle.com/terms-of-service"
