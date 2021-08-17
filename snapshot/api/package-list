@@ -1,7 +1,9 @@
 io.micronaut.aws
+io.micronaut.aws.alexa.annotation
 io.micronaut.aws.alexa.builders
 io.micronaut.aws.alexa.conf
 io.micronaut.aws.alexa.flashbriefing
+io.micronaut.aws.alexa.handlers
 io.micronaut.aws.alexa.httpserver
 io.micronaut.aws.alexa.httpserver.conf
 io.micronaut.aws.alexa.httpserver.controllers
@@ -26,6 +28,9 @@ io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
 io.micronaut.aws.secretsmanager
 io.micronaut.discovery.aws.parameterstore
+io.micronaut.discovery.aws.route53
+io.micronaut.discovery.aws.route53.client
+io.micronaut.discovery.aws.route53.registration
 io.micronaut.discovery.aws.servicediscovery
 io.micronaut.discovery.aws.servicediscovery.client
 io.micronaut.discovery.aws.servicediscovery.registration
