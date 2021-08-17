@@ -47,23 +47,23 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#releases"><strong>2</strong><span>Release History</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#whatsNew"><strong>3</strong><span>What's new?</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#mnawsthree"><strong>3</strong><span>Micronaut AWS 3.0</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#corretto"><strong>4</strong><span>Amazon Correto</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#mnawstwo"><strong>4</strong><span>Micronaut AWS 2.0</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#sdkv1"><strong>5</strong><span>AWS SDK v1</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#corretto"><strong>5</strong><span>Amazon Correto</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#sdkv2"><strong>6</strong><span>AWS SDK v2</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#sdkv1"><strong>6</strong><span>AWS SDK v1</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#lambda"><strong>7</strong><span>AWS Lambda Support</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#sdkv2"><strong>7</strong><span>AWS SDK v2</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#lambda"><strong>8</strong><span>AWS Lambda Support</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#distributedconfiguration"><strong>9</strong><span>Distributed Configuration</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#alexa"><strong>9</strong><span>Alexa Support</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#distributedconfiguration"><strong>10</strong><span>Distributed Configuration</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#breaks"><strong>11</strong><span>Breaking Changes</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>11</strong><span>Repository</span></a></div>
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#thirdPartyLibraries"><strong>12</strong><span>Third-party libraries</span></a></div>
                                 
@@ -100,97 +100,107 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-releases"><a href="#releases"><strong>2</strong><span>Release History</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-whatsNew"><a href="#whatsNew"><strong>3</strong><span>What's new?</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-mnawsthree"><a href="#mnawsthree"><strong>3</strong><span>Micronaut AWS 3.0</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-corretto"><a href="#corretto"><strong>4</strong><span>Amazon Correto</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mnawsthreeBreaks"><a href="#mnawsthreeBreaks"><strong>3.1</strong><span>Breaking Changes in Micronaut AWS 3.0</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-sdkv1"><a href="#sdkv1"><strong>5</strong><span>AWS SDK v1</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-mnawstwo"><a href="#mnawstwo"><strong>4</strong><span>Micronaut AWS 2.0</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-awsCredentialsProvider"><a href="#awsCredentialsProvider"><strong>5.1</strong><span>AWS Credentials Provider</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mnawstwoWhatsNew"><a href="#mnawstwoWhatsNew"><strong>4.1</strong><span>What's new in Micronaut AWS 2.0 ?</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-sdkv2"><a href="#sdkv2"><strong>6</strong><span>AWS SDK v2</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mnawstwoBreaks"><a href="#mnawstwoBreaks"><strong>4.2</strong><span>Breaking Changes in Micronaut AWS 2.0</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sdkHttpClient"><a href="#sdkHttpClient"><strong>6.1</strong><span>SDK HTTP Client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-corretto"><a href="#corretto"><strong>5</strong><span>Amazon Correto</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-urlConnection"><a href="#urlConnection"><strong>6.1.1</strong><span>URLConnection client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-sdkv1"><a href="#sdkv1"><strong>6</strong><span>AWS SDK v1</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-apacheHttpClient"><a href="#apacheHttpClient"><strong>6.1.2</strong><span>Apache HTTP client</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-awsCredentialsProvider"><a href="#awsCredentialsProvider"><strong>6.1</strong><span>AWS Credentials Provider</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-nettyClient"><a href="#nettyClient"><strong>6.1.3</strong><span>Netty client</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-sdkv2"><a href="#sdkv2"><strong>7</strong><span>AWS SDK v2</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-awsCredentials"><a href="#awsCredentials"><strong>6.2</strong><span>Supplying AWS credentials</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sdkHttpClient"><a href="#sdkHttpClient"><strong>7.1</strong><span>SDK HTTP Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-awsRegionSelection"><a href="#awsRegionSelection"><strong>6.3</strong><span>AWS region selection</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-urlConnection"><a href="#urlConnection"><strong>7.1.1</strong><span>URLConnection client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-s3"><a href="#s3"><strong>6.4</strong><span>S3</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-apacheHttpClient"><a href="#apacheHttpClient"><strong>7.1.2</strong><span>Apache HTTP client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-dynamodb"><a href="#dynamodb"><strong>6.5</strong><span>Dynamo DB</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-nettyClient"><a href="#nettyClient"><strong>7.1.3</strong><span>Netty client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ses"><a href="#ses"><strong>6.6</strong><span>SES</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-awsCredentials"><a href="#awsCredentials"><strong>7.2</strong><span>Supplying AWS credentials</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>6.7</strong><span>SNS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-awsRegionSelection"><a href="#awsRegionSelection"><strong>7.3</strong><span>AWS region selection</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>6.8</strong><span>SQS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-s3"><a href="#s3"><strong>7.4</strong><span>S3</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>6.9</strong><span>SSM</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-dynamodb"><a href="#dynamodb"><strong>7.5</strong><span>Dynamo DB</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>6.10</strong><span>Secrets Manager</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ses"><a href="#ses"><strong>7.6</strong><span>SES</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>6.11</strong><span>Advanced configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>7.7</strong><span>SNS</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>6.12</strong><span>Other services</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>7.8</strong><span>SQS</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>7</strong><span>AWS Lambda Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>7.9</strong><span>SSM</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-applicationtypesforawslambda"><a href="#applicationtypesforawslambda"><strong>7.1</strong><span>Micronaut Application Types for AWS Lambda</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>7.10</strong><span>Secrets Manager</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-awslambdaconsiderations"><a href="#awslambdaconsiderations"><strong>7.2</strong><span>AWS Lambda Considerations</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>7.11</strong><span>Service discovery</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-awslambdaruntimes"><a href="#awslambdaruntimes"><strong>7.3</strong><span>AWS Lambda Runtimes</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>7.12</strong><span>Advanced configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-applicationtyperuntimedependencies"><a href="#applicationtyperuntimedependencies"><strong>7.4</strong><span>Application Types, Lambda Runtimes, Dependencies</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>7.13</strong><span>Other services</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdatriggers"><a href="#lambdatriggers"><strong>7.5</strong><span>Lambda Triggers</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>8</strong><span>AWS Lambda Support</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>7.6</strong><span>Lambda Handlers</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-applicationtypesforawslambda"><a href="#applicationtypesforawslambda"><strong>8.1</strong><span>Micronaut Application Types for AWS Lambda</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-coldstartups"><a href="#coldstartups"><strong>7.7</strong><span>Cold Startups</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-awslambdaconsiderations"><a href="#awslambdaconsiderations"><strong>8.2</strong><span>AWS Lambda Considerations</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>7.8</strong><span>GraalVM and AWS Custom runtimes</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-awslambdaruntimes"><a href="#awslambdaruntimes"><strong>8.3</strong><span>AWS Lambda Runtimes</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-mdc"><a href="#mdc"><strong>7.9</strong><span>MDC Logging</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-applicationtyperuntimedependencies"><a href="#applicationtyperuntimedependencies"><strong>8.4</strong><span>Application Types, Lambda Runtimes, Dependencies</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>7.10</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdatriggers"><a href="#lambdatriggers"><strong>8.5</strong><span>Lambda Triggers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>7.11</strong><span>Testing Lambda Handlers</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>8.6</strong><span>Lambda Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaStreamHandler"><a href="#lambdaStreamHandler"><strong>7.12</strong><span>MicronautRequestStreamHandler</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-coldstartups"><a href="#coldstartups"><strong>8.7</strong><span>Cold Startups</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdafunctionclient"><a href="#lambdafunctionclient"><strong>7.13</strong><span>Invoke Lambda with @FunctionClient</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>8.8</strong><span>GraalVM and AWS Custom runtimes</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mdc"><a href="#mdc"><strong>8.9</strong><span>MDC Logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-alexaskillconfiguration"><a href="#alexaskillconfiguration"><strong>8.1</strong><span>Alexa Skill Configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>8.10</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-skillbuilderprovider"><a href="#skillbuilderprovider"><strong>8.2</strong><span>Skill Builder Provider</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>8.11</strong><span>Testing Lambda Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-alexahandlers"><a href="#alexahandlers"><strong>8.3</strong><span>Handlers</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-objectmapperconfiguration"><a href="#objectmapperconfiguration"><strong>8.12</strong><span>Object Mapper Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-alexalambda"><a href="#alexalambda"><strong>8.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaStreamHandler"><a href="#lambdaStreamHandler"><strong>8.13</strong><span>MicronautRequestStreamHandler</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-webservice"><a href="#webservice"><strong>8.5</strong><span>Alexa Skill as a Web Service</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>9</strong><span>Alexa Support</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ssmlbuilder"><a href="#ssmlbuilder"><strong>8.6</strong><span>SSML Builder</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-alexaskillconfiguration"><a href="#alexaskillconfiguration"><strong>9.1</strong><span>Alexa Skill Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>8.7</strong><span>Flash Briefings</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-skillbuilderprovider"><a href="#skillbuilderprovider"><strong>9.2</strong><span>Skill Builder Provider</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-distributedconfiguration"><a href="#distributedconfiguration"><strong>9</strong><span>Distributed Configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-alexahandlers"><a href="#alexahandlers"><strong>9.3</strong><span>Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>9.1</strong><span>AWS System Manager Parameter Store</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-alexalambda"><a href="#alexalambda"><strong>9.4</strong><span>Alexa Skill as an AWS Lambda Function</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>10</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-webservice"><a href="#webservice"><strong>9.5</strong><span>Alexa Skill as a Web Service</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-breaks"><a href="#breaks"><strong>11</strong><span>Breaking Changes</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ssmlbuilder"><a href="#ssmlbuilder"><strong>9.6</strong><span>SSML Builder</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>9.7</strong><span>Flash Briefings</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-distributedconfiguration"><a href="#distributedconfiguration"><strong>10</strong><span>Distributed Configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-distributedconfigurationsecretsmanager"><a href="#distributedconfigurationsecretsmanager"><strong>10.1</strong><span>AWS Secrets Manager</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>10.2</strong><span>AWS System Manager Parameter Store</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>11</strong><span>Repository</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-thirdPartyLibraries"><a href="#thirdPartyLibraries"><strong>12</strong><span>Third-party libraries</span></a></div>
         
@@ -202,13 +212,13 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-aws/snapshot/guide/index.html'>SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-aws/3.0.0-M1/guide/index.html'>3.0.0-M1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.9.0/guide/index.html'>2.9.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.8.0/guide/index.html'>2.8.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.2/guide/index.html'>2.7.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.1/guide/index.html'>2.7.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.0/guide/index.html'>2.7.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.2/guide/index.html'>2.6.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.1/guide/index.html'>2.6.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.0/guide/index.html'>2.6.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.5.0/guide/index.html'>2.5.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.2/guide/index.html'>2.4.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.1/guide/index.html'>2.4.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.0/guide/index.html'>2.4.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.3.0/guide/index.html'>2.3.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.5/guide/index.html'>2.2.5</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.4/guide/index.html'>2.2.4</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.3/guide/index.html'>2.2.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.2/guide/index.html'>2.2.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.1/guide/index.html'>2.2.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.0/guide/index.html'>2.2.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.1/guide/index.html'>2.1.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0/guide/index.html'>2.1.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0.RC2/guide/index.html'>2.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0.RC1/guide/index.html'>2.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.3/guide/index.html'>2.0.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.2/guide/index.html'>2.0.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.1/guide/index.html'>2.0.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.0/guide/index.html'>2.0.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.0.RC1/guide/index.html'>2.0.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.0.M3/guide/index.html'>2.0.0.M3</option></select></p>
+        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-aws/snapshot/guide/index.html'>SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-aws/3.0.0-M1/guide/index.html'>3.0.0-M1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.9.0/guide/index.html'>2.9.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.8.0/guide/index.html'>2.8.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.3/guide/index.html'>2.7.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.2/guide/index.html'>2.7.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.1/guide/index.html'>2.7.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.7.0/guide/index.html'>2.7.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.2/guide/index.html'>2.6.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.1/guide/index.html'>2.6.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.6.0/guide/index.html'>2.6.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.5.0/guide/index.html'>2.5.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.2/guide/index.html'>2.4.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.1/guide/index.html'>2.4.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.4.0/guide/index.html'>2.4.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.3.0/guide/index.html'>2.3.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.5/guide/index.html'>2.2.5</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.4/guide/index.html'>2.2.4</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.3/guide/index.html'>2.2.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.2/guide/index.html'>2.2.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.1/guide/index.html'>2.2.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.2.0/guide/index.html'>2.2.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.1/guide/index.html'>2.1.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0/guide/index.html'>2.1.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0.RC2/guide/index.html'>2.1.0.RC2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.1.0.RC1/guide/index.html'>2.1.0.RC1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.3/guide/index.html'>2.0.3</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.2/guide/index.html'>2.0.2</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.1/guide/index.html'>2.0.1</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.0/guide/index.html'>2.0.0</option><option value='https://micronaut-projects.github.io/micronaut-aws/2.0.0.RC1/guide/index.html'>2.0.0.RC1</option></select></p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/introduction.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/introduction.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -218,14 +228,14 @@
 <p>This project provides various extensions to Micronaut for Amazon Web Services (AWS).</p>
 </div>
 <div class="paragraph">
-<p>A base <a href="../api/io/micronaut/configuration/aws/AWSClientConfiguration.html">AWSClientConfiguration</a> is provided which can be used as a base configuration class for
+<p>A base <a href="../api/io/micronaut/aws/sdk/v1/AWSClientConfiguration.html">AWSClientConfiguration</a> is provided which can be used as a base configuration class for
 any configuration that needs to configure an AWS SDK client.</p>
 </div>
 
 <h1 id="releases"><a class="anchor" href="#releases"></a>2 Release History</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/releases.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/releases.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -238,10 +248,71 @@ any configuration that needs to configure an AWS SDK client.</p>
 <p><a href="https://github.com/micronaut-projects/micronaut-aws/releases">https://github.com/micronaut-projects/micronaut-aws/releases</a></p>
 </div>
 
-<h1 id="whatsNew"><a class="anchor" href="#whatsNew"></a>3 What's new?</h1>
+<h1 id="mnawsthree"><a class="anchor" href="#mnawsthree"></a>3 Micronaut AWS 3.0</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/whatsNew.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/mnawsthree.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+
+
+<h2 id="mnawsthreeBreaks"><a class="anchor" href="#mnawsthreeBreaks"></a>3.1 Breaking Changes in Micronaut AWS 3.0</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/mnawsthree/mnawsthreeBreaks.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_module_micronaut_aws_route53_removal">Module micronaut-aws-route53 removal</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Module <code>micronaut-aws-route53</code> which used AWS SDK V1 has been removed. Instead, you can use <code>micronaut-aws-service-discovery</code> module which provides the same functionality but it uses AWS SDK V2.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_intenthandler_removal">@IntentHandler removal</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>@IntentHandler</code> annotation and the associated <code>AnnotatedRequestHandler</code> have been removed. <code>@IntentHandler</code> helped to implement automatically the method <code>canHandle</code> of an Alexa&#8217;s handler.
+If you had code, such as <code>@IntentHandler("HelloWorldIntent")</code>, you need to implement <code>canHandle</code> method. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Override
+public boolean canHandle(HandlerInput handlerInput) {
+return handlerInput.matches(Predicates.intentName("HelloWorldIntent"));
+}
+
+== Micronaut Function Name
+
+Property `micronaut.function.name` takes precedence over the function name present in the Lambda Context.</code></pre>
+</div>
+</div>
+</div>
+</div>
+
+<h1 id="mnawstwo"><a class="anchor" href="#mnawstwo"></a>4 Micronaut AWS 2.0</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/mnawstwo.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+
+
+<h2 id="mnawstwoWhatsNew"><a class="anchor" href="#mnawstwoWhatsNew"></a>4.1 What's new in Micronaut AWS 2.0 ?</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/mnawstwo/mnawstwoWhatsNew.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -273,13 +344,128 @@ any configuration that needs to configure an AWS SDK client.</p>
 <p>Check the <a href="#alexa">Alexa</a> section to learn more.</p>
 </div>
 <div class="paragraph">
-<p>See the section <a href="#breaks">Breaking Changes</a> to ease into the migration to Micronaut AWS 2.x</p>
+<p>See the section <a href="#mnawstwoBreaks">Breaking Changes</a> to ease into the migration to Micronaut AWS 2.x</p>
 </div>
 
-<h1 id="corretto"><a class="anchor" href="#corretto"></a>4 Amazon Correto</h1>
+<h2 id="mnawstwoBreaks"><a class="anchor" href="#mnawstwoBreaks"></a>4.2 Breaking Changes in Micronaut AWS 2.0</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/corretto.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/mnawstwo/mnawstwoBreaks.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="_class_changes">Class changes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> has been refactored to ease extension.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Classes renamed</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Old Class Name</th>
+<th class="tableblock halign-left valign-top">New Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.AlexaConfiguration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">io.micronaut.aws.alexa.conf.AlexaSkillConfiguration</a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Classes relocated</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Class Name</th>
+<th class="tableblock halign-left valign-top">Old Package</th>
+<th class="tableblock halign-left valign-top">New Package</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IntentHandler</code>[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.annotation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.annotation</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AnnotatedRequestHandler</code>[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.handlers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.handlers</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaIntents.html">AlexaIntents</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.conf</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_artifact_changes">Artifact changes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now all artifacts are published under the <code>io.micronaut.aws</code> group id.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Artifacts relocated</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Old artifact</th>
+<th class="tableblock halign-left valign-top">New artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut:micronaut-function-aws</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws:micronaut-function-aws</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_content_negotiation">Content negotiation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using AWS API Proxy, the new support for server side content negotiation may require changes to tests. For example
+a test that makes a call such as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String result = client.toBlocking().retrieve(
+    HttpRequest.GET("/test")
+        .accept("text/plain"), String)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the server implementation does not declare the route as <code>@Produces("text/plain")</code> the request won&#8217;t match.</p>
+</div>
+</div>
+</div>
+
+<h1 id="corretto"><a class="anchor" href="#corretto"></a>5 Amazon Correto</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/corretto.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -296,10 +482,10 @@ any configuration that needs to configure an AWS SDK client.</p>
 </blockquote>
 </div>
 
-<h1 id="sdkv1"><a class="anchor" href="#sdkv1"></a>5 AWS SDK v1</h1>
+<h1 id="sdkv1"><a class="anchor" href="#sdkv1"></a>6 AWS SDK v1</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv1.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv1.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -326,17 +512,17 @@ any configuration that needs to configure an AWS SDK client.</p>
 </p>
 </div>
 
-<h2 id="awsCredentialsProvider"><a class="anchor" href="#awsCredentialsProvider"></a>5.1 AWS Credentials Provider</h2>
+<h2 id="awsCredentialsProvider"><a class="anchor" href="#awsCredentialsProvider"></a>6.1 AWS Credentials Provider</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv1/awsCredentialsProvider.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv1/awsCredentialsProvider.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/configuration/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a>.</p>
+<p>When working with AWS SDK, you may need to provide a <code>com.amazonaws.auth.AWSCredentialsProvider</code>. To ease that this module provides a utility class: <a href="../api/io/micronaut/aws/sdk/v1/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a></p>
 </div>
 <div class="paragraph">
 <p>For example the following snippet show how you may configure a S3 Client if you set two environment variables:</p>
@@ -358,10 +544,10 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 <p>Read about <a href="https://docs.micronaut.io/latest/guide/index.html#propertySource">externalized Configuration with property sources</a> in Micronaut.</p>
 </div>
 
-<h1 id="sdkv2"><a class="anchor" href="#sdkv2"></a>6 AWS SDK v2</h1>
+<h1 id="sdkv2"><a class="anchor" href="#sdkv2"></a>7 AWS SDK v2</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -388,10 +574,10 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 </p>
 </div>
 
-<h2 id="sdkHttpClient"><a class="anchor" href="#sdkHttpClient"></a>6.1 SDK HTTP Client</h2>
+<h2 id="sdkHttpClient"><a class="anchor" href="#sdkHttpClient"></a>7.1 SDK HTTP Client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sdkHttpClient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sdkHttpClient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -402,10 +588,10 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 to use a client based on the JVM&#8217;s lightweight <code>URLConnection</code>, you should configure it as explained below.</p>
 </div>
 
-<h2 id="urlConnection"><a class="anchor" href="#urlConnection"></a>6.1.1 URLConnection client</h2>
+<h2 id="urlConnection"><a class="anchor" href="#urlConnection"></a>7.1.1 URLConnection client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sdkHttpClient/urlConnection.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sdkHttpClient/urlConnection.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -510,10 +696,10 @@ following JVM system properties:</p>
 </ul>
 </div>
 
-<h2 id="apacheHttpClient"><a class="anchor" href="#apacheHttpClient"></a>6.1.2 Apache HTTP client</h2>
+<h2 id="apacheHttpClient"><a class="anchor" href="#apacheHttpClient"></a>7.1.2 Apache HTTP client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sdkHttpClient/apacheHttpClient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sdkHttpClient/apacheHttpClient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -636,10 +822,10 @@ following JVM system properties:</p>
 </tbody>
 </table>
 
-<h2 id="nettyClient"><a class="anchor" href="#nettyClient"></a>6.1.3 Netty client</h2>
+<h2 id="nettyClient"><a class="anchor" href="#nettyClient"></a>7.1.3 Netty client</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sdkHttpClient/nettyClient.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sdkHttpClient/nettyClient.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -747,10 +933,10 @@ following JVM system properties:</p>
 </tbody>
 </table>
 
-<h2 id="awsCredentials"><a class="anchor" href="#awsCredentials"></a>6.2 Supplying AWS credentials</h2>
+<h2 id="awsCredentials"><a class="anchor" href="#awsCredentials"></a>7.2 Supplying AWS credentials</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/awsCredentials.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/awsCredentials.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -794,10 +980,10 @@ following JVM system properties:</p>
 </div>
 </div>
 
-<h2 id="awsRegionSelection"><a class="anchor" href="#awsRegionSelection"></a>6.3 AWS region selection</h2>
+<h2 id="awsRegionSelection"><a class="anchor" href="#awsRegionSelection"></a>7.3 AWS region selection</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/awsRegionSelection.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/awsRegionSelection.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -832,10 +1018,10 @@ following JVM system properties:</p>
 </div>
 </div>
 
-<h2 id="s3"><a class="anchor" href="#s3"></a>6.4 S3</h2>
+<h2 id="s3"><a class="anchor" href="#s3"></a>7.4 S3</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/s3.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/s3.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -947,10 +1133,10 @@ following JVM system properties:</p>
 </tbody>
 </table>
 
-<h2 id="dynamodb"><a class="anchor" href="#dynamodb"></a>6.5 Dynamo DB</h2>
+<h2 id="dynamodb"><a class="anchor" href="#dynamodb"></a>7.5 Dynamo DB</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/dynamodb.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/dynamodb.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1006,10 +1192,10 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="ses"><a class="anchor" href="#ses"></a>6.6 SES</h2>
+<h2 id="ses"><a class="anchor" href="#ses"></a>7.6 SES</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/ses.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/ses.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1065,10 +1251,10 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sns"><a class="anchor" href="#sns"></a>6.7 SNS</h2>
+<h2 id="sns"><a class="anchor" href="#sns"></a>7.7 SNS</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sns.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sns.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1124,10 +1310,10 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sqs"><a class="anchor" href="#sqs"></a>6.8 SQS</h2>
+<h2 id="sqs"><a class="anchor" href="#sqs"></a>7.8 SQS</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/sqs.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sqs.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1183,10 +1369,10 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="ssm"><a class="anchor" href="#ssm"></a>6.9 SSM</h2>
+<h2 id="ssm"><a class="anchor" href="#ssm"></a>7.9 SSM</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/ssm.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/ssm.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1242,10 +1428,10 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>6.10 Secrets Manager</h2>
+<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>7.10 Secrets Manager</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/secretsmanager.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/secretsmanager.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1301,10 +1487,69 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>6.11 Advanced configuration</h2>
+<h2 id="servicediscovery"><a class="anchor" href="#servicediscovery"></a>7.11 Service discovery</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/servicediscovery.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use Service discovery, the AWS Java SDK for Amazon Route 53 Auto Naming module, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:servicediscovery")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;servicediscovery&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClient</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClientBuilder</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>7.12 Advanced configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1330,10 +1575,10 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 </div>
 </div>
 
-<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>6.12 Other services</h2>
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>7.13 Other services</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/sdkv2/otherServices.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/otherServices.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1417,10 +1662,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 </table>
 </div>
 
-<h1 id="lambda"><a class="anchor" href="#lambda"></a>7 AWS Lambda Support</h1>
+<h1 id="lambda"><a class="anchor" href="#lambda"></a>8 AWS Lambda Support</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1430,10 +1675,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <p>There are several ways to create Micronaut AWS Lambda functions.</p>
 </div>
 
-<h2 id="applicationtypesforawslambda"><a class="anchor" href="#applicationtypesforawslambda"></a>7.1 Micronaut Application Types for AWS Lambda</h2>
+<h2 id="applicationtypesforawslambda"><a class="anchor" href="#applicationtypesforawslambda"></a>8.1 Micronaut Application Types for AWS Lambda</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/applicationtypesforawslambda.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/applicationtypesforawslambda.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1465,10 +1710,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 </tbody>
 </table>
 
-<h2 id="awslambdaconsiderations"><a class="anchor" href="#awslambdaconsiderations"></a>7.2 AWS Lambda Considerations</h2>
+<h2 id="awslambdaconsiderations"><a class="anchor" href="#awslambdaconsiderations"></a>8.2 AWS Lambda Considerations</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/awslambdaconsiderations.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/awslambdaconsiderations.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1497,10 +1742,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <p>The above decisions influence the type of Micronaut application you choose.</p>
 </div>
 
-<h2 id="awslambdaruntimes"><a class="anchor" href="#awslambdaruntimes"></a>7.3 AWS Lambda Runtimes</h2>
+<h2 id="awslambdaruntimes"><a class="anchor" href="#awslambdaruntimes"></a>8.3 AWS Lambda Runtimes</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/awslambdaruntimes.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/awslambdaruntimes.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1520,10 +1765,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 </div>
 </div>
 
-<h2 id="applicationtyperuntimedependencies"><a class="anchor" href="#applicationtyperuntimedependencies"></a>7.4 Application Types, Lambda Runtimes, Dependencies</h2>
+<h2 id="applicationtyperuntimedependencies"><a class="anchor" href="#applicationtyperuntimedependencies"></a>8.4 Application Types, Lambda Runtimes, Dependencies</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/applicationtyperuntimedependencies.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/applicationtyperuntimedependencies.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1578,10 +1823,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <p>Micronaut CLI or Launch will include the necessary dependencies when you select the <code>aws-lambda</code> feature or both <code>aws-lambda</code> and <code>graalvm</code> features.</p>
 </div>
 
-<h2 id="lambdatriggers"><a class="anchor" href="#lambdatriggers"></a>7.5 Lambda Triggers</h2>
+<h2 id="lambdatriggers"><a class="anchor" href="#lambdatriggers"></a>8.5 Lambda Triggers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/lambdatriggers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdatriggers.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1623,10 +1868,10 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <p>On the other hand, functions written as an application of type <code>Application</code> allows you to code with a more familiar paradigm - Classes annotated with  <code>@Controller</code>. That it is possible because, through the <a href="https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws-api-proxy">micronaut-function-aws-api-proxy</a> dependency, Micronaut integrates with the <a href="https://github.com/awslabs/aws-serverless-java-container">AWS Serverless Java Container</a> project.</p>
 </div>
 
-<h2 id="requestHandlers"><a class="anchor" href="#requestHandlers"></a>7.6 Lambda Handlers</h2>
+<h2 id="requestHandlers"><a class="anchor" href="#requestHandlers"></a>8.6 Lambda Handlers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/requestHandlers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/requestHandlers.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1748,21 +1993,21 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 </tbody>
 </table>
 
-<h2 id="coldstartups"><a class="anchor" href="#coldstartups"></a>7.7 Cold Startups</h2>
+<h2 id="coldstartups"><a class="anchor" href="#coldstartups"></a>8.7 Cold Startups</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/coldstartups.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/coldstartups.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Instances of Lambdas are added and removed dynamically.
-When a new instance handles its first request, the response time increases, which is called a cold start. After that request is processed, the instance stays alive (≈10 m) to be reused for subsequent requests.</p>
+<p>Instances of Lambda functions are automatically added as request concurrency increases.
+When a new instance handles its first request it has to start the JVM and load your code, this one time process is called a cold start. The request is then processed, and the instance stays alive to be reused for subsequent requests. Lambda instances can be replaced over time and there is no way to determine how long a Lambda instance will live for.</p>
 </div>
 <div class="paragraph">
-<p>Lambdas execution have different phases (Initialization, Invocation&#8230;&#8203;).</p>
+<p>Lambda function executions have different phases (Initialization, Invocation&#8230;&#8203;).</p>
 </div>
 <div class="paragraph">
 <p>During the initialization phase:</p>
@@ -1775,19 +2020,16 @@ When a new instance handles its first request, the response time increases, whic
 <li>
 <p>Java runtime loads and initializes handler class.</p>
 </li>
-<li>
-<p>Lambda calls the handler method.</p>
-</li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The intialization phase has access to more CPU because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
+<p>The intialization phase has access to more CPU, because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
 </div>
 
-<h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>7.8 GraalVM and AWS Custom runtimes</h2>
+<h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>8.8 GraalVM and AWS Custom runtimes</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/customRuntimes.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/customRuntimes.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1816,10 +2058,10 @@ When a new instance handles its first request, the response time increases, whic
 <p>When you generate a project with Micronaut CLI or <a href="https://launch.micronaut.io">Micronaut Launch</a> with <code>aws-lambda</code> and <code>graalvm</code> features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.</p>
 </div>
 
-<h2 id="mdc"><a class="anchor" href="#mdc"></a>7.9 MDC Logging</h2>
+<h2 id="mdc"><a class="anchor" href="#mdc"></a>8.9 MDC Logging</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/mdc.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/mdc.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1893,10 +2135,10 @@ When a new instance handles its first request, the response time increases, whic
 <p>Override <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> <code>populateMappingDiagnosticContextValues</code> or <code>populateMappingDiagnosticContextWithXrayTraceId</code> methods to adjust the functionality to your needs.</p>
 </div>
 
-<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>7.10 Micronaut AWS Lambda Tutorials</h2>
+<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>8.10 Micronaut AWS Lambda Tutorials</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/lambdaTutorials.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaTutorials.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1922,37 +2164,47 @@ When a new instance handles its first request, the response time increases, whic
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Application</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Java 11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deploy a Micronaut application to AWS Lambda Java 11 Runtime <a href="https://guides.micronaut.io/mn-application-aws-lambda-java11/guide/index.html">JAVA</a> <a href="https://guides.micronaut.io/mn-application-aws-lambda-java11-kotlin/guide/index.html">KOTLIN</a> <a href="https://guides.micronaut.io/mn-application-aws-lambda-java11-groovy/guide/index.html">GROOVY</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/mn-application-aws-lambda-java11.html">Deploy a Micronaut application to AWS Lambda Java 11 Runtime</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Serverless Function</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Java 11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deploy a Serverless Micronaut function to AWS Lambda Java 11 Runtime <a href="https://guides.micronaut.io/mn-serverless-function-aws-lambda/guide/index.html">JAVA</a> <a href="https://guides.micronaut.io/mn-serverless-function-aws-lambda-kotlin/guide/index.html">KOTLIN</a> <a href="https://guides.micronaut.io/mn-serverless-function-aws-lambda-groovy/guide/index.html">GROOVY</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda.html">Deploy a Serverless Micronaut function to AWS Lambda Java 11 Runtime</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Application</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">GraalVM Native Image in Custom Runtime</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deploy a Micronaut application as a GraalVM Native Image to AWS Lambda <a href="https://guides.micronaut.io/mn-application-aws-lambda-graalvm/guide/index.html">JAVA</a> <a href="https://guides.micronaut.io/mn-application-aws-lambda-graalvm-kotlin/guide/index.html">KOTLIN</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/mn-application-aws-lambda-graalvm.html">Deploy a Micronaut application as a GraalVM Native Image to AWS Lambda</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Serverless Function</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">GraalVM Native Image in Custom Runtime</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deploy a Serverless Micronaut function as a GraalVM Native Image to AWS Lambda <a href="https://guides.micronaut.io/mn-serverless-function-aws-lambda-graalvm/guide/index.html">JAVA</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda-graalvm.html">Deploy a Micronaut function as a GraalVM Native Image to AWS Lambda</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Serverless Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java 11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/micronaut-aws-lambda-s3-event.html">Micronaut AWS Lambda and S3 Event</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Serverless Function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java 11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://guides.micronaut.io/latest/micronaut-aws-lambda-eventbridge-event.html">Micronaut AWS Lambda and a Cron Job</a></p></td>
 </tr>
 </tbody>
 </table>
 
-<h2 id="lambdaTesting"><a class="anchor" href="#lambdaTesting"></a>7.11 Testing Lambda Handlers</h2>
+<h2 id="lambdaTesting"><a class="anchor" href="#lambdaTesting"></a>8.11 Testing Lambda Handlers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/lambdaTesting.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaTesting.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>To test Lambda handlers with JUnit 5, use the <a href="../api/io/micronaut/function/aws/test/MicronautLambdaTest.html">MicronautLambdaTest</a>
+<p>To test Lambda handlers with JUnit 5, use the <a href="../api/io/micronaut/function/aws/test/annotation/MicronautLambdaTest.html">MicronautLambdaTest</a>
 annotation which will configure a suitable <code>ApplicationContext</code> for use in a Lambda environment. The following
 dependency is needed:</p>
 </div>
@@ -2006,7 +2258,7 @@ both a no-arg and a one-arg constructor, the latter being used to inject the tes
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import org.junit.jupiter.api.Test;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 @MicronautLambdaTest
 public class RequestHandlerTest {
@@ -2026,10 +2278,27 @@ public class RequestHandlerTest {
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).</p>
 </div>
 
-<h2 id="lambdaStreamHandler"><a class="anchor" href="#lambdaStreamHandler"></a>7.12 MicronautRequestStreamHandler</h2>
+<h2 id="objectmapperconfiguration"><a class="anchor" href="#objectmapperconfiguration"></a>8.12 Object Mapper Configuration</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/lambdaStreamHandler.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/objectmapperconfiguration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>By default, for efficiency reasons, Micronaut uses the default Jackson <code>ObjectMapper</code> to communicate with the AWS API proxy. However, if you have configured it for your application (for example, setting <code>jackson.propertyNamingStrategy: SNAKE_CASE</code>)
+ in a way that it would be incompatible with the API proxy, you can set <code>aws.proxy.shared-object-mapper: false</code>, and Micronaut will create a brand new <code>ObjectMapper</code> for the API proxy.</p>
+</div>
+<div class="paragraph">
+<p>If you wish to further configure this <code>ObjectMapper</code>, you can register a <code>BeanCreatedEventListener&lt;ObjectMapper&gt;</code> and filter based on <code>event.getBeanDefinition()</code> having an annotation like <code>@Named("aws")</code>.</p>
+</div>
+
+<h2 id="lambdaStreamHandler"><a class="anchor" href="#lambdaStreamHandler"></a>8.13 MicronautRequestStreamHandler</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaStreamHandler.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2134,7 +2403,7 @@ class EventLogger : Consumer&lt;String&gt; {
 <p>A single project can define multiple functions, however only a single function should be configured for execution by the application.</p>
 </div>
 <div class="paragraph">
-<p>By default, it is resolved from the function name present in the Lambda Context, the name of the function on the AWS Console. If the function name cannot be resolved via the Lambda Context the property <code>micronaut.function.name</code> is used.</p>
+<p>By default, it is resolved via the property <code>micronaut.function.name</code>. If not present, the function name present in the Lambda Context, the name of the function on the AWS Console, is used.</p>
 </div>
 <div class="paragraph">
 <p>Alternatively, you can write a custom Handler which extends <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> and overrides <code>MicronautRequestStreamHandler::resolveFunctionName(Environment)</code></p>
@@ -2182,142 +2451,10 @@ class Handler : MicronautRequestStreamHandler() {
 </div>
 </div>
 
-<h2 id="lambdafunctionclient"><a class="anchor" href="#lambdafunctionclient"></a>7.13 Invoke Lambda with @FunctionClient</h2>
+<h1 id="alexa"><a class="anchor" href="#alexa"></a>9 Alexa Support</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/lambda/lambdafunctionclient.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="paragraph">
-<p>Micronaut AWS provides support for invoking AWS Lambda functions within a Micronaut application context.</p>
-</div>
-<div class="paragraph">
-<p>To use the features described in this section, you will need to have the <code>micronaut-function-client-aws</code> dependency on your classpath.</p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-function-client-aws&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</p>
-</div>
-<div class="paragraph">
-<p>You can define multiple named functions under the <code>aws.lambda.functions</code> configuration.
-Each is configured by <code>AWSInvokeRequestDefinition</code> that allows setting any property on the underlying <code>com.amazonaws.services.lambda.model.InvokeRequest</code>.</p>
-</div>
-<div class="paragraph">
-<p>For example, you invoke a function named <code>AwsLambdaFunctionName</code>, in the AWS Lambda console, with the following configuration:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
-aws:
-  lambda:
-    functions:
-      analytics:
-        function-name: 'AwsLambdaFunctionName'</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You create an interface annotated with <code>@FunctionClient</code> to invoke the Lambda Function:</p>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.client.FunctionClient;
-import javax.inject.Named;
-@FunctionClient
-public interface AnalyticsClient {
-
-    @Named("analytics") <b class="conum">(1)</b>
-    String visit(String productId);
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
-import javax.inject.Named;
-@FunctionClient
-interface AnalyticsClient {
-    @Named('analytics') <b class="conum">(1)</b>
-    String visit(String productId);
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The value of the <code>@Named</code> annotation matches the bean&#8217;s name used in configuration <code>aws.lambda.functions.</code><strong>analytics</strong><code>.function-name</code>.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Alternatively, you can remove the <code>@Named</code> annotation and match the method name to the function bean name.</p>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.client.FunctionClient;
-
-@FunctionClient
-public interface AnalyticsClient {
-    String analytics(String productId);
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
-
-@FunctionClient
-interface AnalyticsClient {
-    String analytics(String productId);
-}</code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To configure credentials for invoking the function you can either define a <code>~/.aws/credentials</code> file or use <code>application.yml</code>. Micronaut registers a <a href="../api/io/micronaut/configurations/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a> that resolves AWS credentials from the Micronaut Environment.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> using <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a> that allows configuring any of the properties of the <code>AWSLambdaAsyncClientBuilder</code> class.
-</td>
-</tr>
-</table>
-</div>
-
-<h1 id="alexa"><a class="anchor" href="#alexa"></a>8 Alexa Support</h1>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2344,10 +2481,10 @@ To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> us
 </p>
 </div>
 
-<h2 id="alexaskillconfiguration"><a class="anchor" href="#alexaskillconfiguration"></a>8.1 Alexa Skill Configuration</h2>
+<h2 id="alexaskillconfiguration"><a class="anchor" href="#alexaskillconfiguration"></a>9.1 Alexa Skill Configuration</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/alexaskillconfiguration.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexaskillconfiguration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2366,10 +2503,10 @@ To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> us
 </div>
 </div>
 
-<h2 id="skillbuilderprovider"><a class="anchor" href="#skillbuilderprovider"></a>8.2 Skill Builder Provider</h2>
+<h2 id="skillbuilderprovider"><a class="anchor" href="#skillbuilderprovider"></a>9.2 Skill Builder Provider</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/skillbuilderprovider.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/skillbuilderprovider.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2424,10 +2561,10 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 </ul>
 </div>
 
-<h2 id="alexahandlers"><a class="anchor" href="#alexahandlers"></a>8.3 Handlers</h2>
+<h2 id="alexahandlers"><a class="anchor" href="#alexahandlers"></a>9.3 Handlers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/alexahandlers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexahandlers.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2438,7 +2575,7 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html">Amazon Documentation - Develop your first skill</a> with Micronaut&#8217;s Alexa you will write the same <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#launchrequest-handler">LaunchRequestHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helloworldintent-handler">HelloWorldIntent</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#helpintent-handler">HelpIntent</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#cancelandstopintent-handler">CancelandStopHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#fallbackintent-handler">FallbackIntentHandler</a>, <a href="https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/develop-your-first-skill.html#sessionendedrequest-handler">SessionEndedRequestHandler</a> handlers.</p>
 </div>
 <div class="paragraph">
-<p>You will do just one change, you will annotate those handlers with <code>javax.inject.Singleton</code>.</p>
+<p>You will do just one change, you will annotate those handlers with <code>jakarta.inject.Singleton</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2447,7 +2584,7 @@ import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.Optional;
 
 @Singleton <i class="conum" data-value="1"></i><b>(1)</b>
@@ -2479,10 +2616,10 @@ public class HelloWorldIntentHandler implements RequestHandler {
 </table>
 </div>
 
-<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>8.4 Alexa Skill as an AWS Lambda Function</h2>
+<h2 id="alexalambda"><a class="anchor" href="#alexalambda"></a>9.4 Alexa Skill as an AWS Lambda Function</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/alexalambda.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/alexalambda.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2512,10 +2649,10 @@ public class HelloWorldIntentHandler implements RequestHandler {
 <p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
 </div>
 
-<h2 id="webservice"><a class="anchor" href="#webservice"></a>8.5 Alexa Skill as a Web Service</h2>
+<h2 id="webservice"><a class="anchor" href="#webservice"></a>9.5 Alexa Skill as a Web Service</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/webservice.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/webservice.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2554,10 +2691,10 @@ public class HelloWorldIntentHandler implements RequestHandler {
 <p>You can configure your Skill&#8217;s endpoint under <code>Build/Endpoint</code> in the Alexa developer console.</p>
 </div>
 
-<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>8.6 SSML Builder</h2>
+<h2 id="ssmlbuilder"><a class="anchor" href="#ssmlbuilder"></a>9.6 SSML Builder</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/ssmlbuilder.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2572,10 +2709,10 @@ public class HelloWorldIntentHandler implements RequestHandler {
 </div>
 </div>
 
-<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>8.7 Flash Briefings</h2>
+<h2 id="flashbriefings"><a class="anchor" href="#flashbriefings"></a>9.7 Flash Briefings</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/alexa/flashbriefings.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/flashbriefings.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2651,17 +2788,17 @@ public class FlashBriefingsController {
 </table>
 </div>
 
-<h1 id="distributedconfiguration"><a class="anchor" href="#distributedconfiguration"></a>9 Distributed Configuration</h1>
+<h1 id="distributedconfiguration"><a class="anchor" href="#distributedconfiguration"></a>10 Distributed Configuration</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/distributedconfiguration.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Micronaut AWS supports distributed configuration via services such as <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>.</p>
+<p>Micronaut AWS supports distributed configuration via services such as <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> and <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>.</p>
 </div>
 <div class="paragraph">
 <p>You can create environment-specific configurations as well by including the environment name after an underscore <code>_</code>. For example if <code>micronaut.application.name</code> is set to <code>helloworld</code>, specifying configuration values under <code>helloworld_test</code> will be applied only to the <code>test</code> environment.</p>
@@ -2694,23 +2831,143 @@ public class FlashBriefingsController {
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝🔝🔝</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application_prod</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications for the <code>prod</code> <a href="../api/io/micronaut/context/env/Environment.html">Environment</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications for the <code>prod</code> <a href="https://docs.micronaut.io/latest/guide/#environments">Environment</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝🔝🔝🔝</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]_prod</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration for an active <a href="../api/io/micronaut/context/env/Environment.html">Environment</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration for an active <a href="https://docs.micronaut.io/latest/guide/#environments">Environment</a></p></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
 <p>For example, if the configuration name <code>/config/application_test/server.url</code> is configured in AWS Parameter Store, any application connecting to that parameter store can retrieve the value using <code>server.url</code>. If the application has <code>micronaut.application.name</code> configured to be <code>myapp</code>, a value with the name <code>/config/myapp_test/server.url</code> overrides the value just for that application.</p>
 </div>
+<a id="io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties" href="#io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html">AwsDistributedConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.search-active-environments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Search additional paths suffixed with each active environment.
+ e.g. /config/application_ec2
+ Default value (true).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.search-common-application</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not. Default value (true).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prefix for AWS Distributed Configuration resources names. Default ("/config/")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.common-application-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default Application name. Default value ("application".</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.distributed-configuration.delimiter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delimiter for AWS Distributed Configuration resources names. Default value ("/").</p></td>
+</tr>
+</tbody>
+</table>
 
-<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>9.1 AWS System Manager Parameter Store</h2>
+<h2 id="distributedconfigurationsecretsmanager"><a class="anchor" href="#distributedconfigurationsecretsmanager"></a>10.1 AWS Secrets Manager</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/distributedconfiguration/parametersStore.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/distributedconfigurationsecretsmanager.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a> as distributed configuration include the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-secretsmanager")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-secretsmanager&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</p>
+</div>
+<div class="paragraph">
+<p>To enable distributed configuration, create a <code>src/main/resources/bootstrap.yml</code> file and enable the configuration client:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/bootstrap.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  config-client:
+    enabled: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="paragraph">
+<p>If you add <code>micronaut.application.name: myapp</code> to <code>bootstrap.yml</code> and you start your app in the <code>dev</code> <a href="https://docs.micronaut.io/latest/guide/index.html#environments">Micronaut environment</a> the secret shown in the following image is read and two properties <code>micronaut.security.oauth2.clients.companyauthserver.client-id</code> and <code>micronaut.security.oauth2.clients.companyauthserver.client-secret</code> are exposed to your application:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../img/secretsmanager.png" alt="AWS Secrets Manager">
+</div>
+</div>
+<a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html">SecretsManagerConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secretsmanager.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default value (true).</p></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>10.2 AWS System Manager Parameter Store</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/parametersStore.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2770,10 +3027,10 @@ aws:
 <p>For special secure information, such as keys or passwords, use the type <code>SecureString</code>. KMS will be automatically invoked when you add and retrieve values, and will decrypt them with the default key store for your account. If you set the configuration to not use secure strings, they will be returned to you encrypted and you must manually decrypt them.</p>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>10 Repository</h1>
+<h1 id="repository"><a class="anchor" href="#repository"></a>11 Repository</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/repository.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/repository.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2786,125 +3043,10 @@ aws:
 <p><a href="https://github.com/micronaut-projects/micronaut-aws">https://github.com/micronaut-projects/micronaut-aws</a></p>
 </div>
 
-<h1 id="breaks"><a class="anchor" href="#breaks"></a>11 Breaking Changes</h1>
-
-<div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/breaks.adoc"'>
-        <i class='fa fa-pencil-square-o'></i> Improve this doc
-    </button>
-</div>
-
-
-<div class="sect1">
-<h2 id="_class_changes">Class changes</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> has been refactored to ease extension.</p>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. Classes renamed</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Old Class Name</th>
-<th class="tableblock halign-left valign-top">New Class</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.AlexaConfiguration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">io.micronaut.aws.alexa.conf.AlexaSkillConfiguration</a></p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 2. Classes relocated</caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Class Name</th>
-<th class="tableblock halign-left valign-top">Old Package</th>
-<th class="tableblock halign-left valign-top">New Package</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/annotation/IntentHandler.html">IntentHandler</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.annotation</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.annotation</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/handlers/AnnotatedRequestHandler.html">AnnotatedRequestHandler</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.handlers</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.handlers</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaIntents.html">AlexaIntents</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws.alexa.conf</code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_artifact_changes">Artifact changes</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Now all artifacts are published under the <code>io.micronaut.aws</code> group id.</p>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Artifacts relocated</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Old artifact</th>
-<th class="tableblock halign-left valign-top">New artifact</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut:micronaut-function-aws</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.aws:micronaut-function-aws</code></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_content_negotiation">Content negotiation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>When using AWS API Proxy, the new support for server side content negotiation may require changes to tests. For example
-a test that makes a call such as:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String result = client.toBlocking().retrieve(
-    HttpRequest.GET("/test")
-        .accept("text/plain"), String)</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If the server implementation does not declare the route as <code>@Produces("text/plain")</code> the request won&#8217;t match.</p>
-</div>
-</div>
-</div>
-
 <h1 id="thirdPartyLibraries"><a class="anchor" href="#thirdPartyLibraries"></a>12 Third-party libraries</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.7.x/src/main/docs/guide/thirdPartyLibraries.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/thirdPartyLibraries.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
