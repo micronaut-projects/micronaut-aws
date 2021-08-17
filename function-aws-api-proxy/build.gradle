@@ -6,7 +6,7 @@ dependencies {
     implementation "io.projectreactor:reactor-core"
 
     api "io.micronaut:micronaut-http-server"
-    api 'com.amazonaws.serverless:aws-serverless-java-container-core:1.5.2', {
+    api "com.amazonaws.serverless:aws-serverless-java-container-core:$awsServerlessJavaContainerCoreVersion", {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"

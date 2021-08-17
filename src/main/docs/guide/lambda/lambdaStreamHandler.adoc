@@ -1,0 +1,24 @@
+Use api:function.aws.MicronautRequestStreamHandler[] in combination of a class annotated with ann:function.FunctionBean[] which implements one of the interfaces from the `java.util.function` package.
+
+.Functional Interfaces
+|===
+|Interface|Dependency
+
+|jdk:java.util.function.Supplier[] | Accepts no arguments and returns a single result
+|jdk:java.util.function.Consumer[] | Accepts a single argument and returns no result
+|jdk:java.util.function.BiConsumer[] | Accepts two arguments and returns no result
+|jdk:java.util.function.Function[] | Accepts a single argument and returns a single result
+|jdk:java.util.function.BiFunction[] | Accepts two arguments and returns a single result
+|===
+
+For example, you can have a `@FunctionBean` which logs the input event.
+
+snippet::io.micronaut.docs.function.aws.EventLogger[tags="clazz"]
+
+A single project can define multiple functions, however only a single function should be configured for execution by the application.
+
+By default, it is resolved from the function name present in the Lambda Context, the name of the function on the AWS Console. If the function name cannot be resolved via the Lambda Context the property `micronaut.function.name` is used.
+
+Alternatively, you can write a custom Handler which extends api:function.aws.MicronautRequestStreamHandler[] and overrides `MicronautRequestStreamHandler::resolveFunctionName(Environment)`
+
+snippet::io.micronaut.docs.function.aws.Handler[tags="clazz"]
