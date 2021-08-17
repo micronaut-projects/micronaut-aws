@@ -1,3 +1,4 @@
 dependencies {
     testImplementation project(":function-aws")
+    testImplementation project(":function-client-aws")
 }
