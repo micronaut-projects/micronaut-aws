@@ -36,11 +36,14 @@ public class AWSInvokeRequestDefinition implements FunctionDefinition {
     @ConfigurationBuilder
     protected InvokeRequest invokeRequest;
 
+    private final String name;
+
     /**
      * Constructor.
      * @param name configured name from a property
      */
     public AWSInvokeRequestDefinition(@Parameter String name) {
+        this.name = name;
         this.invokeRequest = new InvokeRequest();
         this.invokeRequest.setFunctionName(name);
     }
@@ -54,6 +57,6 @@ public class AWSInvokeRequestDefinition implements FunctionDefinition {
 
     @Override
     public String getName() {
-        return invokeRequest.getFunctionName();
+        return this.name;
     }
 }

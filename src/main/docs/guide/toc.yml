@@ -45,6 +45,7 @@ lambda:
   lambdaTesting: Testing Lambda Handlers
   objectmapperconfiguration: Object Mapper Configuration
   lambdaStreamHandler: MicronautRequestStreamHandler
+  lambdafunctionclient: Invoke Lambda with @FunctionClient
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration

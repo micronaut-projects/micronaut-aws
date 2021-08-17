@@ -1,7 +1,6 @@
 package io.micronaut.docs.function.aws
 
 import com.amazonaws.services.lambda.runtime.Context
-import io.micronaut.context.ApplicationContext
 import io.micronaut.function.aws.MicronautRequestStreamHandler
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Specification
