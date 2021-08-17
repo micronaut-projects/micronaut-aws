@@ -42,7 +42,7 @@ class AwsLambdaInvokeSpec extends Specification {
     void "test setup function definitions"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'aws.lambda.functions.test.functionName':'micronaut-function',
+                'aws.lambda.functions.test.function-name':'micronaut-function',
                 'aws.lambda.functions.test.qualifier':'something'
         )
         
@@ -51,8 +51,14 @@ class AwsLambdaInvokeSpec extends Specification {
         expect:
         definitions.size() == 1
         definitions.first() instanceof AWSInvokeRequestDefinition
-        definitions.first().invokeRequest.functionName == 'micronaut-function'
-        definitions.first().invokeRequest.qualifier == 'something'
+
+        when:
+        AWSInvokeRequestDefinition invokeRequestDefinition = (AWSInvokeRequestDefinition) definitions.first()
+
+        then:
+        invokeRequestDefinition.name == 'micronaut-function'
+        invokeRequestDefinition.invokeRequest.functionName == 'micronaut-function'
+        invokeRequestDefinition.invokeRequest.qualifier == 'something'
 
         cleanup:
         applicationContext.close()
