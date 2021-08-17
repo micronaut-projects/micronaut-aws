@@ -22,11 +22,10 @@ import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.function.aws.proxy.MicronautAwsProxyRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.Authentication;
-import io.micronaut.security.authentication.DefaultAuthentication;
 import io.micronaut.security.filters.AuthenticationFetcher;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
-import jakarta.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,7 +92,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             if (authorizer != null) {
                 final CognitoAuthorizerClaims claims = authorizer.getClaims();
                 return Publishers.just(
-                        new DefaultAuthentication(
+                        Authentication.build(
                                 authorizer.getPrincipalId(),
                                 attributesOfClaims(claims)
                         )
@@ -102,7 +101,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                 final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
                 if (v != null) {
                     return Publishers.just(
-                            new DefaultAuthentication(
+                            Authentication.build(
                                     v,
                                     Collections.emptyMap()
                             )
