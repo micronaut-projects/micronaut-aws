@@ -1,4 +1,4 @@
-Use api:function.aws.MicronautRequestStreamHandler[] in combination of a class annotated with ann:function.FunctionBean[] which implements one of the interfaces from the `java.util.function` package.
+Use api:function.aws.MicronautRequestStreamHandler[] in combination of a class annotated with https://docs.micronaut.io/latest/api/io/micronaut/function/FunctionBean[FunctionBean] which implements one of the interfaces from the `java.util.function` package.
 
 .Functional Interfaces
 |===
