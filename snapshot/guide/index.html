@@ -150,6 +150,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>7.11</strong><span>Testing Lambda Handlers</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaStreamHandler"><a href="#lambdaStreamHandler"><strong>7.12</strong><span>MicronautRequestStreamHandler</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-alexa"><a href="#alexa"><strong>8</strong><span>Alexa Support</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-alexaskillconfiguration"><a href="#alexaskillconfiguration"><strong>8.1</strong><span>Alexa Skill Configuration</span></a></div>
@@ -1966,6 +1968,162 @@ public class RequestHandlerTest {
 <div class="paragraph">
 <p>The annotation supports the same options as <code>@MicronautTest</code>. Please note that regardless of whether or not you provide
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).</p>
+</div>
+
+<h2 id="lambdaStreamHandler"><a class="anchor" href="#lambdaStreamHandler"></a>7.12 MicronautRequestStreamHandler</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/2.6.x/src/main/docs/guide/lambda/lambdaStreamHandler.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Use <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> in combination of a class annotated with <a href="../api/io/micronaut/function/FunctionBean.html">@FunctionBean</a> which implements one of the interfaces from the <code>java.util.function</code> package.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Functional Interfaces</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Interface</th>
+<th class="tableblock halign-left valign-top">Dependency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html">Supplier</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts no arguments and returns a single result</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html">Consumer</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts a single argument and returns no result</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html">BiConsumer</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts two arguments and returns no result</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">Function</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts a single argument and returns a single result</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html">BiFunction</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Accepts two arguments and returns a single result</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For example, you can have a <code>@FunctionBean</code> which logs the input event.</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.FunctionBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.function.Consumer;
+
+@FunctionBean("eventlogger")
+public class EventLogger implements Consumer&lt;String&gt; {
+    private static final Logger LOG = LoggerFactory.getLogger(EventLogger.class);
+    @Override
+    public void accept(String input) {
+        LOG.info("Received: {}", input);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">import groovy.transform.CompileStatic
+import io.micronaut.function.FunctionBean
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.util.function.Consumer
+
+@CompileStatic
+@FunctionBean('eventlogger')
+class EventLogger implements Consumer&lt;String&gt; {
+    private static final Logger LOG = LoggerFactory.getLogger(EventLogger.class)
+    @Override
+    void accept(String input) {
+        LOG.info("Received: {}", input)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import io.micronaut.function.FunctionBean
+import org.slf4j.LoggerFactory
+import java.util.function.Consumer
+
+@FunctionBean("eventlogger")
+class EventLogger : Consumer&lt;String&gt; {
+    override fun accept(input: String) {
+        LOG.info("Received: {}", input)
+    }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(EventLogger::class.java)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A single project can define multiple functions, however only a single function should be configured for execution by the application.</p>
+</div>
+<div class="paragraph">
+<p>By default, it is resolved from the function name present in the Lambda Context, the name of the function on the AWS Console. If the function name cannot be resolved via the Lambda Context the property <code>micronaut.function.name</code> is used.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can write a custom Handler which extends <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> and overrides <code>MicronautRequestStreamHandler::resolveFunctionName(Environment)</code></p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.function.aws.MicronautRequestStreamHandler;
+
+@Introspected
+public class Handler extends MicronautRequestStreamHandler {
+    @Override
+    protected String resolveFunctionName(Environment env) {
+        return "eventlogger";
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.context.env.Environment
+import io.micronaut.core.annotation.Introspected
+import io.micronaut.function.aws.MicronautRequestStreamHandler
+
+@Introspected
+class Handler extends MicronautRequestStreamHandler {
+    @Override
+    protected String resolveFunctionName(Environment env) {
+        'eventlogger'
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import io.micronaut.context.env.Environment
+import io.micronaut.function.aws.MicronautRequestStreamHandler
+
+class Handler : MicronautRequestStreamHandler() {
+    override fun resolveFunctionName(env: Environment): String {
+        return "eventlogger"
+    }
+}</code></pre>
+</div>
 </div>
 
 <h1 id="alexa"><a class="anchor" href="#alexa"></a>8 Alexa Support</h1>
