@@ -10,8 +10,7 @@ import spock.lang.Specification
 class ContextFunctionNameSpec extends Specification {
     void "Context::getFunctionName has priority over micronaut.function.name property"() {
         given:
-        ApplicationContext ctx = ApplicationContext.run(['micronaut.function.name': 'capitalize'])
-        MicronautRequestStreamHandler handler = new MicronautRequestStreamHandler(ctx)
+        MicronautRequestStreamHandler handler = new MicronautRequestStreamHandler()
 
         when:
         String input = 'jOHn'

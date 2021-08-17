@@ -20,7 +20,9 @@ class MicronautFunctionNameSpec extends Specification {
         handler.handleRequest(
                 inputStream,
                 output,
-                Mock(Context)
+                Stub(Context) {
+                    getFunctionName() >> 'uppercase'
+                }
         )
 
         then:

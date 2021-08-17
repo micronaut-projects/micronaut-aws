@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 import io.micronaut.core.annotation.NonNull;
 import java.io.IOException;
@@ -36,7 +37,8 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
-    private String functionName;
+    @Nullable
+    private String ctxFunctionName;
 
     /**
      * Default constructor; will initialize a suitable {@link ApplicationContext} for
@@ -67,7 +69,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         ApplicationContext applicationContext = super.buildApplicationContext(context);
         if (context != null) {
             registerContextBeans(context, applicationContext);
-            this.functionName = context.getFunctionName();
+            this.ctxFunctionName = context.getFunctionName();
         }
         return applicationContext;
     }
@@ -80,10 +82,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
 
     @Override
     protected String resolveFunctionName(Environment env) {
-        if (this.functionName != null) {
-            return functionName;
-        } else {
-            return super.resolveFunctionName(env);
-        }
+        String functionName = super.resolveFunctionName(env);
+        return (functionName != null) ? functionName : ctxFunctionName;
     }
 }

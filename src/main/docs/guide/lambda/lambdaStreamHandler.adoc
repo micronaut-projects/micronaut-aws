@@ -17,7 +17,7 @@ snippet::io.micronaut.docs.function.aws.EventLogger[tags="clazz"]
 
 A single project can define multiple functions, however only a single function should be configured for execution by the application.
 
-By default, it is resolved from the function name present in the Lambda Context, the name of the function on the AWS Console. If the function name cannot be resolved via the Lambda Context the property `micronaut.function.name` is used.
+By default, it is resolved via the property `micronaut.function.name`. If not present, the function name present in the Lambda Context, the name of the function on the AWS Console, is used.
 
 Alternatively, you can write a custom Handler which extends api:function.aws.MicronautRequestStreamHandler[] and overrides `MicronautRequestStreamHandler::resolveFunctionName(Environment)`
 
