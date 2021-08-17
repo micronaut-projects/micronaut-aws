@@ -38,7 +38,6 @@ import javax.inject.Named
 })
 class AwsLambdaInvokeSpec extends Specification {
 
-
     void "test setup function definitions"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
@@ -56,7 +55,7 @@ class AwsLambdaInvokeSpec extends Specification {
         AWSInvokeRequestDefinition invokeRequestDefinition = (AWSInvokeRequestDefinition) definitions.first()
 
         then:
-        invokeRequestDefinition.name == 'micronaut-function'
+        invokeRequestDefinition.name == 'test'
         invokeRequestDefinition.invokeRequest.functionName == 'micronaut-function'
         invokeRequestDefinition.invokeRequest.qualifier == 'something'
 
