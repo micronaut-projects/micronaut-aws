@@ -13,3 +13,7 @@ If you had code, such as `@IntentHandler("HelloWorldIntent")`, you need to imple
 public boolean canHandle(HandlerInput handlerInput) {
 return handlerInput.matches(Predicates.intentName("HelloWorldIntent"));
 }
+
+== Micronaut Function Name
+
+Property `micronaut.function.name` takes precedence over the function name present in the Lambda Context.
