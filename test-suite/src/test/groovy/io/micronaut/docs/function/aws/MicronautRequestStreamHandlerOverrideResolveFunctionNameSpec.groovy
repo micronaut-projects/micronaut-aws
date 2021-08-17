@@ -11,7 +11,7 @@ import spock.lang.Specification
 class MicronautRequestStreamHandlerOverrideResolveFunctionNameSpec extends Specification {
     void "Overriding MicronautRequestStreamHandler::resolveFunctionName(Environment) takes precedence"() {
         given:
-        ApplicationContext ctx = ApplicationContext.run(['micronanut.function.name': 'capitalize'])
+        ApplicationContext ctx = ApplicationContext.run(['micronaut.function.name': 'capitalize'])
         MicronautRequestStreamHandler handler = new MicronautRequestStreamHandler(ctx) {
             @Override
             protected String resolveFunctionName(Environment environment) {
