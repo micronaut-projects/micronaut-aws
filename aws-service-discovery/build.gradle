@@ -1,5 +1,5 @@
 dependencies {
-    api 'io.micronaut.discovery:micronaut-discovery-client:2.4.0'
+    api 'io.micronaut.discovery:micronaut-discovery-client:3.0.1-SNAPSHOT'
     api project(":aws-sdk-v2")
 
     implementation 'software.amazon.awssdk:servicediscovery'
