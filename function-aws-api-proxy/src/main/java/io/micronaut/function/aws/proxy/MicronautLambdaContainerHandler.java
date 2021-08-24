@@ -480,17 +480,17 @@ public final class MicronautLambdaContainerHandler
             MicronautAwsProxyRequest<?> containerRequest,
             MicronautAwsProxyResponse<?> containerResponse,
             MethodBasedRouteMatch finalRoute) {
-        final RouteMatch<?> boundRoute = requestArgumentSatisfier.fulfillArgumentRequirements(
-                finalRoute,
-                containerRequest,
-                false
-        );
-
         try {
             decodeRequestBody(containerRequest, finalRoute);
         } catch (Exception e) {
             return Mono.error(e);
         }
+
+        final RouteMatch<?> boundRoute = requestArgumentSatisfier.fulfillArgumentRequirements(
+                finalRoute,
+                containerRequest,
+                false
+        );
 
         Object result = boundRoute.execute();
 
