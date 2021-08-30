@@ -33,7 +33,6 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -109,8 +108,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
         if (containerResponse.getAwsProxyRequest().getRequestSource() == AwsProxyRequest.RequestSource.ALB) {
             final HttpStatus status = containerResponse.getStatus();
             awsProxyResponse.setStatusDescription(
-                    status + " " +
-                            Response.Status.fromStatusCode(status.getCode()).getReasonPhrase());
+                    status + " " + status.getReason());
         }
 
         Timer.stop(TIMER_NAME);
