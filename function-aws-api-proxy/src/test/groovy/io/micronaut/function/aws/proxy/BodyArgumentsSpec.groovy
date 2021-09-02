@@ -6,8 +6,10 @@ import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpMethod
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Produces
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
@@ -42,6 +44,7 @@ class BodyArgumentsSpec extends Specification {
     static class BodyController {
 
         @Post(uri = "/getA")
+        @Produces(MediaType.TEXT_PLAIN)
         String getA(String a) {
             return a
         }
