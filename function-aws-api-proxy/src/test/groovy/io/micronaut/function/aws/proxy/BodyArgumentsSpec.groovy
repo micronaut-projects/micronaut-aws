@@ -5,6 +5,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
@@ -30,6 +31,7 @@ class BodyArgumentsSpec extends Specification {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/body-arguments-test/getA', HttpMethod.POST.toString())
         builder.body('{"a":"A","b":"B"}')
+        builder.header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
 
         when:
         def response = handler.proxy(builder.build(), lambdaContext)
