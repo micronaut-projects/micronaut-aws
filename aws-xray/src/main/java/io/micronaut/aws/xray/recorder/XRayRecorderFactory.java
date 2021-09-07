@@ -21,11 +21,11 @@ import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
 import com.amazonaws.xray.strategy.sampling.SamplingStrategy;
-import edu.umd.cs.findbugs.annotations.Nullable;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.annotation.Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.Collection;
 
 /**

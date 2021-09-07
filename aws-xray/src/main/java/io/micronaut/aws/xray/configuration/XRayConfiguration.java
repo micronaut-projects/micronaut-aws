@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.xray.configuration;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
+
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.util.Toggleable;
 import java.util.List;
 import java.util.Optional;

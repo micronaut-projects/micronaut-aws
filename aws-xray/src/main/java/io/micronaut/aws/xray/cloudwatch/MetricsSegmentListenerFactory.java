@@ -17,7 +17,7 @@ package io.micronaut.aws.xray.cloudwatch;
 
 import com.amazonaws.xray.metrics.MetricsSegmentListener;
 import io.micronaut.context.annotation.Factory;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates {@link MetricsSegmentListener} that is afterwards injected into {@link com.amazonaws.xray.AWSXRayRecorder} and

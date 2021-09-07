@@ -1,0 +1,32 @@
+Micronaut supports configuration sharing via https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS System Manager Parameter Store]. You need the following dependencies configured:
+
+dependency:io.micronaut.aws:micronaut-aws-parameter-store[]
+
+To enable distributed configuration a `src/main/resources/bootstrap.yml` configuration file must be created and configured to use Parameter Store:
+
+.bootstrap.yml
+[source,yaml]
+----
+micronaut:
+  application:
+    name: hello-world
+  config-client:
+    enabled: true
+aws:
+  client:
+    system-manager:
+      parameterstore:
+        enabled: true
+----
+
+See the https://micronaut-projects.github.io/micronaut-aws/latest/guide/configurationreference.html#io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfiguration[configuration reference] for all configuration options.
+
+You can configure shared properties from the AWS Console -> System Manager -> Parameter Store.
+
+Micronaut uses a hierarchy to read configuration values, and supports `String`, `StringList`, and `SecureString` types.
+
+
+
+Each level of the tree can be composed of key=value pairs. For multiple key/value pairs, set the type to `StringList`.
+
+For special secure information, such as keys or passwords, use the type `SecureString`. KMS will be automatically invoked when you add and retrieve values, and will decrypt them with the default key store for your account. If you set the configuration to not use secure strings, they will be returned to you encrypted and you must manually decrypt them.

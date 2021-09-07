@@ -15,19 +15,22 @@
  */
 package io.micronaut.function.client.aws
 
-import io.reactivex.Single
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.async.annotation.SingleResult
 import io.micronaut.core.type.Argument
 import io.micronaut.function.client.FunctionClient
 import io.micronaut.function.client.FunctionDefinition
 import io.micronaut.function.client.FunctionInvoker
 import io.micronaut.function.client.FunctionInvokerChooser
 import io.micronaut.http.annotation.Body
+import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Specification
 
-import javax.inject.Named
+import jakarta.inject.Named
 
 /**
  * @author graemerocher
@@ -36,25 +39,31 @@ import javax.inject.Named
 @IgnoreIf({
     return !new File("${System.getProperty("user.home")}/.aws/credentials").exists()
 })
-//@Ignore
 class AwsLambdaInvokeSpec extends Specification {
-
 
     void "test setup function definitions"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'aws.lambda.functions.test.functionName':'micronaut-function',
+                'aws.lambda.functions.test.function-name':'micronaut-function',
                 'aws.lambda.functions.test.qualifier':'something'
         )
-        
+
         Collection<FunctionDefinition> definitions = applicationContext.getBeansOfType(FunctionDefinition)
-        
+
         expect:
         definitions.size() == 1
         definitions.first() instanceof AWSInvokeRequestDefinition
-        definitions.first().invokeRequest.functionName == 'micronaut-function'
-        definitions.first().invokeRequest.qualifier == 'something'
 
+        when:
+        AWSInvokeRequestDefinition invokeRequestDefinition = (AWSInvokeRequestDefinition) definitions.first()
+
+        then:
+        invokeRequestDefinition.name == 'test'
+        invokeRequestDefinition.invokeRequest.functionName == 'micronaut-function'
+        invokeRequestDefinition.invokeRequest.qualifier == 'something'
+
+        cleanup:
+        applicationContext.close()
     }
 
     void "test setup lambda config"() {
@@ -72,6 +81,9 @@ class AwsLambdaInvokeSpec extends Specification {
         expect:
         configuration.builder.region == 'us-east-1'
         invoker.isPresent()
+
+        cleanup:
+        applicationContext.close()
     }
 
     @Ignore
@@ -98,6 +110,9 @@ class AwsLambdaInvokeSpec extends Specification {
         then:
         book != null
         book.title == "THE STAND"
+
+        cleanup:
+        applicationContext.close()
     }
 
     @Ignore
@@ -124,11 +139,14 @@ class AwsLambdaInvokeSpec extends Specification {
         book.title == "THE STAND"
 
         when:
-        book = myClient.reactiveInvoke( "The Stand" ).blockingGet()
+        book = Flux.from(myClient.reactiveInvoke( "The Stand" )).blockFirst()
 
         then:
         book != null
         book.title == "THE STAND"
+
+        cleanup:
+        applicationContext.close()
     }
 
     static class Book {
@@ -145,7 +163,8 @@ class AwsLambdaInvokeSpec extends Specification {
         Book someOtherName(String title)
 
         @Named('micronaut-function')
-        Single<Book> reactiveInvoke(String title)
+        @SingleResult
+        Publisher<Book> reactiveInvoke(String title)
     }
     //end::functionClient[]
 }

@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * NOTICE: The method {@link SkillRequestTimestampVerifierFactory#timeStampToleranceSystemProperty()} is forked from https://github.com/alexa/alexa-skills-kit-sdk-for-java ask-sdk-servlet-support module.

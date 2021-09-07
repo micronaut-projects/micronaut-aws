@@ -5,7 +5,7 @@ import com.amazonaws.xray.strategy.LogErrorContextMissingStrategy
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Requires(property = 'spec.name', value = 'XrayRecorderBuilderContextMissingStrategySpec')
 //tag::clazz[]

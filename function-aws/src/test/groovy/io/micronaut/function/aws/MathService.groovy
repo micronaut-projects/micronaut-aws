@@ -15,7 +15,7 @@
  */
 package io.micronaut.function.aws
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Singleton
 class MathService {

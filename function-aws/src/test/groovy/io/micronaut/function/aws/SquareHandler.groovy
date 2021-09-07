@@ -1,6 +1,6 @@
 package io.micronaut.function.aws
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 class SquareHandler extends MicronautRequestHandler<Integer, Integer> {
 

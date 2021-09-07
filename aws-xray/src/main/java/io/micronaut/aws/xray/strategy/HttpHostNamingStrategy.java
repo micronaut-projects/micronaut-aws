@@ -20,7 +20,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.server.util.HttpHostResolver;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Uses as segment name the host name resolved by {@link HttpHostResolver}.

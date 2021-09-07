@@ -12,6 +12,9 @@ dependencies {
 
     // slf4j segment listener
     compileOnly("com.amazonaws:aws-xray-recorder-sdk-slf4j")
+
+    implementation "io.projectreactor:reactor-core"
+
     testImplementation("com.amazonaws:aws-xray-recorder-sdk-slf4j")
 
     // cloudwatch metrics
@@ -30,3 +33,9 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
+
+test {
+    systemProperty "aws.region", 'us-east-1'
+}
+
+

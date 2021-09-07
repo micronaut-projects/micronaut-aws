@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a Netty client.
@@ -29,7 +29,6 @@ import javax.inject.Singleton;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
-
 @Factory
 @BootstrapContextCompatible
 public class NettyClientFactory {

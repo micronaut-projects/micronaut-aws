@@ -14,7 +14,7 @@ import io.micronaut.context.event.BeanCreatedEventListener
 import io.micronaut.core.annotation.Nullable
 import spock.lang.Shared
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class AwsXraySubsegmentInterceptorSpec extends ApplicationContextSpecification {
 

@@ -17,11 +17,12 @@ package io.micronaut.aws.sdk.v2.client.apache;
 
 import io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory;
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates an Apache HTTP client.
@@ -29,6 +30,7 @@ import javax.inject.Singleton;
  * @author Álvaro Sánchez-Mariscal
  * @since 2.0.0
  */
+@BootstrapContextCompatible
 @Factory
 public class ApacheClientFactory {
 

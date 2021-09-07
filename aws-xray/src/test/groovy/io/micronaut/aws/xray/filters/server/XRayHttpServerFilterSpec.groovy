@@ -11,12 +11,13 @@ import io.micronaut.context.event.BeanCreatedEventListener
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.runtime.server.EmbeddedServer
-import io.reactivex.Flowable
+import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
 import spock.lang.Specification
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class XRayHttpServerFilterSpec extends Specification {
 
@@ -28,7 +29,7 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         when:
         def response = client.toBlocking().exchange("${embeddedServer.getURL()}/success", String)
@@ -53,7 +54,7 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         when:
         client.toBlocking().exchange("${embeddedServer.getURL()}/success")
@@ -74,7 +75,7 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         when:
         client.toBlocking().exchange("${embeddedServer.getURL()}/fail", String)
@@ -82,7 +83,7 @@ class XRayHttpServerFilterSpec extends Specification {
         then:
         thrown(HttpClientResponseException)
         emitter.segments
-        emitter.segments[0].isFault()
+        emitter.segments[0].isError()
 
         cleanup:
         embeddedServer.stop()
@@ -96,7 +97,7 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         when:
         def response = client.toBlocking().exchange("${embeddedServer.getURL()}/flowable", String)
@@ -127,8 +128,8 @@ class XRayHttpServerFilterSpec extends Specification {
         }
 
         @Get(uri = "/flowable", processes = MediaType.TEXT_PLAIN)
-        Flowable<String> flowable() {
-            return Flowable.just("flowable")
+        Publisher<String> flowable() {
+            return Flux.just("flowable")
         }
 
     }

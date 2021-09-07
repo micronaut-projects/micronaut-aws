@@ -18,9 +18,8 @@ package io.micronaut.aws.xray.segmentlisteners;
 import com.amazonaws.xray.slf4j.SLF4JSegmentListener;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 
 /**
  * @author Sergio del Amo

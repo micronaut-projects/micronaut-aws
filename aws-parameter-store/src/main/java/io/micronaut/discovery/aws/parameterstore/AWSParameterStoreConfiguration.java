@@ -15,14 +15,12 @@
  */
 package io.micronaut.discovery.aws.parameterstore;
 
-import io.micronaut.aws.sdk.v1.AWSClientConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
-
 import io.micronaut.core.annotation.NonNull;
 
 /**
@@ -32,7 +30,7 @@ import io.micronaut.core.annotation.NonNull;
 @Requires(property = AWSParameterStoreConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.FALSE)
 @ConfigurationProperties(AWSParameterStoreConfiguration.CONFIGURATION_PREFIX)
 @BootstrapContextCompatible
-public class AWSParameterStoreConfiguration extends AWSClientConfiguration implements Toggleable  {
+public class AWSParameterStoreConfiguration implements Toggleable  {
 
     /**
      * Constant for whether AWS parameter store is enabled or not.
@@ -42,7 +40,7 @@ public class AWSParameterStoreConfiguration extends AWSClientConfiguration imple
     /**
      * The prefix for configuration.
      */
-    public static final String CONFIGURATION_PREFIX = "system-manager.parameterstore";
+    public static final String CONFIGURATION_PREFIX = "aws.client.system-manager.parameterstore";
 
     private static final String PREFIX = "config";
     private static final String DEFAULT_PATH = "/" + PREFIX + "/";

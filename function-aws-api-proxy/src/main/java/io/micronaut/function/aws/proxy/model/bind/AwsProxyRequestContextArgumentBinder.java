@@ -23,7 +23,7 @@ import io.micronaut.function.aws.proxy.MicronautAwsProxyRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.Optional;
 
 /**

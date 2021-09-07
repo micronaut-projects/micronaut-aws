@@ -18,15 +18,14 @@ package io.micronaut.function.aws.proxy.security;
 import com.amazonaws.serverless.proxy.model.ApiGatewayAuthorizerContext;
 import com.amazonaws.serverless.proxy.model.CognitoAuthorizerClaims;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.function.aws.proxy.MicronautAwsProxyRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.Authentication;
-import io.micronaut.security.authentication.DefaultAuthentication;
 import io.micronaut.security.filters.AuthenticationFetcher;
-import io.reactivex.Flowable;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Singleton;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -92,8 +91,8 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
 
             if (authorizer != null) {
                 final CognitoAuthorizerClaims claims = authorizer.getClaims();
-                return Flowable.just(
-                        new DefaultAuthentication(
+                return Publishers.just(
+                        Authentication.build(
                                 authorizer.getPrincipalId(),
                                 attributesOfClaims(claims)
                         )
@@ -101,8 +100,8 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
             } else {
                 final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
                 if (v != null) {
-                    return Flowable.just(
-                            new DefaultAuthentication(
+                    return Publishers.just(
+                            Authentication.build(
                                     v,
                                     Collections.emptyMap()
                             )
@@ -110,7 +109,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                 }
             }
         }
-        return Flowable.empty();
+        return Publishers.empty();
     }
 
     /**
@@ -144,7 +143,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
                 attributes.putIfAbsent(claim, value);
             }
         }
-        
+
         return Collections.unmodifiableMap(attributes);
     }
 

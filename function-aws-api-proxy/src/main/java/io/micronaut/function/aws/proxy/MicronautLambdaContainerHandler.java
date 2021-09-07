@@ -51,11 +51,10 @@ import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
 import io.micronaut.web.router.*;
 import io.micronaut.web.router.resource.StaticResourceResolver;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
 import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.InputStream;
@@ -69,6 +68,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -121,7 +121,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler() throws ContainerInitializationException {
-        this(new LambdaContainerState(), ApplicationContext.build(), null);
+        this(new LambdaContainerState(), ApplicationContext.builder(), null);
     }
 
     /**
@@ -131,7 +131,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException The exception
      */
     public MicronautLambdaContainerHandler(ApplicationContext applicationContext) throws ContainerInitializationException {
-        this(new LambdaContainerState(), ApplicationContext.build(), applicationContext);
+        this(new LambdaContainerState(), ApplicationContext.builder(), applicationContext);
     }
 
     /**
@@ -173,32 +173,7 @@ public final class MicronautLambdaContainerHandler
      * @throws ContainerInitializationException if the container couldn't be started
      */
     private MicronautLambdaContainerHandler(LambdaContainerState lambdaContainerEnvironment) throws ContainerInitializationException {
-        this(lambdaContainerEnvironment, ApplicationContext.build(), null);
-    }
-
-    /**
-     * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
-     *
-     * @return The {@link MicronautLambdaContainerHandler}
-     * @throws ContainerInitializationException if the container couldn't be started
-     */
-    @Deprecated
-    public static MicronautLambdaContainerHandler getAwsProxyHandler() throws ContainerInitializationException {
-        return new MicronautLambdaContainerHandler(new LambdaContainerState());
-    }
-
-    /**
-     * Gets a new {@link MicronautLambdaContainerHandler} should be called exactly once.
-     *
-     * @param builder The builder to customize the context creation
-     * @return The {@link MicronautLambdaContainerHandler}
-     * @throws ContainerInitializationException if the container couldn't be started
-     * @deprecated Use {@link #MicronautLambdaContainerHandler(ApplicationContextBuilder)} instead
-     */
-    @Deprecated
-    public static MicronautLambdaContainerHandler getAwsProxyHandler(ApplicationContextBuilder builder) throws ContainerInitializationException {
-        ArgumentUtils.requireNonNull("builder", builder);
-        return new MicronautLambdaContainerHandler(new LambdaContainerState(), builder, null);
+        this(lambdaContainerEnvironment, ApplicationContext.builder(), null);
     }
 
     /**
@@ -318,16 +293,16 @@ public final class MicronautLambdaContainerHandler
                                 .map(MediaType::new)
                                 .ifPresent(containerResponse::contentType);
 
-                        final Flowable<MutableHttpResponse<?>> responsePublisher = Flowable.defer(() ->
+                        final Mono<MutableHttpResponse<?>> responsePublisher = Mono.defer(() ->
                                 executeRoute(containerRequest, containerResponse, finalRoute)
                         );
 
                         final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
-                        final Flowable<MutableHttpResponse<?>> filterPublisher = Flowable.fromPublisher(filterPublisher(
+                        final Mono<MutableHttpResponse<?>> filterPublisher = Mono.from(filterPublisher(
                                 requestReference,
                                 responsePublisher));
 
-                        filterPublisher.onErrorResumeNext(mayBeWrapped -> {
+                        filterPublisher.onErrorResume(mayBeWrapped -> {
                             Throwable throwable = mayBeWrapped instanceof UndeclaredThrowableException ? mayBeWrapped.getCause() : mayBeWrapped;
                             final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(
                                     finalRoute.getDeclaringType(),
@@ -343,7 +318,7 @@ public final class MicronautLambdaContainerHandler
                                         )).orElse(null);
 
                                 if (exceptionHandler != null) {
-                                    final Flowable<? extends MutableHttpResponse<?>> errorFlowable =
+                                    final Mono<? extends MutableHttpResponse<?>> errorFlowable =
                                             handleException(containerRequest, containerResponse, throwable, exceptionHandler);
 
                                     return filterPublisher(
@@ -363,8 +338,8 @@ public final class MicronautLambdaContainerHandler
                                         errorPublisher
                                 );
                             }
-                            return Flowable.error(throwable);
-                        }).blockingFirst();
+                            return Mono.error(throwable);
+                        }).block();
                     } else {
                         final Optional<UriRouteMatch<Object, Object>> finalRoute = lambdaContainerEnvironment.getRouter().route(
                                 containerRequest.getMethod(),
@@ -405,8 +380,7 @@ public final class MicronautLambdaContainerHandler
                                 final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
 
                                 if (errorHandler instanceof MethodBasedRouteMatch) {
-                                    Flowable.fromPublisher(executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler))
-                                            .blockingFirst();
+                                    executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler).block();
                                 } else {
 
                                     final ExceptionHandler exceptionHandler = ctx
@@ -415,13 +389,13 @@ public final class MicronautLambdaContainerHandler
                                             )).orElse(null);
 
                                     if (exceptionHandler != null) {
-                                        final Flowable<? extends MutableHttpResponse<?>> errorFlowable =
+                                        final Mono<? extends MutableHttpResponse<?>> errorFlowable =
                                                 handleException(containerRequest, containerResponse, e, exceptionHandler);
 
-                                        Flowable.fromPublisher(filterPublisher(
+                                        filterPublisher(
                                                 requestReference,
                                                 errorFlowable
-                                        )).blockingFirst();
+                                        ).block();
                                     }
                                 }
                             }
@@ -431,15 +405,15 @@ public final class MicronautLambdaContainerHandler
                                     .getRouter()
                                     .findAny(containerRequest.getPath(), containerRequest);
 
-                            final Flowable<? extends MutableHttpResponse<?>> statusFlowable = Flowable.fromCallable(() -> {
+                            final Mono<? extends MutableHttpResponse<?>> statusFlowable = Mono.fromCallable(() -> {
                                 containerResponse.status(matches.findFirst().isPresent() ? HttpStatus.METHOD_NOT_ALLOWED : HttpStatus.NOT_FOUND);
                                 return containerResponse;
                             });
 
-                            Flowable.fromPublisher(filterPublisher(
+                            filterPublisher(
                                     requestReference,
                                     statusFlowable
-                            )).blockingFirst();
+                            ).block();
                         }
                     }
                 } finally {
@@ -491,8 +465,8 @@ public final class MicronautLambdaContainerHandler
         }
     }
 
-    private Flowable<? extends MutableHttpResponse<?>> handleException(MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Throwable throwable, ExceptionHandler exceptionHandler) {
-        return Flowable.fromCallable(() -> {
+    private Mono<? extends MutableHttpResponse<?>> handleException(MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Throwable throwable, ExceptionHandler exceptionHandler) {
+        return Mono.fromCallable(() -> {
             Object result = exceptionHandler.handle(containerRequest, throwable);
             MutableHttpResponse<?> response = errorResultToResponse(result);
             containerResponse.status(response.getStatus());
@@ -502,21 +476,21 @@ public final class MicronautLambdaContainerHandler
         });
     }
 
-    private Publisher<MutableHttpResponse<?>> executeRoute(
+    private Mono<MutableHttpResponse<?>> executeRoute(
             MicronautAwsProxyRequest<?> containerRequest,
             MicronautAwsProxyResponse<?> containerResponse,
             MethodBasedRouteMatch finalRoute) {
+        try {
+            decodeRequestBody(containerRequest, finalRoute);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+
         final RouteMatch<?> boundRoute = requestArgumentSatisfier.fulfillArgumentRequirements(
                 finalRoute,
                 containerRequest,
                 false
         );
-
-        try {
-            decodeRequestBody(containerRequest, finalRoute);
-        } catch (Exception e) {
-            return Flowable.error(e);
-        }
 
         Object result = boundRoute.execute();
 
@@ -527,14 +501,14 @@ public final class MicronautLambdaContainerHandler
         if (!void.class.isAssignableFrom(boundRoute.getReturnType().getType()) && result == null) {
             applyRouteConfig(containerResponse, finalRoute);
             containerResponse.status(HttpStatus.NOT_FOUND);
-            return Flowable.just(containerResponse);
+            return Mono.just(containerResponse);
         }
         if (Publishers.isConvertibleToPublisher(result)) {
-            Single<?> single;
+            Mono<?> single;
             if (Publishers.isSingle(result.getClass()) || boundRoute.getReturnType().isSpecifiedSingle()) {
-                single = Publishers.convertPublisher(result, Single.class);
+                single = Mono.from(Publishers.convertPublisher(result, Publisher.class));
             } else {
-                single = Publishers.convertPublisher(result, Flowable.class).toList();
+                single = Flux.from(Publishers.convertPublisher(result, Publisher.class)).collectList();
             }
             return single.map((Function<Object, MutableHttpResponse<?>>) o -> {
                 if (!(o instanceof MicronautAwsProxyResponse)) {
@@ -542,13 +516,13 @@ public final class MicronautLambdaContainerHandler
                 }
                 applyRouteConfig(containerResponse, finalRoute);
                 return containerResponse;
-            }).toFlowable();
+            });
         } else {
             if (!(result instanceof MicronautAwsProxyResponse)) {
                 applyRouteConfig(containerResponse, finalRoute);
                 ((MutableHttpResponse) containerResponse).body(result);
             }
-            return Flowable.just(containerResponse);
+            return Mono.just(containerResponse);
         }
     }
 
@@ -578,7 +552,7 @@ public final class MicronautLambdaContainerHandler
         this.applicationContext.close();
     }
 
-    private Publisher<MutableHttpResponse<?>> filterPublisher(
+    private Mono<MutableHttpResponse<?>> filterPublisher(
             AtomicReference<HttpRequest<?>> requestReference,
             Publisher<? extends MutableHttpResponse<?>> routePublisher) {
         Publisher<? extends io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
@@ -597,7 +571,7 @@ public final class MicronautLambdaContainerHandler
             finalPublisher = routePublisher;
         }
 
-        return (Publisher<MutableHttpResponse<?>>) finalPublisher;
+        return Mono.from(finalPublisher);
     }
 
     /**

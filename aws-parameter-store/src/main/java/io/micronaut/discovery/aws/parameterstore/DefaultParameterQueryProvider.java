@@ -19,12 +19,12 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.EnvironmentPropertySource;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.Nullable;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  *
@@ -40,19 +40,19 @@ final class DefaultParameterQueryProvider implements AWSParameterQueryProvider {
     private static int envBasePriority = basePriority + 50;
 
     @Override
-    public List<ParameterQuery> getParameterQueries(Environment environment, Optional<String> serviceId, AWSParameterStoreConfiguration configuration) {
+    public List<ParameterQuery> getParameterQueries(Environment environment, @Nullable String serviceId, AWSParameterStoreConfiguration configuration) {
         List<String> activeNames = configuration.isSearchActiveEnvironments() ?
                 new ArrayList<>(environment.getActiveNames()) : Collections.emptyList();
         String path = configuration.getRootHierarchyPath();
         String normalizedPath = !path.endsWith("/") ? path + "/" : path;
         String commonConfigPath = normalizedPath + Environment.DEFAULT_NAME;
-        final boolean hasApplicationSpecificConfig = serviceId.isPresent();
-        String applicationSpecificPath = hasApplicationSpecificConfig ? normalizedPath + serviceId.get() : null;
+        final boolean hasApplicationSpecificConfig = serviceId != null;
+        String applicationSpecificPath = hasApplicationSpecificConfig ? normalizedPath + serviceId : null;
 
         List<ParameterQuery> queries = new ArrayList<>();
         addNameAndPathQueries(queries, commonConfigPath, Environment.DEFAULT_NAME, basePriority + 1);
         if (hasApplicationSpecificConfig) {
-            addNameAndPathQueries(queries, applicationSpecificPath, serviceId.get(), basePriority + 2);
+            addNameAndPathQueries(queries, applicationSpecificPath, serviceId, basePriority + 2);
         }
 
         for (int i = 0; i < activeNames.size(); i++) {
@@ -64,7 +64,7 @@ final class DefaultParameterQueryProvider implements AWSParameterQueryProvider {
             addNameAndPathQueries(queries, environmentSpecificPath, propertySourceName, priority);
             if (hasApplicationSpecificConfig) {
                 String appEnvironmentSpecificPath = applicationSpecificPath + "_" + activeName;
-                propertySourceName = serviceId.get() + "[" + activeName + "]";
+                propertySourceName = serviceId + "[" + activeName + "]";
                 addNameAndPathQueries(queries, appEnvironmentSpecificPath, propertySourceName, priority + 1);
             }
         }

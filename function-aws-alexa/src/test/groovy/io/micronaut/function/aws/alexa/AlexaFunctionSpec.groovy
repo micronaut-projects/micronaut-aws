@@ -25,12 +25,11 @@ import com.amazon.ask.model.IntentRequest
 import com.amazon.ask.model.RequestEnvelope
 import com.amazon.ask.model.Response
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration
-import io.micronaut.aws.alexa.handlers.AnnotatedRequestHandler
 import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 class AlexaFunctionSpec extends Specification {
 
@@ -56,7 +55,7 @@ class AlexaFunctionSpec extends Specification {
         requestHandlers.find { it instanceof MyHandler}
 
         when:
-        AnnotatedRequestHandler handler = requestHandlers.find { it instanceof AnnotatedRequestHandler }
+        TestAlexaApplicationHandler handler = requestHandlers.find { it instanceof TestAlexaApplicationHandler }
 
         then:
         handler
@@ -103,7 +102,7 @@ class AlexaFunctionSpec extends Specification {
         requestHandlers.find { it instanceof MyHandler}
 
         when:
-        AnnotatedRequestHandler handler = requestHandlers.find { it instanceof AnnotatedRequestHandler }
+        TestAlexaApplicationHandler handler = requestHandlers.find { it instanceof TestAlexaApplicationHandler }
 
         then:
         handler

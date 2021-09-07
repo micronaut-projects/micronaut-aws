@@ -15,7 +15,6 @@
  */
 package io.micronaut.aws.xray.annotation;
 
-import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
@@ -24,14 +23,13 @@ import io.micronaut.aop.InterceptPhase;
 import io.micronaut.aop.InterceptorBean;
 import io.micronaut.aop.MethodInterceptor;
 import io.micronaut.aop.MethodInvocationContext;
-import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.http.context.ServerRequestContext;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.inject.Singleton;
+
 import java.util.Optional;
 
 /**
@@ -65,13 +63,15 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
             LOG.trace("Annotation AwsXraySubsegment name {}. ", name);
         }
         Entity currentContext = recorder.getTraceEntity();
+        /*
         ServerRequestContext.currentRequest()
                 .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class))
                 .ifPresent(AWSXRay::setTraceEntity);
+         */
         Optional<Segment> segmentOptional = recorder.getCurrentSegmentOptional();
         if (segmentOptional.isPresent()) {
             Object result = wrapContextInSubsegment(context, name);
-            recorder.setTraceEntity(currentContext);
+            //recorder.setTraceEntity(currentContext);
             return result;
         }
         if (LOG.isTraceEnabled()) {

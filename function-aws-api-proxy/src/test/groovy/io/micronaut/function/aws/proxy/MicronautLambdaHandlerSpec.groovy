@@ -11,8 +11,6 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.Issue
 import spock.lang.Specification
 
@@ -23,7 +21,7 @@ class MicronautLambdaHandlerSpec extends Specification {
      */
     void "injected ApplicationContext preserves behaviour"() {
         given:
-        MicronautLambdaHandler handler = new MicronautLambdaHandler(ApplicationContext.build().properties([
+        MicronautLambdaHandler handler = new MicronautLambdaHandler(ApplicationContext.builder().properties([
                 'spec.name': 'MicronautLambdaHandlerSpec'
         ]))
         ApplicationContext context = new LambdaApplicationContextBuilder()
@@ -56,7 +54,8 @@ class MicronautLambdaHandlerSpec extends Specification {
     void "test selected route reflects accept header"(){
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.build().properties([
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
                         'spec.name': 'MicronautLambdaHandlerSpec',
                 ])
         )
@@ -85,7 +84,6 @@ class MicronautLambdaHandlerSpec extends Specification {
         handler.close()
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller
     @Requires(property = 'spec.name', value = 'MicronautLambdaHandlerSpec')
     static class SimpleController {
@@ -97,7 +95,6 @@ class MicronautLambdaHandlerSpec extends Specification {
         }
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller("/bar")
     @Requires(property = 'spec.name', value = 'MicronautLambdaHandlerSpec')
     static class ProduceController {

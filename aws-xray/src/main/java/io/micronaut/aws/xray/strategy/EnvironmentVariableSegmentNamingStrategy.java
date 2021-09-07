@@ -20,7 +20,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.order.Ordered;
 import io.micronaut.http.HttpRequest;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * If Environment variable AWS_XRAY_TRACING_NAME is set, it returns its value as the segment name.

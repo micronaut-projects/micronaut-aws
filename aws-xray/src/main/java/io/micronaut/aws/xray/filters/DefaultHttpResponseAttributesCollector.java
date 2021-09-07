@@ -19,7 +19,7 @@ import com.amazonaws.xray.entities.Entity;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpResponse;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

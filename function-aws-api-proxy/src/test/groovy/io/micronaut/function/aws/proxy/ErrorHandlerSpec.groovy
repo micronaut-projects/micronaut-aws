@@ -14,15 +14,13 @@ import io.micronaut.http.codec.CodecException
 import io.micronaut.http.hateoas.JsonError
 import io.micronaut.http.hateoas.Link
 import io.micronaut.http.server.exceptions.ExceptionHandler
-import io.micronaut.security.annotation.Secured
-import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import javax.validation.Valid
 import javax.validation.constraints.Min
 import javax.ws.rs.core.MediaType
@@ -32,7 +30,8 @@ class ErrorHandlerSpec extends Specification {
     @Shared
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-            ApplicationContext.build().properties([
+            ApplicationContext.builder().properties([
+                    'micronaut.security.enabled': false,
                     'spec.name': 'ErrorHandlerSpec',
                     'micronaut.server.cors.enabled': true,
                     'micronaut.server.cors.configurations.web.allowedOrigins': ['http://localhost:8080']
@@ -180,7 +179,6 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class ErrorController {
@@ -214,7 +212,6 @@ class ErrorHandlerSpec extends Specification {
     }
 
     @Issue("issues/761")
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller(value = '/json/errors', produces = io.micronaut.http.MediaType.APPLICATION_JSON)
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class JsonErrorController {
@@ -245,7 +242,6 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/json')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class JsonController {
@@ -255,7 +251,6 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/global-errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class GlobalErrorController {

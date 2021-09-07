@@ -4,7 +4,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "io.micronaut.build.internal:micronaut-gradle-plugins:4.0.0.RC5"
+        classpath "io.micronaut.build.internal:micronaut-gradle-plugins:4.0.1"
     }
 }
 
@@ -13,11 +13,19 @@ subprojects { Project subproject ->
     group "io.micronaut.aws"
 
     if (subproject.name != 'aws-bom') {
+
         apply plugin: "io.micronaut.build.internal.common"
+
+        repositories {
+            maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+        }
+
         dependencies {
             annotationProcessor "io.micronaut:micronaut-inject-java"
             annotationProcessor "io.micronaut:micronaut-graal"
-            annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
+            if (!subproject.name.startsWith("test-suite")) {
+                annotationProcessor "io.micronaut.docs:micronaut-docs-asciidoc-config-props:${micronautDocsVersion}"
+            }
 
             testAnnotationProcessor "io.micronaut:micronaut-inject-java"
             testImplementation("org.spockframework:spock-core:${spockVersion}") {
@@ -32,7 +40,9 @@ subprojects { Project subproject ->
         version projectVersion
     }
     apply plugin: "io.micronaut.build.internal.dependency-updates"
-    apply plugin: "io.micronaut.build.internal.publishing"
+    if (!subproject.name.startsWith("test-suite")) {
+        apply plugin: "io.micronaut.build.internal.publishing"
+    }
 }
 
 apply plugin: "io.micronaut.build.internal.docs"

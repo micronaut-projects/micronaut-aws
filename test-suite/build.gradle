@@ -1,0 +1,9 @@
+dependencies {
+    testImplementation project(":function-aws")
+    testImplementation project(":function-client-aws")
+}
+test {
+    systemProperty "aws.accessKeyId", 'XXX'
+    systemProperty "aws.secretKey", 'YYY'
+    systemProperty "aws.region", 'us-east-1'
+}

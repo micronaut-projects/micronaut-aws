@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * <p>

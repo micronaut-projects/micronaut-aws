@@ -16,6 +16,7 @@
 package io.micronaut.aws.xray.filters.server;
 
 import com.amazonaws.xray.AWSXRayRecorder;
+import com.amazonaws.xray.contexts.SegmentContextExecutors;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.TraceHeader;
@@ -41,13 +42,14 @@ import io.micronaut.core.util.PathMatcher;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Filter;
-import io.micronaut.http.filter.OncePerRequestHttpServerFilter;
+import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.filter.ServerFilterPhase;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
 import java.util.List;
@@ -67,7 +69,7 @@ import java.util.Optional;
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(beans = SegmentNamingStrategy.class)
 @Filter(Filter.MATCH_ALL_PATTERN)
-public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
+public class XRayHttpServerFilter implements HttpServerFilter {
     public static final String ATTRIBUTE_X_RAY_TRACE_ENTITY = "X_RAY_TRACE_ENTITY";
 
     private static final Logger LOG = LoggerFactory.getLogger(XRayHttpServerFilter.class);
@@ -117,8 +119,7 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
     }
 
     @Override
-    protected Publisher<MutableHttpResponse<?>> doFilterOnce(HttpRequest<?> request, ServerFilterChain chain) {
-
+    public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
         if (CollectionUtils.isNotEmpty(excludes)) {
             final String path = request.getUri().getPath();
             if (excludes.stream().anyMatch(exclude -> pathMatcher.matches(exclude, path))) {
@@ -139,14 +140,16 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
         Optional<TraceHeader> incomingTraceHeaderOptional = traceHeaderParser.parseTraceHeader(request);
         TraceHeader incomingTraceHeader = incomingTraceHeaderOptional.orElse(null);
         Map<String, Object>  requestAttributes = httpRequestAttributesCollector.requestAttributes(request);
-        Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
+        final Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
         TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader(segment, incomingTraceHeader);
         String responseTraceHeaderString = responseTraceHeader.toString();
 
         Entity context = recorder.getTraceEntity();
         request.setAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, context);
-
-        return Flowable.fromPublisher(chain.proceed(request))
+        //ctx.put(ATTRIBUTE_X_RAY_TRACE_ENTITY, segment);
+        return Flux.from(chain.proceed(request))
+                .contextWrite(ctx -> ctx.put("AwsXrayTraceId", segment.getTraceId().toString()))
+                .subscribeOn(Schedulers.fromExecutor(SegmentContextExecutors.newSegmentContextExecutor(segment)))
                 .doOnError(t -> {
                     try {
                         segment.addException(t);
@@ -155,22 +158,22 @@ public class XRayHttpServerFilter extends OncePerRequestHttpServerFilter {
                             LOG.warn("segment not found onError");
                         }
                     }
-                }).doFinally(() -> {
+                }).doFinally(signalType -> {
+                    Entity currentContext = recorder.getTraceEntity();
+                    recorder.setTraceEntity(context);
+                    for (SegmentDecorator decorator : segmentDecorators) {
+                        decorator.decorate(segment, request);
+                    }
                     try {
-                        Entity currentContext = recorder.getTraceEntity();
-                        recorder.setTraceEntity(context);
-                        for (SegmentDecorator decorator : segmentDecorators) {
-                            decorator.decorate(segment, request);
-                        }
                         segment.close();
-                        recorder.setTraceEntity(currentContext);
                     } catch (SegmentNotFoundException e) {
                         if (LOG.isWarnEnabled()) {
                             LOG.warn("Cloud not close segment because segment {} was not found", segment.getName());
                         }
                     }
-                })
-                .map(mutableHttpResponse -> {
+                    recorder.setTraceEntity(currentContext);
+                    request.removeAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
+                }).map(mutableHttpResponse -> {
                     mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, responseTraceHeaderString);
                     httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
                     return mutableHttpResponse;

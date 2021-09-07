@@ -19,7 +19,7 @@ import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.NonNull;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Provides a {@link MockLambdaContext}.

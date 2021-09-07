@@ -17,8 +17,8 @@ import io.micronaut.inject.qualifiers.Qualifiers
 import spock.lang.Shared
 import spock.lang.Subject
 
-import javax.inject.Named
-import javax.inject.Singleton
+import jakarta.inject.Named
+import jakarta.inject.Singleton
 import javax.validation.ConstraintViolationException
 
 class AlexaSkillBuilderSpec extends ApplicationContextSpecification {

@@ -16,11 +16,12 @@
 package io.micronaut.aws.sdk.v2.client.urlConnection;
 
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 /**
  * Factory that creates an {@link java.net.URLConnection} based client.
@@ -29,6 +30,7 @@ import javax.inject.Singleton;
  * @since 2.0.0
  */
 @Factory
+@BootstrapContextCompatible
 public class UrlConnectionClientFactory {
 
     public static final String HTTP_SERVICE_IMPL = "software.amazon.awssdk.http.service.impl";

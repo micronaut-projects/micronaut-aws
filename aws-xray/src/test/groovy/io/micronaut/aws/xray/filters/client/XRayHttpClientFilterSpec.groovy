@@ -10,26 +10,20 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
-import io.micronaut.core.convert.value.MutableConvertibleValues
 import io.micronaut.core.util.StringUtils
-import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MediaType
-import io.micronaut.http.MutableHttpHeaders
-import io.micronaut.http.MutableHttpParameters
-import io.micronaut.http.MutableHttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.http.client.RxHttpClient
+import io.micronaut.http.client.HttpClient
 import io.micronaut.http.context.ServerRequestContext
-import io.micronaut.http.cookie.Cookie
-import io.micronaut.http.cookie.Cookies
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.scheduling.annotation.ExecuteOn
-import io.reactivex.Flowable
+import jakarta.inject.Singleton
+import org.reactivestreams.Publisher
+import reactor.core.publisher.Flux
 import spock.lang.Specification
-import javax.inject.Singleton
 
 class XRayHttpClientFilterSpec extends Specification {
 
@@ -41,7 +35,7 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
@@ -71,7 +65,7 @@ class XRayHttpClientFilterSpec extends Specification {
         embeddedServer.close()
     }
 
-    def "it creates subsegment with exception when segment configured"() {
+    void "it creates subsegment with exception when segment configured"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "tracing.xray.server-filter" : StringUtils.FALSE,
@@ -79,7 +73,7 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
@@ -123,7 +117,7 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        RxHttpClient client = context.createBean(RxHttpClient)
+        HttpClient client = context.createBean(HttpClient)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
@@ -158,8 +152,8 @@ class XRayHttpClientFilterSpec extends Specification {
         }
 
         @Get(uri = "/flowable", processes = MediaType.TEXT_PLAIN)
-        Flowable<String> flowable() {
-            return Flowable.just("flowable")
+        Publisher<String> flowable() {
+            return Flux.just("flowable")
         }
     }
 

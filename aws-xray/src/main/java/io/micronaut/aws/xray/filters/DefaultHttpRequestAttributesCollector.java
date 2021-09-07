@@ -17,7 +17,7 @@ package io.micronaut.aws.xray.filters;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

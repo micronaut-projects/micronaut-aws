@@ -1,0 +1,17 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.5.30"
+    id("org.jetbrains.kotlin.kapt") version "1.5.30"
+}
+dependencies {
+    kaptTest "io.micronaut:micronaut-inject-java:$micronautVersion"
+    testImplementation project(":function-aws")
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
+    testImplementation project(":function-client-aws")
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = '1.8'
+        javaParameters = true
+    }
+}

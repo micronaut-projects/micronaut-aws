@@ -1,5 +1,5 @@
 dependencies {
-    api platform("software.amazon.awssdk:bom:2.16.59")
+    api platform("software.amazon.awssdk:bom:2.16.104")
     api project(":aws-common")
 
     compileOnly "org.graalvm.nativeimage:svm"
@@ -17,8 +17,10 @@ dependencies {
     compileOnly "software.amazon.awssdk:sqs"
     compileOnly "software.amazon.awssdk:ssm"
     compileOnly 'software.amazon.awssdk:secretsmanager'
+    compileOnly 'software.amazon.awssdk:servicediscovery'
 
     // Tests
+    testImplementation 'software.amazon.awssdk:servicediscovery'
     testImplementation "software.amazon.awssdk:url-connection-client"
     testImplementation "software.amazon.awssdk:netty-nio-client"
     testImplementation "software.amazon.awssdk:apache-client"
@@ -30,6 +32,6 @@ dependencies {
     testImplementation "software.amazon.awssdk:sqs"
     testImplementation "software.amazon.awssdk:ssm"
     testImplementation "software.amazon.awssdk:rekognition"
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
 }

@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.xray.filters.client;
 
+import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Subsegment;
@@ -24,6 +25,7 @@ import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
 import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpRequest;
@@ -32,13 +34,12 @@ import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import io.micronaut.http.filter.ServerFilterPhase;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import java.util.Map;
 import java.util.Optional;
-import io.micronaut.http.HttpAttributes;
 
 /**
  * {@link HttpClientFilter} that handles creation of AWX x-ray subsegment.
@@ -64,48 +65,89 @@ public class XRayHttpClientFilter implements HttpClientFilter {
 
     @Override
     public Publisher<? extends HttpResponse<?>> doFilter(MutableHttpRequest<?> request, ClientFilterChain chain) {
-        Optional<Entity> contextOptional = ServerRequestContext.currentRequest()
-                .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class));
-        if (!contextOptional.isPresent()) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("attribute {} not found in current request", XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY);
+        return Flux.deferContextual(ctx -> {
+                LOG.trace("AWS XRAy trace id: {}" , ctx.getOrDefault("AwsXrayTraceId", ""));
+
+            if (!AWSXRay.getGlobalRecorder().getCurrentSegmentOptional().isPresent()) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("global recorder current segment not found - client {}", getSubsegmentName(request));
+                }
             }
-            return chain.proceed(request);
-        }
-        Entity currentContext = recorder.getTraceEntity();
-        final Entity context = contextOptional.get();
-        recorder.setTraceEntity(context);
-        if (!recorder.getCurrentSegmentOptional().isPresent()) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("current segment not found using {} context", XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY);
+
+            HttpRequest<?> serverRequestContextRequest = ServerRequestContext.currentRequest().orElse(null);
+            if (serverRequestContextRequest == null) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("current request at ServerRequestContext is null - client {}", getSubsegmentName(request));
+                }
+            } else {
+                Optional<Entity> entityOptional = serverRequestContextRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
+                if (entityOptional.isPresent()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Trace ID in Server Request context {}", entityOptional.get().getTraceId());
+                    }
+                }
             }
-            return chain.proceed(request);
-        }
-        String subsegmentName = getSubsegmentName(request);
-        Subsegment subsegment = initSubsegment(subsegmentName, request).orElse(null);
-        return Flowable.fromPublisher(chain.proceed(request))
-                .map(mutableHttpResponse -> {
-                    try {
-                        if (subsegment != null) {
-                            httpResponseAttributesCollector.populateEntityWithResponse(subsegment, mutableHttpResponse);
-                        }
-                    } catch (Exception e) {
-                        if (subsegment != null) {
-                            if (LOG.isWarnEnabled()) {
-                                LOG.warn("Failed to configure subsegment '{}' on success response", subsegment.getName(), e);
+
+            HttpRequest<?> ctxRequest = ctx.getOrDefault(ServerRequestContext.KEY, null);
+            if (ctxRequest == null) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("context request is null - client {}", getSubsegmentName(request));
+                }
+            } else {
+                Optional<Entity> entityOptional = ctxRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
+                if (entityOptional.isPresent()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Trace ID in Reactor context {}", entityOptional.get().getTraceId());
+                    }
+                }
+            }
+            if (serverRequestContextRequest != null) {
+                Optional<Entity> entityOptional = serverRequestContextRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
+                if (entityOptional.isPresent()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("setting trace entity which was saved in server request context attribute - client {}", getSubsegmentName(request));
+                    }
+                    recorder.setTraceEntity(entityOptional.get());
+                }
+            } else if (ctxRequest != null) {
+                Optional<Entity> entityOptional = ctxRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
+                if (entityOptional.isPresent()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("setting trace entity which was saved in a request attribute - client {}", getSubsegmentName(request));
+                    }
+                    recorder.setTraceEntity(entityOptional.get());
+                }
+            }
+
+            if (!recorder.getCurrentSegmentOptional().isPresent()) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("current segment not found - client {}", getSubsegmentName(request));
+                }
+            }
+            final Subsegment subsegment = recorder.getTraceEntity() != null &&
+                    recorder.getCurrentSegmentOptional().isPresent() ?
+                    initSubsegment(request).orElse(null) : null;
+            return Flux.from(chain.proceed(request))
+                        .map(mutableHttpResponse -> {
+                            if (subsegment != null) {
+                                try {
+                                    httpResponseAttributesCollector.populateEntityWithResponse(subsegment, mutableHttpResponse);
+                                } catch (Exception e) {
+                                    if (LOG.isWarnEnabled()) {
+                                        LOG.warn("Failed to configure subsegment '{}' on success response", subsegment.getName(), e);
+                                    }
+                                    subsegment.addException(e);
+                                }
                             }
-                            subsegment.addException(e);
-                        }
-                    }
-                    return mutableHttpResponse;
-                }).doFinally(() -> {
-                    endSubsegmentSafe(subsegment);
-                    recorder.setTraceEntity(currentContext);
-                }).doOnError(t -> {
-                    if (subsegment != null) {
-                        subsegment.addException(t);
-                    }
-                });
+                            return mutableHttpResponse;
+                        }).doFinally(signalType -> {
+                                endSubsegmentSafe(subsegment);
+                        }).doOnError(t -> {
+                            if (subsegment != null) {
+                                subsegment.addException(t);
+                            }
+                        });
+        });
     }
 
     @Override
@@ -116,6 +158,9 @@ public class XRayHttpClientFilter implements HttpClientFilter {
     private void endSubsegmentSafe(@Nullable Subsegment subsegment) {
         try {
             if (subsegment != null) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("ending subsegment {}", subsegment.getName());
+                }
                 subsegment.run(recorder::endSubsegment, recorder);
             }
         } catch (Exception e) {
@@ -125,7 +170,8 @@ public class XRayHttpClientFilter implements HttpClientFilter {
         }
     }
 
-    private Optional<Subsegment> initSubsegment(@NonNull String subsegmentName, @NonNull MutableHttpRequest<?> request) {
+    private Optional<Subsegment> initSubsegment(@NonNull MutableHttpRequest<?> request) {
+        String subsegmentName = getSubsegmentName(request);
         Subsegment subsegment = null;
         try {
             subsegment = recorder.beginSubsegment(subsegmentName);

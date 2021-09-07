@@ -19,7 +19,6 @@ import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.interceptors.TracingInterceptor;
 import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
-import io.micronaut.http.context.ServerRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.core.interceptor.Context;
@@ -43,6 +42,7 @@ public class RequestAttributeTracingInterceptor extends TracingInterceptor {
             LOG.trace("Override beforeExecution");
         }
         currentContext = AWSXRay.getGlobalRecorder().getTraceEntity();
+        /*
         ServerRequestContext.currentRequest()
                 .flatMap(httpRequest -> httpRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class))
                 .ifPresent(traceEntity -> {
@@ -51,6 +51,8 @@ public class RequestAttributeTracingInterceptor extends TracingInterceptor {
                     }
                     AWSXRay.getGlobalRecorder().setTraceEntity(traceEntity);
                 });
+
+         */
         super.beforeExecution(context, executionAttributes);
     }
 

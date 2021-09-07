@@ -2,6 +2,7 @@ dependencies {
     api project(":aws-sdk-v1")
     compileOnly "io.micronaut:micronaut-inject-java"
     implementation "com.amazonaws:aws-java-sdk-lambda"
+    implementation "io.projectreactor:reactor-core"
     api "io.micronaut:micronaut-function-client:$micronautVersion"
 
     testImplementation "io.micronaut:micronaut-inject-java"

@@ -1,0 +1,53 @@
+## Class changes
+
+api:function.aws.alexa.AlexaFunction[] has been refactored to ease extension.
+
+.Classes renamed
+|===
+| Old Class Name | New Class
+
+| `io.micronaut.function.aws.alexa.AlexaConfiguration` | api:io.micronaut.aws.alexa.conf.AlexaSkillConfiguration[io.micronaut.aws.alexa.conf.AlexaSkillConfiguration]
+|===
+
+.Classes relocated
+|===
+| Class Name | Old Package | New Package
+
+| `IntentHandler`[]
+| `io.micronaut.function.aws.alexa.annotation`
+| `io.micronaut.aws.alexa.annotation`
+
+| `AnnotatedRequestHandler`[]
+| `io.micronaut.function.aws.alexa.handlers`
+| `io.micronaut.aws.alexa.handlers`
+
+| api:io.micronaut.aws.alexa.conf.AlexaIntents[]
+| `io.micronaut.function.aws.alexa`
+| `io.micronaut.aws.alexa.conf`
+|===
+
+## Artifact changes
+
+Now all artifacts are published under the `io.micronaut.aws` group id.
+
+.Artifacts relocated
+|===
+| Old artifact | New artifact
+
+
+| `io.micronaut:micronaut-function-aws` | `io.micronaut.aws:micronaut-function-aws`
+|===
+
+== Content negotiation
+
+When using AWS API Proxy, the new support for server side content negotiation may require changes to tests. For example
+a test that makes a call such as:
+
+[source,java]
+----
+String result = client.toBlocking().retrieve(
+    HttpRequest.GET("/test")
+        .accept("text/plain"), String)
+----
+
+If the server implementation does not declare the route as `@Produces("text/plain")` the request won't match.

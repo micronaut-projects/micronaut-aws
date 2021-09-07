@@ -15,7 +15,7 @@ dependencies {
     api "com.amazon.alexa:ask-sdk-lambda-support:$askVersion"
     api project(":aws-alexa")
 
-    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.30"
+    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
 
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
         transitive(false)
