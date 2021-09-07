@@ -1,5 +1,5 @@
 dependencies {
-    compileOnly "io.micronaut.security:micronaut-security:$micronautSecurity"
+    compileOnly "io.micronaut.security:micronaut-security"
 
     implementation "io.micronaut:micronaut-http-netty"
 
@@ -21,7 +21,7 @@ dependencies {
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut.security:micronaut-security:$micronautSecurity"
+    testImplementation "io.micronaut.security:micronaut-security"
 
     testImplementation "io.micronaut.views:micronaut-views-handlebars"
 
