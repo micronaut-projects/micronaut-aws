@@ -21,7 +21,7 @@ public class MicronautLambdaExtensionTest {
 
     @Test
     public void testContextProperlyConfigured() {
-        Set<String> expectedNames = new HashSet<>(Arrays.asList("test", "function", "lambda"));
+        Set<String> expectedNames = new HashSet<>(Arrays.asList("test"));
         assertNotNull(context);
         assertEquals(context.getEnvironment().getActiveNames(), expectedNames);
         Collection<BeanRegistration<EagerSingleton>> registrations =

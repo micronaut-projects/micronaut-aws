@@ -17,7 +17,7 @@ public class CustomBuilderTest {
 
     @Test
     public void testContextProperlyConfigured() {
-        Set<String> expectedNames = new HashSet<>(Arrays.asList("test", "function", "lambda", "custom-env"));
+        Set<String> expectedNames = new HashSet<>(Arrays.asList("test", "custom-env"));
         assertEquals(context.getEnvironment().getActiveNames(), expectedNames);
         assertEquals(Optional.of("baz"), context.getProperty("test.first", String.class));
         assertEquals(Optional.of("bar"), context.getProperty("test.second", String.class));

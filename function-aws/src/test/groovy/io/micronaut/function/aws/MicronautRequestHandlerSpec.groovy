@@ -58,7 +58,6 @@ class MicronautRequestHandlerSpec extends Specification {
 
         @Override
         Integer execute(Float input) {
-            assert env.activeNames.contains(Environment.FUNCTION)
             assert env.activeNames.contains("foo")
             return mathService.round(input)
         }

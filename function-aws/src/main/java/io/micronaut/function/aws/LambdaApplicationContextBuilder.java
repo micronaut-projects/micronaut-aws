@@ -32,7 +32,7 @@ public class LambdaApplicationContextBuilder extends DefaultApplicationContextBu
 
     public static void setLambdaConfiguration(ApplicationContextBuilder builder) {
         builder
-            .environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+            .defaultEnvironments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA)
             .eagerInitConfiguration(true)
             .eagerInitSingletons(true);
     }
