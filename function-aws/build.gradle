@@ -5,4 +5,8 @@ dependencies {
     api "com.amazonaws:aws-lambda-java-core:1.2.1"
 
     testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation("io.micronaut.mongodb:micronaut-mongo-sync")
+    testImplementation("org.testcontainers:spock")
+    testImplementation("org.testcontainers:mongodb")
+    testImplementation("org.testcontainers:testcontainers")
 }
