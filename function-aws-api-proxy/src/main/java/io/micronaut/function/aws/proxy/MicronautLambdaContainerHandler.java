@@ -49,6 +49,7 @@ import io.micronaut.http.server.exceptions.ExceptionHandler;
 import io.micronaut.http.server.types.files.StreamedFile;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
+import io.micronaut.security.filters.SecurityFilter;
 import io.micronaut.web.router.*;
 import io.micronaut.web.router.resource.StaticResourceResolver;
 import org.apache.commons.io.IOUtils;
@@ -69,6 +70,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -556,8 +558,12 @@ public final class MicronautLambdaContainerHandler
             AtomicReference<HttpRequest<?>> requestReference,
             Publisher<? extends MutableHttpResponse<?>> routePublisher) {
         Publisher<? extends io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
-        List<HttpFilter> filters = new ArrayList<>(lambdaContainerEnvironment.getRouter().findFilters(requestReference.get()));
+        HttpRequest<?> request = requestReference.get();
+        List<HttpFilter> filters = new ArrayList<>(lambdaContainerEnvironment.getRouter().findFilters(request));
         if (!filters.isEmpty()) {
+            if (request.getAttribute(SecurityFilter.KEY).isPresent()) {
+                filters.removeIf(httpFilter -> httpFilter instanceof SecurityFilter);
+            }
             // make the action executor the last filter in the chain
             filters.add((HttpServerFilter) (req, chain) -> (Publisher<MutableHttpResponse<?>>) routePublisher);
 
