@@ -18,9 +18,7 @@ import io.micronaut.http.server.exceptions.ExceptionHandler
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
-import spock.lang.IgnoreRest
 import spock.lang.Issue
-import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -89,7 +87,6 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    //@PendingFeature
     void 'test custom global status handlers declared in controller'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
@@ -233,6 +230,7 @@ class ErrorHandlerSpec extends Specification {
 
         @Error
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String localHandler(AnotherException throwable) {
             return throwable.getMessage()
         }
@@ -250,7 +248,6 @@ class ErrorHandlerSpec extends Specification {
         }
 
         @Error
-
         HttpResponse<JsonError> errorHandler(HttpRequest request, RuntimeException exception) {
             JsonError error = new JsonError("Error: " + exception.getMessage())
                     .link(Link.SELF, Link.of(request.getUri()));

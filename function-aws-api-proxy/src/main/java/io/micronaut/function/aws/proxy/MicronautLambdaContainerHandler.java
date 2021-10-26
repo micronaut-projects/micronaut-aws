@@ -486,24 +486,24 @@ public final class MicronautLambdaContainerHandler
                 .map(MediaType::new)
                 .ifPresent(response::contentType);
 
+        Flux<MutableHttpResponse<?>> routeResponse;
         try {
             decodeRequestBody(request, originalRoute);
+
+            RouteMatch<?> route = requestArgumentSatisfier.fulfillArgumentRequirements(originalRoute, request, false);
+
+            // TODO? body, streamed...
+
+            Flux<RouteMatch<?>> routeMatchPublisher = Flux.just(route);
+
+            routeResponse = routeExecutor.executeRoute(
+                    request,
+                    true,
+                    routeMatchPublisher
+            ).mapNotNull(r -> convertResponseBody(response, r.getAttribute(HttpAttributes.ROUTE_MATCH, RouteMatch.class).get(), r.body()).block());
         } catch (Exception e) {
-            // TODO
-            throw e;
+            routeResponse = Flux.from(routeExecutor.filterPublisher(new AtomicReference<>(request), routeExecutor.onError(e, request)));
         }
-
-        RouteMatch<?> route = requestArgumentSatisfier.fulfillArgumentRequirements(originalRoute, request, false);
-
-        // TODO? body, streamed...
-
-        Flux<RouteMatch<?>> routeMatchPublisher = Flux.just(route);
-
-        final Flux<MutableHttpResponse<?>> routeResponse = routeExecutor.executeRoute(
-                request,
-                true,
-                routeMatchPublisher
-        ).mapNotNull(r -> convertResponseBody(response, route, route, r.body()).block());
 
         routeResponse
                 .contextWrite(ctx -> ctx.put(ServerRequestContext.KEY, request))
@@ -819,35 +819,33 @@ public final class MicronautLambdaContainerHandler
 
         Object result = boundRoute.execute();
 
-        return createResponseForBody(containerResponse, finalRoute, boundRoute, result);
+        return createResponseForBody(containerResponse, boundRoute, result);
     }
 
     private Mono<MutableHttpResponse<?>> createResponseForBody(
             MicronautAwsProxyResponse<?> containerResponse,
-            RouteMatch<?> finalRoute,
-            RouteMatch<?> boundRoute,
+            RouteMatch<?> routeMatch,
             Object result) {
 
         if (result instanceof Optional) {
             Optional<?> optional = (Optional) result;
             result = optional.orElse(null);
         }
-        if (!void.class.isAssignableFrom(boundRoute.getReturnType().getType()) && result == null) {
-            applyRouteConfig(containerResponse, finalRoute);
+        if (!void.class.isAssignableFrom(routeMatch.getReturnType().getType()) && result == null) {
+            applyRouteConfig(containerResponse, routeMatch);
             containerResponse.status(HttpStatus.NOT_FOUND);
             return Mono.just(containerResponse);
         }
-        return convertResponseBody(containerResponse, finalRoute, boundRoute, result);
+        return convertResponseBody(containerResponse, routeMatch, result);
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(
             MicronautAwsProxyResponse<?> containerResponse,
-            RouteMatch<?> finalRoute,
-            RouteMatch<?> boundRoute,
+            RouteMatch<?> routeMatch,
             Object body) {
         if (Publishers.isConvertibleToPublisher(body)) {
             Mono<?> single;
-            if (Publishers.isSingle(body.getClass()) || boundRoute.getReturnType().isSpecifiedSingle()) {
+            if (Publishers.isSingle(body.getClass()) || routeMatch.getReturnType().isSpecifiedSingle()) {
                 single = Mono.from(Publishers.convertPublisher(body, Publisher.class));
             } else {
                 single = Flux.from(Publishers.convertPublisher(body, Publisher.class)).collectList();
@@ -856,12 +854,12 @@ public final class MicronautLambdaContainerHandler
                 if (!(o instanceof MicronautAwsProxyResponse)) {
                     ((MutableHttpResponse) containerResponse).body(o);
                 }
-                applyRouteConfig(containerResponse, finalRoute);
+                applyRouteConfig(containerResponse, routeMatch);
                 return containerResponse;
             });
         } else {
             if (!(body instanceof MicronautAwsProxyResponse)) {
-                applyRouteConfig(containerResponse, finalRoute);
+                applyRouteConfig(containerResponse, routeMatch);
                 ((MutableHttpResponse) containerResponse).body(body);
             }
             return Mono.just(containerResponse);
