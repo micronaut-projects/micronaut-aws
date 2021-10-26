@@ -31,45 +31,61 @@ import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.core.annotation.AnnotationMetadata;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
+import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.core.util.ArgumentUtils;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpAttributes;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.Status;
 import io.micronaut.http.bind.RequestBinderRegistry;
 import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.HttpFilter;
-import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
+import io.micronaut.http.server.HttpServerConfiguration;
+import io.micronaut.http.server.RouteExecutor;
 import io.micronaut.http.server.binding.RequestArgumentSatisfier;
-import io.micronaut.http.server.exceptions.ExceptionHandler;
-import io.micronaut.http.server.types.files.StreamedFile;
+import io.micronaut.http.server.exceptions.response.ErrorContext;
+import io.micronaut.http.server.exceptions.response.ErrorResponseProcessor;
 import io.micronaut.inject.qualifiers.Qualifiers;
 import io.micronaut.jackson.codec.JsonMediaTypeCodec;
-import io.micronaut.web.router.*;
+import io.micronaut.scheduling.executor.ExecutorSelector;
+import io.micronaut.web.router.MethodBasedRouteMatch;
+import io.micronaut.web.router.RouteInfo;
+import io.micronaut.web.router.RouteMatch;
+import io.micronaut.web.router.Router;
+import io.micronaut.web.router.UriRouteMatch;
 import io.micronaut.web.router.resource.StaticResourceResolver;
-import org.apache.commons.io.IOUtils;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.InputStream;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 /**
  * Main entry for AWS API proxy with Micronaut.
@@ -97,6 +113,7 @@ import java.util.stream.Stream;
 public final class MicronautLambdaContainerHandler
         extends AbstractLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautLambdaContainerHandler.class);
     private static final String TIMER_INIT = "MICRONAUT_COLD_START";
     private static final String TIMER_REQUEST = "MICRONAUT_HANDLE_REQUEST";
     private final ApplicationContextBuilder applicationContextBuilder;
@@ -104,6 +121,9 @@ public final class MicronautLambdaContainerHandler
     private ApplicationContext applicationContext;
     private RequestArgumentSatisfier requestArgumentSatisfier;
     private StaticResourceResolver resourceResolver;
+    private Router router;
+    private ErrorResponseProcessor errorResponseProcessor;
+    private RouteExecutor routeExecutor;
 
     /**
      * Default constructor.
@@ -248,6 +268,20 @@ public final class MicronautLambdaContainerHandler
         );
         this.resourceResolver = applicationContext.getBean(StaticResourceResolver.class);
         addConverters();
+
+        this.router = lambdaContainerEnvironment.getRouter();
+        this.errorResponseProcessor = applicationContext.getBean(ErrorResponseProcessor.class);
+        HttpServerConfiguration serverConfiguration = applicationContext.getBean(HttpServerConfiguration.class);
+        ExecutorSelector executorSelector = applicationContext.getBean(ExecutorSelector.class);
+
+        this.routeExecutor = new RouteExecutor(
+                this.router,
+                applicationContext,
+                requestArgumentSatisfier,
+                serverConfiguration,
+                errorResponseProcessor,
+                executorSelector
+        );
     }
 
     /**
@@ -272,150 +306,17 @@ public final class MicronautLambdaContainerHandler
             MicronautAwsProxyResponse<?> containerResponse,
             Context lambdaContext) {
         Timer.start(TIMER_REQUEST);
-
         try {
-            // process filters & invoke servlet
             ServerRequestContext.with(containerRequest, () -> {
-                final Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(
-                        HttpAttributes.ROUTE_MATCH,
-                        UriRouteMatch.class
-                );
-
                 try {
-                    if (routeMatch.isPresent()) {
-                        final UriRouteMatch finalRoute = routeMatch.get();
-                        containerRequest.setAttribute(
-                                HttpAttributes.ROUTE_MATCH, finalRoute
-                        );
+                    Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(HttpAttributes.ROUTE_MATCH, UriRouteMatch.class);
 
-                        final AnnotationMetadata annotationMetadata = finalRoute.getAnnotationMetadata();
-                        annotationMetadata.stringValue(Produces.class)
-                                .map(MediaType::new)
-                                .ifPresent(containerResponse::contentType);
-
-                        final Mono<MutableHttpResponse<?>> responsePublisher = Mono.defer(() ->
-                                executeRoute(containerRequest, containerResponse, finalRoute)
-                        );
-
-                        final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
-                        final Mono<MutableHttpResponse<?>> filterPublisher = Mono.from(filterPublisher(
-                                requestReference,
-                                responsePublisher));
-
-                        filterPublisher.onErrorResume(mayBeWrapped -> {
-                            Throwable throwable = mayBeWrapped instanceof UndeclaredThrowableException ? mayBeWrapped.getCause() : mayBeWrapped;
-                            final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(
-                                    finalRoute.getDeclaringType(),
-                                    throwable
-                            ).orElseGet(() -> lambdaContainerEnvironment.getRouter().route(
-                                    throwable
-                            ).orElse(null));
-                            if (errorHandler == null) {
-                                final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
-                                final ExceptionHandler exceptionHandler = ctx
-                                        .findBean(ExceptionHandler.class, Qualifiers.byTypeArgumentsClosest(
-                                                throwable.getClass(), Object.class
-                                        )).orElse(null);
-
-                                if (exceptionHandler != null) {
-                                    final Mono<? extends MutableHttpResponse<?>> errorFlowable =
-                                            handleException(containerRequest, containerResponse, throwable, exceptionHandler);
-
-                                    return filterPublisher(
-                                            requestReference,
-                                            errorFlowable
-                                    );
-                                }
-                            } else if (errorHandler instanceof MethodBasedRouteMatch) {
-                                final Publisher<? extends MutableHttpResponse<?>> errorPublisher = executeRoute(
-                                        containerRequest,
-                                        containerResponse,
-                                        (MethodBasedRouteMatch) errorHandler
-                                );
-
-                                return filterPublisher(
-                                        requestReference,
-                                        errorPublisher
-                                );
-                            }
-                            return Mono.error(throwable);
-                        }).block();
-                    } else {
-                        final Optional<UriRouteMatch<Object, Object>> finalRoute = lambdaContainerEnvironment.getRouter().route(
-                                containerRequest.getMethod(),
-                                containerRequest.getPath()
-                        );
-
-                        if (finalRoute.isPresent()) {
-                            final AnnotationMetadata annotationMetadata = finalRoute.get().getAnnotationMetadata();
-                            annotationMetadata.stringValue(Produces.class).map(MediaType::new)
-                                    .ifPresent(containerResponse::contentType);
-
-                            final MediaType[] expectedContentType = Arrays.stream(annotationMetadata.stringValues(Consumes.class))
-                                    .map(MediaType::new)
-                                    .toArray(MediaType[]::new);
-                            final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-
-                            if (expectedContentType.length > 0 && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(requestContentType)) && Arrays.stream(expectedContentType).noneMatch(ct -> ct.equals(MediaType.ALL_TYPE))) {
-                                containerResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-                                containerResponse.close();
-                                return;
-                            }
-                        }
-
-                        final Optional<URL> staticMatch = resourceResolver.resolve(containerRequest.getPath());
-                        if (staticMatch.isPresent()) {
-                            final StreamedFile streamedFile = new StreamedFile(staticMatch.get());
-                            long length = streamedFile.getLength();
-                            if (length > -1) {
-                                containerResponse.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(length));
-                            }
-                            containerResponse.header(HttpHeaders.CONTENT_TYPE, streamedFile.getMediaType().toString());
-                            try (InputStream inputStream = streamedFile.getInputStream()) {
-                                byte[] data = IOUtils.toByteArray(inputStream);
-                                ((MutableHttpResponse) containerResponse).body(data);
-                            } catch (Throwable e) {
-                                final RouteMatch<Object> errorHandler = lambdaContainerEnvironment.getRouter().route(e).orElse(null);
-                                final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
-                                final ApplicationContext ctx = lambdaContainerEnvironment.getApplicationContext();
-
-                                if (errorHandler instanceof MethodBasedRouteMatch) {
-                                    executeRoute(containerRequest, containerResponse, (MethodBasedRouteMatch) errorHandler).block();
-                                } else {
-
-                                    final ExceptionHandler exceptionHandler = ctx
-                                            .findBean(ExceptionHandler.class, Qualifiers.byTypeArgumentsClosest(
-                                                    e.getClass(), Object.class
-                                            )).orElse(null);
-
-                                    if (exceptionHandler != null) {
-                                        final Mono<? extends MutableHttpResponse<?>> errorFlowable =
-                                                handleException(containerRequest, containerResponse, e, exceptionHandler);
-
-                                        filterPublisher(
-                                                requestReference,
-                                                errorFlowable
-                                        ).block();
-                                    }
-                                }
-                            }
-                        } else {
-                            final AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(containerRequest);
-                            final Stream<UriRouteMatch<Object, Object>> matches = lambdaContainerEnvironment
-                                    .getRouter()
-                                    .findAny(containerRequest.getPath(), containerRequest);
-
-                            final Mono<? extends MutableHttpResponse<?>> statusFlowable = Mono.fromCallable(() -> {
-                                containerResponse.status(matches.findFirst().isPresent() ? HttpStatus.METHOD_NOT_ALLOWED : HttpStatus.NOT_FOUND);
-                                return containerResponse;
-                            });
-
-                            filterPublisher(
-                                    requestReference,
-                                    statusFlowable
-                            ).block();
-                        }
+                    if (!routeMatch.isPresent()) {
+                        handlePossibleErrorStatus(containerRequest, containerResponse);
+                        return;
                     }
+
+                    handleRouteMatch(routeMatch.get(), containerRequest, containerResponse);
                 } finally {
                     containerResponse.close();
                 }
@@ -423,11 +324,100 @@ public final class MicronautLambdaContainerHandler
         } finally {
             Timer.stop(TIMER_REQUEST);
         }
-
-
     }
 
-    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, MethodBasedRouteMatch<Object, Object> finalRoute) {
+    private void handleRouteMatch(
+            RouteMatch<?> originalRoute,
+            MicronautAwsProxyRequest<?> request,
+            MicronautAwsProxyResponse<?> response
+    ) {
+        final AnnotationMetadata annotationMetadata = originalRoute.getAnnotationMetadata();
+        annotationMetadata.stringValue(Produces.class)
+                .map(MediaType::new)
+                .ifPresent(response::contentType);
+
+        Flux<MutableHttpResponse<?>> routeResponse;
+        try {
+            decodeRequestBody(request, originalRoute);
+
+            RouteMatch<?> route = requestArgumentSatisfier.fulfillArgumentRequirements(originalRoute, request, false);
+
+            Flux<RouteMatch<?>> routeMatchPublisher = Flux.just(route);
+
+            routeResponse = routeExecutor.executeRoute(
+                    request,
+                    true,
+                    routeMatchPublisher
+            ).mapNotNull(r -> convertResponseBody(response, r.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class).get(), r.body()).block());
+        } catch (Exception e) {
+            routeResponse = Flux.from(routeExecutor.filterPublisher(new AtomicReference<>(request), routeExecutor.onError(e, request)));
+        }
+
+        routeResponse
+                .contextWrite(ctx -> ctx.put(ServerRequestContext.KEY, request))
+                .subscribe(new CompletionAwareSubscriber<HttpResponse<?>>() {
+                    @Override
+                    protected void doOnSubscribe(Subscription subscription) {
+                        subscription.request(1);
+                    }
+
+                    @Override
+                    protected void doOnNext(HttpResponse<?> message) {
+                        encodeHttpResponse(
+                                request,
+                                response,
+                                message,
+                                message.body()
+                        );
+                        subscription.request(1);
+                    }
+
+                    @Override
+                    protected void doOnError(Throwable throwable) {
+                        final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, throwable);
+                        encodeHttpResponse(
+                                request,
+                                response,
+                                defaultErrorResponse,
+                                defaultErrorResponse.body()
+                        );
+                    }
+
+                    @Override
+                    protected void doOnComplete() {
+                    }
+                });
+    }
+
+    // Response is encoded/written in MicronautResponseWriter after handleRequest finishes,
+    // so we just need a complete MicronautAwsProxyResponse.
+    private void encodeHttpResponse(
+            MicronautAwsProxyRequest<?> request,
+            MicronautAwsProxyResponse<?> response,
+            HttpResponse<?> message,
+            Object body) {
+        toAwsProxyResponse(response, message);
+    }
+
+    private MicronautAwsProxyResponse<?> toAwsProxyResponse(
+            MicronautAwsProxyResponse<?> response,
+            HttpResponse<?> message) {
+
+        if (response != message) {
+            response.status(message.status(), message.status().getReason());
+            response.body(message.body());
+            message.getHeaders().forEach((name, value) -> {
+                for (String val : value) {
+                    response.header(name, val);
+                }
+            });
+            response.getAttributes().putAll(message.getAttributes());
+        }
+
+        return response;
+    }
+
+    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, RouteMatch<?> finalRoute) {
         if (!containerRequest.isBodyDecoded()) {
             final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
             if (permitsRequestBody) {
@@ -440,9 +430,12 @@ public final class MicronautLambdaContainerHandler
 
                             Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
                             if (bodyArgument == null) {
-                                bodyArgument = Arrays.stream(finalRoute.getArguments()).filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
-                                        .findFirst()
-                                        .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+                                if (finalRoute instanceof MethodBasedRouteMatch) {
+                                    bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
+                                            .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                                            .findFirst()
+                                            .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+                                }
                             }
 
                             if (bodyArgument != null) {
@@ -465,113 +458,183 @@ public final class MicronautLambdaContainerHandler
         }
     }
 
-    private Mono<? extends MutableHttpResponse<?>> handleException(MicronautAwsProxyRequest<?> containerRequest, MicronautAwsProxyResponse<?> containerResponse, Throwable throwable, ExceptionHandler exceptionHandler) {
-        return Mono.fromCallable(() -> {
-            Object result = exceptionHandler.handle(containerRequest, throwable);
-            MutableHttpResponse<?> response = errorResultToResponse(result);
-            containerResponse.status(response.getStatus());
-            response.getContentType().ifPresent(containerResponse::contentType);
-            response.getBody().ifPresent(((MutableHttpResponse) containerResponse)::body);
-            return response;
-        });
-    }
-
-    private Mono<MutableHttpResponse<?>> executeRoute(
-            MicronautAwsProxyRequest<?> containerRequest,
+    private Mono<MutableHttpResponse<?>> convertResponseBody(
             MicronautAwsProxyResponse<?> containerResponse,
-            MethodBasedRouteMatch finalRoute) {
-        try {
-            decodeRequestBody(containerRequest, finalRoute);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        final RouteMatch<?> boundRoute = requestArgumentSatisfier.fulfillArgumentRequirements(
-                finalRoute,
-                containerRequest,
-                false
-        );
-
-        Object result = boundRoute.execute();
-
-        if (result instanceof Optional) {
-            Optional<?> optional = (Optional) result;
-            result = optional.orElse(null);
-        }
-        if (!void.class.isAssignableFrom(boundRoute.getReturnType().getType()) && result == null) {
-            applyRouteConfig(containerResponse, finalRoute);
-            containerResponse.status(HttpStatus.NOT_FOUND);
-            return Mono.just(containerResponse);
-        }
-        if (Publishers.isConvertibleToPublisher(result)) {
+            RouteInfo<?> routeInfo,
+            Object body) {
+        if (Publishers.isConvertibleToPublisher(body)) {
             Mono<?> single;
-            if (Publishers.isSingle(result.getClass()) || boundRoute.getReturnType().isSpecifiedSingle()) {
-                single = Mono.from(Publishers.convertPublisher(result, Publisher.class));
+            if (Publishers.isSingle(body.getClass()) || routeInfo.getReturnType().isSpecifiedSingle()) {
+                single = Mono.from(Publishers.convertPublisher(body, Publisher.class));
             } else {
-                single = Flux.from(Publishers.convertPublisher(result, Publisher.class)).collectList();
+                single = Flux.from(Publishers.convertPublisher(body, Publisher.class)).collectList();
             }
             return single.map((Function<Object, MutableHttpResponse<?>>) o -> {
                 if (!(o instanceof MicronautAwsProxyResponse)) {
                     ((MutableHttpResponse) containerResponse).body(o);
                 }
-                applyRouteConfig(containerResponse, finalRoute);
+                applyRouteConfig(containerResponse, routeInfo);
                 return containerResponse;
             });
         } else {
-            if (!(result instanceof MicronautAwsProxyResponse)) {
-                applyRouteConfig(containerResponse, finalRoute);
-                ((MutableHttpResponse) containerResponse).body(result);
+            if (!(body instanceof MicronautAwsProxyResponse)) {
+                applyRouteConfig(containerResponse, routeInfo);
+                ((MutableHttpResponse) containerResponse).body(body);
             }
             return Mono.just(containerResponse);
         }
     }
 
-    private MutableHttpResponse<?> errorResultToResponse(Object result) {
-        MutableHttpResponse<?> response;
-        if (result == null) {
-            response = io.micronaut.http.HttpResponse.serverError();
-        } else if (result instanceof io.micronaut.http.HttpResponse) {
-            response = (MutableHttpResponse) result;
-        } else {
-            response = io.micronaut.http.HttpResponse.serverError()
-                    .body(result);
-            MediaType.fromType(result.getClass()).ifPresent(response::contentType);
+    private void applyRouteConfig(MicronautAwsProxyResponse<?> containerResponse, RouteInfo<?> finalRoute) {
+        if (!containerResponse.getContentType().isPresent()) {
+            finalRoute.getAnnotationMetadata().getValue(Produces.class, String.class).ifPresent(containerResponse::contentType);
         }
-        return response;
+        finalRoute.getAnnotationMetadata().getValue(Status.class, HttpStatus.class).ifPresent(httpStatus -> containerResponse.status(httpStatus));
     }
 
-    private void applyRouteConfig(MicronautAwsProxyResponse<?> containerResponse, MethodBasedRouteMatch finalRoute) {
-        if (!containerResponse.getContentType().isPresent()) {
-            finalRoute.getValue(Produces.class, String.class).ifPresent(containerResponse::contentType);
+    private void handlePossibleErrorStatus(
+            MicronautAwsProxyRequest<?> request,
+            MicronautAwsProxyResponse<?> response) {
+
+        final MediaType contentType = request.getContentType().orElse(null);
+        final String requestMethodName = request.getMethodName();
+
+        // if there is no route present try to locate a route that matches a different HTTP method
+        final List<UriRouteMatch<?, ?>> anyMatchingRoutes = router
+                .findAny(request.getPath(), request)
+                .collect(Collectors.toList());
+        final Collection<MediaType> acceptedTypes = request.accept();
+        final boolean hasAcceptHeader = CollectionUtils.isNotEmpty(acceptedTypes);
+
+        Set<MediaType> acceptableContentTypes = contentType != null ? new HashSet<>(5) : null;
+        Set<String> allowedMethods = new HashSet<>(5);
+        Set<MediaType> produceableContentTypes = hasAcceptHeader ? new HashSet<>(5) : null;
+        for (UriRouteMatch<?, ?> anyRoute : anyMatchingRoutes) {
+            final String routeMethod = anyRoute.getRoute().getHttpMethodName();
+            if (!requestMethodName.equals(routeMethod)) {
+                allowedMethods.add(routeMethod);
+            }
+            if (contentType != null && !anyRoute.doesConsume(contentType)) {
+                acceptableContentTypes.addAll(anyRoute.getRoute().getConsumes());
+            }
+            if (hasAcceptHeader && !anyRoute.doesProduce(acceptedTypes)) {
+                produceableContentTypes.addAll(anyRoute.getRoute().getProduces());
+            }
         }
-        finalRoute.getValue(Status.class, HttpStatus.class).ifPresent(httpStatus -> containerResponse.status(httpStatus));
+
+        if (CollectionUtils.isNotEmpty(acceptableContentTypes)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Content type not allowed for URI {}, method {}, and content type {}", request.getUri(),
+                        requestMethodName, contentType);
+            }
+
+            handleStatusError(
+                    request,
+                    response,
+                    HttpResponse.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE),
+                    "Content Type [" + contentType + "] not allowed. Allowed types: " + acceptableContentTypes);
+            return;
+        }
+
+        if (CollectionUtils.isNotEmpty(produceableContentTypes)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Content type not allowed for URI {}, method {}, and content type {}", request.getUri(),
+                        requestMethodName, contentType);
+            }
+
+            handleStatusError(
+                    request,
+                    response,
+                    HttpResponse.status(HttpStatus.NOT_ACCEPTABLE),
+                    "Specified Accept Types " + acceptedTypes + " not supported. Supported types: " + produceableContentTypes);
+            return;
+        }
+
+        if (!allowedMethods.isEmpty()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Method not allowed for URI {} and method {}", request.getUri(), requestMethodName);
+            }
+
+            handleStatusError(
+                    request,
+                    response,
+                    HttpResponse.notAllowedGeneric(allowedMethods),
+                    "Method [" + requestMethodName + "] not allowed for URI [" + request.getUri() + "]. Allowed methods: " + allowedMethods);
+            return;
+        }
+    }
+
+    private void handleStatusError(
+            MicronautAwsProxyRequest<?> request,
+            MicronautAwsProxyResponse<?> response,
+            MutableHttpResponse<?> defaultResponse,
+            String message) {
+
+        Optional<RouteMatch<Object>> statusRoute = router.findStatusRoute(defaultResponse.status(), request);
+        if (statusRoute.isPresent()) {
+            handleRouteMatch(statusRoute.get(), request, response);
+        } else {
+            if (request.getMethod() != HttpMethod.HEAD) {
+                defaultResponse = errorResponseProcessor.processResponse(
+                        ErrorContext.builder(request).errorMessage(message).build(),
+                        defaultResponse
+                );
+                if (!defaultResponse.getContentType().isPresent()) {
+                    defaultResponse = defaultResponse.contentType(MediaType.APPLICATION_JSON_TYPE);
+                }
+            }
+
+            filterAndEncodeResponse(request, response, Publishers.just(defaultResponse));
+        }
+    }
+
+    private void filterAndEncodeResponse(
+            MicronautAwsProxyRequest<?> request,
+            MicronautAwsProxyResponse<?> response,
+            Publisher<MutableHttpResponse<?>> responsePublisher) {
+        AtomicReference<HttpRequest<?>> requestReference = new AtomicReference<>(request);
+
+        Flux.from(routeExecutor.filterPublisher(requestReference, responsePublisher))
+                .contextWrite(ctx -> ctx.put(ServerRequestContext.KEY, request))
+                .subscribe(new Subscriber<MutableHttpResponse<?>>() {
+                    Subscription subscription;
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        this.subscription = s;
+                        s.request(1);
+                    }
+
+                    @Override
+                    public void onNext(MutableHttpResponse<?> message) {
+                        encodeHttpResponse(
+                                request,
+                                response,
+                                message,
+                                message.body()
+                        );
+                        subscription.request(1);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, t);
+                        encodeHttpResponse(
+                                request,
+                                response,
+                                defaultErrorResponse,
+                                defaultErrorResponse.body()
+                        );
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
     @Override
     public void close() {
         this.applicationContext.close();
-    }
-
-    private Mono<MutableHttpResponse<?>> filterPublisher(
-            AtomicReference<HttpRequest<?>> requestReference,
-            Publisher<? extends MutableHttpResponse<?>> routePublisher) {
-        Publisher<? extends io.micronaut.http.MutableHttpResponse<?>> finalPublisher;
-        List<HttpFilter> filters = new ArrayList<>(lambdaContainerEnvironment.getRouter().findFilters(requestReference.get()));
-        if (!filters.isEmpty()) {
-            // make the action executor the last filter in the chain
-            filters.add((HttpServerFilter) (req, chain) -> (Publisher<MutableHttpResponse<?>>) routePublisher);
-
-            AtomicInteger integer = new AtomicInteger();
-            int len = filters.size();
-            ServerFilterChain filterChain = new LambdaFilterChain(integer, len, filters, requestReference);
-            HttpFilter httpFilter = filters.get(0);
-            Publisher<? extends HttpResponse<?>> resultingPublisher = httpFilter.doFilter(requestReference.get(), filterChain);
-            finalPublisher = (Publisher<MutableHttpResponse<?>>) resultingPublisher;
-        } else {
-            finalPublisher = routePublisher;
-        }
-
-        return Mono.from(finalPublisher);
     }
 
     /**
