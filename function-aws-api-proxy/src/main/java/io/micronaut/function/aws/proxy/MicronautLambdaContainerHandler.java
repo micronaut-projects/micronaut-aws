@@ -185,7 +185,6 @@ public final class MicronautLambdaContainerHandler
         }
     }
 
-
     /**
      * constructor.
      *
