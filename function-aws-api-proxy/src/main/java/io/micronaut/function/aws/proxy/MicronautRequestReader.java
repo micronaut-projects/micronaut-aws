@@ -70,9 +70,10 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
 
             if (!uriRoutes.isEmpty()) {
                 UriRouteMatch<Object, Object> finalRoute = uriRoutes.get(0);
-                containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
                 final UriRoute route = finalRoute.getRoute();
                 containerRequest.setAttribute(HttpAttributes.ROUTE, route);
+                containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
+                containerRequest.setAttribute(HttpAttributes.ROUTE_INFO, finalRoute);
                 containerRequest.setAttribute(HttpAttributes.URI_TEMPLATE, route.getUriMatchTemplate().toString());
             }
             return containerRequest;
