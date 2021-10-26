@@ -18,6 +18,7 @@ import io.micronaut.http.server.exceptions.ExceptionHandler
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
+import spock.lang.IgnoreRest
 import spock.lang.Issue
 import spock.lang.PendingFeature
 import spock.lang.Shared
@@ -88,7 +89,7 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    @PendingFeature
+    //@PendingFeature
     void 'test custom global status handlers declared in controller'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
@@ -286,12 +287,14 @@ class ErrorHandlerSpec extends Specification {
 
         @Error(global = true, exception = GloballyHandledException)
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String globallyHandledException(GloballyHandledException throwable) {
             return throwable.getMessage()
         }
 
         @Error(global = true, status = HttpStatus.I_AM_A_TEAPOT)
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String globalControllerHandlerForStatus() {
             return 'global status'
         }
