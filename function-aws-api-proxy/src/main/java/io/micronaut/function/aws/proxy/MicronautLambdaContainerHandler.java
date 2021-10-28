@@ -308,18 +308,14 @@ public final class MicronautLambdaContainerHandler
         Timer.start(TIMER_REQUEST);
         try {
             ServerRequestContext.with(containerRequest, () -> {
-                try {
-                    Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(HttpAttributes.ROUTE_MATCH, UriRouteMatch.class);
+                Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(HttpAttributes.ROUTE_MATCH, UriRouteMatch.class);
 
-                    if (!routeMatch.isPresent()) {
-                        handlePossibleErrorStatus(containerRequest, containerResponse);
-                        return;
-                    }
-
-                    handleRouteMatch(routeMatch.get(), containerRequest, containerResponse);
-                } finally {
-                    containerResponse.close();
+                if (!routeMatch.isPresent()) {
+                    handlePossibleErrorStatus(containerRequest, containerResponse);
+                    return;
                 }
+
+                handleRouteMatch(routeMatch.get(), containerRequest, containerResponse);
             });
         } finally {
             Timer.stop(TIMER_REQUEST);
@@ -363,40 +359,25 @@ public final class MicronautLambdaContainerHandler
 
                     @Override
                     protected void doOnNext(HttpResponse<?> message) {
-                        encodeHttpResponse(
-                                request,
-                                response,
-                                message,
-                                message.body()
-                        );
+                        toAwsProxyResponse(response, message);
                         subscription.request(1);
                     }
 
                     @Override
                     protected void doOnError(Throwable throwable) {
-                        final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, throwable);
-                        encodeHttpResponse(
-                                request,
-                                response,
-                                defaultErrorResponse,
-                                defaultErrorResponse.body()
-                        );
+                        try {
+                            final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, throwable);
+                            toAwsProxyResponse(response, defaultErrorResponse);
+                        } finally {
+                            response.close();
+                        }
                     }
 
                     @Override
                     protected void doOnComplete() {
+                        response.close();
                     }
                 });
-    }
-
-    // Response is encoded/written in MicronautResponseWriter after handleRequest finishes,
-    // so we just need a complete MicronautAwsProxyResponse.
-    private void encodeHttpResponse(
-            MicronautAwsProxyRequest<?> request,
-            MicronautAwsProxyResponse<?> response,
-            HttpResponse<?> message,
-            Object body) {
-        toAwsProxyResponse(response, message);
     }
 
     private MicronautAwsProxyResponse<?> toAwsProxyResponse(
@@ -560,7 +541,6 @@ public final class MicronautLambdaContainerHandler
                     response,
                     HttpResponse.notAllowedGeneric(allowedMethods),
                     "Method [" + requestMethodName + "] not allowed for URI [" + request.getUri() + "]. Allowed methods: " + allowedMethods);
-            return;
         }
     }
 
@@ -606,28 +586,23 @@ public final class MicronautLambdaContainerHandler
 
                     @Override
                     public void onNext(MutableHttpResponse<?> message) {
-                        encodeHttpResponse(
-                                request,
-                                response,
-                                message,
-                                message.body()
-                        );
+                        toAwsProxyResponse(response, message);
                         subscription.request(1);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, t);
-                        encodeHttpResponse(
-                                request,
-                                response,
-                                defaultErrorResponse,
-                                defaultErrorResponse.body()
-                        );
+                        try {
+                            final MutableHttpResponse<?> defaultErrorResponse = routeExecutor.createDefaultErrorResponse(request, t);
+                            toAwsProxyResponse(response, defaultErrorResponse);
+                        } finally {
+                            response.close();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
+                        response.close();
                     }
                 });
     }
@@ -680,39 +655,6 @@ public final class MicronautLambdaContainerHandler
 
         void setObjectMapper(ObjectMapper objectMapper) {
             this.objectMapper = objectMapper;
-        }
-
-    }
-
-    /**
-     * Implementation of {@link ServerFilterChain} for Lambda.
-     */
-    private static class LambdaFilterChain implements ServerFilterChain {
-        private final AtomicInteger integer;
-        private final int len;
-        private final List<HttpFilter> filters;
-        private final AtomicReference<HttpRequest<?>> requestReference;
-
-        LambdaFilterChain(
-                AtomicInteger integer,
-                int len,
-                List<HttpFilter> filters,
-                AtomicReference<HttpRequest<?>> requestReference) {
-            this.integer = integer;
-            this.len = len;
-            this.filters = filters;
-            this.requestReference = requestReference;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public Publisher<MutableHttpResponse<?>> proceed(HttpRequest<?> request) {
-            int pos = integer.incrementAndGet();
-            if (pos > len) {
-                throw new IllegalStateException("The FilterChain.proceed(..) method should be invoked exactly once per filter execution. The method has instead been invoked multiple times by an erroneous filter definition.");
-            }
-            HttpFilter httpFilter = filters.get(pos);
-            return (Publisher<MutableHttpResponse<?>>) httpFilter.doFilter(requestReference.getAndSet(request), this);
         }
     }
 }
