@@ -86,6 +86,29 @@ class MicronautLambdaHandlerSpec extends Specification {
         handler.close()
     }
 
+    void "test behavior of 404"() {
+        given:
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.builder().properties([
+                        'spec.name': 'MicronautLambdaHandlerSpec',
+                        'micronaut.security.enabled': false
+                ])
+        )
+
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/does-not-exist', HttpMethod.GET.toString())
+        builder.header("Accept", MediaType.APPLICATION_JSON)
+
+        def response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response
+        response.statusCode == 404
+
+        cleanup:
+        handler.close()
+    }
+
     @Controller
     @Requires(property = 'spec.name', value = 'MicronautLambdaHandlerSpec')
     @Secured(SecurityRule.IS_ANONYMOUS)

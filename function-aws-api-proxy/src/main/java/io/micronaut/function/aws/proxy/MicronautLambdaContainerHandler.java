@@ -538,7 +538,14 @@ public final class MicronautLambdaContainerHandler
                     response,
                     HttpResponse.notAllowedGeneric(allowedMethods),
                     "Method [" + requestMethodName + "] not allowed for URI [" + request.getUri() + "]. Allowed methods: " + allowedMethods);
+            return;
         }
+
+        handleStatusError(
+                request,
+                response,
+                HttpResponse.notFound(),
+                "Page Not Found");
     }
 
     private void handleStatusError(
