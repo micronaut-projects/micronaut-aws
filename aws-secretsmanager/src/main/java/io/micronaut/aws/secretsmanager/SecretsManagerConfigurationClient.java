@@ -15,40 +15,30 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
+import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.runtime.ApplicationConfiguration;
-
 import jakarta.inject.Singleton;
 
 /**
- * Distributed configuration client for AWS Secrets Manager.
- * @see <a href="https://aws.amazon.com/secrets-manager/">AWS Secrets Manager</a>
  * @author Sergio del Amo
- * @since 2.8.0
+ * @author Matej Nedic
+ * @since ?
  */
 @Requires(beans = {
-        AwsDistributedConfiguration.class,
-        SecretsManagerKeyValueFetcher.class
+        SecretsManagerKeyValueFetcher.class,
+        AwsDistributedConfigurationProperties.class
 })
 @Singleton
 @BootstrapContextCompatible
 public class SecretsManagerConfigurationClient extends AwsDistributedConfigurationClient {
 
-    /**
-     *
-     * @param awsDistributedConfiguration AWS Distributed Configuration
-     * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
-     * @param applicationConfiguration Application Configuration
-     */
-    public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
-                                             @Nullable ApplicationConfiguration applicationConfiguration) {
-        super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);
+    public SecretsManagerConfigurationClient(SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
+                                             @Nullable AwsDistributedConfigurationProperties awsDistributedConfigurationProperties) {
+        super(secretsManagerKeyValueFetcher, awsDistributedConfigurationProperties);
     }
 
     @Override

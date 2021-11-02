@@ -4,8 +4,8 @@ import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.inject.BeanDefinition
-import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient
 import jakarta.inject.Singleton
+import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient
 
 class SecretsManagerConfigurationClientSpec extends ApplicationContextSpecification {
 

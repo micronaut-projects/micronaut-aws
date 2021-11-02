@@ -1,18 +1,3 @@
-/*
- * Copyright 2017-2021 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.micronaut.aws.distributedconfiguration;
 
 import io.micronaut.context.env.Environment;
@@ -22,147 +7,91 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.discovery.config.ConfigurationClient;
-import io.micronaut.runtime.ApplicationConfiguration;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
+
+import static io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties.STARTS_WITH;
 
 /**
- * Base implementation for AWS services contributing distributed configuration.
+ * Client used to fetchSecrets. Currently not supporting ENV loading.
+ * Should introduce load by currently active profile and respect load precedence.
+ * For each application-env AwsDistributedConfigurationProperties.secrets should be used and AWS SDK called.
+ * https://docs.micronaut.io/1.3.0.M1/guide/index.html#_included_propertysource_loaders
+ *
+ * This class could be abstracted to have List<KeyValueFetcherByPath> beans and resolve keys/paths by calling it.
+ * Parsing and resolving String secret from properties should be handed to KeyValueFetcherByPath implementation.
+ * With handing parsing and resolving we could then say if KeyValueFetcherByPath should resolve path/key or it should be other KeyValueFetcherByPath implementation.
+ * With this approach we could reuse parameter and secrets manager integration.
  *
  * @author Sergio del Amo
- * @since 2.8.0
+ * @author Matej Nedic
+ * @since ?
  */
 public abstract class AwsDistributedConfigurationClient implements ConfigurationClient {
+
     private static final Logger LOG = LoggerFactory.getLogger(AwsDistributedConfigurationClient.class);
-    private static final String UNDERSCORE = "_";
-    private final AwsDistributedConfiguration awsDistributedConfiguration;
-    private final KeyValueFetcher keyValueFetcher;
+    private static final String SEMI_COLON = ";";
+    private final KeyValueFetcherByPath keyValueFetcherByPath;
+    private final AwsDistributedConfigurationProperties configurationPath;
 
-    @Nullable
-    private final String applicationName;
-
-    /**
-     *
-     * @param awsDistributedConfiguration AWS Distributed Configuration
-     * @param keyValueFetcher a Key Value Fetcher
-     * @param applicationConfiguration Application Configuration
-     */
-    public AwsDistributedConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             KeyValueFetcher keyValueFetcher,
-                                             @Nullable ApplicationConfiguration applicationConfiguration) {
-        this.awsDistributedConfiguration = awsDistributedConfiguration;
-        this.keyValueFetcher = keyValueFetcher;
-        this.applicationName = applicationConfiguration == null ? null : (applicationConfiguration.getName().orElse(null));
-        if (LOG.isTraceEnabled()) {
-            if (this.applicationName != null) {
-                LOG.trace("application name: {}", applicationName);
-            } else {
-                LOG.trace("application name not set");
-            }
-        }
+    public AwsDistributedConfigurationClient(KeyValueFetcherByPath keyValueFetcherByPath,
+                                             @Nullable AwsDistributedConfigurationProperties configurationPath) {
+        this.keyValueFetcherByPath = keyValueFetcherByPath;
+        this.configurationPath = configurationPath;
     }
+
 
     @Override
     public Publisher<PropertySource> getPropertySources(Environment environment) {
-        List<String> configurationResolutionPrefixes = generateConfigurationResolutionPrefixes(environment);
+        List<String> secrets = parseSecrets(configurationPath.getSecrets());
+        List<SecretRepresentation> secretRepresentations = getRepresentation(secrets);
+        Map<String, String> configurationResolutionPrefixesValues = new HashMap<>();
 
-        Map<String, Map> configurationResolutionPrefixesValues = new HashMap<>();
-
-        for (String prefix : configurationResolutionPrefixes) {
-            Optional<Map> keyValuesOptional = keyValueFetcher.keyValuesByPrefix(prefix);
-            if (keyValuesOptional.isPresent()) {
-                Map keyValues = keyValuesOptional.get();
-                configurationResolutionPrefixesValues.put(prefix, keyValues);
-            }
-        }
-        Set<String> allKeys = new HashSet<>();
-        for (Map m : configurationResolutionPrefixesValues.values()) {
-            allKeys.addAll(m.keySet());
-        }
-        Map<String, Object> result = new HashMap<>();
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("evaluating {} keys", allKeys.size());
-        }
-        for (String k : allKeys) {
-            if (!result.containsKey(k)) {
-                for (String prefix : configurationResolutionPrefixes) {
-                    if (configurationResolutionPrefixesValues.containsKey(prefix)) {
-                        Map<String, ?> values = configurationResolutionPrefixesValues.get(prefix);
-                        if (values.containsKey(k)) {
-                            if (LOG.isTraceEnabled()) {
-                                LOG.trace("adding property {} from prefix {}", k, prefix);
-                            }
-                            result.put(k, values.get(k));
-                            break;
-                        }
-                    }
-                }
-            }
+        for (SecretRepresentation secretRepresentation : secretRepresentations) {
+            Optional<Map<String,String>> keyValuesOptional = keyValueFetcherByPath.keyValuesByPrefix(secretRepresentation.getKey(), secretRepresentation.getVersionId());
+            keyValuesOptional.ifPresent(stringStringMap -> stringStringMap.forEach(configurationResolutionPrefixesValues::put));
         }
         String propertySourceName = getPropertySourceName();
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Property source {} with #{} items", propertySourceName, result.size());
+            LOG.debug("Property source {} with #{} items", propertySourceName, configurationResolutionPrefixesValues.size());
         }
         if (LOG.isTraceEnabled()) {
-            for (String k : result.keySet()) {
+            for (String k : configurationResolutionPrefixesValues.keySet()) {
                 LOG.trace("property {} resolved", k);
             }
         }
-        return Publishers.just(new MapPropertySource(propertySourceName, result));
+        return Publishers.just(new MapPropertySource(propertySourceName, configurationResolutionPrefixesValues));
     }
 
-    /**
-     *
-     * @return The name of the property source
-     */
     @NonNull
     protected abstract String getPropertySourceName();
 
-    /**
-     *
-     * @param environment Micronaut's Environment
-     * @return A List of prefixes ordered by precedence
-     */
-    @NonNull
-    private List<String> generateConfigurationResolutionPrefixes(@NonNull Environment environment) {
-        List<String> configurationResolutionPrefixes = new ArrayList<>();
-        if (applicationName != null) {
-            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
-                for (String name : environment.getActiveNames()) {
-                    configurationResolutionPrefixes.add(prefix(applicationName, name));
-               }
-            }
-            configurationResolutionPrefixes.add(prefix(applicationName));
-        }
-        if (awsDistributedConfiguration.isSearchCommonApplication()) {
-            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
-                for (String name : environment.getActiveNames()) {
-                    configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
+    private List<SecretRepresentation> getRepresentation(List<String> secrets) {
+        List<SecretRepresentation> secretRepresentations = new ArrayList<>();
+        secrets.parallelStream().forEach(
+                secret -> {
+                    if(secret.contains(":")) {
+                        int location = secret.charAt(':');
+                        secretRepresentations.add(new SecretRepresentation(secret.substring(0, location), secret.substring(location+1)));
+                    } else {
+                        secretRepresentations.add(new SecretRepresentation(secret, null));
+                    }
                 }
-            }
-            configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName()));
-        }
-        return configurationResolutionPrefixes;
+        );
+        return secretRepresentations;
     }
 
-    @NonNull
-    private String prefix(@NonNull String appName) {
-        return prefix(appName, null);
+
+    private List<String> parseSecrets(String secret) {
+        if (secret.contains(STARTS_WITH)) {
+            return Arrays.asList(secret.replaceFirst(STARTS_WITH, "").split(SEMI_COLON));
+        } else {
+            //Should be removed after validation is set
+            throw new UnsupportedOperationException("Failed application since prefix is not found! Please include " + STARTS_WITH + " as prefix");
+        }
     }
 
-    @NonNull
-    private String prefix(@NonNull String appName, @Nullable String envName) {
-        if (envName != null) {
-            return awsDistributedConfiguration.getPrefix() +  appName + UNDERSCORE + envName + awsDistributedConfiguration.getDelimiter();
-        }
-        return awsDistributedConfiguration.getPrefix() +  appName + awsDistributedConfiguration.getDelimiter();
-    }
 }
