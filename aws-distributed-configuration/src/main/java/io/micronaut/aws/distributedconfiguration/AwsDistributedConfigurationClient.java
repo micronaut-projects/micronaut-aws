@@ -21,9 +21,9 @@ import static io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurat
  * https://docs.micronaut.io/1.3.0.M1/guide/index.html#_included_propertysource_loaders
  * For each application-env AwsDistributedConfigurationProperties.secrets should be used and AWS SDK called.
  *
- * This class could be abstracted to have List<KeyValueFetcherByPath> beans and resolve keys/paths by calling it.
- * Parsing and resolving String secret from properties should be handed to KeyValueFetcherByPath implementation.
- * With handing parsing and resolving we could then say if KeyValueFetcherByPath should resolve path/key or it should be other KeyValueFetcherByPath implementation.
+ * This class could be abstracted to have Map<String, KeyValueFetcherByPath> beans and resolve keys/paths by calling it.
+ * Parsing and resolving String secret from properties should be handed by this class.
+ * Since we have a map of <Prefix, KeyValueFetcherByPath> we can know which, if any KeyValueFetcherByPath should make request towards AWS.
  * With this approach we could reuse parameter and secrets manager integration.
  *
  * @author Sergio del Amo
