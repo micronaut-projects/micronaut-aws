@@ -18,8 +18,8 @@ import static io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurat
 /**
  * Client used to fetchSecrets. Currently not supporting ENV loading.
  * Should introduce load by currently active profile and respect load precedence.
- * For each application-env AwsDistributedConfigurationProperties.secrets should be used and AWS SDK called.
  * https://docs.micronaut.io/1.3.0.M1/guide/index.html#_included_propertysource_loaders
+ * For each application-env AwsDistributedConfigurationProperties.secrets should be used and AWS SDK called.
  *
  * This class could be abstracted to have List<KeyValueFetcherByPath> beans and resolve keys/paths by calling it.
  * Parsing and resolving String secret from properties should be handed to KeyValueFetcherByPath implementation.
@@ -71,7 +71,7 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
 
     private List<SecretRepresentation> getRepresentation(List<String> secrets) {
         List<SecretRepresentation> secretRepresentations = new ArrayList<>();
-        secrets.parallelStream().forEach(
+        secrets.forEach(
                 secret -> {
                     if(secret.contains(":")) {
                         int location = secret.charAt(':');

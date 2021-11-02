@@ -49,7 +49,7 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcherByPath {
 
     @Override
     @NonNull
-    public Optional<Map<String,String>> keyValuesByPrefix(String keyOrPath, String version) {
+    public Optional<Map<String,String>> keyValuesByPrefix(@NonNull String keyOrPath, String version) {
         Map<String,String> result = new HashMap<>();
         try {
                     Optional<String> secretValueOptional = fetchSecretValue(secretsClient, keyOrPath, version);
