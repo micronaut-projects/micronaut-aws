@@ -2,6 +2,7 @@ package io.micronaut.function.aws.proxy
 
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.InheritConstructors
@@ -14,9 +15,10 @@ import io.micronaut.http.codec.CodecException
 import io.micronaut.http.hateoas.JsonError
 import io.micronaut.http.hateoas.Link
 import io.micronaut.http.server.exceptions.ExceptionHandler
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import spock.lang.AutoCleanup
 import spock.lang.Issue
-import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -31,7 +33,6 @@ class ErrorHandlerSpec extends Specification {
     @AutoCleanup
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
             ApplicationContext.builder().properties([
-                    'micronaut.security.enabled': false,
                     'spec.name': 'ErrorHandlerSpec',
                     'micronaut.server.cors.enabled': true,
                     'micronaut.server.cors.configurations.web.allowedOrigins': ['http://localhost:8080']
@@ -86,7 +87,6 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    @PendingFeature
     void 'test custom global status handlers declared in controller'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/errors/global-status-ctrl', HttpMethod.GET.toString())
@@ -166,6 +166,18 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
+    void 'secured controller returns 401'() {
+        given:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/secret', HttpMethod.GET.toString())
+                .header(HttpHeaders.ACCEPT, MediaType.TEXT_PLAIN)
+
+        when:
+        AwsProxyResponse response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 401
+    }
+
     void 'cors headers are present after failed deserialisation when error handler is used'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/errors/global', HttpMethod.POST.toString())
@@ -179,6 +191,18 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) == 'http://localhost:8080'
     }
 
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Controller('/secret')
+    @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
+    static class SecretController {
+        @Get
+        @Produces(MediaType.TEXT_PLAIN)
+        String index() {
+            "area 51 hosts an alien"
+        }
+    }
+
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class ErrorController {
@@ -206,11 +230,13 @@ class ErrorHandlerSpec extends Specification {
 
         @Error
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String localHandler(AnotherException throwable) {
             return throwable.getMessage()
         }
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Issue("issues/761")
     @Controller(value = '/json/errors', produces = io.micronaut.http.MediaType.APPLICATION_JSON)
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
@@ -222,7 +248,6 @@ class ErrorHandlerSpec extends Specification {
         }
 
         @Error
-
         HttpResponse<JsonError> errorHandler(HttpRequest request, RuntimeException exception) {
             JsonError error = new JsonError("Error: " + exception.getMessage())
                     .link(Link.SELF, Link.of(request.getUri()));
@@ -242,6 +267,7 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/json')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class JsonController {
@@ -251,18 +277,21 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Controller('/global-errors')
     @Requires(property = 'spec.name', value = 'ErrorHandlerSpec')
     static class GlobalErrorController {
 
         @Error(global = true, exception = GloballyHandledException)
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String globallyHandledException(GloballyHandledException throwable) {
             return throwable.getMessage()
         }
 
         @Error(global = true, status = HttpStatus.I_AM_A_TEAPOT)
         @Produces(io.micronaut.http.MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.OK)
         String globalControllerHandlerForStatus() {
             return 'global status'
         }

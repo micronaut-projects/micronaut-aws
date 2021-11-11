@@ -85,4 +85,10 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         String functionName = super.resolveFunctionName(env);
         return (functionName != null) ? functionName : ctxFunctionName;
     }
+
+    @Override
+    public void close() {
+        // Don't close the application context
+        // ApplicationContext will be closed via the `Runtime.getRuntime().addShutdownHook` added at {@link AbstractExecutor#buildApplicationContext}
+    }
 }
