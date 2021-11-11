@@ -1,5 +1,8 @@
+plugins {
+    id "io.micronaut.build.internal.module"
+}
 dependencies {
-    api 'io.micronaut.discovery:micronaut-discovery-client:2.4.0'
+    api 'io.micronaut.discovery:micronaut-discovery-client'
     api project(":aws-sdk-v2")
 
     implementation 'software.amazon.awssdk:servicediscovery'
@@ -7,3 +10,4 @@ dependencies {
     testImplementation "io.projectreactor:reactor-core"
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
+group "io.micronaut.aws"

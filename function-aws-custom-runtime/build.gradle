@@ -1,3 +1,6 @@
+plugins {
+    id "io.micronaut.build.internal.module"
+}
 dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
     compileOnly project(":function-aws-api-proxy")
@@ -13,3 +16,4 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "io.micronaut:micronaut-inject-groovy"
 }
+group "io.micronaut.aws"

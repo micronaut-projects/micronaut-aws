@@ -1,3 +1,10 @@
+plugins {
+    id 'java-platform'
+    id 'io.micronaut.build.internal.publishing'
+    id 'io.micronaut.build.internal.dependency-updates'
+}
+version projectVersion
+group "io.micronaut.aws"
 javaPlatform {
     allowDependencies()
 }
@@ -7,9 +14,7 @@ dependencies {
             if (p.name.endsWith("-bom")) {
                 continue
             }
-
             api "$p.group:micronaut-$p.name:$p.version"
         }
-
     }
 }

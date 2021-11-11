@@ -1,3 +1,6 @@
+plugins {
+    id "io.micronaut.build.internal.module"
+}
 dependencies {
     api platform("software.amazon.awssdk:bom:2.16.104")
     api project(":aws-common")
@@ -20,6 +23,7 @@ dependencies {
     compileOnly 'software.amazon.awssdk:servicediscovery'
 
     // Tests
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation 'software.amazon.awssdk:servicediscovery'
     testImplementation "software.amazon.awssdk:url-connection-client"
     testImplementation "software.amazon.awssdk:netty-nio-client"
@@ -35,3 +39,4 @@ dependencies {
     testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
 }
+group "io.micronaut.aws"

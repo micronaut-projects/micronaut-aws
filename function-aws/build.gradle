@@ -1,3 +1,6 @@
+plugins {
+    id "io.micronaut.build.internal.module"
+}
 dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
 
@@ -10,3 +13,4 @@ dependencies {
     testImplementation("org.testcontainers:mongodb")
     testImplementation("org.testcontainers:testcontainers")
 }
+group "io.micronaut.aws"
