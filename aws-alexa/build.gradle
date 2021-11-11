@@ -1,11 +1,9 @@
 plugins {
-    id 'java-library'
+    id "io.micronaut.build.internal.module"
 }
-
 dependencies {
     annotationProcessor "io.micronaut:micronaut-validation"
 
-    implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-runtime"
     implementation "io.micronaut:micronaut-validation"
     implementation 'com.github.spotbugs:spotbugs-annotations'
@@ -13,6 +11,7 @@ dependencies {
     compileOnly ("com.amazon.alexa:ask-sdk:$askVersion")
     api ("com.amazon.alexa:ask-sdk-core:$askVersion")
 
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
         transitive(false)
     }
@@ -22,5 +21,6 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "org.codehaus.groovy:groovy-json:$groovyVersion"
     testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
-
 }
+
+group "io.micronaut.aws"

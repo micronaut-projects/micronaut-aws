@@ -1,3 +1,6 @@
+plugins {
+    id "io.micronaut.build.internal.module"
+}
 dependencies {
     api platform("com.amazonaws:aws-java-sdk-bom:1.12.27")
     api "com.amazonaws:aws-java-sdk-core"
@@ -8,3 +11,4 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
 
 }
+group "io.micronaut.aws"

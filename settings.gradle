@@ -6,9 +6,8 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '4.2.2'
+    id 'io.micronaut.build.shared.settings' version '4.2.6'
 }
-
 
 rootProject.name = 'aws'
 
