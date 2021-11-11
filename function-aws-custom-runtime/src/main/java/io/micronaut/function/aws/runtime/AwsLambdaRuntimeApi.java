@@ -22,6 +22,9 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import java.util.Collections;
 
+import static io.micronaut.function.aws.runtime.AbstractMicronautLambdaRuntime.USER_AGENT_VALUE;
+import static io.micronaut.http.HttpHeaders.USER_AGENT;
+
 /**
  * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html">AWS Lambda Runtime Interface</a>
  * @author sdelamo
@@ -63,7 +66,7 @@ public interface AwsLambdaRuntimeApi {
      * @return Invocation Response Request
      */
     default HttpRequest invocationResponseRequest(@NonNull String requestId, Object body) {
-        return HttpRequest.POST(responseUri(requestId), body);
+        return HttpRequest.POST(responseUri(requestId), body).header(USER_AGENT, USER_AGENT_VALUE);
     }
 
     /**
@@ -79,7 +82,7 @@ public interface AwsLambdaRuntimeApi {
                                                                         @Nullable String errorType,
                                                                         @Nullable String lambdaFunctionErrorType) {
         AwsLambdaRuntimeApiError error = new AwsLambdaRuntimeApiError(errorMessage, errorType);
-        MutableHttpRequest<AwsLambdaRuntimeApiError> request = HttpRequest.POST(errorUri(requestId), error);
+        MutableHttpRequest<AwsLambdaRuntimeApiError> request = HttpRequest.POST(errorUri(requestId), error).header(USER_AGENT, USER_AGENT_VALUE);
         if (lambdaFunctionErrorType != null) {
             return request.header(LAMBDA_RUNTIME_FUNCTION_ERROR_TYPE, lambdaFunctionErrorType);
         }
@@ -97,7 +100,7 @@ public interface AwsLambdaRuntimeApi {
                                                                             @Nullable String errorType,
                                                                             @Nullable String lambdaFunctionErrorType) {
         AwsLambdaRuntimeApiError error = new AwsLambdaRuntimeApiError(errorMessage, errorType);
-        MutableHttpRequest<AwsLambdaRuntimeApiError> request = HttpRequest.POST(INIT_ERROR_URI, error);
+        MutableHttpRequest<AwsLambdaRuntimeApiError> request = HttpRequest.POST(INIT_ERROR_URI, error).header(USER_AGENT, USER_AGENT_VALUE);
         if (lambdaFunctionErrorType != null) {
             return request.header(LAMBDA_RUNTIME_FUNCTION_ERROR_TYPE, lambdaFunctionErrorType);
         }
