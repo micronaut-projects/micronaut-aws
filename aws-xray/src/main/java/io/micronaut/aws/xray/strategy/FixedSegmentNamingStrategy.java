@@ -24,9 +24,7 @@ import io.micronaut.http.HttpRequest;
 import jakarta.inject.Singleton;
 
 /**
- * <p>
  * <p><b>N.B.</b>: This class was forked from AWS X-Ray Java SDK with modifications.</p>
- * <p>
  * <p>As per the Apache 2.0 license, the original copyright notice and all author and copyright information have
  * remained intact.</p>
  *
