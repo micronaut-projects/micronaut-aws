@@ -5,6 +5,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    testImplementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
     testImplementation project(":function-aws")
     testImplementation project(":function-client-aws")
 }
