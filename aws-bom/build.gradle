@@ -8,6 +8,9 @@ dependencies {
                 continue
             }
 
+            if (p.name.startsWith("test-suite")) {
+                continue
+            }
             api "$p.group:micronaut-$p.name:$p.version"
         }
 
