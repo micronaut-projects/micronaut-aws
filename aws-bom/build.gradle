@@ -4,10 +4,12 @@ javaPlatform {
 dependencies {
     constraints {
         for (Project p : rootProject.subprojects) {
+            if (p != project) {
+                evaluationDependsOn(p.path)
+            }
             if (p.name.endsWith("-bom")) {
                 continue
             }
-
             if (p.name.startsWith("test-suite")) {
                 continue
             }
