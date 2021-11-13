@@ -2,5 +2,13 @@ plugins {
     id "io.micronaut.build.internal.docs"
     id "io.micronaut.build.internal.dependency-updates"
 }
-evaluationDependsOnChildren()
+configurations {
+    configProperties {
+        dependencies.whenObjectAdded {
+            if (it.name == 'aws-bom') {
+                dependencies.remove(it)
+            }
+        }
+    }
+}
 
