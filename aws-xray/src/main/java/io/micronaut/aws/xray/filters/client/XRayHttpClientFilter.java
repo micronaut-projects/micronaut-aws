@@ -18,6 +18,7 @@ package io.micronaut.aws.xray.filters.client;
 import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
+import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
 import com.amazonaws.xray.entities.TraceHeader;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
@@ -25,6 +26,7 @@ import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
 import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -38,6 +40,8 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Map;
 import java.util.Optional;
 
@@ -63,91 +67,72 @@ public class XRayHttpClientFilter implements HttpClientFilter {
         this.httpRequestAttributesCollector = httpRequestAttributesCollector;
     }
 
+    private Optional<Segment> currentSegment(HttpRequest<?> request) {
+        HttpRequest<?> serverRequestContextRequest = ServerRequestContext.currentRequest().orElse(null);
+        if (serverRequestContextRequest == null) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("current request at ServerRequestContext is null - client {}", getSubsegmentName(request));
+            }
+        } else {
+            Optional<Segment> segmentOptional = serverRequestContextRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Segment.class);
+            if (segmentOptional.isPresent()) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Trace ID in Server Request context {}", segmentOptional.get().getTraceId());
+                }
+            }
+            return segmentOptional;
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Publisher<? extends HttpResponse<?>> doFilter(MutableHttpRequest<?> request, ClientFilterChain chain) {
-        return Flux.deferContextual(ctx -> {
-                LOG.trace("AWS XRAy trace id: {}" , ctx.getOrDefault("AwsXrayTraceId", ""));
-
-            if (!AWSXRay.getGlobalRecorder().getCurrentSegmentOptional().isPresent()) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("global recorder current segment not found - client {}", getSubsegmentName(request));
-                }
+        if (!AWSXRay.getGlobalRecorder().getCurrentSegmentOptional().isPresent()) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("global recorder current segment not found - client {}", getSubsegmentName(request));
             }
-
-            HttpRequest<?> serverRequestContextRequest = ServerRequestContext.currentRequest().orElse(null);
-            if (serverRequestContextRequest == null) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("current request at ServerRequestContext is null - client {}", getSubsegmentName(request));
-                }
-            } else {
-                Optional<Entity> entityOptional = serverRequestContextRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
-                if (entityOptional.isPresent()) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Trace ID in Server Request context {}", entityOptional.get().getTraceId());
-                    }
-                }
-            }
-
-            HttpRequest<?> ctxRequest = ctx.getOrDefault(ServerRequestContext.KEY, null);
-            if (ctxRequest == null) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("context request is null - client {}", getSubsegmentName(request));
-                }
-            } else {
-                Optional<Entity> entityOptional = ctxRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
-                if (entityOptional.isPresent()) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Trace ID in Reactor context {}", entityOptional.get().getTraceId());
-                    }
-                }
-            }
-            if (serverRequestContextRequest != null) {
-                Optional<Entity> entityOptional = serverRequestContextRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
-                if (entityOptional.isPresent()) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("setting trace entity which was saved in server request context attribute - client {}", getSubsegmentName(request));
-                    }
-                    recorder.setTraceEntity(entityOptional.get());
-                }
-            } else if (ctxRequest != null) {
-                Optional<Entity> entityOptional = ctxRequest.getAttribute(XRayHttpServerFilter.ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
-                if (entityOptional.isPresent()) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("setting trace entity which was saved in a request attribute - client {}", getSubsegmentName(request));
-                    }
-                    recorder.setTraceEntity(entityOptional.get());
-                }
-            }
-
-            if (!recorder.getCurrentSegmentOptional().isPresent()) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("current segment not found - client {}", getSubsegmentName(request));
-                }
-            }
-            final Subsegment subsegment = recorder.getTraceEntity() != null &&
-                    recorder.getCurrentSegmentOptional().isPresent() ?
-                    initSubsegment(request).orElse(null) : null;
-            return Flux.from(chain.proceed(request))
-                        .map(mutableHttpResponse -> {
-                            if (subsegment != null) {
-                                try {
-                                    httpResponseAttributesCollector.populateEntityWithResponse(subsegment, mutableHttpResponse);
-                                } catch (Exception e) {
-                                    if (LOG.isWarnEnabled()) {
-                                        LOG.warn("Failed to configure subsegment '{}' on success response", subsegment.getName(), e);
-                                    }
-                                    subsegment.addException(e);
-                                }
+            Optional<Segment> optionalSegment = currentSegment(request);
+            optionalSegment.ifPresent(segment -> recorder.setTraceEntity(segment));
+        }
+        final Subsegment subsegment = recorder.getTraceEntity() != null &&
+                recorder.getCurrentSegmentOptional().isPresent() ?
+                initSubsegment(request).orElse(null) : null;
+        return Flux.from(chain.proceed(request))
+                .map(mutableHttpResponse -> {
+                    if (subsegment != null) {
+                        try {
+                            httpResponseAttributesCollector.populateEntityWithResponse(subsegment, mutableHttpResponse);
+                        } catch (Exception e) {
+                            if (LOG.isWarnEnabled()) {
+                                LOG.warn("Failed to configure subsegment '{}' on success response", subsegment.getName(), e);
                             }
-                            return mutableHttpResponse;
-                        }).doFinally(signalType -> {
+                            subsegment.addException(e);
+                        }
+                    }
+                    Optional<?> body = mutableHttpResponse.getBody();
+                    if (body.isPresent()) {
+                        Object o = body.get();
+                        if (Publishers.isConvertibleToPublisher(o)) {
+                            Publisher<?> resultPublisher = Publishers.convertPublisher(o, Publisher.class);
+
+                            Mono.from(resultPublisher).subscribe(s -> {
+                                Entity currentContext = recorder.getTraceEntity();
+                                recorder.setTraceEntity(subsegment);
                                 endSubsegmentSafe(subsegment);
-                        }).doOnError(t -> {
-                            if (subsegment != null) {
-                                subsegment.addException(t);
-                            }
-                        });
-        });
+                                recorder.setTraceEntity(currentContext);
+                            });
+                        } else {
+                            endSubsegmentSafe(subsegment);
+                        }
+                    } else {
+                        endSubsegmentSafe(subsegment);
+                    }
+                    return mutableHttpResponse;
+                }).doOnError(t -> {
+                    if (subsegment != null) {
+                        subsegment.addException(t);
+                    }
+                });
     }
 
     @Override

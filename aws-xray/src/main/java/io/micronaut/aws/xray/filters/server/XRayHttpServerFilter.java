@@ -36,6 +36,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.AntPathMatcher;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.PathMatcher;
@@ -49,12 +50,14 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 
 /**
  * <p><b>N.B.</b>: This class was forked from AWSXRayServletFilter AWS X-Ray Java SDK with modifications.</p>
@@ -141,13 +144,8 @@ public class XRayHttpServerFilter implements HttpServerFilter {
         final Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
         TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader(segment, incomingTraceHeader);
         String responseTraceHeaderString = responseTraceHeader.toString();
-
-        Entity context = recorder.getTraceEntity();
-        request.setAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, context);
-        //ctx.put(ATTRIBUTE_X_RAY_TRACE_ENTITY, segment);
+        request.setAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, segment);
         return Flux.from(chain.proceed(request))
-                .contextWrite(ctx -> ctx.put("AwsXrayTraceId", segment.getTraceId().toString()))
-                .subscribeOn(Schedulers.fromExecutor(SegmentContextExecutors.newSegmentContextExecutor(segment)))
                 .doOnError(t -> {
                     try {
                         segment.addException(t);
@@ -156,27 +154,51 @@ public class XRayHttpServerFilter implements HttpServerFilter {
                             LOG.warn("segment not found onError");
                         }
                     }
-                }).doFinally(signalType -> {
-                    Entity currentContext = recorder.getTraceEntity();
-                    recorder.setTraceEntity(context);
-                    for (SegmentDecorator decorator : segmentDecorators) {
-                        decorator.decorate(segment, request);
-                    }
-                    try {
-                        segment.close();
-                    } catch (SegmentNotFoundException e) {
-                        if (LOG.isWarnEnabled()) {
-                            LOG.warn("Cloud not close segment because segment {} was not found", segment.getName());
-                        }
-                    }
-                    recorder.setTraceEntity(currentContext);
-                    request.removeAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
                 }).map(mutableHttpResponse -> {
                     mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, responseTraceHeaderString);
                     httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
+
+                    for (SegmentDecorator decorator : segmentDecorators) {
+                        decorator.decorate(segment, request);
+                    }
+
+                    Optional<?> body = mutableHttpResponse.getBody();
+                    if (body.isPresent()) {
+                        Object o = body.get();
+                        if (Publishers.isConvertibleToPublisher(o)) {
+                            Publisher<?> resultPublisher = Publishers.convertPublisher(o, Publisher.class);
+
+                            Mono.from(resultPublisher).subscribe(s -> {
+                                Entity currentContext = recorder.getTraceEntity();
+                                recorder.setTraceEntity(segment);
+                                closeSegment(segment);
+                                recorder.setTraceEntity(currentContext);
+                            });
+                        } else {
+                            closeSegment(segment);
+                        }
+                    } else {
+                        closeSegment(segment);
+                    }
+
+
                     return mutableHttpResponse;
                 });
     }
+
+    private void closeSegment(Segment segment) {
+        try {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("ending segment");
+            }
+            segment.close();
+        } catch (SegmentNotFoundException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Cloud not close segment because segment {} was not found", segment.getName());
+            }
+        }
+    }
+
 
     @NonNull
     private SamplingRequest createSamplingRequest(@NonNull HttpRequest<?> httpRequest, @NonNull String segmentName) {
