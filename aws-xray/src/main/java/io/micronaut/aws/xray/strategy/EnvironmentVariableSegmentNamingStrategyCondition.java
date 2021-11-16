@@ -25,7 +25,7 @@ import io.micronaut.context.condition.ConditionContext;
  * @author Sergio del Amo
  * @since 2.7.0
  */
-public class EnvironmentVariableSegmentNamingStrategyCondition  implements Condition {
+public class EnvironmentVariableSegmentNamingStrategyCondition implements Condition {
 
     @Override
     public boolean matches(ConditionContext context) {

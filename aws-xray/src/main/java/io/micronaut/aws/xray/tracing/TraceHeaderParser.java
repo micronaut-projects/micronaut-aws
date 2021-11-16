@@ -42,7 +42,7 @@ public interface TraceHeaderParser {
 
     /**
      *
-     * @param segment X-Ray Segement
+     * @param segment X-Ray Segment
      * @param incomingHeader Incoming Tracing Header
      * @return Create a TraceHeader for the HTTP Response
      */

@@ -32,7 +32,7 @@ public interface XRayConfiguration extends Toggleable {
 
     /**
      *
-     * @return A list of paths which should not be filter by {@link io.micronaut.aws.xray.filters.server.XRayHttpServerFilter}.
+     * @return A list of paths which should not be filtered by {@link io.micronaut.aws.xray.filters.server.XRayHttpServerFilter}.
      */
     @NonNull
     Optional<List<String>> getExcludes();

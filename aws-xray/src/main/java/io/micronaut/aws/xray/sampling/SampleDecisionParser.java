@@ -22,7 +22,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
 
 /**
- * Parses a Sampling Decision for a HTTP Request and a Sampling Response.
+ * Parses a Sampling Decision for an HTTP Request and a Sampling Response.
  * @author Sergio del Amo
  * @since 2.7.0
  */

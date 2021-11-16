@@ -66,7 +66,7 @@ public class XRayHttpClientFilter implements HttpClientFilter {
     @Override
     public Publisher<? extends HttpResponse<?>> doFilter(MutableHttpRequest<?> request, ClientFilterChain chain) {
         return Flux.deferContextual(ctx -> {
-                LOG.trace("AWS XRAy trace id: {}" , ctx.getOrDefault("AwsXrayTraceId", ""));
+                LOG.trace("AWS XRay trace id: {}" , ctx.getOrDefault("AwsXrayTraceId", ""));
 
             if (!AWSXRay.getGlobalRecorder().getCurrentSegmentOptional().isPresent()) {
                 if (LOG.isTraceEnabled()) {
