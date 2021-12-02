@@ -1,6 +1,7 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.aws-module"
 }
+
 dependencies {
     annotationProcessor "io.micronaut:micronaut-validation"
 
@@ -22,4 +23,3 @@ dependencies {
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:$askVersion"
 }
-group "io.micronaut.aws"

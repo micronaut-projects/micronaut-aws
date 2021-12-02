@@ -1,6 +1,7 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.aws-module"
 }
+
 dependencies {
     api 'io.micronaut.discovery:micronaut-discovery-client'
     api project(":aws-service-discovery")
@@ -11,4 +12,3 @@ dependencies {
 
     testImplementation "io.micronaut:micronaut-http-server-netty"
 }
-group "io.micronaut.aws"

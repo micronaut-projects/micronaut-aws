@@ -1,6 +1,7 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.aws-module"
 }
+
 dependencies {
     compileOnly "io.micronaut:micronaut-inject-java"
 
@@ -13,4 +14,3 @@ dependencies {
     testImplementation("org.testcontainers:mongodb")
     testImplementation("org.testcontainers:testcontainers")
 }
-group "io.micronaut.aws"

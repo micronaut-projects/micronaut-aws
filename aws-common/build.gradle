@@ -1,9 +1,10 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.aws-module"
 }
+
+
 dependencies {
     compileOnly "io.micronaut:micronaut-runtime"
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-runtime"
 }
-group "io.micronaut.aws"

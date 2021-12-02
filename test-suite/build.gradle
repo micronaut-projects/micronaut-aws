@@ -1,15 +1,14 @@
 plugins {
-    id 'java-library'
+    id 'io.micronaut.build.internal.aws-test-suite'
 }
-repositories {
-    mavenCentral()
-}
+
 dependencies {
     testImplementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
     testImplementation project(":function-aws")
     testImplementation project(":function-client-aws")
 }
-test {
+
+tasks.named("test") {
     systemProperty "aws.accessKeyId", 'XXX'
     systemProperty "aws.secretKey", 'YYY'
     systemProperty "aws.region", 'us-east-1'

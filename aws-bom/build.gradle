@@ -1,23 +1,4 @@
 plugins {
-    id 'java-platform'
-    id 'io.micronaut.build.internal.publishing'
-    id 'io.micronaut.build.internal.dependency-updates'
-}
-version projectVersion
-group "io.micronaut.aws"
-javaPlatform {
-    allowDependencies()
-}
-dependencies {
-    constraints {
-        for (Project p : rootProject.subprojects) {
-            if (p.name.endsWith("-bom")) {
-                continue
-            }
-            if (p.name.startsWith("test-suite")) {
-                continue
-            }
-            api "$p.group:micronaut-$p.name:$p.version"
-        }
-    }
+    id 'io.micronaut.build.internal.aws-base'
+    id 'io.micronaut.build.internal.bom'
 }
