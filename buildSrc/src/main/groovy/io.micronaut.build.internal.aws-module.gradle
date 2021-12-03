@@ -2,6 +2,5 @@
  * Plugin for AWS modules.
  */
 plugins {
-    id "io.micronaut.build.internal.aws-base"
     id "io.micronaut.build.internal.module"
 }
