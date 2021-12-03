@@ -1,6 +1,7 @@
 plugins {
-    id "io.micronaut.build.internal.module"
+    id "io.micronaut.build.internal.aws-module"
 }
+
 dependencies {
     compileOnly "io.micronaut.security:micronaut-security"
 
@@ -33,5 +34,3 @@ dependencies {
     testImplementation 'org.javadelight:delight-fileupload:0.0.5'
     testRuntimeOnly 'com.github.jknack:handlebars:4.2.0'
 }
-
-group "io.micronaut.aws"
