@@ -8,5 +8,5 @@ dependencies {
     api project(":function-aws")
     api "io.micronaut:micronaut-function"
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
 }
