@@ -35,11 +35,13 @@ import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.cli.CommandLine;
 import io.micronaut.core.reflect.ClassUtils;
 import io.micronaut.core.reflect.GenericTypeUtils;
+import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.MicronautRequestHandler;
 import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
@@ -327,7 +329,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI, requestType);
+                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(
+                            HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI), Argument.of(requestType));
                     final RequestType request = response.body();
                     if (request != null) {
                         logn(LogLevel.DEBUG, "request body ", request);
