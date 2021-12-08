@@ -61,8 +61,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static io.micronaut.http.HttpHeaders.USER_AGENT;
-
 /**
  * Class that can be used as a entry point for a AWS Lambda custom runtime.
  * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html">Custom AWS Lambda runtimes</a>.
@@ -100,11 +98,6 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
 )
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
-
-    static final String USER_AGENT_VALUE = String.format(
-            "micronaut/%s-%s",
-            System.getProperty("java.vendor.version"),
-            AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
 
     protected Object handler;
 
@@ -337,7 +330,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             try {
                 while (loopUntil.test(runtimeApiURL)) {
                     final HttpResponse<RequestType> response = blockingHttpClient.exchange(
-                            HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI).header(USER_AGENT, USER_AGENT_VALUE), Argument.of(requestType));
+                            HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI), Argument.of(requestType));
                     final RequestType request = response.body();
                     if (request != null) {
                         logn(LogLevel.DEBUG, "request body ", request);
