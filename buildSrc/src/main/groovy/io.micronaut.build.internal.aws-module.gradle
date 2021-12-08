@@ -1,6 +1,0 @@
-/**
- * Plugin for AWS modules.
- */
-plugins {
-    id "io.micronaut.build.internal.module"
-}

@@ -1,5 +1,5 @@
 plugins {
-    id "io.micronaut.build.internal.aws-module"
+    id("io.micronaut.build.internal.module")
 }
 
 dependencies {
