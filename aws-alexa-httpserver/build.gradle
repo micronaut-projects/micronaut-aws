@@ -15,7 +15,7 @@ dependencies {
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "org.bouncycastle:bcprov-jdk15on:1.69"
+    testImplementation "org.bouncycastle:bcprov-jdk15on:1.70"
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
         transitive(false)
     }
