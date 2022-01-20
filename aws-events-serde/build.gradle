@@ -1,0 +1,11 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
+dependencies {
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor:$serdeVersion")
+    implementation("io.micronaut.serde:micronaut-serde-jackson:$serdeVersion")
+    implementation("com.amazonaws:aws-lambda-java-serialization:$awsLambdaJavaSerializationVersion")
+    implementation("com.amazonaws:aws-lambda-java-events:$awsLambdaJavaEventsVersion")
+}
+
