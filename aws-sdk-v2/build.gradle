@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api platform("software.amazon.awssdk:bom:2.16.104")
+    api platform("software.amazon.awssdk:bom:2.17.117")
     api project(":aws-common")
 
     compileOnly "org.graalvm.nativeimage:svm"
