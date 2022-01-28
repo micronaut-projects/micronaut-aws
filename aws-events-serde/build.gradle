@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor "io.micronaut:micronaut-graal"
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor:$serdeVersion")
     implementation("io.micronaut.serde:micronaut-serde-jackson:$serdeVersion")
     implementation("com.amazonaws:aws-lambda-java-serialization:$awsLambdaJavaSerializationVersion")
