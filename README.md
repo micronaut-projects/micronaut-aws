@@ -2,6 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.micronaut.aws/micronaut-aws-common.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.micronaut.aws%22%20AND%20a:%22micronaut-aws-common%22)
 [![Build Status](https://github.com/micronaut-projects/micronaut-aws/workflows/Java%20CI/badge.svg)](https://github.com/micronaut-projects/micronaut-aws/actions)
+[![Revved up by Gradle Enterprise](https://img.shields.io/badge/Revved%20up%20by-Gradle%20Enterprise-06A0CE?logo=Gradle&labelColor=02303A)](https://ge.micronaut.io/scans)
 
 This project includes integration between [Micronaut](https://micronaut.io) and AWS.
 
