@@ -21,5 +21,5 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
     testImplementation "org.codehaus.groovy:groovy-json:$groovyVersion"
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.32"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.35"
 }
