@@ -15,7 +15,7 @@ dependencies {
     api "com.amazon.alexa:ask-sdk-lambda-support:$askVersion"
     api project(":aws-alexa")
 
-    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.32"
+    runtimeOnly "org.slf4j:jcl-over-slf4j:1.7.36"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {

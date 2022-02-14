@@ -37,6 +37,6 @@ dependencies {
     testImplementation "software.amazon.awssdk:sqs"
     testImplementation "software.amazon.awssdk:ssm"
     testImplementation "software.amazon.awssdk:rekognition"
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.32"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.36"
     testRuntimeOnly "io.micronaut:micronaut-runtime"
 }
