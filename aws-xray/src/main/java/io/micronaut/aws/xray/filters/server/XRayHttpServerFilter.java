@@ -16,7 +16,9 @@
 package io.micronaut.aws.xray.filters.server;
 
 import com.amazonaws.xray.AWSXRayRecorder;
+import com.amazonaws.xray.contexts.SegmentContext;
 import com.amazonaws.xray.contexts.SegmentContextExecutors;
+import com.amazonaws.xray.contexts.SegmentContextResolver;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.TraceHeader;
@@ -29,6 +31,8 @@ import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.aws.xray.decorators.SegmentDecorator;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
 import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
+import io.micronaut.aws.xray.recorder.ReactorSegmentContext;
+import io.micronaut.aws.xray.recorder.ReactorSegmentContextResolverChain;
 import io.micronaut.aws.xray.sampling.SampleDecisionParser;
 import io.micronaut.aws.xray.strategy.SegmentNamingStrategy;
 import io.micronaut.aws.xray.tracing.TraceHeaderParser;
@@ -39,9 +43,11 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.AntPathMatcher;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.PathMatcher;
+import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Filter;
+import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.filter.ServerFilterPhase;
@@ -49,12 +55,17 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * <p><b>N.B.</b>: This class was forked from AWSXRayServletFilter AWS X-Ray Java SDK with modifications.</p>
@@ -138,43 +149,30 @@ public class XRayHttpServerFilter implements HttpServerFilter {
         Optional<TraceHeader> incomingTraceHeaderOptional = traceHeaderParser.parseTraceHeader(request);
         TraceHeader incomingTraceHeader = incomingTraceHeaderOptional.orElse(null);
         Map<String, Object>  requestAttributes = httpRequestAttributesCollector.requestAttributes(request);
-        final Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
-        TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader(segment, incomingTraceHeader);
-        String responseTraceHeaderString = responseTraceHeader.toString();
 
-        Entity context = recorder.getTraceEntity();
-        request.setAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, context);
-        //ctx.put(ATTRIBUTE_X_RAY_TRACE_ENTITY, segment);
+        Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
+        request.setAttribute(ReactorSegmentContextResolverChain.XRAY_SEGMENT_RESOLVER, segment);
+
+
         return Flux.from(chain.proceed(request))
-                .contextWrite(ctx -> ctx.put("AwsXrayTraceId", segment.getTraceId().toString()))
-                .subscribeOn(Schedulers.fromExecutor(SegmentContextExecutors.newSegmentContextExecutor(segment)))
-                .doOnError(t -> {
-                    try {
+                .doOnNext(mutableHttpResponse -> {
+                    Optional<Throwable> objectOptional = mutableHttpResponse.getAttribute(HttpAttributes.EXCEPTION, Throwable.class);
+                    if (objectOptional.isPresent()) {
+                        Throwable t = objectOptional.get();
                         segment.addException(t);
-                    } catch (SegmentNotFoundException e) {
-                        if (LOG.isWarnEnabled()) {
-                            LOG.warn("segment not found onError");
-                        }
                     }
+
+                    TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader((Segment) segment, incomingTraceHeader);
+                    String responseTraceHeaderString = responseTraceHeader.toString();
+                    mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, responseTraceHeaderString);
+                    httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
+
                 }).doFinally(signalType -> {
-                    Entity currentContext = recorder.getTraceEntity();
-                    recorder.setTraceEntity(context);
                     for (SegmentDecorator decorator : segmentDecorators) {
                         decorator.decorate(segment, request);
                     }
-                    try {
-                        segment.close();
-                    } catch (SegmentNotFoundException e) {
-                        if (LOG.isWarnEnabled()) {
-                            LOG.warn("Cloud not close segment because segment {} was not found", segment.getName());
-                        }
-                    }
-                    recorder.setTraceEntity(currentContext);
-                    request.removeAttribute(ATTRIBUTE_X_RAY_TRACE_ENTITY, Entity.class);
-                }).map(mutableHttpResponse -> {
-                    mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, responseTraceHeaderString);
-                    httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
-                    return mutableHttpResponse;
+                    segment.close();
+                    request.removeAttribute(ReactorSegmentContextResolverChain.XRAY_SEGMENT_RESOLVER, Segment.class);
                 });
     }
 

@@ -21,6 +21,7 @@ import com.amazonaws.xray.AWSXRayRecorderBuilder;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
 import com.amazonaws.xray.strategy.sampling.SamplingStrategy;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.annotation.Factory;
 import org.slf4j.Logger;
@@ -40,15 +41,6 @@ public class XRayRecorderFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(XRayRecorderFactory.class);
 
-    private final Collection<Plugin> plugins;
-    private final Collection<SegmentListener> segmentListeners;
-
-    public XRayRecorderFactory(Collection<Plugin> plugins,
-                               Collection<SegmentListener> segmentListeners) {
-        this.plugins = plugins;
-        this.segmentListeners = segmentListeners;
-    }
-
     /**
      * Builds a {@link AWSXRayRecorder} and sets the recorder as Global Recorder {@link AWSXRay#setGlobalRecorder(AWSXRayRecorder)}.
      * @param builder X-Ray recorder builder
@@ -56,7 +48,8 @@ public class XRayRecorderFactory {
      */
     @Singleton
     public AWSXRayRecorder build(AWSXRayRecorderBuilder builder) {
-        AWSXRayRecorder awsxRayRecorder = builder.build();
+        AWSXRayRecorder awsxRayRecorder = builder
+                .build();
         AWSXRay.setGlobalRecorder(awsxRayRecorder);
         return awsxRayRecorder;
     }
@@ -68,10 +61,15 @@ public class XRayRecorderFactory {
      * It registers the beans of type {@link SegmentListener} as segments listeners.
      * A {@link AWSXRayRecorderBuilder}
      * @param samplingStrategy Sampling Strategy
+     * @param plugins Plugins
+     * @param segmentListeners Segment Listeners
      * @return X-Ray recorder builder
      */
     @Singleton
-    protected AWSXRayRecorderBuilder builder(@Nullable SamplingStrategy samplingStrategy) {
+    protected AWSXRayRecorderBuilder builder(@Nullable SamplingStrategy samplingStrategy,
+                                             @NonNull Collection<Plugin> plugins,
+                                             @NonNull Collection<SegmentListener> segmentListeners,
+                                             @NonNull ReactorSegmentContextResolverChain segmentContextResolverChain) {
         AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard()
                 .withDefaultPlugins();
         for (Plugin plugin : plugins) {
@@ -89,6 +87,7 @@ public class XRayRecorderFactory {
         if (samplingStrategy != null) {
             builder.withSamplingStrategy(samplingStrategy);
         }
+        builder.withSegmentContextResolverChain(segmentContextResolverChain);
         return builder;
     }
 }
