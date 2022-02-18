@@ -1,4 +1,10 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
 dependencies {
+    annotationProcessor "io.micronaut:micronaut-graal"
+
     compileOnly "io.micronaut.security:micronaut-security"
 
     implementation "io.micronaut:micronaut-http-netty"
@@ -11,7 +17,7 @@ dependencies {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
     }
-    api "org.slf4j:jcl-over-slf4j:1.7.31"
+    api "org.slf4j:jcl-over-slf4j:1.7.32"
     api project(":function-aws")
     api project(":aws-common")
 
@@ -28,5 +34,5 @@ dependencies {
     testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
     testImplementation 'javax.servlet:servlet-api:2.5'
     testImplementation 'org.javadelight:delight-fileupload:0.0.5'
-    testRuntimeOnly 'com.github.jknack:handlebars:4.2.0'
+    testRuntimeOnly 'com.github.jknack:handlebars:4.3.0'
 }

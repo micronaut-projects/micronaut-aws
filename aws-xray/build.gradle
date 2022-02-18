@@ -1,3 +1,7 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
 dependencies {
     api "io.micronaut:micronaut-inject"
     api "io.micronaut:micronaut-runtime"

@@ -1,11 +1,10 @@
 plugins {
-    id "java-library"
+    id("io.micronaut.build.internal.module")
 }
 
 dependencies {
     annotationProcessor "io.micronaut:micronaut-validation"
 
-    implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-runtime"
     implementation "io.micronaut:micronaut-validation"
     implementation 'com.github.spotbugs:spotbugs-annotations'
@@ -16,11 +15,11 @@ dependencies {
 
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "org.bouncycastle:bcprov-jdk15on:1.69"
+    testImplementation "org.bouncycastle:bcprov-jdk15on:1.70"
     testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
         transitive(false)
     }
     testImplementation "com.amazon.alexa:ask-sdk-apache-client:$askVersion"
 
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.31"
+    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.32"
 }

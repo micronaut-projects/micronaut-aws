@@ -1,15 +1,18 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.5.21"
-    id("org.jetbrains.kotlin.kapt") version "1.5.21"
+    id 'io.micronaut.build.internal.aws-test-suite'
+    id "org.jetbrains.kotlin.jvm" version "1.6.10"
+    id("org.jetbrains.kotlin.kapt") version "1.6.0"
 }
+
 dependencies {
     kaptTest "io.micronaut:micronaut-inject-java:$micronautVersion"
+    testImplementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
     testImplementation project(":function-aws")
-    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21'
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0'
     testImplementation project(":function-client-aws")
 }
 
-compileTestKotlin {
+tasks.named("compileTestKotlin") {
     kotlinOptions {
         jvmTarget = '1.8'
         javaParameters = true

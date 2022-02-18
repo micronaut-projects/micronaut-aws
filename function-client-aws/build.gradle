@@ -1,10 +1,15 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
 dependencies {
     api project(":aws-sdk-v1")
     compileOnly "io.micronaut:micronaut-inject-java"
     implementation "com.amazonaws:aws-java-sdk-lambda"
     implementation "io.projectreactor:reactor-core"
-    api "io.micronaut:micronaut-function-client:$micronautVersion"
+    api "io.micronaut:micronaut-function-client:3.3.3"
 
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-java"
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut:micronaut-http-server-netty"

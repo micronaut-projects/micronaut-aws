@@ -1,15 +1,3 @@
-javaPlatform {
-    allowDependencies()
-}
-dependencies {
-    constraints {
-        for (Project p : rootProject.subprojects) {
-            if (p.name.endsWith("-bom")) {
-                continue
-            }
-
-            api "$p.group:micronaut-$p.name:$p.version"
-        }
-
-    }
+plugins {
+    id 'io.micronaut.build.internal.bom'
 }

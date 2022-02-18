@@ -1,0 +1,10 @@
+/**
+ * Plugin for test suite projects.
+ */
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
