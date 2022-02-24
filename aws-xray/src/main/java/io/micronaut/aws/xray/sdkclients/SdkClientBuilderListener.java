@@ -30,7 +30,7 @@ import jakarta.inject.Singleton;
  * @see <a href="https://aws.amazon.com/blogs/developer/x-ray-support-for-the-aws-sdk-for-java-v2/">X-Ray support for the AWS SDK for Java 2</a>
  *
  * @author Pavol Gressa
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(classes = SdkClientBuilder.class)
 @Singleton

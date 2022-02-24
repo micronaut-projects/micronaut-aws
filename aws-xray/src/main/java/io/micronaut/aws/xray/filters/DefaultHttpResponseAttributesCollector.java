@@ -28,7 +28,7 @@ import java.util.Optional;
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link HttpResponseAttributesCollector}.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Singleton
 public class DefaultHttpResponseAttributesCollector implements HttpResponseAttributesCollector {

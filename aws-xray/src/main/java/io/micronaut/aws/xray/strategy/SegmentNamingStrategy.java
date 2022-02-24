@@ -22,7 +22,7 @@ import io.micronaut.http.HttpRequest;
 /**
  * Resolves how to name the X-Ray segment for a given HTTP Request.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @FunctionalInterface
 public interface SegmentNamingStrategy extends Ordered {

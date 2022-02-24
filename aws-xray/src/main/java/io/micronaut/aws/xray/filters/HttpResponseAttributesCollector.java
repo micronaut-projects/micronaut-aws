@@ -25,7 +25,7 @@ import java.util.Optional;
 
 /**
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @DefaultImplementation(DefaultHttpResponseAttributesCollector.class)
 public interface HttpResponseAttributesCollector {

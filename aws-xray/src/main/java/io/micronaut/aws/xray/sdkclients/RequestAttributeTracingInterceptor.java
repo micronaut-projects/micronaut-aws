@@ -29,7 +29,7 @@ import software.amazon.awssdk.core.interceptor.ExecutionAttributes;
  * It obtains the trace entity context from the HTTP Request {@link XRayHttpServerFilter#ATTRIBUTE_X_RAY_TRACE_ENTITY} attribute.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 public class RequestAttributeTracingInterceptor extends TracingInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger(RequestAttributeTracingInterceptor.class);

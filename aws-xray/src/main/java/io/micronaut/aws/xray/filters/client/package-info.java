@@ -15,7 +15,7 @@
  */
 /**
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(property = XRayConfigurationProperties.PREFIX + ".client-filter", notEquals = StringUtils.FALSE, defaultValue = StringUtils.TRUE)

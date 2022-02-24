@@ -27,7 +27,7 @@ import java.util.Optional;
 /**
  * Parses a {@link TraceHeader} from {@link HttpRequest}.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @DefaultImplementation(DefaultTraceHeaderParser.class)
 public interface TraceHeaderParser {

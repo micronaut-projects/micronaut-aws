@@ -25,7 +25,7 @@ import jakarta.inject.Singleton;
 /**
  * Uses as segment name the host name resolved by {@link HttpHostResolver}.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(classes = HttpHostResolver.class)
 @Requires(beans = HttpHostResolver.class)

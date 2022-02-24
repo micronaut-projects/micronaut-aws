@@ -18,7 +18,7 @@ package io.micronaut.aws.xray.filters;
 /**
  * Error Categories of X-Ray.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 public enum ErrorCategory {
     ERROR,

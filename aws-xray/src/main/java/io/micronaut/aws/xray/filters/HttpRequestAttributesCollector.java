@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Collects the attributes from an HTTP Request to include in an X-Ray segment.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @DefaultImplementation(DefaultHttpRequestAttributesCollector.class)
 @FunctionalInterface

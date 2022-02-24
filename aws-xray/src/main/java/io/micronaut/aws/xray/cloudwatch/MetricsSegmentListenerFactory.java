@@ -24,7 +24,7 @@ import jakarta.inject.Singleton;
  * sends metrics to cloudwatch.
  *
  * @author Pavol Gressa
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Factory
 public class MetricsSegmentListenerFactory {

@@ -46,7 +46,7 @@ import java.util.Optional;
  *
  * @author Pavol Gressa
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Filter(Filter.MATCH_ALL_PATTERN)
 public class XRayHttpClientFilter implements HttpClientFilter {

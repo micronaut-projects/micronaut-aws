@@ -24,7 +24,7 @@ import io.micronaut.http.HttpRequest;
 /**
  * Parses a Sampling Decision for an HTTP Request and a Sampling Response.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @DefaultImplementation(DefaultSampleDecisionParser.class)
 @FunctionalInterface

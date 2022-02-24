@@ -34,7 +34,7 @@ import java.util.Collection;
  *
  * @author Pavol Gressa
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Factory
 public class XRayRecorderFactory {

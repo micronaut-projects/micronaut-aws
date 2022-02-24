@@ -29,7 +29,7 @@ import java.util.Optional;
  *
  * @see <a href="https://docs.aws.amazon.com/xray-sdk-for-java/latest/javadoc/com/amazonaws/xray/javax/servlet/AWSXRayServletFilter.html">AWSXRayServletFilter</a>.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Singleton
 public class DefaultHttpRequestAttributesCollector implements HttpRequestAttributesCollector {

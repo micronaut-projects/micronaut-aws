@@ -28,7 +28,7 @@ import jakarta.inject.Singleton;
  * <p>As per the Apache 2.0 license, the original copyright notice and all author and copyright information have
  * remained intact.</p>
  *
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(property = FixedSegmentNamingStrategy.PROPERTY)
 @Singleton

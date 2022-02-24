@@ -21,7 +21,7 @@ import io.micronaut.context.condition.ConditionContext;
 /**
  * Evaluates to true if the system property {@link SystemPropertySegmentNamingStrategy#SYSTEM_PROPERTY_KEY_TRACING_NAME} is present.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 public class SystemPropertySegmentNamingStrategyCondition implements Condition {
     @Override

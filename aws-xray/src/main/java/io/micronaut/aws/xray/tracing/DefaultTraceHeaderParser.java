@@ -29,7 +29,7 @@ import java.util.Optional;
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link TraceHeaderParser}.
  * If {@link XRayConfiguration#acceptTraceIdHeaders()} is set to true, attempts to retrieve the Trace ID from X-Amzn-Trace-Id header.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Singleton
 public class DefaultTraceHeaderParser implements TraceHeaderParser {

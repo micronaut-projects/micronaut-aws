@@ -17,6 +17,6 @@
  *
  * Annotations related to Aws X-Ray.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 package io.micronaut.aws.xray.annotation;

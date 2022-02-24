@@ -25,7 +25,7 @@ import java.util.Optional;
 
 /**
  * @author Sergio del Amo
- * @since XXXX
+ * @since 3.2.0
  */
 public class HttpRequestAttributeSegmentContext extends ThreadLocalSegmentContext {
     public static final String XRAY_SEGMENT_RESOLVER = "XRAY-SEGMENT-RESOLVER";

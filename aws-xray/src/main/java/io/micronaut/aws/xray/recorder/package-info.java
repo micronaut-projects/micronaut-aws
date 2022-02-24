@@ -17,6 +17,6 @@
  * Classes related to {@link com.amazonaws.xray.AWSXRayRecorder} configuration.
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 package io.micronaut.aws.xray.recorder;

@@ -25,7 +25,7 @@ import jakarta.inject.Singleton;
 /**
  * If Environment variable AWS_XRAY_TRACING_NAME is set, it returns its value as the segment name.
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(condition = EnvironmentVariableSegmentNamingStrategyCondition.class)
 @Singleton

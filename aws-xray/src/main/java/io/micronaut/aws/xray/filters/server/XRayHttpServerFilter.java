@@ -60,7 +60,7 @@ import java.util.Optional;
  * remained intact.</p>
  *
  * @author Sergio del Amo
- * @since 2.7.0
+ * @since 3.2.0
  */
 @Requires(beans = AWSXRayRecorder.class)
 @Requires(beans = SegmentNamingStrategy.class)
