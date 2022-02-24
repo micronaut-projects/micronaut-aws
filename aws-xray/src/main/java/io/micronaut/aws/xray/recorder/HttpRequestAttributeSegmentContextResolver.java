@@ -20,7 +20,7 @@ import com.amazonaws.xray.contexts.SegmentContextResolver;
 import io.micronaut.http.context.ServerRequestContext;
 
 /**
- * If {@link ServerRequestContext::currentRequest} is able to resolve the request it returns an instance of {@link HttpRequestAttributeSegmentContext} otherwise returns null.
+ * If {@link ServerRequestContext#currentRequest} is able to resolve the request it returns an instance of {@link HttpRequestAttributeSegmentContext} otherwise returns null.
  * @author Sergio del Amo
  * @since 3.2.0
  */
