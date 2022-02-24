@@ -364,7 +364,7 @@ Property `micronaut.function.name` takes precedence over the function name prese
 <div class="paragraph">
 <p><a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> has been refactored to ease extension.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Classes renamed</caption>
 <colgroup>
 <col style="width: 50%;">
@@ -379,11 +379,11 @@ Property `micronaut.function.name` takes precedence over the function name prese
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>io.micronaut.function.aws.alexa.AlexaConfiguration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">io.micronaut.aws.alexa.conf.AlexaSkillConfiguration</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">AlexaSkillConfiguration</a></p></td>
 </tr>
 </tbody>
 </table>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Classes relocated</caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -423,7 +423,7 @@ Property `micronaut.function.name` takes precedence over the function name prese
 <div class="paragraph">
 <p>Now all artifacts are published under the <code>io.micronaut.aws</code> group id.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. Artifacts relocated</caption>
 <colgroup>
 <col style="width: 50%;">
@@ -510,8 +510,7 @@ a test that makes a call such as:</p>
     &lt;artifactId&gt;micronaut-aws-sdk-v1&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 
 <h2 id="awsCredentialsProvider"><a class="anchor" href="#awsCredentialsProvider"></a>6.1 AWS Credentials Provider</h2>
@@ -572,8 +571,7 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
     &lt;artifactId&gt;micronaut-aws-sdk-v2&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 
 <h2 id="sdkHttpClient"><a class="anchor" href="#sdkHttpClient"></a>7.1 SDK HTTP Client</h2>
@@ -639,7 +637,7 @@ implementation "software.amazon.awssdk:url-connection-client"</code></pre>
 <p>Then, you can configure it with the following configuration properties:</p>
 </div>
 <a id="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html">UrlConnectionClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -711,7 +709,7 @@ following JVM system properties:</p>
 <p>The Apache HTTP client can be configured with the following options:</p>
 </div>
 <a id="io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html">ApacheClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -842,7 +840,7 @@ following JVM system properties:</p>
 <p>The Netty client can be configured with the following options:</p>
 </div>
 <a id="io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html">NettyClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1071,8 +1069,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;s3&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1107,7 +1104,7 @@ following JVM system properties:</p>
 <p>Additionally, this service accepts the following configuration properties:</p>
 </div>
 <a id="io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties" href="#io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html">S3ConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1186,8 +1183,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;dynamodb&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1245,8 +1241,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;ses&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1304,8 +1299,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;sns&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1363,8 +1357,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;sqs&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1422,8 +1415,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;ssm&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1481,8 +1473,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;secretsmanager&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1540,8 +1531,7 @@ following JVM system properties:</p>
     &lt;artifactId&gt;servicediscovery&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Then, the following beans will be created:</p>
@@ -1588,7 +1578,7 @@ following JVM system properties:</p>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Singleton
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Singleton
 public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3ClientBuilder&gt; {
 
     @Override
@@ -1623,7 +1613,7 @@ classes that support the services supported by Micronaut.</p>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Factory
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Factory
 public class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient&gt; {
 
     protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
@@ -1632,39 +1622,39 @@ public class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionCli
 
     // Sync client
     @Override
-    protected RekognitionClientBuilder createSyncBuilder() { <b class="conum">(1)</b>
+    protected RekognitionClientBuilder createSyncBuilder() { // <b class="conum">(1)</b>
         return RekognitionClient.builder();
     }
 
     @Override
     @Singleton
-    public RekognitionClientBuilder syncBuilder(SdkHttpClient httpClient) { <b class="conum">(2)</b>
+    public RekognitionClientBuilder syncBuilder(SdkHttpClient httpClient) { // <b class="conum">(2)</b>
         return super.syncBuilder(httpClient);
     }
 
     @Override
     @Bean(preDestroy = "close")
-    public RekognitionClient syncClient(RekognitionClientBuilder builder) { <b class="conum">(3)</b>
+    public RekognitionClient syncClient(RekognitionClientBuilder builder) { // <b class="conum">(3)</b>
         return super.syncClient(builder);
     }
 
     // Async client
     @Override
-    protected RekognitionAsyncClientBuilder createAsyncBuilder() { <b class="conum">(1)</b>
+    protected RekognitionAsyncClientBuilder createAsyncBuilder() { // <b class="conum">(1)</b>
         return RekognitionAsyncClient.builder();
     }
 
     @Override
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
-    public RekognitionAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) { <b class="conum">(2)</b>
+    public RekognitionAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) { // <b class="conum">(2)</b>
         return super.asyncBuilder(httpClient);
     }
 
     @Override
     @Bean(preDestroy = "close")
     @Requires(beans = SdkAsyncHttpClient.class)
-    public RekognitionAsyncClient asyncClient(RekognitionAsyncClientBuilder builder) { <b class="conum">(3)</b>
+    public RekognitionAsyncClient asyncClient(RekognitionAsyncClientBuilder builder) { // <b class="conum">(3)</b>
         return super.asyncClient(builder);
     }
 }</code></pre>
@@ -1714,7 +1704,7 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <div class="paragraph">
 <p>In <a href="https://launch.micronaut.io">Micronaut Launch</a>, you can select the feature <code>aws-lambda</code> for applications of type <code>Application</code> or <code>Serverless Function</code>. Those application types have their CLI equivalents commands.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1804,7 +1794,7 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <div class="paragraph">
 <p>Depending on your application type and runtime, you need different dependencies:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1862,7 +1852,7 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <div class="paragraph">
 <p><a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html">AWS Lambda integrates with other AWS services</a> to invoke functions. The Micronaut application type you select depends on the triggers you want to support. To respond to incoming HTTP requests (e.g. <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html">AWS Lambda Proxy integrations in API Gateway</a>) you can choose either <code>Application</code> or <code>Serverless Function</code>. For other triggers, such as consuming events from a queue, or run on a schedule you will choose <code>Serverless Function</code>.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1917,7 +1907,7 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 <div class="paragraph">
 <p>The <a href="https://github.com/aws/aws-lambda-java-libs/tree/master/aws-lambda-java-core">aws-lambda-java-core</a> library defines two interfaces for handler methods. When coding your functions with Micronaut you don&#8217;t implement those interfaces directly. Instead you extend or use its Micronaut equivalents:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1968,8 +1958,7 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
     &lt;artifactId&gt;micronaut-function-aws-api-proxy&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>For Serverless Functions the decision to use one <code>MicronautRequestHandler</code> or <code>MicronautRequestStreamHandler</code> depends on how you want to handle the input and output types.</p>
@@ -1991,13 +1980,12 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
     &lt;artifactId&gt;micronaut-function-aws&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>With <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a>, it is expected that you supply generic types with the input and the output types. If you wish to work with raw streams then subclass <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> instead.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2097,7 +2085,7 @@ When a new instance handles its first request it has to start the JVM and load y
 <div class="paragraph">
 <p><code>micronaut-function-aws</code> adds SLF4J Mapping Diagnostic Context Key/Value pairs for:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2174,7 +2162,7 @@ When a new instance handles its first request it has to start the JVM and load y
 <div class="paragraph">
 <p>Check the step-by-step tutorials to get you started:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2250,8 +2238,7 @@ dependency is needed:</p>
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>Testing subclasses of <code>MicronautRequestHandler</code> or <code>MicronautRequestStreamHandler</code> with this annotation requires
@@ -2334,7 +2321,7 @@ a custom builder, some Lambda-specific configuration will be set (e.g. eager ini
 <div class="paragraph">
 <p>Use <a href="../api/io/micronaut/function/aws/MicronautRequestStreamHandler.html">MicronautRequestStreamHandler</a> in combination of a class annotated with <a href="../api/io/micronaut/function/FunctionBean.html">@FunctionBean</a> which implements one of the interfaces from the <code>java.util.function</code> package.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Functional Interfaces</caption>
 <colgroup>
 <col style="width: 50%;">
@@ -2374,7 +2361,7 @@ a custom builder, some Lambda-specific configuration will be set (e.g. eager ini
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.FunctionBean;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.function.FunctionBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.function.Consumer;
@@ -2391,7 +2378,7 @@ public class EventLogger implements Consumer&lt;String&gt; {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import groovy.transform.CompileStatic
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import groovy.transform.CompileStatic
 import io.micronaut.function.FunctionBean
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -2410,7 +2397,7 @@ class EventLogger implements Consumer&lt;String&gt; {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import io.micronaut.function.FunctionBean
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.function.FunctionBean
 import org.slf4j.LoggerFactory
 import java.util.function.Consumer
 
@@ -2437,7 +2424,7 @@ class EventLogger : Consumer&lt;String&gt; {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.context.env.Environment;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestStreamHandler;
 
@@ -2452,7 +2439,7 @@ public class Handler extends MicronautRequestStreamHandler {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.context.env.Environment
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.context.env.Environment
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.function.aws.MicronautRequestStreamHandler
 
@@ -2467,7 +2454,7 @@ class Handler extends MicronautRequestStreamHandler {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">import io.micronaut.context.env.Environment
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.env.Environment
 import io.micronaut.function.aws.MicronautRequestStreamHandler
 
 class Handler : MicronautRequestStreamHandler() {
@@ -2507,8 +2494,7 @@ class Handler : MicronautRequestStreamHandler() {
     &lt;artifactId&gt;micronaut-function-client-aws&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>You can define multiple named functions under the <code>aws.lambda.functions</code> configuration.
@@ -2532,30 +2518,30 @@ aws:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.client.FunctionClient;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.function.client.FunctionClient;
 import jakarta.inject.Named;
 @FunctionClient
 public interface AnalyticsClient {
 
-    @Named("analytics") <b class="conum">(1)</b>
+    @Named("analytics") // <b class="conum">(1)</b>
     String visit(String productId);
 }</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
 import jakarta.inject.Named;
 @FunctionClient
 interface AnalyticsClient {
-    @Named('analytics') <b class="conum">(1)</b>
+    @Named('analytics') // <b class="conum">(1)</b>
     String visit(String productId);
 }</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin"></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2571,7 +2557,7 @@ interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import io.micronaut.function.client.FunctionClient;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.function.client.FunctionClient;
 
 @FunctionClient
 public interface AnalyticsClient {
@@ -2581,7 +2567,7 @@ public interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.function.client.FunctionClient;
 
 @FunctionClient
 interface AnalyticsClient {
@@ -2591,7 +2577,7 @@ interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin"></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin"></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2636,8 +2622,7 @@ To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> us
     &lt;artifactId&gt;micronaut-aws-alexa&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 
 <h2 id="alexaskillconfiguration"><a class="anchor" href="#alexaskillconfiguration"></a>9.1 Alexa Skill Configuration</h2>
@@ -2693,8 +2678,7 @@ To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> us
     &lt;version&gt;2.38.1&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>For each <a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">AlexaSkillConfiguration</a> bean,
@@ -2801,8 +2785,7 @@ public class HelloWorldIntentHandler implements RequestHandler {
     &lt;artifactId&gt;micronaut-function-aws-alexa&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>As handler specify <code>io.micronaut.function.aws.alexa.AlexaFunction</code>. You don&#8217;t need to create a class which extends <code>SkillStreamHandler</code>, <a href="../api/io/micronaut/function/aws/alexa/AlexaFunction.html">AlexaFunction</a> takes care of adding request handlers interceptors etc.</p>
@@ -2840,8 +2823,7 @@ public class HelloWorldIntentHandler implements RequestHandler {
     &lt;artifactId&gt;micronaut-aws-alexa-httpserver&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>you get an POST endpoint at <code>/alexa</code> (the route is configurable via <code>alexa.endpoint.path</code>.</p>
@@ -2864,7 +2846,7 @@ public class HelloWorldIntentHandler implements RequestHandler {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">new Ssml().speak(new Ssml("Welcome to Ride Hailer. ").audio('soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01').build()).build() == '&lt;speak&gt;Welcome to Ride Hailer. &lt;audio src="soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01"/&gt;&lt;/speak&gt;'</code></pre>
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">new Ssml().speak(new Ssml("Welcome to Ride Hailer. ").audio('soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01').build()).build() == '&lt;speak&gt;Welcome to Ride Hailer. &lt;audio src="soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01"/&gt;&lt;/speak&gt;'</code></pre>
 </div>
 </div>
 
@@ -2892,7 +2874,7 @@ public class HelloWorldIntentHandler implements RequestHandler {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -2913,13 +2895,13 @@ public class FlashBriefingsController {
         this.flashBriefingRepository = flashBriefingRepository;
     }
 
-    @Get <b class="conum">(1)</b>
+    @Get // <b class="conum">(1)</b>
     public List&lt;FlashBriefingItem&gt; index() {
         return flashBriefingRepository.find()
                 .stream()
-                .filter(item -&gt; validator.validate(item).isEmpty()) <b class="conum">(2)</b>
-                .sorted() <b class="conum">(3)</b>
-                .limit(5) <b class="conum">(4)</b>
+                .filter(item -&gt; validator.validate(item).isEmpty()) // <b class="conum">(2)</b>
+                .sorted() // <b class="conum">(3)</b>
+                .limit(5) // <b class="conum">(4)</b>
                 .collect(Collectors.toList());
     }
 
@@ -2962,7 +2944,7 @@ public class FlashBriefingsController {
 <div class="paragraph">
 <p>You can create environment-specific configurations as well by including the environment name after an underscore <code>_</code>. For example if <code>micronaut.application.name</code> is set to <code>helloworld</code>, specifying configuration values under <code>helloworld_test</code> will be applied only to the <code>test</code> environment.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Resolution Precedence</caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3003,7 +2985,7 @@ public class FlashBriefingsController {
 <p>For example, if the configuration name <code>/config/application_test/server.url</code> is configured in AWS Parameter Store, any application connecting to that parameter store can retrieve the value using <code>server.url</code>. If the application has <code>micronaut.application.name</code> configured to be <code>myapp</code>, a value with the name <code>/config/myapp_test/server.url</code> overrides the value just for that application.</p>
 </div>
 <a id="io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties" href="#io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationProperties">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html">AwsDistributedConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3074,8 +3056,7 @@ public class FlashBriefingsController {
     &lt;artifactId&gt;micronaut-aws-secretsmanager&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>To enable distributed configuration, create a <code>src/main/resources/bootstrap.yml</code> file and enable the configuration client:</p>
@@ -3100,7 +3081,7 @@ public class FlashBriefingsController {
 </div>
 </div>
 <a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties">&#128279;</a>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html">SecretsManagerConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3149,8 +3130,7 @@ public class FlashBriefingsController {
     &lt;artifactId&gt;micronaut-aws-parameter-store&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
-</div>
-</p>
+</div></p>
 </div>
 <div class="paragraph">
 <p>To enable distributed configuration a <code>src/main/resources/bootstrap.yml</code> configuration file must be created and configured to use Parameter Store:</p>
