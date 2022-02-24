@@ -16,14 +16,9 @@
 package io.micronaut.aws.xray.filters.server;
 
 import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.contexts.SegmentContext;
-import com.amazonaws.xray.contexts.SegmentContextExecutors;
-import com.amazonaws.xray.contexts.SegmentContextResolver;
-import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.TraceHeader;
 import com.amazonaws.xray.entities.TraceID;
-import com.amazonaws.xray.exceptions.SegmentNotFoundException;
 import com.amazonaws.xray.strategy.sampling.SamplingRequest;
 import com.amazonaws.xray.strategy.sampling.SamplingResponse;
 import com.amazonaws.xray.strategy.sampling.SamplingStrategy;
@@ -31,8 +26,7 @@ import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.aws.xray.decorators.SegmentDecorator;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
 import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
-import io.micronaut.aws.xray.recorder.ReactorSegmentContext;
-import io.micronaut.aws.xray.recorder.ReactorSegmentContextResolverChain;
+import io.micronaut.aws.xray.recorder.HttpRequestAttributeSegmentContext;
 import io.micronaut.aws.xray.sampling.SampleDecisionParser;
 import io.micronaut.aws.xray.strategy.SegmentNamingStrategy;
 import io.micronaut.aws.xray.tracing.TraceHeaderParser;
@@ -47,7 +41,6 @@ import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Filter;
-import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.filter.ServerFilterPhase;
@@ -55,17 +48,11 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Schedulers;
-import reactor.util.context.Context;
-import reactor.util.context.ContextView;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * <p><b>N.B.</b>: This class was forked from AWSXRayServletFilter AWS X-Ray Java SDK with modifications.</p>
@@ -151,7 +138,7 @@ public class XRayHttpServerFilter implements HttpServerFilter {
         Map<String, Object>  requestAttributes = httpRequestAttributesCollector.requestAttributes(request);
 
         Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
-        request.setAttribute(ReactorSegmentContextResolverChain.XRAY_SEGMENT_RESOLVER, segment);
+        request.setAttribute(HttpRequestAttributeSegmentContext.XRAY_SEGMENT_RESOLVER, segment);
 
 
         return Flux.from(chain.proceed(request))
@@ -172,7 +159,7 @@ public class XRayHttpServerFilter implements HttpServerFilter {
                         decorator.decorate(segment, request);
                     }
                     segment.close();
-                    request.removeAttribute(ReactorSegmentContextResolverChain.XRAY_SEGMENT_RESOLVER, Segment.class);
+                    request.removeAttribute(HttpRequestAttributeSegmentContext.XRAY_SEGMENT_RESOLVER, Segment.class);
                 });
     }
 

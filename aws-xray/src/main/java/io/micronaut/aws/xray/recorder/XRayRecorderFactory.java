@@ -50,6 +50,7 @@ public class XRayRecorderFactory {
     public AWSXRayRecorder build(AWSXRayRecorderBuilder builder) {
         AWSXRayRecorder awsxRayRecorder = builder
                 .build();
+        awsxRayRecorder.getSegmentContextResolverChain().addResolver(new HttpRequestAttributeSegmentContextResolver());
         AWSXRay.setGlobalRecorder(awsxRayRecorder);
         return awsxRayRecorder;
     }
@@ -68,8 +69,7 @@ public class XRayRecorderFactory {
     @Singleton
     protected AWSXRayRecorderBuilder builder(@Nullable SamplingStrategy samplingStrategy,
                                              @NonNull Collection<Plugin> plugins,
-                                             @NonNull Collection<SegmentListener> segmentListeners,
-                                             @NonNull ReactorSegmentContextResolverChain segmentContextResolverChain) {
+                                             @NonNull Collection<SegmentListener> segmentListeners) {
         AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard()
                 .withDefaultPlugins();
         for (Plugin plugin : plugins) {
@@ -87,7 +87,6 @@ public class XRayRecorderFactory {
         if (samplingStrategy != null) {
             builder.withSamplingStrategy(samplingStrategy);
         }
-        builder.withSegmentContextResolverChain(segmentContextResolverChain);
         return builder;
     }
 }
