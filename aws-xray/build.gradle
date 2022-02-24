@@ -36,6 +36,8 @@ dependencies {
     // for testing http filter
     testImplementation "io.micronaut:micronaut-http-client"
     testImplementation "io.micronaut:micronaut-http-server-netty"
+
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
 }
 
 test {

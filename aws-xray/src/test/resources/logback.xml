@@ -14,4 +14,6 @@
     <logger name="io.micronaut.context" level="INFO"/>
     <logger name="io.micronaut.tracing.aws" level="TRACE"/>
     <logger name="com.amazonaws.xray" level="TRACE"/>
+    <logger name="io.micronaut.aws.xray" level="TRACE"/>
+    <logger name="io.micronaut.http.client" level="TRACE"/>
 </configuration>

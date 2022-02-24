@@ -5,6 +5,8 @@ import com.amazonaws.xray.AWSXRayRecorderBuilder
 import com.amazonaws.xray.emitters.Emitter
 import com.amazonaws.xray.entities.Segment
 import com.amazonaws.xray.entities.Subsegment
+import io.micronaut.aws.xray.TestEmitter
+import io.micronaut.aws.xray.TestEmitterXRayRecorderBuilderBeanListener
 import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
@@ -159,42 +161,16 @@ class XRayHttpClientFilterSpec extends Specification {
 
     @Requires(property = 'spec.name', value = 'XRayHttpClientFilterSpec')
     @Singleton
-    static class XRayRecorderBuilderBeanListener implements BeanCreatedEventListener<AWSXRayRecorderBuilder> {
+    static class MockTestEmitterXRayRecorderBuilderBeanListener extends TestEmitterXRayRecorderBuilderBeanListener {
 
-        private final TestEmitter emitter
-
-        XRayRecorderBuilderBeanListener(TestEmitter emitter) {
-            this.emitter = emitter
-        }
-
-        @Override
-        AWSXRayRecorderBuilder onCreated(BeanCreatedEvent<AWSXRayRecorderBuilder> event) {
-            event.bean.withEmitter(emitter)
+        MockTestEmitterXRayRecorderBuilderBeanListener(TestEmitter emitter) {
+            super(emitter)
         }
     }
 
     @Requires(property = 'spec.name', value = 'XRayHttpClientFilterSpec')
     @Singleton
-    static class TestEmitter extends Emitter {
+    static class MockTestEmitter extends TestEmitter {
 
-        List<Segment> segments = []
-        List<Subsegment> subsegments = []
-
-        @Override
-        boolean sendSegment(Segment segment) {
-            segments.add(segment)
-            true
-        }
-
-        @Override
-        boolean sendSubsegment(Subsegment subsegment) {
-            subsegments.add(subsegment)
-            true
-        }
-
-        void reset() {
-            segments.clear()
-            subsegments.clear()
-        }
     }
 }

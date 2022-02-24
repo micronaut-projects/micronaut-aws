@@ -15,14 +15,11 @@
  */
 package io.micronaut.aws.xray.filters.client;
 
-import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
-import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Subsegment;
 import com.amazonaws.xray.entities.TraceHeader;
 import io.micronaut.aws.xray.filters.HttpRequestAttributesCollector;
 import io.micronaut.aws.xray.filters.HttpResponseAttributesCollector;
-import io.micronaut.aws.xray.filters.server.XRayHttpServerFilter;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpAttributes;
@@ -30,7 +27,6 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.annotation.Filter;
-import io.micronaut.http.context.ServerRequestContext;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import io.micronaut.http.filter.ServerFilterPhase;
@@ -38,6 +34,7 @@ import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+
 import java.util.Map;
 import java.util.Optional;
 

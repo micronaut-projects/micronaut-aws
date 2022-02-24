@@ -4,10 +4,13 @@ import com.amazonaws.xray.AWSXRayRecorderBuilder
 import com.amazonaws.xray.emitters.Emitter
 import com.amazonaws.xray.entities.Segment
 import com.amazonaws.xray.entities.Subsegment
+import io.micronaut.aws.xray.TestEmitter
+import io.micronaut.aws.xray.TestEmitterXRayRecorderBuilderBeanListener
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -21,20 +24,21 @@ import jakarta.inject.Singleton
 
 class XRayHttpServerFilterSpec extends Specification {
 
-    def "it creates segment with resolved host as segment name"() {
+    void "it creates segment with resolved host as segment name"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "tracing.xray.client-filter": "false",
                 "spec.name": "XRayHttpServerFilterSpec"
         ])
-        ApplicationContext context = embeddedServer.getApplicationContext()
+        ApplicationContext context = embeddedServer.applicationContext
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         when:
-        def response = client.toBlocking().exchange("${embeddedServer.getURL()}/success", String)
+        HttpResponse<String> response = client.toBlocking().exchange("/success", String)
 
         then:
+        noExceptionThrown()
         response
         response.code() == 200
         response.body() == "pong"
@@ -42,10 +46,11 @@ class XRayHttpServerFilterSpec extends Specification {
         emitter.segments[0].name.startsWith('http://localhost')
 
         cleanup:
-        embeddedServer.stop()
+        client.close()
+        embeddedServer.close()
     }
 
-    def "it creates segment with micronaut application segment name"() {
+    void "it creates segment with micronaut application segment name"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer.class, [
                 "tracing.xray.client-filter" : "false",
@@ -54,17 +59,19 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         when:
-        client.toBlocking().exchange("${embeddedServer.getURL()}/success")
+        client.toBlocking().exchange("/success")
 
         then:
+        noExceptionThrown()
         emitter.segments
         emitter.segments[0].name == 'micronautapp'
 
         cleanup:
-        embeddedServer.stop()
+        client.close()
+        embeddedServer.close()
     }
 
     def "it configures the exception in segment when throwed"() {
@@ -75,10 +82,10 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         when:
-        client.toBlocking().exchange("${embeddedServer.getURL()}/fail", String)
+        client.toBlocking().exchange("/fail", String)
 
         then:
         thrown(HttpClientResponseException)
@@ -86,7 +93,8 @@ class XRayHttpServerFilterSpec extends Specification {
         emitter.segments[0].isError()
 
         cleanup:
-        embeddedServer.stop()
+        client.close()
+        embeddedServer.close()
     }
 
     def "it handles flowables"() {
@@ -97,12 +105,13 @@ class XRayHttpServerFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         when:
-        def response = client.toBlocking().exchange("${embeddedServer.getURL()}/flowable", String)
+        HttpResponse<String> response = client.toBlocking().exchange("/flowable", String)
 
         then:
+        noExceptionThrown()
         response
         response.code() == 200
         response.body() == "flowable"
@@ -110,7 +119,9 @@ class XRayHttpServerFilterSpec extends Specification {
         emitter.segments[0].name.startsWith('http://localhost:')
 
         cleanup:
-        embeddedServer.stop()
+
+        client.close()
+        embeddedServer.close()
     }
 
     @Requires(property = "spec.name", value = "XRayHttpServerFilterSpec")
@@ -119,7 +130,7 @@ class XRayHttpServerFilterSpec extends Specification {
 
         @Get(uri = "/success", processes = MediaType.TEXT_PLAIN)
         String success() {
-            return "pong"
+            "pong"
         }
 
         @Get(uri = "/fail", processes = MediaType.TEXT_PLAIN)
@@ -129,50 +140,23 @@ class XRayHttpServerFilterSpec extends Specification {
 
         @Get(uri = "/flowable", processes = MediaType.TEXT_PLAIN)
         Publisher<String> flowable() {
-            return Flux.just("flowable")
+            Flux.just("flowable")
         }
 
     }
 
     @Requires(property = 'spec.name', value = 'XRayHttpServerFilterSpec')
     @Singleton
-    static class XRayRecorderBuilderBeanListener implements BeanCreatedEventListener<AWSXRayRecorderBuilder> {
-
-        private final TestEmitter emitter
-
-        XRayRecorderBuilderBeanListener(TestEmitter emitter) {
-            this.emitter = emitter
-        }
-
-        @Override
-        AWSXRayRecorderBuilder onCreated(BeanCreatedEvent<AWSXRayRecorderBuilder> event) {
-            event.bean.withEmitter(emitter)
+    static class MockXRayRecorderBuilderBeanListener extends TestEmitterXRayRecorderBuilderBeanListener {
+        MockXRayRecorderBuilderBeanListener(TestEmitter emitter) {
+            super(emitter)
         }
     }
 
     @Requires(property = 'spec.name', value = 'XRayHttpServerFilterSpec')
     @Singleton
-    static class TestEmitter extends Emitter {
+    static class MockTestEmitter extends TestEmitter {
 
-        List<Segment> segments = []
-        List<Subsegment> subsegments = []
-
-        @Override
-        boolean sendSegment(Segment segment) {
-            segments.add(segment)
-            true
-        }
-
-        @Override
-        boolean sendSubsegment(Subsegment subsegment) {
-            subsegments.add(subsegment)
-            true
-        }
-
-        void reset() {
-            segments.clear()
-            subsegments.clear()
-        }
     }
 
 }

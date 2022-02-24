@@ -34,6 +34,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.util.AntPathMatcher;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.PathMatcher;
@@ -44,15 +45,19 @@ import io.micronaut.http.annotation.Filter;
 import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.filter.ServerFilterPhase;
+import io.micronaut.scheduling.TaskExecutors;
+import jakarta.inject.Named;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
 /**
  * <p><b>N.B.</b>: This class was forked from AWSXRayServletFilter AWS X-Ray Java SDK with modifications.</p>
@@ -86,6 +91,8 @@ public class XRayHttpServerFilter implements HttpServerFilter {
 
     private final SampleDecisionParser sampleDecisionParser;
 
+    private final ExecutorService executorService;
+
     @Nullable
     private final List<String> excludes;
 
@@ -96,7 +103,8 @@ public class XRayHttpServerFilter implements HttpServerFilter {
                                 List<SegmentNamingStrategy> segmentNamingStrategies,
                                 List<SegmentDecorator> segmentDecorators,
                                 TraceHeaderParser traceHeaderParser,
-                                SampleDecisionParser sampleDecisionParser) {
+                                SampleDecisionParser sampleDecisionParser,
+                                @Named(TaskExecutors.IO) ExecutorService executorService) {
         this.excludes = xRayConfiguration.getExcludes().orElse(Collections.emptyList());
         this.recorder = awsxRayRecorder;
         this.httpResponseAttributesCollector = httpResponseAttributesCollector;
@@ -107,6 +115,7 @@ public class XRayHttpServerFilter implements HttpServerFilter {
                 .orElseThrow(() -> new ConfigurationException("No bean of type SegmentNamingStrategy found"));
         this.segmentDecorators = segmentDecorators;
         this.pathMatcher = PathMatcher.ANT;
+        this.executorService = executorService;
     }
 
     @Override
@@ -142,25 +151,60 @@ public class XRayHttpServerFilter implements HttpServerFilter {
 
 
         return Flux.from(chain.proceed(request))
-                .doOnNext(mutableHttpResponse -> {
+                .map(mutableHttpResponse -> {
                     Optional<Throwable> objectOptional = mutableHttpResponse.getAttribute(HttpAttributes.EXCEPTION, Throwable.class);
                     if (objectOptional.isPresent()) {
                         Throwable t = objectOptional.get();
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("adding exception to segment", t);
+                        }
                         segment.addException(t);
                     }
 
                     TraceHeader responseTraceHeader = traceHeaderParser.createResponseTraceHeader((Segment) segment, incomingTraceHeader);
                     String responseTraceHeaderString = responseTraceHeader.toString();
                     mutableHttpResponse.getHeaders().add(TraceHeader.HEADER_KEY, responseTraceHeaderString);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("populating segment with response");
+                    }
                     httpResponseAttributesCollector.populateEntityWithResponse(segment, mutableHttpResponse);
 
-                }).doFinally(signalType -> {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("decorating segment");
+                    }
                     for (SegmentDecorator decorator : segmentDecorators) {
                         decorator.decorate(segment, request);
                     }
-                    segment.close();
-                    request.removeAttribute(HttpRequestAttributeSegmentContext.XRAY_SEGMENT_RESOLVER, Segment.class);
+
+                    Object body = mutableHttpResponse.body();
+
+                    if (Publishers.isSingle(body.getClass())) {
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("Body is Publisher single");
+                        }
+                        mutableHttpResponse.body(
+                                Mono.from(Publishers.convertPublisher(body, Publisher.class)).doAfterTerminate(() -> closeSegment(segment)));
+                        return mutableHttpResponse;
+                    } else if (Publishers.isConvertibleToPublisher(body)) {
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("Body isConvertibleToPublisher");
+                        }
+                        mutableHttpResponse.body(
+                                Flux.from(Publishers.convertPublisher(body, Publisher.class)).doAfterTerminate(() -> closeSegment(segment)));
+                        return mutableHttpResponse;
+                    } else {
+                        closeSegment(segment);
+                    }
+
+                    return mutableHttpResponse;
                 });
+    }
+
+    private void closeSegment(Segment segment) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("closing segment");
+        }
+        segment.close();
     }
 
     @NonNull

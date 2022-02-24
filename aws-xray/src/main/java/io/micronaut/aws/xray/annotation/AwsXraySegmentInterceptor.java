@@ -19,26 +19,20 @@ import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.entities.Entity;
 import com.amazonaws.xray.entities.Segment;
 import com.amazonaws.xray.entities.Subsegment;
-import io.micronaut.aop.*;
+import io.micronaut.aop.InterceptPhase;
+import io.micronaut.aop.InterceptedMethod;
+import io.micronaut.aop.InterceptorBean;
+import io.micronaut.aop.MethodInterceptor;
+import io.micronaut.aop.MethodInvocationContext;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.core.type.Argument;
-import io.micronaut.core.type.ReturnType;
 import jakarta.inject.Singleton;
-import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * {@link MethodInterceptor} that instruments {@link AwsXraySubsegment}.
@@ -102,7 +96,7 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
                     );
                 case COMPLETION_STAGE:
                     return interceptedMethod.interceptResultAsCompletionStage().whenComplete((o, t) -> {
-                        if ( t!= null) {
+                        if (t != null) {
                             subsegment.addException(t);
                         }
                     });

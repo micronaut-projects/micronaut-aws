@@ -18,9 +18,13 @@ package io.micronaut.aws.xray.recorder;
 import com.amazonaws.xray.AWSXRay;
 import com.amazonaws.xray.AWSXRayRecorder;
 import com.amazonaws.xray.AWSXRayRecorderBuilder;
+import com.amazonaws.xray.contexts.LambdaSegmentContextResolver;
+import com.amazonaws.xray.contexts.SegmentContextResolverChain;
+import com.amazonaws.xray.contexts.ThreadLocalSegmentContextResolver;
 import com.amazonaws.xray.listeners.SegmentListener;
 import com.amazonaws.xray.plugins.Plugin;
 import com.amazonaws.xray.strategy.sampling.SamplingStrategy;
+import io.micronaut.aws.xray.configuration.XRayConfiguration;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.annotation.Factory;
@@ -50,7 +54,6 @@ public class XRayRecorderFactory {
     public AWSXRayRecorder build(AWSXRayRecorderBuilder builder) {
         AWSXRayRecorder awsxRayRecorder = builder
                 .build();
-        awsxRayRecorder.getSegmentContextResolverChain().addResolver(new HttpRequestAttributeSegmentContextResolver());
         AWSXRay.setGlobalRecorder(awsxRayRecorder);
         return awsxRayRecorder;
     }
@@ -64,12 +67,15 @@ public class XRayRecorderFactory {
      * @param samplingStrategy Sampling Strategy
      * @param plugins Plugins
      * @param segmentListeners Segment Listeners
+     * @param xRayConfiguration XRay Configuration
      * @return X-Ray recorder builder
      */
     @Singleton
     protected AWSXRayRecorderBuilder builder(@Nullable SamplingStrategy samplingStrategy,
                                              @NonNull Collection<Plugin> plugins,
-                                             @NonNull Collection<SegmentListener> segmentListeners) {
+                                             @NonNull Collection<SegmentListener> segmentListeners,
+                                             @NonNull XRayConfiguration xRayConfiguration
+    ) {
         AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard()
                 .withDefaultPlugins();
         for (Plugin plugin : plugins) {
@@ -87,6 +93,19 @@ public class XRayRecorderFactory {
         if (samplingStrategy != null) {
             builder.withSamplingStrategy(samplingStrategy);
         }
+
+        if (xRayConfiguration.isServerFilter()) {
+            builder.withSegmentContextResolverChain(createSegmentContextResolverChain());
+        }
         return builder;
     }
+
+    private SegmentContextResolverChain createSegmentContextResolverChain() {
+        SegmentContextResolverChain segmentContextResolverChain = new SegmentContextResolverChain();
+        segmentContextResolverChain.addResolver(new HttpRequestAttributeSegmentContextResolver());
+        segmentContextResolverChain.addResolver(new LambdaSegmentContextResolver());
+        segmentContextResolverChain.addResolver(new ThreadLocalSegmentContextResolver());
+        return segmentContextResolverChain;
+    }
+
 }
