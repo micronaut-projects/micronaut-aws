@@ -41,6 +41,16 @@ public class DefaultHttpResponseAttributesCollector implements HttpResponseAttri
     @NonNull
     public Optional<ErrorCategory> parseErrorCategory(@NonNull HttpResponse<?> response) {
         int responseCode = response.status().getCode();
+        return parseErrorCategory(responseCode);
+    }
+
+    /**
+     *
+     * @param responseCode Response Code
+     * @return {@link ErrorCategory#THROTTLE} if 429, {@link ErrorCategory#FAULT} for other 4xx responses, {@link ErrorCategory#ERROR} for 5xx responses.
+     */
+    @NonNull
+    public Optional<ErrorCategory> parseErrorCategory(int responseCode) {
         if (responseCode == 429) {
             return Optional.of(ErrorCategory.THROTTLE);
         }

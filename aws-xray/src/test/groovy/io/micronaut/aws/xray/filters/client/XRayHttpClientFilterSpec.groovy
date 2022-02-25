@@ -14,6 +14,7 @@ import io.micronaut.context.event.BeanCreatedEvent
 import io.micronaut.context.event.BeanCreatedEventListener
 import io.micronaut.core.util.StringUtils
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -39,7 +40,7 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
@@ -50,7 +51,7 @@ class XRayHttpClientFilterSpec extends Specification {
             getAttribute(_, _) >> Optional.of(AWSXRay.getTraceEntity())
         }
         ServerRequestContext.set(httpRequest)
-        def response = client.toBlocking().exchange("${embeddedServer.getURL()}/success", String)
+        def response = client.toBlocking().exchange("/success", String)
         AWSXRay.endSegment()
 
         then:
@@ -77,7 +78,7 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
@@ -89,7 +90,7 @@ class XRayHttpClientFilterSpec extends Specification {
                 getAttribute(_, _) >> Optional.of(AWSXRay.getTraceEntity())
             }
             ServerRequestContext.set(httpRequest)
-            client.toBlocking().exchange("${embeddedServer.getURL()}/fail", String)
+            client.toBlocking().exchange("/fail", String)
         } catch (Exception e) {
             // no-op
         } finally {
@@ -121,13 +122,13 @@ class XRayHttpClientFilterSpec extends Specification {
         ])
         ApplicationContext context = embeddedServer.getApplicationContext()
         TestEmitter emitter = context.getBean(TestEmitter.class)
-        HttpClient client = context.createBean(HttpClient)
+        HttpClient client = context.createBean(HttpClient, embeddedServer.URL)
 
         expect:
         !context.containsBean(XRayHttpServerFilter)
 
         when:
-        def response = client.toBlocking().exchange("${embeddedServer.getURL()}/success", String)
+        HttpResponse<String> response = client.toBlocking().exchange("/success", String)
 
         then:
         response

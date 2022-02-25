@@ -14,18 +14,24 @@ class TestEmitter extends Emitter {
 
     @Override
     boolean sendSegment(Segment segment) {
-        segments.add(segment)
+        synchronized (this) {
+            segments.add(segment)
+        }
         true
     }
 
     @Override
     boolean sendSubsegment(Subsegment subsegment) {
-        subsegments.add(subsegment)
+        synchronized (this) {
+            subsegments.add(subsegment)
+        }
         true
     }
 
     void reset() {
-        segments.clear()
-        subsegments.clear()
+        synchronized (this) {
+            segments.clear()
+            subsegments.clear()
+        }
     }
 }

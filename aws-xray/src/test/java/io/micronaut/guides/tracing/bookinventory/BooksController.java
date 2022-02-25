@@ -12,6 +12,7 @@ import io.micronaut.security.rules.SecurityRule;
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
 
+
 @Requires(property = "spec.name", value = "DistributingTracingGuideSpec.bookinventory")
 @Controller("/books")
 public class BooksController {
@@ -19,7 +20,8 @@ public class BooksController {
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Produces(MediaType.TEXT_PLAIN)
     @Get("/stock/{isbn}")
-    public Boolean stock(@PathVariable @NotBlank String isbn) {
+    public Boolean stock(@PathVariable @NotBlank String isbn) throws InterruptedException {
+        Thread.sleep(2_000);
         return bookInventoryByIsbn(isbn).map(bi -> bi.getStock() > 0).orElse(null);
     }
 
