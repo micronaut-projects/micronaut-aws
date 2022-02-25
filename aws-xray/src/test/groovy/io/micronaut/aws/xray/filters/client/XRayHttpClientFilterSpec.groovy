@@ -22,6 +22,8 @@ import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.scheduling.TaskExecutors
 import io.micronaut.scheduling.annotation.ExecuteOn
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import jakarta.inject.Singleton
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
@@ -140,6 +142,7 @@ class XRayHttpClientFilterSpec extends Specification {
 
     @Requires(property = "spec.name", value = "XRayHttpClientFilterSpec")
     @Controller
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @ExecuteOn(TaskExecutors.IO)
     static class TestController {
 

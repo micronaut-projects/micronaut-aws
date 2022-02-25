@@ -38,6 +38,8 @@ dependencies {
     testImplementation "io.micronaut:micronaut-http-server-netty"
 
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+
+    testImplementation("io.micronaut.security:micronaut-security")
 }
 
 test {

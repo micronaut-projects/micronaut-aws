@@ -1,5 +1,6 @@
 package io.micronaut.aws.xray
 
+import com.amazonaws.xray.config.DaemonConfiguration
 import com.amazonaws.xray.emitters.Emitter
 import com.amazonaws.xray.entities.Segment
 import com.amazonaws.xray.entities.Subsegment

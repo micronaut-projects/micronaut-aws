@@ -17,6 +17,8 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.runtime.server.EmbeddedServer
+import io.micronaut.security.annotation.Secured
+import io.micronaut.security.rules.SecurityRule
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import spock.lang.Specification
@@ -126,6 +128,7 @@ class XRayHttpServerFilterSpec extends Specification {
 
     @Requires(property = "spec.name", value = "XRayHttpServerFilterSpec")
     @Controller
+    @Secured(SecurityRule.IS_ANONYMOUS)
     static class TestController {
 
         @Get(uri = "/success", processes = MediaType.TEXT_PLAIN)

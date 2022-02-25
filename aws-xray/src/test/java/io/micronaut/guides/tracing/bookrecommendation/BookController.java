@@ -3,6 +3,8 @@ package io.micronaut.guides.tracing.bookrecommendation;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import reactor.core.publisher.Flux;
 import org.reactivestreams.Publisher;
 
@@ -19,6 +21,7 @@ public class BookController {
         this.bookInventoryOperations = bookInventoryOperations;
     }
 
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Get
     public Publisher<BookRecommendation> index() {
         return Flux.from(bookCatalogueOperations.findAll())

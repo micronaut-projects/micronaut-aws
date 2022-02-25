@@ -95,13 +95,19 @@ public class AwsXraySegmentInterceptor implements MethodInterceptor<Object, Obje
                         .doOnError(subsegment::addException)
                     );
                 case COMPLETION_STAGE:
-                    return interceptedMethod.interceptResultAsCompletionStage().whenComplete((o, t) -> {
+                    return interceptedMethod.interceptResultAsCompletionStage()
+                            .whenComplete((o, t) -> {
                         if (t != null) {
-                            subsegment.addException(t);
+                            subsegment.addException(t.getCause() != null ? t.getCause() : t);
                         }
                     });
                 case SYNCHRONOUS:
-                    return context.proceed();
+                    try {
+                        return context.proceed();
+                    } catch (Exception e) {
+                        subsegment.addException(e);
+                        return interceptedMethod.handleException(e);
+                    }
                 default:
                     return interceptedMethod.unsupported();
             }
