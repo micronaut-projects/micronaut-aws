@@ -17,16 +17,18 @@ package io.micronaut.aws.xray.strategy;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.order.Ordered;
-import io.micronaut.http.HttpRequest;
+
+import java.util.Optional;
 
 /**
  * Resolves how to name the X-Ray segment for a given HTTP Request.
  * @author Sergio del Amo
  * @since 3.2.0
+ * @param <T> Request
  */
 @FunctionalInterface
-public interface SegmentNamingStrategy extends Ordered {
+public interface SegmentNamingStrategy<T> extends Ordered {
 
     @NonNull
-    String nameForRequest(@NonNull HttpRequest<?> request);
+    Optional<String> resolveName(@NonNull T request);
 }

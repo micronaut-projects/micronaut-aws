@@ -15,6 +15,6 @@ class FixedSegmentNamingStrategySpec extends ApplicationContextSpecification {
     void 'tracing.xray.fixed-name enabled FixedSegmentNamingStrategy'() {
         expect:
         applicationContext.containsBean(SegmentNamingStrategy)
-        applicationContext.getBeansOfType(SegmentNamingStrategy).first().nameForRequest(Mock(HttpRequest)) == 'micronautapp'
+        'micronautapp' == applicationContext.getBean(SegmentNamingStrategy).resolveName(Mock(HttpRequest)).get()
     }
 }

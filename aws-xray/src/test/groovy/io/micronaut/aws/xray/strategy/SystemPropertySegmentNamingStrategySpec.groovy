@@ -13,6 +13,6 @@ class SystemPropertySegmentNamingStrategySpec extends ApplicationContextSpecific
 
         expect:
         applicationContext.containsBean(SegmentNamingStrategy)
-        applicationContext.getBeansOfType(SegmentNamingStrategy).first().nameForRequest(Mock(HttpRequest)) == 'foo'
+        'foo' == applicationContext.getBean(SegmentNamingStrategy).resolveName(Mock(HttpRequest)).get()
     }
 }

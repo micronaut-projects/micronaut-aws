@@ -17,18 +17,18 @@ package io.micronaut.aws.xray.strategy;
 
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.http.HttpRequest;
-
 import jakarta.inject.Singleton;
+import java.util.Optional;
 
 /**
+ * If the system property {@value SYSTEM_PROPERTY_KEY_TRACING_NAME} is present, its value is used as the segment name.
  * @author Sergio del Amo
  * @since 3.2.0
+ * @param <T> Request
  */
 @Requires(condition = SystemPropertySegmentNamingStrategyCondition.class)
 @Singleton
-public class SystemPropertySegmentNamingStrategy implements SegmentNamingStrategy {
-
+public class SystemPropertySegmentNamingStrategy<T> implements SegmentNamingStrategy<T> {
     /**
      * System property key used to override the default segment name.
      */
@@ -43,7 +43,7 @@ public class SystemPropertySegmentNamingStrategy implements SegmentNamingStrateg
 
     @Override
     @NonNull
-    public String nameForRequest(@NonNull HttpRequest<?> request) {
-        return System.getProperty(SYSTEM_PROPERTY_KEY_TRACING_NAME);
+    public Optional<String> resolveName(@NonNull T request) {
+        return Optional.ofNullable(System.getProperty(SYSTEM_PROPERTY_KEY_TRACING_NAME));
     }
 }

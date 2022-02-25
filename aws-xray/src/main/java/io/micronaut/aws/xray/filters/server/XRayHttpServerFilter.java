@@ -31,7 +31,6 @@ import io.micronaut.aws.xray.sampling.SampleDecisionParser;
 import io.micronaut.aws.xray.strategy.SegmentNamingStrategy;
 import io.micronaut.aws.xray.tracing.TraceHeaderParser;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
@@ -83,7 +82,7 @@ public class XRayHttpServerFilter implements HttpServerFilter {
 
     private final HttpResponseAttributesCollector httpResponseAttributesCollector;
 
-    private final SegmentNamingStrategy segmentNamingStrategy;
+    private final SegmentNamingStrategy<HttpRequest<?>> segmentNamingStrategy;
 
     private final List<SegmentDecorator> segmentDecorators;
 
@@ -100,7 +99,7 @@ public class XRayHttpServerFilter implements HttpServerFilter {
                                 AWSXRayRecorder awsxRayRecorder,
                                 HttpResponseAttributesCollector httpResponseAttributesCollector,
                                 HttpRequestAttributesCollector httpRequestAttributesCollector,
-                                List<SegmentNamingStrategy> segmentNamingStrategies,
+                                SegmentNamingStrategy<HttpRequest<?>> segmentNamingStrategy,
                                 List<SegmentDecorator> segmentDecorators,
                                 TraceHeaderParser traceHeaderParser,
                                 SampleDecisionParser sampleDecisionParser,
@@ -110,9 +109,8 @@ public class XRayHttpServerFilter implements HttpServerFilter {
         this.httpResponseAttributesCollector = httpResponseAttributesCollector;
         this.httpRequestAttributesCollector = httpRequestAttributesCollector;
         this.traceHeaderParser = traceHeaderParser;
+        this.segmentNamingStrategy = segmentNamingStrategy;
         this.sampleDecisionParser = sampleDecisionParser;
-        this.segmentNamingStrategy = segmentNamingStrategies.stream().findFirst()
-                .orElseThrow(() -> new ConfigurationException("No bean of type SegmentNamingStrategy found"));
         this.segmentDecorators = segmentDecorators;
         this.pathMatcher = PathMatcher.ANT;
         this.executorService = executorService;
@@ -137,7 +135,13 @@ public class XRayHttpServerFilter implements HttpServerFilter {
         if (LOG.isTraceEnabled()) {
             LOG.trace("Tracing request {} {}", request.getMethod(), request.getPath());
         }
-        String segmentName = segmentNamingStrategy.nameForRequest(request);
+        String segmentName = segmentNamingStrategy.resolveName(request).orElse(null);
+        if (segmentName == null) {
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("segment name not resolved");
+            }
+            return chain.proceed(request);
+        }
         SamplingRequest samplingRequest = createSamplingRequest(request, segmentName);
         SamplingStrategy samplingStrategy = recorder.getSamplingStrategy();
         SamplingResponse samplingResponse = samplingStrategy.shouldTrace(samplingRequest);
@@ -148,7 +152,6 @@ public class XRayHttpServerFilter implements HttpServerFilter {
 
         Segment segment = createSegment(incomingTraceHeader, sampleDecision, samplingResponse, samplingStrategy, requestAttributes, segmentName);
         request.setAttribute(HttpRequestAttributeSegmentContext.XRAY_SEGMENT_RESOLVER, segment);
-
 
         return Flux.from(chain.proceed(request))
                 .map(mutableHttpResponse -> {

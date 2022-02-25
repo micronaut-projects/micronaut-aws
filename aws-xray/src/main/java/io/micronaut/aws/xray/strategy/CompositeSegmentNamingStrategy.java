@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright 2017-2022 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,38 +15,34 @@
  */
 package io.micronaut.aws.xray.strategy;
 
-import io.micronaut.aws.xray.configuration.XRayConfiguration;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * If the property tracing.xray.fixed-name is set its value is used as the segment name.
- * @since 3.2.0
+ * Attempts to resolve the segment name using every bean of type {@link SegmentNamingStrategy}.
  * @author Sergio del Amo
+ * @since 3.2.0
  * @param <T> Request
  */
+@Primary
 @Singleton
-public class FixedSegmentNamingStrategy<T> implements SegmentNamingStrategy<T> {
-    public static final int ORDER = SystemPropertySegmentNamingStrategy.ORDER + 100;
-    private final String fixedName;
+public class CompositeSegmentNamingStrategy<T> implements SegmentNamingStrategy<T> {
 
-    /**
-     *
-     * @param xRayConfiguration X-Ray Configuration
-     */
-    public FixedSegmentNamingStrategy(XRayConfiguration xRayConfiguration) {
-        this.fixedName = xRayConfiguration.getFixedName().orElse(null);
-    }
+    private final List<SegmentNamingStrategy<T>> segmentNamingStrategyList;
 
-    @Override
-    public int getOrder() {
-        return ORDER;
+    public CompositeSegmentNamingStrategy(List<SegmentNamingStrategy<T>> segmentNamingStrategyList) {
+        this.segmentNamingStrategyList = segmentNamingStrategyList;
     }
 
     @Override
     @NonNull
     public Optional<String> resolveName(@NonNull T request) {
-        return Optional.ofNullable(fixedName);
+        return segmentNamingStrategyList.stream()
+                .filter(it -> it.resolveName(request).isPresent())
+                .map(it -> it.resolveName(request).orElse(null))
+                .findFirst();
     }
 }

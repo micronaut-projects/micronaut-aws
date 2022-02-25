@@ -22,15 +22,16 @@ import io.micronaut.http.server.util.HttpHostResolver;
 
 import jakarta.inject.Singleton;
 
+import java.util.Optional;
+
 /**
  * Uses as segment name the host name resolved by {@link HttpHostResolver}.
  * @author Sergio del Amo
  * @since 3.2.0
  */
-@Requires(classes = HttpHostResolver.class)
 @Requires(beans = HttpHostResolver.class)
 @Singleton
-public class HttpHostNamingStrategy implements SegmentNamingStrategy {
+public class HttpHostNamingStrategy implements SegmentNamingStrategy<HttpRequest<?>> {
     public static final int ORDER = FixedSegmentNamingStrategy.ORDER + 100;
 
     private final HttpHostResolver httpHostResolver;
@@ -50,7 +51,7 @@ public class HttpHostNamingStrategy implements SegmentNamingStrategy {
 
     @Override
     @NonNull
-    public String nameForRequest(@NonNull HttpRequest<?> request) {
-        return httpHostResolver.resolve(request);
+    public Optional<String> resolveName(@NonNull HttpRequest<?> request) {
+        return Optional.of(httpHostResolver.resolve(request));
     }
 }

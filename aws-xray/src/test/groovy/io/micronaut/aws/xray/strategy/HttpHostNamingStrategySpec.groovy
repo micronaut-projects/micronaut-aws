@@ -27,6 +27,6 @@ class HttpHostNamingStrategySpec extends ApplicationContextSpecification {
 
         expect:
         applicationContext.containsBean(SegmentNamingStrategy)
-        applicationContext.getBeansOfType(SegmentNamingStrategy).first().nameForRequest(request) == "http://abc:8080"
+        "http://abc:8080" == applicationContext.getBean(SegmentNamingStrategy).resolveName(request).get()
     }
 }

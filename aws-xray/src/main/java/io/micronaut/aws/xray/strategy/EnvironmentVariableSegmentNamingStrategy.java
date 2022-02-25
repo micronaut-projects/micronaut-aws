@@ -18,18 +18,18 @@ package io.micronaut.aws.xray.strategy;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.order.Ordered;
-import io.micronaut.http.HttpRequest;
-
 import jakarta.inject.Singleton;
+import java.util.Optional;
 
 /**
- * If Environment variable AWS_XRAY_TRACING_NAME is set, it returns its value as the segment name.
+ * If Environment variable {@value ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME} is set, it returns its value as the segment name.
  * @author Sergio del Amo
  * @since 3.2.0
+ * @param <T> Request
  */
 @Requires(condition = EnvironmentVariableSegmentNamingStrategyCondition.class)
 @Singleton
-public class EnvironmentVariableSegmentNamingStrategy implements SegmentNamingStrategy {
+public class EnvironmentVariableSegmentNamingStrategy<T> implements SegmentNamingStrategy<T> {
     public static final String ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME = "AWS_XRAY_TRACING_NAME";
     public static final int ORDER = Ordered.HIGHEST_PRECEDENCE + 100;
 
@@ -40,7 +40,7 @@ public class EnvironmentVariableSegmentNamingStrategy implements SegmentNamingSt
 
     @Override
     @NonNull
-    public String nameForRequest(@NonNull HttpRequest<?> request) {
-        return System.getenv(ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME);
+    public Optional<String> resolveName(@NonNull T request) {
+        return Optional.ofNullable(System.getenv(ENVIRONMENT_VARIABLE_AWS_XRAY_TRACING_NAME));
     }
 }
