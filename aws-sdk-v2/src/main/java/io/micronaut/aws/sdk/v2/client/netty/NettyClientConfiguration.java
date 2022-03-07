@@ -47,7 +47,7 @@ public class NettyClientConfiguration extends AWSConfiguration {
         ProxyConfiguration proxyConfig = proxy.build();
         if (proxyConfig.scheme() == null &&
                 proxyConfig.host() == null &&
-                proxyConfig.nonProxyHosts().isEmpty()
+                proxy.useSystemPropertyValues(false).build().nonProxyHosts().isEmpty()
         ) {
             return builder;
         } else {
