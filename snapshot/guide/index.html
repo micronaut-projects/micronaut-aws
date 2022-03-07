@@ -2541,7 +2541,14 @@ interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin"></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.function.client.FunctionClient
+import jakarta.inject.Named
+
+@FunctionClient
+internal interface AnalyticsClient {
+    @Named("analytics")
+    fun visit(productId: String): String
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -2577,7 +2584,12 @@ interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin"></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.function.client.FunctionClient
+
+@FunctionClient
+internal interface AnalyticsClient {
+    fun analytics(productId: String): String
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
