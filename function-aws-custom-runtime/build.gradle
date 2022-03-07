@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor "io.micronaut:micronaut-graal"
     compileOnly "io.micronaut:micronaut-inject-java"
     compileOnly project(":function-aws-api-proxy")
 
