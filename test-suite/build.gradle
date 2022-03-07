@@ -1,9 +1,18 @@
 plugins {
-    id 'io.micronaut.build.internal.aws-test-suite'
+    id 'java-library'
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
-    testImplementation platform("io.micronaut:micronaut-bom:${micronautVersion}")
+    testAnnotationProcessor(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+
+    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
     testImplementation project(":function-aws")
     testImplementation project(":function-client-aws")
 }
@@ -12,4 +21,13 @@ tasks.named("test") {
     systemProperty "aws.accessKeyId", 'XXX'
     systemProperty "aws.secretKey", 'YYY'
     systemProperty "aws.region", 'us-east-1'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("1.8")
+    targetCompatibility = JavaVersion.toVersion("1.8")
 }
