@@ -36,6 +36,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.function.aws.DiagnosticInfoPopulator;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpMethod;
@@ -121,6 +122,7 @@ public final class MicronautLambdaContainerHandler
     private Router router;
     private ErrorResponseProcessor errorResponseProcessor;
     private RouteExecutor routeExecutor;
+    private DiagnosticInfoPopulator diagnosticInfoPopulator;
 
     /**
      * Default constructor.
@@ -174,6 +176,7 @@ public final class MicronautLambdaContainerHandler
         ArgumentUtils.requireNonNull("applicationContextBuilder", applicationContextBuilder);
         this.lambdaContainerEnvironment = lambdaContainerEnvironment;
         this.applicationContextBuilder = applicationContextBuilder;
+        this.diagnosticInfoPopulator = new DiagnosticInfoPopulator();
 
         if (applicationContext == null) {
             initialize();
@@ -303,6 +306,10 @@ public final class MicronautLambdaContainerHandler
             MicronautAwsProxyResponse<?> containerResponse,
             Context lambdaContext) {
         Timer.start(TIMER_REQUEST);
+
+        diagnosticInfoPopulator.populateMappingDiagnosticContextValues(lambdaContext);
+        diagnosticInfoPopulator.populateMappingDiagnosticContextWithXrayTraceId();
+
         try {
             ServerRequestContext.with(containerRequest, () -> {
                 Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(HttpAttributes.ROUTE_MATCH, UriRouteMatch.class);

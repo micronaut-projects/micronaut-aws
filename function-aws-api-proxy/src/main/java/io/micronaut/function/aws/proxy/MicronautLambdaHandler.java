@@ -65,6 +65,7 @@ public class MicronautLambdaHandler implements RequestHandler<AwsProxyRequest, A
 
     @Override
     public AwsProxyResponse handleRequest(AwsProxyRequest input, Context context) {
+
         return handler.proxy(input, context);
     }
 
