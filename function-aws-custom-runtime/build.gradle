@@ -3,18 +3,16 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-graal"
-    compileOnly "io.micronaut:micronaut-inject-java"
+    annotationProcessor libs.micronaut.graal
     compileOnly project(":function-aws-api-proxy")
 
-    api "io.micronaut:micronaut-http-client"
-    api "com.amazonaws:aws-lambda-java-events:3.11.0"
-    implementation 'com.github.spotbugs:spotbugs-annotations'
+    api libs.micronaut.http.client
+    api libs.managed.aws.lambda.events
+    implementation libs.spotbugs.annotations
 
     testImplementation project(":function-aws-api-proxy"), {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
-    testImplementation "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation libs.micronaut.inject.java
+    testImplementation libs.micronaut.http.server.netty
 }

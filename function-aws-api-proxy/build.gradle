@@ -3,36 +3,34 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-graal"
+    annotationProcessor libs.micronaut.graal
 
-    compileOnly "io.micronaut.security:micronaut-security"
+    compileOnly libs.micronaut.security
 
-    implementation "io.micronaut:micronaut-http-netty"
+    implementation libs.micronaut.http.netty
 
-    implementation "io.projectreactor:reactor-core"
+    implementation libs.projectreactor
 
-    api "io.micronaut:micronaut-http-server"
-    api "com.amazonaws.serverless:aws-serverless-java-container-core:$awsServerlessJavaContainerCoreVersion", {
+    api libs.micronaut.http.server
+    api(libs.managed.aws.serverless.core) {
         exclude group:'javax.servlet', module:'javax.servlet-api'
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
         exclude group: "commons-logging"
     }
-    api "org.slf4j:jcl-over-slf4j:1.7.36"
+    api libs.managed.jcl.over.slf4j
     api project(":function-aws")
     api project(":aws-common")
 
-    testAnnotationProcessor "io.micronaut:micronaut-validation"
-    testImplementation "io.micronaut:micronaut-validation"
+    testAnnotationProcessor libs.micronaut.validation
+    testImplementation libs.micronaut.validation
 
-    testImplementation "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut.security:micronaut-security"
+    testImplementation libs.micronaut.inject.java
+    testImplementation libs.micronaut.http.client
+    testImplementation libs.micronaut.security
 
-    testImplementation "io.micronaut.views:micronaut-views-handlebars"
+    testImplementation libs.micronaut.views.handlebars
 
-    testImplementation 'com.fasterxml.jackson.module:jackson-module-afterburner'
-    testImplementation 'javax.servlet:servlet-api:2.5'
-    testImplementation 'org.javadelight:delight-fileupload:0.0.5'
-    testRuntimeOnly 'com.github.jknack:handlebars:4.3.0'
+    testImplementation libs.jackson.afterburner
+    testImplementation libs.servlet.api
+    testImplementation libs.fileupload
 }

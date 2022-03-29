@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    api 'io.micronaut.discovery:micronaut-discovery-client'
+    api libs.micronaut.discovery.client
     api project(":aws-sdk-v2")
 
-    implementation 'software.amazon.awssdk:servicediscovery'
+    implementation libs.awssdk.servicediscovery
 
-    testImplementation "io.projectreactor:reactor-core"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
+    testImplementation libs.projectreactor
+    testImplementation libs.micronaut.http.server.netty
 }

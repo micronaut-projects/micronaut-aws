@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    compileOnly "io.micronaut:micronaut-runtime"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-runtime"
+    compileOnly libs.micronaut.runtime
+    testImplementation libs.micronaut.runtime
 }
