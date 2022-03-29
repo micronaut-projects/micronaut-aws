@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api platform(libs.boms.aws.java.sdk.v1)
+    api platform('com.amazonaws:aws-java-sdk-bom:1.12.172')
     api libs.managed.aws.java.sdk.core
 
     api project(":aws-common")

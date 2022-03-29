@@ -29,9 +29,6 @@ awssdk-sqs = { module = 'software.amazon.awssdk:sqs' }
 awssdk-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection-client' }
 
-boms-aws-java-sdk-v1 = { module = 'com.amazonaws:aws-java-sdk-bom', version.ref = 'managed-aws-java-sdk-v1' }
-boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'managed-aws-java-sdk-v2' }
-
 bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.ref = 'bouncycastle'}
 fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
 graal = { module = "org.graalvm.nativeimage:svm" }
