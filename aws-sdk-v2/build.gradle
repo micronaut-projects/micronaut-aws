@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api platform("software.amazon.awssdk:bom:${libs.versions.managed.aws.java.sdk.v2.get()}")
+    api platform(libs.boms.aws.java.sdk.v2)
     api project(":aws-common")
 
     compileOnly libs.graal
