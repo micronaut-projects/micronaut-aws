@@ -20,14 +20,15 @@ import com.amazonaws.serverless.proxy.ExceptionHandler;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.ErrorModel;
 import com.amazonaws.serverless.proxy.model.Headers;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Default {@link ExceptionHandler} implementation.
@@ -94,11 +95,12 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
      * @return The error json
      */
     protected String getErrorJson(String message) {
-        try {
-            return environment
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            environment
                     .getObjectMapper()
-                    .writeValueAsString(new ErrorModel(message));
-        } catch (JsonProcessingException e) {
+                    .writeValue(baos, new ErrorModel(message));
+            return baos.toString(StandardCharsets.UTF_8.name());
+        } catch (IOException e) {
             LOG.error("Could not produce error JSON", e);
             return "{ \"message\": \"" + message + "\" }";
         }

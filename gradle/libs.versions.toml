@@ -65,6 +65,8 @@ micronaut-mongo-sync = { module = 'io.micronaut.mongodb:micronaut-mongo-sync' }
 micronaut-runtime = { module = 'io.micronaut:micronaut-runtime' }
 micronaut-runtime-groovy = { module = 'io.micronaut.groovy:micronaut-runtime-groovy' }
 micronaut-security = { module = 'io.micronaut.security:micronaut-security' }
+micronaut-serde = { module = 'io.micronaut.serde:micronaut-serde-api' }
+micronaut-serde-jackson = { module = 'io.micronaut.serde:micronaut-serde-jackson' }
 micronaut-test-junit5 = { module = 'io.micronaut.test:micronaut-test-junit5' }
 micronaut-validation = { module = 'io.micronaut:micronaut-validation' }
 micronaut-views-handlebars = { module = 'io.micronaut.views:micronaut-views-handlebars' }

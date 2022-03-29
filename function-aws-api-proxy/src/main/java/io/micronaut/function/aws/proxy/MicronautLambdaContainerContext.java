@@ -15,10 +15,10 @@
  */
 package io.micronaut.function.aws.proxy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.function.aws.MicronautLambdaContext;
-import io.micronaut.jackson.codec.JsonMediaTypeCodec;
+import io.micronaut.json.JsonMapper;
+import io.micronaut.json.codec.JsonMediaTypeCodec;
 import io.micronaut.web.router.Router;
 
 /**
@@ -40,9 +40,9 @@ public interface MicronautLambdaContainerContext extends ApplicationContextProvi
     JsonMediaTypeCodec getJsonCodec();
 
     /**
-     * @return The Jackson's {@link ObjectMapper}
+     * @return The {@link JsonMapper}
      */
-    default ObjectMapper getObjectMapper() {
-        return getJsonCodec().getObjectMapper();
+    default JsonMapper getObjectMapper() {
+        return getJsonCodec().getJsonMapper();
     }
 }

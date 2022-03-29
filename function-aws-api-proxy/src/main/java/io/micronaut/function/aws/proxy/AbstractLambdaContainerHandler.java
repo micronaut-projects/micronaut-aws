@@ -28,9 +28,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import io.micronaut.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +117,7 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
      *
      * @return Return the object mapper.
      */
-    protected abstract ObjectMapper objectMapper();
+    protected abstract JsonMapper objectMapper();
 
     /**
      * Gets a writer for the given response class.
@@ -133,7 +131,7 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
      * @param requestClass The request class
      * @return The reader
      */
-    protected abstract ObjectReader readerFor(Class<RequestType> requestClass);
+    protected abstract ObjectReader<RequestType> readerFor(Class<RequestType> requestClass);
 
     /**
      * Get the container response.
@@ -258,4 +256,17 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
     public static ContainerConfig getContainerConfig() {
         return config;
     }
+
+    @FunctionalInterface
+    interface ObjectWriter {
+
+        void writeValue(OutputStream os, Object value) throws IOException;
+    }
+
+    @FunctionalInterface
+    interface ObjectReader<T> {
+
+        T readValue(InputStream input) throws IOException;
+    }
+
 }

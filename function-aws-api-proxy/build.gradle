@@ -4,12 +4,15 @@ plugins {
 
 dependencies {
     annotationProcessor libs.micronaut.graal
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor:1.0.1")
 
     compileOnly libs.micronaut.security
 
     implementation libs.micronaut.http.netty
 
     implementation libs.projectreactor
+    implementation libs.micronaut.serde
+    implementation libs.micronaut.serde.jackson
 
     api libs.micronaut.http.server
     api(libs.managed.aws.serverless.core) {
