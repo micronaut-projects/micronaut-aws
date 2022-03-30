@@ -104,6 +104,7 @@ public class SkillController {
             if (responseEnvelope != null) {
                 return HttpResponse.ok(responseEnvelope);
             }
+
         } catch (IOException e) {
             LOG.error("Unable to parse a byte array to RequestEnvelope");
         }
