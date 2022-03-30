@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.codec.CodecException
@@ -19,7 +18,6 @@ import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.serde.annotation.Serdeable
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
@@ -130,8 +128,6 @@ class ErrorHandlerSpec extends Specification {
         response.multiValueHeaders.getFirst(HttpHeaders.CONTENT_TYPE) == io.micronaut.http.MediaType.APPLICATION_JSON
     }
 
-    // TODO: This returns a Bad Request, not a validation error?!?
-    @Ignore
     void 'message validation errors return 400'() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/jsonBody', HttpMethod.POST.toString()).body("{\"numberField\": 0}")
