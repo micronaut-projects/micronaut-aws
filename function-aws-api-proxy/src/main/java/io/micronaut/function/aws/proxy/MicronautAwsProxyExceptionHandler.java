@@ -95,11 +95,8 @@ public class MicronautAwsProxyExceptionHandler implements ExceptionHandler<AwsPr
      * @return The error json
      */
     protected String getErrorJson(String message) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            environment
-                    .getObjectMapper()
-                    .writeValue(baos, new ErrorModel(message));
-            return baos.toString(StandardCharsets.UTF_8.name());
+        try {
+            return new String(environment.getObjectMapper().writeValueAsBytes(new ErrorModel(message)), StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             LOG.error("Could not produce error JSON", e);
             return "{ \"message\": \"" + message + "\" }";

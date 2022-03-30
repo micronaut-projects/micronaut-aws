@@ -15,8 +15,7 @@
  */
 package io.micronaut.discovery.cloud.aws;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonFactory;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
@@ -24,6 +23,10 @@ import io.micronaut.core.io.IOUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.discovery.cloud.ComputeInstanceMetadata;
 import io.micronaut.discovery.cloud.ComputeInstanceMetadataResolver;
+import io.micronaut.jackson.core.tree.JsonNodeTreeCodec;
+import io.micronaut.json.tree.JsonNode;
+import io.micronaut.serde.ObjectMapper;
+import io.micronaut.serde.annotation.SerdeImport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +56,7 @@ import static io.micronaut.discovery.cloud.ComputeInstanceMetadataResolverUtils.
 @Requires(property = AmazonMetadataConfiguration.PREFIX + ".enabled", value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Requires(classes = ComputeInstanceMetadataResolver.class)
 @Primary
+@SerdeImport(value = JsonNode.class)
 public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMetadataResolver {
 
     private static final Logger LOG = LoggerFactory.getLogger(AmazonComputeInstanceMetadataResolver.class);
@@ -62,6 +66,7 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
     private static final Pattern DRIVE_LETTER_PATTERN = Pattern.compile("^\\/*[a-zA-z]:.*$");
 
     private final ObjectMapper objectMapper;
+    private final JsonFactory jsonFactory = new JsonFactory();
     private final AmazonMetadataConfiguration configuration;
     private AmazonEC2InstanceMetadata cachedMetadata;
 
@@ -77,12 +82,8 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
         this.configuration = configuration;
     }
 
-    /**
-     * Create a new instance to resolve {@link ComputeInstanceMetadata} for Amazon EC2 with default configurations.
-     */
-    public AmazonComputeInstanceMetadataResolver() {
-        this.objectMapper = new ObjectMapper();
-        this.configuration = new AmazonMetadataConfiguration();
+    private static Optional<String> stringValue(JsonNode json, String key) {
+        return Optional.ofNullable(json.get(key)).map(JsonNode::coerceStringValue);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
         try {
             String ec2InstanceIdentityDocURL = configuration.getInstanceDocumentUrl();
             String ec2InstanceMetadataURL = configuration.getMetadataUrl();
-            JsonNode metadataJson = readMetadataUrl(new URL(ec2InstanceIdentityDocURL), CONNECTION_TIMEOUT_IN_MILLS, READ_TIMEOUT_IN_MILLS, objectMapper, new HashMap<>());
+            JsonNode metadataJson = readMetadataUrl(new URL(ec2InstanceIdentityDocURL), CONNECTION_TIMEOUT_IN_MILLS, READ_TIMEOUT_IN_MILLS, JsonNodeTreeCodec.getInstance().withConfig(objectMapper.getStreamConfig()), jsonFactory, new HashMap<>());
             if (metadataJson != null) {
                 stringValue(metadataJson, EC2MetadataKeys.instanceId.name()).ifPresent(ec2InstanceMetadata::setInstanceId);
                 stringValue(metadataJson, EC2MetadataKeys.accountId.name()).ifPresent(ec2InstanceMetadata::setAccount);
@@ -138,7 +139,7 @@ public class AmazonComputeInstanceMetadataResolver implements ComputeInstanceMet
                 LOG.error("error getting public host name from:{}{}", ec2InstanceMetadataURL, EC2MetadataKeys.publicHostname.getName(), e);
             }
 
-            Map<?, ?> metadata = objectMapper.convertValue(ec2InstanceMetadata, Map.class);
+            Map<?, ?> metadata = objectMapper.readValue(objectMapper.writeValueAsString(ec2InstanceMetadata), Map.class);
             populateMetadata(ec2InstanceMetadata, metadata);
             LOG.debug("EC2 Metadata found:{}", ec2InstanceMetadata.getMetadata());
             //TODO make individual calls for building network interfaces.. required recursive http calls for all mac addresses

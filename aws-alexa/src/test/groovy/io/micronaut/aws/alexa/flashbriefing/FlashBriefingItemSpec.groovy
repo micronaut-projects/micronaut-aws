@@ -1,8 +1,8 @@
 package io.micronaut.aws.alexa.flashbriefing
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
 import io.micronaut.aws.ApplicationContextSpecification
+import io.micronaut.serde.ObjectMapper
 import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Unroll

@@ -15,7 +15,6 @@
  */
 package io.micronaut.function.aws.proxy;
 
-
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.LogFormatter;
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
@@ -26,8 +25,6 @@ import com.amazonaws.serverless.proxy.ResponseWriter;
 import com.amazonaws.serverless.proxy.SecurityContextWriter;
 import com.amazonaws.services.lambda.runtime.Context;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import io.micronaut.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -234,12 +231,6 @@ public abstract class AbstractLambdaContainerHandler<RequestType, ResponseType, 
             ResponseType resp = proxy(request, context);
 
             writerFor(responseTypeClass).writeValue(output, resp);
-        } catch (JsonParseException e) {
-            log.error("Error while parsing request object stream", e);
-            objectMapper().writeValue(output, exceptionHandler.handle(e));
-        } catch (JsonMappingException e) {
-            log.error("Error while mapping object to RequestType class", e);
-            objectMapper().writeValue(output, exceptionHandler.handle(e));
         } finally {
             output.flush();
             output.close();

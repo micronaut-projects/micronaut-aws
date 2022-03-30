@@ -3,7 +3,12 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor libs.micronaut.serde.processor
+
     api project(":aws-sdk-v2")
     api project(":aws-distributed-configuration")
     api libs.awssdk.secretsmanager
+
+    implementation libs.micronaut.serde
+    implementation libs.micronaut.serde.jackson
 }

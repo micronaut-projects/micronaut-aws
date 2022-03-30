@@ -1,77 +1,112 @@
 [
   {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Class io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Constructor io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver(com.fasterxml.jackson.databind.ObjectMapper,io.micronaut.discovery.cloud.aws.AmazonMetadataConfiguration)",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Constructor io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver()",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.aws.alexa.httpserver.controllers.SkillController",
+    "member": "Class io.micronaut.aws.alexa.httpserver.controllers.SkillController",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.aws.alexa.httpserver.controllers.SkillController",
+    "member": "Constructor io.micronaut.aws.alexa.httpserver.controllers.SkillController(com.fasterxml.jackson.databind.ObjectMapper,io.micronaut.aws.alexa.httpserver.services.RequestEnvelopeVerificationService,io.micronaut.aws.alexa.httpserver.services.RequestEnvelopeService)",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Class io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,com.fasterxml.jackson.databind.ObjectMapper)",
+    "reason": "Replacing Jackson mapping with Serde"
+  },
+  {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Class io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.objectMapper()",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.readerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.writerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Class io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.objectMapper()",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.readerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.writerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
     "member": "Class io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
     "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerContext.getJsonCodec()",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
     "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerContext.getObjectMapper()",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
     "member": "Class io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.objectMapper()",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.readerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   },
   {
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
     "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.writerFor(java.lang.Class)",
-    "reason": "Removal of Jackson for Serde"
+    "reason": "Replacing Jackson mapping with Serde"
   }
 ]

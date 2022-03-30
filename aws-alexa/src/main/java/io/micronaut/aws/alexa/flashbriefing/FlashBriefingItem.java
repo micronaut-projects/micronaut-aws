@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -32,7 +33,7 @@ import java.time.ZonedDateTime;
  * @author sdelamo
  * @since 2.0.0
  */
-@Introspected
+@Serdeable
 public class FlashBriefingItem implements Comparable<FlashBriefingItem> {
 
     /**
@@ -49,7 +50,7 @@ public class FlashBriefingItem implements Comparable<FlashBriefingItem> {
     @NotNull
     @NonNull
     @PastOrPresent
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private ZonedDateTime updateDate;
 
     /**
@@ -65,7 +66,7 @@ public class FlashBriefingItem implements Comparable<FlashBriefingItem> {
     @NonNull
     @NotNull
     @Size(max = 4500)
-    @JsonInclude()
+    @JsonInclude(value = JsonInclude.Include.ALWAYS)
     private String mainText;
 
     /**

@@ -3,6 +3,12 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor libs.micronaut.serde.processor
+
     compileOnly libs.micronaut.runtime
+
+    implementation libs.micronaut.serde
+    implementation libs.micronaut.serde.jackson
+
     testImplementation libs.micronaut.runtime
 }
