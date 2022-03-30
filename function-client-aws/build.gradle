@@ -4,16 +4,14 @@ plugins {
 
 dependencies {
     api project(":aws-sdk-v1")
-    compileOnly "io.micronaut:micronaut-inject-java"
     implementation "com.amazonaws:aws-java-sdk-lambda"
-    implementation "io.projectreactor:reactor-core"
-    api "io.micronaut:micronaut-function-client"
+    implementation libs.projectreactor
+    api libs.micronaut.function.client
 
-    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-inject-java"
-    testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "io.micronaut:micronaut-function-web"
-    testImplementation "io.micronaut.groovy:micronaut-function-groovy"
-    testImplementation "io.micronaut.groovy:micronaut-runtime-groovy"
+    testAnnotationProcessor libs.micronaut.inject.java
+    testImplementation libs.micronaut.inject.java
+    testImplementation libs.micronaut.http.server.netty
+    testImplementation libs.micronaut.function.web
+    testImplementation libs.micronaut.function.groovy
+    testImplementation libs.micronaut.runtime.groovy
 }

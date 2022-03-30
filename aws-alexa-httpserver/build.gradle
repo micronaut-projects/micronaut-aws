@@ -3,23 +3,23 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor "io.micronaut:micronaut-validation"
+    annotationProcessor libs.micronaut.validation
 
-    implementation "io.micronaut:micronaut-runtime"
-    implementation "io.micronaut:micronaut-validation"
-    implementation 'com.github.spotbugs:spotbugs-annotations'
+    implementation libs.micronaut.validation
+    implementation libs.spotbugs.annotations
 
     api project(":aws-alexa")
-    implementation "io.micronaut:micronaut-http-server"
-    api ("com.amazon.alexa:ask-sdk-core:$askVersion")
 
-    testImplementation "io.micronaut:micronaut-http-client"
-    testImplementation "io.micronaut:micronaut-http-server-netty"
-    testImplementation "org.bouncycastle:bcprov-jdk15on:1.70"
-    testImplementation ("com.amazon.alexa:ask-sdk:$askVersion") {
+    implementation libs.micronaut.http.server
+    api(libs.managed.alexa.ask.sdk.core)
+
+    testImplementation libs.micronaut.http.client
+    testImplementation libs.micronaut.http.server.netty
+    testImplementation libs.bouncycastle.provider
+    testImplementation (libs.alexa.ask.sdk) {
         transitive(false)
     }
-    testImplementation "com.amazon.alexa:ask-sdk-apache-client:$askVersion"
+    testImplementation libs.alexa.ask.sdk.apache.client
 
-    testRuntimeOnly "org.slf4j:jcl-over-slf4j:1.7.36"
+    testRuntimeOnly libs.jcl.over.slf4j
 }

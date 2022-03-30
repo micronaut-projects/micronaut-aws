@@ -3,9 +3,8 @@ plugins {
 }
 
 dependencies {
-    api "io.micronaut:micronaut-http-server"
+    api libs.micronaut.http.server
     api project(":function-aws-api-proxy")
-    implementation 'org.eclipse.jetty:jetty-server:9.4.35.v20201120'
-    testCompileOnly "io.micronaut:micronaut-inject-groovy"
-    testImplementation "io.micronaut:micronaut-http-client"
+    implementation libs.jetty.server
+    testImplementation libs.micronaut.http.client
 }

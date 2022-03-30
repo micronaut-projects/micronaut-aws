@@ -3,14 +3,11 @@ plugins {
 }
 
 dependencies {
-    compileOnly "io.micronaut:micronaut-inject-java"
+    api libs.micronaut.function
+    api libs.managed.aws.lambda.core
 
-    api "io.micronaut:micronaut-function:$micronautVersion"
-    api "com.amazonaws:aws-lambda-java-core:$awsLambdaJavaCoreVersion"
-
-    testImplementation "io.micronaut:micronaut-inject-groovy"
-    testImplementation("io.micronaut.mongodb:micronaut-mongo-sync")
-    testImplementation("org.testcontainers:spock")
-    testImplementation("org.testcontainers:mongodb")
-    testImplementation("org.testcontainers:testcontainers")
+    testImplementation(libs.micronaut.mongo.sync)
+    testImplementation(libs.testcontainers.spock)
+    testImplementation(libs.testcontainers.mongodb)
+    testImplementation(libs.testcontainers)
 }
