@@ -41,7 +41,7 @@ class SkillControllerPathSpec extends EmbeddedServerSpecification implements Req
         String skillId = applicationContext.getBean(AlexaSkillConfiguration).skillId
         RequestEnvelope re = launchRequestEnvelop(skillId)
 
-        HttpRequest request = HttpRequest.POST("/computer", re)
+        HttpRequest<RequestEnvelope> request = HttpRequest.POST("/computer", re)
         HttpResponse<ResponseEnvelope> response = client.exchange(request, ResponseEnvelope)
 
         then:
