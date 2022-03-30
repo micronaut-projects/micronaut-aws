@@ -15,17 +15,8 @@
  */
 package io.micronaut.aws.alexa.httpserver.conf;
 
-import com.amazon.ask.model.Application;
-import com.amazon.ask.model.Context;
-import com.amazon.ask.model.LaunchRequest;
-import com.amazon.ask.model.RequestEnvelope;
-import com.amazon.ask.model.ResponseEnvelope;
-import com.amazon.ask.model.Session;
-import com.amazon.ask.model.User;
-import com.amazon.ask.model.interfaces.system.SystemState;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.core.util.Toggleable;
-import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * Defines configuration for the Alexa controller.
@@ -33,14 +24,6 @@ import io.micronaut.serde.annotation.SerdeImport;
  * @author sdelamo
  * @since 2.0.0
  */
-@SerdeImport(RequestEnvelope.class)
-@SerdeImport(ResponseEnvelope.class)
-@SerdeImport(Session.class)
-@SerdeImport(User.class)
-@SerdeImport(Application.class)
-@SerdeImport(Context.class)
-@SerdeImport(SystemState.class)
-@SerdeImport(LaunchRequest.class)
 public interface AlexaControllerConfiguration extends Toggleable {
 
     /**

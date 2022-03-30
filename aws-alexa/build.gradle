@@ -4,13 +4,9 @@ plugins {
 
 dependencies {
     annotationProcessor libs.micronaut.validation
-    annotationProcessor libs.micronaut.serde.processor
 
     implementation libs.micronaut.validation
     implementation libs.spotbugs.annotations
-
-    implementation libs.micronaut.serde
-    implementation libs.micronaut.serde.jackson
 
     compileOnly(libs.alexa.ask.sdk)
     api(libs.managed.alexa.ask.sdk.core)

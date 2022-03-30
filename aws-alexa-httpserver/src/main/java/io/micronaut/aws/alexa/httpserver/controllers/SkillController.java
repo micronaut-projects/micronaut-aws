@@ -17,6 +17,7 @@ package io.micronaut.aws.alexa.httpserver.controllers;
 
 import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.aws.alexa.httpserver.AskHttpServerConstants;
 import io.micronaut.aws.alexa.httpserver.conf.AlexaControllerConfigurationProperties;
 import io.micronaut.aws.alexa.httpserver.services.RequestEnvelopeService;
@@ -28,7 +29,6 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.serde.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,7 +104,6 @@ public class SkillController {
             if (responseEnvelope != null) {
                 return HttpResponse.ok(responseEnvelope);
             }
-
         } catch (IOException e) {
             LOG.error("Unable to parse a byte array to RequestEnvelope");
         }
