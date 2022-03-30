@@ -50,6 +50,7 @@ import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
+import io.micronaut.serde.annotation.SerdeImport;
 
 import java.io.Closeable;
 import java.io.PrintWriter;
@@ -98,6 +99,22 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
                 com.amazonaws.services.lambda.runtime.events.SQSEvent.class
         }
 )
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CognitoEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.ConfigEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.LexEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.SNSEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.SQSEvent.class)
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
 

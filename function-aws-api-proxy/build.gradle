@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     annotationProcessor libs.micronaut.graal
-    annotationProcessor libs.micronaut.serde
+    annotationProcessor libs.micronaut.serde.processor
 
     compileOnly libs.micronaut.security
 

@@ -117,14 +117,18 @@ import java.util.stream.Collectors;
                 AwsProxySecurityContext.class
         }
 )
-@SerdeImport(AwsProxyResponse.class)
+@SerdeImport(AlbContext.class)
+@SerdeImport(ApiGatewayAuthorizerContext.class)
+@SerdeImport(ApiGatewayRequestIdentity.class)
 @SerdeImport(AwsProxyRequest.class)
 @SerdeImport(AwsProxyRequestContext.class)
-@SerdeImport(MultiValuedTreeMap.class)
+@SerdeImport(AwsProxyResponse.class)
+@SerdeImport(CognitoAuthorizerClaims.class)
+@SerdeImport(ContainerConfig.class)
+@SerdeImport(ErrorModel.class)
 @SerdeImport(Headers.class)
-@SerdeImport(ApiGatewayRequestIdentity.class)
-@SerdeImport(ApiGatewayAuthorizerContext.class)
-@SerdeImport(AlbContext.class)
+@SerdeImport(MultiValuedTreeMap.class)
+@SerdeImport(AwsProxySecurityContext.class)
 public final class MicronautLambdaContainerHandler
         extends AbstractLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
