@@ -451,7 +451,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                 try {
                     return objectMapper.writeValueAsString(value);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    return null;
                 }
             }
         }

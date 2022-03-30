@@ -48,24 +48,4 @@ class ObjectMapperSpec extends Specification {
         thrown(NoSuchBeanException)
     }
 
-
-    void "when changing global object mapper configuration, it can be configured to create a new one for aws" () {
-        given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.builder().properties([
-                        'jackson.property-naming-strategy': 'SNAKE_CASE',
-                        'aws.proxy.shared-object-mapper': false
-                ])
-        )
-
-        when:
-        ObjectMapper global = handler.applicationContext.getBean(ObjectMapper)
-        ObjectMapper aws = handler.applicationContext.getBean(ObjectMapper, Qualifiers.byName("aws"))
-
-        then:
-        global.deserializationConfig.propertyNamingStrategy == PropertyNamingStrategies.SNAKE_CASE ||
-                global.deserializationConfig.propertyNamingStrategy == PropertyNamingStrategy.SNAKE_CASE
-        aws.deserializationConfig.propertyNamingStrategy == null
-    }
-
 }
