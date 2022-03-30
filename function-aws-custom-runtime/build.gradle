@@ -13,7 +13,9 @@ dependencies {
     implementation libs.micronaut.serde
     implementation libs.spotbugs.annotations
 
+    testAnnotationProcessor libs.micronaut.inject.java
     testAnnotationProcessor libs.micronaut.serde.processor
+
     testImplementation project(":function-aws-api-proxy"), {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'
     }
