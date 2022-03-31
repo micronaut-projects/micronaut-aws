@@ -74,7 +74,6 @@ micronaut-views-handlebars = { module = 'io.micronaut.views:micronaut-views-hand
 
 projectreactor = { module = 'io.projectreactor:reactor-core' }
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
-spotbugs-annotations = { module = 'com.github.spotbugs:spotbugs-annotations' }
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
 testcontainers-spock = { module = 'org.testcontainers:spock' }

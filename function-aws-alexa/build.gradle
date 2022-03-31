@@ -8,8 +8,6 @@ dependencies {
     implementation libs.micronaut.runtime
     implementation libs.micronaut.validation
 
-    implementation libs.spotbugs.annotations
-
     implementation project(":function-aws")
 
     api libs.managed.alexa.ask.sdk.lambda
