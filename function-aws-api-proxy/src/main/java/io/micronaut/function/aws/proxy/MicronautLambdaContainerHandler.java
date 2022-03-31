@@ -19,12 +19,18 @@ import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.AwsProxySecurityContextWriter;
 import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
-import com.amazonaws.serverless.proxy.model.*;
+import com.amazonaws.serverless.proxy.model.AlbContext;
+import com.amazonaws.serverless.proxy.model.ApiGatewayAuthorizerContext;
+import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.serverless.proxy.model.CognitoAuthorizerClaims;
+import com.amazonaws.serverless.proxy.model.ContainerConfig;
+import com.amazonaws.serverless.proxy.model.ErrorModel;
+import com.amazonaws.serverless.proxy.model.Headers;
+import com.amazonaws.serverless.proxy.model.MultiValuedTreeMap;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
@@ -55,8 +61,11 @@ import io.micronaut.http.server.binding.RequestArgumentSatisfier;
 import io.micronaut.http.server.exceptions.response.ErrorContext;
 import io.micronaut.http.server.exceptions.response.ErrorResponseProcessor;
 import io.micronaut.inject.qualifiers.Qualifiers;
-import io.micronaut.jackson.codec.JsonMediaTypeCodec;
+import io.micronaut.json.JsonMapper;
+import io.micronaut.json.codec.JsonMediaTypeCodec;
 import io.micronaut.scheduling.executor.ExecutorSelector;
+import io.micronaut.serde.ObjectMapper;
+import io.micronaut.serde.annotation.SerdeImport;
 import io.micronaut.web.router.MethodBasedRouteMatch;
 import io.micronaut.web.router.RouteInfo;
 import io.micronaut.web.router.RouteMatch;
@@ -77,6 +86,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -107,6 +117,18 @@ import java.util.stream.Collectors;
                 AwsProxySecurityContext.class
         }
 )
+@SerdeImport(AlbContext.class)
+@SerdeImport(ApiGatewayAuthorizerContext.class)
+@SerdeImport(ApiGatewayRequestIdentity.class)
+@SerdeImport(AwsProxyRequest.class)
+@SerdeImport(AwsProxyRequestContext.class)
+@SerdeImport(AwsProxyResponse.class)
+@SerdeImport(CognitoAuthorizerClaims.class)
+@SerdeImport(ContainerConfig.class)
+@SerdeImport(ErrorModel.class)
+@SerdeImport(Headers.class)
+@SerdeImport(MultiValuedTreeMap.class)
+@SerdeImport(AwsProxySecurityContext.class)
 public final class MicronautLambdaContainerHandler
         extends AbstractLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse, MicronautAwsProxyRequest<?>, MicronautAwsProxyResponse<?>> implements ApplicationContextProvider, Closeable, AutoCloseable {
 
@@ -202,18 +224,18 @@ public final class MicronautLambdaContainerHandler
     }
 
     @Override
-    protected ObjectMapper objectMapper() {
+    protected JsonMapper objectMapper() {
         return lambdaContainerEnvironment.getObjectMapper();
     }
 
     @Override
     protected ObjectWriter writerFor(Class<AwsProxyResponse> responseClass) {
-        return objectMapper().writerFor(responseClass);
+        return (outputStream, value) -> outputStream.write(objectMapper().writeValueAsBytes(value));
     }
 
     @Override
-    protected ObjectReader readerFor(Class<AwsProxyRequest> requestClass) {
-        return objectMapper().readerFor(requestClass);
+    protected ObjectReader<AwsProxyRequest> readerFor(Class<AwsProxyRequest> requestClass) {
+        return input -> objectMapper().readValue(input, Argument.of(requestClass));
     }
 
     @Override
@@ -422,12 +444,10 @@ public final class MicronautLambdaContainerHandler
                                     bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
                                 }
                                 final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body.get());
-                                ((MicronautAwsProxyRequest) containerRequest)
-                                        .setDecodedBody(decoded);
+                                ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(decoded);
                             } else {
-                                final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body.get());
-                                ((MicronautAwsProxyRequest) containerRequest)
-                                        .setDecodedBody(jsonNode);
+                                final Map<?, ?> node = lambdaContainerEnvironment.getJsonCodec().decode(Map.class, body.get());
+                                ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(node);
                             }
                         }
                     }
@@ -467,7 +487,7 @@ public final class MicronautLambdaContainerHandler
         if (!containerResponse.getContentType().isPresent()) {
             finalRoute.getAnnotationMetadata().getValue(Produces.class, String.class).ifPresent(containerResponse::contentType);
         }
-        finalRoute.getAnnotationMetadata().getValue(Status.class, HttpStatus.class).ifPresent(httpStatus -> containerResponse.status(httpStatus));
+        finalRoute.getAnnotationMetadata().getValue(Status.class, HttpStatus.class).ifPresent(containerResponse::status);
     }
 
     private void handlePossibleErrorStatus(

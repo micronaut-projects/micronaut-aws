@@ -22,6 +22,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
+import io.micronaut.serde.annotation.Serdeable
 import org.apache.commons.fileupload.FileItem
 import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
@@ -243,6 +244,7 @@ class BodySpec extends Specification {
     }
 
     @Canonical
+    @Serdeable
     static class Point {
         Integer x,y
     }

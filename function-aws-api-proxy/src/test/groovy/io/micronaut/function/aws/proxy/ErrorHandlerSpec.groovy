@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.transform.InheritConstructors
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.*
 import io.micronaut.http.annotation.*
 import io.micronaut.http.codec.CodecException
@@ -17,6 +16,7 @@ import io.micronaut.http.hateoas.Link
 import io.micronaut.http.server.exceptions.ExceptionHandler
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import io.micronaut.serde.annotation.Serdeable
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
@@ -257,7 +257,7 @@ class ErrorHandlerSpec extends Specification {
         }
     }
 
-    @Introspected
+    @Serdeable
     static class RequestObject {
         @Min(1L)
         Integer numberField;

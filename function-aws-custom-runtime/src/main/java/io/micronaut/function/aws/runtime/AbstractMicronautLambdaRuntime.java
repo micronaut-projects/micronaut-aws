@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2022 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.ApplicationContext;
@@ -50,8 +47,11 @@ import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
+import io.micronaut.serde.ObjectMapper;
+import io.micronaut.serde.annotation.SerdeImport;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -98,6 +98,22 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
                 com.amazonaws.services.lambda.runtime.events.SQSEvent.class
         }
 )
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.CognitoEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.ConfigEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.LexEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.SNSEvent.class)
+@SerdeImport(com.amazonaws.services.lambda.runtime.events.SQSEvent.class)
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
 
@@ -291,12 +307,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      *
      * @param request Request obtained from the Runtime API
      * @return if the request and the handler type are the same, just return the request, if the request is of type {@link APIGatewayProxyRequestEvent} it attempts to build an object of type HandlerRequestType with the body of the request, else returns {@code null}
-     * @throws JsonProcessingException if underlying request body contains invalid content
-     * @throws JsonMappingException if the request body JSON structure does not match structure
+     * @throws IOException if underlying request body contains invalid content or the request body JSON structure does not match structure
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected HandlerRequestType createHandlerRequest(RequestType request) throws JsonProcessingException, JsonMappingException  {
+    protected HandlerRequestType createHandlerRequest(RequestType request) throws IOException {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
         } else if (request instanceof APIGatewayProxyRequestEvent) {
@@ -435,7 +450,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                 ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
                 try {
                     return objectMapper.writeValueAsString(value);
-                } catch (JsonProcessingException e) {
+                } catch (IOException e) {
                     return null;
                 }
             }
@@ -449,12 +464,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param valueType Class Type to be read into
      * @param <T> Type to be read into
      * @return a new Class build from the JSON String
-     * @throws JsonProcessingException if underlying input contains invalid content
-     * @throws JsonMappingException if the input JSON structure does not match structure
+     * @throws IOException if underlying input contains invalid content, or does not match structure
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected <T> T valueFromContent(String content, Class<T> valueType) throws JsonProcessingException, JsonMappingException {
+    protected <T> T valueFromContent(String content, Class<T> valueType) throws IOException {
         if (content == null) {
             return null;
         }

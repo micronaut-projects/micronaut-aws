@@ -4,10 +4,16 @@ plugins {
 
 dependencies {
     annotationProcessor libs.micronaut.graal
+    annotationProcessor libs.micronaut.serde.processor
+
     compileOnly project(":function-aws-api-proxy")
 
     api libs.micronaut.http.client
     api libs.managed.aws.lambda.events
+    implementation libs.micronaut.serde
+
+    testAnnotationProcessor libs.micronaut.inject.java
+    testAnnotationProcessor libs.micronaut.serde.processor
 
     testImplementation project(":function-aws-api-proxy"), {
         exclude group:'com.fasterxml.jackson.module', module:'jackson-module-afterburner'

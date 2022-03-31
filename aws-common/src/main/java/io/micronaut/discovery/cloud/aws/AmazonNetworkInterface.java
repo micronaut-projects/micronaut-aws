@@ -17,6 +17,7 @@ package io.micronaut.discovery.cloud.aws;
 
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.discovery.cloud.NetworkInterface;
+import io.micronaut.serde.annotation.Serdeable;
 
 /**
  * A {@link NetworkInterface} implementation for Amazon.
@@ -25,6 +26,7 @@ import io.micronaut.discovery.cloud.NetworkInterface;
  * @since 1.0
  */
 @Internal
+@Serdeable
 class AmazonNetworkInterface extends NetworkInterface {
 
     @Override

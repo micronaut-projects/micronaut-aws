@@ -15,13 +15,12 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.serde.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
@@ -39,6 +38,8 @@ import software.amazon.awssdk.services.secretsmanager.model.ResourceNotFoundExce
 import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry;
 import software.amazon.awssdk.services.secretsmanager.model.SecretsManagerException;
 import jakarta.inject.Singleton;
+
+import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +106,7 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
                     if (secretValueOptional.isPresent()) {
                         try {
                             result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
-                        } catch (JsonProcessingException e) {
+                        } catch (IOException e) {
                             if (LOG.isWarnEnabled()) {
                                 LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
                             }

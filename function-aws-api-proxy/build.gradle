@@ -4,12 +4,16 @@ plugins {
 
 dependencies {
     annotationProcessor libs.micronaut.graal
+    annotationProcessor libs.micronaut.serde.processor
 
     compileOnly libs.micronaut.security
 
     implementation libs.micronaut.http.netty
 
     implementation libs.projectreactor
+
+    implementation libs.micronaut.serde
+    implementation libs.micronaut.serde.jackson
 
     api libs.micronaut.http.server
     api(libs.managed.aws.serverless.core) {
@@ -21,7 +25,9 @@ dependencies {
     api project(":function-aws")
     api project(":aws-common")
 
+    testAnnotationProcessor libs.micronaut.serde.processor
     testAnnotationProcessor libs.micronaut.validation
+
     testImplementation libs.micronaut.validation
 
     testImplementation libs.micronaut.inject.java

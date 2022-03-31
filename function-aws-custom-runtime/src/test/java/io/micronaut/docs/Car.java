@@ -1,14 +1,13 @@
 package io.micronaut.docs;
 
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
 
-@Introspected
+@Serdeable
 public class Car {
 
     private int cylinders;
 
     public Car() {
-
     }
 
     public int getCylinders() {

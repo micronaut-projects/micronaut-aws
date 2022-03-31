@@ -15,17 +15,22 @@
  */
 package io.micronaut.discovery.cloud
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.ComputePlatform
 import io.micronaut.context.env.Environment
 import io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver
 import io.micronaut.discovery.cloud.aws.AmazonMetadataConfiguration
+import io.micronaut.serde.ObjectMapper
+import spock.lang.AutoCleanup
 import spock.lang.Specification
 
 import java.nio.file.Path
 import java.nio.file.Paths
 
 class AmazonEC2InstanceResolverSpec extends Specification {
+
+    @AutoCleanup
+    ApplicationContext context = ApplicationContext.run()
 
     void "test building ec2 metadata"() {
         given:
@@ -34,7 +39,6 @@ class AmazonEC2InstanceResolverSpec extends Specification {
         AmazonComputeInstanceMetadataResolver resolver = getResolver()
 
         Optional<ComputeInstanceMetadata> computeInstanceMetadata = resolver.resolve(environment)
-
 
         expect:
         computeInstanceMetadata.isPresent()
@@ -45,7 +49,6 @@ class AmazonEC2InstanceResolverSpec extends Specification {
         networkInterface.network == "subnet-1e660468"
         networkInterface.gateway == "vpc-75d5d111"
         networkInterface.id == "eni-d88bca3d"
-
 
         computeInstanceMetadata.get().publicIpV4 == "34.230.77.169"
         computeInstanceMetadata.get().account == "057654311259"
@@ -67,7 +70,7 @@ class AmazonEC2InstanceResolverSpec extends Specification {
         configuration.metadataUrl = "file:///${s}/src/test/groovy/io/micronaut/discovery/cloud/"
         configuration.instanceDocumentUrl = "file:///${s}/src/test/groovy/io/micronaut/discovery/cloud/identity-document.json"
         AmazonComputeInstanceMetadataResolver resolver = new AmazonComputeInstanceMetadataResolver(
-                new ObjectMapper(),
+                context.getBean(ObjectMapper),
                 configuration
         )
         resolver

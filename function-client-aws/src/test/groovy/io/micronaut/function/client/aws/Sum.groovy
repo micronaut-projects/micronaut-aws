@@ -15,10 +15,13 @@
  */
 package io.micronaut.function.client.aws
 
+import io.micronaut.serde.annotation.Serdeable
+
 /**
  * @author graemerocher
  * @since 1.0
  */
+@Serdeable
 class Sum {
     int a
     Integer b

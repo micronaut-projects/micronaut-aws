@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Consumes
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
+import io.micronaut.serde.annotation.Serdeable
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
@@ -53,6 +54,7 @@ class ConsumesSpec extends Specification {
         }
     }
 
+    @Serdeable
     static class Pojo {
         String name
     }

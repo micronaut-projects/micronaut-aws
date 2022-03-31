@@ -1,0 +1,157 @@
+[
+  {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Class io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Constructor io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver(com.fasterxml.jackson.databind.ObjectMapper,io.micronaut.discovery.cloud.aws.AmazonMetadataConfiguration)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver",
+    "member": "Constructor io.micronaut.discovery.cloud.aws.AmazonComputeInstanceMetadataResolver()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Class io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,com.fasterxml.jackson.databind.ObjectMapper)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Class io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference.getBeanType()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference.load()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Class io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference.getBeanDefinitionType()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference.getBeanType()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Method io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference.load()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Class io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.objectMapper()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.readerFor(java.lang.Class)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler.writerFor(java.lang.Class)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AwsObjectMapperFactory",
+    "member": "Class io.micronaut.function.aws.proxy.AwsObjectMapperFactory",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AwsObjectMapperFactory",
+    "member": "Method io.micronaut.function.aws.proxy.AwsObjectMapperFactory.objectMapper()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AwsObjectMapperFactory",
+    "member": "Constructor io.micronaut.function.aws.proxy.AwsObjectMapperFactory()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "member": "Class io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerContext.getJsonCodec()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerContext.getObjectMapper()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Class io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.objectMapper()",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.readerFor(java.lang.Class)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Method io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler.writerFor(java.lang.Class)",
+    "reason": "Rewrite to use Serde instead of Jackson"
+  }
+]
