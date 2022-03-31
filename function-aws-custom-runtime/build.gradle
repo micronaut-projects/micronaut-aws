@@ -11,7 +11,6 @@ dependencies {
     api libs.micronaut.http.client
     api libs.managed.aws.lambda.events
     implementation libs.micronaut.serde
-    implementation libs.spotbugs.annotations
 
     testAnnotationProcessor libs.micronaut.inject.java
     testAnnotationProcessor libs.micronaut.serde.processor
