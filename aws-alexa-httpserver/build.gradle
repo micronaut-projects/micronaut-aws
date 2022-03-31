@@ -6,7 +6,6 @@ dependencies {
     annotationProcessor libs.micronaut.validation
 
     implementation libs.micronaut.validation
-    implementation libs.spotbugs.annotations
 
     api project(":aws-alexa")
 
