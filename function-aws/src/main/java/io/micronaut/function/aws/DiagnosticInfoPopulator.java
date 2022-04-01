@@ -26,6 +26,10 @@ import com.amazonaws.services.lambda.runtime.Context;
  */
 @DefaultImplementation(DefaultDiagnosticInfoPopulator.class)
 public interface DiagnosticInfoPopulator {
+    /**
+     * Populate MDC with Lambda Context values.
+     * @param context Lambda Context
+     */
     void populateMappingDiagnosticContextValues(@NonNull Context context);
 
     /**
