@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static io.micronaut.function.aws.DiagnosticInfoPopulator.registerContextBeans;
-
 /**
  * <p>An implementation of the {@link RequestStreamHandler} for Micronaut</p>.
  *
@@ -59,19 +57,21 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         this.applicationContext = applicationContext;
     }
 
-    @Override
-    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-        execute(input, output, context);
+    /**
+     * Constructor used to inject a preexisting {@link ApplicationContextBuilder}.
+     * @param applicationContextBuilder the application context builder
+     */
+    public MicronautRequestStreamHandler(ApplicationContextBuilder applicationContextBuilder) {
+        this(applicationContextBuilder.build());
     }
 
     @Override
-    protected ApplicationContext buildApplicationContext(Context context) {
-        ApplicationContext applicationContext = super.buildApplicationContext(context);
+    public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
+        HandlerUtils.configureWithContext(this, context);
         if (context != null) {
-            registerContextBeans(context, applicationContext);
             this.ctxFunctionName = context.getFunctionName();
         }
-        return applicationContext;
+        execute(input, output, context);
     }
 
     @NonNull

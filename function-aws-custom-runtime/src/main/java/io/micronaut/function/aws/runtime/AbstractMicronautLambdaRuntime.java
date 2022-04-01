@@ -40,6 +40,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
+import io.micronaut.function.aws.XRayUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -59,8 +60,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static io.micronaut.function.aws.DiagnosticInfoPopulator.LAMBDA_TRACE_HEADER_PROP;
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -402,7 +401,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            System.setProperty(LAMBDA_TRACE_HEADER_PROP, traceId);
+            System.setProperty(XRayUtils.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 

@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 package io.micronaut.function.aws;
-
+import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.core.annotation.NonNull;
-import com.amazonaws.services.lambda.runtime.Context;
 
 /**
- * Populates Mapping Diagnostic Context with Lambda Context.
+ * Register Lambda Context singletons for the current Handler execution.
  * @author Sergio del Amo
- * @since 3.2.0
+ * @since 3.2.2
  */
-@DefaultImplementation(DefaultDiagnosticInfoPopulator.class)
-public interface DiagnosticInfoPopulator {
-    void populateMappingDiagnosticContextValues(@NonNull Context context);
-
+@DefaultImplementation(DefaultLambdaContextFactory.class)
+@FunctionalInterface
+public interface LambdaContextFactory {
     /**
-     * Populate MDC with XRay Trace ID if it is able to parse it.
+     * Registers Lambda Context as a singleton.
+     * @param lambdaContext Lambda Context
      */
-    void populateMappingDiagnosticContextWithXrayTraceId();
+    void registerSingletons(@NonNull Context lambdaContext);
 }
