@@ -16,6 +16,8 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import spock.lang.AutoCleanup
+import spock.lang.Issue
+import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -31,6 +33,8 @@ class ContentTypeSpec extends Specification {
     @Shared
     Context lambdaContext = new MockLambdaContext()
 
+    @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1330")
+    @PendingFeature
     void "verify controllers return json by default"() {
         given:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/json/bydefault', HttpMethod.GET.toString())
