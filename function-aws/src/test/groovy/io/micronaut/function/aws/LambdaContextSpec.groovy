@@ -66,6 +66,7 @@ class LambdaContextSpec extends Specification {
     @Requires(property = "spec.name", value = "LambdaContextSpec")
     @Singleton
     static class DefaultRequestIdProvider implements RequestIdProvider {
+
         private final BeanProvider<Context> context
 
         DefaultRequestIdProvider(@Any BeanProvider<Context> context) {
@@ -92,180 +93,23 @@ class LambdaContextSpec extends Specification {
         }
     }
 
-    static Context createContextWithoutCollaborators() {
-        new Context() {
-            @Override
-            String getAwsRequestId() {
-                'XXX'
-            }
-
-            @Override
-            String getLogGroupName() {
-                null
-            }
-
-            @Override
-            String getLogStreamName() {
-                null
-            }
-
-            @Override
-            String getFunctionName() {
-                null
-            }
-
-            @Override
-            String getFunctionVersion() {
-                null
-            }
-
-            @Override
-            String getInvokedFunctionArn() {
-                null
-            }
-
-            @Override
-            CognitoIdentity getIdentity() {
-                null
-            }
-
-            @Override
-            ClientContext getClientContext() {
-                null
-            }
-
-            @Override
-            int getRemainingTimeInMillis() {
-                return 0
-            }
-
-            @Override
-            int getMemoryLimitInMB() {
-                return 0
-            }
-
-            @Override
-            LambdaLogger getLogger() {
-                null
-            }
+    Context createContextWithoutCollaborators() {
+        Stub(Context) {
+            getAwsRequestId() >> 'XXX'
+            getIdentity() >> null
+            getClientContext() >> null
+            getClientContext() >> null
+            getLogger() >> null
         }
     }
-    static Context createContext() {
-        return new Context() {
-            @Override
-            String getAwsRequestId() {
-                return "XXX"
-            }
 
-            @Override
-            String getLogGroupName() {
-                null
-            }
-
-            @Override
-            String getLogStreamName() {
-                null
-            }
-
-            @Override
-            String getFunctionName() {
-                null
-            }
-
-            @Override
-            String getFunctionVersion() {
-                null
-            }
-
-            @Override
-            String getInvokedFunctionArn() {
-                null
-            }
-
-            @Override
-            CognitoIdentity getIdentity() {
-                new CognitoIdentity() {
-                    @Override
-                    String getIdentityId() {
-                        return "identityIDXXX"
-                    }
-
-                    @Override
-                    String getIdentityPoolId() {
-                        return "identityPoolIdXXX"
-                    }
-                }
-            }
-
-            @Override
-            ClientContext getClientContext() {
-                new ClientContext() {
-                    @Override
-                    Client getClient() {
-                        return new Client() {
-                            @Override
-                            String getInstallationId() {
-                                return "installationId"
-                            }
-
-                            @Override
-                            String getAppTitle() {
-                                null
-                            }
-
-                            @Override
-                            String getAppVersionName() {
-                                null
-                            }
-
-                            @Override
-                            String getAppVersionCode() {
-                                null
-                            }
-
-                            @Override
-                            String getAppPackageName() {
-                                null
-                            }
-                        }
-                    }
-
-                    @Override
-                    Map<String, String> getCustom() {
-                        null
-                    }
-
-                    @Override
-                    Map<String, String> getEnvironment() {
-                        null
-                    }
-                }
-            }
-
-            @Override
-            int getRemainingTimeInMillis() {
-                return 0
-            }
-
-            @Override
-            int getMemoryLimitInMB() {
-                return 0
-            }
-
-            @Override
-            LambdaLogger getLogger() {
-                return new LambdaLogger() {
-                    @Override
-                    void log(String message) {
-
-                    }
-
-                    @Override
-                    void log(byte[] message) {
-
-                    }
-                }
-            }
+    Context createContext() {
+        Stub(Context) {
+            getAwsRequestId() >> 'XXX'
+            getIdentity() >> Mock(CognitoIdentity)
+            getClientContext() >> Mock(ClientContext)
+            getClientContext() >> Mock(ClientContext)
+            getLogger() >> Mock(LambdaLogger)
         }
     }
 }
