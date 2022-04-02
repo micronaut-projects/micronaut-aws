@@ -30,6 +30,13 @@ public final class HandlerUtils {
     private HandlerUtils() {
     }
 
+    /**
+     * It uses {@link LambdaContextFactory} to registers Lambda Context beans as singletons in the bean context.
+     * It uses {@link DiagnosticInfoPopulator} to populate the MDC context with Lambda Context values.
+     *
+     * @param applicationContextProvider Application Context Provider
+     * @param lambdaContext Lambda Context
+     */
     public static void configureWithContext(@NonNull ApplicationContextProvider applicationContextProvider,
                                             @Nullable Context lambdaContext) {
         ApplicationContext applicationContext = applicationContextProvider.getApplicationContext();
