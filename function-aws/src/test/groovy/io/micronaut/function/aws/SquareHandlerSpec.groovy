@@ -22,14 +22,14 @@ class SquareHandlerSpec extends Specification {
 
     def "test using detached mock"() {
         given:
-        def handler = new SquareHandler()
+        SquareHandler handler = new SquareHandler()
         def appCtx = handler.buildApplicationContext(lambdaCtx)
-        def squareService = appCtx.getBean(SquareService)
+        SquareService squareService = appCtx.getBean(SquareService)
         assert mockUtil.isMock(squareService)
         mockUtil.attachMock(squareService, this)
 
         when:
-        def result = handler.handleRequest(2, lambdaCtx)
+        Integer result = handler.handleRequest(2, lambdaCtx)
 
         then:
         squareService.square(_) >> 4

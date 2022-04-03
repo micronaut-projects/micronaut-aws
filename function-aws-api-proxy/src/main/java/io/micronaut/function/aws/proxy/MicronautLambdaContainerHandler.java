@@ -36,6 +36,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.type.TypeVariableResolver;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.function.aws.HandlerUtils;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpMethod;
@@ -303,6 +304,8 @@ public final class MicronautLambdaContainerHandler
             MicronautAwsProxyResponse<?> containerResponse,
             Context lambdaContext) {
         Timer.start(TIMER_REQUEST);
+        HandlerUtils.configureWithContext(this, lambdaContext);
+
         try {
             ServerRequestContext.with(containerRequest, () -> {
                 Optional<UriRouteMatch> routeMatch = containerRequest.getAttribute(HttpAttributes.ROUTE_MATCH, UriRouteMatch.class);

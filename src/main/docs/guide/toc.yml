@@ -37,6 +37,7 @@ lambda:
   awslambdaruntimes: AWS Lambda Runtimes
   applicationtyperuntimedependencies: Application Types, Lambda Runtimes, Dependencies
   lambdatriggers: Lambda Triggers
+  lambdacontext: Lambda Context
   requestHandlers: Lambda Handlers
   coldstartups: Cold Startups
   customRuntimes: GraalVM and AWS Custom runtimes
