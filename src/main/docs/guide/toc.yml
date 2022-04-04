@@ -7,7 +7,7 @@ mnawstwo:
   title: Micronaut AWS 2.0
   mnawstwoWhatsNew: What's new in Micronaut AWS 2.0 ?
   mnawstwoBreaks: Breaking Changes in Micronaut AWS 2.0
-corretto: Amazon Correto
+corretto: Amazon Corretto
 sdkv1:
   title: AWS SDK v1
   awsCredentialsProvider: AWS Credentials Provider
