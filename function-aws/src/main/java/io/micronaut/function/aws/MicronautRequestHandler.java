@@ -210,7 +210,6 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     @Deprecated
     static void registerContextBeans(Context context, ApplicationContext applicationContext) {
-        applicationContext.getBean(LambdaContextFactory.class).registerSingletons(context);
     }
 
     private Class initTypeArgument() {

@@ -57,21 +57,18 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         this.applicationContext = applicationContext;
     }
 
-    /**
-     * Constructor used to inject a preexisting {@link ApplicationContextBuilder}.
-     * @param applicationContextBuilder the application context builder
-     */
-    public MicronautRequestStreamHandler(ApplicationContextBuilder applicationContextBuilder) {
-        this(applicationContextBuilder.build());
-    }
-
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-        HandlerUtils.configureWithContext(this, context);
         if (context != null) {
             this.ctxFunctionName = context.getFunctionName();
         }
+        HandlerUtils.configureWithContext(this, context);
         execute(input, output, context);
+    }
+
+    @Override
+    protected ApplicationContext buildApplicationContext(Context context) {
+        return super.buildApplicationContext(context);
     }
 
     @NonNull

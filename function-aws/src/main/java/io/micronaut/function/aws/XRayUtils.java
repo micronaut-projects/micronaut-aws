@@ -26,12 +26,12 @@ import java.util.Optional;
  * @since 3.2.2
  */
 public final class XRayUtils {
-    private static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
-
     /**
      * <a href="https://github.com/aws/aws-xray-sdk-java/issues/251">Read _X_AMZN_TRACE_ID from system properties if environment variable is not set</a>.
      */
     public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
+
+    private static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
 
     /**
      * Constructor.

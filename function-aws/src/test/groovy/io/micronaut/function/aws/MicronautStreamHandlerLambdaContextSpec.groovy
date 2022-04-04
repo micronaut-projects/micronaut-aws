@@ -20,11 +20,7 @@ class MicronautStreamHandlerLambdaContextSpec extends Specification {
 
     void "Lambda Context beans are registered"() {
         given:
-        ApplicationContextBuilder builder = ApplicationContext.builder()
-                .properties(Collections.singletonMap(
-                        "spec.name", "MicronautStreamHandlerLambdaContextSpec"
-                ))
-        MicronautRequestStreamHandler handler = new LambdaContextSpecHandler(builder)
+        MicronautRequestStreamHandler handler = new LambdaContextSpecHandler()
         handler.applicationContext.start()
 
         when:
@@ -46,11 +42,7 @@ class MicronautStreamHandlerLambdaContextSpec extends Specification {
 
     void "verify LambdaLogger CognitoIdentity and ClientContext are not registered if null"() {
         given:
-        ApplicationContextBuilder builder = ApplicationContext.builder()
-                .properties(Collections.singletonMap(
-                        "spec.name", "MicronautStreamHandlerLambdaContextSpec"
-                ))
-        MicronautRequestStreamHandler handler = new LambdaContextSpecHandler(builder)
+        MicronautRequestStreamHandler handler = new LambdaContextSpecHandler()
         handler.applicationContext.start()
 
         when:
@@ -102,8 +94,11 @@ class MicronautStreamHandlerLambdaContextSpec extends Specification {
         @Inject
         RequestIdProvider requestIdProvider
 
-        LambdaContextSpecHandler(ApplicationContextBuilder builder) {
-            super(builder)
+        @Override
+        protected ApplicationContextBuilder newApplicationContextBuilder() {
+            super.newApplicationContextBuilder().properties(Collections.singletonMap(
+                    "spec.name", "MicronautStreamHandlerLambdaContextSpec"
+            ))
         }
 
         @Override
