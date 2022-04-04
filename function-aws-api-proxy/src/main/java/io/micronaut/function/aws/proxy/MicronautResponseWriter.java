@@ -123,10 +123,10 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
     private static Map<String, String> getHeaders(AwsProxyResponse awsProxyResponse) {
         Headers multiValueHeaders = awsProxyResponse.getMultiValueHeaders();
         Map<String, String> headers = new HashMap<>();
-        for (String k : multiValueHeaders.keySet()) {
-            List<String> headerValues = multiValueHeaders.get(k);
+        for (Map.Entry<String, List<String>> entry : multiValueHeaders.entrySet()) {
+            List<String> headerValues = entry.getValue();
             if (headerValues != null && headerValues.size() == 1) {
-                headers.put(k, headerValues.get(0));
+                headers.put(entry.getKey(), headerValues.get(0));
             }
         }
         return headers;
