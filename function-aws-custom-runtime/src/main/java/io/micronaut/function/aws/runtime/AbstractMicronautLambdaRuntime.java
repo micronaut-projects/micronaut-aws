@@ -24,12 +24,13 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
+import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.cli.CommandLine;
@@ -39,7 +40,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
-import io.micronaut.function.aws.MicronautRequestHandler;
+import io.micronaut.function.aws.XRayUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -48,7 +49,6 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
-import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
 
 import java.io.Closeable;
@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -402,7 +401,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            System.setProperty(MicronautRequestHandler.LAMBDA_TRACE_HEADER_PROP, traceId);
+            System.setProperty(XRayUtils.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 

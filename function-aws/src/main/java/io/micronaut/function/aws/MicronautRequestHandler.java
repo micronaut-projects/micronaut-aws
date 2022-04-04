@@ -24,7 +24,6 @@ import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.MDC;
 import java.util.Optional;
@@ -44,12 +43,46 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     // See: https://github.com/aws/aws-xray-sdk-java/issues/251
     public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
 
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_AWS_REQUEST_ID = "AWSRequestId";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_FUNCTION_NAME = "AWSFunctionName";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_FUNCTION_VERSION = "AWSFunctionVersion";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_FUNCTION_ARN = "AWSFunctionArn";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_FUNCTION_MEMORY_SIZE = "AWSFunctionMemoryLimit";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_FUNCTION_REMAINING_TIME = "AWSFunctionRemainingTime";
+
+    /**
+     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
+     */
+    @Deprecated
     public static final String MDC_DEFAULT_XRAY_TRACE_ID = "AWS-XRAY-TRACE-ID";
 
     @SuppressWarnings("unchecked")
@@ -70,7 +103,16 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     public MicronautRequestHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        startEnvironment(applicationContext);
         injectIntoApplicationContext();
+    }
+
+    /**
+     * Constructor used to inject a preexisting {@link ApplicationContextBuilder}.
+     * @param applicationContextBuilder the application context builder
+     */
+    public MicronautRequestHandler(ApplicationContextBuilder applicationContextBuilder) {
+        this(applicationContextBuilder.build());
     }
 
     private void injectIntoApplicationContext() {
@@ -79,11 +121,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
 
     @Override
     public final O handleRequest(I input, Context context) {
-        if (context != null) {
-            registerContextBeans(context, applicationContext);
-            populateMappingDiagnosticContextValues(context);
-        }
-        populateMappingDiagnosticContextWithXrayTraceId();
+        HandlerUtils.configureWithContext(this, context);
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
@@ -93,22 +131,10 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     /**
      * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/java-logging.html">AWS Lambda function logging in Java</a>
      * @param context The Lambda execution environment context object.
+     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
      */
+    @Deprecated
     protected void populateMappingDiagnosticContextValues(@NonNull Context context) {
-        if (context.getAwsRequestId() != null) {
-            mdcput(MDC_DEFAULT_AWS_REQUEST_ID, context.getAwsRequestId());
-        }
-        if (context.getFunctionName() != null) {
-            mdcput(MDC_DEFAULT_FUNCTION_NAME, context.getFunctionName());
-        }
-        if (context.getFunctionVersion() != null) {
-            mdcput(MDC_DEFAULT_FUNCTION_VERSION, context.getFunctionVersion());
-        }
-        if (context.getInvokedFunctionArn() != null) {
-            mdcput(MDC_DEFAULT_FUNCTION_ARN, context.getInvokedFunctionArn());
-        }
-        mdcput(MDC_DEFAULT_FUNCTION_MEMORY_SIZE, String.valueOf(context.getMemoryLimitInMB()));
-        mdcput(MDC_DEFAULT_FUNCTION_REMAINING_TIME, String.valueOf(context.getRemainingTimeInMillis()));
     }
 
     /**
@@ -116,35 +142,31 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      * @param key non-null key
      * @param val value to put in the map
      * @throws IllegalArgumentException in case the "key" parameter is null
+     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
      */
+    @Deprecated
     protected void mdcput(@NonNull String key, @NonNull String val) throws IllegalArgumentException {
         MDC.put(key, val);
     }
 
     /**
      * Populate MDC with XRay Trace ID if is able to parse it.
+     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
      */
+    @Deprecated
     protected void populateMappingDiagnosticContextWithXrayTraceId() {
-        parseXrayTraceId().ifPresent(xrayTraceId -> mdcput(MDC_DEFAULT_XRAY_TRACE_ID, xrayTraceId));
     }
 
     /**
      * Parses XRay Trace ID from _X_AMZN_TRACE_ID environment variable.
      * @see <a href="https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html">Trace ID injection into logs</a>
      * @return Trace id or empty if not found
+     * @deprecated Use {@link XRayUtils#parseXrayTraceId()} instead.
      */
     @NonNull
+    @Deprecated
     protected static Optional<String> parseXrayTraceId() {
-        String lambdaTraceHeaderKey = System.getenv(ENV_X_AMZN_TRACE_ID);
-        lambdaTraceHeaderKey = StringUtils.isNotEmpty(lambdaTraceHeaderKey) ? lambdaTraceHeaderKey
-                : System.getProperty(LAMBDA_TRACE_HEADER_PROP);
-        if (lambdaTraceHeaderKey != null) {
-            String[] arr = lambdaTraceHeaderKey.split(";");
-            if (arr.length >= 1) {
-                return Optional.of(arr[0].replace("Root=", ""));
-            }
-        }
-        return Optional.empty();
+       return XRayUtils.parseXrayTraceId();
     }
 
     /**
@@ -184,21 +206,10 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      *
      * @param context context
      * @param applicationContext application context
+     * @deprecated Use the bena of type {@link LambdaContextFactory} instead.
      */
+    @Deprecated
     static void registerContextBeans(Context context, ApplicationContext applicationContext) {
-        applicationContext.registerSingleton(context);
-        LambdaLogger logger = context.getLogger();
-        if (logger != null) {
-            applicationContext.registerSingleton(logger);
-        }
-        ClientContext clientContext = context.getClientContext();
-        if (clientContext != null) {
-            applicationContext.registerSingleton(clientContext);
-        }
-        CognitoIdentity identity = context.getIdentity();
-        if (identity != null) {
-            applicationContext.registerSingleton(identity);
-        }
     }
 
     private Class initTypeArgument() {

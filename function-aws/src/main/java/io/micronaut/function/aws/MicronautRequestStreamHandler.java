@@ -61,17 +61,16 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
+        if (context != null) {
+            this.ctxFunctionName = context.getFunctionName();
+        }
+        HandlerUtils.configureWithContext(this, context);
         execute(input, output, context);
     }
 
     @Override
     protected ApplicationContext buildApplicationContext(Context context) {
-        ApplicationContext applicationContext = super.buildApplicationContext(context);
-        if (context != null) {
-            registerContextBeans(context, applicationContext);
-            this.ctxFunctionName = context.getFunctionName();
-        }
-        return applicationContext;
+        return super.buildApplicationContext(context);
     }
 
     @NonNull
