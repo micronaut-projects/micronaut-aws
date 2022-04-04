@@ -19,7 +19,9 @@ import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
+import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.io.socket.SocketUtils;
 import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
@@ -28,11 +30,11 @@ import io.micronaut.http.server.exceptions.HttpServerException;
 import io.micronaut.http.server.exceptions.ServerStartupException;
 import io.micronaut.runtime.ApplicationConfiguration;
 import io.micronaut.runtime.server.EmbeddedServer;
+import jakarta.inject.Singleton;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import jakarta.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -91,7 +93,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             while (retryCount <= 3) {
                 try {
                     this.server = new Server(port);
-                    this.server.setHandler(new AwsProxyHandler());
+                    this.server.setHandler(new AwsProxyHandler(applicationContext));
                     this.server.start();
                     break;
                 } catch (BindException e) {
@@ -181,8 +183,14 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
         private final ServletToAwsProxyResponseAdapter responseAdapter;
         private final ContextProvider contextProvider;
 
-        public AwsProxyHandler() throws ContainerInitializationException {
-            lambdaHandler = new MicronautLambdaHandler();
+        public AwsProxyHandler(ApplicationContext proxyTestApplicationContext) throws ContainerInitializationException {
+            ApplicationContextBuilder builder = ApplicationContext.builder();
+            for (PropertySource propertySource : proxyTestApplicationContext.getEnvironment()
+                    .getPropertySources()) {
+                builder = builder.propertySources(propertySource);
+            }
+            lambdaHandler = new MicronautLambdaHandler(builder);
+
             ApplicationContext ctx = lambdaHandler.getApplicationContext();
             this.requestAdapter = ctx.getBean(ServletToAwsProxyRequestAdapter.class);
             this.responseAdapter = ctx.getBean(ServletToAwsProxyResponseAdapter.class);
