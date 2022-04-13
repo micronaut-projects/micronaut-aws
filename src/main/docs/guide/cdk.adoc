@@ -1,0 +1,1 @@
+Micronaut CDK modules simplify the creation of Lambda functions with https://aws.amazon.com/cdk/[Amazon Cloud Development Kit (CDK)].

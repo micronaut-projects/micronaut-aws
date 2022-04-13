@@ -47,6 +47,10 @@ lambda:
   objectmapperconfiguration: Object Mapper Configuration
   lambdaStreamHandler: MicronautRequestStreamHandler
   lambdafunctionclient: Invoke Lambda with @FunctionClient
+cdk:
+  title: AWS CDK
+  micronautFunctionFile: MicronautFunctionFile
+  micronautFunction: MicronautFunction
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration
