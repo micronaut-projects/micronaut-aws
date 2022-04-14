@@ -21,6 +21,7 @@ import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link com.amazonaws.services.lambda.runtime.events.CodeCommitEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */

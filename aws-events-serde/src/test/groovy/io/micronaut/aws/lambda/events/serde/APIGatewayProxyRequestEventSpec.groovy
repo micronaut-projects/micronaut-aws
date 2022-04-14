@@ -8,7 +8,7 @@ import jakarta.inject.Inject
 import spock.lang.Specification
 
 @MicronautTest(startApplication = false)
-class APIGatewayProxyRequestEventSpec extends Specification  {
+class APIGatewayProxyRequestEventSpec extends Specification {
     @Inject
     ObjectMapper objectMapper
 
@@ -38,25 +38,25 @@ class APIGatewayProxyRequestEventSpec extends Specification  {
         [proxy: "/path/to/resource"] == event.pathParameters
         [baz: "qux"] == event.stageVariables
         [
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                "Accept-Encoding": "gzip, deflate, sdch",
-                "Accept-Language": "en-US,en;q=0.8",
-                "Cache-Control": "max-age=0",
-                "CloudFront-Forwarded-Proto": "https",
+                "Accept"                      : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Encoding"             : "gzip, deflate, sdch",
+                "Accept-Language"             : "en-US,en;q=0.8",
+                "Cache-Control"               : "max-age=0",
+                "CloudFront-Forwarded-Proto"  : "https",
                 "CloudFront-Is-Desktop-Viewer": "true",
-                "CloudFront-Is-Mobile-Viewer": "false",
+                "CloudFront-Is-Mobile-Viewer" : "false",
                 "CloudFront-Is-SmartTV-Viewer": "false",
-                "CloudFront-Is-Tablet-Viewer": "false",
-                "CloudFront-Viewer-Country": "US",
-                "Host": "1234567890.execute-api.us-east-1.amazonaws.com",
-                "Upgrade-Insecure-Requests": "1",
-                "User-Agent": "Custom User Agent String",
-                "Via": "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
-                "X-Amz-Cf-Id": "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
-                "X-Forwarded-For": "127.0.0.1, 127.0.0.2",
-                "X-Forwarded-Port": "443",
-                "X-Forwarded-Proto": "https"
-         ] == event.headers
+                "CloudFront-Is-Tablet-Viewer" : "false",
+                "CloudFront-Viewer-Country"   : "US",
+                "Host"                        : "1234567890.execute-api.us-east-1.amazonaws.com",
+                "Upgrade-Insecure-Requests"   : "1",
+                "User-Agent"                  : "Custom User Agent String",
+                "Via"                         : "1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)",
+                "X-Amz-Cf-Id"                 : "cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==",
+                "X-Forwarded-For"             : "127.0.0.1, 127.0.0.2",
+                "X-Forwarded-Port"            : "443",
+                "X-Forwarded-Proto"           : "https"
+        ] == event.headers
         ["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"] == event.multiValueHeaders.get("Accept")
         ["gzip, deflate, sdch"] == event.multiValueHeaders.get("Accept-Encoding")
         ["en-US,en;q=0.8"] == event.multiValueHeaders.get("Accept-Language")
@@ -92,7 +92,7 @@ class APIGatewayProxyRequestEventSpec extends Specification  {
         null == event.requestContext.identity.userArn
         "Custom User Agent String" == event.requestContext.identity.userAgent
         null == event.requestContext.identity.user
-        "/prod/path/to/resource" ==  event.requestContext.path
+        "/prod/path/to/resource" == event.requestContext.path
         "/{proxy+}" == event.requestContext.resourcePath
         "POST" == event.requestContext.httpMethod
         "1234567890" == event.requestContext.apiId

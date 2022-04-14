@@ -20,7 +20,8 @@ import com.amazonaws.services.lambda.runtime.serialization.events.mixins.CloudWa
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
- * Serde configuration for Cloud Watch Logs event.
+ * {@link SerdeImport} for {@link CloudWatchLogsEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */

@@ -16,17 +16,22 @@
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
+import com.amazonaws.services.lambda.runtime.events.models.dynamodb.AttributeValue;
+import com.amazonaws.services.lambda.runtime.events.models.dynamodb.Identity;
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.StreamRecord;
 import com.amazonaws.services.lambda.runtime.serialization.events.mixins.DynamodbEventMixin;
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link DynamodbEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */
-@SerdeImport(value = StreamRecord.class)
-@SerdeImport(value = DynamodbEvent.DynamodbStreamRecord.class)
+@SerdeImport(value = StreamRecord.class, mixin = DynamodbEventMixin.StreamRecordMixin.class)
+@SerdeImport(value = DynamodbEvent.DynamodbStreamRecord.class, mixin = DynamodbEventMixin.DynamodbStreamRecordMixin.class)
+@SerdeImport(Identity.class)
+@SerdeImport(value = AttributeValue.class, mixin = DynamodbEventMixin.AttributeValueMixin.class)
 @SerdeImport(value = DynamodbEvent.class, mixin = DynamodbEventMixin.class)
 public class DynamodbEventSerde {
 }

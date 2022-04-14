@@ -15,7 +15,6 @@
  */
 package io.micronaut.aws.lambda.events.serde;
 
-import java.io.IOException;
 import com.amazonaws.services.lambda.runtime.serialization.util.SerializeUtil;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
@@ -27,20 +26,24 @@ import io.micronaut.serde.util.NullableSerde;
 import jakarta.inject.Singleton;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
+
 /**
  * {@link NullableSerde} implementation for JODA {@link DateTime}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */
 @Singleton
 @Requires(classes = DateTime.class)
 @TypeHint(typeNames = {"org.joda.time.format.DateTimeFormatter", "org.joda.time.format.ISODateTimeFormat", "org.joda.time.ReadableInstant"})
-public class JodaDateTimeSerde implements NullableSerde<DateTime> {
+public class JodaDateTimeSerde implements NullableSerde<DateTime> {//TODO unit test
+
     @Override
     public void serialize(@NonNull Encoder encoder,
-                   @NonNull EncoderContext context,
-                   @NonNull Argument<? extends DateTime> type,
-                   @NonNull DateTime value) throws IOException {
+                          @NonNull EncoderContext context,
+                          @NonNull Argument<? extends DateTime> type,
+                          @NonNull DateTime value) throws IOException {
         encoder.encodeString(SerializeUtil.serializeDateTime(value, getClass().getClassLoader()));
     }
 

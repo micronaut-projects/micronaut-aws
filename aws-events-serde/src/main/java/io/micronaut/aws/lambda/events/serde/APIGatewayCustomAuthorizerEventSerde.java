@@ -16,19 +16,17 @@
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayCustomAuthorizerEvent;
-import io.micronaut.core.annotation.Introspected;
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link APIGatewayCustomAuthorizerEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */
-@Introspected(classes = {
-        APIGatewayCustomAuthorizerEvent.class,
-        APIGatewayCustomAuthorizerEvent.RequestContext.class,
-        APIGatewayCustomAuthorizerEvent.Identity.class,
-})
+@SerdeImport(APIGatewayCustomAuthorizerEvent.Identity.class)
+@SerdeImport(APIGatewayCustomAuthorizerEvent.RequestContext.class)
 @SerdeImport(APIGatewayCustomAuthorizerEvent.class)
 final class APIGatewayCustomAuthorizerEventSerde {
+
 }

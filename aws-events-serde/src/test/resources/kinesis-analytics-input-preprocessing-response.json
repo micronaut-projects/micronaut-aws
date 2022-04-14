@@ -1,0 +1,16 @@
+{
+  "records": [
+    {
+      "recordId": "test-recordId1",
+      "result": "Ok"
+    },
+    {
+      "recordId": "test-recordId2",
+      "result": "ProcessingFailed"
+    },
+    {
+      "recordId": "test-recordId3",
+      "result": "Dropped"
+    }
+  ]
+}

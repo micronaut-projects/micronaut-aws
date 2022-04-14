@@ -20,7 +20,8 @@ import com.amazonaws.services.lambda.runtime.serialization.events.mixins.CloudFr
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
- * Serde configuration for Cloud Front event.
+ * {@link SerdeImport} for {@link CloudFrontEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */

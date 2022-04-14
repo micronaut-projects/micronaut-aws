@@ -20,6 +20,7 @@ import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link S3EventNotification}.
+ *
  * @author Sergio del Amo
  * @since 3.3.0
  */

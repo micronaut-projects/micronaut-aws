@@ -16,11 +16,11 @@
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.events.CognitoEvent;
-import com.amazonaws.services.lambda.runtime.events.DynamodbEvent;
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link CognitoEvent}.
+ *
  * @author Sergio del Amo
  * @since 1.0.0
  */
