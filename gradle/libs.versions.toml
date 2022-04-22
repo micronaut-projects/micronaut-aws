@@ -8,10 +8,14 @@ managed-aws-java-sdk-v2 = '2.17.172'
 managed-aws-lambda = '1.2.1'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.8'
+managed-aws-cdk-lib='2.20.0'
 servlet-api = "2.5"
 slf4j = "1.7.36"
 
 [libraries]
+
+aws-cdk-lib = { module = 'software.amazon.awscdk:aws-cdk-lib', version.ref = 'managed-aws-cdk-lib' }
+
 alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
 
