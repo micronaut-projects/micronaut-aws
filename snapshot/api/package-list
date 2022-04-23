@@ -9,7 +9,6 @@ io.micronaut.aws.alexa.httpserver.exceptions
 io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
 io.micronaut.aws.alexa.ssml
-io.micronaut.aws.cdk.function
 io.micronaut.aws.distributedconfiguration
 io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
