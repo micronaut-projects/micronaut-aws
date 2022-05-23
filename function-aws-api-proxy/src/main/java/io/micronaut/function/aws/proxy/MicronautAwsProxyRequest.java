@@ -275,7 +275,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             return Optional.of(decodedBody);
         }
         final String body = awsProxyRequest.getBody();
-        if (awsProxyRequest.isBase64Encoded()) {
+        if (awsProxyRequest.isBase64Encoded() && body != null) {
             return (Optional<T>) Optional.ofNullable(Base64.getMimeDecoder().decode(body));
         }
         return (Optional<T>) Optional.ofNullable(body);
