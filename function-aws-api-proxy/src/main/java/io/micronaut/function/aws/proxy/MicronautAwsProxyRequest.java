@@ -28,7 +28,6 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.*;
-import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
@@ -38,12 +37,9 @@ import io.micronaut.http.simple.cookies.SimpleCookies;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
-import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.amazonaws.serverless.proxy.RequestReader.*;
 
@@ -439,7 +435,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             if (StringUtils.isNotEmpty(name)) {
                 final List<String> strings = params.get(name.toString());
                 if (CollectionUtils.isNotEmpty(strings)) {
-                    return strings.stream().map(v -> decodeValue(name, v)).collect(Collectors.toList());
+                    return strings;
                 }
             }
             return Collections.emptyList();
@@ -448,12 +444,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Nullable
         @Override
         public String get(CharSequence name) {
-            if (StringUtils.isNotEmpty(name)) {
-                final String v = params.getFirst(name.toString());
-                if (v != null) {
-                    return decodeValue(name, v);
-                }
-                return v;
+        	if (StringUtils.isNotEmpty(name)) {
+                return params.getFirst(name.toString());
             }
             return null;
         }
@@ -475,14 +467,6 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
                 return ConversionService.SHARED.convert(v, conversionContext);
             }
             return Optional.empty();
-        }
-
-        private String decodeValue(CharSequence name, String v) {
-            try {
-                return URLDecoder.decode(v, getCharacterEncoding().name());
-            } catch (UnsupportedEncodingException e) {
-                throw new CodecException("Error decoding parameter: " + name, e);
-            }
         }
     }
 

@@ -28,13 +28,14 @@ class ParametersSpec extends Specification {
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/parameters-test/all', HttpMethod.GET.toString())
         builder.queryString("test", "one")
         builder.queryString("test", "two")
+        builder.queryString("test", "three+four")
 
         when:
         def response = handler.proxy(builder.build(), lambdaContext)
 
         then:
         response.statusCode == 200
-        response.body == '["one","two"]'
+        response.body == '["one","two","three+four"]'
     }
 
     @Controller('/parameters-test')
