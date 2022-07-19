@@ -444,7 +444,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Nullable
         @Override
         public String get(CharSequence name) {
-        	if (StringUtils.isNotEmpty(name)) {
+            if (StringUtils.isNotEmpty(name)) {
                 return params.getFirst(name.toString());
             }
             return null;
