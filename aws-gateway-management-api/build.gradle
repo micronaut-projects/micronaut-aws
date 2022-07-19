@@ -1,0 +1,12 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
+dependencies {
+    api project(":aws-sdk-v2")
+
+    compileOnly libs.awssdk.apigatewaymanagementapi
+
+    implementation("io.micronaut:micronaut-validation")
+    implementation("io.micronaut:micronaut-http")
+}
