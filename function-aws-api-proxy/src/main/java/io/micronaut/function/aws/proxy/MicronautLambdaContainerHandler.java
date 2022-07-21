@@ -29,6 +29,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.core.annotation.AnnotationMetadata;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
@@ -77,6 +79,7 @@ import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -404,44 +407,12 @@ public final class MicronautLambdaContainerHandler
             final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
             if (permitsRequestBody) {
                 final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase(MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension())) {
+                List<String> supportedExtensions = Arrays.asList(
+                    MediaType.APPLICATION_JSON_TYPE.getExtension(),
+                    MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension());
+                if (requestContentType != null && supportedExtensions.contains(requestContentType.getExtension())) {
                     final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("x-www-form-urlencoded"))) {
-                        final Optional<String> bodyOptional = containerRequest.getBody(String.class);
-                        if (bodyOptional.isPresent()) {
-                            String body = bodyOptional.get();
-                            if (StringUtils.isNotEmpty(body)) {
-                                Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
-                                if (bodyArgument == null) {
-                                    if (finalRoute instanceof MethodBasedRouteMatch) {
-                                        bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
-                                            .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
-                                            .findFirst()
-                                            .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
-                                    }
-                                    if (bodyArgument != null) {
-                                        final Class<?> rawType = bodyArgument.getType();
-                                        if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
-                                            bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
-                                        }
-                                        // we need a form_data -> data converter... There's one in netty HttpPostStandardRequestDecoder but
-                                        // it's tied to netty and looking at the source, it's not as simple as it may first seem.
-                                        // https://github.com/netty/netty/blob/4.1/codec-http/src/main/java/io/netty/handler/codec/http/multipart/HttpPostStandardRequestDecoder.java
-                                        // is there one in the AWS libraries?
-//                                        final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body);
-//                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(decoded);
-                                    } else {
-//                                        final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body);
-//                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(jsonNode);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
-                    final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
+                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> supportedExtensions.contains(ct.getExtension()))) {
                         final Optional<String> bodyOptional = containerRequest.getBody(String.class);
                         if (bodyOptional.isPresent()) {
                             String body = bodyOptional.get();
@@ -456,26 +427,58 @@ public final class MicronautLambdaContainerHandler
                                                 .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
                                     }
                                 }
+                                getDecodedBody(bodyArgument, requestContentType, body).ifPresent(decoded -> {
+                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(decoded);
+                                });
 
-                                if (bodyArgument != null) {
-                                    final Class<?> rawType = bodyArgument.getType();
-                                    if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
-                                        bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
-                                    }
-                                    final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body);
-                                    ((MicronautAwsProxyRequest) containerRequest)
-                                            .setDecodedBody(decoded);
-                                } else {
-                                    final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body);
-                                    ((MicronautAwsProxyRequest) containerRequest)
-                                            .setDecodedBody(jsonNode);
-                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    @NonNull
+    private Optional<Object> getDecodedBody(Argument<?> bodyArgument,
+                                            MediaType requestContentType,
+                                            String body) {
+        if (bodyArgument != null) {
+            final Class<?> rawType = bodyArgument.getType();
+            if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
+                bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+            }
+            if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension().equals(requestContentType.getExtension())) {
+                Optional<String> optionalJson = formUrlEncodedToJson(body);
+                if (optionalJson.isPresent()) {
+                    String json = optionalJson.get();
+                    return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, json));
+                }
+            } else {
+                return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body));
+
+            }
+        } else {
+            return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body));
+        }
+        return Optional.empty();
+    }
+
+    @NonNull
+    private Optional<String> formUrlEncodedToJson(@Nullable String formUrlEncodedString) {
+        if (formUrlEncodedString == null) {
+            return Optional.empty();
+        }
+        String[] arr = formUrlEncodedString.split("&");
+        String json = "{";
+        for (String item : arr) {
+            String[] itemArr = item.split("=");
+            if (itemArr.length == 2) {
+                json += "\"" + itemArr[0] + "\":\"" + itemArr[1] + "\"";
+            }
+        }
+        json += "}";
+        return Optional.of(json);
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(

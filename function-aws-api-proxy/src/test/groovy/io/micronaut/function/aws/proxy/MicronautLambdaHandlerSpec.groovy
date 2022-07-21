@@ -2,6 +2,7 @@ package io.micronaut.function.aws.proxy
 
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.core.annotation.Introspected
@@ -12,6 +13,7 @@ import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Consumes
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
@@ -121,7 +123,7 @@ class MicronautLambdaHandlerSpec extends Specification {
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                 ApplicationContext.builder().properties([
-                        'spec.name': 'MicronautLambdaHandlerSpec',
+                        'spec.name'                 : 'MicronautLambdaHandlerSpec',
                         'micronaut.security.enabled': false
                 ])
         )
@@ -130,11 +132,54 @@ class MicronautLambdaHandlerSpec extends Specification {
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form', HttpMethod.POST.toString())
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
         builder.body("message=World")
-        def response = handler.proxy(builder.build(), new MockLambdaContext())
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
 
         then:
         response.statusCode == 200
-        response.body == '{"message":"World"}'
+        response.body == '{"message":"Hello World"}'
+    }
+
+    @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
+    void "form-url-encoded with Body annotation and a nested attribute"() {
+            given:
+            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                    ApplicationContext.builder().properties([
+                            'spec.name': 'MicronautLambdaHandlerSpec',
+                            'micronaut.security.enabled': false
+                    ])
+            )
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/nested-attribute', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
+        builder.body("message=World")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"message":"Hello World"}'
+
+        cleanup:
+        handler.close()
+    }
+
+    @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
+    void "application-json with Body annotation and a nested attribute"() {
+        given:
+        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.builder().properties([
+                        'spec.name': 'MicronautLambdaHandlerSpec',
+                        'micronaut.security.enabled': false
+                ])
+        )
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/json-nested-attribute', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body("{\"message\":\"World\"}")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"message":"Hello World"}'
 
         cleanup:
         handler.close()
@@ -191,8 +236,20 @@ class MicronautLambdaHandlerSpec extends Specification {
 
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
         @Post
-        Map<String, Object> save(MessageCreate messageCreate) {
-            [message: "Hello ${messageCreate.getMessage()}"]
+        String save(@Body MessageCreate messageCreate) {
+            "{\"message\":\"Hello ${messageCreate.getMessage()}\"}";
+        }
+
+        @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+        @Post("/nested-attribute")
+        String save(@Body("message") String value) {
+            "{\"message\":\"Hello ${value}\"}";
+        }
+
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Post("/json-nested-attribute")
+        String jsonNestedAttribute(@Body("message") String value) {
+            "{\"message\":\"Hello ${value}\"}";
         }
     }
 }
