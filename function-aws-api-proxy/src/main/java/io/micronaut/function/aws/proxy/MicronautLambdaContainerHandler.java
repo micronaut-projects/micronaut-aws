@@ -404,6 +404,41 @@ public final class MicronautLambdaContainerHandler
             final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
             if (permitsRequestBody) {
                 final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("x-www-form-urlencoded")) {
+                    final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("x-www-form-urlencoded"))) {
+                        final Optional<String> bodyOptional = containerRequest.getBody(String.class);
+                        if (bodyOptional.isPresent()) {
+                            String body = bodyOptional.get();
+                            if (StringUtils.isNotEmpty(body)) {
+                                Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+                                if (bodyArgument == null) {
+                                    if (finalRoute instanceof MethodBasedRouteMatch) {
+                                        bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
+                                            .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                                            .findFirst()
+                                            .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+                                    }
+                                    if (bodyArgument != null) {
+                                        final Class<?> rawType = bodyArgument.getType();
+                                        if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
+                                            bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
+                                        }
+                                        // we need a form_data -> data converter... There's one in netty HttpPostStandardRequestDecoder but
+                                        // it's tied to netty and looking at the source, it's not as simple as it may first seem.
+                                        // https://github.com/netty/netty/blob/4.1/codec-http/src/main/java/io/netty/handler/codec/http/multipart/HttpPostStandardRequestDecoder.java
+                                        // is there one in the AWS libraries?
+//                                        final Object decoded = lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body);
+//                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(decoded);
+                                    } else {
+//                                        final JsonNode jsonNode = lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body);
+//                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(jsonNode);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("json")) {
                     final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
                     if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("json"))) {
