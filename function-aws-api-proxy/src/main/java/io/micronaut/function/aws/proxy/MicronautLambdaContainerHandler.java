@@ -404,7 +404,7 @@ public final class MicronautLambdaContainerHandler
             final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
             if (permitsRequestBody) {
                 final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase("x-www-form-urlencoded")) {
+                if (requestContentType != null && requestContentType.getExtension().equalsIgnoreCase(MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension())) {
                     final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
                     if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> ct.getExtension().equalsIgnoreCase("x-www-form-urlencoded"))) {
                         final Optional<String> bodyOptional = containerRequest.getBody(String.class);
