@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.gatewaymanagement;
+package io.micronaut.aws.sdk.v2.service.gatewaymanagement;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
@@ -30,7 +30,7 @@ import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagem
 import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClientBuilder;
 
 /**
- * Factory that creates a Api Gateway client.
+ * Factory that creates an Api Gateway client.
  *
  * @author Sergio del Amo
  * @since 3.5.2

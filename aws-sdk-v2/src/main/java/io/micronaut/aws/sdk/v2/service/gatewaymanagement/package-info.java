@@ -13,29 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.gatewaymanagement;
-
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.http.uri.UriBuilder;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.net.URI;
-
 /**
- *
+ * Classes related to gateway management api coming from AWS Services.
  * @author Sergio del Amo
  * @since 3.5.2
  */
-public final class WebSocketConnectionUtils {
-    private WebSocketConnectionUtils() {
+@Requires(classes = {ApiGatewayManagementApiClient.class, ApiGatewayManagementApiAsyncClient.class})
+@Configuration
+package io.micronaut.aws.sdk.v2.service.gatewaymanagement;
 
-    }
-
-    @NonNull
-    public static URI uriOf(@NonNull @NotNull @Valid WebSocketConnection webSocketConnection) {
-        return UriBuilder.of("https://" + webSocketConnection.getApiId() + ".execute-api.us-east-1.amazonaws.com")
-                .path(webSocketConnection.getStage())
-                .build();
-    }
-}
+import io.micronaut.context.annotation.Configuration;
+import io.micronaut.context.annotation.Requires;
+import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClient;
+import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient;

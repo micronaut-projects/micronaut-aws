@@ -14,6 +14,7 @@ dependencies {
     compileOnly libs.awssdk.apache.client
 
     // Services
+    compileOnly libs.awssdk.apigatewaymanagementapi
     compileOnly libs.awssdk.s3
     compileOnly libs.awssdk.dynamodb
     compileOnly libs.awssdk.ses
@@ -25,6 +26,7 @@ dependencies {
 
     // Tests
     testAnnotationProcessor libs.micronaut.inject.java
+    testImplementation libs.awssdk.apigatewaymanagementapi
     testImplementation libs.awssdk.servicediscovery
     testImplementation libs.awssdk.url.connection.client
     testImplementation libs.awssdk.netty.nio.client
