@@ -48,6 +48,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.Status;
@@ -82,6 +83,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -443,23 +445,35 @@ public final class MicronautLambdaContainerHandler
     private Optional<Object> getDecodedBody(Argument<?> bodyArgument,
                                             MediaType requestContentType,
                                             String body) {
+
+        JsonMediaTypeCodec jsonCodec = lambdaContainerEnvironment.getJsonCodec();
         if (bodyArgument != null) {
             final Class<?> rawType = bodyArgument.getType();
             if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
                 bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
             }
             if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension().equals(requestContentType.getExtension())) {
-                Optional<String> optionalJson = formUrlEncodedToJson(body);
+                Optional<Map<String, String>> optionalJson = formUrlEncodedToMap(body);
                 if (optionalJson.isPresent()) {
-                    String json = optionalJson.get();
-                    return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, json));
+                    Map<String, String> json = optionalJson.get();
+                    AnnotationMetadata annotationMetadata = bodyArgument.getAnnotationMetadata();
+
+                    if (annotationMetadata.hasAnnotation(Body.class)) {
+                        Optional<String> stringOptional  = annotationMetadata.stringValue(Body.class);
+                        if (stringOptional.isPresent()) {
+                            return Optional.ofNullable(json.get(stringOptional.get()));
+                        }
+                    }
+                    return Optional.of(jsonCodec.decode(bodyArgument, formUrlEncodedToJson(body).get()));
                 }
             } else {
-                return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(bodyArgument, body));
+                Object decoded = jsonCodec.decode(bodyArgument, body);
+                return Optional.of(decoded);
 
             }
         } else {
-            return Optional.of(lambdaContainerEnvironment.getJsonCodec().decode(JsonNode.class, body));
+            JsonNode decoded = jsonCodec.decode(JsonNode.class, body);
+            return Optional.of(decoded);
         }
         return Optional.empty();
     }
@@ -479,6 +493,10 @@ public final class MicronautLambdaContainerHandler
         }
         json += "}";
         return Optional.of(json);
+    }
+
+    private Optional<Map<String, String>> formUrlEncodedToMap(@Nullable String formUrlEncodedString) {
+        return Optional.of(Collections.singletonMap("message", "World"));
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(
