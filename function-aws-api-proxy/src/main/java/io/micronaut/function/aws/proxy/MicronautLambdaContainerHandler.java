@@ -70,6 +70,7 @@ import io.micronaut.web.router.RouteMatch;
 import io.micronaut.web.router.Router;
 import io.micronaut.web.router.UriRouteMatch;
 import io.micronaut.web.router.resource.StaticResourceResolver;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -392,7 +393,7 @@ public final class MicronautLambdaContainerHandler
     private MicronautAwsProxyResponse<?> toAwsProxyResponse(
             MicronautAwsProxyResponse<?> response,
             HttpResponse<?> message) {
-
+        // already failed here
         if (response != message) {
             response.status(message.status(), message.status().getReason());
             response.body(message.body());
@@ -484,20 +485,18 @@ public final class MicronautLambdaContainerHandler
 
     @Nullable
     private ConvertibleValues<?> formUrlEncodedBodyToConvertibleValues(String body) {
-        Optional<Map<String, String>> formUrlEncodedToMapOptional = formUrlEncodedToMap(body);
-        if (formUrlEncodedToMapOptional.isPresent()) {
-            Map<String, String> formUrlEncodedToMap = formUrlEncodedToMapOptional.get();
-            return new ConvertibleValuesMap(formUrlEncodedToMap);
+        QueryStringDecoder decoder = new QueryStringDecoder(body, false);
+        Map<String, List<String>> parameters = decoder.parameters();
+        if (parameters.isEmpty()) {
+            return null;
         }
-        return null;
+        return new ConvertibleValuesMap<>(parameters);
     }
 
     private boolean nestedBody(Argument<?> bodyArgument) {
         AnnotationMetadata annotationMetadata = bodyArgument.getAnnotationMetadata();
         if (annotationMetadata.hasAnnotation(Body.class)) {
-            if (annotationMetadata.stringValue(Body.class).isPresent()) {
-                return true;
-            }
+            return annotationMetadata.stringValue(Body.class).isPresent();
         }
         return false;
     }
@@ -523,6 +522,8 @@ public final class MicronautLambdaContainerHandler
         if (formUrlEncodedString == null) {
             return Optional.empty();
         }
+
+
         String[] arr = formUrlEncodedString.split("&");
         Map<String, String> result = new HashMap<>();
         for (String item : arr) {
