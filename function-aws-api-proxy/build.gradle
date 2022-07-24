@@ -34,3 +34,9 @@ dependencies {
     testImplementation libs.servlet.api
     testImplementation libs.fileupload
 }
+
+spotless {
+    java {
+        targetExclude '**/io/micronaut/function/aws/proxy/QueryStringDecoder.java'
+    }
+}

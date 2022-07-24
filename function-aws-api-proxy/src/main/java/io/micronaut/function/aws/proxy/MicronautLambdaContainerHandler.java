@@ -34,6 +34,7 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
+import io.micronaut.core.bind.BeanPropertyBinder;
 import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.convert.value.ConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
@@ -70,7 +71,6 @@ import io.micronaut.web.router.RouteMatch;
 import io.micronaut.web.router.Router;
 import io.micronaut.web.router.UriRouteMatch;
 import io.micronaut.web.router.resource.StaticResourceResolver;
-import io.netty.handler.codec.http.QueryStringDecoder;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -83,6 +83,8 @@ import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -479,10 +481,7 @@ public final class MicronautLambdaContainerHandler
                 if (nestedBody(bodyArgument)) {
                     return Optional.of(formUrlEncodedBodyToConvertibleValues(body));
                 } else {
-                    Optional<String> jsonOptional = formUrlEncodedToJson(body);
-                    if (jsonOptional.isPresent()) {
-                        return Optional.of(jsonCodec.decode(bodyArgument, jsonOptional.get()));
-                    }
+                    return bindFormUrlEncoded(bodyArgument, body);
                 }
             } else if (MediaType.APPLICATION_JSON_TYPE.getExtension().equals(requestContentType.getExtension())) {
                 if (nestedBody(bodyArgument)) {
@@ -520,20 +519,21 @@ public final class MicronautLambdaContainerHandler
     }
 
     @NonNull
-    private Optional<String> formUrlEncodedToJson(@Nullable String formUrlEncodedString) {
-        if (formUrlEncodedString == null) {
+    private Optional<Object> bindFormUrlEncoded(@NonNull Argument<?> argument, @Nullable String formUrlEncodedString) {
+        QueryStringDecoder decoder = new QueryStringDecoder(formUrlEncodedString, false);
+        Map<String, List<String>> parameters = decoder.parameters();
+        if (parameters.isEmpty()) {
             return Optional.empty();
         }
-        String[] arr = formUrlEncodedString.split("&");
-        String json = "{";
-        for (String item : arr) {
-            String[] itemArr = item.split("=");
-            if (itemArr.length == 2) {
-                json += "\"" + itemArr[0] + "\":\"" + itemArr[1] + "\"";
-            }
+        if (!applicationContext.containsBean(BeanPropertyBinder.class)) {
+            return Optional.empty();
         }
-        json += "}";
-        return Optional.of(json);
+        BeanPropertyBinder beanPropertyBinder = applicationContext.getBean(BeanPropertyBinder.class);
+        Map<CharSequence, Object> source = new HashMap<>();
+        for (String k : parameters.keySet()) {
+            source.put(k, parameters.get(k));
+        }
+        return Optional.of(beanPropertyBinder.bind(argument.getType(), source));
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(
