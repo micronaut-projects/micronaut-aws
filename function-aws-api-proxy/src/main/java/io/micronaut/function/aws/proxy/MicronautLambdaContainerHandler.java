@@ -83,8 +83,6 @@ import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +92,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Main entry for AWS API proxy with Micronaut.
@@ -408,41 +407,60 @@ public final class MicronautLambdaContainerHandler
         return response;
     }
 
-    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, RouteMatch<?> finalRoute) {
+    @NonNull
+    private static Optional<String> parseUndecodedBody(@NonNull MicronautAwsProxyRequest<?> containerRequest,
+                                                @NonNull RouteMatch<?> finalRoute,
+                                                @NonNull MediaType mediaType) {
         if (!containerRequest.isBodyDecoded()) {
             final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
             if (permitsRequestBody) {
                 final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                List<String> supportedExtensions = Arrays.asList(
-                    MediaType.APPLICATION_JSON_TYPE.getExtension(),
-                    MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension());
-                if (requestContentType != null && supportedExtensions.contains(requestContentType.getExtension())) {
+                if (requestContentType != null && mediaType.getExtension().equals(requestContentType.getExtension())) {
                     final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> supportedExtensions.contains(ct.getExtension()))) {
-                        final Optional<String> bodyOptional = containerRequest.getBody(String.class);
-                        if (bodyOptional.isPresent()) {
-                            String body = bodyOptional.get();
-                            if (StringUtils.isNotEmpty(body)) {
-
-                                Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
-                                if (bodyArgument == null) {
-                                    if (finalRoute instanceof MethodBasedRouteMatch) {
-                                        bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
-                                                .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
-                                                .findFirst()
-                                                .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
-                                    }
-                                }
-                                getDecodedBody(bodyArgument, requestContentType, body).ifPresent(decoded -> {
-                                        ((MicronautAwsProxyRequest) containerRequest).setDecodedBody(decoded);
-                                });
-
-                            }
-                        }
+                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> mediaType.getExtension().equals(ct.getExtension()))) {
+                        return containerRequest.getBody(String.class);
                     }
                 }
             }
         }
+        return Optional.empty();
+    }
+
+    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, RouteMatch<?> finalRoute) {
+        Stream.of(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+            .map(mediaType -> parseUndecodedBody(containerRequest, finalRoute, mediaType))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(body -> decodeRequestBody(body, containerRequest, finalRoute))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst()
+            .ifPresent(((MicronautAwsProxyRequest) containerRequest)::setDecodedBody);
+    }
+
+    @NonNull
+    private Optional<Object> decodeRequestBody(@NonNull String body,
+                                               @NonNull MicronautAwsProxyRequest<?> containerRequest,
+                                               @NonNull RouteMatch<?> finalRoute) {
+        if (StringUtils.isNotEmpty(body)) {
+            Argument<?> bodyArgument = parseBodyArgument(finalRoute);
+            return getDecodedBody(bodyArgument, containerRequest.getContentType().orElse(null), body);
+        }
+        return Optional.empty();
+    }
+
+    @Nullable
+    private static Argument<?> parseBodyArgument(@NonNull RouteMatch<?> finalRoute) {
+        Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+        if (bodyArgument == null) {
+            if (finalRoute instanceof MethodBasedRouteMatch) {
+                bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
+                    .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
+                    .findFirst()
+                    .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
+            }
+        }
+        return bodyArgument;
     }
 
     @NonNull
@@ -516,23 +534,6 @@ public final class MicronautLambdaContainerHandler
         }
         json += "}";
         return Optional.of(json);
-    }
-
-    private Optional<Map<String, String>> formUrlEncodedToMap(@Nullable String formUrlEncodedString) {
-        if (formUrlEncodedString == null) {
-            return Optional.empty();
-        }
-
-
-        String[] arr = formUrlEncodedString.split("&");
-        Map<String, String> result = new HashMap<>();
-        for (String item : arr) {
-            String[] itemArr = item.split("=");
-            if (itemArr.length == 2) {
-                result.put(itemArr[0], itemArr[1]);
-            }
-        }
-        return Optional.of(result);
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(
