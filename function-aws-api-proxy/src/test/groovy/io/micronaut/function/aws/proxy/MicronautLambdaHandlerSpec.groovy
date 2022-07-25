@@ -21,6 +21,7 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.Issue
+import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import javax.validation.constraints.NotBlank
@@ -65,11 +66,7 @@ class MicronautLambdaHandlerSpec extends Specification {
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/868")
     void "test selected route reflects accept header"(){
         given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.builder().properties([
-                        'spec.name': 'MicronautLambdaHandlerSpec',
-                ])
-        )
+        MicronautLambdaContainerHandler handler = instantiateHandler()
 
         when:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/bar/ok', HttpMethod.GET.toString())
@@ -97,12 +94,7 @@ class MicronautLambdaHandlerSpec extends Specification {
 
     void "test behavior of 404"() {
         given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.builder().properties([
-                        'spec.name': 'MicronautLambdaHandlerSpec',
-                        'micronaut.security.enabled': false
-                ])
-        )
+        MicronautLambdaContainerHandler handler = instantiateHandler()
 
         when:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/does-not-exist', HttpMethod.GET.toString())
@@ -121,12 +113,7 @@ class MicronautLambdaHandlerSpec extends Specification {
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
     void "POST form url encoded body binding to pojo works"() {
         given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.builder().properties([
-                        'spec.name'                 : 'MicronautLambdaHandlerSpec',
-                        'micronaut.security.enabled': false
-                ])
-        )
+        MicronautLambdaContainerHandler handler = instantiateHandler()
 
         when:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form', HttpMethod.POST.toString())
@@ -139,15 +126,27 @@ class MicronautLambdaHandlerSpec extends Specification {
         response.body == '{"message":"Hello World"}'
     }
 
+    @PendingFeature
+    void "POST form url encoded body binding to pojo works if you don't specify body annotation"() {
+        given:
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/without-body-annotation', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
+        builder.body("message=World")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"message":"Hello World"}'
+    }
+
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
     void "form-url-encoded with Body annotation and a nested attribute"() {
-            given:
-            MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                    ApplicationContext.builder().properties([
-                            'spec.name': 'MicronautLambdaHandlerSpec',
-                            'micronaut.security.enabled': false
-                    ])
-            )
+        given:
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
         when:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/nested-attribute', HttpMethod.POST.toString())
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
@@ -165,14 +164,29 @@ class MicronautLambdaHandlerSpec extends Specification {
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
     void "application-json with Body annotation and a nested attribute"() {
         given:
-        MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
-                ApplicationContext.builder().properties([
-                        'spec.name': 'MicronautLambdaHandlerSpec',
-                        'micronaut.security.enabled': false
-                ])
-        )
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
         when:
         AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/json-nested-attribute', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body("{\"message\":\"World\"}")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"message":"Hello World"}'
+
+        cleanup:
+        handler.close()
+    }
+
+    @PendingFeature
+    void "application-json with Body annotation and a nested attribute and Map return rendered as JSON"() {
+        given:
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/json-nested-attribute-with-map-return', HttpMethod.POST.toString())
         builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
         builder.body("{\"message\":\"World\"}")
         AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
@@ -235,6 +249,12 @@ class MicronautLambdaHandlerSpec extends Specification {
     static class FormController {
 
         @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+        @Post("/without-body-annotation")
+        String withoutBodyAnnotation(MessageCreate messageCreate) {
+            "{\"message\":\"Hello ${messageCreate.getMessage()}\"}";
+        }
+
+        @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
         @Post
         String save(@Body MessageCreate messageCreate) {
             "{\"message\":\"Hello ${messageCreate.getMessage()}\"}";
@@ -251,5 +271,20 @@ class MicronautLambdaHandlerSpec extends Specification {
         String jsonNestedAttribute(@Body("message") String value) {
             "{\"message\":\"Hello ${value}\"}";
         }
+
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Post("/json-nested-attribute-with-map-return")
+        Map<String, String> jsonNestedAttributeWithMapReturn(@Body("message") String value) {
+            [message: "Hello ${value}"]
+        }
+    }
+
+    private static MicronautLambdaContainerHandler instantiateHandler() {
+        new MicronautLambdaContainerHandler(
+                ApplicationContext.builder().properties([
+                        'spec.name'                 : 'MicronautLambdaHandlerSpec',
+                        'micronaut.security.enabled': false
+                ])
+        )
     }
 }
