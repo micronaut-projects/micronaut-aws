@@ -22,13 +22,21 @@ import com.amazonaws.serverless.proxy.model.ContainerConfig;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.http.HttpAttributes;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.web.router.UriRoute;
 import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static io.micronaut.http.HttpAttributes.AVAILABLE_HTTP_METHODS;
+import static io.micronaut.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 
 /**
  * Implementation of the {@link RequestReader} class for Micronaut.
@@ -68,7 +76,11 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
 
             List<UriRouteMatch<Object, Object>> uriRoutes = environment.getRouter().findAllClosest(containerRequest);
 
-            if (!uriRoutes.isEmpty()) {
+            if (uriRoutes.isEmpty() && isPreflightRequest(containerRequest)) {
+                List<UriRouteMatch<Object, Object>> anyUriRoutes = environment.getRouter().findAny(containerRequest.getUri().getPath(), containerRequest)
+                    .collect(Collectors.toList());
+                containerRequest.setAttribute(AVAILABLE_HTTP_METHODS, anyUriRoutes.stream().map(UriRouteMatch::getHttpMethod).collect(Collectors.toList()));
+            } else if (!uriRoutes.isEmpty()) {
                 UriRouteMatch<Object, Object> finalRoute = uriRoutes.get(0);
                 final UriRoute route = finalRoute.getRoute();
                 containerRequest.setAttribute(HttpAttributes.ROUTE, route);
@@ -80,6 +92,12 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
         } catch (Exception e) {
             throw new InvalidRequestEventException("Invalid Request: " + e.getMessage(), e);
         }
+    }
+
+    static boolean isPreflightRequest(HttpRequest<?> request) {
+        HttpHeaders headers = request.getHeaders();
+        Optional<String> origin = headers.getOrigin();
+        return origin.isPresent() && headers.contains(ACCESS_CONTROL_REQUEST_METHOD) && HttpMethod.OPTIONS == request.getMethod();
     }
 
     @Override
