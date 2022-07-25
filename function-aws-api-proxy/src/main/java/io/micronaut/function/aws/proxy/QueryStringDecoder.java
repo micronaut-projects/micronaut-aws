@@ -275,11 +275,7 @@ final class QueryStringDecoder {
             return false;
         }
 
-        List<String> values = params.get(name);
-        if (values == null) {
-            values = new ArrayList<String>(1);  // Often there's only 1 value.
-            params.put(name, values);
-        }
+        List<String> values = params.computeIfAbsent(name, k -> new ArrayList<>(1));
         values.add(value);
         nParams ++;
         return true;
