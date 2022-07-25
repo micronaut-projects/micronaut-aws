@@ -552,8 +552,8 @@ public final class MicronautLambdaContainerHandler
     @NonNull
     private Optional<Object> bindFormUrlEncoded(@NonNull Argument<?> argument, @NonNull Map<String, List<String>> bodyParameters) {
         Map<CharSequence, Object> source = new HashMap<>();
-        for (String k : bodyParameters.keySet()) {
-            source.put(k, bodyParameters.get(k));
+        for (Map.Entry<String, List<String>> entry : bodyParameters.entrySet()) {
+            source.put(entry.getKey(), entry.getValue());
         }
         try {
             return Optional.of(beanPropertyBinder.bind(argument.getType(), source));
