@@ -180,6 +180,24 @@ class MicronautLambdaHandlerSpec extends Specification {
         handler.close()
     }
 
+    void "application-json without Body annotation"() {
+        given:
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/json-without-body-annotation', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body("{\"message\":\"World\"}")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"message":"Hello World"}'
+
+        cleanup:
+        handler.close()
+    }
+
     @PendingFeature
     void "application-json with Body annotation and a nested attribute and Map return rendered as JSON"() {
         given:
@@ -264,6 +282,12 @@ class MicronautLambdaHandlerSpec extends Specification {
         @Post("/nested-attribute")
         String save(@Body("message") String value) {
             "{\"message\":\"Hello ${value}\"}";
+        }
+
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Post("/json-without-body-annotation")
+        String jsonWithoutBody(MessageCreate messageCreate) {
+            "{\"message\":\"Hello ${messageCreate.message}\"}";
         }
 
         @Consumes(MediaType.APPLICATION_JSON)
