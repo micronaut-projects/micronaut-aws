@@ -21,7 +21,6 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import spock.lang.Issue
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import javax.validation.constraints.NotBlank
@@ -197,7 +196,6 @@ class MicronautLambdaHandlerSpec extends Specification {
         handler.close()
     }
 
-    @PendingFeature
     void "application-json with Body annotation and a nested attribute and Map return rendered as JSON"() {
         given:
         MicronautLambdaContainerHandler handler = instantiateHandler()
@@ -298,7 +296,7 @@ class MicronautLambdaHandlerSpec extends Specification {
         @Consumes(MediaType.APPLICATION_JSON)
         @Post("/json-nested-attribute-with-map-return")
         Map<String, String> jsonNestedAttributeWithMapReturn(@Body("message") String value) {
-            [message: "Hello ${value}"]
+            [message: "Hello ${value}".toString()]
         }
     }
 
