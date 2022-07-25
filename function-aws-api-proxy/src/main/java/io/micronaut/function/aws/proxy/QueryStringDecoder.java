@@ -326,7 +326,8 @@ final class QueryStringDecoder {
         }
         final int size = s.length();
         boolean modified = false;
-        for (int i = 0; i < size; i++) {
+        int i = 0;
+        while (i < size) {
             final char c = s.charAt(i);
             switch (c) {
                 case '%':
@@ -337,13 +338,15 @@ final class QueryStringDecoder {
                     break;
                 default:
             }
+            i++;
         }
         if (!modified) {
             return s;
         }
         final byte[] buf = new byte[size];
         int pos = 0;  // position in `buf'.
-        for (int i = 0; i < size; i++) {
+        i = 0;
+        while (i < size) {
             char c = s.charAt(i);
             switch (c) {
                 case '+':
@@ -377,6 +380,7 @@ final class QueryStringDecoder {
                     buf[pos++] = (byte) c;
                     break;
             }
+            i++;
         }
         return new String(buf, 0, pos, charset);
     }
