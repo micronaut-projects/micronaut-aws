@@ -400,7 +400,6 @@ public final class MicronautLambdaContainerHandler
     private MicronautAwsProxyResponse<?> toAwsProxyResponse(
             MicronautAwsProxyResponse<?> response,
             HttpResponse<?> message) {
-        // already failed here
         if (response != message) {
             response.status(message.status(), message.status().getReason());
             response.body(message.body());
