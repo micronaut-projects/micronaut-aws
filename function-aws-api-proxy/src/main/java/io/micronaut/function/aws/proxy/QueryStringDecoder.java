@@ -225,6 +225,7 @@ final class QueryStringDecoder {
         return params;
     }
 
+    @SuppressWarnings("java:S3776")
     private void decodeParams(String s) {
         this.params = new LinkedHashMap<>();
         nParams = 0;
@@ -321,7 +322,7 @@ final class QueryStringDecoder {
      * @throws IllegalArgumentException if the string contains a malformed
      * escape sequence.
      */
-    @SuppressWarnings("fallthrough")
+    @SuppressWarnings({"fallthrough", "java:S3776"})
     public static String decodeComponent(final String s,
                                          final Charset charset) {
         if (s == null) {
