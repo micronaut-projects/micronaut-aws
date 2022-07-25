@@ -119,7 +119,7 @@ class MicronautLambdaHandlerSpec extends Specification {
     }
 
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1410")
-    void "test form post"() {
+    void "POST form url encoded body binding to pojo works"() {
         given:
         MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
                 ApplicationContext.builder().properties([

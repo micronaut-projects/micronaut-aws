@@ -35,6 +35,7 @@ import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.async.subscriber.CompletionAwareSubscriber;
 import io.micronaut.core.bind.BeanPropertyBinder;
+import io.micronaut.core.convert.exceptions.ConversionErrorException;
 import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.convert.value.ConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
@@ -83,7 +84,6 @@ import java.io.Closeable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -92,9 +92,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Main entry for AWS API proxy with Micronaut.
@@ -127,12 +127,14 @@ public final class MicronautLambdaContainerHandler
     private static final String TIMER_REQUEST = "MICRONAUT_HANDLE_REQUEST";
     private final ApplicationContextBuilder applicationContextBuilder;
     private final LambdaContainerState lambdaContainerEnvironment;
+    private final BeanPropertyBinder beanPropertyBinder;
     private ApplicationContext applicationContext;
     private RequestArgumentSatisfier requestArgumentSatisfier;
     private StaticResourceResolver resourceResolver;
     private Router router;
     private ErrorResponseProcessor errorResponseProcessor;
     private RouteExecutor routeExecutor;
+    private final Map<MediaType, BiFunction<Argument<?>, String, Optional<Object>>> mediaTypeBodyDecoder = new HashMap<>();
 
     /**
      * Default constructor.
@@ -193,6 +195,8 @@ public final class MicronautLambdaContainerHandler
             this.applicationContext = applicationContext;
             initContainerState();
         }
+        this.beanPropertyBinder = this.applicationContext.getBean(BeanPropertyBinder.class);
+        populateMediaTypeBodyDecoders();
     }
 
     /**
@@ -345,7 +349,9 @@ public final class MicronautLambdaContainerHandler
 
         Flux<MutableHttpResponse<?>> routeResponse;
         try {
-            decodeRequestBody(request, originalRoute);
+            decodeRequestBody(request, originalRoute)
+                .ifPresent(((MicronautAwsProxyRequest) request)::setDecodedBody
+            );
 
             RouteMatch<?> route = requestArgumentSatisfier.fulfillArgumentRequirements(originalRoute, request, false);
 
@@ -409,44 +415,59 @@ public final class MicronautLambdaContainerHandler
         return response;
     }
 
+    private void populateMediaTypeBodyDecoders() {
+        mediaTypeBodyDecoder.put(MediaType.APPLICATION_JSON_TYPE, this::getJsonDecodedBody);
+        mediaTypeBodyDecoder.put(MediaType.APPLICATION_FORM_URLENCODED_TYPE, this::getFormUrlEncodedDecodedBody);
+    }
+
     @NonNull
     private static Optional<String> parseUndecodedBody(@NonNull MicronautAwsProxyRequest<?> containerRequest,
                                                 @NonNull RouteMatch<?> finalRoute,
                                                 @NonNull MediaType mediaType) {
-        if (!containerRequest.isBodyDecoded()) {
-            final boolean permitsRequestBody = HttpMethod.permitsRequestBody(containerRequest.getMethod());
-            if (permitsRequestBody) {
-                final MediaType requestContentType = containerRequest.getContentType().orElse(null);
-                if (requestContentType != null && mediaType.getExtension().equals(requestContentType.getExtension())) {
-                    final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
-                    if (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> mediaType.getExtension().equals(ct.getExtension()))) {
-                        return containerRequest.getBody(String.class);
-                    }
-                }
-            }
+        if (containerRequest.isBodyDecoded()) {
+            return Optional.empty();
         }
-        return Optional.empty();
-    }
-
-    private void decodeRequestBody(MicronautAwsProxyRequest<?> containerRequest, RouteMatch<?> finalRoute) {
-        Stream.of(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE)
-            .map(mediaType -> parseUndecodedBody(containerRequest, finalRoute, mediaType))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(body -> decodeRequestBody(body, containerRequest, finalRoute))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .findFirst()
-            .ifPresent(((MicronautAwsProxyRequest) containerRequest)::setDecodedBody);
+        if (!HttpMethod.permitsRequestBody(containerRequest.getMethod())) {
+            return Optional.empty();
+        }
+        final MediaType requestContentType = containerRequest.getContentType().orElse(null);
+        if (requestContentType == null) {
+            return Optional.empty();
+        }
+        if (!mediaType.getExtension().equals(requestContentType.getExtension())) {
+            return Optional.empty();
+        }
+        final MediaType[] expectedContentType = finalRoute.getAnnotationMetadata().getValue(Consumes.class, MediaType[].class).orElse(null);
+        return (expectedContentType == null || Arrays.stream(expectedContentType).anyMatch(ct -> mediaType.getExtension().equals(ct.getExtension()))) ?
+            containerRequest.getBody(String.class) :
+            Optional.empty();
     }
 
     @NonNull
-    private Optional<Object> decodeRequestBody(@NonNull String body,
-                                               @NonNull MicronautAwsProxyRequest<?> containerRequest,
+    private Optional<Object> decodeRequestBody(@NonNull MicronautAwsProxyRequest<?> containerRequest,
+                                               @NonNull RouteMatch<?> finalRoute) {
+        return mediaTypeBodyDecoder.entrySet()
+            .stream()
+            .map(e -> decodeRequestBody(containerRequest, finalRoute, e))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst();
+    }
+
+    private static Optional<Object> decodeRequestBody(@NonNull MicronautAwsProxyRequest<?> containerRequest,
+                                                      @NonNull RouteMatch<?> finalRoute,
+                                                      @NonNull Map.Entry<MediaType, BiFunction<Argument<?>, String, Optional<Object>>> entry) {
+        return parseUndecodedBody(containerRequest, finalRoute, entry.getKey())
+            .flatMap(body -> decodeRequestBody(body, entry.getValue(), finalRoute));
+    }
+
+    @NonNull
+    private static Optional<Object> decodeRequestBody(@NonNull String body,
+                                               @NonNull BiFunction<Argument<?>, String, Optional<Object>> function,
                                                @NonNull RouteMatch<?> finalRoute) {
         if (StringUtils.isNotEmpty(body)) {
             Argument<?> bodyArgument = parseBodyArgument(finalRoute);
-            return getDecodedBody(bodyArgument, containerRequest.getContentType().orElse(null), body);
+            return function.apply(bodyArgument, body);
         }
         return Optional.empty();
     }
@@ -462,55 +483,59 @@ public final class MicronautLambdaContainerHandler
                     .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
             }
         }
-        return bodyArgument;
-    }
-
-    @NonNull
-    private Optional<Object> getDecodedBody(Argument<?> bodyArgument,
-                                            MediaType requestContentType,
-                                            String body) {
-
-        JsonMediaTypeCodec jsonCodec = lambdaContainerEnvironment.getJsonCodec();
         if (bodyArgument != null) {
             final Class<?> rawType = bodyArgument.getType();
             if (Publishers.isConvertibleToPublisher(rawType) || HttpRequest.class.isAssignableFrom(rawType)) {
                 bodyArgument = bodyArgument.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT);
             }
+        }
+        return bodyArgument;
+    }
 
-            if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.getExtension().equals(requestContentType.getExtension())) {
-                if (nestedBody(bodyArgument)) {
-                    return Optional.of(formUrlEncodedBodyToConvertibleValues(body));
-                } else {
-                    return bindFormUrlEncoded(bodyArgument, body);
-                }
-            } else if (MediaType.APPLICATION_JSON_TYPE.getExtension().equals(requestContentType.getExtension())) {
-                if (nestedBody(bodyArgument)) {
-                    Map decoded = jsonCodec.decode(Argument.of(Map.class), body);
-                    return Optional.of(new ConvertibleValuesMap(decoded));
+    @NonNull
+    private Optional<Object> getFormUrlEncodedDecodedBody(@Nullable Argument<?> bodyArgument,
+                                                          @NonNull String body) {
+        if (bodyArgument == null) {
+            return Optional.empty();
+        }
+        if (nestedBody(bodyArgument)) {
+            return Optional.of(formUrlEncodedBodyToConvertibleValues(body));
+        }
+        return bindFormUrlEncoded(bodyArgument, body);
+    }
 
-                } else {
-                    Object decoded = jsonCodec.decode(bodyArgument, body);
-                    return Optional.of(decoded);
-                }
-            }
-        } else {
+    @NonNull
+    private Optional<Object> getJsonDecodedBody(@Nullable Argument<?> bodyArgument,
+                                                @NonNull String body) {
+
+        if (bodyArgument == null) {
+            JsonMediaTypeCodec jsonCodec = lambdaContainerEnvironment.getJsonCodec();
             JsonNode decoded = jsonCodec.decode(JsonNode.class, body);
             return Optional.of(decoded);
         }
-        return Optional.empty();
+        JsonMediaTypeCodec jsonCodec = lambdaContainerEnvironment.getJsonCodec();
+        if (nestedBody(bodyArgument)) {
+            return Optional.of(new ConvertibleValuesMap(jsonCodec.decode(Argument.of(Map.class), body)));
+        }
+        return Optional.of(jsonCodec.decode(bodyArgument, body));
+    }
+
+    @NonNull
+    private static Optional<Map<String, List<String>>> formUrlEncodedBodyToMap(@NonNull String body) {
+        QueryStringDecoder decoder = new QueryStringDecoder(body, false);
+        Map<String, List<String>> parameters = decoder.parameters();
+        return CollectionUtils.isEmpty(parameters) ? Optional.empty() :
+            Optional.of(parameters);
     }
 
     @Nullable
-    private ConvertibleValues<?> formUrlEncodedBodyToConvertibleValues(String body) {
-        QueryStringDecoder decoder = new QueryStringDecoder(body, false);
-        Map<String, List<String>> parameters = decoder.parameters();
-        if (parameters.isEmpty()) {
-            return null;
-        }
-        return new ConvertibleValuesMap<>(parameters);
+    private static ConvertibleValues<?> formUrlEncodedBodyToConvertibleValues(@NonNull String body) {
+        return formUrlEncodedBodyToMap(body)
+            .map(ConvertibleValuesMap::new)
+            .orElse(null);
     }
 
-    private boolean nestedBody(Argument<?> bodyArgument) {
+    private static boolean nestedBody(@NonNull Argument<?> bodyArgument) {
         AnnotationMetadata annotationMetadata = bodyArgument.getAnnotationMetadata();
         if (annotationMetadata.hasAnnotation(Body.class)) {
             return annotationMetadata.stringValue(Body.class).isPresent();
@@ -519,21 +544,22 @@ public final class MicronautLambdaContainerHandler
     }
 
     @NonNull
-    private Optional<Object> bindFormUrlEncoded(@NonNull Argument<?> argument, @Nullable String formUrlEncodedString) {
-        QueryStringDecoder decoder = new QueryStringDecoder(formUrlEncodedString, false);
-        Map<String, List<String>> parameters = decoder.parameters();
-        if (parameters.isEmpty()) {
-            return Optional.empty();
-        }
-        if (!applicationContext.containsBean(BeanPropertyBinder.class)) {
-            return Optional.empty();
-        }
-        BeanPropertyBinder beanPropertyBinder = applicationContext.getBean(BeanPropertyBinder.class);
+    private Optional<Object> bindFormUrlEncoded(@NonNull Argument<?> argument, @NonNull String formUrlEncodedString) {
+        return formUrlEncodedBodyToMap(formUrlEncodedString)
+            .flatMap(parameters -> bindFormUrlEncoded(argument, parameters));
+    }
+
+    @NonNull
+    private Optional<Object> bindFormUrlEncoded(@NonNull Argument<?> argument, @NonNull Map<String, List<String>> bodyParameters) {
         Map<CharSequence, Object> source = new HashMap<>();
-        for (String k : parameters.keySet()) {
-            source.put(k, parameters.get(k));
+        for (String k : bodyParameters.keySet()) {
+            source.put(k, bodyParameters.get(k));
         }
-        return Optional.of(beanPropertyBinder.bind(argument.getType(), source));
+        try {
+            return Optional.of(beanPropertyBinder.bind(argument.getType(), source));
+        } catch (ConversionErrorException e) {
+            return Optional.empty();
+        }
     }
 
     private Mono<MutableHttpResponse<?>> convertResponseBody(
