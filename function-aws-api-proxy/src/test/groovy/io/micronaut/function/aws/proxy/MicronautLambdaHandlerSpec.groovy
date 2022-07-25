@@ -214,6 +214,24 @@ class MicronautLambdaHandlerSpec extends Specification {
         handler.close()
     }
 
+    void "application-json with Body annotation and Object return rendered as JSON"() {
+        given:
+        MicronautLambdaContainerHandler handler = instantiateHandler()
+
+        when:
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/form/json-with-body-annotation-and-with-object-return', HttpMethod.POST.toString())
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+        builder.body("{\"message\":\"World\"}")
+        AwsProxyResponse response = handler.proxy(builder.build(), new MockLambdaContext())
+
+        then:
+        response.statusCode == 200
+        response.body == '{"greeting":"Hello World"}'
+
+        cleanup:
+        handler.close()
+    }
+
     @Controller
     @Requires(property = 'spec.name', value = 'MicronautLambdaHandlerSpec')
     @Secured(SecurityRule.IS_ANONYMOUS)
@@ -258,6 +276,23 @@ class MicronautLambdaHandlerSpec extends Specification {
         }
     }
 
+    @Introspected
+    static class MyResponse {
+
+        @NonNull
+        @NotBlank
+        private final String greeting;
+
+        MyResponse(@NonNull String greeting) {
+            this.greeting = greeting
+        }
+
+        @NonNull
+        String getGreeting() {
+            return greeting
+        }
+    }
+
     @Controller("/form")
     @Requires(property = 'spec.name', value = 'MicronautLambdaHandlerSpec')
     @Secured(SecurityRule.IS_ANONYMOUS)
@@ -297,6 +332,12 @@ class MicronautLambdaHandlerSpec extends Specification {
         @Post("/json-nested-attribute-with-map-return")
         Map<String, String> jsonNestedAttributeWithMapReturn(@Body("message") String value) {
             [message: "Hello ${value}".toString()]
+        }
+
+        @Consumes(MediaType.APPLICATION_JSON)
+        @Post("/json-with-body-annotation-and-with-object-return")
+        MyResponse jsonNestedAttributeWithObjectReturn(@Body MessageCreate messageCreate) {
+            new MyResponse("Hello ${messageCreate.message}")
         }
     }
 
