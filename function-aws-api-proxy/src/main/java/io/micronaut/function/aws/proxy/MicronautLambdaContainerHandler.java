@@ -496,10 +496,11 @@ public final class MicronautLambdaContainerHandler
     private Optional<Object> getFormUrlEncodedDecodedBody(@Nullable Argument<?> bodyArgument,
                                                           @NonNull String body) {
         if (bodyArgument == null) {
-            return Optional.empty();
+            JsonNode encodedValues = lambdaContainerEnvironment.getObjectMapper().valueToTree(formUrlEncodedBodyToConvertibleValues(body));
+            return Optional.ofNullable(encodedValues);
         }
         if (nestedBody(bodyArgument)) {
-            return Optional.of(formUrlEncodedBodyToConvertibleValues(body));
+            return Optional.ofNullable(formUrlEncodedBodyToConvertibleValues(body));
         }
         return bindFormUrlEncoded(bodyArgument, body);
     }

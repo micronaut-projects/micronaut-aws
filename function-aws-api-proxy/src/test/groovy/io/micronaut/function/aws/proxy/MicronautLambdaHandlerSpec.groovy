@@ -126,7 +126,6 @@ class MicronautLambdaHandlerSpec extends Specification {
         response.body == '{"message":"Hello World"}'
     }
 
-    @PendingFeature
     void "POST form url encoded body binding to pojo works if you don't specify body annotation"() {
         given:
         MicronautLambdaContainerHandler handler = instantiateHandler()
