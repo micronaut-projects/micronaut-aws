@@ -226,8 +226,7 @@ final class QueryStringDecoder {
     }
 
     private void decodeParams(String s) {
-        this.params = new LinkedHashMap<String, List<String>>();
-        Map<String, List<String>> params = this.params;
+        this.params = new LinkedHashMap<>();
         nParams = 0;
         String name = null;
         int pos = 0; // Beginning of the unprocessed region
@@ -246,11 +245,11 @@ final class QueryStringDecoder {
                     // We haven't seen an `=' so far but moved forward.
                     // Must be a param of the form '&a&' so add it with
                     // an empty value.
-                    if (!addParam(params, decodeComponent(s.substring(pos, i), charset), "")) {
+                    if (!addParam(this.params, decodeComponent(s.substring(pos, i), charset), "")) {
                         return;
                     }
                 } else if (name != null) {
-                    if (!addParam(params, name, decodeComponent(s.substring(pos, i), charset))) {
+                    if (!addParam(this.params, name, decodeComponent(s.substring(pos, i), charset))) {
                         return;
                     }
                     name = null;
@@ -261,12 +260,12 @@ final class QueryStringDecoder {
 
         if (pos != i) {  // Are there characters we haven't dealt with?
             if (name == null) {     // Yes and we haven't seen any `='.
-                addParam(params, decodeComponent(s.substring(pos, i), charset), "");
+                addParam(this.params, decodeComponent(s.substring(pos, i), charset), "");
             } else {                // Yes and this must be the last value.
-                addParam(params, name, decodeComponent(s.substring(pos, i), charset));
+                addParam(this.params, name, decodeComponent(s.substring(pos, i), charset));
             }
         } else if (name != null) {  // Have we seen a name without value?
-            addParam(params, name, "");
+            addParam(this.params, name, "");
         }
     }
 
