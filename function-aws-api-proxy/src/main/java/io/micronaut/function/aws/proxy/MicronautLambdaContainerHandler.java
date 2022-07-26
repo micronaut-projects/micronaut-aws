@@ -558,6 +558,9 @@ public final class MicronautLambdaContainerHandler
         try {
             return Optional.of(beanPropertyBinder.bind(argument.getType(), source));
         } catch (ConversionErrorException e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Unable to convert to {}", argument.getType().getSimpleName(), e);
+            }
             return Optional.empty();
         }
     }
