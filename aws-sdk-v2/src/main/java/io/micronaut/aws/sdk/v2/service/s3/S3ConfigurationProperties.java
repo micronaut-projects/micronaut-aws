@@ -47,6 +47,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
 
     /**
      * @return The endpoint with which the AWS SDK should communicate
+     * @since 3.6.2
      */
     public URI getEndpointOverride() {
         return endpointOverride;
@@ -54,6 +55,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
 
     /**
      * @param endpointOverride The endpoint with which the AWS SDK should communicate
+     * @since 3.6.2
      */
     public void setEndpointOverride(URI endpointOverride) {
         this.endpointOverride = endpointOverride;
