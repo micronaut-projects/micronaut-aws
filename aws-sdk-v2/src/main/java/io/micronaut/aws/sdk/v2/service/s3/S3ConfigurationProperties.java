@@ -22,6 +22,8 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Configuration.Builder;
 
+import java.net.URI;
+
 /**
  * Configuration properties for S3.
  *
@@ -34,10 +36,26 @@ public class S3ConfigurationProperties extends AWSConfiguration {
     @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
     private Builder builder = S3Configuration.builder();
 
+    private URI endpointOverride;
+
     /**
      * @return The builder
      */
     public Builder getBuilder() {
         return builder;
+    }
+
+    /**
+     * @return The endpoint with which the AWS SDK should communicate
+     */
+    public URI getEndpointOverride() {
+        return endpointOverride;
+    }
+
+    /**
+     * @param endpointOverride The endpoint with which the AWS SDK should communicate
+     */
+    public void setEndpointOverride(URI endpointOverride) {
+        this.endpointOverride = endpointOverride;
     }
 }

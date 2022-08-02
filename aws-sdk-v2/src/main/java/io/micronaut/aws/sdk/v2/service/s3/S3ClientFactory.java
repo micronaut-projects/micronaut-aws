@@ -56,8 +56,12 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
 
     @Override
     protected S3ClientBuilder createSyncBuilder() {
-        return S3Client.builder()
-                .serviceConfiguration(configuration.getBuilder().build());
+       S3ClientBuilder builder = S3Client.builder();
+       if (configuration.getEndpointOverride() != null) {
+           builder.endpointOverride(configuration.getEndpointOverride());
+       }
+       builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override
