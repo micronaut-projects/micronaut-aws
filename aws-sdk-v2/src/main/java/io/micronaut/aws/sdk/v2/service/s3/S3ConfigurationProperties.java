@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.service.s3;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.Nullable;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Configuration.Builder;
@@ -36,6 +37,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
     @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
     private Builder builder = S3Configuration.builder();
 
+    @Nullable
     private URI endpointOverride;
 
     /**
@@ -49,6 +51,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
      * @return The endpoint with which the AWS SDK should communicate
      * @since 3.6.2
      */
+    @Nullable
     public URI getEndpointOverride() {
         return endpointOverride;
     }
@@ -57,7 +60,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
      * @param endpointOverride The endpoint with which the AWS SDK should communicate
      * @since 3.6.2
      */
-    public void setEndpointOverride(URI endpointOverride) {
+    public void setEndpointOverride(@Nullable URI endpointOverride) {
         this.endpointOverride = endpointOverride;
     }
 }
