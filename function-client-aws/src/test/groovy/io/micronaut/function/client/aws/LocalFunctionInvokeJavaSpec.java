@@ -30,7 +30,7 @@ public class LocalFunctionInvokeJavaSpec {
         assertEquals(Long.valueOf(Integer.MAX_VALUE), mathClient.max());
         assertEquals(2, mathClient.rnd(1.6f));
         assertEquals(15, mathClient.sum(sum));
-
+        mathClient.infinite();
     }
     //end::invokeLocalFunction[]
 
@@ -66,6 +66,8 @@ public class LocalFunctionInvokeJavaSpec {
         //end::functionRnd[]
 
         long sum(Sum sum);
+
+        void infinite();
         //tag::endFunctionClient[]
     }
     //end::endFunctionClient[]
