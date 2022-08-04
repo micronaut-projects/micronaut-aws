@@ -15,6 +15,7 @@ dependencies {
 
     testImplementation project(":function-aws")
     testImplementation project(":function-client-aws")
+    testImplementation project(":function-client-aws-v2")
 }
 
 tasks.named("test") {

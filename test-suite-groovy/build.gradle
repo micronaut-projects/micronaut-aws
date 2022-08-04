@@ -16,6 +16,7 @@ dependencies {
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation project(":function-aws")
     testImplementation project(":function-client-aws")
+    testImplementation project(":function-client-aws-v2")
 }
 
 tasks.named('test') {

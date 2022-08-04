@@ -17,6 +17,7 @@ dependencies {
     compileOnly libs.awssdk.apigatewaymanagementapi
     compileOnly libs.awssdk.s3
     compileOnly libs.awssdk.dynamodb
+    compileOnly libs.awssdk.lambda
     compileOnly libs.awssdk.ses
     compileOnly libs.awssdk.sns
     compileOnly libs.awssdk.sqs
@@ -33,6 +34,7 @@ dependencies {
     testImplementation libs.awssdk.apache.client
     testImplementation libs.awssdk.s3
     testImplementation libs.awssdk.dynamodb
+    testImplementation libs.awssdk.lambda
     testImplementation libs.awssdk.ses
     testImplementation libs.awssdk.secretsmanager
     testImplementation libs.awssdk.sns
