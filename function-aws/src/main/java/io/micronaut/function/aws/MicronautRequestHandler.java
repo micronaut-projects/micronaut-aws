@@ -135,7 +135,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
             O output = this.execute(input);
             eventPublisher.publishEvent(AfterExecutionEvent.success(output));
             return output;
-        } catch (RuntimeException re) {
+        } catch (Throwable re) {
             eventPublisher.publishEvent(AfterExecutionEvent.failure(re));
             throw re;
         }

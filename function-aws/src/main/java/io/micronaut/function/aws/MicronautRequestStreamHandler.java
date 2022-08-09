@@ -72,7 +72,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         try {
             execute(input, output, context);
             eventPublisher.publishEvent(AfterExecutionEvent.success(null));
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             eventPublisher.publishEvent(AfterExecutionEvent.failure(e));
             throw e;
         }

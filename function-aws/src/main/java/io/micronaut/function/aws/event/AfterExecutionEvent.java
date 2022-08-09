@@ -30,11 +30,11 @@ import io.micronaut.core.annotation.Nullable;
 public final class AfterExecutionEvent {
 
     @Nullable
-    private final RuntimeException exception;
+    private final Throwable exception;
     @Nullable
     private final Object output;
 
-    private AfterExecutionEvent(@Nullable Object output, @Nullable RuntimeException exception) {
+    private AfterExecutionEvent(@Nullable Object output, @Nullable Throwable exception) {
         this.output = output;
         this.exception = exception;
     }
@@ -53,7 +53,7 @@ public final class AfterExecutionEvent {
      * @param exception the exception which has been thrown during the execution
      * @return a new {@link AfterExecutionEvent} with an exception been thrown.
      */
-    public static AfterExecutionEvent failure(RuntimeException exception) {
+    public static AfterExecutionEvent failure(Throwable exception) {
         return new AfterExecutionEvent(null, exception);
     }
 
@@ -76,7 +76,7 @@ public final class AfterExecutionEvent {
      * @return the optional exception which has been thrown
      */
     @Nullable
-    public RuntimeException getException() {
+    public Throwable getException() {
         return exception;
     }
 
