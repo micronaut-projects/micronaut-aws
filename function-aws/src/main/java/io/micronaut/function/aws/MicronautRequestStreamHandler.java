@@ -21,6 +21,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 import io.micronaut.core.annotation.NonNull;
 import java.io.IOException;
@@ -65,7 +66,13 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
             this.ctxFunctionName = context.getFunctionName();
         }
         HandlerUtils.configureWithContext(this, context);
-        execute(input, output, context);
+        try {
+            execute(input, output, context);
+            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.success(null));
+        } catch (RuntimeException e) {
+            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.failure(e));
+            throw e;
+        }
     }
 
     @Override

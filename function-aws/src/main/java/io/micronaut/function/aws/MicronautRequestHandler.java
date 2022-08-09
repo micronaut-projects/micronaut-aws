@@ -24,6 +24,7 @@ import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.MDC;
 import java.util.Optional;
@@ -125,7 +126,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
-        return this.execute(input);
+        try {
+            O output = this.execute(input);
+            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.success(output));
+            return output;
+        } catch (RuntimeException re) {
+            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.failure(re));
+            throw re;
+        }
     }
 
     /**
