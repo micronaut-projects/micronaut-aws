@@ -16,6 +16,7 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
+import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -89,6 +90,8 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
+    private final ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
+
     /**
      * Default constructor; will initialize a suitable {@link ApplicationContext} for
      * Lambda deployment.
@@ -96,6 +99,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     public MicronautRequestHandler() {
         buildApplicationContext(null);
         injectIntoApplicationContext();
+        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     /**
@@ -106,6 +110,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         this.applicationContext = applicationContext;
         startEnvironment(applicationContext);
         injectIntoApplicationContext();
+        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     /**
@@ -128,10 +133,10 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         }
         try {
             O output = this.execute(input);
-            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.success(output));
+            eventPublisher.publishEvent(AfterExecutionEvent.success(output));
             return output;
         } catch (RuntimeException re) {
-            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.failure(re));
+            eventPublisher.publishEvent(AfterExecutionEvent.failure(re));
             throw re;
         }
     }

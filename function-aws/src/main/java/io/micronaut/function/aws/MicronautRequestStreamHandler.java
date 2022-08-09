@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
+import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.StreamFunctionExecutor;
@@ -36,6 +37,8 @@ import java.io.OutputStream;
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
+    private final ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
+
     @Nullable
     private String ctxFunctionName;
 
@@ -48,6 +51,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
         buildApplicationContext(null);
+        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     /**
@@ -56,6 +60,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      */
     public MicronautRequestStreamHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     @Override
@@ -66,9 +71,9 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         HandlerUtils.configureWithContext(this, context);
         try {
             execute(input, output, context);
-            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.success(null));
+            eventPublisher.publishEvent(AfterExecutionEvent.success(null));
         } catch (RuntimeException e) {
-            applicationContext.getEventPublisher(AfterExecutionEvent.class).publishEvent(AfterExecutionEvent.failure(e));
+            eventPublisher.publishEvent(AfterExecutionEvent.failure(e));
             throw e;
         }
     }
