@@ -17,12 +17,9 @@ package io.micronaut.function.aws.event;
 
 import io.micronaut.core.annotation.Nullable;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
  * This event is published after the execution of {@link io.micronaut.function.aws.MicronautRequestHandler#execute(Object)}
- * and {@link io.micronaut.function.aws.MicronautRequestStreamHandler#execute(InputStream, OutputStream)} methods to allow
+ * and {@link io.micronaut.function.aws.MicronautRequestStreamHandler#execute(java.io.InputStream, java.io.OutputStream)} methods to allow
  * performing actions before the Lambda function run is finished and the JVM is hibernated.
  * <p>
  * This event must be processed synchronously to guarantee it has been processed before the Lambda funciton is hibernated.
@@ -30,7 +27,17 @@ import java.io.OutputStream;
  * @author Vladimir Orany
  * @since 3.8.0
  */
-public class AfterExecutionEvent {
+public final class AfterExecutionEvent {
+
+    @Nullable
+    private final RuntimeException exception;
+    @Nullable
+    private final Object output;
+
+    private AfterExecutionEvent(@Nullable Object output, @Nullable RuntimeException exception) {
+        this.output = output;
+        this.exception = exception;
+    }
 
     /**
      * Creates a new {@link AfterExecutionEvent} with an optional result of the execution.
@@ -48,17 +55,6 @@ public class AfterExecutionEvent {
      */
     public static AfterExecutionEvent failure(RuntimeException exception) {
         return new AfterExecutionEvent(null, exception);
-    }
-
-    @Nullable
-    private final Object output;
-
-    @Nullable
-    private final RuntimeException exception;
-
-    private AfterExecutionEvent(@Nullable Object output, @Nullable RuntimeException exception) {
-        this.output = output;
-        this.exception = exception;
     }
 
     /**
