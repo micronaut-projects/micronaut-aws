@@ -25,6 +25,8 @@ import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import java.util.Optional;
 
@@ -37,6 +39,11 @@ import java.util.Optional;
  * @since 1.0
  */
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
+
+    /**
+     * Logger for the application context creation errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
 
     public static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
 
@@ -93,8 +100,13 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      * Lambda deployment.
      */
     public MicronautRequestHandler() {
-        buildApplicationContext(null);
-        injectIntoApplicationContext();
+        try {
+            buildApplicationContext(null);
+            injectIntoApplicationContext();
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler", e);
+            throw e;
+        }
     }
 
     /**
@@ -103,8 +115,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     public MicronautRequestHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        startEnvironment(applicationContext);
-        injectIntoApplicationContext();
+
+        try {
+            startEnvironment(applicationContext);
+            injectIntoApplicationContext();
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler", e);
+            throw e;
+        }
     }
 
     /**

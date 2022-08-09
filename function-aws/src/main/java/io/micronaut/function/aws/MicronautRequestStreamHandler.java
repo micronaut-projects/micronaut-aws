@@ -23,6 +23,9 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 import io.micronaut.core.annotation.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,6 +40,11 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
+    /**
+     * Logger for the application context creation errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestStreamHandler.class);
+
     @Nullable
     private String ctxFunctionName;
 
@@ -48,7 +56,12 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         // initialize the application context in the constructor
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
-        buildApplicationContext(null);
+        try {
+            buildApplicationContext(null);
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler", e);
+            throw e;
+        }
     }
 
     /**
