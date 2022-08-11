@@ -30,8 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static io.micronaut.function.aws.MicronautRequestHandler.registerContextBeans;
-
 /**
  * <p>An implementation of the {@link RequestStreamHandler} for Micronaut</p>.
  *

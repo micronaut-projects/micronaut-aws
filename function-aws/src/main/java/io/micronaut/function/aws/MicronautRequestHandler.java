@@ -40,11 +40,6 @@ import java.util.Optional;
  */
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
 
-    /**
-     * Logger for the application context creation errors.
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
-
     public static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
 
     // See: https://github.com/aws/aws-xray-sdk-java/issues/251
@@ -91,6 +86,11 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     @Deprecated
     public static final String MDC_DEFAULT_XRAY_TRACE_ID = "AWS-XRAY-TRACE-ID";
+
+    /**
+     * Logger for the application context creation errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
 
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
