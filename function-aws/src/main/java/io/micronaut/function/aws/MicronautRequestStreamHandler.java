@@ -37,7 +37,8 @@ import java.io.OutputStream;
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
 
-    private final ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
+
+    private ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
 
     @Nullable
     private String ctxFunctionName;
@@ -51,7 +52,6 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
         buildApplicationContext(null);
-        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     /**
@@ -60,7 +60,6 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      */
     public MicronautRequestStreamHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        this.eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
     }
 
     @Override
@@ -71,9 +70,9 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         HandlerUtils.configureWithContext(this, context);
         try {
             execute(input, output, context);
-            eventPublisher.publishEvent(AfterExecutionEvent.success(null));
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(null));
         } catch (Throwable e) {
-            eventPublisher.publishEvent(AfterExecutionEvent.failure(e));
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(e));
             throw e;
         }
     }
@@ -93,6 +92,13 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     protected String resolveFunctionName(Environment env) {
         String functionName = super.resolveFunctionName(env);
         return (functionName != null) ? functionName : ctxFunctionName;
+    }
+
+    private ApplicationEventPublisher<AfterExecutionEvent> resolveAfterExecutionPublisher() {
+        if (eventPublisher == null) {
+            eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
+        }
+        return eventPublisher;
     }
 
     @Override
