@@ -64,5 +64,7 @@ distributedconfiguration:
   title: Distributed Configuration
   distributedconfigurationsecretsmanager: AWS Secrets Manager
   parametersStore: AWS System Manager Parameter Store
+cloudwatchLogging:
+  title: CloudWatch logging
 repository: Repository
 thirdPartyLibraries: Third-party libraries

@@ -22,6 +22,7 @@ alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
+awssdk-cloudwatchlogs = { module = 'software.amazon.awssdk:cloudwatchlogs'}
 awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }
 awssdk-netty-nio-client = { module = 'software.amazon.awssdk:netty-nio-client' }
 awssdk-rekognition = { module = 'software.amazon.awssdk:rekognition' }

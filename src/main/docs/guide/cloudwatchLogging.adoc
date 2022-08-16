@@ -1,0 +1,157 @@
+To use the https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html[Cloudwatch Logs], add the following dependency to your project:
+
+dependency:io.micronaut.aws:micronaut-aws-cloudwatch-logging[]
+
+=== Setup Cloudwatch logging
+
+By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the `createGroupAndStream` flag to `false` inside your appender.
+Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value `groupName` for group name and `streamName` for stream name.
+
+.Configurable CloudWatchLoggingAppender Appender Properties
+|===
+|Property|Type|Default value|Description
+
+|`groupName`
+|`String`
+|Application name
+|Cloudwatch Log group name
+
+|`streamName`
+|`String`
+|Host name
+|Cloudwatch Log stream name
+
+|`publishPeriod`
+|`Integer`
+|100
+|Time in ms between two batch publishing of logs
+
+|`maxBatchSize`
+|`Integer`
+|128
+|Time maximum number of log lines that will be sent in one batch request
+
+|`queueSize`
+|`Integer`
+|128
+|The size of publishing log queue
+
+|`createGroupAndStream`
+|`Boolean`
+|true
+|If flag is set to true the Micronaut application will try to create group and stream on the AWS
+
+|`blackListLoggerName`
+|`List`
+|empty
+|List of logger names that won't be published
+|===
+
+=== Logback configuration
+
+Edit a `src/main/resources/logback.xml` file and make it look like this:
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH" />
+    </root>
+</configuration>
+----
+You can customize your JsonLayout with additional parameters the are available on official docs of https://javadoc.io/static/ch.qos.logback.contrib/logback-json-classic/0.1.5/ch/qos/logback/contrib/json/classic/JsonLayout.html[Logback's JsonLayout].
+
+The `CloudWatchLoggingAppender` supports blacklisting the loggers by specifying the logger name. That might come handy if you want to use `level=DEBUG` or `level=TRACE` for the root logger level.
+
+=== OpenTelemetry and logging
+
+If you are using the https://opentelemetry.io/[OpenTelemetry] for tracing you can include `traceId` and `spanId` fields into your logs. First you have to add next dependency into your project:
+
+dependency:io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:1.16.0-alpha[scope="runtime"]
+
+Inside your `src/main/resources/logback.xml` you should add a new appender https://javadoc.io/doc/io.opentelemetry.instrumentation/opentelemetry-logback-1.0/latest/io/opentelemetry/instrumentation/logback/v1_0/OpenTelemetryAppender.html[io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender].
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender">
+        <appender-ref ref="CLOUDWATCH" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="OTEL" />
+    </root>
+</configuration>
+----
+
+=== Emergency Appender
+
+Since this appender is queuing up log messages and then writing them remotely, there are a number of situations which might result in log messages not getting remoted correctly. To address such scenarios you can configure the emergency appender to preserve those messages.
+
+Inside your `src/main/resources/logback.xml` you should add a new appender, in the example it is `STDOUT`. Inside the `CloudWatchLoggingAppender` add `appender-ref` that points to the new crated appender.
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <appender-ref ref="STDOUT"/>
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH" />
+    </root>
+</configuration>
+----
+
+=== Browsing the logs
+
+When you have completed a setup, you can browse your logs on the https://console.aws.amazon.com/cloudwatch/home[Cloudwatch home]. In the Log groups menu and choose the group name and stream name of your application. In the "Log events" section you should be able to see your service logs.
+
+image::logs.png[Log events]

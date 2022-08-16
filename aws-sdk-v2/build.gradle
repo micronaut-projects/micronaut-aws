@@ -15,6 +15,7 @@ dependencies {
 
     // Services
     compileOnly libs.awssdk.apigatewaymanagementapi
+    compileOnly libs.awssdk.cloudwatchlogs
     compileOnly libs.awssdk.s3
     compileOnly libs.awssdk.dynamodb
     compileOnly libs.awssdk.ses
