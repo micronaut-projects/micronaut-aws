@@ -20,14 +20,13 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.function.executor.StreamFunctionExecutor;
-import io.micronaut.core.annotation.NonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static io.micronaut.function.aws.MicronautRequestHandler.registerContextBeans;
 
 /**
  * <p>An implementation of the {@link RequestStreamHandler} for Micronaut</p>.

@@ -15,17 +15,18 @@
  */
 package io.micronaut.function.aws;
 
-import com.amazonaws.services.lambda.runtime.*;
-import io.micronaut.core.annotation.NonNull;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
-import org.slf4j.MDC;
+
 import java.util.Optional;
 
 /**
@@ -42,48 +43,6 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
 
     // See: https://github.com/aws/aws-xray-sdk-java/issues/251
     public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_AWS_REQUEST_ID = "AWSRequestId";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_FUNCTION_NAME = "AWSFunctionName";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_FUNCTION_VERSION = "AWSFunctionVersion";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_FUNCTION_ARN = "AWSFunctionArn";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_FUNCTION_MEMORY_SIZE = "AWSFunctionMemoryLimit";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_FUNCTION_REMAINING_TIME = "AWSFunctionRemainingTime";
-
-    /**
-     * @deprecated Use the bena of type {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    public static final String MDC_DEFAULT_XRAY_TRACE_ID = "AWS-XRAY-TRACE-ID";
 
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
@@ -129,47 +88,6 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     }
 
     /**
-     * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/java-logging.html">AWS Lambda function logging in Java</a>
-     * @param context The Lambda execution environment context object.
-     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    protected void populateMappingDiagnosticContextValues(@NonNull Context context) {
-    }
-
-    /**
-     * Put a diagnostic context value.
-     * @param key non-null key
-     * @param val value to put in the map
-     * @throws IllegalArgumentException in case the "key" parameter is null
-     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    protected void mdcput(@NonNull String key, @NonNull String val) throws IllegalArgumentException {
-        MDC.put(key, val);
-    }
-
-    /**
-     * Populate MDC with XRay Trace ID if is able to parse it.
-     * @deprecated Use {@link DiagnosticInfoPopulator} instead.
-     */
-    @Deprecated
-    protected void populateMappingDiagnosticContextWithXrayTraceId() {
-    }
-
-    /**
-     * Parses XRay Trace ID from _X_AMZN_TRACE_ID environment variable.
-     * @see <a href="https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-configuration.html">Trace ID injection into logs</a>
-     * @return Trace id or empty if not found
-     * @deprecated Use {@link XRayUtils#parseXrayTraceId()} instead.
-     */
-    @NonNull
-    @Deprecated
-    protected static Optional<String> parseXrayTraceId() {
-       return XRayUtils.parseXrayTraceId();
-    }
-
-    /**
      * Converts the input the required type. Subclasses can override to provide custom conversion.
      *
      * @param input The input
@@ -199,17 +117,6 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @NonNull
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         return new LambdaApplicationContextBuilder();
-    }
-
-    /**
-     * Register the beans in the application.
-     *
-     * @param context context
-     * @param applicationContext application context
-     * @deprecated Use the bena of type {@link LambdaContextFactory} instead.
-     */
-    @Deprecated
-    static void registerContextBeans(Context context, ApplicationContext applicationContext) {
     }
 
     private Class initTypeArgument() {
