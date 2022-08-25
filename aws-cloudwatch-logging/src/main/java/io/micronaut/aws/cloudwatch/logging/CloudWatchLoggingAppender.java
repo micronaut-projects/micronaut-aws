@@ -241,10 +241,10 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             return;
         }
 
-        List<InputLogEvent> logEvents = new ArrayList<>(DEFAULT_MAX_BATCH_SIZE);
-        List<ILoggingEvent> iLoggingEvents = new ArrayList<>(DEFAULT_MAX_BATCH_SIZE);
+        List<InputLogEvent> logEvents = new ArrayList<>(maxBatchSize);
+        List<ILoggingEvent> iLoggingEvents = new ArrayList<>(maxBatchSize);
 
-        while (!deque.isEmpty() && logEvents.size() < DEFAULT_MAX_BATCH_SIZE) {
+        while (!deque.isEmpty() && logEvents.size() < maxBatchSize) {
             ILoggingEvent event = deque.takeFirst();
             final InputLogEvent inputLogEvent = InputLogEvent.builder().message(
                 new String(encoder.encode(event))
