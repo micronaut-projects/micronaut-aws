@@ -140,6 +140,11 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             return;
         }
 
+        if (maxBatchSize <= 0) {
+            addError("Max Batch size must be greater than zero");
+            return;
+        }
+
         if (encoder == null) {
             addError("No encoder set for the appender named [" + name + "].");
             return;

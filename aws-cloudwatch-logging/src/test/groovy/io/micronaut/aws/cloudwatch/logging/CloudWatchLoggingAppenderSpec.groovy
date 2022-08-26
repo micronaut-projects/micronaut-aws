@@ -83,6 +83,16 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         statuses.find { it.message == "Publish period must be greater than zero" }
     }
 
+    void 'test error max batch size less or equal to 0'() {
+        when:
+        appender.maxBatchSize = 0
+        appender.start()
+
+        then:
+        def statuses = context.getStatusManager().getCopyOfStatusList()
+        statuses.find { it.message == "Max Batch size must be greater than zero" }
+    }
+
     void 'encoder not set'() {
         when:
         appender.queueSize = 100
