@@ -26,6 +26,8 @@ To resolve that class you need to add the `micronaut-function-aws-api-proxy` dep
 
 dependency:micronaut-function-aws-api-proxy[]
 
+NOTE: `micronaut-function-aws-api-proxy` supports only https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0].
+
 For Serverless Functions the decision to use one `MicronautRequestHandler` or `MicronautRequestStreamHandler` depends on how you want to handle the input and output types.
 
 To resolve those classes you need to add the `micronaut-function-aws` dependency to your build.
