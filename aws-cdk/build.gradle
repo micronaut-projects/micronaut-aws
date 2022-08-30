@@ -9,6 +9,6 @@ repositories {
 
 dependencies {
     api libs.aws.cdk.lib
-    api("io.micronaut.starter:micronaut-starter-api:$micronautVersion")
+    api("io.micronaut.starter:micronaut-starter-api:$micronautStarterVersion")
     testImplementation(project(":function-aws-api-proxy"))
 }
