@@ -46,7 +46,7 @@
         <div class="docs-content">
             <div class="project">
                 <h1>Configuration Reference</h1>
-                <p><strong>Version:</strong>3.7.1-SNAPSHOT</p>
+                <p><strong>Version:</strong>3.8.0-SNAPSHOT</p>
                 <p></p>
             </div>
 <div class="sect2">
@@ -468,9 +468,43 @@
 </div>
 <div class="sect2">
 <h3 id="_aws_sdk_v2_config_properties">Aws Sdk V2 Config Properties</h3>
+<a id="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html">UrlConnectionClientConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.socket-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.proxy-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.urlconnection.ProxyConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html">ApacheClientConfiguration</a></caption>
+<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html">ApacheClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -582,40 +616,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.use-system-property-values</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration" href="#io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/client/urlConnection/UrlConnectionClientConfiguration.html">UrlConnectionClientConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.socket-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.connection-timeout</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.url-connection-client.proxy-configuration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.urlconnection.ProxyConfiguration</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
@@ -829,38 +829,9 @@
 </div>
 <div class="sect2">
 <h3 id="_aws_service_discovery_config_properties">Aws Service Discovery Config Properties</h3>
-<a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.aws-service-id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">set service ID for easier testing.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">enable/disabled this feature. Default value ({@value io.micronaut.discovery.DiscoveryConfiguration#DEFAULT_ENABLED}).</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
+<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -923,6 +894,35 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.registration.aws-service-id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Setting for service id to make easier testing.</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.aws-service-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set service ID for easier testing.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enable/disabled this feature. Default value ({@value io.micronaut.discovery.DiscoveryConfiguration#DEFAULT_ENABLED}).</p></td>
 </tr>
 </tbody>
 </table>
@@ -1141,9 +1141,73 @@
 </div>
 <div class="sect2">
 <h3 id="_function_client_aws_config_properties">Function Client Aws Config Properties</h3>
+<a id="io.micronaut.function.client.aws.AWSLambdaConfiguration" href="#io.micronaut.function.client.aws.AWSLambdaConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.executor-factory</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.ExecutorFactory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.credentials</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.auth.AWSCredentialsProvider</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.ClientConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.metrics-collector</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.metrics.RequestMetricCollector</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.region</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.regions.Regions</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.endpoint-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.AwsClientBuilder$EndpointConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.request-handlers</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.handlers.RequestHandler2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.monitoring-listener</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.MonitoringListener</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-side-monitoring-configuration-provider</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.CsmConfigurationProvider</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.function.client.aws.AWSInvokeRequestDefinition" href="#io.micronaut.function.client.aws.AWSInvokeRequestDefinition">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
+<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1210,70 +1274,6 @@
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.functions.*.sdk-client-execution-timeout</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.function.client.aws.AWSLambdaConfiguration" href="#io.micronaut.function.client.aws.AWSLambdaConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.executor-factory</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.ExecutorFactory</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.credentials</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.auth.AWSCredentialsProvider</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-configuration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.ClientConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.metrics-collector</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.metrics.RequestMetricCollector</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.region</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.regions.Regions</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.endpoint-configuration</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.client.builder.AwsClientBuilder$EndpointConfiguration</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.request-handlers</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.handlers.RequestHandler2</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.monitoring-listener</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.MonitoringListener</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.lambda.client-side-monitoring-configuration-provider</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">com.amazonaws.monitoring.CsmConfigurationProvider</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
