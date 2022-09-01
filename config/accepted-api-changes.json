@@ -1,0 +1,37 @@
+[
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_AWS_REQUEST_ID",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_MEMORY_SIZE",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_NAME",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_REMAINING_TIME",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_XRAY_TRACE_ID",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_ARN",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_VERSION",
+    "reason": "removed deprecated member for Micronaut 4.0.x"
+  }
+]
