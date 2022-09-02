@@ -1,9 +1,6 @@
 plugins {
     id 'java-library'
-}
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    id("io.micronaut.build.internal.aws-tests")
 }
 
 dependencies {

@@ -1,11 +1,7 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.7.10"
     id("org.jetbrains.kotlin.kapt") version "1.7.10"
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    id("io.micronaut.build.internal.aws-tests")
 }
 
 dependencies {
