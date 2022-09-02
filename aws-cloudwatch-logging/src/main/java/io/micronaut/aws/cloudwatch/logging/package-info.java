@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 /**
- * Integration with AWS service discovery.
+ * Integration with AWS CloudWatch logging.
  *
- * @author graemerocher
- * @since 1.0
+ * @author Nemanja Mikic
+ * @since 3.8.0
  */
 package io.micronaut.aws.cloudwatch.logging;
