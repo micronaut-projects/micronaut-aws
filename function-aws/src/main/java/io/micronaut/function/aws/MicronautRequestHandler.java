@@ -120,7 +120,7 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
             startEnvironment(applicationContext);
             injectIntoApplicationContext();
         } catch (Exception e) {
-            LOG.error("Exception initializing handler", e);
+            LOG.error("Exception initializing handler: " + e.getMessage() , e);
             throw e;
         }
     }

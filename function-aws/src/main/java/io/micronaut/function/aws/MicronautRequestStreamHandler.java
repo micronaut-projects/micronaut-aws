@@ -57,7 +57,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         try {
             buildApplicationContext(null);
         } catch (Exception e) {
-            LOG.error("Exception initializing handler", e);
+            LOG.error("Exception initializing handler: " + e.getMessage(), e);
             throw e;
         }
     }
