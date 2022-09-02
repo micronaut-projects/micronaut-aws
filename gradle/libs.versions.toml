@@ -3,12 +3,12 @@ bouncycastle = '1.70'
 fileupload = '0.0.5'
 jetty = '9.4.48.v20220622'
 managed-alexa-ask-sdk = "2.43.7"
-managed-aws-java-sdk-v1 = '1.12.273'
-managed-aws-java-sdk-v2 = '2.17.244'
+managed-aws-java-sdk-v1 = '1.12.292'
+managed-aws-java-sdk-v2 = '2.17.263'
 managed-aws-lambda = '1.2.1'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.8.2'
-managed-aws-cdk-lib='2.35.0'
+managed-aws-cdk-lib='2.39.1'
 servlet-api = "2.5"
 slf4j = "1.7.36"
 

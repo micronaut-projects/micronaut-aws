@@ -27,6 +27,8 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import java.util.Optional;
 
@@ -87,6 +89,11 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @Deprecated
     public static final String MDC_DEFAULT_XRAY_TRACE_ID = "AWS-XRAY-TRACE-ID";
 
+    /**
+     * Logger for the application context creation errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
+
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
@@ -97,8 +104,13 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      * Lambda deployment.
      */
     public MicronautRequestHandler() {
-        buildApplicationContext(null);
-        injectIntoApplicationContext();
+        try {
+            buildApplicationContext(null);
+            injectIntoApplicationContext();
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler", e);
+            throw e;
+        }
     }
 
     /**
@@ -107,8 +119,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
      */
     public MicronautRequestHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        startEnvironment(applicationContext);
-        injectIntoApplicationContext();
+
+        try {
+            startEnvironment(applicationContext);
+            injectIntoApplicationContext();
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler: " + e.getMessage() , e);
+            throw e;
+        }
     }
 
     /**
