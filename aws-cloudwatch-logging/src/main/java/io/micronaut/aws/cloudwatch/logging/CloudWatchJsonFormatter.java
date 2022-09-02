@@ -25,7 +25,7 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * OracleCloudJsonFormatter implementation of the {@link JsonFormatter}.
+ * CloudWatch implementation of the {@link JsonFormatter}.
  *
  * @author Nemanja Mikic
  * @since 3.8.0
