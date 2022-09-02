@@ -34,11 +34,7 @@ import java.util.Map;
 public final class CloudWatchJsonFormatter implements JsonFormatter {
     public static final int BUFFER_SIZE = 512;
 
-    private ObjectMapper objectMapper;
-
-    public CloudWatchJsonFormatter() {
-        this.objectMapper = new ObjectMapper();
-    }
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public String toJsonString(Map m) throws IOException {
