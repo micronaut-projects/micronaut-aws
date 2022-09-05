@@ -1,0 +1,23 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
+dependencies {
+    api project(":aws-sdk-v2")
+    implementation libs.projectreactor
+    implementation libs.awssdk.lambda
+    api libs.micronaut.function.client
+
+    testAnnotationProcessor libs.micronaut.inject.java
+    testImplementation libs.micronaut.inject.java
+    testImplementation libs.micronaut.http.server.netty
+    testImplementation libs.micronaut.function.web
+    testImplementation libs.micronaut.function.groovy
+    testImplementation libs.micronaut.runtime.groovy
+}
+
+micronautBuild {
+    binaryCompatibility {
+        enabled = false
+    }
+}

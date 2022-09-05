@@ -23,6 +23,7 @@ aws-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
 awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }
+awssdk-lambda = { module = 'software.amazon.awssdk:lambda' }
 awssdk-netty-nio-client = { module = 'software.amazon.awssdk:netty-nio-client' }
 awssdk-rekognition = { module = 'software.amazon.awssdk:rekognition' }
 awssdk-s3 = { module = 'software.amazon.awssdk:s3' }

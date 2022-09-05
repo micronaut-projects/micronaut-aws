@@ -3,3 +3,7 @@ plugins {
     id "io.micronaut.build.internal.dependency-updates"
     id "io.micronaut.build.internal.quality-reporting"
 }
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
