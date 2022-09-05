@@ -3,6 +3,7 @@ package io.micronaut.function.aws.runtime
 import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext
+import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanProvider
@@ -37,7 +38,7 @@ class RuntimeApiSpec extends Specification {
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            assert lambadaRuntimeApi.responses['123456'].contains('body":"Hello 123456"')
+            assert lambadaRuntimeApi.responses['123456'].body == "Hello 123456"
         }
 
         cleanup:
@@ -76,7 +77,7 @@ class RuntimeApiSpec extends Specification {
     @Controller("/")
     static class MockLambadaRuntimeApi {
 
-        Map<String, String> responses = [:]
+        Map<String, AwsProxyResponse> responses = [:]
 
         @Get("/2018-06-01/runtime/invocation/next")
         HttpResponse<AwsProxyRequest> next() {
@@ -92,8 +93,8 @@ class RuntimeApiSpec extends Specification {
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
-        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body String body) {
-            responses[requestId] = body
+        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body AwsProxyResponse proxyResponse) {
+            responses[requestId] = proxyResponse
             return HttpResponse.accepted()
         }
     }
