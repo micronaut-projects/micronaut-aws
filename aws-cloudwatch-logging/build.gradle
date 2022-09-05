@@ -5,11 +5,10 @@ plugins {
 dependencies {
     api project(":aws-sdk-v2")
 
-    implementation("ch.qos.logback.contrib:logback-json-classic:0.1.5")
-    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation libs.logback.json.classic
+    implementation libs.jackson.databind
     api libs.awssdk.cloudwatchlogs
     api libs.micronaut.runtime
-    testImplementation("com.fasterxml.jackson.core:jackson-databind")
 
 }
 

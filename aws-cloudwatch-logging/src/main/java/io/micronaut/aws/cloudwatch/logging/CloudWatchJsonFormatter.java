@@ -25,14 +25,14 @@ import java.io.StringWriter;
 import java.util.Map;
 
 /**
- * CloudWatch implementation of the {@link JsonFormatter}.
+ * CloudWatch's implementation of the {@link JsonFormatter}.
  *
  * @author Nemanja Mikic
  * @since 3.8.0
  */
 @Internal
 public final class CloudWatchJsonFormatter implements JsonFormatter {
-    public static final int BUFFER_SIZE = 512;
+    private static final int BUFFER_SIZE = 512;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
