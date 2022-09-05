@@ -19,16 +19,21 @@ import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse
+import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.BeanProvider
+import io.micronaut.context.annotation.Any
 import io.micronaut.context.annotation.Requires
 import io.micronaut.function.aws.MicronautRequestHandler
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Produces
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -77,7 +82,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            assert lambadaRuntimeApi.responses['123456'].body == 'Hello 123456'
+            assert lambadaRuntimeApi.responses['123456'].contains('body":"Hello 123456"')
         }
 
         cleanup:
@@ -103,10 +108,12 @@ class MicronautLambdaRuntimeSpec extends Specification {
 
     @Controller("/hello")
     static class HelloController {
+        @Any BeanProvider<Context> context
 
+        @Produces(MediaType.TEXT_PLAIN)
         @Get("/world")
-        String index(AwsProxyRequest request) {
-            return "Hello " + request.getRequestContext().getRequestId()
+        String index() {
+            return "Hello " + context.get().awsRequestId
         }
     }
 
@@ -114,7 +121,7 @@ class MicronautLambdaRuntimeSpec extends Specification {
     @Controller("/")
     static class MockLambadaRuntimeApi {
 
-        Map<String, AwsProxyResponse> responses = [:]
+        Map<String, String> responses = [:]
 
         @Get("/2018-06-01/runtime/invocation/next")
         HttpResponse<AwsProxyRequest> next() {
@@ -130,8 +137,8 @@ class MicronautLambdaRuntimeSpec extends Specification {
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
-        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body AwsProxyResponse proxyResponse) {
-            responses[requestId] = proxyResponse
+        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body String body) {
+            responses[requestId] = body
             return HttpResponse.accepted()
         }
     }
