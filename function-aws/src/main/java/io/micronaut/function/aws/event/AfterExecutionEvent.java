@@ -25,7 +25,7 @@ import io.micronaut.core.annotation.Nullable;
  * This event must be processed synchronously to guarantee it has been processed before the Lambda funciton is hibernated.
  *
  * @author Vladimir Orany
- * @since 3.8.0
+ * @since 3.9.0
  */
 public final class AfterExecutionEvent {
 
