@@ -4,6 +4,6 @@ plugins {
 
 dependencies {
     api(project(":aws-common"))
-    api("io.micronaut.discovery:micronaut-discovery-client")
+    api(mn.micronaut.discovery)
     testImplementation(mn.micronaut.http.server.netty)
 }

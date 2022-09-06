@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api("io.micronaut.discovery:micronaut-discovery-client")
+    api(mn.micronaut.discovery)
     api(project(":aws-service-discovery"))
     api(project(":aws-sdk-v2"))
     implementation(libs.aws.ssm)
