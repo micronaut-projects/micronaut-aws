@@ -59,25 +59,6 @@ managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanage
 managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
-micronaut-discovery-client = { module = 'io.micronaut.discovery:micronaut-discovery-client' }
-micronaut-function = { module = 'io.micronaut:micronaut-function' }
-micronaut-function-client = { module = 'io.micronaut:micronaut-function-client' }
-micronaut-function-groovy = { module = 'io.micronaut.groovy:micronaut-function-groovy' }
-micronaut-function-web = { module = 'io.micronaut:micronaut-function-web' }
-micronaut-http-client = { module = 'io.micronaut:micronaut-http-client' }
-micronaut-http-netty = { module = 'io.micronaut:micronaut-http-netty' }
-micronaut-http-server = { module = 'io.micronaut:micronaut-http-server' }
-micronaut-http-server-netty = { module = 'io.micronaut:micronaut-http-server-netty' }
-micronaut-graal = { module = 'io.micronaut:micronaut-graal' }
-micronaut-inject-java = { module = 'io.micronaut:micronaut-inject-java' }
-micronaut-mongo-sync = { module = 'io.micronaut.mongodb:micronaut-mongo-sync' }
-micronaut-runtime = { module = 'io.micronaut:micronaut-runtime' }
-micronaut-runtime-groovy = { module = 'io.micronaut.groovy:micronaut-runtime-groovy' }
-micronaut-security = { module = 'io.micronaut.security:micronaut-security' }
-micronaut-test-junit5 = { module = 'io.micronaut.test:micronaut-test-junit5' }
-micronaut-validation = { module = 'io.micronaut:micronaut-validation' }
-micronaut-views-handlebars = { module = 'io.micronaut.views:micronaut-views-handlebars' }
-
 projectreactor = { module = 'io.projectreactor:reactor-core' }
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
 testcontainers = { module = 'org.testcontainers:testcontainers' }
