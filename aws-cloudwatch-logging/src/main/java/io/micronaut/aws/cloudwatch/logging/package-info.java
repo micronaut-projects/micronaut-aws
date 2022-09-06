@@ -17,6 +17,6 @@
  * Integration with AWS CloudWatch logging.
  *
  * @author Nemanja Mikic
- * @since 3.8.0
+ * @since 3.9.0
  */
 package io.micronaut.aws.cloudwatch.logging;

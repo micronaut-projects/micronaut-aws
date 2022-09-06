@@ -37,7 +37,7 @@ import java.util.Optional;
  * CloudWatchLoggingClient is a {@link CloudWatchLogsClient} client that is required for {@link CloudWatchLoggingAppender}.
  *
  * @author Nemanja Mikic
- * @since 3.8.0
+ * @since 3.9.0
  */
 @Context
 @Internal

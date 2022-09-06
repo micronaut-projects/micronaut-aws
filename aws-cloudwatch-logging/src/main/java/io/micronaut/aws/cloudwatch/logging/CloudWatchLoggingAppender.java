@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * Cloudwatch log appender for logback.
  *
  * @author Nemanja Mikic
- * @since 3.8.0
+ * @since 3.9.0
  */
 @Internal
 public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent> implements AppenderAttachable<ILoggingEvent> {

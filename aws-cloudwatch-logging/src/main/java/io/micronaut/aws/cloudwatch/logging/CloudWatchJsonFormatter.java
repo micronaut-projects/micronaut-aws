@@ -28,7 +28,7 @@ import java.util.Map;
  * CloudWatch's implementation of the {@link JsonFormatter}.
  *
  * @author Nemanja Mikic
- * @since 3.8.0
+ * @since 3.9.0
  */
 @Internal
 public final class CloudWatchJsonFormatter implements JsonFormatter {
