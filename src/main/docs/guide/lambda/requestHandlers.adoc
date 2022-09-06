@@ -45,7 +45,3 @@ With api:function.aws.MicronautRequestHandler[], it is expected that you supply 
 | Raw streams
 | api:function.aws.MicronautRequestStreamHandler[]
 |===
-
-AWS Lambda runtime will reuse the instances of your handler classes but the Java Virtual Machine will be suspended between the invocation. Every call on a single instance of your handler will reuse the same application context. If you need to perform actions before the JVM gets suspended then you can create **synchronous** handler for `AfterExecutionEvent` event which is published right before the execution of the method `handleRequest` in `MicronautRequestHandler` and `MicronautRequestStreamHandler` is finished.
-
-To subscribe to `AfterExecutionEvent` create a `@Singleton` class which implements `ApplicationEventListener<AfterExecutionEvent>`.  Learn more about https://docs.micronaut.io/latest/guide/#contextEvents[Context Events].
