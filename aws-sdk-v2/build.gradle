@@ -25,7 +25,7 @@ dependencies {
     compileOnly libs.awssdk.servicediscovery
 
     // Tests
-    testAnnotationProcessor libs.micronaut.inject.java
+    testAnnotationProcessor mn.micronaut.inject.java
     testImplementation libs.awssdk.apigatewaymanagementapi
     testImplementation libs.awssdk.servicediscovery
     testImplementation libs.awssdk.url.connection.client

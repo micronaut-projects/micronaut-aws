@@ -10,5 +10,5 @@ dependencies {
 
     runtimeOnly libs.jcl.over.slf4j
 
-    testImplementation libs.micronaut.http.server.netty
+    testImplementation mn.micronaut.http.server.netty
 }

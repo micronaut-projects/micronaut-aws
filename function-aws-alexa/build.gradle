@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor libs.micronaut.validation
+    annotationProcessor mn.micronaut.validation
 
-    implementation libs.micronaut.runtime
-    implementation libs.micronaut.validation
+    implementation mn.micronaut.runtime
+    implementation mn.micronaut.validation
 
     implementation project(":function-aws")
 
@@ -15,7 +15,7 @@ dependencies {
 
     runtimeOnly libs.jcl.over.slf4j
 
-    testAnnotationProcessor libs.micronaut.inject.java
+    testAnnotationProcessor mn.micronaut.inject.java
     testImplementation (libs.alexa.ask.sdk) {
         transitive(false)
     }

@@ -3,17 +3,17 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor libs.micronaut.validation
+    annotationProcessor mn.micronaut.validation
 
-    implementation libs.micronaut.validation
+    implementation mn.micronaut.validation
 
     api project(":aws-alexa")
 
-    implementation libs.micronaut.http.server
+    implementation mn.micronaut.http.server
     api(libs.managed.alexa.ask.sdk.core)
 
-    testImplementation libs.micronaut.http.client
-    testImplementation libs.micronaut.http.server.netty
+    testImplementation mn.micronaut.http.client
+    testImplementation mn.micronaut.http.server.netty
     testImplementation libs.bouncycastle.provider
     testImplementation (libs.alexa.ask.sdk) {
         transitive(false)
