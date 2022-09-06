@@ -1,8 +1,0 @@
-plugins {
-    id("io.micronaut.build.internal.module")
-}
-
-dependencies {
-    compileOnly libs.micronaut.runtime
-    testImplementation libs.micronaut.runtime
-}
