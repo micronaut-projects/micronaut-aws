@@ -15,3 +15,5 @@ https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html[AWS Lambda int
 On the one hand, if you need to support a single endpoint a `Serverless Function` gives you a function with less code (which translates to a faster cold startup).
 
 On the other hand, functions written as an application of type `Application` allows you to code with a more familiar paradigm - Classes annotated with  `@Controller`. That it is possible because, through the https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws-api-proxy[micronaut-function-aws-api-proxy] dependency, Micronaut integrates with the https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java Container] project.
+
+NOTE: `micronaut-function-aws-api-proxy` supports only https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0].
