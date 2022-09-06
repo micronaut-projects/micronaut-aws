@@ -1,0 +1,32 @@
+If you are using the https://opentelemetry.io/[OpenTelemetry] for tracing you can include `traceId` and `spanId` fields into your logs. First you have to add next dependency into your project:
+
+dependency:io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:1.16.0-alpha[scope="runtime"]
+
+Inside your `src/main/resources/logback.xml` you should add a new appender https://javadoc.io/doc/io.opentelemetry.instrumentation/opentelemetry-logback-1.0/latest/io/opentelemetry/instrumentation/logback/v1_0/OpenTelemetryAppender.html[io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender].
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender">
+        <appender-ref ref="CLOUDWATCH" />
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="OTEL" />
+    </root>
+</configuration>
+----
