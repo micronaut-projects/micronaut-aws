@@ -273,14 +273,8 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             }
         }
         for (int i = 0; i < PUT_REQUEST_RETRY_COUNT; i++) {
-            PutLogEventsRequest putLogEventsRequest = PutLogEventsRequest.builder()
-                .logEvents(logEvents)
-                .logGroupName(groupName)
-                .logStreamName(streamName)
-                .sequenceToken(sequenceToken)
-                .build();
             try {
-                PutLogEventsResponse putLogEventsResponse = CloudWatchLoggingClient.putLogs(putLogEventsRequest);
+                PutLogEventsResponse putLogEventsResponse = putLogs(logEvents, groupName, streamName, sequenceToken);
                 if (putLogEventsResponse == null || putLogEventsResponse.nextSequenceToken() == null) {
                     addError("Sending log request failed");
                 } else {
@@ -352,5 +346,17 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
         } else {
             return false;
         }
+    }
+    
+    private PutLogEventsResponse putLogs(List<InputLogEvent> logEvents,
+                                         String groupName,
+                                         String streamName,
+                                         String sequenceToken) {
+        return CloudWatchLoggingClient.putLogs(PutLogEventsRequest.builder()
+            .logEvents(logEvents)
+            .logGroupName(groupName)
+            .logStreamName(streamName)
+            .sequenceToken(sequenceToken)
+            .build());
     }
 }
