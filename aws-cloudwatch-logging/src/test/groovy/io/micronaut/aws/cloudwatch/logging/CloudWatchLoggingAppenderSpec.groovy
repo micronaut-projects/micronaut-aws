@@ -11,7 +11,6 @@ import io.micronaut.runtime.ApplicationConfiguration
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
-
 class CloudWatchLoggingAppenderSpec extends Specification {
 
     CloudWatchLoggingAppender appender

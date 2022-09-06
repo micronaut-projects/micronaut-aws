@@ -179,7 +179,5 @@ class CloudwatchLoggingSpec extends Specification {
         void incrementVisit(String methodName) {
             numberOfCalls.compute(methodName, (k, v) -> (v == null) ? 1 : v + 1)
         }
-
     }
-
 }
