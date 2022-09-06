@@ -2,7 +2,9 @@ package io.micronaut.aws.cloudwatch.logging
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.micronaut.context.annotation.Property
 import io.micronaut.context.annotation.Replaces
+import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.discovery.ServiceInstance
 import io.micronaut.discovery.event.ServiceReadyEvent
@@ -19,6 +21,7 @@ import software.amazon.awssdk.services.cloudwatchlogs.model.*
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
+@Property(name = "spec.name", value = "CloudwatchLoggingSpec")
 @MicronautTest
 class CloudwatchLoggingSpec extends Specification {
 
@@ -103,7 +106,7 @@ class CloudwatchLoggingSpec extends Specification {
         EXCEPTION
     }
 
-
+    @Requires(property = "spec.name", value = "CloudwatchLoggingSpec")
     @Singleton
     @Replaces(CloudWatchLogsClient)
     static class MockLogging implements CloudWatchLogsClient {
