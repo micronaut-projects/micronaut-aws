@@ -27,6 +27,7 @@ dependencies {
 
     // Tests
     testAnnotationProcessor libs.micronaut.inject.java
+    testImplementation libs.awssdk.cloudwatchlogs
     testImplementation libs.awssdk.apigatewaymanagementapi
     testImplementation libs.awssdk.servicediscovery
     testImplementation libs.awssdk.url.connection.client
