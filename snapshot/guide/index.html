@@ -132,25 +132,27 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-awsRegionSelection"><a href="#awsRegionSelection"><strong>7.3</strong><span>AWS region selection</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-s3"><a href="#s3"><strong>7.4</strong><span>S3</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-apiGatewayManagementApi"><a href="#apiGatewayManagementApi"><strong>7.4</strong><span>API Gateway Management API Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-dynamodb"><a href="#dynamodb"><strong>7.5</strong><span>Dynamo DB</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-s3"><a href="#s3"><strong>7.5</strong><span>S3</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ses"><a href="#ses"><strong>7.6</strong><span>SES</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-dynamodb"><a href="#dynamodb"><strong>7.6</strong><span>Dynamo DB</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>7.7</strong><span>SNS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ses"><a href="#ses"><strong>7.7</strong><span>SES</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>7.8</strong><span>SQS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>7.8</strong><span>SNS</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>7.9</strong><span>SSM</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>7.9</strong><span>SQS</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>7.10</strong><span>Secrets Manager</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>7.10</strong><span>SSM</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>7.11</strong><span>Service discovery</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>7.11</strong><span>Secrets Manager</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>7.12</strong><span>Advanced configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>7.12</strong><span>Service discovery</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>7.13</strong><span>Other services</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>7.13</strong><span>Advanced configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>7.14</strong><span>Other services</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>8</strong><span>AWS Lambda Support</span></a></div>
         
@@ -1058,7 +1060,65 @@ following JVM system properties:</p>
 </div>
 </div>
 
-<h2 id="s3"><a class="anchor" href="#s3"></a>7.4 S3</h2>
+<h2 id="apiGatewayManagementApi"><a class="anchor" href="#apiGatewayManagementApi"></a>7.4 API Gateway Management API Client</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/apiGatewayManagementApi.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use an API Gateway Management Api client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:apigatewaymanagementapi")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;apigatewaymanagementapi&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="s3"><a class="anchor" href="#s3"></a>7.5 S3</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/s3.adoc"'>
@@ -1177,7 +1237,7 @@ following JVM system properties:</p>
 </tbody>
 </table>
 
-<h2 id="dynamodb"><a class="anchor" href="#dynamodb"></a>7.5 Dynamo DB</h2>
+<h2 id="dynamodb"><a class="anchor" href="#dynamodb"></a>7.6 Dynamo DB</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/dynamodb.adoc"'>
@@ -1235,7 +1295,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="ses"><a class="anchor" href="#ses"></a>7.6 SES</h2>
+<h2 id="ses"><a class="anchor" href="#ses"></a>7.7 SES</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/ses.adoc"'>
@@ -1293,7 +1353,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sns"><a class="anchor" href="#sns"></a>7.7 SNS</h2>
+<h2 id="sns"><a class="anchor" href="#sns"></a>7.8 SNS</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sns.adoc"'>
@@ -1351,7 +1411,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sqs"><a class="anchor" href="#sqs"></a>7.8 SQS</h2>
+<h2 id="sqs"><a class="anchor" href="#sqs"></a>7.9 SQS</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/sqs.adoc"'>
@@ -1409,7 +1469,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="ssm"><a class="anchor" href="#ssm"></a>7.9 SSM</h2>
+<h2 id="ssm"><a class="anchor" href="#ssm"></a>7.10 SSM</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/ssm.adoc"'>
@@ -1467,7 +1527,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>7.10 Secrets Manager</h2>
+<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>7.11 Secrets Manager</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/secretsmanager.adoc"'>
@@ -1525,7 +1585,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="servicediscovery"><a class="anchor" href="#servicediscovery"></a>7.11 Service discovery</h2>
+<h2 id="servicediscovery"><a class="anchor" href="#servicediscovery"></a>7.12 Service discovery</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/servicediscovery.adoc"'>
@@ -1583,7 +1643,7 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>7.12 Advanced configuration</h2>
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>7.13 Advanced configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
@@ -1612,7 +1672,7 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 </div>
 </div>
 
-<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>7.13 Other services</h2>
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>7.14 Other services</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/otherServices.adoc"'>
