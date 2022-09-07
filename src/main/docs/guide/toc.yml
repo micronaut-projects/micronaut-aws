@@ -20,6 +20,7 @@ sdkv2:
     nettyClient: Netty client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
+  apiGatewayManagementApi: API Gateway Management API Client
   s3: S3
   dynamodb: Dynamo DB
   ses: SES
