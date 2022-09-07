@@ -829,9 +829,38 @@
 </div>
 <div class="sect2">
 <h3 id="_aws_service_discovery_config_properties">Aws Service Discovery Config Properties</h3>
+<a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.aws-service-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set service ID for easier testing.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">enable/disabled this feature. Default value ({@value io.micronaut.discovery.DiscoveryConfiguration#DEFAULT_ENABLED}).</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
+<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -900,7 +929,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
+<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1078,35 +1107,6 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.client.namespace-id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">allows you to override the namespace id for testing.</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Property</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.aws-service-id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">set service ID for easier testing.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.service-discovery.enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">enable/disabled this feature. Default value ({@value io.micronaut.discovery.DiscoveryConfiguration#DEFAULT_ENABLED}).</p></td>
 </tr>
 </tbody>
 </table>
