@@ -45,8 +45,9 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                               SqsConfigurationProperties clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
     }
 
     @Override

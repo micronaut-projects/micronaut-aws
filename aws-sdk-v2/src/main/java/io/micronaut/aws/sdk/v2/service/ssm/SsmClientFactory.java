@@ -47,8 +47,9 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                               SsmConfigurationProperties clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
     }
 
     @Override

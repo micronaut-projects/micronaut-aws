@@ -45,8 +45,9 @@ public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilde
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected DynamoDbClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected DynamoDbClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                                    DynamoDbConfigurationProperties clientConfiguration) {
+        super(credentialsProvider, regionProvider, clientConfiguration);
     }
 
     @Override

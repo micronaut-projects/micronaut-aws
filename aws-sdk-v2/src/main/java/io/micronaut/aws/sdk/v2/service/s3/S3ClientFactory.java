@@ -19,6 +19,7 @@ import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -27,8 +28,6 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates an S3 client.
@@ -39,8 +38,6 @@ import jakarta.inject.Singleton;
 @Factory
 public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncClientBuilder, S3Client, S3AsyncClient> {
 
-    private final S3ConfigurationProperties configuration;
-
     /**
      * Constructor.
      *
@@ -50,28 +47,17 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      */
     public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
                            S3ConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider);
-        this.configuration = configuration;
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override
     protected S3ClientBuilder createSyncBuilder() {
-       S3ClientBuilder builder = S3Client.builder();
-       if (configuration.getEndpointOverride() != null) {
-           builder.endpointOverride(configuration.getEndpointOverride());
-       }
-       builder.serviceConfiguration(configuration.getBuilder().build());
-        return builder;
+        return S3Client.builder();
     }
 
     @Override
     protected S3AsyncClientBuilder createAsyncBuilder() {
-        S3AsyncClientBuilder builder = S3AsyncClient.builder();
-        if (configuration.getEndpointOverride() != null) {
-            builder.endpointOverride(configuration.getEndpointOverride());
-        }
-        builder.serviceConfiguration(configuration.getBuilder().build());
-        return builder;
+        return S3AsyncClient.builder();
     }
 
     @Override

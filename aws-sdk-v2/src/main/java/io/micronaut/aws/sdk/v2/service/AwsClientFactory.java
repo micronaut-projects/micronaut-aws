@@ -24,6 +24,8 @@ import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
 
+import java.util.Optional;
+
 /**
  * Abstract class that eases creation of AWS client factories.
  *
@@ -39,6 +41,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
+    protected final ClientConfigurationProperties clientConfiguration;
 
     /**
      * Constructor.
@@ -46,9 +49,11 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
      */
-    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+                               ClientConfigurationProperties clientConfiguration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
+        this.clientConfiguration = clientConfiguration;
     }
 
     /**
@@ -60,10 +65,12 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @return The sync builder
      */
     public SB syncBuilder(SdkHttpClient httpClient) {
-        return createSyncBuilder()
+        SB sb = createSyncBuilder()
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
+        Optional.ofNullable(clientConfiguration.getEndpointOverride()).ifPresent(sb::endpointOverride);
+        return sb;
     }
 
     /**
@@ -86,10 +93,12 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @return The async builder
      */
     public AB asyncBuilder(SdkAsyncHttpClient httpClient) {
-        return createAsyncBuilder()
+        AB ab = createAsyncBuilder()
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
+        Optional.ofNullable(clientConfiguration.getEndpointOverride()).ifPresent(ab::endpointOverride);
+        return ab;
     }
 
     /**

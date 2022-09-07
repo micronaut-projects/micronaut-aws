@@ -1,17 +1,23 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
+
+import software.amazon.awssdk.core.client.config.SdkClientOption
 import software.amazon.awssdk.services.sns.SnsAsyncClient
 import software.amazon.awssdk.services.sns.SnsClient
 
-class SnsClientSpec extends ApplicationContextSpecification {
+class SnsClientSpec extends ServiceClientSpec {
+
+    @Override
+    protected String serviceName() {
+        return SnsClient.SERVICE_NAME
+    }
 
     void "it can configure a sync client"() {
         when:
         SnsClient client = applicationContext.getBean(SnsClient)
 
         then:
-        client.serviceName() == SnsClient.SERVICE_NAME
+        client.serviceName() == serviceName()
     }
 
     void "it can configure an async client"() {
@@ -19,6 +25,16 @@ class SnsClientSpec extends ApplicationContextSpecification {
         SnsAsyncClient client = applicationContext.getBean(SnsAsyncClient)
 
         then:
-        client.serviceName() == SnsClient.SERVICE_NAME
+        client.serviceName() == serviceName()
+    }
+
+    void "it can override the endpoint"() {
+        when:
+        SnsClient client = applicationContext.getBean(SnsClient)
+        SnsAsyncClient asyncClient = applicationContext.getBean(SnsAsyncClient)
+
+        then:
+        client.clientConfiguration.option(SdkClientOption.ENDPOINT).toString() == ENDPOINT
+        asyncClient.clientConfiguration.option(SdkClientOption.ENDPOINT).toString() == ENDPOINT
     }
 }
