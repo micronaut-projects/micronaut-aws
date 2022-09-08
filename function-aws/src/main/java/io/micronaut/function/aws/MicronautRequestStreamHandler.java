@@ -44,7 +44,7 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      * Logger for the application context creation errors.
      */
     private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestStreamHandler.class);
-    
+
     private ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
 
     @Nullable
@@ -82,9 +82,9 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         HandlerUtils.configureWithContext(this, context);
         try {
             execute(input, output, context);
-            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(null));
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(context, null));
         } catch (Throwable e) {
-            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(e));
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(context, e));
             throw e;
         }
     }

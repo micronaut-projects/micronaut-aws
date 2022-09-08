@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.event;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Nullable;
 
 /**
@@ -30,31 +31,37 @@ import io.micronaut.core.annotation.Nullable;
 public final class AfterExecutionEvent {
 
     @Nullable
+    private final Context context;
+
+    @Nullable
     private final Throwable exception;
     @Nullable
     private final Object output;
 
-    private AfterExecutionEvent(@Nullable Object output, @Nullable Throwable exception) {
+    private AfterExecutionEvent(@Nullable Context context, @Nullable Object output, @Nullable Throwable exception) {
+        this.context = context;
         this.output = output;
         this.exception = exception;
     }
 
     /**
      * Creates a new {@link AfterExecutionEvent} with an optional result of the execution.
+     *
      * @param output an optional result of the exectuion
      * @return a new {@link AfterExecutionEvent} with an optional result of the execution
      */
-    public static AfterExecutionEvent success(@Nullable Object output) {
-        return new AfterExecutionEvent(output, null);
+    public static AfterExecutionEvent success(@Nullable Context context, @Nullable Object output) {
+        return new AfterExecutionEvent(context, output, null);
     }
 
     /**
      * Creates a new {@link AfterExecutionEvent} with an exception been thrown.
+     *
      * @param exception the exception which has been thrown during the execution
      * @return a new {@link AfterExecutionEvent} with an exception been thrown.
      */
-    public static AfterExecutionEvent failure(Throwable exception) {
-        return new AfterExecutionEvent(null, exception);
+    public static AfterExecutionEvent failure(@Nullable Context context, Throwable exception) {
+        return new AfterExecutionEvent(context, null, exception);
     }
 
     /**
@@ -80,4 +87,11 @@ public final class AfterExecutionEvent {
         return exception;
     }
 
+    /**
+     * @return the optional Lambda context
+     */
+    @Nullable
+    public Context getContext() {
+        return context;
+    }
 }
