@@ -44,10 +44,11 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration       The service configuration
      */
     protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               SesConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+                               SesConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override

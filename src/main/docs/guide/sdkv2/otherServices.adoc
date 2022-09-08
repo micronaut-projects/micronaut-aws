@@ -1,9 +1,17 @@
 Since the list of services offered by AWS is huge, you can write your own client support and leverage the foundation
 classes that support the services supported by Micronaut.
 
-To do so, you would create a `@Factory` class that would get injected by some other beans to do its job.
+To do so, you would create a `@Factory` class that would get injected by some other beans to do its job along with a
+`io.micronaut.aws.sdk.v2.service.ServiceClientConfigurationProperties` class that will be plugged into the
+factory to allow for custom and inherited configuration values
 
 For example, to create a client for AWS Rekognition:
+
+Create a `io.micronaut.aws.sdk.v2.service.ServiceClientConfigurationProperties` class:
+
+snippet::io.micronaut.aws.sdk.v2.RekognitionConfigurationProperties[tags="class", project="aws-sdk-v2", source="test"]
+
+Then create the client factory:
 
 snippet::io.micronaut.aws.sdk.v2.RekognitionClientFactory[tags="class", project="aws-sdk-v2", source="test"]
 

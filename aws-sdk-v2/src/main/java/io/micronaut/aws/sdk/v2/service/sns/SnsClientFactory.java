@@ -44,10 +44,11 @@ public class SnsClientFactory extends AwsClientFactory<SnsClientBuilder, SnsAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration       The service configuration
      */
     protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               SnsConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+                               SnsConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override

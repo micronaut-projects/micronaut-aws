@@ -44,9 +44,10 @@ public class ServiceDiscoveryAsyncClientFactory extends AwsClientFactory<Service
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration       The service configuration
      */
-    public ServiceDiscoveryAsyncClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ServiceDiscoveryConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+    public ServiceDiscoveryAsyncClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ServiceDiscoveryConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override

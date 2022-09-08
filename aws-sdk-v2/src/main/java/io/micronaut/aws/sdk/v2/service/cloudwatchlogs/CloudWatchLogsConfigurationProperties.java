@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.service.ses;
+package io.micronaut.aws.sdk.v2.service.cloudwatchlogs;
 
 import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import software.amazon.awssdk.services.ses.SesClient;
+import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
 
 /**
- * Configuration properties for {@code SesClient}.
+ * Configuration properties for {@code CloudWatchLogsClient}.
  *
  * @author Stephen Cprek
  * @since 3.9.0
  */
-@ConfigurationProperties(SesClient.SERVICE_NAME)
-public class SesConfigurationProperties extends ServiceClientConfiguration {
+@ConfigurationProperties(CloudWatchLogsClient.SERVICE_NAME)
+public class CloudWatchLogsConfigurationProperties extends ServiceClientConfiguration {
 }

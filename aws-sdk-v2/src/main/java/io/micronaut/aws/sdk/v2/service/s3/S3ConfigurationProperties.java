@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
-import io.micronaut.aws.sdk.v2.service.ClientConfigurationProperties;
+import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -29,7 +29,7 @@ import software.amazon.awssdk.services.s3.S3Configuration.Builder;
  * @since 2.0.0
  */
 @ConfigurationProperties(S3Client.SERVICE_NAME)
-public class S3ConfigurationProperties extends ClientConfigurationProperties {
+public class S3ConfigurationProperties extends ServiceClientConfiguration {
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
     private Builder builder = S3Configuration.builder();

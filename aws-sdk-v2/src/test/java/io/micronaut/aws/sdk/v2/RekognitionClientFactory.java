@@ -21,8 +21,8 @@ import jakarta.inject.Singleton;
 public class RekognitionClientFactory extends AwsClientFactory<RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient> {
 
     protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                                       RekognitionConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+                                       RekognitionConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     // Sync client

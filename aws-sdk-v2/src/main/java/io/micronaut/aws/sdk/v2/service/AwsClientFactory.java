@@ -41,19 +41,20 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
-    protected final ClientConfigurationProperties clientConfiguration;
+    protected final ServiceClientConfiguration configuration;
 
     /**
      * Constructor.
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
+     * @param configuration The service configuration
      */
     protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               ClientConfigurationProperties clientConfiguration) {
+                               ServiceClientConfiguration configuration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
-        this.clientConfiguration = clientConfiguration;
+        this.configuration = configuration;
     }
 
     /**
@@ -69,7 +70,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(clientConfiguration.getEndpointOverride()).ifPresent(sb::endpointOverride);
+        Optional.ofNullable(configuration.getEndpointOverride()).ifPresent(sb::endpointOverride);
         return sb;
     }
 
@@ -97,7 +98,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(clientConfiguration.getEndpointOverride()).ifPresent(ab::endpointOverride);
+        Optional.ofNullable(configuration.getEndpointOverride()).ifPresent(ab::endpointOverride);
         return ab;
     }
 

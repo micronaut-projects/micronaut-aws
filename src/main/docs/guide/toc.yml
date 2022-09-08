@@ -20,24 +20,26 @@ sdkv2:
     nettyClient: Netty client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
-  apiGatewayManagementApi: API Gateway Management API Client
-  s3: S3
-  dynamodb: Dynamo DB
-  ses: SES
-  sns: SNS
-  sqs: SQS
-  ssm: SSM
-  secretsmanager: Secrets Manager
-  servicediscovery: Service discovery
-  cloudWatchLogging:
-    title: CloudWatch logging
-    setCloudWatchLogging: Set CloudWatch Logging
-    logbackConfiguration: Logback configuration
-    openTelemetryAndLogging: OpenTelemetry and logging
-    emergencyAppender: Emergency Appender
-    browsingTheLogs: Browsing the Logs
-  advancedConfiguration: Advanced configuration
-  otherServices: Other services
+  serviceClients:
+    title: Service Clients
+    apiGatewayManagementApi: API Gateway Management API Client
+    s3: S3
+    dynamodb: Dynamo DB
+    ses: SES
+    sns: SNS
+    sqs: SQS
+    ssm: SSM
+    secretsmanager: Secrets Manager
+    servicediscovery: Service discovery
+    cloudWatchLogging:
+      title: CloudWatch logging
+      setCloudWatchLogging: Set CloudWatch Logging
+      logbackConfiguration: Logback configuration
+      openTelemetryAndLogging: OpenTelemetry and logging
+      emergencyAppender: Emergency Appender
+      browsingTheLogs: Browsing the Logs
+    advancedConfiguration: Advanced configuration
+    otherServices: Other services
 lambda:
   title: AWS Lambda Support
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda

@@ -45,9 +45,10 @@ public class SecretsManagerClientFactory extends AwsClientFactory<SecretsManager
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration       The service configuration
      */
-    protected SecretsManagerClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, SecretsManagerConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+    protected SecretsManagerClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, SecretsManagerConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override

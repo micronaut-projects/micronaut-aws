@@ -46,8 +46,8 @@ public class CloudwatchLogsClientFactory extends AwsClientFactory<CloudWatchLogs
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      */
-    protected CloudwatchLogsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected CloudwatchLogsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, CloudWatchLogsConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override

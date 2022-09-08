@@ -43,9 +43,10 @@ public class ApiGatewayManagementApiClientFactory extends AwsClientFactory<ApiGa
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration       The service configuration
      */
-    protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ApiGatewayManagementApiConfigurationProperties clientConfiguration) {
-        super(credentialsProvider, regionProvider, clientConfiguration);
+    protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ApiGatewayManagementApiConfigurationProperties configuration) {
+        super(credentialsProvider, regionProvider, configuration);
     }
 
     @Override
