@@ -47,6 +47,7 @@ public final class AfterExecutionEvent {
     /**
      * Creates a new {@link AfterExecutionEvent} with an optional result of the execution.
      *
+     * @param context AWS Lambda context
      * @param output an optional result of the exectuion
      * @return a new {@link AfterExecutionEvent} with an optional result of the execution
      */
@@ -57,6 +58,7 @@ public final class AfterExecutionEvent {
     /**
      * Creates a new {@link AfterExecutionEvent} with an exception been thrown.
      *
+     * @param context AWS Lambda context
      * @param exception the exception which has been thrown during the execution
      * @return a new {@link AfterExecutionEvent} with an exception been thrown.
      */
