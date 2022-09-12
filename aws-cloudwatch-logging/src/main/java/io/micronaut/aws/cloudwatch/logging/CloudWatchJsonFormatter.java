@@ -16,12 +16,10 @@
 package io.micronaut.aws.cloudwatch.logging;
 
 import ch.qos.logback.contrib.json.JsonFormatter;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micronaut.serde.ObjectMapper;
 import io.micronaut.core.annotation.Internal;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Map;
 
 /**
@@ -32,28 +30,14 @@ import java.util.Map;
  */
 @Internal
 public final class CloudWatchJsonFormatter implements JsonFormatter {
-    private static final int BUFFER_SIZE = 512;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper;
 
     @Override
     public String toJsonString(Map m) throws IOException {
-        StringWriter writer = new StringWriter(BUFFER_SIZE);
-        JsonGenerator generator = this.objectMapper.getFactory().createGenerator(writer);
-
-        this.objectMapper.writeValue(generator, m);
-
-        writer.flush();
-
-        return writer.toString();
-    }
-
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
-    }
-
-    public void setObjectMapper(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+        if (objectMapper == null) {
+            objectMapper = ObjectMapper.getDefault();
+        }
+        return objectMapper.writeValueAsString(m);
     }
 
 }

@@ -12,9 +12,7 @@
         <publishPeriod>120</publishPeriod>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter">
-                    <objectMapper>io.micronaut.aws.cloudwatch.logging.CustomObjectMapper</objectMapper>
-                </jsonFormatter>
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
             </layout>
         </encoder>
     </appender>

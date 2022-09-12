@@ -1,7 +1,5 @@
 package io.micronaut.aws.cloudwatch.logging
 
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.context.annotation.Property
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.context.annotation.Requires
@@ -9,6 +7,7 @@ import io.micronaut.context.event.ApplicationEventPublisher
 import io.micronaut.discovery.ServiceInstance
 import io.micronaut.discovery.event.ServiceReadyEvent
 import io.micronaut.runtime.ApplicationConfiguration
+import io.micronaut.serde.ObjectMapper
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
@@ -59,15 +58,14 @@ class CloudwatchLoggingSpec extends Specification {
         putLogRequestList.stream().allMatch(x -> x.logGroupName() == applicationConfiguration.getName().get())
         putLogRequestList.stream().allMatch(x -> x.logStreamName() == testHost)
 
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = ObjectMapper.getDefault()
 
         def logEntries = new ArrayList<Map<String, String>>()
-        def typeRef = new TypeReference<HashMap<String, String>>() {}
 
         putLogRequestList.forEach(
                 x -> {
                     x.logEvents().stream().forEach(y -> logEntries.add(
-                            mapper.readValue(y.message(), typeRef) as Map<String, String>
+                            mapper.readValue(y.message(), HashMap.class) as Map<String, String>
                     ))
                 }
         )
