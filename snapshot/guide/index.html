@@ -150,9 +150,21 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>7.12</strong><span>Service discovery</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>7.13</strong><span>Advanced configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-cloudWatchLogging"><a href="#cloudWatchLogging"><strong>7.13</strong><span>CloudWatch logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>7.14</strong><span>Other services</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-setCloudWatchLogging"><a href="#setCloudWatchLogging"><strong>7.13.1</strong><span>Set CloudWatch Logging</span></a></div>
+        
+        <div class="toc-item" style="margin-left:20px" id="toc-item-logbackConfiguration"><a href="#logbackConfiguration"><strong>7.13.2</strong><span>Logback configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:20px" id="toc-item-openTelemetryAndLogging"><a href="#openTelemetryAndLogging"><strong>7.13.3</strong><span>OpenTelemetry and logging</span></a></div>
+        
+        <div class="toc-item" style="margin-left:20px" id="toc-item-emergencyAppender"><a href="#emergencyAppender"><strong>7.13.4</strong><span>Emergency Appender</span></a></div>
+        
+        <div class="toc-item" style="margin-left:20px" id="toc-item-browsingTheLogs"><a href="#browsingTheLogs"><strong>7.13.5</strong><span>Browsing the Logs</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>7.14</strong><span>Advanced configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>7.15</strong><span>Other services</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-lambda"><a href="#lambda"><strong>8</strong><span>AWS Lambda Support</span></a></div>
         
@@ -1643,7 +1655,321 @@ following JVM system properties:</p>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>7.13 Advanced configuration</h2>
+<h2 id="cloudWatchLogging"><a class="anchor" href="#cloudWatchLogging"></a>7.13 CloudWatch logging</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWatch logs produced to standard out.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To use the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html">Cloudwatch Logs</a>, add the following dependency to your project:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-aws-cloudwatch-logging")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-aws-cloudwatch-logging&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClientBuilder</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClientBuilder</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="setCloudWatchLogging"><a class="anchor" href="#setCloudWatchLogging"></a>7.13.1 Set CloudWatch Logging</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging/setCloudWatchLogging.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the <code>createGroupAndStream</code> flag to <code>false</code> inside your appender.
+Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value <code>groupName</code> for group name and <code>streamName</code> for stream name.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configurable CloudWatchLoggingAppender Appender Properties</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>groupName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloudwatch Log group name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>streamName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Host name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloudwatch Log stream name</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>publishPeriod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time in ms between two batch publishing of logs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>maxBatchSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time maximum number of log lines that will be sent in one batch request</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>queueSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Integer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The size of publishing log queue</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createGroupAndStream</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If flag is set to true the Micronaut application will try to create group and stream on the AWS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>blackListLoggerName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of logger names that won&#8217;t be published</p></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="logbackConfiguration"><a class="anchor" href="#logbackConfiguration"></a>7.13.2 Logback configuration</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging/logbackConfiguration.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Edit a <code>src/main/resources/logback.xml</code> file and make it look like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/logback.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;configuration&gt;
+
+    &lt;appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender"&gt;
+        &lt;!-- &lt;blackListLoggerName&gt;example.app.Application&lt;/blackListLoggerName&gt; --&gt;
+        &lt;encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"&gt;
+            &lt;layout class="ch.qos.logback.contrib.json.classic.JsonLayout"&gt;
+                &lt;jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" /&gt;
+            &lt;/layout&gt;
+        &lt;/encoder&gt;
+        &lt;!-- &lt;groupName&gt;customGroupName&lt;/groupName&gt; --&gt;
+        &lt;!-- &lt;streamName&gt;customStreamName&lt;/streamName&gt; --&gt;
+        &lt;!-- &lt;createGroupAndStream&gt;true&lt;/createGroupAndStream&gt; --&gt;
+    &lt;/appender&gt;
+
+    &lt;root level="INFO"&gt;
+        &lt;appender-ref ref="CLOUDWATCH" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can customize your JsonLayout with additional parameters the are available on official docs of <a href="https://javadoc.io/static/ch.qos.logback.contrib/logback-json-classic/0.1.5/ch/qos/logback/contrib/json/classic/JsonLayout.html">Logback&#8217;s JsonLayout</a>.</p>
+</div>
+<div class="paragraph">
+<p>The <code>CloudWatchLoggingAppender</code> supports blacklisting the loggers by specifying the logger name. That might come handy if you want to use <code>level=DEBUG</code> or <code>level=TRACE</code> for the root logger level.</p>
+</div>
+
+<h2 id="openTelemetryAndLogging"><a class="anchor" href="#openTelemetryAndLogging"></a>7.13.3 OpenTelemetry and logging</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging/openTelemetryAndLogging.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>If you are using the <a href="https://opentelemetry.io/">OpenTelemetry</a> for tracing you can include <code>traceId</code> and <code>spanId</code> fields into your logs. First you have to add next dependency into your project:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">runtimeOnly(<span class="hljs-string">"io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:1.16.0-alpha")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.opentelemetry.instrumentation&lt;/groupId&gt;
+    &lt;artifactId&gt;opentelemetry-logback-mdc-1.0&lt;/artifactId&gt;
+    &lt;version&gt;1.16.0-alpha&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>Inside your <code>src/main/resources/logback.xml</code> you should add a new appender <a href="https://javadoc.io/doc/io.opentelemetry.instrumentation/opentelemetry-logback-1.0/latest/io/opentelemetry/instrumentation/logback/v1_0/OpenTelemetryAppender.html">io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender</a>.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/logback.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;configuration&gt;
+
+    &lt;appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender"&gt;
+        &lt;!-- &lt;blackListLoggerName&gt;example.app.Application&lt;/blackListLoggerName&gt; --&gt;
+        &lt;encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"&gt;
+            &lt;layout class="ch.qos.logback.contrib.json.classic.JsonLayout"&gt;
+                &lt;jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" /&gt;
+            &lt;/layout&gt;
+        &lt;/encoder&gt;
+        &lt;!-- &lt;groupName&gt;customGroupName&lt;/groupName&gt; --&gt;
+        &lt;!-- &lt;streamName&gt;customStreamName&lt;/streamName&gt; --&gt;
+        &lt;!-- &lt;createGroupAndStream&gt;true&lt;/createGroupAndStream&gt; --&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name="OTEL" class="io.opentelemetry.instrumentation.logback.v1_0.OpenTelemetryAppender"&gt;
+        &lt;appender-ref ref="CLOUDWATCH" /&gt;
+    &lt;/appender&gt;
+
+    &lt;root level="INFO"&gt;
+        &lt;appender-ref ref="OTEL" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+
+<h2 id="emergencyAppender"><a class="anchor" href="#emergencyAppender"></a>7.13.4 Emergency Appender</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging/emergencyAppender.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Since this appender is queuing up log messages and then writing them remotely, there are a number of situations which might result in log messages not getting remoted correctly. To address such scenarios you can configure the emergency appender to preserve those messages.</p>
+</div>
+<div class="paragraph">
+<p>Inside your <code>src/main/resources/logback.xml</code> you should add a new appender, in the example it is <code>STDOUT</code>. Inside the <code>CloudWatchLoggingAppender</code> add <code>appender-ref</code> that points to the new crated appender.</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/logback.xml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;configuration&gt;
+    &lt;appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"&gt;
+        &lt;withJansi&gt;true&lt;/withJansi&gt;
+        &lt;!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default --&gt;
+        &lt;encoder&gt;
+            &lt;pattern&gt;%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n&lt;/pattern&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+
+    &lt;appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender"&gt;
+        &lt;appender-ref ref="STDOUT"/&gt;
+        &lt;!-- &lt;blackListLoggerName&gt;example.app.Application&lt;/blackListLoggerName&gt; --&gt;
+        &lt;encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder"&gt;
+            &lt;layout class="ch.qos.logback.contrib.json.classic.JsonLayout"&gt;
+                &lt;jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" /&gt;
+            &lt;/layout&gt;
+        &lt;/encoder&gt;
+        &lt;!-- &lt;groupName&gt;customGroupName&lt;/groupName&gt; --&gt;
+        &lt;!-- &lt;streamName&gt;customStreamName&lt;/streamName&gt; --&gt;
+        &lt;!-- &lt;createGroupAndStream&gt;true&lt;/createGroupAndStream&gt; --&gt;
+    &lt;/appender&gt;
+
+    &lt;root level="INFO"&gt;
+        &lt;appender-ref ref="CLOUDWATCH" /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+
+<h2 id="browsingTheLogs"><a class="anchor" href="#browsingTheLogs"></a>7.13.5 Browsing the Logs</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/cloudWatchLogging/browsingTheLogs.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>When you have completed a setup, you can browse your logs on the <a href="https://console.aws.amazon.com/cloudwatch/home">Cloudwatch home</a>. In the Log groups menu and choose the group name and stream name of your application. In the "Log events" section you should be able to see your service logs.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../img/logs.png" alt="Log events">
+</div>
+</div>
+
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>7.14 Advanced configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
@@ -1672,7 +1998,7 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 </div>
 </div>
 
-<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>7.14 Other services</h2>
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>7.15 Other services</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/sdkv2/otherServices.adoc"'>

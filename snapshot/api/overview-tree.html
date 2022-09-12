@@ -83,6 +83,7 @@
 <li><a href="io/micronaut/aws/alexa/httpserver/verifiers/package-tree.html">io.micronaut.aws.alexa.httpserver.verifiers</a>, </li>
 <li><a href="io/micronaut/aws/alexa/ssml/package-tree.html">io.micronaut.aws.alexa.ssml</a>, </li>
 <li><a href="io/micronaut/aws/cdk/function/package-tree.html">io.micronaut.aws.cdk.function</a>, </li>
+<li><a href="io/micronaut/aws/cloudwatch/logging/package-tree.html">io.micronaut.aws.cloudwatch.logging</a>, </li>
 <li><a href="io/micronaut/aws/distributedconfiguration/package-tree.html">io.micronaut.aws.distributedconfiguration</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v1/package-tree.html">io.micronaut.aws.sdk.v1</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/package-tree.html">io.micronaut.aws.sdk.v2</a>, </li>
@@ -90,6 +91,7 @@
 <li><a href="io/micronaut/aws/sdk/v2/client/netty/package-tree.html">io.micronaut.aws.sdk.v2.client.netty</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/client/urlConnection/package-tree.html">io.micronaut.aws.sdk.v2.client.urlConnection</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/package-tree.html">io.micronaut.aws.sdk.v2.service</a>, </li>
+<li><a href="io/micronaut/aws/sdk/v2/service/cloudwatchlogs/package-tree.html">io.micronaut.aws.sdk.v2.service.cloudwatchlogs</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/dynamodb/package-tree.html">io.micronaut.aws.sdk.v2.service.dynamodb</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/gatewaymanagement/package-tree.html">io.micronaut.aws.sdk.v2.service.gatewaymanagement</a>, </li>
 <li><a href="io/micronaut/aws/sdk/v2/service/s3/package-tree.html">io.micronaut.aws.sdk.v2.service.s3</a>, </li>
@@ -183,6 +185,7 @@
 <li type="circle">io.micronaut.aws.sdk.v2.service.<a href="io/micronaut/aws/sdk/v2/service/AwsClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service"><span class="typeNameLink">AwsClientFactory</span></a>&lt;SB,AB,SC,AC&gt;
 <ul>
 <li type="circle">io.micronaut.aws.sdk.v2.service.gatewaymanagement.<a href="io/micronaut/aws/sdk/v2/service/gatewaymanagement/ApiGatewayManagementApiClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service.gatewaymanagement"><span class="typeNameLink">ApiGatewayManagementApiClientFactory</span></a></li>
+<li type="circle">io.micronaut.aws.sdk.v2.service.cloudwatchlogs.<a href="io/micronaut/aws/sdk/v2/service/cloudwatchlogs/CloudwatchLogsClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service.cloudwatchlogs"><span class="typeNameLink">CloudwatchLogsClientFactory</span></a></li>
 <li type="circle">io.micronaut.aws.sdk.v2.service.dynamodb.<a href="io/micronaut/aws/sdk/v2/service/dynamodb/DynamoDbClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service.dynamodb"><span class="typeNameLink">DynamoDbClientFactory</span></a></li>
 <li type="circle">io.micronaut.aws.sdk.v2.service.s3.<a href="io/micronaut/aws/sdk/v2/service/s3/S3ClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service.s3"><span class="typeNameLink">S3ClientFactory</span></a></li>
 <li type="circle">io.micronaut.aws.sdk.v2.service.secretsmanager.<a href="io/micronaut/aws/sdk/v2/service/secretsmanager/SecretsManagerClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service.secretsmanager"><span class="typeNameLink">SecretsManagerClientFactory</span></a></li>
@@ -221,7 +224,17 @@
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">AwsProxyRequestArgumentBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/AwsProxyRequestContextArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">AwsProxyRequestContextArgumentBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
 <li type="circle">io.micronaut.discovery.aws.servicediscovery.client.<a href="io/micronaut/discovery/aws/servicediscovery/client/AwsServiceDiscoveryClient.html" title="class in io.micronaut.discovery.aws.servicediscovery.client"><span class="typeNameLink">AwsServiceDiscoveryClient</span></a> (implements io.micronaut.discovery.DiscoveryClient)</li>
+<li type="circle">io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchJsonFormatter.html" title="class in io.micronaut.aws.cloudwatch.logging"><span class="typeNameLink">CloudWatchJsonFormatter</span></a> (implements ch.qos.logback.contrib.json.JsonFormatter)</li>
 <li type="circle">io.micronaut.function.aws.proxy.model.bind.<a href="io/micronaut/function/aws/proxy/model/bind/ContextArgumentBinder.html" title="class in io.micronaut.function.aws.proxy.model.bind"><span class="typeNameLink">ContextArgumentBinder</span></a> (implements io.micronaut.http.bind.binders.TypedRequestArgumentBinder&lt;T&gt;)</li>
+<li type="circle">ch.qos.logback.core.spi.ContextAwareBase (implements ch.qos.logback.core.spi.ContextAware)
+<ul>
+<li type="circle">ch.qos.logback.core.AppenderBase&lt;E&gt; (implements ch.qos.logback.core.Appender&lt;E&gt;)
+<ul>
+<li type="circle">io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging"><span class="typeNameLink">CloudWatchLoggingAppender</span></a> (implements ch.qos.logback.core.spi.AppenderAttachable&lt;E&gt;)</li>
+</ul>
+</li>
+</ul>
+</li>
 <li type="circle">io.micronaut.aws.sdk.v2.<a href="io/micronaut/aws/sdk/v2/CredentialsAndRegionFactory.html" title="class in io.micronaut.aws.sdk.v2"><span class="typeNameLink">CredentialsAndRegionFactory</span></a></li>
 <li type="circle">io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/DefaultAlexaSkillBuilder.html" title="class in io.micronaut.aws.alexa.builders"><span class="typeNameLink">DefaultAlexaSkillBuilder</span></a> (implements io.micronaut.aws.alexa.builders.<a href="io/micronaut/aws/alexa/builders/AlexaSkillBuilder.html" title="interface in io.micronaut.aws.alexa.builders">AlexaSkillBuilder</a>&lt;Request,Response&gt;)</li>
 <li type="circle">io.micronaut.context.DefaultApplicationContextBuilder (implements io.micronaut.context.ApplicationContextBuilder, io.micronaut.context.ApplicationContextConfiguration)

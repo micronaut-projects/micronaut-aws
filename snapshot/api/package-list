@@ -10,6 +10,7 @@ io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
 io.micronaut.aws.alexa.ssml
 io.micronaut.aws.cdk.function
+io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
 io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
@@ -17,6 +18,7 @@ io.micronaut.aws.sdk.v2.client.apache
 io.micronaut.aws.sdk.v2.client.netty
 io.micronaut.aws.sdk.v2.client.urlConnection
 io.micronaut.aws.sdk.v2.service
+io.micronaut.aws.sdk.v2.service.cloudwatchlogs
 io.micronaut.aws.sdk.v2.service.dynamodb
 io.micronaut.aws.sdk.v2.service.gatewaymanagement
 io.micronaut.aws.sdk.v2.service.s3
