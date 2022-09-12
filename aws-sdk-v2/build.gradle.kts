@@ -23,9 +23,11 @@ dependencies {
     compileOnly(libs.awssdk.ssm)
     compileOnly(libs.awssdk.secretsmanager)
     compileOnly(libs.awssdk.servicediscovery)
+    compileOnly(libs.awssdk.cloudwatchlogs)
 
     // Tests
     testAnnotationProcessor(mn.micronaut.inject.java)
+    testImplementation(libs.awssdk.cloudwatchlogs)
     testImplementation(libs.awssdk.apigatewaymanagementapi)
     testImplementation(libs.awssdk.servicediscovery)
     testImplementation(libs.awssdk.url.connection.client)
