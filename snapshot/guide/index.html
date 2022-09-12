@@ -1140,7 +1140,32 @@ following JVM system properties:</p>
 
 
 <div class="paragraph">
-<p>To use an S3 client, add the following dependency:</p>
+<p>Micronaut provides a high-level, uniform object storage API that works across the major cloud providers: <a href="https://micronaut-projects.github.io/micronaut-object-storage/latest/guide/">Micronaut Object Storage</a>.</p>
+</div>
+<div class="paragraph">
+<p>To get started, select the <code>object-storage-aws</code> feature in <a href="https://micronaut.io/launch?features=object-storage-aws">Micronaut Launch</a>, or add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.objectstorage:micronaut-object-storage-aws")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.objectstorage&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-object-storage-aws&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>For more information, check the <a href="https://micronaut-projects.github.io/micronaut-object-storage/latest/guide/#aws">Micronaut Object Storage AWS support</a> documentation.</p>
+</div>
+<div class="paragraph">
+<p>If you still need the low-level AWS S3 client, add the following dependency:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
