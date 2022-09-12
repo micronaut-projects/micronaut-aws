@@ -1,4 +1,6 @@
-To use an S3 client, add the following dependency:
+Micronaut provides a high-level, uniform object storage API that works across the major cloud providers: https://micronaut-projects.github.io/micronaut-object-storage/latest/guide/[Micronaut Object Storage].
+
+If you still need the low-level AWS S3 client, add the following dependency:
 
 dependency:s3[groupId="software.amazon.awssdk"]
 
