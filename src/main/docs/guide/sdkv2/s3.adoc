@@ -1,6 +1,6 @@
 Micronaut provides a high-level, uniform object storage API that works across the major cloud providers: https://micronaut-projects.github.io/micronaut-object-storage/latest/guide/[Micronaut Object Storage].
 
-To get started, select the `object-storage-aws` feature in https://micronaut.io/launch?type=DEFAULT&name=demo&package=com.example&javaVersion=JDK_11&lang=JAVA&build=GRADLE&test=JUNIT&features=object-storage-aws&activity=preview&showing=build.gradle[Micronaut Launch], or add the following dependency:
+To get started, select the `object-storage-aws` feature in https://micronaut.io/launch?features=object-storage-aws[Micronaut Launch], or add the following dependency:
 
 dependency:io.micronaut.objectstorage:micronaut-object-storage-aws[]
 
