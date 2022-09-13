@@ -30,7 +30,7 @@ import java.net.URI;
 public abstract class ServiceClientConfiguration extends AWSConfiguration {
 
     @Nullable
-        private URI endpointOverride;
+    private URI endpointOverride;
 
     /**
      * @return The endpoint with which the AWS SDK should communicate

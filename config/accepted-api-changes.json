@@ -1,0 +1,47 @@
+[
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.AwsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.AwsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ses.SesClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ses.SesClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  }
+]

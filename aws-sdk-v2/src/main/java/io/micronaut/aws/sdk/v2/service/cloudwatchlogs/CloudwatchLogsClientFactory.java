@@ -20,6 +20,7 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -28,8 +29,6 @@ import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClientBuilder;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a CloudWatch Logs client.
@@ -45,6 +44,7 @@ public class CloudwatchLogsClientFactory extends AwsClientFactory<CloudWatchLogs
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param configuration The service configuration
      */
     protected CloudwatchLogsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, CloudWatchLogsConfigurationProperties configuration) {
         super(credentialsProvider, regionProvider, configuration);

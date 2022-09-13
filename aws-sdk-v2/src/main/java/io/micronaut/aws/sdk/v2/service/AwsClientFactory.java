@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service;
 
+import io.micronaut.core.annotation.Nullable;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.awscore.client.builder.AwsAsyncClientBuilder;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
@@ -41,6 +42,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
+    @Nullable
     protected final ServiceClientConfiguration configuration;
 
     /**
@@ -51,7 +53,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @param configuration The service configuration
      */
     protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               ServiceClientConfiguration configuration) {
+                               @Nullable ServiceClientConfiguration configuration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
         this.configuration = configuration;
@@ -70,7 +72,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(configuration.getEndpointOverride()).ifPresent(sb::endpointOverride);
+        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(sb::endpointOverride);
         return sb;
     }
 
@@ -98,7 +100,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(configuration.getEndpointOverride()).ifPresent(ab::endpointOverride);
+        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(ab::endpointOverride);
         return ab;
     }
 
