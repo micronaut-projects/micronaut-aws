@@ -20,7 +20,9 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
+import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.StreamFunctionExecutor;
 import io.micronaut.core.annotation.NonNull;
 import org.slf4j.Logger;
@@ -42,6 +44,8 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      * Logger for the application context creation errors.
      */
     private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestStreamHandler.class);
+
+    private ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
 
     @Nullable
     private String ctxFunctionName;
@@ -76,7 +80,13 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
             this.ctxFunctionName = context.getFunctionName();
         }
         HandlerUtils.configureWithContext(this, context);
-        execute(input, output, context);
+        try {
+            execute(input, output, context);
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(context, null));
+        } catch (Throwable e) {
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(context, e));
+            throw e;
+        }
     }
 
     @Override
@@ -94,6 +104,13 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     protected String resolveFunctionName(Environment env) {
         String functionName = super.resolveFunctionName(env);
         return (functionName != null) ? functionName : ctxFunctionName;
+    }
+
+    private ApplicationEventPublisher<AfterExecutionEvent> resolveAfterExecutionPublisher() {
+        if (eventPublisher == null) {
+            eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
+        }
+        return eventPublisher;
     }
 
     @Override

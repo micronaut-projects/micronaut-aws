@@ -16,6 +16,7 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.*;
+import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -24,6 +25,7 @@ import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
 import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
+import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +97,8 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
 
+    private ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
+
     /**
      * Default constructor; will initialize a suitable {@link ApplicationContext} for
      * Lambda deployment.
@@ -143,7 +147,14 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         if (!inputType.isInstance(input)) {
             input = convertInput(input);
         }
-        return this.execute(input);
+        try {
+            O output = this.execute(input);
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(context, output));
+            return output;
+        } catch (Throwable re) {
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(context, re));
+            throw re;
+        }
     }
 
     /**
@@ -240,5 +251,12 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
         } else {
             return Object.class;
         }
+    }
+
+    private ApplicationEventPublisher<AfterExecutionEvent> resolveAfterExecutionPublisher() {
+        if (eventPublisher == null) {
+            eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
+        }
+        return eventPublisher;
     }
 }

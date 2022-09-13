@@ -47,6 +47,7 @@ lambda:
   lambdatriggers: Lambda Triggers
   lambdacontext: Lambda Context
   requestHandlers: Lambda Handlers
+  afterExecutionEvent: AfterExecutionEvent
   coldstartups: Cold Startups
   customRuntimes: GraalVM and AWS Custom runtimes
   mdc: MDC Logging
