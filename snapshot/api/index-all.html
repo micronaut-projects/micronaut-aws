@@ -108,6 +108,12 @@
 <dd>
 <div class="block">Add converters to the Application environment.</div>
 </dd>
+<dt><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><span class="typeNameLink">AfterExecutionEvent</span></a> - Class in <a href="io/micronaut/function/aws/event/package-summary.html">io.micronaut.function.aws.event</a></dt>
+<dd>
+<div class="block">This event is published after the execution of <code>FunctionExecutor.execute(Object)</code>
+ and <code>StreamFunctionExecutor.execute(java.io.InputStream, java.io.OutputStream)</code> methods to allow
+ performing actions before the Lambda function run is finished and the JVM is hibernated.</div>
+</dd>
 <dt><a href="io/micronaut/aws/alexa/httpserver/conf/AlexaControllerConfiguration.html" title="interface in io.micronaut.aws.alexa.httpserver.conf"><span class="typeNameLink">AlexaControllerConfiguration</span></a> - Interface in <a href="io/micronaut/aws/alexa/httpserver/conf/package-summary.html">io.micronaut.aws.alexa.httpserver.conf</a></dt>
 <dd>
 <div class="block">Defines configuration for the Alexa controller.</div>
@@ -984,6 +990,10 @@
 </a>
 <h2 class="title">F</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#failure-com.amazonaws.services.lambda.runtime.Context-java.lang.Throwable-">failure(Context, Throwable)</a></span> - Static method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
+<dd>
+<div class="block">Creates a new <a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an exception been thrown.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/conf/AlexaIntents.html#FALLBACK">FALLBACK</a></span> - Static variable in interface io.micronaut.aws.alexa.conf.<a href="io/micronaut/aws/alexa/conf/AlexaIntents.html" title="interface in io.micronaut.aws.alexa.conf">AlexaIntents</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html#fetchAuthentication-io.micronaut.http.HttpRequest-">fetchAuthentication(HttpRequest&lt;?&gt;)</a></span> - Method in class io.micronaut.function.aws.proxy.security.<a href="io/micronaut/function/aws/proxy/security/MicronautLambdaAuthenticationFetcher.html" title="class in io.micronaut.function.aws.proxy.security">MicronautLambdaAuthenticationFetcher</a></dt>
@@ -1089,6 +1099,8 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html#getContentType--">getContentType()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#getContext--">getContext()</a></span> - Method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/ContextProvider.html#getContext--">getContext()</a></span> - Method in interface io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/ContextProvider.html" title="interface in io.micronaut.function.aws.proxy.test">ContextProvider</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/test/MockContextProvider.html#getContext--">getContext()</a></span> - Method in class io.micronaut.function.aws.proxy.test.<a href="io/micronaut/function/aws/proxy/test/MockContextProvider.html" title="class in io.micronaut.function.aws.proxy.test">MockContextProvider</a></dt>
@@ -1135,6 +1147,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#getErrorMessage--">getErrorMessage()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html#getErrorType--">getErrorType()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApiError.html" title="class in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApiError</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#getException--">getException()</a></span> - Method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getFunctionName--">getFunctionName()</a></span> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
@@ -1211,6 +1225,8 @@
 <div class="block">This is the name space ID for the domain/subdomain in route 53 service registry.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html#getObjectMapper--">getObjectMapper()</a></span> - Method in interface io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#getOutput--">getOutput()</a></span> - Method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterQueryProvider.html#getParameterQueries-io.micronaut.context.env.Environment-java.lang.String-io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfiguration-">getParameterQueries(Environment, String, AWSParameterStoreConfiguration)</a></span> - Method in interface io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterQueryProvider.html" title="interface in io.micronaut.discovery.aws.parameterstore">AWSParameterQueryProvider</a></dt>
 <dd>&nbsp;</dd>
@@ -1594,6 +1610,10 @@
 <dd>
 <div class="block">Classes to support exposing <code>FunctionBean</code> instances for AWS lambda Alexa Skills</div>
 </dd>
+<dt><a href="io/micronaut/function/aws/event/package-summary.html">io.micronaut.function.aws.event</a> - package io.micronaut.function.aws.event</dt>
+<dd>
+<div class="block">Event classes to support AWS Lambda lifecycle.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/proxy/package-summary.html">io.micronaut.function.aws.proxy</a> - package io.micronaut.function.aws.proxy</dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/model/bind/package-summary.html">io.micronaut.function.aws.proxy.model.bind</a> - package io.micronaut.function.aws.proxy.model.bind</dt>
@@ -1653,6 +1673,8 @@
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#isSearchCommonApplication--">isSearchCommonApplication()</a></span> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html#isSharedObjectMapper--">isSharedObjectMapper()</a></span> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#isSuccess--">isSuccess()</a></span> - Method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#iteratorForAppenders--">iteratorForAppenders()</a></span> - Method in class io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging">CloudWatchLoggingAppender</a></dt>
 <dd>&nbsp;</dd>
@@ -2686,6 +2708,10 @@
 </dd>
 <dt><span class="memberNameLink"><a href="io/micronaut/aws/alexa/ssml/Ssml.html#sub-java.lang.String-java.lang.String-">sub(String, String)</a></span> - Method in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="io/micronaut/function/aws/event/AfterExecutionEvent.html#success-com.amazonaws.services.lambda.runtime.Context-java.lang.Object-">success(Context, Object)</a></span> - Static method in class io.micronaut.function.aws.event.<a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></dt>
+<dd>
+<div class="block">Creates a new <a href="io/micronaut/function/aws/event/AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an optional result of the execution.</div>
+</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/SupportedLang.html" title="enum in io.micronaut.aws.alexa.ssml"><span class="typeNameLink">SupportedLang</span></a> - Enum in <a href="io/micronaut/aws/alexa/ssml/package-summary.html">io.micronaut.aws.alexa.ssml</a></dt>
 <dd>
 <div class="block">Supported Locales for xml-lang attribute.</div>

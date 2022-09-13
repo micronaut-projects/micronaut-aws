@@ -182,21 +182,23 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-requestHandlers"><a href="#requestHandlers"><strong>8.7</strong><span>Lambda Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-coldstartups"><a href="#coldstartups"><strong>8.8</strong><span>Cold Startups</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-afterExecutionEvent"><a href="#afterExecutionEvent"><strong>8.8</strong><span>AfterExecutionEvent</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>8.9</strong><span>GraalVM and AWS Custom runtimes</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-coldstartups"><a href="#coldstartups"><strong>8.9</strong><span>Cold Startups</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-mdc"><a href="#mdc"><strong>8.10</strong><span>MDC Logging</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-customRuntimes"><a href="#customRuntimes"><strong>8.10</strong><span>GraalVM and AWS Custom runtimes</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>8.11</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-mdc"><a href="#mdc"><strong>8.11</strong><span>MDC Logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>8.12</strong><span>Testing Lambda Handlers</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTutorials"><a href="#lambdaTutorials"><strong>8.12</strong><span>Micronaut AWS Lambda Tutorials</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-objectmapperconfiguration"><a href="#objectmapperconfiguration"><strong>8.13</strong><span>Object Mapper Configuration</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaTesting"><a href="#lambdaTesting"><strong>8.13</strong><span>Testing Lambda Handlers</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaStreamHandler"><a href="#lambdaStreamHandler"><strong>8.14</strong><span>MicronautRequestStreamHandler</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-objectmapperconfiguration"><a href="#objectmapperconfiguration"><strong>8.14</strong><span>Object Mapper Configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdafunctionclient"><a href="#lambdafunctionclient"><strong>8.15</strong><span>Invoke Lambda with @FunctionClient</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaStreamHandler"><a href="#lambdaStreamHandler"><strong>8.15</strong><span>MicronautRequestStreamHandler</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdafunctionclient"><a href="#lambdafunctionclient"><strong>8.16</strong><span>Invoke Lambda with @FunctionClient</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-cdk"><a href="#cdk"><strong>9</strong><span>AWS CDK</span></a></div>
         
@@ -2511,7 +2513,23 @@ customised. Needs to be overriden to apply the <code>@Singleton</code> annotatio
 </tbody>
 </table>
 
-<h2 id="coldstartups"><a class="anchor" href="#coldstartups"></a>8.8 Cold Startups</h2>
+<h2 id="afterExecutionEvent"><a class="anchor" href="#afterExecutionEvent"></a>8.8 AfterExecutionEvent</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/afterExecutionEvent.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>AWS Lambda runtime will reuse the instances of your handler classes but the Java Virtual Machine will be suspended between the invocation. Every call on a single instance of your handler will reuse the same application context. If you need to perform actions before the JVM gets suspended then you can create <strong>synchronous</strong> handler for <code>AfterExecutionEvent</code> event which is published right before the execution of the method <code>handleRequest</code> in <code>MicronautRequestHandler</code> and <code>MicronautRequestStreamHandler</code> is finished.</p>
+</div>
+<div class="paragraph">
+<p>To subscribe to <code>AfterExecutionEvent</code> create a <code>@Singleton</code> class which implements <code>ApplicationEventListener&lt;AfterExecutionEvent&gt;</code>.  Learn more about <a href="https://docs.micronaut.io/latest/guide/#contextEvents">Context Events</a>.</p>
+</div>
+
+<h2 id="coldstartups"><a class="anchor" href="#coldstartups"></a>8.9 Cold Startups</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/coldstartups.adoc"'>
@@ -2544,7 +2562,7 @@ When a new instance handles its first request it has to start the JVM and load y
 <p>The intialization phase has access to more CPU, because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
 </div>
 
-<h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>8.9 GraalVM and AWS Custom runtimes</h2>
+<h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>8.10 GraalVM and AWS Custom runtimes</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/customRuntimes.adoc"'>
@@ -2576,7 +2594,7 @@ When a new instance handles its first request it has to start the JVM and load y
 <p>When you generate a project with Micronaut CLI or <a href="https://launch.micronaut.io">Micronaut Launch</a> with <code>aws-lambda</code> and <code>graalvm</code> features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.</p>
 </div>
 
-<h2 id="mdc"><a class="anchor" href="#mdc"></a>8.10 MDC Logging</h2>
+<h2 id="mdc"><a class="anchor" href="#mdc"></a>8.11 MDC Logging</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/mdc.adoc"'>
@@ -2653,7 +2671,7 @@ When a new instance handles its first request it has to start the JVM and load y
 <p>Override <a href="../api/io/micronaut/function/aws/MicronautRequestHandler.html">MicronautRequestHandler</a> <code>populateMappingDiagnosticContextValues</code> or <code>populateMappingDiagnosticContextWithXrayTraceId</code> methods to adjust the functionality to your needs.</p>
 </div>
 
-<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>8.11 Micronaut AWS Lambda Tutorials</h2>
+<h2 id="lambdaTutorials"><a class="anchor" href="#lambdaTutorials"></a>8.12 Micronaut AWS Lambda Tutorials</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaTutorials.adoc"'>
@@ -2712,7 +2730,7 @@ When a new instance handles its first request it has to start the JVM and load y
 </tbody>
 </table>
 
-<h2 id="lambdaTesting"><a class="anchor" href="#lambdaTesting"></a>8.12 Testing Lambda Handlers</h2>
+<h2 id="lambdaTesting"><a class="anchor" href="#lambdaTesting"></a>8.13 Testing Lambda Handlers</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaTesting.adoc"'>
@@ -2795,7 +2813,7 @@ public class RequestHandlerTest {
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).</p>
 </div>
 
-<h2 id="objectmapperconfiguration"><a class="anchor" href="#objectmapperconfiguration"></a>8.13 Object Mapper Configuration</h2>
+<h2 id="objectmapperconfiguration"><a class="anchor" href="#objectmapperconfiguration"></a>8.14 Object Mapper Configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/objectmapperconfiguration.adoc"'>
@@ -2812,7 +2830,7 @@ a custom builder, some Lambda-specific configuration will be set (e.g. eager ini
 <p>If you wish to further configure this <code>ObjectMapper</code>, you can register a <code>BeanCreatedEventListener&lt;ObjectMapper&gt;</code> and filter based on <code>event.getBeanDefinition()</code> having an annotation like <code>@Named("aws")</code>.</p>
 </div>
 
-<h2 id="lambdaStreamHandler"><a class="anchor" href="#lambdaStreamHandler"></a>8.14 MicronautRequestStreamHandler</h2>
+<h2 id="lambdaStreamHandler"><a class="anchor" href="#lambdaStreamHandler"></a>8.15 MicronautRequestStreamHandler</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdaStreamHandler.adoc"'>
@@ -2968,7 +2986,7 @@ class Handler : MicronautRequestStreamHandler() {
 </div>
 </div>
 
-<h2 id="lambdafunctionclient"><a class="anchor" href="#lambdafunctionclient"></a>8.15 Invoke Lambda with @FunctionClient</h2>
+<h2 id="lambdafunctionclient"><a class="anchor" href="#lambdafunctionclient"></a>8.16 Invoke Lambda with @FunctionClient</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/lambda/lambdafunctionclient.adoc"'>
