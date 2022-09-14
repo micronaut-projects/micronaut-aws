@@ -20,8 +20,8 @@ sdkv2:
     nettyClient: Netty client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
-  serviceClients:
-    title: Service Clients
+  awsServices:
+    title: AWS Services
     apiGatewayManagementApi: API Gateway Management API Client
     s3: S3
     dynamodb: Dynamo DB
@@ -42,6 +42,7 @@ sdkv2:
     otherServices: Other services
 lambda:
   title: AWS Lambda Support
+  lambdaCustomRuntimes: AWS Lambda Custom Runtimes
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda
   awslambdaconsiderations: AWS Lambda Considerations
   awslambdaruntimes: AWS Lambda Runtimes

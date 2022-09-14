@@ -16,9 +16,12 @@
 package io.micronaut.aws.sdk.v2.service.gatewaymanagement;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.inject.qualifiers.Qualifiers;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -43,10 +46,11 @@ public class ApiGatewayManagementApiClientFactory extends AwsClientFactory<ApiGa
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @param configuration       The service configuration
+     * @param context             The application context
      */
-    protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ApiGatewayManagementApiConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider, configuration);
+    protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ApplicationContext context) {
+        super(credentialsProvider, regionProvider, context.findBean(
+            AWSServiceConfiguration.class, Qualifiers.byName(ApiGatewayManagementApiClient.SERVICE_NAME)).orElse(null));
     }
 
     @Override

@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.gatewaymanagement;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagem
  * @since 3.9.0
  */
 @ConfigurationProperties(ApiGatewayManagementApiClient.SERVICE_NAME)
-public class ApiGatewayManagementApiConfigurationProperties extends ServiceClientConfiguration {
+public class ApiGatewayManagementApiConfigurationProperties extends AWSServiceConfigurationProperties {
 }

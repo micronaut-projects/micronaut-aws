@@ -16,10 +16,14 @@
 package io.micronaut.aws.sdk.v2.service.ssm;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.inject.qualifiers.Qualifiers;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -28,8 +32,6 @@ import software.amazon.awssdk.services.ssm.SsmAsyncClient;
 import software.amazon.awssdk.services.ssm.SsmAsyncClientBuilder;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.SsmClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a SSM client.
@@ -46,11 +48,12 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @param configuration The service configuration
+     * @param context             The application context
      */
     protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               SsmConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider, configuration);
+                               ApplicationContext context) {
+        super(credentialsProvider, regionProvider, context.findBean(
+            AWSServiceConfiguration.class, Qualifiers.byName(SsmClient.SERVICE_NAME)).orElse(null));
     }
 
     @Override

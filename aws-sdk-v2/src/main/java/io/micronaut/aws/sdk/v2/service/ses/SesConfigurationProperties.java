@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.ses;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.ses.SesClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.ses.SesClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(SesClient.SERVICE_NAME)
-public class SesConfigurationProperties extends ServiceClientConfiguration {
+public class SesConfigurationProperties extends AWSServiceConfigurationProperties {
 }

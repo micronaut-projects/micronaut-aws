@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.sqs;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.sqs.SqsClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.sqs.SqsClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(SqsClient.SERVICE_NAME)
-public class SqsConfigurationProperties extends ServiceClientConfiguration {
+public class SqsConfigurationProperties extends AWSServiceConfigurationProperties {
 }

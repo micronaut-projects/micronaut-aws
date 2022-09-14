@@ -16,9 +16,13 @@
 package io.micronaut.aws.sdk.v2.service.servicediscovery;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.inject.qualifiers.Qualifiers;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -27,8 +31,6 @@ import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncCli
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryAsyncClientBuilder;
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient;
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates service discovery clients.
@@ -44,10 +46,11 @@ public class ServiceDiscoveryAsyncClientFactory extends AwsClientFactory<Service
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @param configuration       The service configuration
+     * @param context             The application context
      */
-    public ServiceDiscoveryAsyncClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ServiceDiscoveryConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider, configuration);
+    public ServiceDiscoveryAsyncClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider, ApplicationContext context) {
+        super(credentialsProvider, regionProvider, context.findBean(
+            AWSServiceConfiguration.class, Qualifiers.byName(ServiceDiscoveryClient.SERVICE_NAME)).orElse(null));
     }
 
     @Override

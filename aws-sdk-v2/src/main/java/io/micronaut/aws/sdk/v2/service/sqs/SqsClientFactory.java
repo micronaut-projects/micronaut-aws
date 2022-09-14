@@ -16,9 +16,13 @@
 package io.micronaut.aws.sdk.v2.service.sqs;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.inject.qualifiers.Qualifiers;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -27,8 +31,6 @@ import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.SqsClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a SQS client.
@@ -44,11 +46,12 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @param configuration       The service configuration
+     * @param context             The application context
      */
     protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               SqsConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider, configuration);
+                               ApplicationContext context) {
+        super(credentialsProvider, regionProvider, context.findBean(
+            AWSServiceConfiguration.class, Qualifiers.byName(SqsClient.SERVICE_NAME)).orElse(null));
     }
 
     @Override

@@ -43,7 +43,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
     @Nullable
-    protected final ServiceClientConfiguration configuration;
+    protected final AWSServiceConfiguration configuration;
 
     /**
      * Constructor.
@@ -53,7 +53,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @param configuration The service configuration
      */
     protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               @Nullable ServiceClientConfiguration configuration) {
+                               @Nullable AWSServiceConfiguration configuration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
         this.configuration = configuration;

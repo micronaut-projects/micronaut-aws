@@ -15,6 +15,7 @@
  */
 package io.micronaut.discovery.aws.servicediscovery.registration;
 
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.Internal;
@@ -92,7 +93,7 @@ public class AwsServiceDiscoveryRegistrationClient extends DiscoveryServiceAutoR
     /**
      * Constant for whether route 53 registration is enabled.
      */
-    public static final String ENABLED = "aws.service-discovery.registration.enabled";
+    public static final String ENABLED = AWSServiceConfigurationProperties.FULL_SERVICE_PREFIX + ".service-discovery.registration.enabled";
 
     private static final Logger LOG = LoggerFactory.getLogger(AwsServiceDiscoveryRegistrationClient.class);
     private final AwsServiceDiscoveryRegistrationConfiguration route53AutoRegistrationConfiguration;

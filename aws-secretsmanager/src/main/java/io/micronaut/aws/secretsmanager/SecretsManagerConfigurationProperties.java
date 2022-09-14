@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
@@ -31,7 +31,7 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
     /**
      * Prefix for Amazon EC2 configuration metadata.
      */
-    public static final String PREFIX = AWSConfiguration.PREFIX + ".secretsmanager";
+    public static final String PREFIX = AWSServiceConfigurationProperties.FULL_SERVICE_PREFIX + ".secretsmanager";
 
     /**
      * The default enable value.

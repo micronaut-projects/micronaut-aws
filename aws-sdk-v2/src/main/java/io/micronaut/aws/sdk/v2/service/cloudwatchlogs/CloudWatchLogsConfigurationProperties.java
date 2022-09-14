@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.cloudwatchlogs;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(CloudWatchLogsClient.SERVICE_NAME)
-public class CloudWatchLogsConfigurationProperties extends ServiceClientConfiguration {
+public class CloudWatchLogsConfigurationProperties extends AWSServiceConfigurationProperties {
 }

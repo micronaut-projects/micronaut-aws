@@ -5,6 +5,11 @@
     "reason": "Provide ability to set endpoint override via configuration properties"
   },
   {
+    "type": "io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties)",
+    "reason": "Provide ability to set endpoint override via configuration properties"
+  },
+  {
     "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
     "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
     "reason": "Provide ability to set endpoint override via configuration properties"

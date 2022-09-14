@@ -1,0 +1,3 @@
+Each AWS service supports the following configuration properties:
+
+include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration.adoc[]

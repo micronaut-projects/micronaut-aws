@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.sns;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.sns.SnsClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.sns.SnsClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(SnsClient.SERVICE_NAME)
-public class SnsConfigurationProperties extends ServiceClientConfiguration {
+public class SnsConfigurationProperties extends AWSServiceConfigurationProperties {
 }

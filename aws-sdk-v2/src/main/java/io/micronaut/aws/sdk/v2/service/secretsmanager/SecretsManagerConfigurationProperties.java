@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.secretsmanager;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(SecretsManagerClient.SERVICE_NAME)
-public class SecretsManagerConfigurationProperties extends ServiceClientConfiguration {
+public class SecretsManagerConfigurationProperties extends AWSServiceConfigurationProperties {
 }

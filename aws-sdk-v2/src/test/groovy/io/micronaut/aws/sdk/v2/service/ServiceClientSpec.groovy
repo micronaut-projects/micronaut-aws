@@ -10,7 +10,7 @@ abstract class ServiceClientSpec extends ApplicationContextSpecification {
 
     @Override
     Map<String, Object> getConfiguration() {
-        String endpointOverrideProperty = "aws.${serviceName()}.endpoint-override"
+        String endpointOverrideProperty = "aws.services.${serviceName()}.endpoint-override"
         super.configuration + [
                 (endpointOverrideProperty): ENDPOINT
         ]

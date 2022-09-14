@@ -13,19 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.service.dynamodb;
+package io.micronaut.aws;
 
 
-import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 /**
- * Configuration properties for {@code DynamoDbClient}.
+ * Abstract class to host common AWS service configuration properties.
  *
  * @author Stephen Cprek
  * @since 3.9.0
  */
-@ConfigurationProperties(DynamoDbClient.SERVICE_NAME)
-public class DynamoDbConfigurationProperties extends AWSServiceConfigurationProperties {
+@ConfigurationProperties(AWSServiceConfigurationProperties.SERVICE_PREFIX)
+public class AWSServiceConfigurationProperties extends AWSConfiguration {
+
+    /**
+     * Prefix for all AWS Service Client settings.
+     */
+    public static final String SERVICE_PREFIX = "services";
+
+    /**
+     * Full prefix for all AWS Service Client settings.
+     */
+    public static final String FULL_SERVICE_PREFIX = AWSConfiguration.PREFIX + ".services";
 }

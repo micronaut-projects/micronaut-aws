@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.servicediscovery;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(ServiceDiscoveryClient.SERVICE_NAME)
-public class ServiceDiscoveryConfigurationProperties extends ServiceClientConfiguration {
+public class ServiceDiscoveryConfigurationProperties extends AWSServiceConfigurationProperties {
 }

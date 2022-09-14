@@ -16,21 +16,39 @@
 package io.micronaut.aws.sdk.v2.service;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.aws.AWSServiceConfigurationProperties;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.Nullable;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
- * Abstract class to host common AWS service client configuration properties.
+ * Configuration class to host common AWS service client configuration properties.
  *
  * @author Stephen Cprek
  * @since 3.9.0
  *
  */
-public abstract class ServiceClientConfiguration extends AWSConfiguration {
+@EachProperty(AWSServiceConfigurationProperties.SERVICE_PREFIX)
+public class AWSServiceConfiguration extends AWSConfiguration {
 
+    private final String serviceName;
     @Nullable
     private URI endpointOverride;
+
+    public AWSServiceConfiguration(@Parameter String serviceName)
+        throws URISyntaxException {
+        this.serviceName = serviceName;
+    }
+
+    /**
+     * @return The Service Name
+     */
+    public String getServiceName() {
+        return serviceName;
+    }
 
     /**
      * @return The endpoint with which the AWS SDK should communicate

@@ -85,10 +85,10 @@ class AwsServiceDiscoverySpec extends Specification implements TestPropertyProvi
 
     @Override
     Map<String, String> getProperties() {
-        ["aws.service-discovery.registration.namespace"   : "vanderfox.net",
-         "aws.service-discovery.registration.awsServiceId": "testId",
-         "aws.service-discovery.enabled"                  : "true",
-         "aws.service-discovery.registration.enabled"     : "true",
+        ["aws.services.service-discovery.registration.namespace"   : "vanderfox.net",
+         "aws.services.service-discovery.registration.awsServiceId": "testId",
+         "aws.services.service-discovery.enabled"                  : "true",
+         "aws.services.service-discovery.registration.enabled"     : "true",
          "micronaut.application.name"                     : "testapp",
          "spec.name"                                      : getClass().simpleName]
     }

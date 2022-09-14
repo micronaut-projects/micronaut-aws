@@ -15,7 +15,8 @@
  */
 package io.micronaut.aws.sdk.v2.service.ssm;
 
-import io.micronaut.aws.sdk.v2.service.ServiceClientConfiguration;
+
+import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import software.amazon.awssdk.services.ssm.SsmClient;
 
@@ -26,5 +27,5 @@ import software.amazon.awssdk.services.ssm.SsmClient;
  * @since 3.9.0
  */
 @ConfigurationProperties(SsmClient.SERVICE_NAME)
-public class SsmConfigurationProperties extends ServiceClientConfiguration {
+public class SsmConfigurationProperties extends AWSServiceConfigurationProperties {
 }
