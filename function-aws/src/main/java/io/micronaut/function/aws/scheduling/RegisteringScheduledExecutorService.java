@@ -50,6 +50,7 @@ public class RegisteringScheduledExecutorService implements InstrumentedSchedule
         return target;
     }
 
+    @Override
     public <T> Future<T> submit(Callable<T> task) {
         Future<T> future = target.submit(task);
         futures.add(future);
@@ -84,11 +85,15 @@ public class RegisteringScheduledExecutorService implements InstrumentedSchedule
         return response;
     }
 
+    /**
+     * Waits until all tasks are finished.
+     *
+     * @param finish the time  to wait in milliseconds
+     */
     void awaitAllTaskFinished(long finish) {
         while (!futures.isEmpty() && System.currentTimeMillis() <= finish) {
             cleanUp();
         }
-
         if (!futures.isEmpty()) {
             throw new IllegalStateException("There are still " + futures.size() + " pending tasks " + futures);
         }
@@ -99,6 +104,5 @@ public class RegisteringScheduledExecutorService implements InstrumentedSchedule
             futures.removeAll(futures.stream().filter(f -> f.isDone() || f.isCancelled()).collect(Collectors.toList()));
         }
     }
-
 
 }

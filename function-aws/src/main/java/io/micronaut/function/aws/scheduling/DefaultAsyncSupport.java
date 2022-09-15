@@ -69,7 +69,6 @@ public class DefaultAsyncSupport implements AsyncSupport, BeanCreatedEventListen
         }
     }
 
-
     @Override
     public void onApplicationEvent(AfterExecutionEvent event) {
         awaitAsyncFinished(configuration.getAwaitTermination().toMillis(), TimeUnit.MILLISECONDS);
