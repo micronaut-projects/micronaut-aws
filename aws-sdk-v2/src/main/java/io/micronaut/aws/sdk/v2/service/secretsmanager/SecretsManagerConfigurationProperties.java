@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
  * Configuration properties for {@code SecretsManagerClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(SecretsManagerClient.SERVICE_NAME)
 public class SecretsManagerConfigurationProperties extends AWSServiceConfigurationProperties {

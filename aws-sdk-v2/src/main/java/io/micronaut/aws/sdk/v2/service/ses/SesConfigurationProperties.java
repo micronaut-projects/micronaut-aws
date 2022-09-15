@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.ses.SesClient;
  * Configuration properties for {@code SesClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(SesClient.SERVICE_NAME)
 public class SesConfigurationProperties extends AWSServiceConfigurationProperties {

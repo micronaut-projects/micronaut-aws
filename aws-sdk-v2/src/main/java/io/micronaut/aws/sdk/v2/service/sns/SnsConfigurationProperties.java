@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.sns.SnsClient;
  * Configuration properties for {@code SnsClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(SnsClient.SERVICE_NAME)
 public class SnsConfigurationProperties extends AWSServiceConfigurationProperties {

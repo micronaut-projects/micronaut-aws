@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.sqs.SqsClient;
  * Configuration properties for {@code SqsClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(SqsClient.SERVICE_NAME)
 public class SqsConfigurationProperties extends AWSServiceConfigurationProperties {

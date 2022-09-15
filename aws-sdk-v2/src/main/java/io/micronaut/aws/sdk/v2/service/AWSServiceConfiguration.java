@@ -28,7 +28,7 @@ import java.net.URISyntaxException;
  * Configuration class to host common AWS service client configuration properties.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  *
  */
 @EachProperty(AWSServiceConfigurationProperties.SERVICE_PREFIX)
@@ -52,7 +52,7 @@ public class AWSServiceConfiguration extends AWSConfiguration {
 
     /**
      * @return The endpoint with which the AWS SDK should communicate
-     * @since 3.9.0
+     * @since 3.10.0
      */
     @Nullable
     public URI getEndpointOverride() {
@@ -62,7 +62,7 @@ public class AWSServiceConfiguration extends AWSConfiguration {
     /**
      * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
      * @param endpointOverride The endpoint with which the AWS SDK should communicate
-     * @since 3.9.0
+     * @since 3.10.0
      */
     public void setEndpointOverride(@Nullable URI endpointOverride) {
         this.endpointOverride = endpointOverride;

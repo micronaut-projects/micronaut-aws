@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
  * Configuration properties for {@code CloudWatchLogsClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(CloudWatchLogsClient.SERVICE_NAME)
 public class CloudWatchLogsConfigurationProperties extends AWSServiceConfigurationProperties {

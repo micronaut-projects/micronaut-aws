@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.ssm.SsmClient;
  * Configuration properties for {@code SsmClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(SsmClient.SERVICE_NAME)
 public class SsmConfigurationProperties extends AWSServiceConfigurationProperties {

@@ -72,7 +72,8 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(sb::endpointOverride);
+        // Do not replace with method reference - https://bugs.openjdk.org/browse/JDK-8141508
+        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(o -> sb.endpointOverride(o));
         return sb;
     }
 
@@ -100,7 +101,8 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
                 .httpClient(httpClient)
                 .region(regionProvider.getRegion())
                 .credentialsProvider(credentialsProvider);
-        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(ab::endpointOverride);
+        // Do not replace with method reference - https://bugs.openjdk.org/browse/JDK-8141508
+        Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(o -> ab.endpointOverride(o));
         return ab;
     }
 

@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagem
  * Configuration properties for {@code ApiGatewayManagementApiClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(ApiGatewayManagementApiClient.SERVICE_NAME)
 public class ApiGatewayManagementApiConfigurationProperties extends AWSServiceConfigurationProperties {

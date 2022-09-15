@@ -22,7 +22,7 @@ import io.micronaut.context.annotation.ConfigurationProperties;
  * Abstract class to host common AWS service configuration properties.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(AWSServiceConfigurationProperties.SERVICE_PREFIX)
 public class AWSServiceConfigurationProperties extends AWSConfiguration {

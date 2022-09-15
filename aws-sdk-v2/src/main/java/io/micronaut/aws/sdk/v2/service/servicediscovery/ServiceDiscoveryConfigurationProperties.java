@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.servicediscovery.ServiceDiscoveryClient;
  * Configuration properties for {@code ServiceDiscoveryClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(ServiceDiscoveryClient.SERVICE_NAME)
 public class ServiceDiscoveryConfigurationProperties extends AWSServiceConfigurationProperties {

@@ -24,7 +24,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
  * Configuration properties for {@code DynamoDbClient}.
  *
  * @author Stephen Cprek
- * @since 3.9.0
+ * @since 3.10.0
  */
 @ConfigurationProperties(DynamoDbClient.SERVICE_NAME)
 public class DynamoDbConfigurationProperties extends AWSServiceConfigurationProperties {
