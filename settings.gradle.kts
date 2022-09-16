@@ -31,6 +31,7 @@ include("aws-cdk")
 include("aws-cloudwatch-logging")
 include("function-aws-test")
 include("test-suite")
+include("test-suite-aws-sdk-v2")
 include("test-suite-groovy")
 include("test-suite-kotlin")
 
