@@ -48,6 +48,12 @@ public class DefaultAsyncSupport implements AsyncSupport, BeanCreatedEventListen
 
     @Override
     public ExecutorService onCreated(BeanCreatedEvent<ExecutorService> event) {
+        // wrapping other types of beans leads to ClassCastException
+        Class<ExecutorService> beanType = event.getBeanDefinition().getBeanType();
+        if (!beanType.equals(ExecutorService.class) && !beanType.equals(ScheduledExecutorService.class)) {
+            return event.getBean();
+        }
+
         if (event.getBean() instanceof RegisteringScheduledExecutorService) {
             return event.getBean();
         }
