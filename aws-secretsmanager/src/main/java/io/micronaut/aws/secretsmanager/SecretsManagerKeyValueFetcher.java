@@ -1,62 +1,38 @@
-/*
- * Copyright 2017-2021 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.micronaut.aws.secretsmanager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
+import io.micronaut.aws.distributedconfiguration.KeyValueFetcherByPath;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
-import software.amazon.awssdk.services.secretsmanager.model.DecryptionFailureException;
-import software.amazon.awssdk.services.secretsmanager.model.Filter;
-import software.amazon.awssdk.services.secretsmanager.model.FilterNameStringType;
-import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
-import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
-import software.amazon.awssdk.services.secretsmanager.model.InternalServiceErrorException;
-import software.amazon.awssdk.services.secretsmanager.model.InvalidParameterException;
-import software.amazon.awssdk.services.secretsmanager.model.InvalidRequestException;
-import software.amazon.awssdk.services.secretsmanager.model.ListSecretsRequest;
-import software.amazon.awssdk.services.secretsmanager.model.ListSecretsResponse;
-import software.amazon.awssdk.services.secretsmanager.model.ResourceNotFoundException;
-import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry;
-import software.amazon.awssdk.services.secretsmanager.model.SecretsManagerException;
-import jakarta.inject.Singleton;
+import software.amazon.awssdk.services.secretsmanager.model.*;
+
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 /**
- * {@link KeyValueFetcher} implementations for AWS Secrets Manager.
+ * Class used for communicating directly with AWS sdk.
  * @author Sergio del Amo
- * @since 2.8.0
+ * @author Matej Nedic
+ * @since ?
  */
 @Experimental
 @Requires(beans = {SecretsManagerClient.class})
 @BootstrapContextCompatible
 @Singleton
-public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
+public class SecretsManagerKeyValueFetcher implements KeyValueFetcherByPath {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerKeyValueFetcher.class);
 
+    //async?
     private final SecretsManagerClient secretsClient;
     private final ObjectMapper objectMapper;
 
@@ -73,50 +49,19 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
 
     @Override
     @NonNull
-    public Optional<Map> keyValuesByPrefix(@NonNull String prefix) {
-        Map result = new HashMap<>();
+    public Optional<Map<String,String>> keyValuesByPrefix(@NonNull String keyOrPath, String version) {
+        Map<String,String> result = new HashMap<>();
         try {
-            String nextToken = null;
-            do {
-                ListSecretsRequest.Builder builder = ListSecretsRequest.builder()
-                        .nextToken(nextToken)
-                        .filters(Filter.builder()
-                                .key(FilterNameStringType.NAME)
-                                .values(prefix)
-                                .build());
-                if (nextToken != null) {
-                    builder = builder.nextToken(nextToken);
-                }
-                ListSecretsRequest listSecretsRequest = builder.build();
-                ListSecretsResponse secretsResponse = secretsClient.listSecrets(listSecretsRequest);
-                List<SecretListEntry> secrets = secretsResponse.secretList();
-                if (LOG.isTraceEnabled()) {
-                    if (secrets.isEmpty()) {
-                        LOG.trace("zero secrets for prefix: {}", prefix);
-                    } else {
-                        LOG.trace("# {} secrets for prefix: {}", secrets.size(), prefix);
-                    }
-                }
-                for (SecretListEntry secret : secrets) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace("Evaluating secret {}", secret.name());
-                    }
-                    Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
+                    Optional<String> secretValueOptional = fetchSecretValue(secretsClient, keyOrPath, version);
                     if (secretValueOptional.isPresent()) {
                         try {
                             result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
                         } catch (JsonProcessingException e) {
                             if (LOG.isWarnEnabled()) {
-                                LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
+                                LOG.warn("could not read secret ({}) value from JSON to Map", keyOrPath);
                             }
                         }
                     }
-                }
-
-                nextToken = secretsResponse.nextToken();
-            } while (nextToken != null);
-
-
         } catch (SecretsManagerException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("SecretsManagerException {}", e.awsErrorDetails().errorMessage());
@@ -128,10 +73,16 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
 
     @NonNull
     private Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
-                                              @NonNull String secretName) {
-        GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
-                .secretId(secretName)
-                .build();
+                                              @NonNull String secretName,
+                                              String versionId) {
+        GetSecretValueRequest getSecretValueRequest;
+        GetSecretValueRequest.Builder getSecretValueRequestBuilder = GetSecretValueRequest.builder()
+                .secretId(secretName);
+        if( versionId != null) {
+            getSecretValueRequest = getSecretValueRequestBuilder.versionId(versionId).build();
+        } else {
+            getSecretValueRequest = getSecretValueRequestBuilder.build();
+        }
         return fetchSecretValueResponse(secretsClient, getSecretValueRequest)
                 .map(this::extractSecretValue);
     }
@@ -180,6 +131,5 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
             }
         }
         return Optional.empty();
-
     }
 }

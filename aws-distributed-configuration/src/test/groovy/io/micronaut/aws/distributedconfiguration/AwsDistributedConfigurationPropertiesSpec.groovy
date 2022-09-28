@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 class AwsDistributedConfigurationPropertiesSpec extends Specification {
 
-    void "AwsDistributedConfigurationProperties is annotated with BootstrapContextCompatible"() {
+    void "AwsDistributedConfigurationPath is annotated with BootstrapContextCompatible"() {
         given:
         ApplicationContext context = ApplicationContext.run()
 
