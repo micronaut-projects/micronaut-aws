@@ -18,7 +18,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     testImplementation(project(":function-aws"))
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
     testImplementation(project(":function-client-aws"))
 }
 
