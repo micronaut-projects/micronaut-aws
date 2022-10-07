@@ -1,0 +1,18 @@
+plugins {
+    id("io.micronaut.build.internal.module")
+}
+
+def micronautVersionInfo = tasks.register("micronautVersionInfo",
+        io.micronaut.internal.aws.tasks.WriteMicronautVersionInfoTask) {
+    version = micronautVersion
+    outputDirectory = layout.buildDirectory.dir("version-info")
+}
+
+sourceSets.main.resources.srcDir(micronautVersionInfo)
+
+micronautBuild {
+    // new module, so no binary check
+    binaryCompatibility {
+        enabled.set(false)
+    }
+}

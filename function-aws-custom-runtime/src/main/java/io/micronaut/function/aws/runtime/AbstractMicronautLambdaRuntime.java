@@ -24,6 +24,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micronaut.aws.ua.UserAgentUtils;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
@@ -100,10 +101,7 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
 
-    static final String USER_AGENT_VALUE = String.format(
-            "micronaut/%s-%s",
-            System.getProperty("java.vendor.version"),
-            AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+    static final String USER_AGENT_VALUE = UserAgentUtils.userAgent();
 
     protected Object handler;
 
