@@ -74,8 +74,8 @@ public class SecretsManagerGroupNameAwareKeyValueFetcher implements GroupNameAwa
 
     @Override
     @NonNull
-    public Optional<Map<String, Map>> keyValuesByPrefix(@NonNull String prefix) {
-        Map<String, Map> result = new HashMap<>();
+    public Optional<Map<String, Map<String, ?>>> keyValuesByPrefix(@NonNull String prefix) {
+        Map<String, Map<String, ?>> result = new HashMap<>();
         try {
             String nextToken = null;
             do {
@@ -102,7 +102,7 @@ public class SecretsManagerGroupNameAwareKeyValueFetcher implements GroupNameAwa
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Evaluating secret {}", secret.name());
                     }
-                    Map keyValues = new HashMap<>();
+                    Map<String, ?> keyValues = new HashMap<>();
                     Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
                     if (secretValueOptional.isPresent()) {
                         try {

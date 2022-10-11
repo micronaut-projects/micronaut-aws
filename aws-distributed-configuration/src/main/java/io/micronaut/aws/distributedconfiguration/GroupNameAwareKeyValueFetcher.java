@@ -36,5 +36,5 @@ public interface GroupNameAwareKeyValueFetcher {
      * @return A Map of configuration properties
      */
     @NonNull
-    Optional<Map<String, Map>> keyValuesByPrefix(@NonNull String prefix);
+    Optional<Map<String, Map<String, ?>>> keyValuesByPrefix(@NonNull String prefix);
 }

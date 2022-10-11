@@ -74,13 +74,13 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     @Override
     public Publisher<PropertySource> getPropertySources(Environment environment) {
         List<String> configurationResolutionPrefixes = generateConfigurationResolutionPrefixes(environment);
-        Map<String, Map<String, Map>> configurationResolutionPrefixKeyValueGroups = new LinkedHashMap<>();
+        Map<String, Map<String, Map<String, ?>>> configurationResolutionPrefixKeyValueGroups = new LinkedHashMap<>();
         int allKeysCount = 0;
 
         for (String prefix : configurationResolutionPrefixes) {
-            Optional<Map<String, Map>> keyValueGroupsOptional = keyValueFetcher.keyValuesByPrefix(prefix);
+            Optional<Map<String, Map<String, ?>>> keyValueGroupsOptional = keyValueFetcher.keyValuesByPrefix(prefix);
             if (keyValueGroupsOptional.isPresent()) {
-                Map<String, Map> keyValueGroups = keyValueGroupsOptional.get();
+                Map<String, Map<String, ?>> keyValueGroups = keyValueGroupsOptional.get();
                 configurationResolutionPrefixKeyValueGroups.put(prefix, keyValueGroups);
                 for (Map<String, ?> keyValues: keyValueGroups.values()) {
                     allKeysCount += keyValues.size();
@@ -91,19 +91,21 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
             LOG.trace("evaluating {} keys", allKeysCount);
         }
         Map<String, Object> result = new HashMap<>();
-        for (String prefix : configurationResolutionPrefixKeyValueGroups.keySet()) {
-            Map<String, Map> keyValueGroups = configurationResolutionPrefixKeyValueGroups.get(prefix);
-            for (Map.Entry<String, Map> keyValueGroupEntry : keyValueGroups.entrySet()) {
+        for (Map.Entry<String, Map<String, Map<String, ?>>> configurationMapEntry : configurationResolutionPrefixKeyValueGroups.entrySet()) {
+            String prefix = configurationMapEntry.getKey();
+            Map<String, Map<String, ?>> keyValueGroups = configurationMapEntry.getValue();
+            for (Map.Entry<String, Map<String, ?>> keyValueGroupEntry : keyValueGroups.entrySet()) {
                 String groupName = keyValueGroupEntry.getKey();
                 Map<String, ?> keyValues = keyValueGroupEntry.getValue();
 
-                for (String key : keyValues.keySet()) {
+                for (Map.Entry<String, ?> keyValuesEntry: keyValues.entrySet()) {
+                    String key = keyValuesEntry.getKey();
                     String adaptedPropertyKey = adaptPropertyKey(key, groupName);
                     if (!result.containsKey(adaptedPropertyKey)) {
                         if (LOG.isTraceEnabled()) {
                             LOG.trace("adding property {} from prefix {}", adaptedPropertyKey, prefix);
                         }
-                        result.put(adaptedPropertyKey, keyValues.get(key));
+                        result.put(adaptedPropertyKey, keyValuesEntry.getValue());
                     }
                 }
 
