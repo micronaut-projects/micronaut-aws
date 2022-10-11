@@ -44,8 +44,7 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     private static final Logger LOG = LoggerFactory.getLogger(AwsDistributedConfigurationClient.class);
     private static final String UNDERSCORE = "_";
     private final AwsDistributedConfiguration awsDistributedConfiguration;
-    // TODO: Is it safe to introduce this change?
-    private final GroupNameAwareKeyValueFetcher keyValueFetcher;
+    private final KeyValueFetcher keyValueFetcher;
 
     @Nullable
     private final String applicationName;
@@ -53,11 +52,11 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     /**
      *
      * @param awsDistributedConfiguration AWS Distributed Configuration
-     * @param keyValueFetcher a Key Value Fetcher
+     * @param keyValueFetcher Key Value Fetcher
      * @param applicationConfiguration Application Configuration
      */
     public AwsDistributedConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             GroupNameAwareKeyValueFetcher keyValueFetcher,
+                                             KeyValueFetcher keyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration) {
         this.awsDistributedConfiguration = awsDistributedConfiguration;
         this.keyValueFetcher = keyValueFetcher;
@@ -74,13 +73,13 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     @Override
     public Publisher<PropertySource> getPropertySources(Environment environment) {
         List<String> configurationResolutionPrefixes = generateConfigurationResolutionPrefixes(environment);
-        Map<String, Map<String, Map<String, ?>>> configurationResolutionPrefixKeyValueGroups = new LinkedHashMap<>();
+        Map<String, Map<String, Map<String, Object>>> configurationResolutionPrefixKeyValueGroups = new LinkedHashMap<>();
         int allKeysCount = 0;
 
         for (String prefix : configurationResolutionPrefixes) {
-            Optional<Map<String, Map<String, ?>>> keyValueGroupsOptional = keyValueFetcher.keyValuesByPrefix(prefix);
+            Optional<Map> keyValueGroupsOptional = keyValueFetcher.keyValuesByPrefix(prefix);
             if (keyValueGroupsOptional.isPresent()) {
-                Map<String, Map<String, ?>> keyValueGroups = keyValueGroupsOptional.get();
+                Map<String, Map<String, Object>> keyValueGroups = keyValueGroupsOptional.get();
                 configurationResolutionPrefixKeyValueGroups.put(prefix, keyValueGroups);
                 for (Map<String, ?> keyValues: keyValueGroups.values()) {
                     allKeysCount += keyValues.size();
@@ -91,10 +90,10 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
             LOG.trace("evaluating {} keys", allKeysCount);
         }
         Map<String, Object> result = new HashMap<>();
-        for (Map.Entry<String, Map<String, Map<String, ?>>> configurationMapEntry : configurationResolutionPrefixKeyValueGroups.entrySet()) {
+        for (Map.Entry<String, Map<String, Map<String, Object>>> configurationMapEntry : configurationResolutionPrefixKeyValueGroups.entrySet()) {
             String prefix = configurationMapEntry.getKey();
-            Map<String, Map<String, ?>> keyValueGroups = configurationMapEntry.getValue();
-            for (Map.Entry<String, Map<String, ?>> keyValueGroupEntry : keyValueGroups.entrySet()) {
+            Map<String, Map<String, Object>> keyValueGroups = configurationMapEntry.getValue();
+            for (Map.Entry<String, Map<String, Object>> keyValueGroupEntry : keyValueGroups.entrySet()) {
                 String groupName = keyValueGroupEntry.getKey();
                 Map<String, ?> keyValues = keyValueGroupEntry.getValue();
 

@@ -57,8 +57,8 @@ import java.util.Optional;
 public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerKeyValueFetcher.class);
 
-    private final SecretsManagerClient secretsClient;
-    private final ObjectMapper objectMapper;
+    protected final SecretsManagerClient secretsClient;
+    protected final ObjectMapper objectMapper;
 
     /**
      *
@@ -101,16 +101,7 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Evaluating secret {}", secret.name());
                     }
-                    Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
-                    if (secretValueOptional.isPresent()) {
-                        try {
-                            result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
-                        } catch (JsonProcessingException e) {
-                            if (LOG.isWarnEnabled()) {
-                                LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
-                            }
-                        }
-                    }
+                    addSecretDetailsToResults(secret, result);
                 }
 
                 nextToken = secretsResponse.nextToken();
@@ -127,7 +118,21 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
     }
 
     @NonNull
-    private Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
+    protected void addSecretDetailsToResults(SecretListEntry secret, Map result) {
+        Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
+        if (secretValueOptional.isPresent()) {
+            try {
+                result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
+            } catch (JsonProcessingException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
+                }
+            }
+        }
+    }
+
+    @NonNull
+    protected Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
                                               @NonNull String secretName) {
         GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
                 .secretId(secretName)

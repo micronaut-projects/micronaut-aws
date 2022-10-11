@@ -8,6 +8,7 @@ import io.micronaut.core.annotation.NonNull
 import io.micronaut.core.util.StringUtils
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
+import org.jetbrains.annotations.NotNull
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
@@ -99,6 +100,7 @@ class AwsDistributedConfigurationSpec extends Specification {
             super(awsDistributedConfiguration, keyValueFetcher, applicationConfiguration)
         }
 
+        @NotNull
         @Override
         protected String adaptPropertyKey(String originalKey, String groupName) {
             return originalKey

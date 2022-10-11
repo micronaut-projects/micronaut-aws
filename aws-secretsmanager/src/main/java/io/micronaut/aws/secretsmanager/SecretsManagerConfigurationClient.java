@@ -19,11 +19,13 @@ import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.runtime.ApplicationConfiguration;
 import jakarta.inject.Singleton;
+
+import java.util.Optional;
 
 /**
  * Distributed configuration client for AWS Secrets Manager.
@@ -39,7 +41,19 @@ import jakarta.inject.Singleton;
 @BootstrapContextCompatible
 public class SecretsManagerConfigurationClient extends AwsDistributedConfigurationClient {
 
-    private final SecretsManagerConfiguration secretsManagerConfiguration;
+    private final Optional<SecretsManagerConfiguration> secretsManagerConfiguration;
+
+    /**
+     * @param awsDistributedConfiguration AWS Distributed Configuration
+     * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
+     * @param applicationConfiguration Application Configuration
+     */
+    public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
+                                             SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
+                                             @Nullable ApplicationConfiguration applicationConfiguration) {
+        super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);
+        this.secretsManagerConfiguration = Optional.empty();
+    }
 
     /**
      * @param awsDistributedConfiguration AWS Distributed Configuration
@@ -47,19 +61,21 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
      * @param applicationConfiguration Application Configuration
      * @param secretsManagerConfiguration Secrets Configuration
      */
+    @Creator
     public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
                                              SecretsManagerGroupNameAwareKeyValueFetcher secretsManagerKeyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration,
                                              SecretsManagerConfiguration secretsManagerConfiguration) {
         super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);
-        this.secretsManagerConfiguration = secretsManagerConfiguration;
+        this.secretsManagerConfiguration = Optional.of(secretsManagerConfiguration);
     }
 
     @Override
     @NonNull
     protected String adaptPropertyKey(String originalKey, String groupName) {
-        if (CollectionUtils.isNotEmpty(secretsManagerConfiguration.getSecrets())) {
-            for (SecretConfiguration secretHolder : secretsManagerConfiguration.getSecrets()) {
+        if (secretsManagerConfiguration.isPresent()) {
+            SecretsManagerConfiguration secretsConfiguration = secretsManagerConfiguration.get();
+            for (SecretConfiguration secretHolder : secretsConfiguration.getSecrets()) {
                 if (groupName.endsWith(secretHolder.getSecretName())) {
                     return secretHolder.getPrefix() + "." + originalKey;
                 }
