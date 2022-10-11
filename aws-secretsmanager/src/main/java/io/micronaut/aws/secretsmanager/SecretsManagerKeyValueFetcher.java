@@ -117,6 +117,12 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
         return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
 
+    /**
+     * Add secret details to the result map.
+     *
+     * @param secret a secret list entry
+     * @param result a map that collects the results
+     */
     @NonNull
     protected void addSecretDetailsToResults(SecretListEntry secret, Map result) {
         Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
@@ -131,6 +137,13 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
         }
     }
 
+    /**
+     * Fetches secret value.
+     *
+     * @param secretsClient a secret manager cleint
+     * @param secretName a secret name
+     * @return secret value optional
+     */
     @NonNull
     protected Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
                                               @NonNull String secretName) {
