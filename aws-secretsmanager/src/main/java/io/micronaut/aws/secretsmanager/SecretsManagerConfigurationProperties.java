@@ -93,7 +93,7 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
 
     private Optional<SecretConfiguration> convertMapToSecretHolder(Map<String, String> secretHolderMap) {
         if (CollectionUtils.isNotEmpty(secretHolderMap)) {
-            SecretConfiguration secretHolder = new SecretConfiguration(secretHolderMap.get("secret"), secretHolderMap.get("prefix"));
+            SecretConfiguration secretHolder = new SecretConfiguration(secretHolderMap.get("secretName"), secretHolderMap.get("prefix"));
             return Optional.of(secretHolder);
         }
         return Optional.empty();

@@ -7,8 +7,8 @@ class SecretsManagerSecretsConfigurationSpec extends ApplicationContextSpecifica
         super.configuration + [
                 'aws.secretsmanager.enabled': true,
                 'aws.secretsmanager.secrets': [
-                        ["secret": "rds_default", "prefix": "datasources.default"],
-                        ["secret": "rds_backup", "prefix": "datasources.backup"]
+                        ["secretName": "rds_default", "prefix": "datasources.default"],
+                        ["secretName": "rds_backup", "prefix": "datasources.backup"]
                 ]
         ]
     }

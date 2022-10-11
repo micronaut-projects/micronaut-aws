@@ -17,7 +17,6 @@ package io.micronaut.aws.secretsmanager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
@@ -33,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * {@link KeyValueFetcher} implementations for AWS Secrets Manager.
+ *  Key Value fetcher for AWS Secrets Manager.
  *
  * @author sbodvanski
  * @since 3.8.0

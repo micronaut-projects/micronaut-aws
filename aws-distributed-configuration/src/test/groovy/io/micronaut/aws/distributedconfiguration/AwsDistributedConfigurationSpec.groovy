@@ -8,7 +8,6 @@ import io.micronaut.core.annotation.NonNull
 import io.micronaut.core.util.StringUtils
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
-import org.jetbrains.annotations.NotNull
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
@@ -88,7 +87,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         'otherapp'  | 'foo' || 'application_fooYYY'
     }
 
-    @Requires(beans = [AwsDistributedConfiguration, GroupNameAwareKeyValueFetcher])
+    @Requires(beans = [AwsDistributedConfiguration, KeyValueFetcher])
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
     @Singleton
@@ -100,8 +99,8 @@ class AwsDistributedConfigurationSpec extends Specification {
             super(awsDistributedConfiguration, keyValueFetcher, applicationConfiguration)
         }
 
-        @NotNull
         @Override
+        @NonNull
         protected String adaptPropertyKey(String originalKey, String groupName) {
             return originalKey
         }
@@ -121,7 +120,7 @@ class AwsDistributedConfigurationSpec extends Specification {
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
     @Singleton
-    static class MockKeyValuesFetcher implements GroupNameAwareKeyValueFetcher {
+    static class MockKeyValuesFetcher implements KeyValueFetcher {
 
         Map<String, Map<String, String>> m = [
                 '/config/application/OpenID':

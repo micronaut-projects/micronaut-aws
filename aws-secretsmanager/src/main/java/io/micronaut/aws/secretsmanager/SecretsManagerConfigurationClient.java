@@ -75,9 +75,9 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     protected String adaptPropertyKey(String originalKey, String groupName) {
         if (secretsManagerConfiguration.isPresent()) {
             SecretsManagerConfiguration secretsConfiguration = secretsManagerConfiguration.get();
-            for (SecretConfiguration secretHolder : secretsConfiguration.getSecrets()) {
-                if (groupName.endsWith(secretHolder.getSecretName())) {
-                    return secretHolder.getPrefix() + "." + originalKey;
+            for (SecretConfiguration secret : secretsConfiguration.getSecrets()) {
+                if (groupName.endsWith(secret.getSecretName())) {
+                    return secret.getPrefix() + "." + originalKey;
                 }
             }
         }
