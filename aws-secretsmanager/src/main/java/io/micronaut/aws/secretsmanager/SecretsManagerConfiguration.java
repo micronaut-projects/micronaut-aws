@@ -17,10 +17,17 @@ package io.micronaut.aws.secretsmanager;
 
 import io.micronaut.core.util.Toggleable;
 
+import java.util.List;
+
 /**
  * Configuration for Secrets Manager.
  * @author Sergio del Amo
  * @since 2.8.0
  */
 public interface SecretsManagerConfiguration extends Toggleable  {
+
+    /**
+     * @return the AWS Secrets Manager secrets configuration.
+     */
+    List<SecretHolder> getSecrets();
 }

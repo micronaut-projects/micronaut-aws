@@ -21,8 +21,8 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.runtime.ApplicationConfiguration;
-
 import jakarta.inject.Singleton;
 
 /**
@@ -33,22 +33,38 @@ import jakarta.inject.Singleton;
  */
 @Requires(beans = {
         AwsDistributedConfiguration.class,
-        SecretsManagerKeyValueFetcher.class
+        SecretsManagerGroupNameAwareKeyValueFetcher.class
 })
 @Singleton
 @BootstrapContextCompatible
 public class SecretsManagerConfigurationClient extends AwsDistributedConfigurationClient {
 
+    private SecretsManagerConfiguration secretsManagerConfiguration;
+
     /**
-     *
      * @param awsDistributedConfiguration AWS Distributed Configuration
      * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
      * @param applicationConfiguration Application Configuration
+     * @param secretsManagerConfiguration Secrets Configuration
      */
     public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
-                                             @Nullable ApplicationConfiguration applicationConfiguration) {
+                                             SecretsManagerGroupNameAwareKeyValueFetcher secretsManagerKeyValueFetcher,
+                                             @Nullable ApplicationConfiguration applicationConfiguration,
+                                             SecretsManagerConfiguration secretsManagerConfiguration) {
         super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);
+        this.secretsManagerConfiguration = secretsManagerConfiguration;
+    }
+
+    @Override
+    protected String adaptPropertyKey(String originalKey, String groupName) {
+        if (CollectionUtils.isNotEmpty(secretsManagerConfiguration.getSecrets())) {
+            for (SecretHolder secretHolder : secretsManagerConfiguration.getSecrets()) {
+                if (groupName.endsWith(secretHolder.getSecret())) {
+                    return secretHolder.getPrefix() + "." + originalKey;
+                }
+            }
+        }
+        return originalKey;
     }
 
     @Override
@@ -61,4 +77,5 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     public String getDescription() {
         return "AWS Secrets Manager";
     }
+
 }

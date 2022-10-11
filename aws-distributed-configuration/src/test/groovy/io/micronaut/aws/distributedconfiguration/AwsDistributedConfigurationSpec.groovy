@@ -87,7 +87,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         'otherapp'  | 'foo' || 'application_fooYYY'
     }
 
-    @Requires(beans = [AwsDistributedConfiguration, KeyValueFetcher])
+    @Requires(beans = [AwsDistributedConfiguration, GroupNameAwareKeyValueFetcher])
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
     @Singleton
@@ -97,6 +97,11 @@ class AwsDistributedConfigurationSpec extends Specification {
                                               MockKeyValuesFetcher keyValueFetcher,
                                               ApplicationConfiguration applicationConfiguration) {
             super(awsDistributedConfiguration, keyValueFetcher, applicationConfiguration)
+        }
+
+        @Override
+        protected String adaptPropertyKey(String originalKey, String groupName) {
+            return originalKey
         }
 
         @Override
@@ -114,7 +119,7 @@ class AwsDistributedConfigurationSpec extends Specification {
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
     @Singleton
-    static class MockKeyValuesFetcher implements KeyValueFetcher {
+    static class MockKeyValuesFetcher implements GroupNameAwareKeyValueFetcher {
 
         Map<String, Map<String, String>> m = [
                 '/config/application/OpenID':
@@ -137,9 +142,9 @@ class AwsDistributedConfigurationSpec extends Specification {
         ]
 
         @Override
-        Optional<Map> keyValuesByPrefix(@NonNull String prefix) {
+        Optional<Map<String, Map>> keyValuesByPrefix(@NonNull String prefix) {
             String k = m.keySet().find { it.startsWith(prefix) }
-            (k) ? Optional.of(m[k]) : Optional.empty()
+            (k) ? Optional.of([(k): m[k]] as Map<String, Map>) : Optional.empty()
         }
     }
 }

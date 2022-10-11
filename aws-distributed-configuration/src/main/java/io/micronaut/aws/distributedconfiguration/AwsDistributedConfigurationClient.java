@@ -26,13 +26,13 @@ import io.micronaut.runtime.ApplicationConfiguration;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Base implementation for AWS services contributing distributed configuration.
@@ -44,7 +44,8 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     private static final Logger LOG = LoggerFactory.getLogger(AwsDistributedConfigurationClient.class);
     private static final String UNDERSCORE = "_";
     private final AwsDistributedConfiguration awsDistributedConfiguration;
-    private final KeyValueFetcher keyValueFetcher;
+    // TODO: Is it safe to introduce this change?
+    private final GroupNameAwareKeyValueFetcher keyValueFetcher;
 
     @Nullable
     private final String applicationName;
@@ -56,7 +57,7 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
      * @param applicationConfiguration Application Configuration
      */
     public AwsDistributedConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             KeyValueFetcher keyValueFetcher,
+                                             GroupNameAwareKeyValueFetcher keyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration) {
         this.awsDistributedConfiguration = awsDistributedConfiguration;
         this.keyValueFetcher = keyValueFetcher;
@@ -73,38 +74,39 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     @Override
     public Publisher<PropertySource> getPropertySources(Environment environment) {
         List<String> configurationResolutionPrefixes = generateConfigurationResolutionPrefixes(environment);
-
-        Map<String, Map> configurationResolutionPrefixesValues = new HashMap<>();
+        Map<String, Map<String, Map>> configurationResolutionPrefixKeyValueGroups = new LinkedHashMap<>();
+        int allKeysCount = 0;
 
         for (String prefix : configurationResolutionPrefixes) {
-            Optional<Map> keyValuesOptional = keyValueFetcher.keyValuesByPrefix(prefix);
-            if (keyValuesOptional.isPresent()) {
-                Map keyValues = keyValuesOptional.get();
-                configurationResolutionPrefixesValues.put(prefix, keyValues);
+            Optional<Map<String, Map>> keyValueGroupsOptional = keyValueFetcher.keyValuesByPrefix(prefix);
+            if (keyValueGroupsOptional.isPresent()) {
+                Map<String, Map> keyValueGroups = keyValueGroupsOptional.get();
+                configurationResolutionPrefixKeyValueGroups.put(prefix, keyValueGroups);
+                for (Map<String, ?> keyValues: keyValueGroups.values()) {
+                    allKeysCount += keyValues.size();
+                }
             }
         }
-        Set<String> allKeys = new HashSet<>();
-        for (Map m : configurationResolutionPrefixesValues.values()) {
-            allKeys.addAll(m.keySet());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("evaluating {} keys", allKeysCount);
         }
         Map<String, Object> result = new HashMap<>();
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("evaluating {} keys", allKeys.size());
-        }
-        for (String k : allKeys) {
-            if (!result.containsKey(k)) {
-                for (String prefix : configurationResolutionPrefixes) {
-                    if (configurationResolutionPrefixesValues.containsKey(prefix)) {
-                        Map<String, ?> values = configurationResolutionPrefixesValues.get(prefix);
-                        if (values.containsKey(k)) {
-                            if (LOG.isTraceEnabled()) {
-                                LOG.trace("adding property {} from prefix {}", k, prefix);
-                            }
-                            result.put(k, values.get(k));
-                            break;
+        for (String prefix : configurationResolutionPrefixKeyValueGroups.keySet()) {
+            Map<String, Map> keyValueGroups = configurationResolutionPrefixKeyValueGroups.get(prefix);
+            for (Map.Entry<String, Map> keyValueGroupEntry : keyValueGroups.entrySet()) {
+                String groupName = keyValueGroupEntry.getKey();
+                Map<String, ?> keyValues = keyValueGroupEntry.getValue();
+
+                for (String key : keyValues.keySet()) {
+                    String adaptedPropertyKey = adaptPropertyKey(key, groupName);
+                    if (!result.containsKey(adaptedPropertyKey)) {
+                        if (LOG.isTraceEnabled()) {
+                            LOG.trace("adding property {} from prefix {}", adaptedPropertyKey, prefix);
                         }
+                        result.put(adaptedPropertyKey, keyValues.get(key));
                     }
                 }
+
             }
         }
         String propertySourceName = getPropertySourceName();
@@ -118,6 +120,14 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
         }
         return Publishers.just(new MapPropertySource(propertySourceName, result));
     }
+
+    /**
+     *
+     * @param originalKey an original property key
+     * @param groupName a property group name
+     * @return An adapted property key (e.g. key that has been appended to a prefix)
+     */
+    protected abstract String adaptPropertyKey(String originalKey, String groupName);
 
     /**
      *

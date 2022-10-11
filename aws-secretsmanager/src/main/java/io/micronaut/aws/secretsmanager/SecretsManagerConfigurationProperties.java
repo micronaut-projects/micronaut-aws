@@ -18,6 +18,12 @@ package io.micronaut.aws.secretsmanager;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * {@link ConfigurationProperties} implementation of {@link SecretsManagerConfiguration}.
@@ -41,6 +47,8 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
 
     private boolean enabled = DEFAULT_ENABLED;
 
+    private List<Map<String, String>> secrets;
+
     /**
      * @return Whether the AWS Secrets Manager configuration is enabled
      */
@@ -55,5 +63,39 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * Sets the secret configuration.
+     *
+     * @param secrets the secret configuration
+     */
+    public void setSecrets(List<Map<String, String>> secrets) {
+        this.secrets = secrets;
+    }
+
+    /**
+     * @return the secret configuration
+     */
+    @Override
+    public List<SecretHolder> getSecrets() {
+        List<SecretHolder> secretHolders = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(secrets)) {
+            for (Map<String, String> secretHolderMap : secrets) {
+                Optional<SecretHolder> secretHolder = convertMapToSecretHolder(secretHolderMap);
+                if (secretHolder.isPresent()) {
+                    secretHolders.add(secretHolder.get());
+                }
+            }
+        }
+        return secretHolders;
+    }
+
+    private Optional<SecretHolder> convertMapToSecretHolder(Map<String, String> secretHolderMap) {
+        if (CollectionUtils.isNotEmpty(secretHolderMap)) {
+            SecretHolder secretHolder = new SecretHolder(secretHolderMap.get("secret"), secretHolderMap.get("prefix"));
+            return Optional.of(secretHolder);
+        }
+        return Optional.empty();
     }
 }
