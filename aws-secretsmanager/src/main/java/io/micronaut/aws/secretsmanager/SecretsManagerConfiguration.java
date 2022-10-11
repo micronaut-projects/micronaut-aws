@@ -27,7 +27,10 @@ import java.util.List;
 public interface SecretsManagerConfiguration extends Toggleable  {
 
     /**
+     * Provide a list of secret configurations that allows for flexibility in secret key naming.
+     * This is provided by an option to define a key group prefix for any secret name.
+     *
      * @return the AWS Secrets Manager secrets configuration.
      */
-    List<SecretHolder> getSecrets();
+    List<SecretConfiguration> getSecrets();
 }

@@ -78,11 +78,11 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
      * @return the secret configuration
      */
     @Override
-    public List<SecretHolder> getSecrets() {
-        List<SecretHolder> secretHolders = new ArrayList<>();
+    public List<SecretConfiguration> getSecrets() {
+        List<SecretConfiguration> secretHolders = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(secrets)) {
             for (Map<String, String> secretHolderMap : secrets) {
-                Optional<SecretHolder> secretHolder = convertMapToSecretHolder(secretHolderMap);
+                Optional<SecretConfiguration> secretHolder = convertMapToSecretHolder(secretHolderMap);
                 if (secretHolder.isPresent()) {
                     secretHolders.add(secretHolder.get());
                 }
@@ -91,9 +91,9 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
         return secretHolders;
     }
 
-    private Optional<SecretHolder> convertMapToSecretHolder(Map<String, String> secretHolderMap) {
+    private Optional<SecretConfiguration> convertMapToSecretHolder(Map<String, String> secretHolderMap) {
         if (CollectionUtils.isNotEmpty(secretHolderMap)) {
-            SecretHolder secretHolder = new SecretHolder(secretHolderMap.get("secret"), secretHolderMap.get("prefix"));
+            SecretConfiguration secretHolder = new SecretConfiguration(secretHolderMap.get("secret"), secretHolderMap.get("prefix"));
             return Optional.of(secretHolder);
         }
         return Optional.empty();

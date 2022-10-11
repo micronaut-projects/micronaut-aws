@@ -39,7 +39,7 @@ import jakarta.inject.Singleton;
 @BootstrapContextCompatible
 public class SecretsManagerConfigurationClient extends AwsDistributedConfigurationClient {
 
-    private SecretsManagerConfiguration secretsManagerConfiguration;
+    private final SecretsManagerConfiguration secretsManagerConfiguration;
 
     /**
      * @param awsDistributedConfiguration AWS Distributed Configuration
@@ -56,10 +56,11 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     }
 
     @Override
+    @NonNull
     protected String adaptPropertyKey(String originalKey, String groupName) {
         if (CollectionUtils.isNotEmpty(secretsManagerConfiguration.getSecrets())) {
-            for (SecretHolder secretHolder : secretsManagerConfiguration.getSecrets()) {
-                if (groupName.endsWith(secretHolder.getSecret())) {
+            for (SecretConfiguration secretHolder : secretsManagerConfiguration.getSecrets()) {
+                if (groupName.endsWith(secretHolder.getSecretName())) {
                     return secretHolder.getPrefix() + "." + originalKey;
                 }
             }
@@ -74,6 +75,7 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     }
 
     @Override
+    @NonNull
     public String getDescription() {
         return "AWS Secrets Manager";
     }

@@ -21,13 +21,13 @@ class SecretsManagerSecretsConfigurationSpec extends ApplicationContextSpecifica
 
         when:
         List secretHolder = secretsManagerConfiguration.getSecrets()
-        SecretHolder rdsDefaultSecret = secretHolder[0]
-        SecretHolder rdsBackupSecret = secretHolder[1]
+        SecretConfiguration rdsDefaultSecret = secretHolder[0]
+        SecretConfiguration rdsBackupSecret = secretHolder[1]
 
         then:
-        rdsDefaultSecret.secret == 'rds_default'
+        rdsDefaultSecret.secretName == 'rds_default'
         rdsDefaultSecret.prefix == 'datasources.default'
-        rdsBackupSecret.secret == 'rds_backup'
+        rdsBackupSecret.secretName == 'rds_backup'
         rdsBackupSecret.prefix == 'datasources.backup'
     }
 }

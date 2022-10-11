@@ -15,6 +15,8 @@
  */
 package io.micronaut.aws.secretsmanager;
 
+import io.micronaut.core.annotation.Introspected;
+
 /**
  * Secret configuration holder that allows for flexibility in secret key naming in the Micronaut context to avoid a potential keys name collision.
  * This is provided by an option to define a key group prefix for any secret name.
@@ -22,20 +24,21 @@ package io.micronaut.aws.secretsmanager;
  * @author sbodvanski
  * @since 3.8.0
  */
-public class SecretHolder {
-    private final String secret;
+@Introspected
+public final class SecretConfiguration {
+    private final String secretName;
     private final String prefix;
 
-    public SecretHolder(String secret, String prefix) {
-        this.secret = secret;
+    public SecretConfiguration(String secret, String prefix) {
+        this.secretName = secret;
         this.prefix = prefix;
     }
 
     /**
      * @return A secret name
      */
-    public String getSecret() {
-        return secret;
+    public String getSecretName() {
+        return secretName;
     }
 
     /**

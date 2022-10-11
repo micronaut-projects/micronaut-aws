@@ -124,11 +124,14 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     }
 
     /**
-     *
+     * Adapts an original key. For example, key could be appended to a prefix in order to avoid naming ambiguity.
+     * *
+     * @since 3.8.0
      * @param originalKey an original property key
      * @param groupName a property group name
      * @return An adapted property key (e.g. key that has been appended to a prefix)
      */
+    @NonNull
     protected abstract String adaptPropertyKey(String originalKey, String groupName);
 
     /**
