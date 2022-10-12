@@ -17,7 +17,6 @@ package io.micronaut.aws.secretsmanager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
@@ -46,7 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * {@link KeyValueFetcher} implementations for AWS Secrets Manager.
+ * {@link SecretsKeyValueFetcher} implementations for AWS Secrets Manager.
  * @author Sergio del Amo
  * @since 2.8.0
  */
@@ -54,7 +53,7 @@ import java.util.Optional;
 @Requires(beans = {SecretsManagerClient.class})
 @BootstrapContextCompatible
 @Singleton
-public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
+public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerKeyValueFetcher.class);
 
     protected final SecretsManagerClient secretsClient;

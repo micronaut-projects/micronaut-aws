@@ -17,6 +17,7 @@ package io.micronaut.aws.secretsmanager;
 
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
+import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Creator;
@@ -48,11 +49,11 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
      * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
      * @param applicationConfiguration Application Configuration
      */
+    @Deprecated
     public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
                                              SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration) {
-        super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);
-        this.secretsManagerConfiguration = Optional.empty();
+        this(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration, null);
     }
 
     /**
@@ -63,7 +64,7 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
      */
     @Creator
     public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
-                                             SecretsManagerGroupNameAwareKeyValueFetcher secretsManagerKeyValueFetcher,
+                                             SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration,
                                              SecretsManagerConfiguration secretsManagerConfiguration) {
         super(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration);

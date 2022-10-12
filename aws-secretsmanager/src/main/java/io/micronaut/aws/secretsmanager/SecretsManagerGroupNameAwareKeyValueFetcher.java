@@ -18,6 +18,7 @@ package io.micronaut.aws.secretsmanager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- *  Key Value fetcher for AWS Secrets Manager.
+ *  Key Value fetcher for AWS Secrets Manager that is aware of Secret Key Value group names.
  *
  * @author sbodvanski
  * @since 3.8.0
@@ -41,6 +42,7 @@ import java.util.Optional;
 @Requires(beans = {SecretsManagerClient.class})
 @BootstrapContextCompatible
 @Singleton
+@Replaces(SecretsManagerKeyValueFetcher.class)
 public class SecretsManagerGroupNameAwareKeyValueFetcher extends SecretsManagerKeyValueFetcher {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerGroupNameAwareKeyValueFetcher.class);
 
