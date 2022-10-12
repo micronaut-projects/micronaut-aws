@@ -828,6 +828,40 @@
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Default value (true).</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secretsmanager.secrets</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.List</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties.SecretConfiguration" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties.SecretConfiguration">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.SecretConfiguration.html">SecretConfiguration</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secretsmanager.secrets[*].secret-name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets secret name.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secretsmanager.secrets[*].prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the group key prefix.</p></td>
+</tr>
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
@@ -836,7 +870,7 @@
 <h3 id="_aws_service_discovery_config_properties">Aws Service Discovery Config Properties</h3>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 12. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
+<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -905,7 +939,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
+<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -934,7 +968,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
+<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1121,7 +1155,7 @@
 <h3 id="_function_aws_api_proxy_config_properties">Function Aws Api Proxy Config Properties</h3>
 <a id="io.micronaut.function.aws.proxy.MicronautAwsProxyConfiguration" href="#io.micronaut.function.aws.proxy.MicronautAwsProxyConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html">MicronautAwsProxyConfiguration</a></caption>
+<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/function/aws/proxy/MicronautAwsProxyConfiguration.html">MicronautAwsProxyConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1148,7 +1182,7 @@
 <h3 id="_function_client_aws_config_properties">Function Client Aws Config Properties</h3>
 <a id="io.micronaut.function.client.aws.AWSInvokeRequestDefinition" href="#io.micronaut.function.client.aws.AWSInvokeRequestDefinition">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
+<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html">AWSInvokeRequestDefinition</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1222,7 +1256,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.function.client.aws.AWSLambdaConfiguration" href="#io.micronaut.function.client.aws.AWSLambdaConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
+<caption class="title">Table 18. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/AWSLambdaConfiguration.html">AWSLambdaConfiguration</a></caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
