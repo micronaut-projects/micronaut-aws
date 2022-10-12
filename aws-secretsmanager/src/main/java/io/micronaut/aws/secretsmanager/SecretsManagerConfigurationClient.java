@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.runtime.ApplicationConfiguration;
 import jakarta.inject.Singleton;
 
@@ -75,9 +76,11 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     protected String adaptPropertyKey(String originalKey, String groupName) {
         if (secretsManagerConfiguration.isPresent()) {
             SecretsManagerConfiguration secretsConfiguration = secretsManagerConfiguration.get();
-            for (SecretsManagerConfigurationProperties.SecretConfiguration secret : secretsConfiguration.getSecrets()) {
-                if (groupName.endsWith(secret.getSecretName())) {
-                    return secret.getPrefix() + "." + originalKey;
+            if (CollectionUtils.isNotEmpty(secretsConfiguration.getSecrets())) {
+                for (SecretsManagerConfigurationProperties.SecretConfiguration secret : secretsConfiguration.getSecrets()) {
+                    if (groupName.endsWith(secret.getSecretName())) {
+                        return secret.getPrefix() + "." + originalKey;
+                    }
                 }
             }
         }
