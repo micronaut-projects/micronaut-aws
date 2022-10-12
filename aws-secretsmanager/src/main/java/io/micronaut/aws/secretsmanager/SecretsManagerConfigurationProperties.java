@@ -18,12 +18,10 @@ package io.micronaut.aws.secretsmanager;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.core.annotation.Introspected;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * {@link ConfigurationProperties} implementation of {@link SecretsManagerConfiguration}.
@@ -47,7 +45,7 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
 
     private boolean enabled = DEFAULT_ENABLED;
 
-    private List<Map<String, String>> secrets;
+    protected List<SecretConfiguration> secrets;
 
     /**
      * @return Whether the AWS Secrets Manager configuration is enabled
@@ -65,37 +63,55 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
         this.enabled = enabled;
     }
 
-    /**
-     * Sets the secret configuration.
-     *
-     * @param secrets the secret configuration
-     */
-    public void setSecrets(List<Map<String, String>> secrets) {
-        this.secrets = secrets;
-    }
-
-    /**
-     * @return the secret configuration
-     */
     @Override
     public List<SecretConfiguration> getSecrets() {
-        List<SecretConfiguration> secretHolders = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(secrets)) {
-            for (Map<String, String> secretHolderMap : secrets) {
-                Optional<SecretConfiguration> secretHolder = convertMapToSecretHolder(secretHolderMap);
-                if (secretHolder.isPresent()) {
-                    secretHolders.add(secretHolder.get());
-                }
-            }
-        }
-        return secretHolders;
+        return secrets;
     }
 
-    private Optional<SecretConfiguration> convertMapToSecretHolder(Map<String, String> secretHolderMap) {
-        if (CollectionUtils.isNotEmpty(secretHolderMap)) {
-            SecretConfiguration secretHolder = new SecretConfiguration(secretHolderMap.get("secretName"), secretHolderMap.get("prefix"));
-            return Optional.of(secretHolder);
+    /**
+     * Secret configuration holder that allows for flexibility in secret key naming in the Micronaut context to avoid a potential keys name collision.
+     * This is provided by an option to define a key group prefix for any secret name.
+     *
+     * @author sbodvanski
+     * @since 3.8.0
+     */
+    @Introspected
+    @EachProperty(value = "secrets", list = true)
+    @BootstrapContextCompatible
+    public static class SecretConfiguration {
+        private String secretName;
+        private String prefix;
+
+        /**
+         * Sets secret name.
+         *
+         * @param secretName secret name
+         */
+        public void setSecretName(String secretName) {
+            this.secretName = secretName;
         }
-        return Optional.empty();
+
+        /**
+         * Sets the group key prefix.
+         *
+         * @param prefix prefix
+         */
+        public void setPrefix(String prefix) {
+            this.prefix = prefix;
+        }
+
+        /**
+         * @return a secret name
+         */
+        public String getSecretName() {
+            return secretName;
+        }
+
+        /**
+         * @return a secret key group prefix
+         */
+        public String getPrefix() {
+            return prefix;
+        }
     }
 }

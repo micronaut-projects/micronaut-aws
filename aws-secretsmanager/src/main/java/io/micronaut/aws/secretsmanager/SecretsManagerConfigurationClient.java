@@ -17,7 +17,6 @@ package io.micronaut.aws.secretsmanager;
 
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
-import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Creator;
@@ -76,7 +75,7 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     protected String adaptPropertyKey(String originalKey, String groupName) {
         if (secretsManagerConfiguration.isPresent()) {
             SecretsManagerConfiguration secretsConfiguration = secretsManagerConfiguration.get();
-            for (SecretConfiguration secret : secretsConfiguration.getSecrets()) {
+            for (SecretsManagerConfigurationProperties.SecretConfiguration secret : secretsConfiguration.getSecrets()) {
                 if (groupName.endsWith(secret.getSecretName())) {
                     return secret.getPrefix() + "." + originalKey;
                 }

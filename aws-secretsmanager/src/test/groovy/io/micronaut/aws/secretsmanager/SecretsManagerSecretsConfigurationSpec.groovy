@@ -7,8 +7,8 @@ class SecretsManagerSecretsConfigurationSpec extends ApplicationContextSpecifica
         super.configuration + [
                 'aws.secretsmanager.enabled': true,
                 'aws.secretsmanager.secrets': [
-                        ["secretName": "rds_default", "prefix": "datasources.default"],
-                        ["secretName": "rds_backup", "prefix": "datasources.backup"]
+                        ["secret-name": "rds_default", "prefix": "datasources.default"],
+                        ["secret-name": "rds_backup", "prefix": "datasources.backup"]
                 ]
         ]
     }
@@ -20,14 +20,16 @@ class SecretsManagerSecretsConfigurationSpec extends ApplicationContextSpecifica
         !secretsManagerConfiguration.getSecrets().isEmpty()
 
         when:
-        List secretHolder = secretsManagerConfiguration.getSecrets()
-        SecretConfiguration rdsDefaultSecret = secretHolder[0]
-        SecretConfiguration rdsBackupSecret = secretHolder[1]
+        List secretConfigurations = secretsManagerConfiguration.getSecrets()
 
         then:
-        rdsDefaultSecret.secretName == 'rds_default'
-        rdsDefaultSecret.prefix == 'datasources.default'
-        rdsBackupSecret.secretName == 'rds_backup'
-        rdsBackupSecret.prefix == 'datasources.backup'
+        secretConfigurations.size() == 2
+        for (secretConfiguration in secretConfigurations) {
+            if (secretConfiguration.getSecretName() == 'rds_default') {
+                secretConfiguration.getPrefix() == 'datasources.default'
+            } else if (secretConfiguration.getSecretName() == 'rds_backup') {
+                secretConfiguration.getPrefix() == 'datasources.backup'
+            }
+        }
     }
 }
