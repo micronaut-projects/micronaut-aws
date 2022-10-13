@@ -2,17 +2,20 @@ plugins {
     id("io.micronaut.build.internal.module")
 }
 
-def micronautVersionInfo = tasks.register("micronautVersionInfo",
-        io.micronaut.internal.aws.tasks.WriteMicronautVersionInfoTask) {
-    version = micronautVersion
-    outputDirectory = layout.buildDirectory.dir("version-info")
+def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io.micronaut.internal.aws.tasks.UserAgentProviderGeneratorTask) {
+    version.set(micronautVersion)
+    outputDirectory.set(layout.projectDirectory.dir("src/main/java/"))
 }
-
-sourceSets.main.resources.srcDir(micronautVersionInfo)
+classes.dependsOn(userAgentProviderGenerator)
 
 micronautBuild {
     // new module, so no binary check
     binaryCompatibility {
         enabled.set(false)
+    }
+}
+spotless {
+    java {
+        targetExclude("**/Generated*.java")
     }
 }

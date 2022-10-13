@@ -9,4 +9,7 @@
               <!-- files="DefaultBeanContext.java|BeanDefinitionWriter.java|DefaultHttpClient.java"/> -->
 
     <suppress checks="MissingJavadocType" files=".*doc-examples.*" />
+    <suppress checks="MissingJavadocType" files="Generated*.*" />
+    <suppress checks="RedundantImport" files="Generated*.*" />
+    <suppress checks="UnusedImport" files="Generated*.*" />
 </suppressions>

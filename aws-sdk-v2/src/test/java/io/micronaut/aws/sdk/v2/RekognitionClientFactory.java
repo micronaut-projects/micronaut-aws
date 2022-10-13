@@ -1,9 +1,13 @@
 package io.micronaut.aws.sdk.v2;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties;
+import io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import jakarta.inject.Inject;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -20,8 +24,28 @@ import jakarta.inject.Singleton;
 @Factory
 public class RekognitionClientFactory extends AwsClientFactory<RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient> {
 
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @deprecated Use {@link RekognitionClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider )} instead.
+     */
+    @Deprecated
     protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+        super(credentialsProvider, regionProvider, null);
+    }
+
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     */
+    @Inject
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider);
     }
 
     // Sync client

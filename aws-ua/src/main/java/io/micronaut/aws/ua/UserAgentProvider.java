@@ -17,28 +17,18 @@ package io.micronaut.aws.ua;
 
 import io.micronaut.core.annotation.NonNull;
 
-import static io.micronaut.aws.ua.VersionInfo.getMicronautVersion;
-
 /**
- * Utility class to provide a value for the {@code User-Agent} HTTP Header when communicating with AWS SDK.
- * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent">User-Agent</a>.
+ * Provides value for User-Agent HTTP Header Value.
  * @author Sergio del Amo
  * @since 3.10.0
  */
-public final class UserAgentUtils {
-    private static final String PREFIX = "micronaut";
-
-    private UserAgentUtils() {
-    }
+@FunctionalInterface
+public interface UserAgentProvider {
 
     /**
      *
-     * @return User agent value. For example micronaut/3.7.1
+     * @return value for User-Agent HTTP Header.
      */
     @NonNull
-    public static String userAgent() {
-        return getMicronautVersion()
-            .map(micronautVersion -> String.format("%s/%s", PREFIX, micronautVersion))
-            .orElse(PREFIX);
-    }
+    String userAgent();
 }
