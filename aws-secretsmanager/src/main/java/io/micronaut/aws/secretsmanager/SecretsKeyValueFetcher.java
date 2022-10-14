@@ -15,23 +15,16 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import io.micronaut.core.util.Toggleable;
-
-import java.util.List;
+import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
+import io.micronaut.context.annotation.DefaultImplementation;
 
 /**
- * Configuration for Secrets Manager.
- * @author Sergio del Amo
- * @since 2.8.0
+ * Key Value fetcher for AWS Secrets Manager.
+ * {@link KeyValueFetcher}
+ *
+ * @author sbodvanski
+ * @since 3.8.0
  */
-public interface SecretsManagerConfiguration extends Toggleable  {
-
-    /**
-     * Provide a list of secret configurations that allows for flexibility in secret key naming.
-     * This is provided by an option to define a key group prefix for any secret name.
-     *
-     * @since 3.8.0
-     * @return the AWS Secrets Manager secrets configuration.
-     */
-    List<SecretsManagerConfigurationProperties.SecretConfiguration> getSecrets();
+@DefaultImplementation(SecretsManagerGroupNameAwareKeyValueFetcher.class)
+public interface SecretsKeyValueFetcher extends KeyValueFetcher {
 }
