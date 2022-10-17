@@ -15,7 +15,7 @@ dependencies {
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(libs.bouncycastle.provider)
-    testImplementation(libs.alexa.ask.sdk) {
+    testImplementation(libs.managed.alexa.ask.sdk) {
         isTransitive = false
     }
     testImplementation(libs.alexa.ask.sdk.apache.client)
