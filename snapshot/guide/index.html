@@ -3720,6 +3720,32 @@ public class FlashBriefingsController {
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>To avoid secret keys naming collision in the Micronaut application context, which is caused by the strict naming convention specified by some AWS services, add a configuration section to <code>src/main/resources/bootstrap.yml</code>.
+For example, if you would like to use multiple RDS instances, you can do it in the following way:</p>
+</div>
+<div class="listingblock">
+<div class="title">src/main/resources/bootstrap.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  config-client:
+    enabled: true
+aws:
+  secretsmanager:
+    secrets:
+      - secret-name: rds
+        prefix: datasources.default
+      - secret-name: rds_backup
+        prefix: datasources.backup</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that <code>secret-name</code> is a name suffix of the secret configured in AWS Secret Manager. For example, to add <code>rds_backup</code> configuration for a <code>production</code> environment, add the <code>rds_backup</code> configuration entry to the <code>src/main/resources/bootstrap.yml</code> as shown in the example above. Also, create RDS secret in AWS Secret Manager with name <code>/config/application_prod/rds_backup</code> or <code>/config/[APPLICATION_NAME]_prod/rds_backup</code>.
+Note that <code>prefix</code> is a unique key prefix that is prepended to all keys that belong to a given secret.</p>
+</div>
+<div class="paragraph">
+<p>To learn more about the Micronaut environments, go to <a href="https://docs.micronaut.io/latest/guide/#environments">Environments</a></p>
+</div>
 
 <h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>11.2 AWS System Manager Parameter Store</h2>
 
