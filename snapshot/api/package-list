@@ -8,6 +8,7 @@ io.micronaut.aws.alexa.httpserver.controllers
 io.micronaut.aws.alexa.httpserver.exceptions
 io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
+io.micronaut.aws.alexa.locale
 io.micronaut.aws.alexa.ssml
 io.micronaut.aws.cdk.function
 io.micronaut.aws.cloudwatch.logging

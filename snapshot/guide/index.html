@@ -222,6 +222,8 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-flashbriefings"><a href="#flashbriefings"><strong>10.7</strong><span>Flash Briefings</span></a></div>
         
+        <div class="toc-item" style="margin-left:10px" id="toc-item-localeresoultion"><a href="#localeresoultion"><strong>10.8</strong><span>Locale Resolution</span></a></div>
+        
         <div class="toc-item" style="margin-left:0px" id="toc-item-distributedconfiguration"><a href="#distributedconfiguration"><strong>11</strong><span>Distributed Configuration</span></a></div>
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-distributedconfigurationsecretsmanager"><a href="#distributedconfigurationsecretsmanager"><strong>11.1</strong><span>AWS Secrets Manager</span></a></div>
@@ -3539,6 +3541,54 @@ public class FlashBriefingsController {
 <td><a href="https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html">Flash Briefing Skill API Feed Reference</a> instructs to provide between 1 and 5 unique items at a time.</td>
 </tr>
 </table>
+</div>
+
+<h2 id="localeresoultion"><a class="anchor" href="#localeresoultion"></a>10.8 Locale Resolution</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/alexa/localeresoultion.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To resolve the <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/request-and-response-json-reference.html#request-locale">Request Locale</a> inject a bean of type <code><a href="../api/io/micronaut/aws/alexa/locale/HandlerInputLocaleResolver.html">HandlerInputLocaleResolver</a></code>.</p>
+</div>
+<div class="paragraph">
+<p>You can force a fixed locale or a custom default locale via configuration:</p>
+</div>
+<a id="io.micronaut.aws.alexa.locale.HandlerInputLocaleResolutionConfigurationProperties" href="#io.micronaut.aws.alexa.locale.HandlerInputLocaleResolutionConfigurationProperties">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/aws/alexa/locale/HandlerInputLocaleResolutionConfigurationProperties.html">HandlerInputLocaleResolutionConfigurationProperties</a></caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alexa.locale-resolution.fixed</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the fixed locale. Any of ar-SA, de-DE, en-AU, en-CA, en-GB, en-IN, en-US, es-ES, es-MX, es-US, fr-CA, fr-FR, hi-IN, it-IT, ja-JP, pt-BR</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>alexa.locale-resolution.default-locale</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Locale</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sets the locale that will be used if the locale cannot be
+ resolved through any means. Defaults to "en-US".</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If the built-in methods do not meet your use case, create a bean of type <a href="../api/io/micronaut/aws/alexa/locale/HandlerInputLocaleResolver.html">HandlerInputLocaleResolver</a> and set its order (through the <code>getOrder</code> method) relative to the existing resolvers.</p>
 </div>
 
 <h1 id="distributedconfiguration"><a class="anchor" href="#distributedconfiguration"></a>11 Distributed Configuration</h1>
