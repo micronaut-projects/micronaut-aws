@@ -10,6 +10,9 @@ dependencies {
     compileOnly(libs.alexa.ask.sdk)
     api(libs.managed.alexa.ask.sdk.core)
 
+    testCompileOnly(libs.asm)
+    testCompileOnly(libs.asm.commons)
+
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation(libs.alexa.ask.sdk) {
         transitive(false)

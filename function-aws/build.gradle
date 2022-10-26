@@ -6,6 +6,8 @@ dependencies {
     api mn.micronaut.function
     api libs.managed.aws.lambda.core
 
+    testCompileOnly(libs.asm)
+    testCompileOnly(libs.asm.commons)
     testImplementation(libs.micronaut.mongo.sync)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mongodb)

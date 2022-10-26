@@ -15,6 +15,9 @@ dependencies {
 
     runtimeOnly libs.jcl.over.slf4j
 
+    testCompileOnly(libs.asm)
+    testCompileOnly(libs.asm.commons)
+
     testAnnotationProcessor mn.micronaut.inject.java
     testImplementation (libs.alexa.ask.sdk) {
         transitive(false)

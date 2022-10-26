@@ -5,5 +5,7 @@ plugins {
 dependencies {
     api projects.awsCommon
     api(mn.micronaut.discovery)
+    testCompileOnly(libs.asm)
+    testCompileOnly(libs.asm.commons)
     testImplementation mn.micronaut.http.server.netty
 }
