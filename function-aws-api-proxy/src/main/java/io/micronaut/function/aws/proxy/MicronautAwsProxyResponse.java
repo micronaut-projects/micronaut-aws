@@ -56,7 +56,8 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     private final AwsProxyRequest request;
     private final MicronautLambdaContainerContext handler;
     private T body;
-    private HttpStatus status;
+    private int status;
+    private String reason = HttpStatus.OK.getReason();
     private AwsProxyResponse response = new AwsProxyResponse();
     private final AwsHeaders awsHeaders = new AwsHeaders();
     private Headers multiValueHeaders = new Headers();
@@ -76,7 +77,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         this.request = request;
         this.response.setMultiValueHeaders(multiValueHeaders);
         this.handler = environment;
-        this.status = HttpStatus.OK;
+        this.status = HttpStatus.OK.getCode();
         this.response.setStatusCode(HttpStatus.OK.getCode());
     }
 
@@ -112,16 +113,26 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
-    public MutableHttpResponse<T> status(HttpStatus status, CharSequence message) {
+    public MutableHttpResponse<T> status(int status, CharSequence message) {
         ArgumentUtils.requireNonNull("status", status);
+        if (message == null) {
+            this.reason = HttpStatus.getDefaultReason(status);
+        } else {
+            this.reason = message.toString();
+        }
         this.status = status;
-        response.setStatusCode(status.getCode());
+        response.setStatusCode(status);
         return this;
     }
 
     @Override
-    public HttpStatus getStatus() {
+    public int code() {
         return status;
+    }
+
+    @Override
+    public String reason() {
+        return reason;
     }
 
     /**

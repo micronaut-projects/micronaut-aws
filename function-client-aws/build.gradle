@@ -3,15 +3,15 @@ plugins {
 }
 
 dependencies {
-    api project(":aws-sdk-v1")
+    api projects.awsSdkV1
     implementation "com.amazonaws:aws-java-sdk-lambda"
-    implementation libs.projectreactor
+    implementation mn.reactor
     api libs.micronaut.function.client
 
-    testAnnotationProcessor libs.micronaut.inject.java
-    testImplementation libs.micronaut.inject.java
-    testImplementation libs.micronaut.http.server.netty
-    testImplementation libs.micronaut.function.web
+    testAnnotationProcessor mn.micronaut.inject.java
+    testImplementation mn.micronaut.inject.java
+    testImplementation mn.micronaut.http.server.netty
+    testImplementation mn.micronaut.function.web
     testImplementation libs.micronaut.function.groovy
-    testImplementation libs.micronaut.runtime.groovy
+    testImplementation mn.micronaut.runtime.groovy
 }

@@ -5,7 +5,7 @@ plugins {
 dependencies {
     implementation libs.micronaut.test.junit5
 
-    api project(":function-aws")
-    api libs.micronaut.function
-    testAnnotationProcessor libs.micronaut.inject.java
+    api projects.functionAws
+    api mn.micronaut.function
+    testAnnotationProcessor mn.micronaut.inject.java
 }

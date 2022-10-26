@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api libs.micronaut.http.server
-    api project(":function-aws-api-proxy")
+    api mn.micronaut.http.server
+    api projects.functionAwsApiProxy
     implementation libs.jetty.server
-    testImplementation libs.micronaut.http.client
+    testImplementation mn.micronaut.http.client
 }

@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    compileOnly libs.micronaut.runtime
-    testImplementation libs.micronaut.runtime
+    compileOnly mn.micronaut.runtime
+    testImplementation mn.micronaut.runtime
 }

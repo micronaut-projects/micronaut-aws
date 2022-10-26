@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api libs.micronaut.function
+    api mn.micronaut.function
     api libs.managed.aws.lambda.core
 
     testImplementation(libs.micronaut.mongo.sync)

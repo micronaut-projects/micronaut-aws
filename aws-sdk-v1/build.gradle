@@ -6,9 +6,11 @@ dependencies {
     api platform(libs.boms.aws.java.sdk.v1)
     api libs.managed.aws.java.sdk.core
 
-    api project(":aws-common")
+    api projects.awsCommon
 
     runtimeOnly libs.jcl.over.slf4j
 
-    testImplementation libs.micronaut.http.server.netty
+    testImplementation mn.micronaut.http.server.netty
+    testRuntimeOnly mn.snakeyaml
+
 }
