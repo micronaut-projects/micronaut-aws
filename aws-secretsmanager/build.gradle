@@ -6,4 +6,5 @@ dependencies {
     api projects.awsSdkV2
     api projects.awsDistributedConfiguration
     api libs.awssdk.secretsmanager
+    api mn.micronaut.jackson.databind
 }

@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api mn.micronaut.discovery
     api projects.awsSdkV2
+    api mn.micronaut.jackson.databind
 
     implementation libs.awssdk.servicediscovery
 

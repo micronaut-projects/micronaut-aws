@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api mn.micronaut.function
     api libs.managed.aws.lambda.core
+    api mn.micronaut.jackson.databind
 
     testCompileOnly(libs.asm)
     testCompileOnly(libs.asm.commons)

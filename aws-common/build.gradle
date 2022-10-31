@@ -4,5 +4,6 @@ plugins {
 
 dependencies {
     compileOnly mn.micronaut.runtime
+    implementation mn.micronaut.jackson.databind
     testImplementation mn.micronaut.runtime
 }
