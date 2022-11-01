@@ -7,11 +7,11 @@ dependencies {
 
     implementation(mn.micronaut.validation)
 
-    compileOnly(libs.alexa.ask.sdk)
+    compileOnly(libs.managed.alexa.ask.sdk)
     api(libs.managed.alexa.ask.sdk.core)
 
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testImplementation(libs.alexa.ask.sdk) {
+    testImplementation(libs.managed.alexa.ask.sdk) {
         isTransitive = false
     }
     testImplementation(libs.alexa.ask.sdk.apache.client)
