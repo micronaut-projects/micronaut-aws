@@ -4,9 +4,9 @@ plugins {
 
 dependencies {
     api platform(libs.boms.aws.java.sdk.v2)
-    api project(":aws-common")
+    api projects.awsCommon
 
-    compileOnly libs.graal
+    compileOnly mn.graal
 
     // Clients
     compileOnly libs.awssdk.url.connection.client
@@ -25,7 +25,7 @@ dependencies {
     compileOnly libs.awssdk.servicediscovery
 
     // Tests
-    testAnnotationProcessor libs.micronaut.inject.java
+    testAnnotationProcessor mn.micronaut.inject.java
     testImplementation libs.awssdk.apigatewaymanagementapi
     testImplementation libs.awssdk.servicediscovery
     testImplementation libs.awssdk.url.connection.client
@@ -40,4 +40,5 @@ dependencies {
     testImplementation libs.awssdk.ssm
     testImplementation libs.awssdk.rekognition
     testRuntimeOnly libs.jcl.over.slf4j
+    testRuntimeOnly mn.snakeyaml
 }

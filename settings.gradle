@@ -6,8 +6,10 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings' version '5.3.14'
+    id 'io.micronaut.build.shared.settings' version '6.0.1'
 }
+
+enableFeaturePreview 'TYPESAFE_PROJECT_ACCESSORS'
 
 rootProject.name = 'aws-parent'
 
@@ -32,3 +34,14 @@ include 'function-aws-test'
 include 'test-suite'
 include 'test-suite-groovy'
 include 'test-suite-kotlin'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+micronautBuild {
+    importMicronautCatalog()
+}

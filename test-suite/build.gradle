@@ -11,9 +11,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation project(":function-aws")
-    testImplementation project(":function-client-aws")
+    testImplementation projects.functionAws
+    testImplementation projects.functionClientAws
+    testRuntimeOnly('org.yaml:snakeyaml')
 }
 
 tasks.named("test") {
@@ -24,9 +24,4 @@ tasks.named("test") {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
 }

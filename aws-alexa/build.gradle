@@ -3,21 +3,21 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor libs.micronaut.validation
+    annotationProcessor mn.micronaut.validation
 
-    implementation libs.micronaut.validation
+    implementation mn.micronaut.validation
 
     compileOnly(libs.alexa.ask.sdk)
     api(libs.managed.alexa.ask.sdk.core)
 
-    testAnnotationProcessor libs.micronaut.inject.java
+    testAnnotationProcessor mn.micronaut.inject.java
     testImplementation(libs.alexa.ask.sdk) {
         transitive(false)
     }
     testImplementation libs.alexa.ask.sdk.apache.client
 
-    testImplementation libs.micronaut.http.client
-    testImplementation libs.micronaut.http.server.netty
-    testImplementation libs.groovy.json
+    testImplementation mn.micronaut.http.client
+    testImplementation mn.micronaut.http.server.netty
+    testImplementation mn.groovy.json
     testRuntimeOnly libs.jcl.over.slf4j
 }

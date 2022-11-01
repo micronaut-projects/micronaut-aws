@@ -6,21 +6,15 @@ plugins {
 
 dependencies {
     testCompileOnly("io.micronaut:micronaut-inject-groovy:$micronautVersion")
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude module:'groovy-all'
-    }
-    testImplementation "io.micronaut.test:micronaut-test-spock:$micronautTestVersion"
+    testImplementation("org.spockframework:spock-core")
+    testImplementation "io.micronaut.test:micronaut-test-spock"
 
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation project(":function-aws")
-    testImplementation project(":function-client-aws")
+    testImplementation projects.functionAws
+    testImplementation projects.functionClientAws
+    testRuntimeOnly('org.yaml:snakeyaml')
 }
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-
-java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
 }
