@@ -9,7 +9,6 @@ dependencies {
 
     implementation mn.micronaut.http.netty
     implementation mn.micronaut.core.processor
-    implementation mn.micronaut.jackson.databind
     implementation mn.reactor
 
     api mn.micronaut.http.server
