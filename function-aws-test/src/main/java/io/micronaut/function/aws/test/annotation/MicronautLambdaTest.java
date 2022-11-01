@@ -84,7 +84,7 @@ public @interface MicronautLambdaTest {
 
     /**
      * The application context builder to use to construct the context. Note that some builder
-     * methods may be called to set Lambda-specific configuration (e.g. eager initialization &
+     * methods may be called to set Lambda-specific configuration (e.g. eager initialization and
      * additional environments).
      * @return The builder
      */
