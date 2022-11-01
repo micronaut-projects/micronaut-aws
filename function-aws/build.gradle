@@ -7,8 +7,6 @@ dependencies {
     api libs.managed.aws.lambda.core
     api mn.micronaut.jackson.databind
 
-    testCompileOnly(libs.asm)
-    testCompileOnly(libs.asm.commons)
     testImplementation(libs.micronaut.mongo.sync)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mongodb)

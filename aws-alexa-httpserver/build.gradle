@@ -12,9 +12,6 @@ dependencies {
     implementation mn.micronaut.http.server
     api(libs.managed.alexa.ask.sdk.core)
 
-    testCompileOnly(libs.asm)
-    testCompileOnly(libs.asm.commons)
-
     testImplementation mn.micronaut.http.client
     testImplementation mn.micronaut.http.server.netty
     testImplementation libs.bouncycastle.provider

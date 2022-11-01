@@ -15,6 +15,4 @@ dependencies {
     testImplementation mn.micronaut.function.web
     testImplementation libs.micronaut.function.groovy
     testImplementation mn.micronaut.runtime.groovy
-    testCompileOnly(libs.asm)
-    testCompileOnly(libs.asm.commons)
 }
