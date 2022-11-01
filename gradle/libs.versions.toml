@@ -17,7 +17,6 @@ slf4j = "1.7.36"
 
 aws-cdk-lib = { module = 'software.amazon.awscdk:aws-cdk-lib', version.ref = 'managed-aws-cdk-lib' }
 
-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
 
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
@@ -50,6 +49,7 @@ jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
+managed-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-support', version.ref = 'managed-alexa-ask-sdk' }
 managed-aws-java-sdk-core = { module = 'com.amazonaws:aws-java-sdk-core', version.ref = 'managed-aws-java-sdk-v1' }
