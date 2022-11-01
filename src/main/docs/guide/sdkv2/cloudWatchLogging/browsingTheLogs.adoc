@@ -1,0 +1,3 @@
+When you have completed a setup, you can browse your logs on the https://console.aws.amazon.com/cloudwatch/home[Cloudwatch home]. In the Log groups menu and choose the group name and stream name of your application. In the "Log events" section you should be able to see your service logs.
+
+image::logs.png[Log events]

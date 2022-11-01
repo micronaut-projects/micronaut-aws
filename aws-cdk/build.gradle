@@ -1,9 +1,0 @@
-plugins {
-    id("io.micronaut.build.internal.aws-module")
-}
-
-dependencies {
-    api libs.aws.cdk.lib
-    api("io.micronaut.starter:micronaut-starter-api:$micronautStarterVersion")
-    testImplementation(projects.functionAwsApiProxy)
-}

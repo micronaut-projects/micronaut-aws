@@ -1,14 +1,15 @@
 [versions]
 bouncycastle = '1.70'
 fileupload = '0.0.5'
-jetty = '9.4.48.v20220622'
-managed-alexa-ask-sdk = "2.43.7"
-managed-aws-java-sdk-v1 = '1.12.292'
-managed-aws-java-sdk-v2 = '2.17.263'
+jetty = '9.4.49.v20220914'
+logback-json-classic = '0.1.5'
+managed-alexa-ask-sdk = "2.44.0"
+managed-aws-java-sdk-v1 = '1.12.321'
+managed-aws-java-sdk-v2 = '2.17.292'
 managed-aws-lambda = '1.2.1'
 managed-aws-lambda-events = '3.11.0'
-managed-aws-serverless-core = '1.8.2'
-managed-aws-cdk-lib='2.39.1'
+managed-aws-serverless-core = '1.9'
+managed-aws-cdk-lib='2.46.0'
 servlet-api = "2.5"
 slf4j = "1.7.36"
 
@@ -22,6 +23,7 @@ alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
+awssdk-cloudwatchlogs = { module = 'software.amazon.awssdk:cloudwatchlogs'}
 awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }
 awssdk-netty-nio-client = { module = 'software.amazon.awssdk:netty-nio-client' }
 awssdk-rekognition = { module = 'software.amazon.awssdk:rekognition' }
@@ -43,6 +45,8 @@ jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-af
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
+jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
 managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-support', version.ref = 'managed-alexa-ask-sdk' }
@@ -52,15 +56,6 @@ managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', v
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
 managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
-
-micronaut-function = { module = 'io.micronaut:micronaut-function' }
-micronaut-function-client = { module = 'io.micronaut:micronaut-function-client' }
-micronaut-function-groovy = { module = 'io.micronaut.groovy:micronaut-function-groovy' }
-micronaut-function-web = { module = 'io.micronaut:micronaut-function-web' }
-micronaut-mongo-sync = { module = 'io.micronaut.mongodb:micronaut-mongo-sync' }
-micronaut-runtime-groovy = { module = 'io.micronaut.groovy:micronaut-runtime-groovy' }
-micronaut-test-junit5 = { module = 'io.micronaut.test:micronaut-test-junit5' }
-micronaut-views-handlebars = { module = 'io.micronaut.views:micronaut-views-handlebars' }
 
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
 testcontainers = { module = 'org.testcontainers:testcontainers' }

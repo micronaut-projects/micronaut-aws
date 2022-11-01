@@ -30,7 +30,7 @@ class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification 
 
     void "SecretsManagerKeyValueFetcher is annotated with BootstrapContextCompatible"() {
         when:
-        BeanDefinition<SecretsManagerKeyValueFetcher> beanDefinition = applicationContext.getBeanDefinition(SecretsManagerKeyValueFetcher)
+        BeanDefinition<SecretsManagerGroupNameAwareKeyValueFetcher> beanDefinition = applicationContext.getBeanDefinition(SecretsManagerGroupNameAwareKeyValueFetcher)
 
         then:
         beanDefinition.getAnnotationNameByStereotype(BootstrapContextCompatible).isPresent()
@@ -38,7 +38,7 @@ class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification 
 
     void "bean of type SecretsManagerKeyValueFetcher exists"() {
         when:
-        SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher = applicationContext.getBean(SecretsManagerKeyValueFetcher)
+        SecretsManagerGroupNameAwareKeyValueFetcher secretsManagerKeyValueFetcher = applicationContext.getBean(SecretsManagerGroupNameAwareKeyValueFetcher)
 
         then:
         noExceptionThrown()
@@ -50,18 +50,29 @@ class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification 
         mapOptional.isPresent()
 
         when:
-        Map map = mapOptional.get()
+        Map keyValueGroups = mapOptional.get()
 
         then:
-        map
-        map.containsKey('micronaut.security.oauth2.clients.companyauthserver.client-id')
-        map['micronaut.security.oauth2.clients.companyauthserver.client-id'] == 'XXX'
-        map.containsKey('micronaut.security.oauth2.clients.companyauthserver.client-secret')
-        map['micronaut.security.oauth2.clients.companyauthserver.client-secret'] == 'YYY'
-        map.containsKey('micronaut.security.oauth2.clients.google.client-id')
-        map['micronaut.security.oauth2.clients.google.client-id'] == 'ZZZ'
-        map.containsKey('micronaut.security.oauth2.clients.google.client-secret')
-        map['micronaut.security.oauth2.clients.google.client-secret'] == 'PPP'
+        keyValueGroups.containsKey('/config/myapp_dev/oauthcompanyauthserver')
+        keyValueGroups.containsKey('/config/myapp_dev/oauthgoogle')
+
+        when:
+        Map keyValues = keyValueGroups['/config/myapp_dev/oauthcompanyauthserver']
+
+        then:
+        keyValues.containsKey('micronaut.security.oauth2.clients.companyauthserver.client-id')
+        keyValues['micronaut.security.oauth2.clients.companyauthserver.client-id'] == 'XXX'
+        keyValues.containsKey('micronaut.security.oauth2.clients.companyauthserver.client-secret')
+        keyValues['micronaut.security.oauth2.clients.companyauthserver.client-secret'] == 'YYY'
+
+        when:
+        keyValues = keyValueGroups['/config/myapp_dev/oauthgoogle']
+
+        then:
+        keyValues.containsKey('micronaut.security.oauth2.clients.google.client-id')
+        keyValues['micronaut.security.oauth2.clients.google.client-id'] == 'ZZZ'
+        keyValues.containsKey('micronaut.security.oauth2.clients.google.client-secret')
+        keyValues['micronaut.security.oauth2.clients.google.client-secret'] == 'PPP'
     }
 
     @Requires(property = 'spec.name', value = 'SecretsManagerKeyValueFetcherSpec')
