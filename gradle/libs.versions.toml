@@ -1,5 +1,4 @@
 [versions]
-asm = '9.4'
 bouncycastle = '1.70'
 fileupload = '0.0.5'
 jetty = '9.4.48.v20220622'
@@ -38,8 +37,6 @@ awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection
 boms-aws-java-sdk-v1 = { module = 'com.amazonaws:aws-java-sdk-bom', version.ref = 'managed-aws-java-sdk-v1' }
 boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'managed-aws-java-sdk-v2' }
 
-asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
-asm-commons = { module = "org.ow2.asm:asm-commons", version.ref = "asm" }
 bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.ref = 'bouncycastle'}
 fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
