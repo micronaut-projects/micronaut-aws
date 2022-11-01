@@ -56,8 +56,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     private final AwsProxyRequest request;
     private final MicronautLambdaContainerContext handler;
     private T body;
-    private int status;
-    private String reason = HttpStatus.OK.getReason();
+    private HttpStatus status;
     private AwsProxyResponse response = new AwsProxyResponse();
     private final AwsHeaders awsHeaders = new AwsHeaders();
     private Headers multiValueHeaders = new Headers();
@@ -70,14 +69,14 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
      * @param environment The {@link MicronautLambdaContainerContext}
      */
     MicronautAwsProxyResponse(
-            AwsProxyRequest request,
-            CountDownLatch latch,
-            MicronautLambdaContainerContext environment) {
+        AwsProxyRequest request,
+        CountDownLatch latch,
+        MicronautLambdaContainerContext environment) {
         this.responseEncodeLatch = latch;
         this.request = request;
         this.response.setMultiValueHeaders(multiValueHeaders);
         this.handler = environment;
-        this.status = HttpStatus.OK.getCode();
+        this.status = HttpStatus.OK;
         this.response.setStatusCode(HttpStatus.OK.getCode());
     }
 
@@ -113,26 +112,16 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
-    public MutableHttpResponse<T> status(int status, CharSequence message) {
+    public MutableHttpResponse<T> status(HttpStatus status, CharSequence message) {
         ArgumentUtils.requireNonNull("status", status);
-        if (message == null) {
-            this.reason = HttpStatus.getDefaultReason(status);
-        } else {
-            this.reason = message.toString();
-        }
         this.status = status;
-        response.setStatusCode(status);
+        response.setStatusCode(status.getCode());
         return this;
     }
 
     @Override
-    public int code() {
+    public HttpStatus getStatus() {
         return status;
-    }
-
-    @Override
-    public String reason() {
-        return reason;
     }
 
     /**

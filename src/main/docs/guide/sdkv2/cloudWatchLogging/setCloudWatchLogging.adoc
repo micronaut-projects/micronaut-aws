@@ -1,0 +1,42 @@
+By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the `createGroupAndStream` flag to `false` inside your appender.
+Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value `groupName` for group name and `streamName` for stream name.
+
+.Configurable CloudWatchLoggingAppender Appender Properties
+|===
+|Property|Type|Default value|Description
+
+|`groupName`
+|`String`
+|Application name
+|Cloudwatch Log group name
+
+|`streamName`
+|`String`
+|Host name
+|Cloudwatch Log stream name
+
+|`publishPeriod`
+|`Integer`
+|100
+|Time in ms between two batch publishing of logs
+
+|`maxBatchSize`
+|`Integer`
+|128
+|Time maximum number of log lines that will be sent in one batch request
+
+|`queueSize`
+|`Integer`
+|128
+|The size of publishing log queue
+
+|`createGroupAndStream`
+|`Boolean`
+|true
+|If flag is set to true the Micronaut application will try to create group and stream on the AWS
+
+|`blackListLoggerName`
+|`List`
+|empty
+|List of logger names that won't be published
+|===

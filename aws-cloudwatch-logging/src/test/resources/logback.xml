@@ -1,0 +1,23 @@
+<configuration>
+
+    <appender name="MOCK" class="io.micronaut.aws.cloudwatch.logging.MockAppender"/>
+
+    <appender name="AWS" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <appender-ref ref="MOCK"/>
+        <blackListLoggerName>name1</blackListLoggerName>
+        <blackListLoggerName>name2</blackListLoggerName>
+        <queueSize>300</queueSize>
+        <publishPeriod>120</publishPeriod>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="AWS"/>
+    </root>
+</configuration>

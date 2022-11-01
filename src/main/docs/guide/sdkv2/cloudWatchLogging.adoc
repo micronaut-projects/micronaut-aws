@@ -1,0 +1,17 @@
+NOTE: This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWatch logs produced to standard out.
+
+To use the https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html[Cloudwatch Logs], add the following dependency to your project:
+
+dependency:io.micronaut.aws:micronaut-aws-cloudwatch-logging[]
+
+Then, the following beans will be created:
+
+* `software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient`
+* `software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClientBuilder`
+
+And:
+
+* `software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient`
+* `software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClientBuilder`
+
+The HTTP client, credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.

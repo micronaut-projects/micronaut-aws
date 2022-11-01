@@ -14,12 +14,32 @@ class SecretsManagerConfigurationClientSpec extends ApplicationContextSpecificat
         'SecretsManagerConfigurationClientSpec'
     }
 
+    @Override
+    Map<String, Object> getConfiguration() {
+        super.configuration + [
+                'aws.secretsmanager.enabled': true,
+                'aws.secretsmanager.secrets': [
+                        ["secret-name": "rds_default", "prefix": "datasources.default"],
+                        ["secret-name": "rds_backup", "prefix": "datasources.backup"]
+                ]
+        ]
+    }
+
     void "SecretsManagerConfigurationClient is annotated with BootstrapContextCompatible"() {
         when:
         BeanDefinition<SecretsManagerConfigurationClient> beanDefinition = applicationContext.getBeanDefinition(SecretsManagerConfigurationClient)
 
         then:
         beanDefinition.getAnnotationNameByStereotype(BootstrapContextCompatible).isPresent()
+    }
+
+    void "The adaptPropertyKey method call when secret manager configuration is provided"() {
+        when:
+        SecretsManagerConfigurationClient bean = applicationContext.getBean(SecretsManagerConfigurationClient)
+        String adaptedPropertyKey = bean.adaptPropertyKey('host', 'rds_default')
+
+        then:
+        adaptedPropertyKey == 'datasources.default.host'
     }
 
     @Requires(property = 'spec.name', value = 'SecretsManagerConfigurationClientSpec')

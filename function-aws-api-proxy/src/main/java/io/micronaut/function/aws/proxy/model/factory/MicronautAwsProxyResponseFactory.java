@@ -68,11 +68,6 @@ public class MicronautAwsProxyResponseFactory implements HttpResponseFactory {
 
     @Override
     public <T> MutableHttpResponse<T> status(HttpStatus status, String reason) {
-        return status(status.getCode(), reason);
-    }
-
-    @Override
-    public <T> MutableHttpResponse<T> status(int status, String reason) {
         final HttpRequest<Object> req = ServerRequestContext.currentRequest().orElse(null);
         if (req instanceof MicronautAwsProxyRequest) {
             final MicronautAwsProxyResponse<T> response = (MicronautAwsProxyResponse<T>) ((MicronautAwsProxyRequest<Object>) req).getResponse();
