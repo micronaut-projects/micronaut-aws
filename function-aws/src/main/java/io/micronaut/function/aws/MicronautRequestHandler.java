@@ -119,11 +119,11 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     protected I convertInput(Object input)  {
         final ArgumentConversionContext<I> cc = ConversionContext.of(inputType);
         final Optional<I> converted = applicationContext.getConversionService().convert(
-                input,
-                cc
+            input,
+            cc
         );
         return converted.orElseThrow(() ->
-                new IllegalArgumentException("Unconvertible input: " + input, cc.getLastError().map(ConversionError::getCause).orElse(null))
+            new IllegalArgumentException("Unconvertible input: " + input, cc.getLastError().map(ConversionError::getCause).orElse(null))
         );
     }
 
@@ -143,8 +143,8 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
 
     private Class initTypeArgument() {
         final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
-                getClass(),
-                MicronautRequestHandler.class
+            getClass(),
+            MicronautRequestHandler.class
         );
         if (ArrayUtils.isNotEmpty(args)) {
             return args[0];

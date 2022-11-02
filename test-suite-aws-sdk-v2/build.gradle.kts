@@ -18,8 +18,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation(projects.functionAws)
     testImplementation(projects.functionClientAws)
-    testRuntimeOnly("org.yaml:snakeyaml")
-    testImplementation(project(":aws-sdk-v2"))
+    testRuntimeOnly(mn.snakeyaml)
+    testImplementation(projects.awsSdkV2)
 }
 tasks {
     named("test", Test::class) {

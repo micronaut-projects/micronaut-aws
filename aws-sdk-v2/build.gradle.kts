@@ -41,4 +41,6 @@ dependencies {
     testImplementation(libs.awssdk.ssm)
     testImplementation(libs.awssdk.rekognition)
     testRuntimeOnly(libs.jcl.over.slf4j)
+
+    testRuntimeOnly(mn.snakeyaml)
 }

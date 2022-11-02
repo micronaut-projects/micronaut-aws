@@ -8,4 +8,5 @@ dependencies {
     api(libs.awssdk.cloudwatchlogs)
     api(mn.micronaut.runtime)
     api(mn.micronaut.serde.jackson)
+    testRuntimeOnly(mn.snakeyaml)
 }

@@ -18,11 +18,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation(project(":function-aws"))
+    testImplementation(projects.functionAws)
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
-    testImplementation(project(":function-client-aws"))
-    testRuntimeOnly("org.yaml:snakeyaml")
+    testImplementation(projects.functionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {

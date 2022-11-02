@@ -7,4 +7,5 @@ dependencies {
     api(projects.functionAws)
     api(mn.micronaut.function)
     testAnnotationProcessor(mn.micronaut.inject.java)
+    testRuntimeOnly(mn.snakeyaml)
 }

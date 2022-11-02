@@ -19,9 +19,9 @@ dependencies {
     }
     testImplementation("io.micronaut.test:micronaut-test-spock:$micronautTestVersion")
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation(project(":function-aws"))
-    testImplementation(project(":function-client-aws"))
-    testRuntimeOnly("org.yaml:snakeyaml")
+    testImplementation(projects.functionAws)
+    testImplementation(projects.functionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -31,6 +31,6 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

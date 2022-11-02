@@ -17,9 +17,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation(project(":function-aws"))
-    testImplementation(project(":function-client-aws"))
+    testImplementation(projects.functionAws)
+    testImplementation(projects.functionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -33,6 +33,6 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
