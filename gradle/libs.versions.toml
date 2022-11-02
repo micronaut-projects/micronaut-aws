@@ -40,8 +40,6 @@ boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'm
 
 bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.ref = 'bouncycastle'}
 fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
-graal = { module = "org.graalvm.nativeimage:svm" }
-groovy-json = { module = 'org.codehaus.groovy:groovy-json' }
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
@@ -59,7 +57,6 @@ managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanage
 managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
-projectreactor = { module = 'io.projectreactor:reactor-core' }
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
