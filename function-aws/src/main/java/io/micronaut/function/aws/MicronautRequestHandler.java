@@ -28,6 +28,8 @@ import io.micronaut.core.reflect.GenericTypeUtils;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -45,6 +47,8 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
 
     // See: https://github.com/aws/aws-xray-sdk-java/issues/251
     public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
+
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
 
     @SuppressWarnings("unchecked")
     private final Class<I> inputType = initTypeArgument();
