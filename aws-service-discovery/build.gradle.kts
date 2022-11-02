@@ -1,11 +1,11 @@
 plugins {
-    id("io.micronaut.build.internal.module")
+    id("io.micronaut.build.internal.aws-module")
 }
 
 dependencies {
     api(mn.micronaut.discovery)
-    api(project(":aws-sdk-v2"))
+    api(projects.awsSdkV2)
     implementation(libs.awssdk.servicediscovery)
-    testImplementation(libs.projectreactor)
+    testImplementation(mn.reactor)
     testImplementation(mn.micronaut.http.server.netty)
 }

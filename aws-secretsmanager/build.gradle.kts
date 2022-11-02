@@ -1,9 +1,9 @@
 plugins {
-    id("io.micronaut.build.internal.module")
+    id("io.micronaut.build.internal.aws-module")
 }
 
 dependencies {
-    api(project(":aws-sdk-v2"))
-    api(project(":aws-distributed-configuration"))
+    api(projects.awsSdkV2)
+    api(projects.awsDistributedConfiguration)
     api(libs.awssdk.secretsmanager)
 }
