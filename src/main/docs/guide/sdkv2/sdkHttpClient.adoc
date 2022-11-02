@@ -1,4 +1,4 @@
 By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
 to use a client based on the JVM's lightweight `URLConnection`, you should configure it as explained below.
 
-NOTE: Micronaut will set the `User-Agent` header for all clients as `micronaut/<version>`. You can change this by adding a `@Singleton` and `@Primary` bean that implements `io.micronaut.aws.ua.UserAgentProvider`.
+NOTE: Micronaut AWS sets the `User-Agent` header for all clients as `micronaut/<version>`. If you don't want to include that HTTP Header, set `aws.ua.enabled` to `false` or https://docs.micronaut.io/latest/guide/#replaces[replace] the bean of type `io.micronaut.aws.ua.UserAgentProvider`.
