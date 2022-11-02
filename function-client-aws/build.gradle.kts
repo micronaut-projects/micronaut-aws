@@ -1,11 +1,11 @@
 plugins {
-    id("io.micronaut.build.internal.module")
+    id("io.micronaut.build.internal.aws-module")
 }
 
 dependencies {
-    api(project(":aws-sdk-v1"))
+    api(projects.awsSdkV1)
     implementation("com.amazonaws:aws-java-sdk-lambda")
-    implementation(libs.projectreactor)
+    implementation(mn.reactor)
     api(mn.micronaut.function.client)
 
     testAnnotationProcessor(mn.micronaut.inject.java)

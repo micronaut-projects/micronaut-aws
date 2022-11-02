@@ -1,6 +1,8 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.7.10")
-    id("org.jetbrains.kotlin.kapt") version ("1.7.10")
+    id("org.jetbrains.kotlin.jvm") version ("1.7.20")
+    id("org.jetbrains.kotlin.kapt") version ("1.7.20")
+    id("io.micronaut.build.internal.aws-tests")
+
 }
 
 repositories {
@@ -16,10 +18,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation(project(":function-aws"))
+    testImplementation(projects.functionAws)
     testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
-    testImplementation(project(":function-client-aws"))
+    testImplementation(projects.functionClientAws)
 }
 
 tasks {

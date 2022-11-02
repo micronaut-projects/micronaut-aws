@@ -96,6 +96,7 @@ class MicronautStreamHandlerLambdaContextSpec extends Specification {
         RequestIdProvider requestIdProvider
 
         @Override
+        @NonNull
         protected ApplicationContextBuilder newApplicationContextBuilder() {
             super.newApplicationContextBuilder().properties(Collections.singletonMap(
                     "spec.name", "MicronautStreamHandlerLambdaContextSpec"

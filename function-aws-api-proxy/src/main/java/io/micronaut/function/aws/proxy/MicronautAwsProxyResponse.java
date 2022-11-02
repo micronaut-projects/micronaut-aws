@@ -69,9 +69,9 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
      * @param environment The {@link MicronautLambdaContainerContext}
      */
     MicronautAwsProxyResponse(
-            AwsProxyRequest request,
-            CountDownLatch latch,
-            MicronautLambdaContainerContext environment) {
+        AwsProxyRequest request,
+        CountDownLatch latch,
+        MicronautLambdaContainerContext environment) {
         this.responseEncodeLatch = latch;
         this.request = request;
         this.response.setMultiValueHeaders(multiValueHeaders);
