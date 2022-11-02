@@ -7,7 +7,7 @@ dependencies {
     implementation("com.amazonaws:aws-java-sdk-lambda")
     implementation(mn.reactor)
     api(mn.micronaut.function.client)
-
+    implementation(mn.micronaut.jackson.databind)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.server.netty)

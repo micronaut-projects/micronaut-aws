@@ -16,6 +16,7 @@ dependencies {
     api(libs.managed.jcl.over.slf4j)
     api(projects.functionAws)
     api(projects.awsCommon)
+    implementation(mn.micronaut.jackson.databind)
     testAnnotationProcessor(mn.micronaut.validation)
     testImplementation(mn.micronaut.validation)
     testImplementation(mn.micronaut.inject.java)

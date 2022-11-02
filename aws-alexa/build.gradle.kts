@@ -5,6 +5,7 @@ plugins {
 dependencies {
     annotationProcessor(mn.micronaut.validation)
     implementation(mn.micronaut.validation)
+    implementation(mn.micronaut.jackson.databind)
     compileOnly(libs.managed.alexa.ask.sdk)
     api(libs.managed.alexa.ask.sdk.core)
     testAnnotationProcessor(mn.micronaut.inject.java)
