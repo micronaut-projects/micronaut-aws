@@ -16,8 +16,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation(projects.functionAws)
-    testImplementation(projects.functionClientAws)
     testRuntimeOnly(mn.snakeyaml)
     testImplementation(projects.awsSdkV2)
 }
