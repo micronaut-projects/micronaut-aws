@@ -15,6 +15,7 @@
  */
 package io.micronaut.internal.aws.tasks;
 
+import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -51,6 +52,11 @@ public abstract class UserAgentProviderGeneratorTask extends DefaultTask {
         return JavaFile.builder(packageName, TypeSpec.classBuilder("GeneratedUserAgentProvider")
                 .addAnnotation(ClassName.get("jakarta.inject", "Singleton"))
                 .addSuperinterface(ClassName.get(packageName, "UserAgentProvider"))
+                .addAnnotation(AnnotationSpec.builder(ClassName.get("io.micronaut.context.annotation","Requires"))
+                    .addMember("property", "$S", "aws.ua.enabled")
+                    .addMember("value", "$S", "true")
+                    .addMember("defaultValue", "$S", "true")
+                    .build())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addMethod(MethodSpec.methodBuilder("userAgent")
                     .addModifiers(Modifier.PUBLIC)

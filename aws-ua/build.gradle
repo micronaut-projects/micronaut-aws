@@ -8,6 +8,13 @@ def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io
 }
 classes.dependsOn(userAgentProviderGenerator)
 
+def deleteUserAgentProviderGenerator = tasks.register("deleteUserAgentProviderGenerator", Delete) {
+    delete fileTree('src/main/java') {
+        include '**/Generated*.java'
+    }
+}
+clean.dependsOn(deleteUserAgentProviderGenerator)
+
 micronautBuild {
     // new module, so no binary check
     binaryCompatibility {
