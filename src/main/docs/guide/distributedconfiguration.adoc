@@ -2,24 +2,26 @@ Micronaut AWS supports distributed configuration via services such as https://aw
 
 You can create environment-specific configurations as well by including the environment name after an underscore `_`. For example if `micronaut.application.name` is set to `helloworld`, specifying configuration values under `helloworld_test` will be applied only to the `test` environment.
 
+Note the trailing slash in the configuration names.
+
 .Configuration Resolution Precedence
 |===
 |Precedence|Directory|Description
 
 |🔝
-|`/config/application`
+|`/config/application/`
 |Configuration shared by all applications
 
 |🔝🔝
-|`/config/[APPLICATION_NAME]`
+|`/config/[APPLICATION_NAME]/`
 |Application-specific configuration, example `/config/hello-world`
 
 |🔝🔝🔝
-|`/config/application_prod`
+|`/config/application_prod/`
 |Configuration shared by all applications for the `prod` https://docs.micronaut.io/latest/guide/#environments[Environment]
 
 |🔝🔝🔝🔝
-|`/config/[APPLICATION_NAME]_prod`
+|`/config/[APPLICATION_NAME]_prod/`
 |Application-specific configuration for an active https://docs.micronaut.io/latest/guide/#environments[Environment]
 
 |===
