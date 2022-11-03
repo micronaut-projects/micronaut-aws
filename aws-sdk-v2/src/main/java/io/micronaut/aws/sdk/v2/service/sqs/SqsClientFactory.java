@@ -20,6 +20,7 @@ import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Inject;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -63,7 +64,7 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
     @Inject
     protected SqsClientFactory(AwsCredentialsProviderChain credentialsProvider,
                                AwsRegionProviderChain regionProvider,
-                               UserAgentProvider userAgentProvider) {
+                               @Nullable UserAgentProvider userAgentProvider) {
         super(credentialsProvider, regionProvider, userAgentProvider);
     }
 

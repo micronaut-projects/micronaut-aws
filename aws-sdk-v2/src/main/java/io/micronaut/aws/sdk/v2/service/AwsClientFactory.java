@@ -46,6 +46,8 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
+
+    @Nullable
     protected final UserAgentProvider userAgentProvider;
 
     /**
