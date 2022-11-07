@@ -6,7 +6,7 @@ def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io
     version.set(micronautVersion)
     outputDirectory.set(layout.projectDirectory.dir("src/main/java/"))
 }
-classes.dependsOn(userAgentProviderGenerator)
+compileJava.dependsOn(userAgentProviderGenerator)
 
 def deleteUserAgentProviderGenerator = tasks.register("deleteUserAgentProviderGenerator", Delete) {
     delete fileTree('src/main/java') {
