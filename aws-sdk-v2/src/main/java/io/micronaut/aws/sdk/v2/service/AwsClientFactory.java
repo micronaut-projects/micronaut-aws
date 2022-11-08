@@ -15,14 +15,14 @@
  */
 package io.micronaut.aws.sdk.v2.service;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.awscore.client.builder.AwsAsyncClientBuilder;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.awscore.client.builder.AwsSyncClientBuilder;
 import software.amazon.awssdk.core.SdkClient;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
-import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
+import software.amazon.awssdk.regions.providers.AwsRegionProvider;
 
 /**
  * Abstract class that eases creation of AWS client factories.
@@ -37,8 +37,8 @@ import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
  */
 public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> & AwsClientBuilder<SB, SC>, AB extends AwsAsyncClientBuilder<AB, AC> & AwsClientBuilder<AB, AC>, SC, AC extends SdkClient> {
 
-    protected final AwsCredentialsProviderChain credentialsProvider;
-    protected final AwsRegionProviderChain regionProvider;
+    protected final AwsCredentialsProvider credentialsProvider;
+    protected final AwsRegionProvider regionProvider;
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
      */
-    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+    protected AwsClientFactory(AwsCredentialsProvider credentialsProvider, AwsRegionProvider regionProvider) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
     }

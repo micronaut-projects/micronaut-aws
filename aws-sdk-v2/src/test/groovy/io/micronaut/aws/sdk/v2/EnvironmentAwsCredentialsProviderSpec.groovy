@@ -17,7 +17,7 @@ package io.micronaut.aws.sdk.v2
 
 import io.micronaut.context.ApplicationContext
 import software.amazon.awssdk.auth.credentials.AwsCredentials
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
@@ -38,7 +38,7 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
 
         when:
         AwsCredentials awsCredentials =
-                applicationContext.getBean(AwsCredentialsProviderChain).resolveCredentials()
+                applicationContext.getBean(AwsCredentialsProvider).resolveCredentials()
 
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
@@ -59,7 +59,7 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
 
         when:
         AwsCredentials awsCredentials =
-                applicationContext.getBean(AwsCredentialsProviderChain).resolveCredentials()
+                applicationContext.getBean(AwsCredentialsProvider).resolveCredentials()
 
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
@@ -79,7 +79,7 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
 
         when:
         AwsSessionCredentials awsCredentials =
-                applicationContext.getBean(AwsCredentialsProviderChain).resolveCredentials() as AwsSessionCredentials
+                applicationContext.getBean(AwsCredentialsProvider).resolveCredentials() as AwsSessionCredentials
 
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
@@ -96,7 +96,7 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
 
         when:
         AwsSessionCredentials awsCredentials =
-                applicationContext.getBean(AwsCredentialsProviderChain).resolveCredentials() as AwsSessionCredentials
+                applicationContext.getBean(AwsCredentialsProvider).resolveCredentials() as AwsSessionCredentials
 
         then:
         awsCredentials.accessKeyId() == "yamlAccessKeyId"
@@ -117,7 +117,7 @@ class EnvironmentAwsCredentialsProviderSpec extends Specification {
 
         when:
         AwsCredentials awsCredentials =
-                applicationContext.getBean(AwsCredentialsProviderChain).resolveCredentials()
+                applicationContext.getBean(AwsCredentialsProvider).resolveCredentials()
 
         then:
         awsCredentials.accessKeyId() == TEST_KEY_ID
