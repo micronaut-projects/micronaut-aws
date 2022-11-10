@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.discovery.event.ServiceReadyEvent;
 import io.micronaut.runtime.ApplicationConfiguration;
+import io.micronaut.runtime.server.event.ServerStartupEvent;
 import jakarta.annotation.PreDestroy;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
@@ -43,7 +44,7 @@ import java.util.Optional;
 @Context
 @Internal
 @Singleton
-final class CloudWatchLoggingClient implements ApplicationEventListener<ServiceReadyEvent> {
+final class CloudWatchLoggingClient implements ApplicationEventListener<ServerStartupEvent> {
 
     private static CloudWatchLogsClient logging;
     private static String host;
@@ -122,7 +123,7 @@ final class CloudWatchLoggingClient implements ApplicationEventListener<ServiceR
     }
 
     @Override
-    public void onApplicationEvent(ServiceReadyEvent event) {
+    public void onApplicationEvent(ServerStartupEvent event) {
         setLogging(internalLogging, event.getSource().getHost(), internalAppName);
     }
 

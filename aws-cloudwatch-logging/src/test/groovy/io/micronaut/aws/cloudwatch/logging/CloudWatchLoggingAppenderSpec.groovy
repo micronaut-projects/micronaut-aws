@@ -8,6 +8,8 @@ import ch.qos.logback.core.encoder.LayoutWrappingEncoder
 import io.micronaut.discovery.ServiceInstance
 import io.micronaut.discovery.event.ServiceReadyEvent
 import io.micronaut.runtime.ApplicationConfiguration
+import io.micronaut.runtime.server.EmbeddedServer
+import io.micronaut.runtime.server.event.ServerStartupEvent
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
@@ -34,13 +36,13 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         def config = Stub(ApplicationConfiguration) {
             getName() >> Optional.of("my-awesome-app")
         }
-        def instance = Mock(ServiceInstance.class)
+        def instance = Mock(EmbeddedServer.class)
         instance.getHost() >> "testHost"
-        def serviceReadyEvent = new ServiceReadyEvent(instance)
+        def serverStartupEvent = new ServerStartupEvent(instance)
 
         cloudWatchLogsClient = new CloudwatchLoggingSpec.MockLogging()
 
-        new CloudWatchLoggingClient(cloudWatchLogsClient, config).onApplicationEvent(serviceReadyEvent)
+        new CloudWatchLoggingClient(cloudWatchLogsClient, config).onApplicationEvent(serverStartupEvent)
 
     }
 
