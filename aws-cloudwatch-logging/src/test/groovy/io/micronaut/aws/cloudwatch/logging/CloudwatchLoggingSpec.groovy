@@ -4,9 +4,9 @@ import io.micronaut.context.annotation.Property
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.event.ApplicationEventPublisher
-import io.micronaut.discovery.ServiceInstance
-import io.micronaut.discovery.event.ServiceReadyEvent
 import io.micronaut.runtime.ApplicationConfiguration
+import io.micronaut.runtime.server.EmbeddedServer
+import io.micronaut.runtime.server.event.ServerStartupEvent
 import io.micronaut.serde.ObjectMapper
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
@@ -28,7 +28,7 @@ class CloudwatchLoggingSpec extends Specification {
     CloudWatchLogsClient logging
 
     @Inject
-    ApplicationEventPublisher<ServiceReadyEvent> eventPublisher
+    ApplicationEventPublisher<ServerStartupEvent> eventPublisher
 
     @Inject
     ApplicationConfiguration applicationConfiguration
@@ -41,9 +41,9 @@ class CloudwatchLoggingSpec extends Specification {
         PollingConditions conditions = new PollingConditions(timeout: 10, initialDelay: 1.5, factor: 1.25)
 
         def mockLogging = (MockLogging) logging
-        def instance = Mock(ServiceInstance.class)
+        def instance = Mock(EmbeddedServer.class)
         instance.getHost() >> testHost
-        def event = new ServiceReadyEvent(instance)
+        def event = new ServerStartupEvent(instance)
         eventPublisher.publishEvent(event)
 
         when:
