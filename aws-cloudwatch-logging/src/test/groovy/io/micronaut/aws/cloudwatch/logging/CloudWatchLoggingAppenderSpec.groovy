@@ -5,8 +5,6 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.PatternLayout
 import ch.qos.logback.classic.spi.LoggingEvent
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder
-import io.micronaut.discovery.ServiceInstance
-import io.micronaut.discovery.event.ServiceReadyEvent
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.runtime.server.event.ServerStartupEvent
