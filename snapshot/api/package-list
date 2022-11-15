@@ -30,6 +30,7 @@ io.micronaut.aws.sdk.v2.service.sns
 io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
 io.micronaut.aws.secretsmanager
+io.micronaut.aws.ua
 io.micronaut.discovery.aws.parameterstore
 io.micronaut.discovery.aws.servicediscovery
 io.micronaut.discovery.aws.servicediscovery.client

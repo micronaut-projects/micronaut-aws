@@ -615,6 +615,18 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 <p>By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
 to use a client based on the JVM&#8217;s lightweight <code>URLConnection</code>, you should configure it as explained below.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Micronaut AWS sets the <code>User-Agent</code> header for all clients as <code>micronaut/&lt;version&gt;</code>. If you don&#8217;t want to include that HTTP Header, set <code>aws.ua.enabled</code> to <code>false</code> or <a href="https://docs.micronaut.io/latest/guide/#replaces">replace</a> the bean of type <code>io.micronaut.aws.ua.UserAgentProvider</code>.
+</td>
+</tr>
+</table>
+</div>
 
 <h2 id="urlConnection"><a class="anchor" href="#urlConnection"></a>7.1.1 URLConnection client</h2>
 
@@ -2056,8 +2068,28 @@ classes that support the services supported by Micronaut.</p>
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Factory
 public class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient&gt; {
 
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @deprecated Use {@link RekognitionClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider )} instead.
+     */
+    @Deprecated
     protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+        super(credentialsProvider, regionProvider, null);
+    }
+
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     */
+    @Inject
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       @Nullable UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider);
     }
 
     // Sync client

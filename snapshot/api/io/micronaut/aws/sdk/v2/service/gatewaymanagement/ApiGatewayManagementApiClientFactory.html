@@ -139,7 +139,7 @@ extends <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientF
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;io.micronaut.aws.sdk.v2.service.<a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html" title="class in io.micronaut.aws.sdk.v2.service">AwsClientFactory</a></h3>
-<code><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#credentialsProvider">credentialsProvider</a>, <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#regionProvider">regionProvider</a></code></li>
+<code><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#credentialsProvider">credentialsProvider</a>, <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#regionProvider">regionProvider</a>, <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientFactory.html#userAgentProvider">userAgentProvider</a></code></li>
 </ul>
 </li>
 </ul>
@@ -159,6 +159,16 @@ extends <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientF
 <td class="colFirst"><code>protected </code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/gatewaymanagement/ApiGatewayManagementApiClientFactory.html#ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-">ApiGatewayManagementApiClientFactory</a></span>(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
                                     software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider)</code>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
+<div class="block"><span class="deprecationComment">Use <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/gatewaymanagement/ApiGatewayManagementApiClientFactory.html#ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-io.micronaut.aws.ua.UserAgentProvider-"><code>ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider )</code></a> instead.</span></div>
+</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>protected </code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/gatewaymanagement/ApiGatewayManagementApiClientFactory.html#ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-io.micronaut.aws.ua.UserAgentProvider-">ApiGatewayManagementApiClientFactory</a></span>(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
+                                    software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider,
+                                    <a href="../../../../../../../io/micronaut/aws/ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider)</code>
 <div class="block">Constructor.</div>
 </td>
 </tr>
@@ -238,16 +248,38 @@ extends <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/AwsClientF
 <a name="ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>ApiGatewayManagementApiClientFactory</h4>
-<pre>protected&nbsp;ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
-                                               software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider)</pre>
+<pre>@Deprecated
+protected&nbsp;ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
+                                                           software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider)</pre>
+<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use <a href="../../../../../../../io/micronaut/aws/sdk/v2/service/gatewaymanagement/ApiGatewayManagementApiClientFactory.html#ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-io.micronaut.aws.ua.UserAgentProvider-"><code>ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider )</code></a> instead.</span></div>
 <div class="block">Constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>credentialsProvider</code> - The credentials provider</dd>
 <dd><code>regionProvider</code> - The region provider</dd>
+</dl>
+</li>
+</ul>
+<a name="ApiGatewayManagementApiClientFactory-software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain-software.amazon.awssdk.regions.providers.AwsRegionProviderChain-io.micronaut.aws.ua.UserAgentProvider-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>ApiGatewayManagementApiClientFactory</h4>
+<pre>@Inject
+protected&nbsp;ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
+                                                       software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider,
+                                                       @Nullable
+                                                       <a href="../../../../../../../io/micronaut/aws/ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider)</pre>
+<div class="block">Constructor.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>credentialsProvider</code> - The credentials provider</dd>
+<dd><code>regionProvider</code> - The region provider</dd>
+<dd><code>userAgentProvider</code> - User-Agent Provider</dd>
 </dl>
 </li>
 </ul>
