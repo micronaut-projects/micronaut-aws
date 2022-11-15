@@ -13,6 +13,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "aws-parent"
 
+include("aws-ua")
 include("aws-bom")
 include("function-aws")
 include("function-client-aws")

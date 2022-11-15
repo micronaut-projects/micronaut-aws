@@ -12,9 +12,10 @@ managed-aws-serverless-core = '1.9'
 managed-aws-cdk-lib='2.50.0'
 servlet-api = "2.5"
 slf4j = "1.7.36"
+javapoet = "1.13.0"
 
 [libraries]
-
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 aws-cdk-lib = { module = 'software.amazon.awscdk:aws-cdk-lib', version.ref = 'managed-aws-cdk-lib' }
 
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
