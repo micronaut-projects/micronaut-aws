@@ -17,7 +17,6 @@ package io.micronaut.aws.secretsmanager;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.aws.distributedconfiguration.KeyValueFetcher;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
@@ -46,7 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * {@link KeyValueFetcher} implementations for AWS Secrets Manager.
+ * {@link SecretsKeyValueFetcher} implementations for AWS Secrets Manager.
  * @author Sergio del Amo
  * @since 2.8.0
  */
@@ -54,11 +53,11 @@ import java.util.Optional;
 @Requires(beans = {SecretsManagerClient.class})
 @BootstrapContextCompatible
 @Singleton
-public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
+public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerKeyValueFetcher.class);
 
-    private final SecretsManagerClient secretsClient;
-    private final ObjectMapper objectMapper;
+    protected final SecretsManagerClient secretsClient;
+    protected final ObjectMapper objectMapper;
 
     /**
      *
@@ -101,16 +100,7 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
                     if (LOG.isTraceEnabled()) {
                         LOG.trace("Evaluating secret {}", secret.name());
                     }
-                    Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
-                    if (secretValueOptional.isPresent()) {
-                        try {
-                            result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
-                        } catch (JsonProcessingException e) {
-                            if (LOG.isWarnEnabled()) {
-                                LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
-                            }
-                        }
-                    }
+                    addSecretDetailsToResults(secret, result);
                 }
 
                 nextToken = secretsResponse.nextToken();
@@ -126,8 +116,35 @@ public class SecretsManagerKeyValueFetcher implements KeyValueFetcher {
         return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
 
+    /**
+     * Add secret details to the result map.
+     *
+     * @param secret a secret list entry
+     * @param result a map that collects the results
+     */
     @NonNull
-    private Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
+    protected void addSecretDetailsToResults(SecretListEntry secret, Map result) {
+        Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
+        if (secretValueOptional.isPresent()) {
+            try {
+                result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
+            } catch (JsonProcessingException e) {
+                if (LOG.isWarnEnabled()) {
+                    LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
+                }
+            }
+        }
+    }
+
+    /**
+     * Fetches secret value.
+     *
+     * @param secretsClient a secret manager cleint
+     * @param secretName a secret name
+     * @return secret value optional
+     */
+    @NonNull
+    protected Optional<String> fetchSecretValue(@NonNull SecretsManagerClient secretsClient,
                                               @NonNull String secretName) {
         GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
                 .secretId(secretName)

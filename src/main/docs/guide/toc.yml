@@ -7,7 +7,7 @@ mnawstwo:
   title: Micronaut AWS 2.0
   mnawstwoWhatsNew: What's new in Micronaut AWS 2.0 ?
   mnawstwoBreaks: Breaking Changes in Micronaut AWS 2.0
-corretto: Amazon Correto
+corretto: Amazon Corretto
 sdkv1:
   title: AWS SDK v1
   awsCredentialsProvider: AWS Credentials Provider
@@ -20,6 +20,7 @@ sdkv2:
     nettyClient: Netty client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
+  apiGatewayManagementApi: API Gateway Management API Client
   s3: S3
   dynamodb: Dynamo DB
   ses: SES
@@ -28,6 +29,13 @@ sdkv2:
   ssm: SSM
   secretsmanager: Secrets Manager
   servicediscovery: Service discovery
+  cloudWatchLogging:
+    title: CloudWatch logging
+    setCloudWatchLogging: Set CloudWatch Logging
+    logbackConfiguration: Logback configuration
+    openTelemetryAndLogging: OpenTelemetry and logging
+    emergencyAppender: Emergency Appender
+    browsingTheLogs: Browsing the Logs
   advancedConfiguration: Advanced configuration
   otherServices: Other services
 lambda:
@@ -37,7 +45,9 @@ lambda:
   awslambdaruntimes: AWS Lambda Runtimes
   applicationtyperuntimedependencies: Application Types, Lambda Runtimes, Dependencies
   lambdatriggers: Lambda Triggers
+  lambdacontext: Lambda Context
   requestHandlers: Lambda Handlers
+  afterExecutionEvent: AfterExecutionEvent
   coldstartups: Cold Startups
   customRuntimes: GraalVM and AWS Custom runtimes
   mdc: MDC Logging
@@ -46,6 +56,10 @@ lambda:
   objectmapperconfiguration: Object Mapper Configuration
   lambdaStreamHandler: MicronautRequestStreamHandler
   lambdafunctionclient: Invoke Lambda with @FunctionClient
+cdk:
+  title: AWS CDK
+  micronautFunctionFile: MicronautFunctionFile
+  micronautFunction: MicronautFunction
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration
@@ -55,6 +69,7 @@ alexa:
   webservice: Alexa Skill as a Web Service
   ssmlbuilder: SSML Builder
   flashbriefings: Flash Briefings
+  localeresoultion: Locale Resolution
 distributedconfiguration:
   title: Distributed Configuration
   distributedconfigurationsecretsmanager: AWS Secrets Manager

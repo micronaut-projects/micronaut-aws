@@ -20,14 +20,17 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.annotation.Nullable;
-import io.micronaut.function.executor.StreamFunctionExecutor;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.context.event.ApplicationEventPublisher;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.function.aws.event.AfterExecutionEvent;
+import io.micronaut.function.executor.StreamFunctionExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static io.micronaut.function.aws.MicronautRequestHandler.registerContextBeans;
 
 /**
  * <p>An implementation of the {@link RequestStreamHandler} for Micronaut</p>.
@@ -36,6 +39,13 @@ import static io.micronaut.function.aws.MicronautRequestHandler.registerContextB
  * @since 1.0
  */
 public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Context> implements RequestStreamHandler, MicronautLambdaContext {
+
+    /**
+     * Logger for the application context creation errors.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestStreamHandler.class);
+
+    private ApplicationEventPublisher<AfterExecutionEvent> eventPublisher;
 
     @Nullable
     private String ctxFunctionName;
@@ -48,7 +58,12 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
         // initialize the application context in the constructor
         // this is faster in Lambda as init cost is giving higher processor priority
         // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
-        buildApplicationContext(null);
+        try {
+            buildApplicationContext(null);
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler: " + e.getMessage(), e);
+            throw e;
+        }
     }
 
     /**
@@ -61,17 +76,22 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-        execute(input, output, context);
+        if (context != null) {
+            this.ctxFunctionName = context.getFunctionName();
+        }
+        HandlerUtils.configureWithContext(this, context);
+        try {
+            execute(input, output, context);
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.success(context, null));
+        } catch (Throwable e) {
+            resolveAfterExecutionPublisher().publishEvent(AfterExecutionEvent.failure(context, e));
+            throw e;
+        }
     }
 
     @Override
     protected ApplicationContext buildApplicationContext(Context context) {
-        ApplicationContext applicationContext = super.buildApplicationContext(context);
-        if (context != null) {
-            registerContextBeans(context, applicationContext);
-            this.ctxFunctionName = context.getFunctionName();
-        }
-        return applicationContext;
+        return super.buildApplicationContext(context);
     }
 
     @NonNull
@@ -84,6 +104,13 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
     protected String resolveFunctionName(Environment env) {
         String functionName = super.resolveFunctionName(env);
         return (functionName != null) ? functionName : ctxFunctionName;
+    }
+
+    private ApplicationEventPublisher<AfterExecutionEvent> resolveAfterExecutionPublisher() {
+        if (eventPublisher == null) {
+            eventPublisher = applicationContext.getEventPublisher(AfterExecutionEvent.class);
+        }
+        return eventPublisher;
     }
 
     @Override

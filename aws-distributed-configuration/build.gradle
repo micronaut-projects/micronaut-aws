@@ -1,9 +1,0 @@
-plugins {
-    id("io.micronaut.build.internal.module")
-}
-
-dependencies {
-    api project(":aws-common")
-    api(libs.micronaut.discovery.client)
-    testImplementation libs.micronaut.http.server.netty
-}

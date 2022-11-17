@@ -16,9 +16,12 @@
 package io.micronaut.aws.sdk.v2.service.s3;
 
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Inject;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -47,23 +50,50 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
      * @param configuration The service configuration
+     * @deprecated Use {@link S3ClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,S3ConfigurationProperties,UserAgentProvider )} instead.
      */
+    @Deprecated
     public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
                            S3ConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider);
+        super(credentialsProvider, regionProvider, null);
+        this.configuration = configuration;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider The region provider
+     * @param configuration The service configuration
+     * @param userAgentProvider User-Agent Provider
+     */
+    @Inject
+    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                           AwsRegionProviderChain regionProvider,
+                           S3ConfigurationProperties configuration,
+                           @Nullable UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider);
         this.configuration = configuration;
     }
 
     @Override
     protected S3ClientBuilder createSyncBuilder() {
-        return S3Client.builder()
-                .serviceConfiguration(configuration.getBuilder().build());
+       S3ClientBuilder builder = S3Client.builder();
+       if (configuration.getEndpointOverride() != null) {
+           builder.endpointOverride(configuration.getEndpointOverride());
+       }
+       builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override
     protected S3AsyncClientBuilder createAsyncBuilder() {
-        return S3AsyncClient.builder()
-                .serviceConfiguration(configuration.getBuilder().build());
+        S3AsyncClientBuilder builder = S3AsyncClient.builder();
+        if (configuration.getEndpointOverride() != null) {
+            builder.endpointOverride(configuration.getEndpointOverride());
+        }
+        builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override

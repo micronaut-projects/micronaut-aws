@@ -45,6 +45,15 @@ class AwsApiProxyTestServerSpec extends Specification {
         then:
         result == 'get:bar'
     }
+    
+    void 'query values with special chars are not double decoded'() {
+        when:
+        String result = client.toBlocking().retrieve(HttpRequest.GET('/test-param?foo=prebar%2Bpostbar')
+                                        .contentType(MediaType.TEXT_PLAIN), String)
+
+        then:
+        result == 'get:prebar+postbar'
+    }
 
 
     @Controller

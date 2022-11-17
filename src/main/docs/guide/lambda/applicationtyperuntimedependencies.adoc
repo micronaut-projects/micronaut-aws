@@ -21,6 +21,8 @@ Depending on your application type and runtime, you need different dependencies:
 
 https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws-api-proxy[micronaut-function-aws-api-proxy] has a transitive dependency to https://mvnrepository.com/artifact/io.micronaut.aws/micronaut-function-aws[micronaut-function-aws].
 
+NOTE: `micronaut-function-aws-api-proxy` supports only https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0].
+
 The previous set of artifacts have a group id of `io.micronaut.aws`.
 
 Micronaut CLI or Launch will include the necessary dependencies when you select the `aws-lambda` feature or both `aws-lambda` and `graalvm` features.

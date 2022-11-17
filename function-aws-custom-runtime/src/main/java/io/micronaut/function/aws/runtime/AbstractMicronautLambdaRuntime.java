@@ -24,12 +24,14 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
+import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.cli.CommandLine;
@@ -39,16 +41,16 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
-import io.micronaut.function.aws.MicronautRequestHandler;
+import io.micronaut.function.aws.XRayUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
-import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.logging.LogLevel;
 
 import java.io.Closeable;
@@ -60,7 +62,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -101,10 +102,17 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
 
+    /**
+     * Use {@link io.micronaut.aws.ua.UserAgentProvider} instead.
+     */
+    @Deprecated
     static final String USER_AGENT_VALUE = String.format(
-            "micronaut/%s-%s",
-            System.getProperty("java.vendor.version"),
-            AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+        "micronaut/%s-%s",
+        System.getProperty("java.vendor.version"),
+        AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+
+    @Nullable
+    protected String userAgent;
 
     protected Object handler;
 
@@ -136,6 +144,16 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         logn(LogLevel.DEBUG, "runtime endpoint: ", runtimeApiURL);
         final Predicate<URL> loopUntil = (url) -> true;
         startRuntimeApiEventLoop(runtimeApiURL, loopUntil, args);
+    }
+
+    /**
+     * Uses {@link UserAgentProvider} to populate {@link AbstractMicronautLambdaRuntime#userAgent}.
+     */
+    protected void populateUserAgent() {
+        if (getApplicationContext().containsBean(UserAgentProvider.class)) {
+            UserAgentProvider userAgentProvider = getApplicationContext().getBean(UserAgentProvider.class);
+            this.userAgent = userAgentProvider.userAgent();
+        }
     }
 
     /**
@@ -325,6 +343,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             if (applicationContext == null) {
                 throw new ConfigurationException("Application Context is null");
             }
+            populateUserAgent();
             final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
             config.setReadIdleTimeout(null);
             config.setReadTimeout(null);
@@ -359,7 +378,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                                 log(LogLevel.TRACE, "handler response received\n");
                                 final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
                                 log(LogLevel.TRACE, "sending function response\n");
-                                blockingHttpClient.exchange(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse));
+                                blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
                             } else {
                                 log(LogLevel.WARN, "request id is empty\n");
                             }
@@ -369,7 +388,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                             e.printStackTrace(new PrintWriter(sw));
                             logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", e.getMessage(), sw);
                             try {
-                                blockingHttpClient.exchange(invocationErrorRequest(requestId, e.getMessage(), null, null));
+                                blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, e.getMessage(), null, null)));
 
                             } catch (Throwable e2) {
                                 // swallow, nothing we can do...
@@ -393,6 +412,19 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     }
 
     /**
+     * If the request is {@link MutableHttpRequest} and {@link AbstractMicronautLambdaRuntime#userAgent} is not null,
+     * it adds an HTTP Header User-Agent.
+     * @param request HTTP Request
+     * @return The HTTP Request decorated
+     */
+    protected HttpRequest decorateWithUserAgent(HttpRequest<?> request) {
+        if (userAgent != null && request instanceof MutableHttpRequest) {
+            return ((MutableHttpRequest) request).header(USER_AGENT, userAgent);
+        }
+        return request;
+    }
+
+    /**
      * Get the X-Ray tracing header from the Lambda-Runtime-Trace-Id header in the API response.
      * Set the _X_AMZN_TRACE_ID environment variable with the same value for the X-Ray SDK to use.
      * @param headers next API Response HTTP Headers
@@ -402,7 +434,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            System.setProperty(MicronautRequestHandler.LAMBDA_TRACE_HEADER_PROP, traceId);
+            System.setProperty(XRayUtils.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 
@@ -413,7 +445,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     protected void reportInitializationError(URL runtimeApiURL, Throwable e) {
         try (HttpClient endpointClient = HttpClient.create(runtimeApiURL)) {
-            endpointClient.toBlocking().exchange(initializationErrorRequest(e.getMessage(), null, null));
+            endpointClient.toBlocking().exchange(decorateWithUserAgent(initializationErrorRequest(e.getMessage(), null, null)));
         } catch (Throwable e2) {
             // swallow, nothing we can do...
         }

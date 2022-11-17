@@ -1,0 +1,9 @@
+Lambda Context is registered as a singleton each time the handler gets invoked. You can inject it by using:
+
+- `@Any BeanProvider<com.amazonaws.services.lambda.runtime.Context> context`
+
+If present in the Lambda Context, the following singletons are registered, and you can inject them:
+
+- `@Any BeanProvider<CognitoIdentity> context`
+- `@Any BeanProvider<ClientContext> context`
+- `@Any BeanProvider<LambdaLogger> context`

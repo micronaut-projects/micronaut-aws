@@ -38,7 +38,6 @@ class MicronautRequestStreamHandlerSpec extends Specification{
             }
         }
 
-
         when:
         def body = '{"title":"The Stand"}'
         def input = new ByteArrayInputStream()
