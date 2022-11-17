@@ -19,7 +19,7 @@ dependencies {
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation(projects.functionAws)
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.20")
+    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
     testImplementation(projects.functionClientAws)
 }
 
