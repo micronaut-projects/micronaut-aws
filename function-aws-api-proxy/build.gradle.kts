@@ -5,7 +5,6 @@ plugins {
 dependencies {
     annotationProcessor(mn.micronaut.graal)
     compileOnly(mn.micronaut.security)
-    implementation(mn.micronaut.http.netty)
     implementation(mn.reactor)
     api(mn.micronaut.http.server)
     api(libs.managed.aws.serverless.core) {
@@ -29,6 +28,6 @@ dependencies {
 
 spotless {
     java {
-        targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java")
+        targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java","**/io/micronaut/function/aws/proxy/cookie/*.java")
     }
 }

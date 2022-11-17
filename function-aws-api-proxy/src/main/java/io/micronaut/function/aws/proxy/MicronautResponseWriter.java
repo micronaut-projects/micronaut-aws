@@ -24,12 +24,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.io.Writable;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.function.aws.proxy.cookie.ServerCookieEncoder;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.cookie.Cookie;
-import io.micronaut.http.netty.cookies.NettyCookie;
-import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +69,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
         AwsProxyResponse awsProxyResponse = containerResponse.getAwsResponse();
         final Map<String, Cookie> cookies = containerResponse.getAllCookies();
         if (CollectionUtils.isNotEmpty(cookies)) {
-            final io.netty.handler.codec.http.cookie.Cookie[] nettyCookies = cookies.values().stream().filter(c -> c instanceof NettyCookie).map(c -> ((NettyCookie) c).getNettyCookie()).toArray(io.netty.handler.codec.http.cookie.Cookie[]::new);
-            final List<String> values = ServerCookieEncoder.LAX.encode(nettyCookies);
+            final List<String> values = ServerCookieEncoder.LAX.encode(cookies.values());
             final MutableHttpHeaders headers = containerResponse.getHeaders();
             for (String value : values) {
                 headers.add(HttpHeaders.SET_COOKIE, value);
