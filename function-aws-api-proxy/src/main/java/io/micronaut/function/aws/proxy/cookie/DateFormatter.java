@@ -15,14 +15,13 @@
  */
 package io.micronaut.function.aws.proxy.cookie;
 
-import static io.micronaut.function.aws.proxy.cookie.ObjectUtil.checkNotNull;
-
 import io.micronaut.core.annotation.Internal;
 
 import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /**
@@ -99,7 +98,8 @@ public final class DateFormatter {
      * @return a RFC1123 string
      */
     public static String format(Date date) {
-        return formatter().format0(checkNotNull(date, "date"));
+
+        return formatter().format0(Objects.requireNonNull(date));
     }
 
     /**
@@ -109,7 +109,7 @@ public final class DateFormatter {
      * @return the same StringBuilder
      */
     public static StringBuffer append(Date date, StringBuffer sb) {
-        return formatter().append0(checkNotNull(date, "date"), checkNotNull(sb, "sb"));
+        return formatter().append0(Objects.requireNonNull(date), Objects.requireNonNull(sb));
     }
 
     private static DateFormatter formatter() {
