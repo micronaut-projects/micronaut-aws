@@ -38,6 +38,7 @@ sdkv2:
     browsingTheLogs: Browsing the Logs
   advancedConfiguration: Advanced configuration
   otherServices: Other services
+amazonApiGateway: Amazon API Gateway
 lambda:
   title: AWS Lambda Support
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda
