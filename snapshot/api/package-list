@@ -40,6 +40,7 @@ io.micronaut.function.aws
 io.micronaut.function.aws.alexa
 io.micronaut.function.aws.event
 io.micronaut.function.aws.proxy
+io.micronaut.function.aws.proxy.cookie
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
