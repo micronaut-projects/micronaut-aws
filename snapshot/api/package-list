@@ -10,6 +10,7 @@ io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
 io.micronaut.aws.alexa.locale
 io.micronaut.aws.alexa.ssml
+io.micronaut.aws.apigateway
 io.micronaut.aws.cdk.function
 io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
