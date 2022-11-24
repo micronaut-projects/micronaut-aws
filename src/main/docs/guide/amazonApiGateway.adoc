@@ -1,0 +1,13 @@
+https://docs.aws.amazon.com/apigateway/index.html[Amazon API Gateway], unless you use a custom domain, uses the following format:
+
+`https://{restapi-id}.execute-api.{region}.amazonaws.com/{stageName}`
+
+You can use api:aws.apigateway.StageResolver[] and its implementations api:aws.apigateway.HttpRequestStageResolver[] or
+api:aws.apigateway.APIGatewayProxyRequestEventStageResolver[] to resolve the stage name.
+
+Moreover, you can use api:aws.apigateway.AmazonApiGatewayUtils[] to check whether a https://docs.micronaut.io/latest/guide/#hostResolution[resolved host] matches the above format.
+
+To use this API add the following dependency
+
+dependency:micronaut-aws-apigateway[groupId="io.micronaut.aws"]
+
