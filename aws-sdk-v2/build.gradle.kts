@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(platform(libs.boms.aws.java.sdk.v2))
     api(projects.awsCommon)
-    compileOnly(mn.graal)
+    compileOnly(libs.graal.sdk)
 
     // Clients
     compileOnly(libs.awssdk.url.connection.client)
