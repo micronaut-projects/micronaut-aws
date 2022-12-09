@@ -74,20 +74,6 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                     config
             );
 
-            List<UriRouteMatch<Object, Object>> uriRoutes = environment.getRouter().findAllClosest(containerRequest);
-
-            if (uriRoutes.isEmpty() && isPreflightRequest(containerRequest)) {
-                List<UriRouteMatch<Object, Object>> anyUriRoutes = environment.getRouter().findAny(containerRequest.getUri().getPath(), containerRequest)
-                    .collect(Collectors.toList());
-                containerRequest.setAttribute(AVAILABLE_HTTP_METHODS, anyUriRoutes.stream().map(UriRouteMatch::getHttpMethod).collect(Collectors.toList()));
-            } else if (!uriRoutes.isEmpty()) {
-                UriRouteMatch<Object, Object> finalRoute = uriRoutes.get(0);
-                final UriRoute route = finalRoute.getRoute();
-                containerRequest.setAttribute(HttpAttributes.ROUTE, route);
-                containerRequest.setAttribute(HttpAttributes.ROUTE_MATCH, finalRoute);
-                containerRequest.setAttribute(HttpAttributes.ROUTE_INFO, finalRoute);
-                containerRequest.setAttribute(HttpAttributes.URI_TEMPLATE, route.getUriMatchTemplate().toString());
-            }
             return containerRequest;
         } catch (Exception e) {
             throw new InvalidRequestEventException("Invalid Request: " + e.getMessage(), e);
