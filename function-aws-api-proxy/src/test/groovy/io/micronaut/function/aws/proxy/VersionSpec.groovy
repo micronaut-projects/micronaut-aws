@@ -25,9 +25,10 @@ class VersionSpec extends Specification {
     MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
         ApplicationContext.builder().properties([
                 'micronaut.security.enabled': false,
-                'spec.name'                                 : 'VersionSpec',
-                'micronaut.router.versioning.enabled'       : true,
-                'micronaut.router.versioning.header.enabled': true,
+                'spec.name'                                  : 'VersionSpec',
+                'micronaut.router.versioning.enabled'        : true,
+                'micronaut.router.versioning.header.enabled' : true,
+                'micronaut.router.versioning.default-version': '1',
         ])
     )
 
