@@ -50,7 +50,15 @@ class AwsRequestLifecycle extends RequestLifecycle {
 
     ExecutionFlow<MutableHttpResponse<?>> run() {
         return normalFlow()
-            .flatMap(r -> convertResponseBody(r.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class).get(), r.body()))
+            .flatMap(r -> {
+                Optional<RouteInfo> routeInfo = r.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class);
+                if (routeInfo.isPresent()) {
+                    return convertResponseBody(routeInfo.get(), r.body());
+                } else {
+                    // can happen on error
+                    return ExecutionFlow.just(r);
+                }
+            })
             .onErrorResume(this::onError);
     }
 
