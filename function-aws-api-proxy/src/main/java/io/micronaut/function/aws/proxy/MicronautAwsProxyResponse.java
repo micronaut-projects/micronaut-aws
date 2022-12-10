@@ -59,7 +59,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     private int status;
     private String reason = HttpStatus.OK.getReason();
     private AwsProxyResponse response = new AwsProxyResponse();
-    private final AwsHeaders awsHeaders = new AwsHeaders();
+    private final AwsHeaders awsHeaders;
     private Headers multiValueHeaders = new Headers();
     private Map<String, Cookie> cookies = new ConcurrentHashMap<>(2);
 
@@ -79,6 +79,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         this.handler = environment;
         this.status = HttpStatus.OK.getCode();
         this.response.setStatusCode(HttpStatus.OK.getCode());
+        this.awsHeaders = new AwsHeaders();
     }
 
     @Override
@@ -226,7 +227,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
      * An implementation of {@link MutableHttpHeaders} for AWS lambda.
      */
     private class AwsHeaders implements MutableHttpHeaders {
-        private ConversionService conversionService;
+        private ConversionService conversionService = handler.getApplicationContext().getConversionService();
 
         @Override
         public MutableHttpHeaders add(CharSequence header, CharSequence value) {

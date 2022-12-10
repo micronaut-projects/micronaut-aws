@@ -21,21 +21,15 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.ContainerConfig;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
-import io.micronaut.web.router.UriRoute;
-import io.micronaut.web.router.UriRouteMatch;
 
 import javax.ws.rs.core.SecurityContext;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import static io.micronaut.http.HttpAttributes.AVAILABLE_HTTP_METHODS;
 import static io.micronaut.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 
 /**
@@ -71,8 +65,8 @@ class MicronautRequestReader extends RequestReader<AwsProxyRequest, MicronautAws
                     request,
                     securityContext,
                     lambdaContext,
-                    config
-            );
+                    config,
+                    environment.getApplicationContext().getConversionService());
 
             return containerRequest;
         } catch (Exception e) {
