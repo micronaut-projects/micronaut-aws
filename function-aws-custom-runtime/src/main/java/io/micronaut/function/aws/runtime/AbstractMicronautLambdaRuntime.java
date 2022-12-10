@@ -216,7 +216,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String handler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
         logn(LogLevel.DEBUG, "Handler: ", handler);
         if (handler != null) {
-            Optional<Class> handlerClassOptional = parseHandlerClass(handler);
+            Optional<Class<?>> handlerClassOptional = parseHandlerClass(handler);
             logn(LogLevel.WARN, "No handler Class parsed for ", handler);
             if (handlerClassOptional.isPresent()) {
                 log(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection\n");
@@ -233,7 +233,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param handler handler in format file.method, where file is the name of the file without an extension, and method is the name of a method or function that's defined in the file.
      * @return Empty or an Optional with the referenced class.
      */
-    protected Optional<Class> parseHandlerClass(@NonNull String handler) {
+    protected Optional<Class<?>> parseHandlerClass(@NonNull String handler) {
         String[] arr = handler.split("::");
         if (arr.length > 0) {
             return ClassUtils.forName(arr[0], null);
