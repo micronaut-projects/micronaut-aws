@@ -15,16 +15,16 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -33,6 +33,10 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
+
+import jakarta.inject.Singleton;
+
+import java.net.URISyntaxException;
 
 /**
  * Factory that creates an S3 client.
@@ -43,19 +47,21 @@ import software.amazon.awssdk.services.s3.S3ClientBuilder;
 @Factory
 public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncClientBuilder, S3Client, S3AsyncClient> {
 
+    private final S3ConfigurationProperties configuration;
+
     /**
      * Constructor.
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
      * @param configuration The service configuration
-     * @deprecated Use {@link S3ClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,S3ConfigurationProperties,UserAgentProvider,AWSServiceConfiguration)} instead.
+     * @deprecated Use {@link S3ClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,S3ConfigurationProperties,UserAgentProvider )} instead.
      */
     @Deprecated
-    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider,
-                           AwsRegionProviderChain regionProvider,
+    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
                            S3ConfigurationProperties configuration) {
         super(credentialsProvider, regionProvider, null);
+        this.configuration = configuration;
     }
 
     /**
@@ -65,40 +71,44 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param regionProvider The region provider
      * @param configuration The service configuration
      * @param userAgentProvider User-Agent Provider
-     * @deprecated Use {@link S3ClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,S3ConfigurationProperties,UserAgentProvider,AWSServiceConfiguration)} instead.
-     */
-    @Deprecated
-    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider,
-                           AwsRegionProviderChain regionProvider,
-                           S3ConfigurationProperties configuration,
-                           @Nullable UserAgentProvider userAgentProvider) {
-        super(credentialsProvider, regionProvider, userAgentProvider);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param credentialsProvider The credentials provider
-     * @param regionProvider The region provider
-     * @param userAgentProvider User-Agent Provider
-     * @param awsServiceConfiguration AWS Service Configuration
      */
     @Inject
     public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider,
                            AwsRegionProviderChain regionProvider,
-                           @Nullable UserAgentProvider userAgentProvider,
-                           @Nullable @Named(S3Client.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
-        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
+                           S3ConfigurationProperties configuration,
+                           @Nullable UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider, createAWSServiceConfiguration(configuration));
+        this.configuration = configuration;
+    }
+
+    private static AWSServiceConfiguration createAWSServiceConfiguration(S3ConfigurationProperties s3ConfigurationProperties) {
+        try {
+            AWSServiceConfiguration awsServiceConfiguration = new AWSServiceConfiguration(S3Client.SERVICE_NAME);
+            awsServiceConfiguration.setEndpointOverride(s3ConfigurationProperties.getEndpointOverride());
+            return awsServiceConfiguration;
+        } catch (URISyntaxException e) {
+            throw new ConfigurationException("configuration exception for s3 configuration");
+        }
     }
 
     @Override
     protected S3ClientBuilder createSyncBuilder() {
-        return S3Client.builder();
+        S3ClientBuilder builder = S3Client.builder();
+        if (configuration.getEndpointOverride() != null) {
+            builder.endpointOverride(configuration.getEndpointOverride());
+        }
+        builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override
     protected S3AsyncClientBuilder createAsyncBuilder() {
-        return S3AsyncClient.builder();
+        S3AsyncClientBuilder builder = S3AsyncClient.builder();
+        if (configuration.getEndpointOverride() != null) {
+            builder.endpointOverride(configuration.getEndpointOverride());
+        }
+        builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override
