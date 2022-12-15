@@ -60,6 +60,7 @@ public class S3ConfigurationProperties extends AWSConfiguration {
 
     /**
      * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
+     * Note: To avoid breaking changes, this is redundant when `aws.services.s3.endpoint-override` is set.
      * @param endpointOverride The endpoint with which the AWS SDK should communicate
      * @since 3.6.2
      * @deprecated Use configuration {@literal aws.services.s3.endpoint-override} instead.
