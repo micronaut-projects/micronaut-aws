@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <suppress checks="RedundantImport" files=".*Generated*" />
+    <suppress checks="MissingJavadocType" files=".*Generated*" />
+    <suppress checks="UnusedImports" files=".*Generated*" />
+</suppressions>

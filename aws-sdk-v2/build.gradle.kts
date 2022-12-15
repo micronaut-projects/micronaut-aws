@@ -6,6 +6,7 @@ dependencies {
     api(platform(libs.boms.aws.java.sdk.v2))
     api(projects.awsCommon)
     compileOnly(libs.graal.sdk)
+    implementation(projects.awsUa)
 
     // Clients
     compileOnly(libs.awssdk.url.connection.client)

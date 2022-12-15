@@ -1,0 +1,28 @@
+plugins {
+    id("io.micronaut.build.internal.aws-module")
+}
+
+def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io.micronaut.internal.aws.tasks.UserAgentProviderGeneratorTask) {
+    version.set(micronautVersion)
+    outputDirectory.set(layout.projectDirectory.dir("src/main/java/"))
+}
+compileJava.dependsOn(userAgentProviderGenerator)
+
+def deleteUserAgentProviderGenerator = tasks.register("deleteUserAgentProviderGenerator", Delete) {
+    delete fileTree('src/main/java') {
+        include '**/Generated*.java'
+    }
+}
+clean.dependsOn(deleteUserAgentProviderGenerator)
+
+micronautBuild {
+    // new module, so no binary check
+    binaryCompatibility {
+        enabled.set(false)
+    }
+}
+spotless {
+    java {
+        targetExclude("**/Generated*.java")
+    }
+}

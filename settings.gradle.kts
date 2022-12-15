@@ -13,6 +13,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "aws-parent"
 
+include("aws-ua")
 include("aws-bom")
 include("function-aws")
 include("function-client-aws")
@@ -31,6 +32,7 @@ include("aws-sdk-v1")
 include("aws-sdk-v2")
 include("aws-cdk")
 include("aws-cloudwatch-logging")
+include("aws-apigateway")
 include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")

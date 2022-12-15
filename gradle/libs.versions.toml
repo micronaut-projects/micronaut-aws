@@ -1,7 +1,7 @@
 [versions]
 bouncycastle = '1.70'
 fileupload = '0.0.5'
-jetty = '9.4.49.v20220914'
+jetty = '9.4.50.v20221201'
 logback-json-classic = '0.1.5'
 micronaut-discovery = '4.0.0-SNAPSHOT'
 micronaut-graal = '4.0.0-SNAPSHOT'
@@ -11,21 +11,23 @@ micronaut-security = '4.0.0-SNAPSHOT'
 micronaut-serde = '2.0.0-SNAPSHOT'
 micronaut-views = '4.0.0-SNAPSHOT'
 managed-alexa-ask-sdk = "2.44.0"
-managed-aws-java-sdk-v1 = '1.12.332'
-managed-aws-java-sdk-v2 = '2.18.7'
-managed-aws-lambda = '1.2.1'
+managed-aws-java-sdk-v1 = '1.12.365'
+managed-aws-java-sdk-v2 = '2.18.39'
+managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.9'
-managed-aws-cdk-lib='2.50.0'
+managed-aws-cdk-lib='2.55.0'
 servlet-api = "2.5"
 slf4j = "1.7.36"
 testcontainers = "1.17.6"
+javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "22.0.0.2"
 
 [libraries]
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client", version.ref = "micronaut-discovery" }
 micronaut-graal = { module = "io.micronaut:micronaut-graal", version.ref = "micronaut-graal" }
