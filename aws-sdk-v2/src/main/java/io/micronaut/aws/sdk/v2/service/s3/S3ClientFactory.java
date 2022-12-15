@@ -15,14 +15,12 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
-import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
