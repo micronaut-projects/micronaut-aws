@@ -7,6 +7,6 @@ dependencies {
     implementation(libs.logback.json.classic)
     api(libs.awssdk.cloudwatchlogs)
     api(mn.micronaut.runtime)
-    api(mn.micronaut.serde.jackson)
+    api(mnSerde.micronaut.serde.jackson)
     testRuntimeOnly(mn.snakeyaml)
 }

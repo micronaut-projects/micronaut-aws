@@ -62,6 +62,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     private final HttpParameters parameters;
     private final String path;
     private final ContainerConfig config;
+    private final ConversionService conversionService;
     private Cookies cookies;
     private MicronautAwsProxyResponse<?> response;
     private T decodedBody;
@@ -69,27 +70,30 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     /**
      * Default constructor.
      *
-     * @param path            The path
-     * @param awsProxyRequest The underlying request
-     * @param securityContext The {@link SecurityContext}
-     * @param lambdaContext   The lambda context
-     * @param config          The container configuration
+     * @param path              The path
+     * @param awsProxyRequest   The underlying request
+     * @param securityContext   The {@link SecurityContext}
+     * @param lambdaContext     The lambda context
+     * @param config            The container configuration
+     * @param conversionService The conversion service
      */
     MicronautAwsProxyRequest(
             String path,
             AwsProxyRequest awsProxyRequest,
             SecurityContext securityContext,
             Context lambdaContext,
-            ContainerConfig config) {
+            ContainerConfig config,
+            ConversionService conversionService) {
         this.config = config;
         this.awsProxyRequest = awsProxyRequest;
         this.path = path;
+        this.conversionService = conversionService;
         final String httpMethod = awsProxyRequest.getHttpMethod();
         this.httpMethod = StringUtils.isNotEmpty(httpMethod) ? HttpMethod.valueOf(httpMethod) : HttpMethod.GET;
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
-        this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(ConversionService.SHARED);
+        this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(conversionService);
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
-        this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(ConversionService.SHARED);
+        this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(conversionService);
 
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
         setAttribute(API_GATEWAY_CONTEXT_PROPERTY, requestContext);
@@ -159,7 +163,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @NonNull
     public Cookies getCookies() {
         if (cookies == null) {
-            SimpleCookies simpleCookies = new SimpleCookies(ConversionService.SHARED);
+            SimpleCookies simpleCookies = new SimpleCookies(conversionService);
             getHeaders().getAll(HttpHeaders.COOKIE).forEach(cookieValue -> {
                 List<HeaderValue> parsedHeaders = parseHeaderValue(cookieValue, ";", ",");
 
@@ -281,7 +285,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @NonNull
     public <T1> Optional<T1> getBody(Argument<T1> type) {
         if (decodedBody != null) {
-            return ConversionService.SHARED.convert(decodedBody, type);
+            return conversionService.convert(decodedBody, type);
         }
         final String body = awsProxyRequest.getBody();
         if (body != null) {
@@ -290,13 +294,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
                 if (type.getType().isInstance(bytes)) {
                     return (Optional<T1>) Optional.of(bytes);
                 }
-                return ConversionService.SHARED.convert(bytes, type);
+                return conversionService.convert(bytes, type);
             }
             if (type.getType().isInstance(body)) {
                 return (Optional<T1>) Optional.of(body);
             } else {
                 final byte[] bytes = body.getBytes(getCharacterEncoding());
-                return ConversionService.SHARED.convert(bytes, type);
+                return conversionService.convert(bytes, type);
             }
         }
         return Optional.empty();
@@ -464,7 +468,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             final String v = get(name);
             if (v != null) {
-                return ConversionService.SHARED.convert(v, conversionContext);
+                return conversionService.convert(v, conversionContext);
             }
             return Optional.empty();
         }
@@ -511,7 +515,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             final String v = get(name);
             if (v != null) {
-                return ConversionService.SHARED.convert(v, conversionContext);
+                return conversionService.convert(v, conversionContext);
             }
             return Optional.empty();
         }

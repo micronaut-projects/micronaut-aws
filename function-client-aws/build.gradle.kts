@@ -12,6 +12,6 @@ dependencies {
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.function.web)
-    testImplementation(mn.micronaut.function.groovy)
-    testImplementation(mn.micronaut.runtime.groovy)
+    testImplementation(mnGroovy.micronaut.function.groovy)
+    testImplementation(mnGroovy.micronaut.runtime.groovy)
 }

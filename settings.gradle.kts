@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.0.1"
+    id("io.micronaut.build.shared.settings") version "6.1.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -39,6 +39,11 @@ include("test-suite-kotlin")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-groovy")
+    importMicronautCatalog("micronaut-mongodb")
+    importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-views")
 }
 
 dependencyResolutionManagement {
