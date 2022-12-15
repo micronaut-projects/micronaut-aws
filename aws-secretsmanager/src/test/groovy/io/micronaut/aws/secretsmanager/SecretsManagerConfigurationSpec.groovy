@@ -5,7 +5,7 @@ class SecretsManagerConfigurationSpec  extends ApplicationContextSpecification {
     @Override
     Map<String, Object> getConfiguration() {
         super.configuration + [
-                'aws.services.secretsmanager.enabled': false
+                'aws.secretsmanager.enabled': false
         ]
     }
 

@@ -15,7 +15,6 @@
  */
 package io.micronaut.discovery.aws.servicediscovery;
 
-import io.micronaut.aws.AWSServiceConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
@@ -34,7 +33,7 @@ import io.micronaut.discovery.DiscoveryConfiguration;
 @ConfigurationProperties(AwsServiceDiscoveryConfiguration.PREFIX)
 public class AwsServiceDiscoveryConfiguration extends DiscoveryConfiguration {
 
-    public static final String PREFIX = AWSServiceConfigurationProperties.FULL_SERVICE_PREFIX + ".service-discovery";
+    public static final String PREFIX = "aws.service-discovery";
 
     /**
      * Configuration property for whether discovery is enabled.
