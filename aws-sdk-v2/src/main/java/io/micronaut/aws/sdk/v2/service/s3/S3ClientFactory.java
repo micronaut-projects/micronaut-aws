@@ -38,7 +38,6 @@ import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import jakarta.inject.Singleton;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Factory that creates an S3 client.
