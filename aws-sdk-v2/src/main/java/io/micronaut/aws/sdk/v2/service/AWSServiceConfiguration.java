@@ -15,57 +15,31 @@
  */
 package io.micronaut.aws.sdk.v2.service;
 
-import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.aws.AWSServiceConfigurationProperties;
-import io.micronaut.context.annotation.EachProperty;
-import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
- * Configuration class to host common AWS service client configuration properties.
+ * Configuration of AWS Services.
  *
  * @author Stephen Cprek
  * @since 3.10.0
  *
  */
-@EachProperty(AWSServiceConfigurationProperties.SERVICE_PREFIX)
-public class AWSServiceConfiguration extends AWSConfiguration {
-
-    private final String serviceName;
-    @Nullable
-    private URI endpointOverride;
-
-    public AWSServiceConfiguration(@Parameter String serviceName)
-        throws URISyntaxException {
-        this.serviceName = serviceName;
-    }
-
-    /**
-     * @return The Service Name
-     */
-    public String getServiceName() {
-        return serviceName;
-    }
-
+public interface AWSServiceConfiguration {
     /**
      * @return The endpoint with which the AWS SDK should communicate
      * @since 3.10.0
      */
     @Nullable
-    public URI getEndpointOverride() {
-        return endpointOverride;
-    }
+    URI getEndpointOverride();
 
     /**
-     * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
-     * @param endpointOverride The endpoint with which the AWS SDK should communicate
-     * @since 3.10.0
+     *
+     * @return AWS Service name. For example for s3 {@link software.amazon.awssdk.services.s3.S3Client#SERVICE_NAME}.
      */
-    public void setEndpointOverride(@Nullable URI endpointOverride) {
-        this.endpointOverride = endpointOverride;
-    }
+    @NonNull
+    String getServiceName();
 }
 

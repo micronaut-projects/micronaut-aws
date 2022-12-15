@@ -36,6 +36,7 @@ import software.amazon.awssdk.services.s3.S3ClientBuilder;
 
 import jakarta.inject.Singleton;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -82,13 +83,18 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
     }
 
     private static AWSServiceConfiguration createAWSServiceConfiguration(S3ConfigurationProperties s3ConfigurationProperties) {
-        try {
-            AWSServiceConfiguration awsServiceConfiguration = new AWSServiceConfiguration(S3Client.SERVICE_NAME);
-            awsServiceConfiguration.setEndpointOverride(s3ConfigurationProperties.getEndpointOverride());
-            return awsServiceConfiguration;
-        } catch (URISyntaxException e) {
-            throw new ConfigurationException("configuration exception for s3 configuration");
-        }
+       return new AWSServiceConfiguration() {
+
+                @Override
+                public URI getEndpointOverride() {
+                    return s3ConfigurationProperties.getEndpointOverride();
+                }
+
+                @Override
+                public String getServiceName() {
+                    return S3Client.SERVICE_NAME;
+                }
+            };
     }
 
     @Override
