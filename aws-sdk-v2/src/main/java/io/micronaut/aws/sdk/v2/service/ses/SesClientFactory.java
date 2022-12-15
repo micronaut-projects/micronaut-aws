@@ -47,7 +47,7 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @deprecated Use {@link SesClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider )} instead.
+     * @deprecated Use {@link SesClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
      */
     @Deprecated
     protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
@@ -60,6 +60,7 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link SesClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
      */
     @Deprecated
     protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider,
