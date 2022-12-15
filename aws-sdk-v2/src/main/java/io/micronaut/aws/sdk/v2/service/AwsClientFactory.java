@@ -16,15 +16,19 @@
 package io.micronaut.aws.sdk.v2.service;
 
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.aws.ua.UserAgentProvider;
+import jakarta.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.awscore.client.builder.AwsAsyncClientBuilder;
 import software.amazon.awssdk.awscore.client.builder.AwsClientBuilder;
 import software.amazon.awssdk.awscore.client.builder.AwsSyncClientBuilder;
 import software.amazon.awssdk.core.SdkClient;
+import software.amazon.awssdk.core.client.config.SdkAdvancedClientOption;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain;
-
 import java.util.Optional;
 
 /**
@@ -39,23 +43,60 @@ import java.util.Optional;
  * @param <AC> The async client
  */
 public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> & AwsClientBuilder<SB, SC>, AB extends AwsAsyncClientBuilder<AB, AC> & AwsClientBuilder<AB, AC>, SC, AC extends SdkClient> {
+    private static final Logger LOG = LoggerFactory.getLogger(AwsClientFactory.class);
 
     protected final AwsCredentialsProviderChain credentialsProvider;
     protected final AwsRegionProviderChain regionProvider;
+
     @Nullable
     protected final AWSServiceConfiguration configuration;
+
+    @Nullable
+    protected final UserAgentProvider userAgentProvider;
 
     /**
      * Constructor.
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
-     * @param configuration The service configuration
+     * @deprecated Use {@link AwsClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider)} instead.
      */
-    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
+    @Deprecated
+    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider) {
+        this(credentialsProvider, regionProvider, null, null);    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link AwsClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider, AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider) {
+        this(credentialsProvider, regionProvider, null, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @param configuration  AWS Service Configuration
+     */
+    @Inject
+    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider,
                                @Nullable AWSServiceConfiguration configuration) {
         this.credentialsProvider = credentialsProvider;
         this.regionProvider = regionProvider;
+        this.userAgentProvider = userAgentProvider;
         this.configuration = configuration;
     }
 
@@ -69,10 +110,20 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      */
     public SB syncBuilder(SdkHttpClient httpClient) {
         SB sb = createSyncBuilder()
-                .httpClient(httpClient)
-                .region(regionProvider.getRegion())
-                .credentialsProvider(credentialsProvider);
+            .httpClient(httpClient)
+            .region(regionProvider.getRegion())
+            .credentialsProvider(credentialsProvider)
+            .overrideConfiguration(conf -> {
+                if (userAgentProvider != null) {
+                    String ua = userAgentProvider.userAgent();
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Setting User-Agent for AWS SDK to {}", ua);
+                    }
+                    conf.putAdvancedOption(SdkAdvancedClientOption.USER_AGENT_SUFFIX, ua);
+                }
+            });
         // Do not replace with method reference - https://bugs.openjdk.org/browse/JDK-8141508
+        //noinspection Convert2MethodRef
         Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(o -> sb.endpointOverride(o));
         return sb;
     }
@@ -98,10 +149,20 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      */
     public AB asyncBuilder(SdkAsyncHttpClient httpClient) {
         AB ab = createAsyncBuilder()
-                .httpClient(httpClient)
-                .region(regionProvider.getRegion())
-                .credentialsProvider(credentialsProvider);
+            .httpClient(httpClient)
+            .region(regionProvider.getRegion())
+            .credentialsProvider(credentialsProvider)
+            .overrideConfiguration(conf -> {
+                if (userAgentProvider != null) {
+                    String ua = userAgentProvider.userAgent();
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Setting User-Agent for AWS SDK to {}", ua);
+                    }
+                    conf.putAdvancedOption(SdkAdvancedClientOption.USER_AGENT_SUFFIX, ua);
+                }
+            });
         // Do not replace with method reference - https://bugs.openjdk.org/browse/JDK-8141508
+        //noinspection Convert2MethodRef
         Optional.ofNullable(configuration).flatMap(cfg -> Optional.ofNullable(cfg.getEndpointOverride())).ifPresent(o -> ab.endpointOverride(o));
         return ab;
     }

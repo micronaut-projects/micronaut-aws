@@ -101,6 +101,12 @@ class AwsDistributedConfigurationSpec extends Specification {
 
         @Override
         @NonNull
+        protected String adaptPropertyKey(String originalKey, String groupName) {
+            return originalKey
+        }
+
+        @Override
+        @NonNull
         protected String getPropertySourceName() {
              'mocksecretsmanager'
         }
@@ -137,9 +143,9 @@ class AwsDistributedConfigurationSpec extends Specification {
         ]
 
         @Override
-        Optional<Map> keyValuesByPrefix(@NonNull String prefix) {
+        Optional<Map<String, Map>> keyValuesByPrefix(@NonNull String prefix) {
             String k = m.keySet().find { it.startsWith(prefix) }
-            (k) ? Optional.of(m[k]) : Optional.empty()
+            (k) ? Optional.of([(k): m[k]] as Map<String, Map>) : Optional.empty()
         }
     }
 }

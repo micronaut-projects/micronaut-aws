@@ -159,6 +159,7 @@ class AfterExecutionEventSpec extends Specification {
         }
 
         @Override
+        @NonNull
         protected ApplicationContextBuilder newApplicationContextBuilder() {
             return super.newApplicationContextBuilder().properties(Collections.singletonMap("spec.name", "AfterExecutionEventSpec"))
         }

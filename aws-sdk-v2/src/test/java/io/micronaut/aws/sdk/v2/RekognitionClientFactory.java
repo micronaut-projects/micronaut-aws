@@ -1,12 +1,14 @@
 package io.micronaut.aws.sdk.v2;
 
-import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
-import io.micronaut.context.ApplicationContext;
+import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -22,10 +24,44 @@ import software.amazon.awssdk.services.rekognition.RekognitionClientBuilder;
 @Factory
 public class RekognitionClientFactory extends AwsClientFactory<RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient> {
 
-    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                                       ApplicationContext context) {
-        super(credentialsProvider, regionProvider, context.findBean(
-            AWSServiceConfiguration.class, Qualifiers.byName(RekognitionClient.SERVICE_NAME)).orElse(null));
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @deprecated Use {@link RekognitionClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider, AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+        super(credentialsProvider, regionProvider, null);
+    }
+
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     * @deprecated Use {@link RekognitionClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider, AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       @Nullable UserAgentProvider userAgentProvider) {
+        this(credentialsProvider, regionProvider, userAgentProvider, null);
+    }
+
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     * @param awsServiceConfiguration  AWS Service Configuration
+     */
+    @Inject
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       @Nullable UserAgentProvider userAgentProvider,
+                                       @Nullable @Named(RekognitionClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     // Sync client

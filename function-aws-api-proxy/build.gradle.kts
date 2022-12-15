@@ -1,16 +1,11 @@
 plugins {
-    id("io.micronaut.build.internal.module")
+    id("io.micronaut.build.internal.aws-module")
 }
 
 dependencies {
     annotationProcessor(mn.micronaut.graal)
-
     compileOnly(mn.micronaut.security)
-
-    implementation(mn.micronaut.http.netty)
-
-    implementation(libs.projectreactor)
-
+    implementation(mn.reactor)
     api(mn.micronaut.http.server)
     api(libs.managed.aws.serverless.core) {
         exclude(group = "javax.servlet", module = "javax.servlet-api")
@@ -18,18 +13,14 @@ dependencies {
         exclude(group = "commons-logging")
     }
     api(libs.managed.jcl.over.slf4j)
-    api(project(":function-aws"))
-    api(project(":aws-common"))
-
+    api(projects.functionAws)
+    api(projects.awsCommon)
     testAnnotationProcessor(mn.micronaut.validation)
     testImplementation(mn.micronaut.validation)
-
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.security)
-
     testImplementation(mn.micronaut.views.handlebars)
-
     testImplementation(libs.jackson.afterburner)
     testImplementation(libs.servlet.api)
     testImplementation(libs.fileupload)
@@ -37,6 +28,6 @@ dependencies {
 
 spotless {
     java {
-        targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java")
+        targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java","**/io/micronaut/function/aws/proxy/cookie/*.java")
     }
 }

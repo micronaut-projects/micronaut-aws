@@ -1,12 +1,12 @@
 plugins {
-    id("io.micronaut.build.internal.module")
+    id("io.micronaut.build.internal.aws-module")
 }
 
 dependencies {
     api(platform(libs.boms.aws.java.sdk.v2))
-    api(project(":aws-common"))
-
-    compileOnly(libs.graal)
+    api(projects.awsCommon)
+    implementation(projects.awsUa)
+    compileOnly(mn.graal)
 
     // Clients
     compileOnly(libs.awssdk.url.connection.client)

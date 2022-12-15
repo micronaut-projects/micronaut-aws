@@ -1,6 +1,7 @@
 plugins {
     id("groovy")
     id("java-library")
+    id("io.micronaut.build.internal.aws-tests")
 }
 
 repositories {
@@ -18,8 +19,8 @@ dependencies {
     }
     testImplementation("io.micronaut.test:micronaut-test-spock:$micronautTestVersion")
     testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation(project(":function-aws"))
-    testImplementation(project(":function-client-aws"))
+    testImplementation(projects.functionAws)
+    testImplementation(projects.functionClientAws)
 }
 
 tasks {

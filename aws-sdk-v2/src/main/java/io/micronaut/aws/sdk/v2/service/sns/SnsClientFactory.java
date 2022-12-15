@@ -15,13 +15,15 @@
  */
 package io.micronaut.aws.sdk.v2.service.sns;
 
-import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
-import io.micronaut.context.ApplicationContext;
+import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.inject.qualifiers.Qualifiers;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -46,12 +48,43 @@ public class SnsClientFactory extends AwsClientFactory<SnsClientBuilder, SnsAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @param context             The application context
+     * @deprecated Use {@link SnsClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider, AWSServiceConfiguration)} instead.
      */
-    protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                               ApplicationContext context) {
-        super(credentialsProvider, regionProvider, context.findBean(
-            AWSServiceConfiguration.class, Qualifiers.byName(SnsClient.SERVICE_NAME)).orElse(null));
+    @Deprecated
+    protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+        super(credentialsProvider, regionProvider, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link SnsClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider, AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @param awsServiceConfiguration  AWS Service Configuration
+
+     */
+    @Inject
+    protected SnsClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider,
+                               @Nullable @Named(SnsClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     @Override

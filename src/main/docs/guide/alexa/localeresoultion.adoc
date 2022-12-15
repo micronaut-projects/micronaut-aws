@@ -1,0 +1,7 @@
+To resolve the https://developer.amazon.com/en-US/docs/alexa/custom-skills/request-and-response-json-reference.html#request-locale[Request Locale] inject a bean of type `api:aws.alexa.locale.HandlerInputLocaleResolver[]`.
+
+You can force a fixed locale or a custom default locale via configuration:
+
+include::{includedir}configurationProperties/io.micronaut.aws.alexa.locale.HandlerInputLocaleResolutionConfigurationProperties.adoc[]
+
+If the built-in methods do not meet your use case, create a bean of type api:aws.alexa.locale.HandlerInputLocaleResolver[] and set its order (through the `getOrder` method) relative to the existing resolvers.

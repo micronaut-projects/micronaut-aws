@@ -6,11 +6,14 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.3.14"
+    id("io.micronaut.build.shared.settings") version "5.3.15"
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "aws-parent"
 
+include("aws-ua")
 include("aws-bom")
 include("function-aws")
 include("function-client-aws")
@@ -29,6 +32,7 @@ include("aws-sdk-v1")
 include("aws-sdk-v2")
 include("aws-cdk")
 include("aws-cloudwatch-logging")
+include("aws-apigateway")
 include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")
@@ -37,4 +41,13 @@ include("test-suite-kotlin")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog()
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven {
+            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        }
+    }
 }
