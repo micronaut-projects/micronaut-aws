@@ -17,7 +17,6 @@ package io.micronaut.aws.sdk.v2.service;
 
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.core.annotation.Nullable;
-import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
@@ -55,22 +54,8 @@ public abstract class AwsClientFactory<SB extends AwsSyncClientBuilder<SB, SC> &
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
-     * @deprecated Use {@link AwsClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider)} instead.
-     */
-    @Deprecated
-    protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider,
-                               AwsRegionProviderChain regionProvider) {
-        this(credentialsProvider, regionProvider, null);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param credentialsProvider The credentials provider
-     * @param regionProvider The region provider
      * @param userAgentProvider User-Agent Provider
      */
-    @Inject
     protected AwsClientFactory(AwsCredentialsProviderChain credentialsProvider,
                                AwsRegionProviderChain regionProvider,
                                @Nullable UserAgentProvider userAgentProvider) {
