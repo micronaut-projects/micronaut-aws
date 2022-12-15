@@ -41,7 +41,6 @@ sdkv2:
 amazonApiGateway: Amazon API Gateway
 lambda:
   title: AWS Lambda Support
-  lambdaCustomRuntimes: AWS Lambda Custom Runtimes
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda
   awslambdaconsiderations: AWS Lambda Considerations
   awslambdaruntimes: AWS Lambda Runtimes
