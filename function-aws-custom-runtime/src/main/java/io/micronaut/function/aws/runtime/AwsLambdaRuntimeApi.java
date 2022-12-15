@@ -21,7 +21,6 @@ import io.micronaut.http.uri.UriTemplate;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import java.util.Collections;
-import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
  * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html">AWS Lambda Runtime Interface</a>
