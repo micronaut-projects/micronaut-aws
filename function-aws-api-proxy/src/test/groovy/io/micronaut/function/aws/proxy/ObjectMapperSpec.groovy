@@ -1,6 +1,5 @@
 package io.micronaut.function.aws.proxy
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
