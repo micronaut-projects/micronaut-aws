@@ -43,6 +43,29 @@ class ResponseStatusSpec extends Specification {
         handler.close()
     }
 
+    void "test multi status with alb"() {
+        given:
+
+        def handler = new MicronautLambdaContainerHandler(
+                ApplicationContext.builder().properties([
+                        'micronaut.security.enabled': false,
+                        'spec.name': 'ResponseStatusSpec'
+                ])
+        )
+
+        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-status/multi-status', HttpMethod.GET.toString()).alb()
+        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN)
+
+        when:
+        def response = handler.proxy(builder.build(), lambdaContext)
+
+        then:
+        response.statusCode == 207
+
+        cleanup:
+        handler.close()
+    }
+
     void "test optional causes 404"() {
         given:
 
@@ -162,6 +185,12 @@ class ResponseStatusSpec extends Specification {
         @Status(HttpStatus.NO_CONTENT)
         @Delete(uri = "/delete-something", processes = MediaType.TEXT_PLAIN)
         void deleteSomething() {
+            // do nothing
+        }
+
+        @Get(uri = "/multi-status", processes = MediaType.TEXT_PLAIN)
+        @Status(HttpStatus.MULTI_STATUS)
+        void multiStatus() {
             // do nothing
         }
     }
