@@ -18,7 +18,7 @@ package io.micronaut.function.aws.proxy;
 import com.amazonaws.serverless.exceptions.InvalidResponseObjectException;
 import com.amazonaws.serverless.proxy.ResponseWriter;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.RequestSource;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
@@ -104,7 +104,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
             );
         }
 
-        if (containerResponse.getAwsProxyRequest().getRequestSource() == AwsProxyRequest.RequestSource.ALB) {
+        if (containerResponse.getAwsProxyRequest().getRequestSource() == RequestSource.ALB) {
             final HttpStatus status = containerResponse.getStatus();
             awsProxyResponse.setStatusDescription(
                     status + " " +
