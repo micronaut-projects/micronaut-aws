@@ -115,6 +115,7 @@ import java.util.stream.Collectors;
                 ContainerConfig.class,
                 ErrorModel.class,
                 Headers.class,
+                SingleValueHeaders.class,
                 MultiValuedTreeMap.class,
                 AwsProxySecurityContext.class
         }
