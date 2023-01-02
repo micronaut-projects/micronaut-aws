@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.ssm;
 
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
@@ -23,6 +24,8 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -31,8 +34,6 @@ import software.amazon.awssdk.services.ssm.SsmAsyncClient;
 import software.amazon.awssdk.services.ssm.SsmAsyncClientBuilder;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.SsmClientBuilder;
-
-import jakarta.inject.Singleton;
 
 /**
  * Factory that creates a SSM client.
@@ -49,13 +50,12 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @deprecated Use {@link SsmClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider )} instead.
+     * @deprecated Use {@link SsmClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
      */
     @Deprecated
     protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
         super(credentialsProvider, regionProvider, null);
     }
-
 
     /**
      * Constructor.
@@ -63,12 +63,29 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link SsmClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
      */
-    @Inject
+    @Deprecated
     protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider,
                                AwsRegionProviderChain regionProvider,
                                @Nullable UserAgentProvider userAgentProvider) {
         super(credentialsProvider, regionProvider, userAgentProvider);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @param awsServiceConfiguration AWS Service Configuration
+     */
+    @Inject
+    protected SsmClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider,
+                               @Nullable @Named(SsmClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     @Override

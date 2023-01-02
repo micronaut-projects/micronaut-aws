@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2022 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,60 +13,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.sdk.v2.service.s3;
+package io.micronaut.aws.sdk.v2.service;
 
 import io.micronaut.aws.AWSConfiguration;
-import io.micronaut.context.annotation.ConfigurationBuilder;
-import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.EachProperty;
+import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.S3Configuration;
-import software.amazon.awssdk.services.s3.S3Configuration.Builder;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
- * Configuration properties for S3.
+ * {@link EachProperty} implementation of {@link AWSServiceConfiguration} for {@literal aws.services.*} configuration.
  *
- * @author Álvaro Sánchez-Mariscal
- * @since 2.0.0
+ * @author Stephen Cprek
+ * @since 3.10.0
+ *
  */
-@ConfigurationProperties(S3Client.SERVICE_NAME)
-public class S3ConfigurationProperties extends AWSConfiguration {
+@EachProperty(AWSServiceConfigurationProperties.SERVICE_PREFIX)
+public class AWSServiceConfigurationProperties implements AWSServiceConfiguration {
 
-    @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
-    private Builder builder = S3Configuration.builder();
+    /**
+     * Prefix for all AWS Service Client settings.
+     */
+    public static final String SERVICE_PREFIX = AWSConfiguration.PREFIX + ".services";
 
+    private final String serviceName;
     @Nullable
     private URI endpointOverride;
 
-    /**
-     * @return The builder
-     */
-    public Builder getBuilder() {
-        return builder;
+    public AWSServiceConfigurationProperties(@Parameter String serviceName)
+        throws URISyntaxException {
+        this.serviceName = serviceName;
     }
 
     /**
      * @return The endpoint with which the AWS SDK should communicate
-     * @since 3.6.2
-     * @deprecated Use configuration {@literal aws.services.s3.endpoint-override} instead.
+     * @since 3.10.0
      */
+    @Override
     @Nullable
-    @Deprecated
     public URI getEndpointOverride() {
         return endpointOverride;
     }
 
     /**
-     * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
-     * Note: To avoid breaking changes, this is redundant when `aws.services.s3.endpoint-override` is set.
-     * @param endpointOverride The endpoint with which the AWS SDK should communicate
-     * @since 3.6.2
-     * @deprecated Use configuration {@literal aws.services.s3.endpoint-override} instead.
+     * @return The Service Name
      */
-    @Deprecated
+    @Override
+    @NonNull
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    /**
+     * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
+     * @param endpointOverride The endpoint with which the AWS SDK should communicate
+     * @since 3.10.0
+     */
     public void setEndpointOverride(@Nullable URI endpointOverride) {
         this.endpointOverride = endpointOverride;
     }
 }
+
