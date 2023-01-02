@@ -45,6 +45,7 @@ jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-af
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 

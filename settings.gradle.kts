@@ -37,7 +37,6 @@ include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")
 include("test-suite-http-server-tck-function-aws-api-proxy")
-include("http-server-tck")
 include("test-suite-groovy")
 include("test-suite-kotlin")
 

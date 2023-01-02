@@ -7,6 +7,7 @@ repositories {
 val micronautVersion: String by project
 dependencies {
     testImplementation(projects.functionAwsApiProxy)
-    testImplementation(projects.httpServerTck)
+    testImplementation(mn.micronaut.http.server.tck)
     testImplementation(mn.micronaut.http.client)
+    testImplementation(libs.junit.platform.engine)
 }
