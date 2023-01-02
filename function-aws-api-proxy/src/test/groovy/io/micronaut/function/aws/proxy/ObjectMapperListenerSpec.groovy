@@ -12,8 +12,6 @@ import io.micronaut.inject.BeanDefinition
 import io.micronaut.inject.qualifiers.Qualifiers
 import spock.lang.Issue
 import spock.lang.Specification
-
-import jakarta.inject.Named
 import jakarta.inject.Singleton
 
 @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/186")
