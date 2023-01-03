@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":42,"i2":42};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
+var methods = {"i0":10};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -167,7 +167,7 @@ extends <a href="../../../../../../../io/micronaut/aws/AWSConfiguration.html" ti
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
@@ -175,22 +175,6 @@ extends <a href="../../../../../../../io/micronaut/aws/AWSConfiguration.html" ti
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>software.amazon.awssdk.services.s3.S3Configuration.Builder</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html#getBuilder--">getBuilder</a></span>()</code>&nbsp;</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.net.URI</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html#getEndpointOverride--">getEndpointOverride</a></span>()</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use configuration aws.services.s3.endpoint-override instead.</span></div>
-</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../../../io/micronaut/aws/sdk/v2/service/s3/S3ConfigurationProperties.html#setEndpointOverride-java.net.URI-">setEndpointOverride</a></span>(java.net.URI&nbsp;endpointOverride)</code>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;
-<div class="block"><span class="deprecationComment">Use configuration aws.services.s3.endpoint-override instead.</span></div>
-</div>
-</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -234,51 +218,13 @@ extends <a href="../../../../../../../io/micronaut/aws/AWSConfiguration.html" ti
 <a name="getBuilder--">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>getBuilder</h4>
 <pre>public&nbsp;software.amazon.awssdk.services.s3.S3Configuration.Builder&nbsp;getBuilder()</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The builder</dd>
-</dl>
-</li>
-</ul>
-<a name="getEndpointOverride--">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getEndpointOverride</h4>
-<pre>@Nullable
- @Deprecated
-public&nbsp;java.net.URI&nbsp;getEndpointOverride()</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use configuration aws.services.s3.endpoint-override instead.</span></div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>The endpoint with which the AWS SDK should communicate</dd>
-<dt><span class="simpleTagLabel">Since:</span></dt>
-<dd>3.6.2</dd>
-</dl>
-</li>
-</ul>
-<a name="setEndpointOverride-java.net.URI-">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>setEndpointOverride</h4>
-<pre>@Deprecated
-public&nbsp;void&nbsp;setEndpointOverride(@Nullable
-                                            java.net.URI&nbsp;endpointOverride)</pre>
-<div class="block"><span class="deprecatedLabel">Deprecated.</span>&nbsp;<span class="deprecationComment">Use configuration aws.services.s3.endpoint-override instead.</span></div>
-<div class="block">Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
- Note: To avoid breaking changes, this is redundant when `aws.services.s3.endpoint-override` is set.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>endpointOverride</code> - The endpoint with which the AWS SDK should communicate</dd>
-<dt><span class="simpleTagLabel">Since:</span></dt>
-<dd>3.6.2</dd>
 </dl>
 </li>
 </ul>
