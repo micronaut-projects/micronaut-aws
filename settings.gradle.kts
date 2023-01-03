@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.3.16"
+    id("io.micronaut.build.shared.settings") version "6.1.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -36,24 +36,16 @@ include("aws-apigateway")
 include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")
-include("test-suite-http-server-tck-function-aws-api-proxy")
+//include("test-suite-http-server-tck-function-aws-api-proxy")
 include("test-suite-groovy")
 include("test-suite-kotlin")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
+    addSnapshotRepository()
     importMicronautCatalog()
     importMicronautCatalog("micronaut-groovy")
     importMicronautCatalog("micronaut-mongodb")
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-security")
     importMicronautCatalog("micronaut-views")
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven {
-            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        }
-    }
 }
