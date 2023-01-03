@@ -18,12 +18,9 @@ package io.micronaut.aws.sdk.v2.service.s3;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.core.annotation.Nullable;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Configuration.Builder;
-
-import java.net.URI;
 
 /**
  * Configuration properties for S3.
@@ -37,36 +34,10 @@ public class S3ConfigurationProperties extends AWSConfiguration {
     @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
     private Builder builder = S3Configuration.builder();
 
-    @Nullable
-    private URI endpointOverride;
-
     /**
      * @return The builder
      */
     public Builder getBuilder() {
         return builder;
-    }
-
-    /**
-     * @return The endpoint with which the AWS SDK should communicate
-     * @since 3.6.2
-     * @deprecated Use configuration {@literal aws.services.s3.endpoint-override} instead.
-     */
-    @Nullable
-    @Deprecated
-    public URI getEndpointOverride() {
-        return endpointOverride;
-    }
-
-    /**
-     * Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.
-     * Note: To avoid breaking changes, this is redundant when `aws.services.s3.endpoint-override` is set.
-     * @param endpointOverride The endpoint with which the AWS SDK should communicate
-     * @since 3.6.2
-     * @deprecated Use configuration {@literal aws.services.s3.endpoint-override} instead.
-     */
-    @Deprecated
-    public void setEndpointOverride(@Nullable URI endpointOverride) {
-        this.endpointOverride = endpointOverride;
     }
 }
