@@ -15,12 +15,6 @@ def deleteUserAgentProviderGenerator = tasks.register("deleteUserAgentProviderGe
 }
 clean.dependsOn(deleteUserAgentProviderGenerator)
 
-micronautBuild {
-    // new module, so no binary check
-    binaryCompatibility {
-        enabled.set(false)
-    }
-}
 spotless {
     java {
         targetExclude("**/Generated*.java")

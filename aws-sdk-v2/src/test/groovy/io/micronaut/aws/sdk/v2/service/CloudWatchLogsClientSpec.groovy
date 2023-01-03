@@ -1,24 +1,20 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient
 
-class CloudWatchLogsClientSpec extends ApplicationContextSpecification {
-
-    void "it can configure a sync client"() {
-        when:
-        CloudWatchLogsClient client = applicationContext.getBean(CloudWatchLogsClient)
-
-        then:
-        client.serviceName() == CloudWatchLogsClient.SERVICE_NAME
+class CloudWatchLogsClientSpec extends ServiceClientSpec<CloudWatchLogsClient, CloudWatchLogsAsyncClient> {
+    @Override
+    protected String serviceName() {
+        return CloudWatchLogsClient.SERVICE_NAME
     }
 
-    void "it can configure an async client"() {
-        when:
-        CloudWatchLogsAsyncClient client = applicationContext.getBean(CloudWatchLogsAsyncClient)
+    @Override
+    protected CloudWatchLogsClient getClient() {
+        applicationContext.getBean(CloudWatchLogsClient)
+    }
 
-        then:
-        client.serviceName() == CloudWatchLogsClient.SERVICE_NAME
+    protected CloudWatchLogsAsyncClient getAsyncClient() {
+        applicationContext.getBean(CloudWatchLogsAsyncClient)
     }
 }

@@ -25,6 +25,10 @@ javapoet = "1.13.0"
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "22.0.0.2"
+kotlin = "1.7.21"
+
+# Micronaut
+micronaut-gradle-plugin = "3.6.7"
 
 [libraries]
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
@@ -66,7 +70,9 @@ graal-sdk = { module = 'org.graalvm.sdk:graal-sdk', version.ref = 'graal' }
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
+logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
@@ -85,3 +91,7 @@ testcontainers-bom = { module = 'org.testcontainers:testcontainers-bom', version
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
 testcontainers-spock = { module = 'org.testcontainers:spock' }
+# Gradle
+
+gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
