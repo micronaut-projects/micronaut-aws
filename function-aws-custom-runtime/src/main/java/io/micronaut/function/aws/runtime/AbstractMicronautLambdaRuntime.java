@@ -101,16 +101,6 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
 )
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
-
-    /**
-     * Use {@link io.micronaut.aws.ua.UserAgentProvider} instead.
-     */
-    @Deprecated
-    static final String USER_AGENT_VALUE = String.format(
-        "micronaut/%s-%s",
-        System.getProperty("java.vendor.version"),
-        AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
-
     @Nullable
     protected String userAgent;
 
@@ -355,8 +345,10 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(
-                            HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI).header(USER_AGENT, USER_AGENT_VALUE), Argument.of(requestType));
+                    MutableHttpRequest<?> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
+                    applicationContext.findBean(UserAgentProvider.class)
+                        .ifPresent(userAgentProvider -> nextInvocationHttpRequest.header(USER_AGENT, userAgentProvider.userAgent()));
+                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
                     final RequestType request = response.body();
                     if (request != null) {
                         logn(LogLevel.DEBUG, "request body ", request);

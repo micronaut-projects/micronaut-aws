@@ -43,9 +43,9 @@ public class SecretsManagerConfigurationProperties implements SecretsManagerConf
     @SuppressWarnings("WeakerAccess")
     public static final boolean DEFAULT_ENABLED = true;
 
-    private boolean enabled = DEFAULT_ENABLED;
-
     protected List<SecretConfiguration> secrets;
+
+    private boolean enabled = DEFAULT_ENABLED;
 
     /**
      * @return Whether the AWS Secrets Manager configuration is enabled

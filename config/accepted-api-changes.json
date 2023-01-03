@@ -1,37 +1,162 @@
 [
   {
+    "type": "io.micronaut.aws.sdk.v2.service.AwsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.AwsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference()",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.AwsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.AwsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ses.SesClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ses.SesClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ses.SesClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ses.SesClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_AWS_REQUEST_ID",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_FUNCTION_MEMORY_SIZE",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_FUNCTION_NAME",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_FUNCTION_REMAINING_TIME",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_XRAY_TRACE_ID",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_FUNCTION_ARN",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
   },
   {
     "type": "io.micronaut.function.aws.MicronautRequestHandler",
     "member": "Field MDC_DEFAULT_FUNCTION_VERSION",
-    "reason": "removed deprecated member for Micronaut 4.0.x"
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient(io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration,io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher,io.micronaut.runtime.ApplicationConfiguration)",
+    "reason": "Remove deprecated code in next mayor version"
   }
 ]
