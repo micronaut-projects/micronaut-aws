@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.7.20")
-    id("org.jetbrains.kotlin.kapt") version ("1.7.20")
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.kapt")
     id("io.micronaut.build.internal.aws-tests")
 
 }

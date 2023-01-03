@@ -14,6 +14,11 @@ servlet-api = "2.5"
 slf4j = "1.7.36"
 javapoet = "1.13.0"
 
+kotlin = "1.7.21"
+
+# Micronaut
+micronaut-gradle-plugin = "3.6.7"
+
 [libraries]
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 aws-cdk-lib = { module = 'software.amazon.awscdk:aws-cdk-lib', version.ref = 'managed-aws-cdk-lib' }
@@ -44,7 +49,9 @@ fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fil
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
+logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
@@ -62,3 +69,7 @@ servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
 testcontainers-spock = { module = 'org.testcontainers:spock' }
+# Gradle
+
+gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

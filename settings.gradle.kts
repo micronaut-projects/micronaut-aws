@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.1.1"
+    id("io.micronaut.build.shared.settings") version "5.3.16"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -36,6 +36,7 @@ include("aws-apigateway")
 include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")
+include("test-suite-http-server-tck-function-aws-api-proxy")
 include("test-suite-groovy")
 include("test-suite-kotlin")
 

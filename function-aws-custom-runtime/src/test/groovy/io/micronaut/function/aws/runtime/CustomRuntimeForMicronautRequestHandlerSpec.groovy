@@ -22,6 +22,8 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'CustomRuntimeForMicronautRequestHandlerSpec'])
         String serverUrl = "localhost:$embeddedServer.port"
+
+
         CustomAwsProxyEventMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomAwsProxyEventMicronautLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
             customMicronautLambdaRuntime.run([] as String[])

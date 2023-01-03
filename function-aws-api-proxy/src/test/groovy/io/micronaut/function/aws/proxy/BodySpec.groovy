@@ -34,7 +34,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
-
 class BodySpec extends Specification {
 
     @Shared @AutoCleanup MicronautLambdaContainerHandler handler = new MicronautLambdaContainerHandler(
@@ -58,21 +57,6 @@ class BodySpec extends Specification {
         response.getMultiValueHeaders().getFirst(HttpHeaders.CONTENT_TYPE) == 'application/zip'
         // should be base64
         isZip(Base64.getMimeDecoder().decode(response.body))
-
-    }
-
-    void "test custom body POJO"() {
-        given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo', HttpMethod.POST.toString())
-        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-        builder.body('{"x":10,"y":20}')
-
-        when:
-        def response = handler.proxy(builder.build(), lambdaContext)
-
-        then:
-        response.statusCode == 201
-        response.body == '{"x":10,"y":20}'
 
     }
 
@@ -123,50 +107,6 @@ class BodySpec extends Specification {
 
     }
 
-
-    void "test custom body POJO - default to JSON"() {
-        given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo', HttpMethod.POST.toString())
-        builder.body('{"x":10,"y":20}')
-
-        when:
-        def response = handler.proxy(builder.build(), lambdaContext)
-
-        then:
-        response.statusCode == 201
-        response.body == '{"x":10,"y":20}'
-
-    }
-
-    void "test custom body POJO with whole request"() {
-        given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo-and-request', HttpMethod.POST.toString())
-        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-        builder.body('{"x":10,"y":20}')
-
-        when:
-        def response = handler.proxy(builder.build(), lambdaContext)
-
-        then:
-        response.statusCode == 201
-        response.body == '{"x":10,"y":20}'
-
-    }
-
-    void "test custom body POJO - reactive types"() {
-        given:
-        AwsProxyRequestBuilder builder = new AwsProxyRequestBuilder('/response-body/pojo-reactive', HttpMethod.POST.toString())
-        builder.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
-        builder.body('{"x":10,"y":20}')
-
-        when:
-        def response = handler.proxy(builder.build(), lambdaContext)
-
-        then:
-        response.statusCode == 201
-        response.body == '{"x":10,"y":20}'
-    }
-
     @Controller('/response-body')
     @Requires(property = 'spec.name', value = 'BodySpec')
     static class BodyController {
@@ -174,20 +114,6 @@ class BodySpec extends Specification {
         @Post(uri = "/pojo")
         @Status(HttpStatus.CREATED)
         Point post(@Body Point data) {
-            return data
-        }
-
-        @Post(uri = "/pojo-and-request")
-        @Status(HttpStatus.CREATED)
-        Point postRequest(HttpRequest<Point> request) {
-            return request.body.orElse(null)
-        }
-
-
-        @Post(uri = "/pojo-reactive")
-        @Status(HttpStatus.CREATED)
-        @SingleResult
-        Publisher<Point> post(@Body Publisher<Point> data) {
             return data
         }
 

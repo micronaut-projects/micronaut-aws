@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service.gatewaymanagement;
 
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
@@ -22,6 +23,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -40,13 +42,12 @@ import software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagem
  */
 @Factory
 public class ApiGatewayManagementApiClientFactory extends AwsClientFactory<ApiGatewayManagementApiClientBuilder, ApiGatewayManagementApiAsyncClientBuilder, ApiGatewayManagementApiClient, ApiGatewayManagementApiAsyncClient> {
-
     /**
      * Constructor.
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
-     * @deprecated Use {@link ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider )} instead.
+     * @deprecated Use {@link ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider, AWSServiceConfiguration)} instead.
      */
     @Deprecated
     protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
@@ -59,12 +60,29 @@ public class ApiGatewayManagementApiClientFactory extends AwsClientFactory<ApiGa
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
      * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain, UserAgentProvider, AWSServiceConfiguration)} instead.
      */
-    @Inject
+    @Deprecated
     protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider,
                                                    AwsRegionProviderChain regionProvider,
                                                    @Nullable UserAgentProvider userAgentProvider) {
         super(credentialsProvider, regionProvider, userAgentProvider);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @param awsServiceConfiguration  AWS Service Configuration
+     */
+    @Inject
+    protected ApiGatewayManagementApiClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                                   AwsRegionProviderChain regionProvider,
+                                                   @Nullable UserAgentProvider userAgentProvider,
+                                                   @Nullable @Named(ApiGatewayManagementApiClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     @Override
