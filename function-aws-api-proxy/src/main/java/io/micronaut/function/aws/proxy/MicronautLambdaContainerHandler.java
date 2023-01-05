@@ -745,49 +745,4 @@ public final class MicronautLambdaContainerHandler
         this.applicationContext.close();
     }
 
-    /**
-     * Holds state for the running container.
-     */
-    private static class LambdaContainerState implements MicronautLambdaContainerContext {
-        private Router router;
-        private ApplicationContext applicationContext;
-        private JsonMediaTypeCodec jsonCodec;
-        private ObjectMapper objectMapper;
-
-        @Override
-        public Router getRouter() {
-            return router;
-        }
-
-        @Override
-        public JsonMediaTypeCodec getJsonCodec() {
-            return jsonCodec;
-        }
-
-        @Override
-        public ApplicationContext getApplicationContext() {
-            return applicationContext;
-        }
-
-        @Override
-        public ObjectMapper getObjectMapper() {
-            return objectMapper;
-        }
-
-        void setJsonCodec(JsonMediaTypeCodec jsonCodec) {
-            this.jsonCodec = jsonCodec;
-        }
-
-        void setRouter(Router router) {
-            this.router = router;
-        }
-
-        void setApplicationContext(ApplicationContext applicationContext) {
-            this.applicationContext = applicationContext;
-        }
-
-        void setObjectMapper(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-        }
-    }
 }

@@ -7,6 +7,7 @@ dependencies {
     compileOnly(mn.micronaut.security)
     implementation(mn.reactor)
     api(mn.micronaut.http.server)
+    api(libs.managed.aws.lambda.events)
     api(libs.managed.aws.serverless.core) {
         exclude(group = "javax.servlet", module = "javax.servlet-api")
         exclude(group = "com.fasterxml.jackson.module", module = "jackson-module-afterburner")
