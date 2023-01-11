@@ -8,11 +8,8 @@ io.micronaut.aws.alexa.httpserver.controllers
 io.micronaut.aws.alexa.httpserver.exceptions
 io.micronaut.aws.alexa.httpserver.services
 io.micronaut.aws.alexa.httpserver.verifiers
-io.micronaut.aws.alexa.locale
 io.micronaut.aws.alexa.ssml
-io.micronaut.aws.apigateway
 io.micronaut.aws.cdk.function
-io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
 io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
@@ -20,7 +17,6 @@ io.micronaut.aws.sdk.v2.client.apache
 io.micronaut.aws.sdk.v2.client.netty
 io.micronaut.aws.sdk.v2.client.urlConnection
 io.micronaut.aws.sdk.v2.service
-io.micronaut.aws.sdk.v2.service.cloudwatchlogs
 io.micronaut.aws.sdk.v2.service.dynamodb
 io.micronaut.aws.sdk.v2.service.gatewaymanagement
 io.micronaut.aws.sdk.v2.service.s3
@@ -31,7 +27,6 @@ io.micronaut.aws.sdk.v2.service.sns
 io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
 io.micronaut.aws.secretsmanager
-io.micronaut.aws.ua
 io.micronaut.discovery.aws.parameterstore
 io.micronaut.discovery.aws.servicediscovery
 io.micronaut.discovery.aws.servicediscovery.client
@@ -39,9 +34,7 @@ io.micronaut.discovery.aws.servicediscovery.registration
 io.micronaut.discovery.cloud.aws
 io.micronaut.function.aws
 io.micronaut.function.aws.alexa
-io.micronaut.function.aws.event
 io.micronaut.function.aws.proxy
-io.micronaut.function.aws.proxy.cookie
 io.micronaut.function.aws.proxy.model.bind
 io.micronaut.function.aws.proxy.model.factory
 io.micronaut.function.aws.proxy.security
