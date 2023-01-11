@@ -1,6 +1,8 @@
 package io.micronaut.function.aws.proxy.test
 
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
@@ -45,7 +47,7 @@ class AwsApiProxyTestServerSpec extends Specification {
         then:
         result == 'get:bar'
     }
-    
+
     void 'query values with special chars are not double decoded'() {
         when:
         String result = client.toBlocking().retrieve(HttpRequest.GET('/test-param?foo=prebar%2Bpostbar')
@@ -53,6 +55,16 @@ class AwsApiProxyTestServerSpec extends Specification {
 
         then:
         result == 'get:prebar+postbar'
+    }
+
+    void 'test invoke post that returns empty body'() {
+        when:
+        HttpResponse<?> response = client.toBlocking()
+                .exchange(HttpRequest.POST('/empty-body', "Foo").contentType(MediaType.TEXT_PLAIN))
+
+        then:
+        response.status == HttpStatus.NO_CONTENT
+        !response.body.isPresent()
     }
 
 
@@ -71,6 +83,11 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Get(value = '/test-param{?foo}', processes = MediaType.TEXT_PLAIN)
         String search(@QueryValue String foo) {
             'get:' + foo
+        }
+
+        @Post(value = '/empty-body', processes = MediaType.TEXT_PLAIN)
+        HttpResponse emptyBody(@Body String body) {
+            return HttpResponse.noContent()
         }
     }
 }
