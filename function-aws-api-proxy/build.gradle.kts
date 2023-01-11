@@ -8,6 +8,7 @@ dependencies {
     implementation(mn.reactor)
     api(mn.micronaut.http.server)
     api(libs.managed.aws.serverless.core) {
+        exclude(group = "org.slf4j", module = "slf4j-api")
         exclude(group = "javax.servlet", module = "javax.servlet-api")
         exclude(group = "com.fasterxml.jackson.module", module = "jackson-module-afterburner")
         exclude(group = "commons-logging")
