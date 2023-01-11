@@ -208,6 +208,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             AwsProxyRequest awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
             AwsProxyResponse awsProxyResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
             responseAdapter.handle(request, awsProxyResponse, response);
+            baseRequest.setHandled(true);
         }
     }
 }
