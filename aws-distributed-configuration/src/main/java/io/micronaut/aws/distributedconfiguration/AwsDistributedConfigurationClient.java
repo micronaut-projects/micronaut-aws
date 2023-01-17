@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+
 /**
  * Base implementation for AWS services contributing distributed configuration.
  *
@@ -151,32 +154,43 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
         if (applicationName != null) {
             if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
                 for (String name : environment.getActiveNames()) {
-                    configurationResolutionPrefixes.add(prefix(applicationName, name));
-               }
+                    configurationResolutionPrefixes.addAll(prefix(applicationName, name));
+                }
             }
-            configurationResolutionPrefixes.add(prefix(applicationName));
+            configurationResolutionPrefixes.addAll(prefix(applicationName));
         }
         if (awsDistributedConfiguration.isSearchCommonApplication()) {
             if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
                 for (String name : environment.getActiveNames()) {
-                    configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
+                    configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
                 }
             }
-            configurationResolutionPrefixes.add(prefix(awsDistributedConfiguration.getCommonApplicationName()));
+            configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName()));
         }
         return configurationResolutionPrefixes;
     }
 
     @NonNull
-    private String prefix(@NonNull String appName) {
+    private List<String> prefix(@NonNull String appName) {
         return prefix(appName, null);
     }
 
     @NonNull
-    private String prefix(@NonNull String appName, @Nullable String envName) {
+    private List<String> prefix(@NonNull String appName, @Nullable String envName) {
+        List<String> prefixes = awsDistributedConfiguration.getPrefixes().isEmpty() ?
+            singletonList(awsDistributedConfiguration.getPrefix()) :
+            awsDistributedConfiguration.getPrefixes();
+
+        return prefixes.stream()
+            .map(p -> buildPrefix(p, appName, envName))
+            .collect(toList());
+    }
+
+    private String buildPrefix(@NonNull String inputPrefix, @NonNull String appName, @Nullable String envName) {
+        String delimiter = awsDistributedConfiguration.getDelimiter();
         if (envName != null) {
-            return awsDistributedConfiguration.getPrefix() +  appName + UNDERSCORE + envName + awsDistributedConfiguration.getDelimiter();
+            return inputPrefix + appName + UNDERSCORE + envName + delimiter;
         }
-        return awsDistributedConfiguration.getPrefix() +  appName + awsDistributedConfiguration.getDelimiter();
+        return inputPrefix + appName + delimiter;
     }
 }

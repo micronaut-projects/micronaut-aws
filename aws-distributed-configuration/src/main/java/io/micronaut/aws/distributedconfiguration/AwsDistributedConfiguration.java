@@ -17,6 +17,7 @@ package io.micronaut.aws.distributedconfiguration;
 
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import java.util.List;
 
 /**
  * Configuration for Distributed Configuration using AWS services such as AWS Parameter Store or Secrets Manager.
@@ -33,6 +34,13 @@ public interface AwsDistributedConfiguration {
      */
     @NonNull
     String getPrefix();
+
+    /**
+     * @return List of prefixes for AWS Distributed Configuration resources names. If it is non-empty,
+     * {@link AwsDistributedConfiguration#getPrefix()} is not used
+     */
+    @NonNull
+    List<String> getPrefixes();
 
     /**
      * Delimiter after prefix and application name. For /config/application_dev/micronaut.security.oauth2.clients.mycompanyauth.client-secret
