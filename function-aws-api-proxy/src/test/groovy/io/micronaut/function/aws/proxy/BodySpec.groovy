@@ -121,7 +121,7 @@ class BodySpec extends Specification {
         def response = objectMapper.readValue(output.toByteArray(), AwsProxyResponse)
         then:
         response.statusCode == 201
-        response.getBody()
+        response.getBody() == "Root=1-62e22402-3a5f246225e45edd7735c182"
     }
 
     private String getSingleValueRequestJson() {
@@ -170,8 +170,8 @@ class BodySpec extends Specification {
 
         @Get(uri = "/singeHeaders")
         @Status(HttpStatus.CREATED)
-        String singeHeaders(@Header String userAgent) {
-            return userAgent
+        String singeHeaders(@Header String xAmznTraceId) {
+            return xAmznTraceId
         }
 
 
