@@ -111,7 +111,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         final String httpMethod = awsProxyRequest.getHttpMethod();
         this.httpMethod = StringUtils.isNotEmpty(httpMethod) ? HttpMethod.valueOf(httpMethod) : HttpMethod.GET;
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
-        this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(ConversionService.SHARED);
+        final SingleValueHeaders singleValueHeaders = awsProxyRequest.getHeaders();
+        this.headers = multiValueHeaders != null || singleValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(ConversionService.SHARED);
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
         this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(ConversionService.SHARED);
 
@@ -222,7 +223,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        final SingleValueHeaders singleValueHeaders = awsProxyRequest.getHeaders();
+
+
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
+
+        hostHeader = hostHeader == null && singleValueHeaders !=null ? singleValueHeaders.get(HttpHeaders.HOST): null;
+
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
 
         if (requestContext != null && !isValidHost(hostHeader, requestContext.getApiId(), region)) {
@@ -505,7 +512,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Override
         public List<String> getAll(CharSequence name) {
             if (StringUtils.isNotEmpty(name)) {
-                final List<String> strings = multiValueHeaders.get(name.toString());
+                final List<String> strings = new ArrayList<>();
+                if (multiValueHeaders != null) {
+                    List<String> multiValues = multiValueHeaders.get(name.toString());
+                    if (multiValues != null && !multiValues.isEmpty()) {
+                        strings.addAll(multiValues);
+                    }
+                }
                 String singleHeader = singleValueHeaders != null ? singleValueHeaders.get(name.toString()) : null;
                 if (singleHeader != null) {
                     strings.add(singleHeader);
@@ -521,20 +534,22 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Nullable
         @Override
         public String get(CharSequence name) {
-            String result = null;
-            if (StringUtils.isNotEmpty(name)) {
-                result = multiValueHeaders.getFirst(name.toString());
+            if (StringUtils.isNotEmpty(name) && multiValueHeaders != null) {
+               return multiValueHeaders.getFirst(name.toString());
             }
-            if (StringUtils.isNotEmpty(name) && result == null && singleValueHeaders != null) {
-                result = singleValueHeaders.get(name.toString());
+            if (StringUtils.isNotEmpty(name) && singleValueHeaders != null) {
+                return singleValueHeaders.get(name.toString());
 
             }
-            return result;
+            return null;
         }
 
         @Override
         public Set<String> names() {
-            HashSet<String> names = new HashSet<>(multiValueHeaders.keySet());
+            HashSet<String> names = new HashSet<>();
+            if (multiValueHeaders != null) {
+                names.addAll(multiValueHeaders.keySet());
+            }
             if (singleValueHeaders != null) {
                 names.addAll(singleValueHeaders.keySet());
             }
@@ -545,7 +560,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         public Collection<List<String>> values() {
             ArrayList<List<String>> lists = new ArrayList<>(multiValueHeaders.values());
             if (singleValueHeaders != null) {
-                lists.add(new ArrayList<>(singleValueHeaders.values()));
+                singleValueHeaders.values().forEach(x->lists.add(Collections.singletonList(x)));
             }
             return lists;
         }

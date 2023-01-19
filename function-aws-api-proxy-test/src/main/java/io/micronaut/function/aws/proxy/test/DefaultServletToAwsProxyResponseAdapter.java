@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link ServletToAwsProxyResponseAdapter}.
@@ -42,12 +43,17 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
                        @NonNull AwsProxyResponse awsProxyResponse,
                        @NonNull HttpServletResponse response) throws IOException {
         Headers responseHeaders = awsProxyResponse.getMultiValueHeaders();
+        Map<String, String> headers = awsProxyResponse.getHeaders();
 
         responseHeaders.forEach((key, strings) -> {
             for (String string : strings) {
                 response.addHeader(key, string);
             }
         });
+        if (headers != null) {
+            headers.forEach(response::addHeader);
+        }
+
         response.setStatus(awsProxyResponse.getStatusCode());
         HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
         if (httpMethod != HttpMethod.HEAD && httpMethod != HttpMethod.OPTIONS) {
