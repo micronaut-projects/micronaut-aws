@@ -228,7 +228,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
 
-        hostHeader = hostHeader == null && singleValueHeaders !=null ? singleValueHeaders.get(HttpHeaders.HOST): null;
+        hostHeader = hostHeader == null && singleValueHeaders != null ? singleValueHeaders.get(HttpHeaders.HOST) : null;
 
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
 
@@ -561,7 +561,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         public Collection<List<String>> values() {
             ArrayList<List<String>> lists = new ArrayList<>(multiValueHeaders.values());
             if (singleValueHeaders != null) {
-                singleValueHeaders.values().forEach(x->lists.add(Collections.singletonList(x)));
+                singleValueHeaders.values().forEach(x -> lists.add(Collections.singletonList(x)));
             }
             return lists;
         }
