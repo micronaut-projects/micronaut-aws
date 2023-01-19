@@ -534,14 +534,15 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Nullable
         @Override
         public String get(CharSequence name) {
+            String result = null;
             if (StringUtils.isNotEmpty(name) && multiValueHeaders != null) {
-               return multiValueHeaders.getFirst(name.toString());
+                result = multiValueHeaders.getFirst(name.toString());
             }
-            if (StringUtils.isNotEmpty(name) && singleValueHeaders != null) {
-                return singleValueHeaders.get(name.toString());
+            if (result == null && StringUtils.isNotEmpty(name) && singleValueHeaders != null) {
+                result = singleValueHeaders.get(name.toString());
 
             }
-            return null;
+            return result;
         }
 
         @Override
