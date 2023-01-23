@@ -53,6 +53,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
     @NonNull
     String prefix = DEFAULT_PREFIX;
 
+    @NonNull
     private List<String> prefixes = new ArrayList<>();
 
     @NonNull
