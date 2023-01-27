@@ -21,6 +21,7 @@ class AwsDistributedConfigurationSpec extends Specification {
                 'spec.name': 'AwsDistributedConfigurationSpec',
                 'aws.distributed-configuration.delimiter': '-',
                 'aws.distributed-configuration.prefix': 'foo',
+                'aws.distributed-configuration.prefixes': ['foo', 'bar'],
                 'aws.distributed-configuration.common-application-name': 'bar',
         ]
         when:
@@ -30,6 +31,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         then:
         awsDistributedConfiguration.delimiter == '-'
         awsDistributedConfiguration.prefix == 'foo'
+        awsDistributedConfiguration.prefixes == ['foo', 'bar']
         awsDistributedConfiguration.commonApplicationName == 'bar'
 
         cleanup:
@@ -48,6 +50,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         then:
         awsDistributedConfiguration.delimiter == '/'
         awsDistributedConfiguration.prefix == '/config/'
+        awsDistributedConfiguration.prefixes == []
         awsDistributedConfiguration.commonApplicationName == 'application'
 
         cleanup:
@@ -85,6 +88,44 @@ class AwsDistributedConfigurationSpec extends Specification {
         'myapp'     | null  || 'myappYYY'
         'otherapp'  | null  || 'applicationYYY'
         'otherapp'  | 'foo' || 'application_fooYYY'
+    }
+
+    @RestoreSystemProperties
+    void "multiple prefixes are used to read from secrets" (String appName,
+                                                            String env,
+                                                            List<String> prefixes,
+                                                            String expectedSecret,
+                                                            String expectedToken){
+        given:
+        System.setProperty(Environment.BOOTSTRAP_CONTEXT_PROPERTY, StringUtils.TRUE)
+        Map<String, Object> properties = [
+                'spec.name': 'AwsDistributedConfigurationSpec',
+                'micronaut.application.name': appName,
+                'micronaut.config-client.enabled': true,
+                'aws.distributed-configuration.prefixes': prefixes,
+                'aws.distributed-configuration.delimiter': '/',
+        ]
+
+        when:
+        EmbeddedServer embeddedServer = env ? ApplicationContext.run(EmbeddedServer, properties, env) : ApplicationContext.run(EmbeddedServer,  properties)
+        ApplicationContext context = embeddedServer.applicationContext
+        Optional<String> clientSecretOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-secret', String)
+        Optional<String> clientIdOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-id', String)
+
+        then:
+        clientSecretOptional.isPresent()
+        clientSecretOptional.get() == expectedSecret
+        clientIdOptional.isPresent()
+        clientIdOptional.get() == expectedToken
+
+        cleanup:
+        context.close()
+        embeddedServer.close()
+
+      where:
+      appName    | env   | prefixes                | expectedSecret    | expectedToken
+      'myapp'    | 'foo' | ['/config/', '/other/'] | 'myapp_fooYYY'    | 'myapp_fooXXX'
+      'otherapp' | null  | ['/demo/']              | 'otherapp_fooYYY' | 'otherapp_fooXXX'
     }
 
     @Requires(beans = [AwsDistributedConfiguration, KeyValueFetcher])
@@ -138,8 +179,16 @@ class AwsDistributedConfigurationSpec extends Specification {
                 '/config/myapp_foo/OpenID':
                         [
                                 'micronaut.security.oauth2.clients.companyauthserver.client-secret': 'myapp_fooYYY'
+                        ],
+                '/other/myapp_foo/OpenID':
+                        [
+                                'micronaut.security.oauth2.clients.companyauthserver.client-id': 'myapp_fooXXX'
+                        ],
+                '/demo/otherapp/OpenID':
+                        [
+                                'micronaut.security.oauth2.clients.companyauthserver.client-secret': 'otherapp_fooYYY',
+                                'micronaut.security.oauth2.clients.companyauthserver.client-id': 'otherapp_fooXXX'
                         ]
-
         ]
 
         @Override
