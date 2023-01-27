@@ -18,8 +18,8 @@ dependencies {
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
-    testImplementation(project(":function-aws"))
-    testImplementation(project(":function-client-aws"))
+    testImplementation(projects.functionAws)
+    testImplementation(projects.functionClientAws)
 }
 
 tasks {
