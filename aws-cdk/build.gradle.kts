@@ -7,6 +7,6 @@ val micronautStarterVersion: String by project
 
 dependencies {
     api(libs.aws.cdk.lib)
-    api("io.micronaut.starter:micronaut-starter-api:$micronautStarterVersion")
+    api(libs.managed.micronaut.starter)
     testImplementation(projects.functionAwsApiProxy)
 }
