@@ -2,6 +2,7 @@ package io.micronaut.function.aws.proxy
 
 import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -9,11 +10,9 @@ import delight.fileupload.FileUpload
 import groovy.transform.Canonical
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
-import io.micronaut.core.async.annotation.SingleResult
 import io.micronaut.core.io.Writable
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
-import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
@@ -23,7 +22,6 @@ import io.micronaut.http.annotation.Header
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import org.apache.commons.fileupload.FileItem
-import org.reactivestreams.Publisher
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
