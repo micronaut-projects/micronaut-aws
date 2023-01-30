@@ -14,7 +14,7 @@ servlet-api = "2.5"
 slf4j = "1.7.36"
 javapoet = "1.13.0"
 
-kotlin = "1.7.21"
+kotlin = "1.8.0"
 
 # Micronaut
 micronaut-gradle-plugin = "3.7.0"
