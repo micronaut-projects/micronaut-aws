@@ -1,4 +1,10 @@
 [versions]
+micronaut = "3.8.0"
+micronaut-docs = "2.0.0"
+micronaut-test = "3.8.0"
+groovy = "3.0.13"
+spock = "2.3-groovy-3.0"
+
 bouncycastle = '1.70'
 fileupload = '0.0.5'
 jetty = '9.4.50.v20221201'
@@ -10,11 +16,12 @@ managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.9.1'
 managed-aws-cdk-lib='2.58.1'
+micronaut-starter = "3.8.0"
 servlet-api = "2.5"
 slf4j = "1.7.36"
 javapoet = "1.13.0"
 
-kotlin = "1.7.21"
+kotlin = "1.7.22"
 
 # Micronaut
 micronaut-gradle-plugin = "3.6.7"
@@ -41,6 +48,8 @@ awssdk-sqs = { module = 'software.amazon.awssdk:sqs' }
 awssdk-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection-client' }
 
+kotlin-stdlib-jdk8 = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk8', version.ref = 'kotlin' }
+
 boms-aws-java-sdk-v1 = { module = 'com.amazonaws:aws-java-sdk-bom', version.ref = 'managed-aws-java-sdk-v1' }
 boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'managed-aws-java-sdk-v2' }
 
@@ -50,10 +59,15 @@ jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-af
 jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api' }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
+aws-java-sdk-lambda = { module = 'com.amazonaws:aws-java-sdk-lambda' }
+
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
+
+micronaut-starter = { module = "io.micronaut.starter:micronaut-starter-api", version.ref = 'micronaut-starter'}
 
 managed-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
@@ -61,6 +75,8 @@ managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-suppo
 managed-aws-java-sdk-core = { module = 'com.amazonaws:aws-java-sdk-core', version.ref = 'managed-aws-java-sdk-v1' }
 managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', version.ref = 'managed-aws-lambda'}
 managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events'}
+
+
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
 managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
