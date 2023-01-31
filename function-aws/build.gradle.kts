@@ -10,4 +10,5 @@ dependencies {
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mongodb)
     testImplementation(libs.testcontainers)
+    testRuntimeOnly(mn.micronaut.jackson.databind)
 }
