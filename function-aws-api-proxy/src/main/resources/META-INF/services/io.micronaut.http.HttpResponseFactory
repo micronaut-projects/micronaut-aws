@@ -1,1 +1,2 @@
 io.micronaut.function.aws.proxy.model.factory.MicronautAwsProxyResponseFactory
+io.micronaut.function.aws.proxy.DelegateHttpResponseFactory

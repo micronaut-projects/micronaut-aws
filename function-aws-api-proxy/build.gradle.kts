@@ -4,9 +4,12 @@ plugins {
 
 dependencies {
     annotationProcessor(mn.micronaut.graal)
+    annotationProcessor(mn.micronaut.serde.processor)
     compileOnly(mn.micronaut.security)
     implementation(mn.reactor)
     api(mn.micronaut.http.server)
+    api(mn.micronaut.serde.api)
+    api(libs.managed.aws.lambda.events)
     api(libs.managed.aws.serverless.core) {
         exclude(group = "org.slf4j", module = "slf4j-api")
         exclude(group = "javax.servlet", module = "javax.servlet-api")
