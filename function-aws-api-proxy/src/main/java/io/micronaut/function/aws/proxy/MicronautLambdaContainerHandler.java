@@ -364,7 +364,10 @@ public final class MicronautLambdaContainerHandler
                     request,
                     true,
                     routeMatchPublisher
-            ).mapNotNull(r -> convertResponseBody(response, r.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class).get(), r.body()).block());
+            ).mapNotNull(r -> r.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class)
+                .map(routeInfo -> convertResponseBody(response, routeInfo, r.body()).block())
+                .orElseGet(() -> (MutableHttpResponse) response)
+            );
         } catch (Exception e) {
             routeResponse = Flux.from(routeExecutor.filterPublisher(new AtomicReference<>(request), routeExecutor.onError(e, request)));
         }
