@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.async.publisher.Publishers;
+import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.execution.ExecutionFlow;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.type.TypeVariableResolver;
@@ -51,6 +52,7 @@ class AwsRequestLifecycle extends RequestLifecycle {
     private final MicronautLambdaContainerHandler containerHandler;
     private final MicronautAwsProxyRequest<?> containerRequest;
     private final MicronautAwsProxyResponse<?> containerResponse;
+    private final ConversionService conversionService;
 
     AwsRequestLifecycle(
         MicronautLambdaContainerHandler containerHandler,
@@ -58,6 +60,7 @@ class AwsRequestLifecycle extends RequestLifecycle {
         MicronautAwsProxyRequest<?> containerRequest,
         MicronautAwsProxyResponse<?> containerResponse) {
         super(routeExecutor, containerRequest);
+        this.conversionService = containerHandler.getApplicationContext().getBean(ConversionService.class);
         this.containerHandler = containerHandler;
         this.containerRequest = containerRequest;
         this.containerResponse = containerResponse;
@@ -115,8 +118,8 @@ class AwsRequestLifecycle extends RequestLifecycle {
     private static Argument<?> parseBodyArgument(@NonNull RouteMatch<?> finalRoute) {
         Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
         if (bodyArgument == null) {
-            if (finalRoute instanceof MethodBasedRouteMatch) {
-                bodyArgument = Arrays.stream(((MethodBasedRouteMatch) finalRoute).getArguments())
+            if (finalRoute instanceof MethodBasedRouteMatch methodBasedRouteMatch) {
+                bodyArgument = Arrays.stream(methodBasedRouteMatch.getArguments())
                     .filter(arg -> HttpRequest.class.isAssignableFrom(arg.getType()))
                     .findFirst()
                     .flatMap(TypeVariableResolver::getFirstTypeVariable).orElse(null);
@@ -157,9 +160,9 @@ class AwsRequestLifecycle extends RequestLifecycle {
         if (Publishers.isConvertibleToPublisher(body)) {
             ExecutionFlow<?> single;
             if (Publishers.isSingle(body.getClass()) || routeInfo.getReturnType().isSpecifiedSingle()) {
-                single = ReactiveExecutionFlow.fromPublisher(Mono.from(Publishers.convertPublisher(body, Publisher.class)));
+                single = ReactiveExecutionFlow.fromPublisher(Mono.from(Publishers.convertPublisher(conversionService, body, Publisher.class)));
             } else {
-                single = ReactiveExecutionFlow.fromPublisher(Flux.from(Publishers.convertPublisher(body, Publisher.class)).collectList());
+                single = ReactiveExecutionFlow.fromPublisher(Flux.from(Publishers.convertPublisher(conversionService, body, Publisher.class)).collectList());
             }
             return single.map((Function<Object, MutableHttpResponse<?>>) o -> {
                 if (!(o instanceof MicronautAwsProxyResponse)) {
@@ -178,9 +181,9 @@ class AwsRequestLifecycle extends RequestLifecycle {
     }
 
     private void applyRouteConfig(RouteInfo<?> finalRoute) {
-        if (!containerResponse.getContentType().isPresent()) {
+        if (containerResponse.getContentType().isEmpty()) {
             finalRoute.getAnnotationMetadata().getValue(Produces.class, String.class).ifPresent(containerResponse::contentType);
         }
-        finalRoute.getAnnotationMetadata().getValue(Status.class, HttpStatus.class).ifPresent(httpStatus -> containerResponse.status(httpStatus));
+        finalRoute.getAnnotationMetadata().getValue(Status.class, HttpStatus.class).ifPresent(containerResponse::status);
     }
 }
