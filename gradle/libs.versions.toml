@@ -1,10 +1,9 @@
 [versions]
-micronaut = "3.8.2"
+micronaut = "3.8.0"
 micronaut-docs = "2.0.0"
 micronaut-test = "3.8.0"
 groovy = "3.0.13"
 spock = "2.3-groovy-3.0"
-
 
 bouncycastle = '1.70'
 fileupload = '0.0.5'
