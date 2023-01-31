@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpMethod;
 
+import jakarta.annotation.Nonnull;
 import jakarta.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
 
 /**
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link ServletToAwsProxyResponseAdapter}.
@@ -41,13 +43,7 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
     public void handle(@NonNull HttpServletRequest request,
                        @NonNull AwsProxyResponse awsProxyResponse,
                        @NonNull HttpServletResponse response) throws IOException {
-        Headers responseHeaders = awsProxyResponse.getMultiValueHeaders();
-
-        responseHeaders.forEach((key, strings) -> {
-            for (String string : strings) {
-                response.addHeader(key, string);
-            }
-        });
+        populateHeaders(awsProxyResponse, response);
         response.setStatus(awsProxyResponse.getStatusCode());
         HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
         if (httpMethod != HttpMethod.HEAD && httpMethod != HttpMethod.OPTIONS) {
@@ -62,6 +58,21 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
                     }
                 }
             }
+        }
+    }
+
+    private void populateHeaders(@Nonnull AwsProxyResponse awsProxyResponse,
+                                 @NonNull HttpServletResponse response) {
+        Headers responseHeaders = awsProxyResponse.getMultiValueHeaders();
+        Map<String, String> headers = awsProxyResponse.getHeaders();
+
+        responseHeaders.forEach((key, strings) -> {
+            for (String string : strings) {
+                response.addHeader(key, string);
+            }
+        });
+        if (headers != null) {
+            headers.forEach(response::addHeader);
         }
     }
 
