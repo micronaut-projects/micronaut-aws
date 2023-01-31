@@ -44,4 +44,5 @@ dependencies {
     testRuntimeOnly(libs.jcl.over.slf4j)
 
     testRuntimeOnly(mn.snakeyaml)
+    testRuntimeOnly(mn.micronaut.jackson.databind)
 }

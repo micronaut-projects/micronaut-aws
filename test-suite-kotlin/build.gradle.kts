@@ -12,14 +12,13 @@ repositories {
 val micronautVersion: String by project
 
 dependencies {
-    kaptTest("io.micronaut:micronaut-inject-java:$micronautVersion")
-
-    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    kaptTest(mn.micronaut.inject.java)
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(projects.functionAws)
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22")
+    testImplementation(libs.kotlin.stdlib.jdk8)
     testImplementation(projects.functionClientAws)
     testRuntimeOnly(mn.snakeyaml)
 }

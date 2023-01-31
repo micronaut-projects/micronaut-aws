@@ -158,5 +158,30 @@
     "type": "io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient",
     "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient(io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration,io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher,io.micronaut.runtime.ApplicationConfiguration)",
     "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
   }
 ]

@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(projects.awsSdkV1)
-    implementation("com.amazonaws:aws-java-sdk-lambda")
+    implementation(libs.aws.java.sdk.lambda)
     implementation(mn.reactor)
     api(mn.micronaut.function.client)
     implementation(mn.micronaut.jackson.databind)

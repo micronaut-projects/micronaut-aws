@@ -17,9 +17,17 @@ package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
 import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
-import com.amazonaws.serverless.proxy.model.*;
+import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
+import com.amazonaws.serverless.proxy.model.ContainerConfig;
+import com.amazonaws.serverless.proxy.model.Headers;
+import com.amazonaws.serverless.proxy.model.MultiValuedTreeMap;
+import com.amazonaws.serverless.proxy.model.SingleValueHeaders;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
@@ -27,21 +35,36 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpParameters;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static com.amazonaws.serverless.proxy.RequestReader.*;
+import static com.amazonaws.serverless.proxy.RequestReader.ALB_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_EVENT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_STAGE_VARS_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.JAX_SECURITY_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.LAMBDA_CONTEXT_PROPERTY;
 
 /**
  * Implementation of {@link HttpRequest} that backs onto a {@link AwsProxyRequest} object.
@@ -90,8 +113,9 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         this.conversionService = conversionService;
         final String httpMethod = awsProxyRequest.getHttpMethod();
         this.httpMethod = StringUtils.isNotEmpty(httpMethod) ? HttpMethod.valueOf(httpMethod) : HttpMethod.GET;
-        final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
-        this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(conversionService);
+        this.headers = awsProxyRequest.getMultiValueHeaders() != null || awsProxyRequest.getHeaders() != null ?
+            new AwsHeaders(awsProxyRequest.getMultiValueHeaders(), awsProxyRequest.getHeaders(), conversionService) : new SimpleHttpHeaders(conversionService);
+
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
         this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(conversionService);
 
@@ -202,7 +226,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        final SingleValueHeaders singleValueHeaders = awsProxyRequest.getHeaders();
+
+
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
+
+        hostHeader = hostHeader == null && singleValueHeaders != null ? singleValueHeaders.get(HttpHeaders.HOST) : null;
+
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
 
         if (requestContext != null && !isValidHost(hostHeader, requestContext.getApiId(), region)) {
@@ -477,38 +507,65 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     /**
      * Implementation of {@link HttpHeaders} for AWS.
      */
-    private class AwsHeaders implements HttpHeaders {
+    private static class AwsHeaders implements HttpHeaders {
 
-        private Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        private final Map<String, List<String>> headers;
+        private final ConversionService conversionService;
+
+        public AwsHeaders(@Nullable Headers multivalueHeaders, @Nullable SingleValueHeaders singleValueHeaders, ConversionService conversionService) {
+            this.conversionService = conversionService;
+            if (multivalueHeaders == null && singleValueHeaders == null) {
+                headers = Collections.emptyMap();
+            } else {
+                headers = new HashMap<>();
+                if (multivalueHeaders != null) {
+                    for (String name : multivalueHeaders.keySet()) {
+                        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                        headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                        headers.get(headerName).addAll(multivalueHeaders.get(headerName));
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(singleValueHeaders)) {
+                    for (String name : singleValueHeaders.keySet()) {
+                        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                        headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                        headers.get(headerName).add(singleValueHeaders.get(headerName));
+                    }
+                }
+            }
+        }
 
         @Override
         public List<String> getAll(CharSequence name) {
-            if (StringUtils.isNotEmpty(name)) {
-                final List<String> strings = multiValueHeaders.get(name.toString());
-                if (CollectionUtils.isNotEmpty(strings)) {
-                    return strings;
-                }
+            String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
+            if (!headers.containsKey(headerName)) {
+                return Collections.emptyList();
             }
-            return Collections.emptyList();
+            List<String> values = headers.get(headerName);
+            if (values == null) {
+                return Collections.emptyList();
+            }
+            return values;
         }
 
         @Nullable
         @Override
         public String get(CharSequence name) {
-            if (StringUtils.isNotEmpty(name)) {
-                return multiValueHeaders.getFirst(name.toString());
+            List<String> values = getAll(name);
+            if (CollectionUtils.isEmpty(values)) {
+                return null;
             }
-            return null;
+            return values.get(0);
         }
 
         @Override
         public Set<String> names() {
-            return multiValueHeaders.keySet();
+            return headers.keySet();
         }
 
         @Override
         public Collection<List<String>> values() {
-            return multiValueHeaders.values();
+            return headers.values();
         }
 
         @Override
