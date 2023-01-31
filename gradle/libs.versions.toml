@@ -16,7 +16,7 @@ managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.9.1'
 managed-aws-cdk-lib='2.58.1'
-managed-micronaut-starter = "3.8.0"
+micronaut-starter = "3.8.0"
 servlet-api = "2.5"
 slf4j = "1.7.36"
 javapoet = "1.13.0"
@@ -67,7 +67,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
-managed-micronaut-starter = { module = "io.micronaut.starter:micronaut-starter-api", version.ref = 'managed-micronaut-starter'}
+micronaut-starter = { module = "io.micronaut.starter:micronaut-starter-api", version.ref = 'micronaut-starter'}
 
 managed-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
