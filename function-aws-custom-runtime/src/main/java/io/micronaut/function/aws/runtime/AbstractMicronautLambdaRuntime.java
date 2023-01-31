@@ -161,8 +161,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
 
     @Override
     public ApplicationContext getApplicationContext() {
-        if (handler instanceof ApplicationContextProvider) {
-            return ((ApplicationContextProvider) handler).getApplicationContext();
+        if (handler instanceof ApplicationContextProvider applicationContextProvider) {
+            return applicationContextProvider.getApplicationContext();
         }
         return null;
     }
@@ -307,9 +307,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     protected HandlerRequestType createHandlerRequest(RequestType request) throws JsonProcessingException, JsonMappingException  {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
-        } else if (request instanceof APIGatewayProxyRequestEvent) {
+        } else if (request instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
-            String content = ((APIGatewayProxyRequestEvent) request).getBody();
+            String content = apiGatewayProxyRequestEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         }
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
@@ -389,8 +389,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     }
                 }
             } finally {
-                if (handler instanceof Closeable) {
-                    ((Closeable) handler).close();
+                if (handler instanceof Closeable closeable) {
+                    closeable.close();
                 }
                 if (endpointClient != null) {
                     endpointClient.close();
@@ -410,8 +410,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @return The HTTP Request decorated
      */
     protected HttpRequest decorateWithUserAgent(HttpRequest<?> request) {
-        if (userAgent != null && request instanceof MutableHttpRequest) {
-            return ((MutableHttpRequest) request).header(USER_AGENT, userAgent);
+        if (userAgent != null && request instanceof MutableHttpRequest mutableHttpRequest) {
+            return mutableHttpRequest.header(USER_AGENT, userAgent);
         }
         return request;
     }

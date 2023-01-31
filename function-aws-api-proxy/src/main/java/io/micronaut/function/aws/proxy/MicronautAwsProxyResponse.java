@@ -183,13 +183,13 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         byte[] encoded = null;
         try {
             if (body != null) {
-                if (body instanceof ByteBuffer) {
-                    encoded = ((ByteBuffer) body).toByteArray();
-                } else if (body instanceof byte[]) {
-                    encoded = (byte[]) body;
+                if (body instanceof ByteBuffer byteBuffer) {
+                    encoded = byteBuffer.toByteArray();
+                } else if (body instanceof byte[] bytes) {
+                    encoded = bytes;
                 } else {
                     final Optional<MediaType> contentType = getContentType();
-                    if (!contentType.isPresent()) {
+                    if (contentType.isEmpty()) {
                         contentType(MediaType.APPLICATION_JSON_TYPE);
                     }
                     encoded = codec.encode(body);

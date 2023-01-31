@@ -142,8 +142,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         if (securityContext == null) {
             return false;
         }
-        if (securityContext instanceof AwsProxySecurityContext) {
-            AwsProxySecurityContext awsProxySecurityContext = (AwsProxySecurityContext) securityContext;
+        if (securityContext instanceof AwsProxySecurityContext awsProxySecurityContext) {
             if (awsProxySecurityContext.getEvent() == null ||
                     awsProxySecurityContext.getEvent().getRequestContext() == null ||
                     awsProxySecurityContext.getEvent().getRequestContext().getIdentity() == null) {
