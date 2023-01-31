@@ -4,9 +4,9 @@ plugins {
 }
 
 dependencies {
-    testAnnotationProcessor(platform(mn.micronaut.bom))
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
     testAnnotationProcessor(mn.micronaut.inject.java)
-    testImplementation(platform(mn.micronaut.bom))
+    testImplementation(platform(mn.micronaut.core.bom))
     testImplementation(mn.micronaut.inject.java)
 
     testImplementation(mn.micronaut.http.client)
