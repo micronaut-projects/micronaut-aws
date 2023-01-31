@@ -1,6 +1,8 @@
 <configuration>
 
-    <appender name="MOCK" class="io.micronaut.aws.cloudwatch.logging.MockAppender"/>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+    <appender name="MOCK" class="ch.qos.logback.core.read.ListAppender"/>
 
     <appender name="AWS" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
         <!-- encoders are assigned the type
