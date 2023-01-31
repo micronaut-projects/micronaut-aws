@@ -4,8 +4,8 @@ dependency:io.micronaut.aws:micronaut-aws-parameter-store[]
 
 To enable distributed configuration a `src/main/resources/bootstrap.yml` configuration file must be created and configured to use Parameter Store:
 
-.bootstrap.yml
-[source,yaml]
+.bootstrap configuration
+[configuration]
 ----
 micronaut:
   application:
