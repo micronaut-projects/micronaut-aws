@@ -15,6 +15,7 @@ import io.micronaut.function.FunctionBean
 import jakarta.inject.Singleton
 import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonProperty
+import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
 import spock.lang.Issue
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import java.util.function.Function
 
+@spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
 class MicronautRequestStreamHandlerDontCloseApplicationContextSpec extends Specification {
 
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1187")
