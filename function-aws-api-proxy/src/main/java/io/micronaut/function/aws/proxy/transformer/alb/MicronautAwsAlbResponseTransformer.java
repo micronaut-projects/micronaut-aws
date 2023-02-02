@@ -15,7 +15,9 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class MicronautAwsAlbResponseTransformer implements MicronautAwsResponseTransformer<ApplicationLoadBalancerResponseEvent> {
 
     private final ApplicationContext context;

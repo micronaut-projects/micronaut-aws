@@ -29,7 +29,9 @@ import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class MicronautAwsAlbRequestTransformer<T>
     implements MicronautAwsRequestTransformer<ApplicationLoadBalancerRequestEvent, T> {
     private final ApplicationContext context;
