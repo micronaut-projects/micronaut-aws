@@ -84,8 +84,7 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
     @Nullable
     protected byte[] parseBodyAsBytes(AwsProxyResponse awsProxyResponse) {
         String body = awsProxyResponse.getBody();
-        return body == null ? null :
-                awsProxyResponse.isBase64Encoded() ? Base64.getDecoder().decode(body) : body.getBytes(getBodyCharset());
+        return body == null ? null : awsProxyResponse.isBase64Encoded() ? Base64.getMimeDecoder().decode(body) : body.getBytes(getBodyCharset());
     }
 
     /**
