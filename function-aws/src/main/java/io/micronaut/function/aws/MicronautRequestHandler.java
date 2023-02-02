@@ -15,11 +15,16 @@
  */
 package io.micronaut.function.aws;
 
-import com.amazonaws.services.lambda.runtime.*;
-import io.micronaut.context.event.ApplicationEventPublisher;
-import io.micronaut.core.annotation.NonNull;
+import java.util.Optional;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.event.ApplicationEventPublisher;
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.ConversionError;
@@ -29,8 +34,6 @@ import io.micronaut.function.aws.event.AfterExecutionEvent;
 import io.micronaut.function.executor.AbstractFunctionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import java.util.Optional;
 
 /**
  * <p>An Amazon Lambda {@link RequestHandler} implementation for Micronaut {@link io.micronaut.function.FunctionBean}</p>.
@@ -40,6 +43,13 @@ import java.util.Optional;
  * @author Graeme Rocher
  * @since 1.0
  */
+@TypeHint(
+    accessType = {TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC},
+    value = MicronautRequestHandler.class
+)
+@Introspected(
+    visibility = Introspected.Visibility.PUBLIC
+)
 public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExecutor<I, O, Context> implements RequestHandler<I, O>, MicronautLambdaContext {
 
     public static final String ENV_X_AMZN_TRACE_ID = "_X_AMZN_TRACE_ID";
@@ -114,6 +124,9 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
             throw re;
         }
     }
+
+    public abstract Class<I> inputTypeClass();
+    public abstract Class<O> outputTypeClass();
 
     /**
      * Converts the input the required type. Subclasses can override to provide custom conversion.

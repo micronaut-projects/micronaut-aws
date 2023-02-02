@@ -19,5 +19,5 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 @FunctionalInterface
 public interface MicronautRequestHandlerCreator<RequestType, ResponseType> {
-  RequestHandler<RequestType, ResponseType> createRequestHandler();
+    RequestHandler<RequestType, ResponseType> createRequestHandler();
 }

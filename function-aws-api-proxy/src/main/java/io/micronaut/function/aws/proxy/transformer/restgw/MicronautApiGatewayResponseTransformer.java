@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */package io.micronaut.function.aws.proxy.transformer.restgw;
+ */
+package io.micronaut.function.aws.proxy.transformer.restgw;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,45 +32,45 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class MicronautApiGatewayResponseTransformer<T> implements MicronautAwsResponseTransformer<APIGatewayProxyResponseEvent> {
-  private final ApplicationContext context;
-  private final MediaTypeCodecRegistry mediaTypeCodecRegistry;
+    private final ApplicationContext context;
+    private final MediaTypeCodecRegistry mediaTypeCodecRegistry;
 
-  public MicronautApiGatewayResponseTransformer(final ApplicationContext context) {
-    this.context = context;
-    this.mediaTypeCodecRegistry = context.getBean(MediaTypeCodecRegistry.class);
-  }
+    public MicronautApiGatewayResponseTransformer(final ApplicationContext context) {
+        this.context = context;
+        this.mediaTypeCodecRegistry = context.getBean(MediaTypeCodecRegistry.class);
+    }
 
-  @Override
-  public APIGatewayProxyResponseEvent toAwsResponse(final HttpResponse<?> containerResponse) {
-    APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+    @Override
+    public APIGatewayProxyResponseEvent toAwsResponse(final HttpResponse<?> containerResponse) {
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 
-    HttpHeaders headers = containerResponse.getHeaders();
-    Map<String, List<String>> multiValueHeaders = new HashMap<>();
-    Map<String, String> simpleHeaders = new HashMap<>();
+        HttpHeaders headers = containerResponse.getHeaders();
+        Map<String, List<String>> multiValueHeaders = new HashMap<>();
+        Map<String, String> simpleHeaders = new HashMap<>();
 
-    headers.forEach((k, mv) -> {
-          if (mv.size() == 1) {
-            simpleHeaders.put(k, mv.get(0));
-            return;
-          }
-          multiValueHeaders.put(k, mv);
+        headers.forEach((k, mv) -> {
+            if (mv.size() == 1) {
+                simpleHeaders.put(k, mv.get(0));
+                return;
+            }
+            multiValueHeaders.put(k, mv);
         });
 
-    MediaType mediaType = containerResponse.getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+        MediaType mediaType = containerResponse.getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
 
-    MediaTypeCodec codec = mediaTypeCodecRegistry.findCodec(mediaType)
-        .orElseThrow(() -> new CodecException("Codec not found for type " + mediaType));
+        MediaTypeCodec codec = mediaTypeCodecRegistry.findCodec(mediaType)
+            .orElseThrow(() -> new CodecException("Codec not found for type " + mediaType));
 
-    Object body = containerResponse.body();
-    byte[] encodedBytes = codec.encode(body);
+        Object body = containerResponse.body();
+        byte[] encodedBytes = codec.encode(body);
 
-    response.setStatusCode(containerResponse.getStatus().getCode());
-    response.setHeaders(simpleHeaders);
-    response.setMultiValueHeaders(multiValueHeaders);
-    // TODO: Add Property for Optional Base64 Encoding
-    response.setBody(new String(encodedBytes));
-    response.setIsBase64Encoded(false);
+        response.setStatusCode(containerResponse.getStatus().getCode());
+        response.setHeaders(simpleHeaders);
+        response.setMultiValueHeaders(multiValueHeaders);
+        // TODO: Add Property for Optional Base64 Encoding
+        response.setBody(new String(encodedBytes));
+        response.setIsBase64Encoded(false);
 
-    return response;
-  }
+        return response;
+    }
 }

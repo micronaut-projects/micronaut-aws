@@ -27,24 +27,24 @@ import jakarta.inject.Singleton;
 @Primary
 @Replaces(HttpResponseFactory.class)
 public class DelegateHttpResponseFactory implements HttpResponseFactory {
-  private final SimpleHttpResponseFactory delegate = new SimpleHttpResponseFactory();
+    private final SimpleHttpResponseFactory delegate = new SimpleHttpResponseFactory();
 
-  public DelegateHttpResponseFactory() {
-  }
+    public DelegateHttpResponseFactory() {
+    }
 
-  @Override
-  public <T> MutableHttpResponse<T> ok(T body) {
-    return delegate.ok(body);
-  }
+    @Override
+    public <T> MutableHttpResponse<T> ok(T body) {
+        return delegate.ok(body);
+    }
 
-  @Override
-  public <T> MutableHttpResponse<T> status(HttpStatus status, String reason) {
-    return delegate.status(status, reason);
-  }
+    @Override
+    public <T> MutableHttpResponse<T> status(HttpStatus status, String reason) {
+        return delegate.status(status, reason);
+    }
 
-  @Override
-  public <T> MutableHttpResponse<T> status(HttpStatus status, T body) {
-    return delegate.status(status, body);
-  }
+    @Override
+    public <T> MutableHttpResponse<T> status(HttpStatus status, T body) {
+        return delegate.status(status, body);
+    }
 
 }

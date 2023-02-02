@@ -15,64 +15,68 @@
  */
 package io.micronaut.function.aws.proxy;
 
-import java.util.stream.Stream;
-
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.function.aws.MicronautRequestHandler;
-import io.micronaut.function.aws.proxy.transformer.restgw.MicronautApiGatewayRequestTransformer;
-import io.micronaut.function.aws.proxy.transformer.restgw.MicronautApiGatewayResponseTransformer;
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.MutableHttpResponse;
-import io.micronaut.http.server.RouteExecutor;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.serde.annotation.SerdeImport;
-import io.micronaut.web.router.Router;
-import io.micronaut.web.router.UriRouteMatch;
 import jakarta.inject.Inject;
-import reactor.core.publisher.Flux;
 
+@TypeHint(
+    accessType = {
+        TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS,
+        TypeHint.AccessType.ALL_PUBLIC
+    },
+    value = MicronautApiGatewayV1ContainerHandler.class
+)
+@Introspected(
+    accessKind = {
+        Introspected.AccessKind.METHOD,
+        Introspected.AccessKind.FIELD,
+    },
+    visibility = {
+        Introspected.Visibility.DEFAULT,
+        Introspected.Visibility.PUBLIC
+    },
+    classes = {
+        MicronautApiGatewayV1ContainerHandler.class,
+        APIGatewayProxyRequestEvent.class,
+        APIGatewayProxyRequestEvent.ProxyRequestContext.class,
+        APIGatewayProxyRequestEvent.RequestIdentity.class,
+        APIGatewayProxyResponseEvent.class
+    })
 @SerdeImport(APIGatewayProxyRequestEvent.class)
 @SerdeImport(APIGatewayProxyRequestEvent.ProxyRequestContext.class)
 @SerdeImport(APIGatewayProxyRequestEvent.RequestIdentity.class)
 @SerdeImport(APIGatewayProxyResponseEvent.class)
-public class MicronautApiGatewayV1ContainerHandler extends MicronautRequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class MicronautApiGatewayV1ContainerHandler
+    extends MicronautAwsHttpProxyRequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-  @Inject
-  private MicronautApiGatewayRequestTransformer requestTransformer;
+    @Inject
+    private MicronautAwsApiGatewayRequestTransformer requestTransformer;
 
-  @Inject
-  private MicronautApiGatewayResponseTransformer<?> responseTransformer;
+    @Inject
+    private MicronautApiGatewayResponseTransformer<?> responseTransformer;
 
-  @Inject
-  private RouteExecutor routeExecutor;
+    @Override
+    protected MicronautAwsRequestTransformer<APIGatewayProxyRequestEvent, ? extends HttpRequest<?>> requestTransformer() {
+        return requestTransformer;
+    }
 
-  @Inject
-  private Router router;
+    @Override
+    protected MicronautAwsResponseTransformer<APIGatewayProxyResponseEvent> responseTransformer() {
+        return responseTransformer;
+    }
 
-  public MicronautApiGatewayV1ContainerHandler() {
-    this(ApplicationContext.builder());
-  }
+    @Override
+    public Class<APIGatewayProxyRequestEvent> inputTypeClass() {
+        return APIGatewayProxyRequestEvent.class;
+    }
 
-  public MicronautApiGatewayV1ContainerHandler(ApplicationContextBuilder contextBuilder) {
-    super(contextBuilder);
-  }
-
-  public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent request) {
-    MicronautAwsRequest<?> containerRequest = requestTransformer.toMicronautRequest(request);
-    Stream<UriRouteMatch<Object, Object>> uriRouteMatchStream = router.find(containerRequest);
-    Flux<MutableHttpResponse<?>> mutableHttpResponseFlux =
-        routeExecutor.executeRoute(containerRequest, true, Flux.fromStream(uriRouteMatchStream));
-    HttpResponse<?> response = mutableHttpResponseFlux
-        .single()
-        .block();
-
-    return responseTransformer.toAwsResponse(response);
-  }
-
-  @Override
-  public APIGatewayProxyResponseEvent execute(final APIGatewayProxyRequestEvent input) {
-    return handleRequest(input);
-  }
+    @Override
+    public Class<APIGatewayProxyResponseEvent> outputTypeClass() {
+        return APIGatewayProxyResponseEvent.class;
+    }
 }

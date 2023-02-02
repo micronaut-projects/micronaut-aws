@@ -1,33 +1,18 @@
-/*
- * Copyright 2017-2023 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package io.micronaut.function.aws.proxy.transformer.restgw;
+package io.micronaut.function.aws.proxy.transformer.httpgw;
 
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Base64;
-import java.util.Objects;
+import java.util.List;
+import java.util.Optional;
 
 import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.DefaultMicronautAwsRequestBodySupplier;
+import io.micronaut.function.aws.proxy.LambdaUtils;
 import io.micronaut.function.aws.proxy.MicronautAwsRequest;
 import io.micronaut.function.aws.proxy.MicronautAwsRequestBodySupplier;
 import io.micronaut.function.aws.proxy.MicronautAwsRequestTransformer;
@@ -38,49 +23,44 @@ import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
-import io.micronaut.http.cookie.CookieFactory;
 import io.micronaut.http.simple.SimpleHttpHeaders;
+import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class MicronautApiGatewayRequestTransformer<T>
-    implements MicronautAwsRequestTransformer<APIGatewayProxyRequestEvent, T> {
+public class MicronautApiGatewayV2RequestTransformer<T>
+    implements MicronautAwsRequestTransformer<APIGatewayV2HTTPEvent, T> {
     private final ApplicationContext context;
     private MediaTypeCodecRegistry mediaTypeCodecRegistry;
     private static final String CF_PROTOCOL_HEADER_NAME = "CloudFront-Forwarded-Proto";
     private static final String PROTOCOL_HEADER_NAME = "X-Forwarded-Proto";
 
-    public MicronautApiGatewayRequestTransformer(final ApplicationContext context) {
+    public MicronautApiGatewayV2RequestTransformer(final ApplicationContext context) {
         this.context = context;
         this.mediaTypeCodecRegistry = context.getBean(MediaTypeCodecRegistry.class);
     }
 
     @Override
-    public MicronautAwsRequest<T> toMicronautRequest(final APIGatewayProxyRequestEvent source) {
+    public MicronautAwsRequest<T> toMicronautRequest(final APIGatewayV2HTTPEvent source) {
         SimpleHttpHeaders headers = new SimpleHttpHeaders(ConversionService.SHARED);
+
         source.getHeaders()
-            .forEach(headers::add);
+            .forEach((k, v) -> {
+                List<String> headerValues = Arrays.asList(v.split(","));
+                headerValues.forEach(hv -> headers.add(k, hv));
+            });
 
-        source.getMultiValueHeaders()
-            .forEach((k, mv) -> mv.forEach(v -> headers.add(k, v)));
-
-        String cookieHeaderValue = headers.get(HttpHeaders.COOKIE);
-        headers.remove(HttpHeaders.COOKIE);
         SimpleCookies cookies = new SimpleCookies(ConversionService.SHARED);
 
-        if (StringUtils.isNotEmpty(cookieHeaderValue)) {
-            CookieFactory cookieFactory = context.getBean(CookieFactory.class);
-            // https://www.rfc-editor.org/rfc/rfc6265#section-4.2.1
-            Arrays.stream(cookieHeaderValue.split("; "))
-                .forEach(cookieValue -> {
-                    String[] cookiePair = cookieValue.split("=");
-                    Cookie cookie = cookieFactory.create(cookiePair[0].trim(), cookiePair[1].trim());
-                    cookies.put(cookie.getName(), cookie);
-                });
-        }
+        source.getCookies()
+            .forEach(cookieValue -> {
+                String[] cookiePair = cookieValue.split("=");
+                Cookie cookie = new SimpleCookie(cookiePair[0].trim(), cookiePair[1].trim());
+                cookies.put(cookie.getName(), cookie);
+            });
 
-        String body = getBody(source);
+        String body = LambdaUtils.decodeBody(source.getBody(), source.getIsBase64Encoded());
         MediaType mediaType = headers.getContentType().map(MediaType::of).orElse(MediaType.APPLICATION_JSON_TYPE);
 
         MediaTypeCodec mediaTypeCodec = mediaTypeCodecRegistry.findCodec(mediaType)
@@ -88,26 +68,22 @@ public class MicronautApiGatewayRequestTransformer<T>
 
         MicronautAwsRequestBodySupplier<T> bodySupplier = new DefaultMicronautAwsRequestBodySupplier<>(mediaTypeCodec, body);
 
+        String uri =
+            source.getRawPath() + Optional.ofNullable(source.getRawQueryString())
+                .filter(StringUtils::isNotEmpty)
+                .map(query -> "?" + query);
+
         MicronautAwsRequest<T> request = MicronautAwsRequest.<T>builder()
             .headers(headers)
             .bodySupplier(bodySupplier)
-            .method(HttpMethod.parse(source.getHttpMethod()))
-            .uri(getUri(headers, source.getPath(), source.getRequestContext().getApiId()))
+            .method(HttpMethod.parse(source.getRequestContext().getHttp().getMethod()))
+            .uri(getUri(headers, uri, source.getRequestContext().getApiId()))
             .build();
 
         return request;
     }
 
-    private String getBody(final APIGatewayProxyRequestEvent source) {
-        if (Objects.equals(Boolean.TRUE, source.getIsBase64Encoded())) {
-            byte[] decodedBytes = Base64.getDecoder().decode(source.getBody());
-            return new String(decodedBytes, StandardCharsets.UTF_8);
-        }
-
-        return source.getBody();
-    }
-
-    private URI getUri(HttpHeaders headers, String path, String apiId) {
+    private URI getUri(HttpHeaders headers, String pathQuery, String apiId) {
         String region = System.getenv("AWS_REGION");
         if (region == null) {
             // this is not a critical failure, we just put a static region in the URI
@@ -123,7 +99,7 @@ public class MicronautApiGatewayRequestTransformer<T>
                 ".amazonaws.com";
         }
 
-        return URI.create(getScheme(headers) + "://" + hostHeader + path);
+        return URI.create(getScheme(headers) + "://" + hostHeader + pathQuery);
 
     }
 

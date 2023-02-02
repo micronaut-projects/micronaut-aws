@@ -20,6 +20,7 @@ import java.util.Optional;
 import io.micronaut.core.type.Argument;
 
 public interface MicronautAwsRequestBodySupplier<T> {
-  Optional<T> getBody();
-  <T1> Optional<T1> getBody(Argument<T1> argument);
+    Optional<T> getBody();
+
+    <T1> Optional<T1> getBody(Argument<T1> argument);
 }

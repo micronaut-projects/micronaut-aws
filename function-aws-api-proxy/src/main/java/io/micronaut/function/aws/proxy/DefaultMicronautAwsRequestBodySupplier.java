@@ -23,29 +23,29 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.http.codec.MediaTypeCodec;
 
 public class DefaultMicronautAwsRequestBodySupplier<T> implements MicronautAwsRequestBodySupplier<T> {
-  private final MediaTypeCodec mediaTypeCodec;
-  private final String rawBody;
-  private Class<T> type = initTypeArgument(0);
+    private final MediaTypeCodec mediaTypeCodec;
+    private final String rawBody;
+    private Class<T> type = initTypeArgument(0);
 
-  public DefaultMicronautAwsRequestBodySupplier(MediaTypeCodec mediaTypeCodec, String rawBody) {
-    this.mediaTypeCodec = mediaTypeCodec;
-    this.rawBody = rawBody;
-  }
+    public DefaultMicronautAwsRequestBodySupplier(MediaTypeCodec mediaTypeCodec, String rawBody) {
+        this.mediaTypeCodec = mediaTypeCodec;
+        this.rawBody = rawBody;
+    }
 
-  @Override
-  public Optional<T> getBody() {
-    return Optional.ofNullable(rawBody)
-        .map(b -> mediaTypeCodec.decode(type, rawBody));
-  }
+    @Override
+    public Optional<T> getBody() {
+        return Optional.ofNullable(rawBody)
+            .map(b -> mediaTypeCodec.decode(type, rawBody));
+    }
 
-  @Override
-  public <T1> Optional<T1> getBody(final Argument<T1> argument) {
-    return Optional.ofNullable(rawBody)
-        .map(b -> mediaTypeCodec.decode(argument, rawBody));
-  }
+    @Override
+    public <T1> Optional<T1> getBody(final Argument<T1> argument) {
+        return Optional.ofNullable(rawBody)
+            .map(b -> mediaTypeCodec.decode(argument, rawBody));
+    }
 
-  private Class initTypeArgument(int index) {
-    Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(this.getClass(), DefaultMicronautAwsRequestBodySupplier.class);
-    return ArrayUtils.isNotEmpty(args) && args.length > index ? args[index] : Object.class;
-  }
+    private Class initTypeArgument(int index) {
+        Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(this.getClass(), DefaultMicronautAwsRequestBodySupplier.class);
+        return ArrayUtils.isNotEmpty(args) && args.length > index ? args[index] : Object.class;
+    }
 }

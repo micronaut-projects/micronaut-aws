@@ -19,5 +19,5 @@ import io.micronaut.http.HttpResponse;
 
 @FunctionalInterface
 public interface MicronautAwsResponseTransformer<T> {
-  T toAwsResponse(HttpResponse<?> response);
+    T toAwsResponse(HttpResponse<?> response);
 }

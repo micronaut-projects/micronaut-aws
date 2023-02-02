@@ -17,5 +17,5 @@ package io.micronaut.function.aws.proxy;
 
 @FunctionalInterface
 public interface MicronautAwsRequestTransformer<S, T> {
-  MicronautAwsRequest<T> toMicronautRequest(S source);
+    MicronautAwsRequest<T> toMicronautRequest(S source);
 }

@@ -52,7 +52,7 @@ public class AbstractMicronautPayloadRuntime<RequestType, ResponseType> implemen
   static final String USER_AGENT_VALUE = String.format(
       "micronaut/%s-%s",
       System.getProperty("java.vendor.version"),
-      AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+      MicronautLambdaRuntime.class.getPackage().getImplementationVersion());
 
   @Nullable
   protected String userAgent;
@@ -409,7 +409,7 @@ public class AbstractMicronautPayloadRuntime<RequestType, ResponseType> implemen
   private Class initTypeArgument(int index) {
     final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
         getClass(),
-        AbstractMicronautLambdaRuntime.class
+        MicronautLambdaRuntime.class
     );
     if (ArrayUtils.isNotEmpty(args) && args.length > index) {
       return args[index];
