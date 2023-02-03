@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import io.micronaut.context.ApplicationContext;
