@@ -42,7 +42,7 @@ micronaut-gradle-plugin = "3.7.0"
 [libraries]
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
-micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client", version.ref = "micronaut-discovery" }
+micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
 micronaut-graal = { module = "io.micronaut:micronaut-graal", version.ref = "micronaut-graal" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }

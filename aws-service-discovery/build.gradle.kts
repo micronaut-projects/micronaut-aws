@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(libs.micronaut.discovery.client)
+    api(mnDiscoveryClient.micronaut.discovery.client)
     api(projects.awsSdkV2)
     implementation(libs.awssdk.servicediscovery)
     implementation(mn.micronaut.jackson.databind)

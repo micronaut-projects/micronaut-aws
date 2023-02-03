@@ -43,6 +43,7 @@ include("test-suite-kotlin")
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     addSnapshotRepository()
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-discovery-client")
     importMicronautCatalog("micronaut-groovy")
     importMicronautCatalog("micronaut-mongodb")
     importMicronautCatalog("micronaut-serde")
