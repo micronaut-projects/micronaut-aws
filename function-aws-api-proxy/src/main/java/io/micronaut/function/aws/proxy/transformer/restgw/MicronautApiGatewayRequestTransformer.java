@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
@@ -88,11 +89,24 @@ public class MicronautApiGatewayRequestTransformer<T>
 
         MicronautAwsRequestBodySupplier<T> bodySupplier = new DefaultMicronautAwsRequestBodySupplier<>(mediaTypeCodec, body);
 
+        String queryString = Optional.ofNullable(source.getMultiValueQueryStringParameters())
+            .map(queryStringParams -> queryStringParams.entrySet().stream()
+                .flatMap(queryMap -> queryMap.getValue().stream()
+                    .map(queryValue -> queryMap.getKey() + "=" + queryValue))
+                .collect(Collectors.joining("&")))
+            .orElse(null);
+
+        String uri =
+            source.getPath() + Optional.ofNullable(queryString)
+                .filter(StringUtils::isNotEmpty)
+                .map(query -> "?" + query)
+                .orElse(StringUtils.EMPTY_STRING);
+
         MicronautAwsRequest<T> request = MicronautAwsRequest.<T>builder()
             .headers(headers)
             .bodySupplier(bodySupplier)
             .method(HttpMethod.parse(source.getHttpMethod()))
-            .uri(getUri(headers, source.getPath(), source.getRequestContext().getApiId()))
+            .uri(getUri(headers, uri, source.getRequestContext().getApiId()))
             .build();
 
         return request;
@@ -145,17 +159,9 @@ public class MicronautApiGatewayRequestTransformer<T>
     }
 
     private boolean isValidHost(String host, String apiId, String region) {
-        if (host == null) {
-            return false;
-        }
-        if (host.endsWith(".amazonaws.com")) {
-            String defaultHost = new StringBuilder().append(apiId)
-                .append(".execute-api.")
-                .append(region)
-                .append(".amazonaws.com").toString();
-            return host.equals(defaultHost);
-        } else {
-            return LambdaContainerHandler.getContainerConfig().getCustomDomainNames().contains(host);
-        }
+        return Optional.ofNullable(host)
+            .filter(StringUtils::isNotEmpty)
+            .map(h -> h.equals(apiId + ".execute-api." + region + ".amazonaws.com"))
+            .orElse(false);
     }
 }

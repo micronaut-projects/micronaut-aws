@@ -58,11 +58,6 @@ import io.micronaut.logging.LogLevel;
  * Class that can be used as a entry point for a AWS Lambda custom runtime.
  * @see <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html">Custom AWS Lambda runtimes</a>.
  *
- * @param <RequestType> The expected request object. This is the model class that the event JSON is de-serialized to
- * @param <ResponseType> The expected Lambda function response object. Responses will be written to this model object
- * @param <HandlerRequestType> The request type for {@link com.amazonaws.services.lambda.runtime.RequestHandler}.
- * @param <HandlerResponseType> The response type for the {@link com.amazonaws.services.lambda.runtime.RequestHandler}.
- *
  * @author sdelamo
  * @since 2.0.0
  */

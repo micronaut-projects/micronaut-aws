@@ -19,8 +19,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.TypeHint;
-import io.micronaut.function.aws.MicronautRequestHandler;
-import io.micronaut.http.HttpRequest;
+import io.micronaut.function.aws.proxy.transformer.restgw.MicronautApiGatewayRequestTransformer;
+import io.micronaut.function.aws.proxy.transformer.restgw.MicronautApiGatewayResponseTransformer;
 import io.micronaut.serde.annotation.SerdeImport;
 import jakarta.inject.Inject;
 
@@ -55,13 +55,13 @@ public class MicronautApiGatewayV1ContainerHandler
     extends MicronautAwsHttpProxyRequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     @Inject
-    private MicronautAwsApiGatewayRequestTransformer requestTransformer;
+    private MicronautApiGatewayRequestTransformer<?> requestTransformer;
 
     @Inject
-    private MicronautApiGatewayResponseTransformer<?> responseTransformer;
+    private MicronautApiGatewayResponseTransformer responseTransformer;
 
     @Override
-    protected MicronautAwsRequestTransformer<APIGatewayProxyRequestEvent, ? extends HttpRequest<?>> requestTransformer() {
+    protected MicronautAwsRequestTransformer<APIGatewayProxyRequestEvent, ?> requestTransformer() {
         return requestTransformer;
     }
 

@@ -31,7 +31,7 @@ import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class MicronautApiGatewayResponseTransformer<T> implements MicronautAwsResponseTransformer<APIGatewayProxyResponseEvent> {
+public class MicronautApiGatewayResponseTransformer implements MicronautAwsResponseTransformer<APIGatewayProxyResponseEvent> {
     private final ApplicationContext context;
     private final MediaTypeCodecRegistry mediaTypeCodecRegistry;
 
