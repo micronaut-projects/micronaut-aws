@@ -5,8 +5,8 @@ plugins {
 dependencies {
     api(platform(libs.boms.aws.java.sdk.v2))
     api(projects.awsCommon)
+    compileOnly(libs.graal.sdk)
     implementation(projects.awsUa)
-    compileOnly(mn.graal)
 
     // Clients
     compileOnly(libs.awssdk.url.connection.client)
@@ -42,4 +42,7 @@ dependencies {
     testImplementation(libs.awssdk.ssm)
     testImplementation(libs.awssdk.rekognition)
     testRuntimeOnly(libs.jcl.over.slf4j)
+
+    testRuntimeOnly(mn.snakeyaml)
+    testRuntimeOnly(mn.micronaut.jackson.databind)
 }

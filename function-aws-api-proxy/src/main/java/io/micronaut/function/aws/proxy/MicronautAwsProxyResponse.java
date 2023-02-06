@@ -56,9 +56,10 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     private final AwsProxyRequest request;
     private final MicronautLambdaContainerContext handler;
     private T body;
-    private HttpStatus status;
+    private int status;
+    private String reason = HttpStatus.OK.getReason();
     private AwsProxyResponse response = new AwsProxyResponse();
-    private final AwsHeaders awsHeaders = new AwsHeaders();
+    private final AwsHeaders awsHeaders;
     private Headers multiValueHeaders = new Headers();
     private Map<String, Cookie> cookies = new ConcurrentHashMap<>(2);
 
@@ -76,8 +77,9 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         this.request = request;
         this.response.setMultiValueHeaders(multiValueHeaders);
         this.handler = environment;
-        this.status = HttpStatus.OK;
+        this.status = HttpStatus.OK.getCode();
         this.response.setStatusCode(HttpStatus.OK.getCode());
+        this.awsHeaders = new AwsHeaders();
     }
 
     @Override
@@ -112,16 +114,26 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
     }
 
     @Override
-    public MutableHttpResponse<T> status(HttpStatus status, CharSequence message) {
+    public MutableHttpResponse<T> status(int status, CharSequence message) {
         ArgumentUtils.requireNonNull("status", status);
+        if (message == null) {
+            this.reason = HttpStatus.getDefaultReason(status);
+        } else {
+            this.reason = message.toString();
+        }
         this.status = status;
-        response.setStatusCode(status.getCode());
+        response.setStatusCode(status);
         return this;
     }
 
     @Override
-    public HttpStatus getStatus() {
+    public int code() {
         return status;
+    }
+
+    @Override
+    public String reason() {
+        return reason;
     }
 
     /**
@@ -171,13 +183,13 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         byte[] encoded = null;
         try {
             if (body != null) {
-                if (body instanceof ByteBuffer) {
-                    encoded = ((ByteBuffer) body).toByteArray();
-                } else if (body instanceof byte[]) {
-                    encoded = (byte[]) body;
+                if (body instanceof ByteBuffer byteBuffer) {
+                    encoded = byteBuffer.toByteArray();
+                } else if (body instanceof byte[] bytes) {
+                    encoded = bytes;
                 } else {
                     final Optional<MediaType> contentType = getContentType();
-                    if (!contentType.isPresent()) {
+                    if (contentType.isEmpty()) {
                         contentType(MediaType.APPLICATION_JSON_TYPE);
                     }
                     encoded = codec.encode(body);
@@ -215,6 +227,7 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
      * An implementation of {@link MutableHttpHeaders} for AWS lambda.
      */
     private class AwsHeaders implements MutableHttpHeaders {
+        private ConversionService conversionService = handler.getApplicationContext().getConversionService();
 
         @Override
         public MutableHttpHeaders add(CharSequence header, CharSequence value) {
@@ -262,9 +275,14 @@ public class MicronautAwsProxyResponse<T> implements MutableHttpResponse<T>, Clo
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             final String v = get(name);
             if (v != null) {
-                return ConversionService.SHARED.convert(v, conversionContext);
+                return conversionService.convert(v, conversionContext);
             }
             return Optional.empty();
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            this.conversionService = conversionService;
         }
     }
 }

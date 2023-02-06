@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.4.2"
+    id("io.micronaut.build.shared.settings") version "6.2.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -41,14 +41,12 @@ include("test-suite-groovy")
 include("test-suite-kotlin")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
+    addSnapshotRepository()
     importMicronautCatalog()
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven {
-            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        }
-    }
+    importMicronautCatalog("micronaut-discovery-client")
+    importMicronautCatalog("micronaut-groovy")
+    importMicronautCatalog("micronaut-mongodb")
+    importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-views")
 }

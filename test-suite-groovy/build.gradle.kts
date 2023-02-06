@@ -10,10 +10,11 @@ repositories {
 
 dependencies {
     testCompileOnly(mn.micronaut.inject.groovy)
-    testImplementation(mn.micronaut.test.spock)
-    testImplementation(platform(mn.micronaut.bom))
+    testImplementation(mnTest.micronaut.test.spock)
+    testImplementation(platform(mn.micronaut.core.bom))
     testImplementation(projects.functionAws)
     testImplementation(projects.functionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -23,6 +24,6 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

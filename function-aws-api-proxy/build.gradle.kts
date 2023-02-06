@@ -3,8 +3,9 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.micronaut.graal)
-    compileOnly(mn.micronaut.security)
+    annotationProcessor(libs.micronaut.graal)
+    compileOnly(mnSecurity.micronaut.security)
+
     implementation(mn.reactor)
     api(mn.micronaut.http.server)
     api(libs.managed.aws.serverless.core) {
@@ -16,12 +17,13 @@ dependencies {
     api(libs.managed.jcl.over.slf4j)
     api(projects.functionAws)
     api(projects.awsCommon)
+    implementation(mn.micronaut.jackson.databind)
     testAnnotationProcessor(mn.micronaut.validation)
     testImplementation(mn.micronaut.validation)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
-    testImplementation(mn.micronaut.security)
-    testImplementation(mn.micronaut.views.handlebars)
+    testImplementation(mnSecurity.micronaut.security)
+    testImplementation(mnViews.micronaut.views.handlebars)
     testImplementation(libs.jackson.afterburner)
     testImplementation(libs.servlet.api)
     testImplementation(libs.fileupload)

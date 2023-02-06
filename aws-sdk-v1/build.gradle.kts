@@ -8,4 +8,5 @@ dependencies {
     api(projects.awsCommon)
     runtimeOnly(libs.jcl.over.slf4j)
     testImplementation(mn.micronaut.http.server.netty)
+    testRuntimeOnly(mn.snakeyaml)
 }

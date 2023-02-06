@@ -161,8 +161,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
 
     @Override
     public ApplicationContext getApplicationContext() {
-        if (handler instanceof ApplicationContextProvider) {
-            return ((ApplicationContextProvider) handler).getApplicationContext();
+        if (handler instanceof ApplicationContextProvider applicationContextProvider) {
+            return applicationContextProvider.getApplicationContext();
         }
         return null;
     }
@@ -225,7 +225,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String handler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
         logn(LogLevel.DEBUG, "Handler: ", handler);
         if (handler != null) {
-            Optional<Class> handlerClassOptional = parseHandlerClass(handler);
+            Optional<Class<?>> handlerClassOptional = parseHandlerClass(handler);
             logn(LogLevel.WARN, "No handler Class parsed for ", handler);
             if (handlerClassOptional.isPresent()) {
                 log(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection\n");
@@ -242,7 +242,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param handler handler in format file.method, where file is the name of the file without an extension, and method is the name of a method or function that's defined in the file.
      * @return Empty or an Optional with the referenced class.
      */
-    protected Optional<Class> parseHandlerClass(@NonNull String handler) {
+    protected Optional<Class<?>> parseHandlerClass(@NonNull String handler) {
         String[] arr = handler.split("::");
         if (arr.length > 0) {
             return ClassUtils.forName(arr[0], null);
@@ -307,9 +307,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     protected HandlerRequestType createHandlerRequest(RequestType request) throws JsonProcessingException, JsonMappingException  {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
-        } else if (request instanceof APIGatewayProxyRequestEvent) {
+        } else if (request instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
-            String content = ((APIGatewayProxyRequestEvent) request).getBody();
+            String content = apiGatewayProxyRequestEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         }
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
@@ -389,8 +389,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     }
                 }
             } finally {
-                if (handler instanceof Closeable) {
-                    ((Closeable) handler).close();
+                if (handler instanceof Closeable closeable) {
+                    closeable.close();
                 }
                 if (endpointClient != null) {
                     endpointClient.close();
@@ -410,8 +410,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @return The HTTP Request decorated
      */
     protected HttpRequest decorateWithUserAgent(HttpRequest<?> request) {
-        if (userAgent != null && request instanceof MutableHttpRequest) {
-            return ((MutableHttpRequest) request).header(USER_AGENT, userAgent);
+        if (userAgent != null && request instanceof MutableHttpRequest mutableHttpRequest) {
+            return mutableHttpRequest.header(USER_AGENT, userAgent);
         }
         return request;
     }

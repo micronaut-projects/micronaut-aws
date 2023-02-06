@@ -13,13 +13,14 @@ val micronautVersion: String by project
 
 dependencies {
     kaptTest(mn.micronaut.inject.java)
-    testAnnotationProcessor(platform(mn.micronaut.bom))
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
     testImplementation(libs.junit.jupiter.api)
-    testImplementation(mn.micronaut.test.junit5)
+    testImplementation(mnTest.micronaut.test.junit5)
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(projects.functionAws)
     testImplementation(libs.kotlin.stdlib.jdk8)
     testImplementation(projects.functionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -29,13 +30,13 @@ tasks {
 
     named("compileTestKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "17"
             javaParameters = true
         }
     }
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

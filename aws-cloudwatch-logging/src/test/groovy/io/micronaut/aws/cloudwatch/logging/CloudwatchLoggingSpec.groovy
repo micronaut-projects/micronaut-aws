@@ -1,5 +1,7 @@
 package io.micronaut.aws.cloudwatch.logging
 
+import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.core.read.ListAppender
 import io.micronaut.context.annotation.Property
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.context.annotation.Requires
@@ -11,6 +13,7 @@ import io.micronaut.serde.ObjectMapper
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
+import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
 import software.amazon.awssdk.awscore.exception.AwsServiceException
 import software.amazon.awssdk.core.exception.SdkClientException
@@ -39,14 +42,23 @@ class CloudwatchLoggingSpec extends Specification {
         def testHost = 'testHost'
         def logger = LoggerFactory.getLogger(CloudwatchLoggingSpec.class)
         PollingConditions conditions = new PollingConditions(timeout: 10, initialDelay: 1.5, factor: 1.25)
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory()
+        ListAppender listAppender
+        loggerContext.loggerList.each { Logger l ->
+            l.iteratorForAppenders().each { appender ->
+                if (appender.name == 'AWS') {
+                    CloudWatchLoggingAppender cloudWatchLoggingAppender = (CloudWatchLoggingAppender) appender
+                    listAppender = (ListAppender) cloudWatchLoggingAppender.getAppender('MOCK')
+                }
+            }
+        }
 
+        when:
         def mockLogging = (MockLogging) logging
         def instance = Mock(EmbeddedServer.class)
         instance.getHost() >> testHost
         def event = new ServerStartupEvent(instance)
         eventPublisher.publishEvent(event)
-
-        when:
         logger.info(logMessage)
 
         then:
@@ -73,7 +85,7 @@ class CloudwatchLoggingSpec extends Specification {
         logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.context.env.DefaultEnvironment')
         logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.aws.cloudwatch.logging.CloudwatchLoggingSpec')
         logEntries.stream().anyMatch(x -> x.message == logMessage)
-        MockAppender.getEvents().size() == 0
+        listAppender.list.size() == 0
 
         when:
         mockLogging.state = MockState.NOT_SUCCESSFUL
@@ -82,9 +94,9 @@ class CloudwatchLoggingSpec extends Specification {
 
         then:
         conditions.eventually {
-            MockAppender.getEvents().size() == 1
+            listAppender.list.size() == 1
         }
-        MockAppender.getEvents().get(0).message == logMessage
+        listAppender.list.get(0).message == logMessage
 
         when:
         mockLogging.state = MockState.EXCEPTION
@@ -93,9 +105,9 @@ class CloudwatchLoggingSpec extends Specification {
 
         then:
         conditions.eventually {
-            MockAppender.getEvents().size() == 2
+            listAppender.list.size() == 2
         }
-        MockAppender.getEvents().get(1).message == logMessage + " from Exception"
+        listAppender.list.get(1).message == logMessage + " from Exception"
     }
 
     static enum MockState {
