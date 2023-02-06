@@ -27,7 +27,7 @@ managed-aws-serverless-core = '1.9.1'
 managed-aws-cdk-lib='2.62.2'
 micronaut-starter = "3.8.0"
 servlet-api = "2.5"
-slf4j = "1.7.36"
+slf4j = "2.0.6"
 testcontainers = "1.17.6"
 javapoet = "1.13.0"
 
