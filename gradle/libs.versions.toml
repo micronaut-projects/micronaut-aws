@@ -20,12 +20,12 @@ micronaut-serde = '2.0.0-SNAPSHOT'
 micronaut-views = '4.0.0-SNAPSHOT'
 managed-alexa-ask-sdk = "2.51.0"
 managed-aws-java-sdk-v1 = '1.12.414'
-managed-aws-java-sdk-v2 = '2.19.26'
+managed-aws-java-sdk-v2 = '2.20.11'
 managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.0'
 managed-aws-serverless-core = '1.9.1'
 managed-aws-cdk-lib='2.62.2'
-micronaut-starter = "3.8.0"
+micronaut-starter = "3.8.5"
 servlet-api = "2.5"
 slf4j = "1.7.36"
 testcontainers = "1.17.6"
@@ -33,11 +33,11 @@ javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "22.0.0.2"
+graal = "22.3.1"
 kotlin = "1.7.22"
 
 # Micronaut
-micronaut-gradle-plugin = "3.7.0"
+micronaut-gradle-plugin = "3.7.3"
 
 [libraries]
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
