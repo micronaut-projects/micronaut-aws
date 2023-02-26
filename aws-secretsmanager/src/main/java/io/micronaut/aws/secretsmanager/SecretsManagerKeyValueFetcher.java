@@ -47,6 +47,7 @@ import java.util.Optional;
 /**
  * {@link SecretsKeyValueFetcher} implementations for AWS Secrets Manager.
  * @author Sergio del Amo
+ * @author Adrian Chlebosz
  * @since 2.8.0
  */
 @Experimental
@@ -194,6 +195,10 @@ public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
         } catch (ResourceNotFoundException e) {
             if (LOG.isWarnEnabled()) {
                 LOG.warn("Could not find the resource for secret ({})", getSecretValueRequest.secretId());
+            }
+        } catch (SecretsManagerException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("SecretsManagerException {}", e.awsErrorDetails().errorMessage());
             }
         }
         return Optional.empty();
