@@ -8,7 +8,7 @@ dependencies {
 
     api(mn.micronaut.http.client)
     api(libs.managed.aws.lambda.events)
-    implementation(projects.awsUa)
+    api(projects.awsUa)
     testImplementation(projects.functionAwsApiProxy) {
         exclude(group = "com.fasterxml.jackson.module", module = "jackson-module-afterburner")
     }
