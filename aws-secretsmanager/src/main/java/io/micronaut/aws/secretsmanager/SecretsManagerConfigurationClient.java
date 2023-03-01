@@ -19,6 +19,7 @@ import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.CollectionUtils;
@@ -47,8 +48,21 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
      * @param awsDistributedConfiguration AWS Distributed Configuration
      * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
      * @param applicationConfiguration Application Configuration
+     */
+    @Deprecated
+    public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
+                                             SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
+                                             @Nullable ApplicationConfiguration applicationConfiguration) {
+        this(awsDistributedConfiguration, secretsManagerKeyValueFetcher, applicationConfiguration, null);
+    }
+
+    /**
+     * @param awsDistributedConfiguration AWS Distributed Configuration
+     * @param secretsManagerKeyValueFetcher Secrets Manager Key Value Fetcher
+     * @param applicationConfiguration Application Configuration
      * @param secretsManagerConfiguration Secrets Configuration
      */
+    @Creator
     public SecretsManagerConfigurationClient(AwsDistributedConfiguration awsDistributedConfiguration,
                                              SecretsManagerKeyValueFetcher secretsManagerKeyValueFetcher,
                                              @Nullable ApplicationConfiguration applicationConfiguration,

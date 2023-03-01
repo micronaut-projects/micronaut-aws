@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
@@ -46,9 +47,37 @@ public class SesClientFactory extends AwsClientFactory<SesClientBuilder, SesAsyn
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @deprecated Use {@link SesClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
+        super(credentialsProvider, regionProvider, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @deprecated Use {@link SesClientFactory(AwsCredentialsProviderChain,AwsRegionProviderChain,UserAgentProvider,AWSServiceConfiguration)} instead.
+     */
+    @Deprecated
+    protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                               AwsRegionProviderChain regionProvider,
+                               @Nullable UserAgentProvider userAgentProvider) {
+        super(credentialsProvider, regionProvider, userAgentProvider);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
      * @param userAgentProvider User-Agent Provider
      * @param awsServiceConfiguration  AWS Service Configuration
      */
+    @Inject
     protected SesClientFactory(AwsCredentialsProviderChain credentialsProvider,
                                AwsRegionProviderChain regionProvider,
                                @Nullable UserAgentProvider userAgentProvider,

@@ -101,6 +101,16 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
 )
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
+
+    /**
+     * Use {@link io.micronaut.aws.ua.UserAgentProvider} instead.
+     */
+    @Deprecated
+    static final String USER_AGENT_VALUE = String.format(
+        "micronaut/%s-%s",
+        System.getProperty("java.vendor.version"),
+        AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+
     @Nullable
     protected String userAgent;
 
