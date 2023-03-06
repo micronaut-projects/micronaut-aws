@@ -24,7 +24,7 @@ javapoet = "1.13.0"
 kotlin = "1.7.22"
 
 # Micronaut
-micronaut-gradle-plugin = "3.7.0"
+micronaut-gradle-plugin = "3.7.4"
 
 [libraries]
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
