@@ -143,6 +143,12 @@ public class LambdaServerUnderTest implements ServerUnderTest {
     }
 
     @Override
+    public Optional<Integer> getPort() {
+        // Need a port for the CORS tests
+        return Optional.of(1234);
+    }
+
+    @Override
     public void close() throws IOException {
         this.handler.close();
     }
