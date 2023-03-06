@@ -3,18 +3,15 @@ package io.micronaut.docs;
 //tag::imports[]
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Introspected;
-import javax.validation.constraints.NotBlank;
 //end::imports[]
 //tag::clazz[]
 @Introspected // <1>
 public class BookSaved {
 
     @NonNull
-    @NotBlank
     private String name;
 
     @NonNull
-    @NotBlank
     private String isbn;
 
     public BookSaved() {

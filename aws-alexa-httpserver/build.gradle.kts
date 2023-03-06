@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.micronaut.validation)
-    implementation(mn.micronaut.validation)
+    annotationProcessor(mnValidation.micronaut.validation.processor)
+    implementation(mnValidation.micronaut.validation)
     api(projects.awsAlexa)
     implementation(mn.micronaut.http.server)
     implementation(mn.micronaut.jackson.databind)

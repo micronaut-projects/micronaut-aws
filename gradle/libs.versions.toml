@@ -18,6 +18,8 @@ micronaut-mongodb = '5.0.0-SNAPSHOT'
 micronaut-security = '4.0.0-SNAPSHOT'
 micronaut-serde = '2.0.0-SNAPSHOT'
 micronaut-views = '4.0.0-SNAPSHOT'
+micronaut-validation = "4.0.0-SNAPSHOT"
+
 managed-alexa-ask-sdk = "2.62.0"
 managed-aws-java-sdk-v1 = '1.12.420'
 managed-aws-java-sdk-v2 = '2.20.17'
@@ -49,6 +51,7 @@ micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", versi
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
 micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
 micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.ref = "micronaut-views" }
+micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
 
 aws-cdk-lib = { module = 'software.amazon.awscdk:aws-cdk-lib', version.ref = 'managed-aws-cdk-lib' }
 

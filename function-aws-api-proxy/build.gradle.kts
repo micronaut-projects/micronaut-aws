@@ -18,8 +18,9 @@ dependencies {
     api(projects.functionAws)
     api(projects.awsCommon)
     implementation(mn.micronaut.jackson.databind)
-    testAnnotationProcessor(mn.micronaut.validation)
-    testImplementation(mn.micronaut.validation)
+
+    testAnnotationProcessor(mnValidation.micronaut.validation.processor)
+    testImplementation(mnValidation.micronaut.validation)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mnSecurity.micronaut.security)
