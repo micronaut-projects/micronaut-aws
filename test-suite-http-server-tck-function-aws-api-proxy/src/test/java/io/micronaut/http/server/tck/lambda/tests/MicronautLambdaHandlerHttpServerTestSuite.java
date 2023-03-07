@@ -9,7 +9,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectPackages("io.micronaut.http.server.tck.tests")
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.RemoteAddressTest", // CaptureRemoteAddressFiter throws NPE getting the address
     "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
     "io.micronaut.http.server.tck.tests.filter.RequestFilterExceptionHandlerTest",
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest",
