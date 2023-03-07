@@ -40,6 +40,10 @@ import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpParameters;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.MutableHttpParameters;
+import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
@@ -81,12 +85,12 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     private final AwsProxyRequest awsProxyRequest;
     private final HttpMethod httpMethod;
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
-    private final HttpHeaders headers;
-    private final HttpParameters parameters;
+    private final MutableHttpHeaders headers;
+    private final MutableHttpParameters parameters;
     private final String path;
     private final ContainerConfig config;
     private final ConversionService conversionService;
-    private Cookies cookies;
+    private SimpleCookies cookies;
     private MicronautAwsProxyResponse<?> response;
     private T decodedBody;
 
@@ -453,13 +457,18 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         return "https";
     }
 
+    @Override
+    public MutableHttpRequest<T> mutate() {
+        return new MicronautAwsMutableProxyRequest();
+    }
+
     /**
      * Implementation of {@link HttpParameters} for AWS.
      *
      * @author graemerocher
      * @since 1.1
      */
-    private class AwsParameters implements HttpParameters {
+    private class AwsParameters implements MutableHttpParameters {
 
         private MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
 
@@ -501,15 +510,26 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             }
             return Optional.empty();
         }
+
+        @Override
+        public MutableHttpParameters add(CharSequence name, List<CharSequence> values) {
+            params.addAll(name.toString(), values.stream().map(CharSequence::toString).toList());
+            return this;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            // Not used
+        }
     }
 
     /**
      * Implementation of {@link HttpHeaders} for AWS.
      */
-    private static class AwsHeaders implements HttpHeaders {
+    private static class AwsHeaders implements MutableHttpHeaders {
 
         private final Map<String, List<String>> headers;
-        private final ConversionService conversionService;
+        private ConversionService conversionService;
 
         public AwsHeaders(@Nullable Headers multivalueHeaders, @Nullable SingleValueHeaders singleValueHeaders, ConversionService conversionService) {
             this.conversionService = conversionService;
@@ -575,6 +595,25 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
             }
             return Optional.empty();
         }
+
+        @Override
+        public MutableHttpHeaders add(CharSequence header, CharSequence value) {
+            String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(header.toString());
+            headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+            headers.get(headerName).add(value.toString());
+            return this;
+        }
+
+        @Override
+        public MutableHttpHeaders remove(CharSequence header) {
+            headers.remove(HttpHeaderUtils.normalizeHttpHeaderCase(header.toString()));
+            return this;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            this.conversionService = conversionService;
+        }
     }
 
     /**
@@ -637,6 +676,74 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
         public String getAttribute(String key) {
             return attributes.get(key);
+        }
+    }
+
+    private class MicronautAwsMutableProxyRequest implements MutableHttpRequest<T> {
+
+        private URI uri = MicronautAwsProxyRequest.this.getUri();
+        @Nullable
+        private Object body;
+
+        @Override
+        public MutableHttpRequest<T> cookie(Cookie cookie) {
+            MicronautAwsProxyRequest.this.cookies.put(cookie.getName(), cookie);
+            return this;
+        }
+
+        @Override
+        public MutableHttpRequest<T> uri(URI uri) {
+            this.uri = uri;
+            return this;
+        }
+
+        @Override
+        public <T1> MutableHttpRequest<T1> body(T1 body) {
+            this.body = body;
+            return (MutableHttpRequest<T1>) this;
+        }
+
+        @Override
+        public MutableHttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public MutableConvertibleValues<Object> getAttributes() {
+            return MicronautAwsProxyRequest.this.getAttributes();
+        }
+
+        @Override
+        public Optional<T> getBody() {
+            if (body != null) {
+                return Optional.of((T) body);
+            }
+            return MicronautAwsProxyRequest.this.getBody();
+        }
+
+        @Override
+        public Cookies getCookies() {
+            return MicronautAwsProxyRequest.this.cookies;
+        }
+
+        @Override
+        public MutableHttpParameters getParameters() {
+            return MicronautAwsProxyRequest.this.parameters;
+        }
+
+        @Override
+        public HttpMethod getMethod() {
+            return MicronautAwsProxyRequest.this.getMethod();
+        }
+
+        @Override
+        public URI getUri() {
+            return this.uri;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            // ignored, we use the parent
         }
     }
 }
