@@ -27,6 +27,7 @@ import io.micronaut.http.simple.SimpleHttpResponseFactory;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +114,11 @@ public class LambdaServerUnderTest implements ServerUnderTest {
                 }
             }
         }
-        response.body(awsProxyResponse.getBody());
+        if (awsProxyResponse.isBase64Encoded()) {
+            response.body(Base64.getMimeDecoder().decode(awsProxyResponse.getBody()));
+        } else {
+            response.body(awsProxyResponse.getBody());
+        }
 
         if (response.getStatus().getCode() >= 400) {
             throw new HttpClientResponseException("error", response);

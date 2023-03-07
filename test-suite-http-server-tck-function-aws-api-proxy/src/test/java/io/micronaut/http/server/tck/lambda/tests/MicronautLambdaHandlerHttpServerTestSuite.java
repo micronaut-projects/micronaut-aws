@@ -1,7 +1,6 @@
 package io.micronaut.http.server.tck.lambda.tests;
 
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
@@ -12,7 +11,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.RemoteAddressTest", // CaptureRemoteAddressFiter throws NPE getting the address
     "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
-    "io.micronaut.http.server.tck.tests.OctetTest",
     "io.micronaut.http.server.tck.tests.filter.RequestFilterExceptionHandlerTest",
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest",
     "|io.micronaut.http.server.tck.tests.ErrorHandlerTest", // 2 tests Fail as CORs headers are not added to the response after deserialization fails
