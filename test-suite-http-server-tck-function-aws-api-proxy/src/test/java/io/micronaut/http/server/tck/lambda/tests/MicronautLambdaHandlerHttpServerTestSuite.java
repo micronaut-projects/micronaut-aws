@@ -9,7 +9,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectPackages("io.micronaut.http.server.tck.tests")
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.RemoteAddressTest", // CaptureRemoteAddressFiter throws NPE getting the address
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest",
     "|io.micronaut.http.server.tck.tests.ErrorHandlerTest", // 2 tests Fail as CORs headers are not added to the response after deserialization fails
     "io.micronaut.http.server.tck.tests.BodyTest", // Fails with a multi-value publisher as the body type

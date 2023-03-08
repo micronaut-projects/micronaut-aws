@@ -2,6 +2,7 @@ package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
 import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
+import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
@@ -68,7 +69,15 @@ public class LambdaServerUnderTest implements ServerUnderTest {
         AwsProxyRequest input = new AwsProxyRequest();
         input.setHttpMethod(request.getMethodName());
         input.setRequestContext(new AwsProxyRequestContext() {
-
+            @Override
+            public ApiGatewayRequestIdentity getIdentity() {
+                return new ApiGatewayRequestIdentity() {
+                    @Override
+                    public String getSourceIp() {
+                        return "127.0.0.1";
+                    }
+                };
+            }
         });
         input.setPath(request.getPath());
         for (String headerName : request.getHeaders().names()) {
