@@ -15,8 +15,8 @@ dependencies {
         exclude(group = "commons-logging")
     }
     api(libs.managed.jcl.over.slf4j)
-    api(projects.functionAws)
-    api(projects.awsCommon)
+    api(projects.micronautFunctionAws)
+    api(projects.micronautAwsCommon)
     implementation(mn.micronaut.jackson.databind)
 
     testAnnotationProcessor(mnValidation.micronaut.validation.processor)

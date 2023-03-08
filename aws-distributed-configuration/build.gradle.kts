@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.awsCommon)
+    api(projects.micronautAwsCommon)
     api(mnDiscoveryClient.micronaut.discovery.client)
     testImplementation(mn.micronaut.http.server.netty)
 }

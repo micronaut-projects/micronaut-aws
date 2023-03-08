@@ -5,7 +5,7 @@ plugins {
 dependencies {
     api(platform(libs.boms.aws.java.sdk.v1))
     api(libs.managed.aws.java.sdk.core)
-    api(projects.awsCommon)
+    api(projects.micronautAwsCommon)
     runtimeOnly(libs.jcl.over.slf4j)
     testImplementation(mn.micronaut.http.server.netty)
     testRuntimeOnly(mn.snakeyaml)

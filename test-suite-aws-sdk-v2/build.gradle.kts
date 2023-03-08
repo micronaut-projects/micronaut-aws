@@ -16,7 +16,7 @@ dependencies {
     testImplementation(libs.junit.jupiter.api)
     testImplementation(mnTest.micronaut.test.junit5)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(projects.awsSdkV2)
+    testImplementation(projects.micronautAwsSdkV2)
 }
 tasks {
     named("test", Test::class) {
