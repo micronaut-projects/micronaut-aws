@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     api(mn.micronaut.discovery.core)
-    api(projects.awsServiceDiscovery)
-    api(projects.awsSdkV2)
+    api(projects.micronautAwsServiceDiscovery)
+    api(projects.micronautAwsSdkV2)
     implementation(libs.aws.ssm)
     implementation(mn.reactor)
     testImplementation(mn.micronaut.http.server.netty)

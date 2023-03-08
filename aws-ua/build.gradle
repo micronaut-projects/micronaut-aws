@@ -4,16 +4,9 @@ plugins {
 
 def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io.micronaut.internal.aws.tasks.UserAgentProviderGeneratorTask) {
     version.set(micronautVersion)
-    outputDirectory.set(layout.projectDirectory.dir("src/main/java/"))
+    outputDirectory.set(layout.buildDirectory.dir("generated/user-agent"))
 }
-compileJava.dependsOn(userAgentProviderGenerator)
-
-def deleteUserAgentProviderGenerator = tasks.register("deleteUserAgentProviderGenerator", Delete) {
-    delete fileTree('src/main/java') {
-        include '**/Generated*.java'
-    }
-}
-clean.dependsOn(deleteUserAgentProviderGenerator)
+sourceSets.main.java.srcDir(userAgentProviderGenerator)
 
 spotless {
     java {

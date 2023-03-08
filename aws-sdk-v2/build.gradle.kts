@@ -4,9 +4,9 @@ plugins {
 
 dependencies {
     api(platform(libs.boms.aws.java.sdk.v2))
-    api(projects.awsCommon)
+    api(projects.micronautAwsCommon)
     compileOnly(libs.graal.sdk)
-    implementation(projects.awsUa)
+    implementation(projects.micronautAwsUa)
 
     // Clients
     compileOnly(libs.awssdk.url.connection.client)

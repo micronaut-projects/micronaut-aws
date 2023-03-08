@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(mnTest.micronaut.test.junit5)
-    api(projects.functionAws)
+    api(projects.micronautFunctionAws)
     api(mn.micronaut.function)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testRuntimeOnly(mn.snakeyaml)

@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.awsSdkV1)
+    api(projects.micronautAwsSdkV1)
     implementation(libs.aws.java.sdk.lambda)
     implementation(mn.reactor)
     api(mn.micronaut.function.client)
