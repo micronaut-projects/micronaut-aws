@@ -157,11 +157,14 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</span></div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBodyDecoded()" class="member-name-link">isBodyDecoded</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;io.micronaut.function.aws.proxy.MicronautAwsProxyRequest.HeaderValue&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseHeaderValue(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">parseHeaderValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;headerValue,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.http.MutableHttpRequest&lt;<a href="MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mutate()" class="member-name-link">mutate</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;io.micronaut.function.aws.proxy.MicronautAwsProxyRequest.HeaderValue&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseHeaderValue(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">parseHeaderValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;headerValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;valueSeparator,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifierSeparator)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generic method to parse an HTTP header value and split it into a list of key/values for all its components.</div>
 </div>
 </div>
@@ -178,7 +181,7 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</span></div>
 <code>getBody, getBody, getCharacterEncoding, getContentLength</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.http.HttpRequest">Methods inherited from interface&nbsp;io.micronaut.http.HttpRequest</h3>
-<code>accept, getCertificate, getHttpVersion, getLocale, getMethodName, getPath, getServerAddress, getServerName, getUserPrincipal, getUserPrincipal, isSecure, mutate, setAttribute</code></div>
+<code>accept, getCertificate, getHttpVersion, getLocale, getMethodName, getPath, getServerAddress, getServerName, getUserPrincipal, getUserPrincipal, isSecure, setAttribute</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.core.attr.MutableAttributeHolder">Methods inherited from interface&nbsp;io.micronaut.core.attr.MutableAttributeHolder</h3>
 <code>removeAttribute</code></div>
@@ -356,6 +359,16 @@ implements io.micronaut.http.HttpRequest&lt;T&gt;</span></div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>true if body was already decoded, false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="mutate()">
+<h3>mutate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.micronaut.http.MutableHttpRequest&lt;<a href="MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt;</span>&nbsp;<span class="element-name">mutate</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>mutate</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpRequest&lt;<a href="MicronautAwsProxyRequest.html" title="type parameter in MicronautAwsProxyRequest">T</a>&gt;</code></dd>
 </dl>
 </section>
 </li>
