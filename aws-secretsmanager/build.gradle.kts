@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    api(projects.awsSdkV2)
-    api(projects.awsDistributedConfiguration)
+    api(projects.micronautAwsSdkV2)
+    api(projects.micronautAwsDistributedConfiguration)
     api(libs.awssdk.secretsmanager)
     implementation(mn.micronaut.jackson.databind)
 }

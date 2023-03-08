@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     api(mn.micronaut.http.server)
-    api(projects.functionAwsApiProxy)
+    api(projects.micronautFunctionAwsApiProxy)
     implementation(libs.jetty.server)
     testImplementation(mn.micronaut.http.client)
 }

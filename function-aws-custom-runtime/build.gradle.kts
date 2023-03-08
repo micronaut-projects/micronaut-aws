@@ -4,12 +4,12 @@ plugins {
 
 dependencies {
     annotationProcessor(libs.micronaut.graal)
-    compileOnly(projects.functionAwsApiProxy)
+    compileOnly(projects.micronautFunctionAwsApiProxy)
 
     api(mn.micronaut.http.client)
     api(libs.managed.aws.lambda.events)
-    implementation(projects.awsUa)
-    testImplementation(projects.functionAwsApiProxy) {
+    implementation(projects.micronautAwsUa)
+    testImplementation(projects.micronautFunctionAwsApiProxy) {
         exclude(group = "com.fasterxml.jackson.module", module = "jackson-module-afterburner")
     }
     testImplementation(mn.micronaut.inject.java)

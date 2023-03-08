@@ -9,11 +9,8 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectPackages("io.micronaut.http.server.tck.tests")
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
-    "io.micronaut.http.server.tck.tests.filter.RequestFilterExceptionHandlerTest",
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest",
     "|io.micronaut.http.server.tck.tests.ErrorHandlerTest", // 2 tests Fail as CORs headers are not added to the response after deserialization fails
-    "io.micronaut.http.server.tck.tests.filter.RequestFilterTest",
     "io.micronaut.http.server.tck.tests.BodyTest", // Fails with a multi-value publisher as the body type
     "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest"
 })

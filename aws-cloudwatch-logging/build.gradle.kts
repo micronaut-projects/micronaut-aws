@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.awsSdkV2)
+    api(projects.micronautAwsSdkV2)
     implementation(libs.logback.json.classic)
     api(libs.awssdk.cloudwatchlogs)
     api(mn.micronaut.runtime)

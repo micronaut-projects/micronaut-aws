@@ -22,8 +22,8 @@ import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.client.netty.NettyClientHttpRequestFactory;
-import io.micronaut.http.server.tck.ServerUnderTest;
 import io.micronaut.http.simple.SimpleHttpResponseFactory;
+import io.micronaut.http.tck.ServerUnderTest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -58,6 +58,11 @@ public class LambdaServerUnderTest implements ServerUnderTest {
         } catch (UnsupportedEncodingException e) {
             return new SimpleHttpResponseFactory().status(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public <I, O, E> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType, Argument<E> errorType) {
+        return exchange(request, bodyType);
     }
 
     private <I> AwsProxyRequest adaptRequest(HttpRequest<I> request) throws UnsupportedEncodingException {

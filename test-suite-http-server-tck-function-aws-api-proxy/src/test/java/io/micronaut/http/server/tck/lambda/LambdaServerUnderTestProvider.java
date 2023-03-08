@@ -1,7 +1,7 @@
 package io.micronaut.http.server.tck.lambda;
 
-import io.micronaut.http.server.tck.ServerUnderTest;
-import io.micronaut.http.server.tck.ServerUnderTestProvider;
+import io.micronaut.http.tck.ServerUnderTest;
+import io.micronaut.http.tck.ServerUnderTestProvider;
 
 import java.util.Map;
 

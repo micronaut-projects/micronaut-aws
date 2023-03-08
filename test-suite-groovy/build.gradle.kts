@@ -12,8 +12,8 @@ dependencies {
     testCompileOnly(mn.micronaut.inject.groovy)
     testImplementation(mnTest.micronaut.test.spock)
     testImplementation(platform(mn.micronaut.core.bom))
-    testImplementation(projects.functionAws)
-    testImplementation(projects.functionClientAws)
+    testImplementation(projects.micronautFunctionAws)
+    testImplementation(projects.micronautFunctionClientAws)
     testRuntimeOnly(mn.snakeyaml)
 }
 

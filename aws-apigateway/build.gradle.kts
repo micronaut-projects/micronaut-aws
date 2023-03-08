@@ -3,9 +3,9 @@ plugins {
 }
 dependencies {
     compileOnly(mn.micronaut.http)
-    compileOnly(projects.functionAwsApiProxy)
+    compileOnly(projects.micronautFunctionAwsApiProxy)
     compileOnly(libs.managed.aws.lambda.events)
-    testImplementation(projects.functionAwsApiProxy)
+    testImplementation(projects.micronautFunctionAwsApiProxy)
     testImplementation(libs.managed.aws.lambda.events)
 }
 micronautBuild {
