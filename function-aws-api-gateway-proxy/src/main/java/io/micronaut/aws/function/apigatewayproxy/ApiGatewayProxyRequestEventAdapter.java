@@ -64,7 +64,7 @@ public class ApiGatewayProxyRequestEventAdapter<T> implements HttpRequest<T> {
 
     @Override
     public HttpHeaders getHeaders() {
-        return new ApiGatewayProxyRequestEventAdapterHttpHeaders(conversionService, event);
+        return new ApiGatewayProxyHeaderAdapter(event, conversionService);
     }
 
     @Override

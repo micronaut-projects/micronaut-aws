@@ -16,11 +16,13 @@
 package io.micronaut.aws.function.apigatewayproxy;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.MutableHttpHeaders;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,34 +38,44 @@ import java.util.Set;
  * @author Sergio del Amo
  * @since 4.0.0
  */
-public class ApiGatewayProxyRequestEventAdapterHttpHeaders implements HttpHeaders {
+public class ApiGatewayProxyHeaderAdapter implements MutableHttpHeaders, HttpHeaders {
+
     private final Map<String, List<String>> headers;
-    private final ConversionService conversionService;
+    private ConversionService conversionService;
 
     /**
      *
      * @param conversionService Conversion Service
      * @param event API Gateway Proxy Request event.
      */
-    public ApiGatewayProxyRequestEventAdapterHttpHeaders(ConversionService conversionService, APIGatewayProxyRequestEvent event) {
+    public ApiGatewayProxyHeaderAdapter(APIGatewayProxyRequestEvent event, ConversionService conversionService) {
         this.conversionService = conversionService;
-        if (event.getMultiValueHeaders() == null && event.getHeaders() == null) {
-            headers = Collections.emptyMap();
-        } else {
-            headers = new HashMap<>();
-            if (event.getMultiValueHeaders() != null) {
-                for (String name : event.getMultiValueHeaders().keySet()) {
-                    String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
-                    headers.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    headers.get(headerName).addAll(event.getMultiValueHeaders().get(name));
-                }
+        headers = new HashMap<>();
+        adaptHeaders(event.getMultiValueHeaders(), event.getHeaders());
+    }
+
+    public ApiGatewayProxyHeaderAdapter(APIGatewayProxyResponseEvent event, ConversionService conversionService) {
+        this.conversionService = conversionService;
+        headers = new HashMap<>();
+        adaptHeaders(event.getMultiValueHeaders(), event.getHeaders());
+    }
+
+    private void adaptHeaders(
+        @Nullable Map<String, List<String>> multiValueHeaders,
+        @Nullable Map<String, String> singleHeaders
+    ) {
+        if (multiValueHeaders != null) {
+            for (String name : multiValueHeaders.keySet()) {
+                String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                headers.get(headerName).addAll(multiValueHeaders.get(name));
             }
-            if (CollectionUtils.isNotEmpty(event.getHeaders())) {
-                for (String name : event.getHeaders().keySet()) {
-                    String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
-                    headers.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    headers.get(headerName).add(event.getHeaders().get(name));
-                }
+        }
+        if (CollectionUtils.isNotEmpty(singleHeaders)) {
+            for (String name : singleHeaders.keySet()) {
+                String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                headers.get(headerName).add(singleHeaders.get(name));
             }
         }
     }
@@ -108,5 +120,24 @@ public class ApiGatewayProxyRequestEventAdapterHttpHeaders implements HttpHeader
             return conversionService.convert(v, conversionContext);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public MutableHttpHeaders add(CharSequence name, CharSequence value) {
+        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
+        headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+        headers.get(headerName).add(value.toString());
+        return this;
+    }
+
+    @Override
+    public MutableHttpHeaders remove(CharSequence header) {
+        headers.remove(header.toString());
+        return this;
+    }
+
+    @Override
+    public void setConversionService(ConversionService conversionService) {
+        this.conversionService = conversionService;
     }
 }

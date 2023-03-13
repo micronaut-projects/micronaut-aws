@@ -4,20 +4,15 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.aws.function.apigatewayproxy.ApiGatewayProxyRequestEventHandler;
+import io.micronaut.aws.function.apigatewayproxy.ApiGatewayProxyResponseEventAdapter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
-import io.micronaut.core.convert.ConversionService;
-import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.type.Argument;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
-import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
-import io.micronaut.http.simple.SimpleHttpHeaders;
-import io.micronaut.http.simple.SimpleHttpResponseFactory;
 import io.micronaut.http.tck.ServerUnderTest;
 
 import java.io.IOException;
@@ -67,8 +62,7 @@ public class LambdaServerUnderTest implements ServerUnderTest {
     }
 
     private <O> HttpResponse<O> adaptReponse(APIGatewayProxyResponseEvent awsProxyResponse) {
-        MutableHttpResponse<O> response = new SimpleHttpResponseFactory().status(HttpStatus.valueOf(awsProxyResponse.getStatusCode()));
-
+        MutableHttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter<>(awsProxyResponse, getApplicationContext().getConversionService());
         if (response.getStatus().getCode() >= 400) {
             throw new HttpClientResponseException("error", response);
         }
