@@ -55,14 +55,14 @@ public class ApiGatewayProxyRequestEventAdapterHttpHeaders implements HttpHeader
                 for (String name : event.getMultiValueHeaders().keySet()) {
                     String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
                     headers.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    headers.get(headerName).addAll(event.getMultiValueHeaders().get(headerName));
+                    headers.get(headerName).addAll(event.getMultiValueHeaders().get(name));
                 }
             }
             if (CollectionUtils.isNotEmpty(event.getHeaders())) {
                 for (String name : event.getHeaders().keySet()) {
                     String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
                     headers.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    headers.get(headerName).add(event.getHeaders().get(headerName));
+                    headers.get(headerName).add(event.getHeaders().get(name));
                 }
             }
         }

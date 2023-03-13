@@ -16,10 +16,15 @@
 package io.micronaut.aws.function.apigatewayproxy;
 
 import io.micronaut.core.execution.ExecutionFlow;
+import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.server.RequestLifecycle;
 import io.micronaut.http.server.RouteExecutor;
+import io.micronaut.web.router.RouteInfo;
+
+import java.util.Optional;
 
 /**
  * Used in {@link ApiGatewayProxyRequestEventHandler} to handle the full route processing lifecycle for a request.
@@ -37,10 +42,15 @@ public class AmazonApiGatewayRequestLifecycle extends RequestLifecycle {
     }
 
     /**
-     *
      * @return An ExecutionFlow
      */
     ExecutionFlow<MutableHttpResponse<?>> run() {
-        return normalFlow();
+        return normalFlow().map(response -> {
+            Optional<RouteInfo> routeInfo = response.getAttribute(HttpAttributes.ROUTE_INFO, RouteInfo.class);
+            if (routeInfo.isPresent() && (response.getContentType().isEmpty())) {
+                routeInfo.get().getAnnotationMetadata().getValue(Produces.class, String.class).ifPresent(response::contentType);
+            }
+            return response;
+        });
     }
 }

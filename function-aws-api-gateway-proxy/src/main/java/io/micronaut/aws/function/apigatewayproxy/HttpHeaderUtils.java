@@ -17,6 +17,7 @@ package io.micronaut.aws.function.apigatewayproxy;
 
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpHeaders;
 
 /**
@@ -219,6 +220,6 @@ final class HttpHeaderUtils {
         } else if (headerName.equalsIgnoreCase(HttpHeaders.X_AUTH_TOKEN)) {
             return HttpHeaders.X_AUTH_TOKEN;
         }
-        return headerName;
+        return StringUtils.capitalize(headerName.toLowerCase());
     }
 }

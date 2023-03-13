@@ -68,8 +68,6 @@ public class LambdaServerUnderTest implements ServerUnderTest {
 
     private <O> HttpResponse<O> adaptReponse(APIGatewayProxyResponseEvent awsProxyResponse) {
         MutableHttpResponse<O> response = new SimpleHttpResponseFactory().status(HttpStatus.valueOf(awsProxyResponse.getStatusCode()));
-        //TODO do the headers
-        response.header(HttpHeaders.CONTENT_TYPE, awsProxyResponse.getHeaders().get(HttpHeaders.CONTENT_TYPE));//TODO del this line
 
         if (response.getStatus().getCode() >= 400) {
             throw new HttpClientResponseException("error", response);
