@@ -31,9 +31,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Adapts from {@link APIGatewayProxyRequestEvent#getHeaders()} and {@link APIGatewayProxyRequestEvent#getMultiValueHeaders()} to {@link HttpHeaders}.
+ * @author Sergio del Amo
+ * @since 4.0.0
+ */
 public class ApiGatewayProxyRequestEventAdapterHttpHeaders implements HttpHeaders {
     private final Map<String, List<String>> headers;
     private final ConversionService conversionService;
+
+    /**
+     *
+     * @param conversionService Conversion Service
+     * @param event API Gateway Proxy Request event.
+     */
     public ApiGatewayProxyRequestEventAdapterHttpHeaders(ConversionService conversionService, APIGatewayProxyRequestEvent event) {
         this.conversionService = conversionService;
         if (event.getMultiValueHeaders() == null && event.getHeaders() == null) {
@@ -56,7 +67,6 @@ public class ApiGatewayProxyRequestEventAdapterHttpHeaders implements HttpHeader
             }
         }
     }
-
 
     @Override
     public List<String> getAll(CharSequence name) {

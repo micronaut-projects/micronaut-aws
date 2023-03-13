@@ -36,6 +36,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * {@link com.amazonaws.services.lambda.runtime.RequestHandler(APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent) which starts a Micronaut Application Context in the constructor and handles the full route processing lifecycle for a request.
+ * @author Sergio del Amo
+ * @since 4.0.0
+ *
+ */
 public class ApiGatewayProxyRequestEventHandler extends MicronautRequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     @Inject
@@ -44,13 +50,24 @@ public class ApiGatewayProxyRequestEventHandler extends MicronautRequestHandler<
     @Inject
     ConversionService conversionService;
 
+    /**
+     * Constructor.
+     */
     public ApiGatewayProxyRequestEventHandler() {
     }
 
+    /**
+     * Constructor.
+     * @param applicationContext Application Context
+     */
     public ApiGatewayProxyRequestEventHandler(ApplicationContext applicationContext) {
         super(applicationContext);
     }
 
+    /**
+     * Constructor.
+     * @param applicationContextBuilder ApplicationContextBuilder
+     */
     public ApiGatewayProxyRequestEventHandler(ApplicationContextBuilder applicationContextBuilder) {
         super(applicationContextBuilder);
     }

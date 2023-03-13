@@ -27,6 +27,11 @@ import io.micronaut.http.cookie.Cookies;
 import java.net.URI;
 import java.util.Optional;
 
+/**
+ * Adapts between a {@link APIGatewayProxyRequestEvent} to a {@link HttpRequest}.
+ *
+ * @param <T> The HTTP Message body
+ */
 public class ApiGatewayProxyRequestEventAdapter<T> implements HttpRequest<T> {
     private APIGatewayProxyRequestEvent event;
     private final ConversionService conversionService;
@@ -36,6 +41,7 @@ public class ApiGatewayProxyRequestEventAdapter<T> implements HttpRequest<T> {
         this.conversionService = conversionService;
         this.event = event;
     }
+
     @Override
     public Cookies getCookies() {
         return null;
