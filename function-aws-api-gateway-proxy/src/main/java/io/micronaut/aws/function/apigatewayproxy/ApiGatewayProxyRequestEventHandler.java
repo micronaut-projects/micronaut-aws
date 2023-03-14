@@ -26,6 +26,7 @@ import io.micronaut.function.aws.MicronautRequestHandler;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.server.RouteExecutor;
 import jakarta.inject.Inject;
 
@@ -73,6 +74,9 @@ public class ApiGatewayProxyRequestEventHandler extends MicronautRequestHandler<
     public APIGatewayProxyResponseEvent execute(APIGatewayProxyRequestEvent input) {
         HttpRequest<?> request = new ApiGatewayProxyRequestEventAdapter<>(conversionService, input);
         HttpResponse<?> response = handle(request);
+        if (response.getStatus().getCode() >= 400) {
+            throw new HttpClientResponseException("error", response);
+        }
         return adaptResponse(request, response);
     }
 

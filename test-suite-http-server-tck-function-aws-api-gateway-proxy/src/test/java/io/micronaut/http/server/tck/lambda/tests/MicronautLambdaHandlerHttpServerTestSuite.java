@@ -11,7 +11,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @IncludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.HelloWorldTest",
     "io.micronaut.http.server.tck.tests.HeadersTest",
-//    "io.micronaut.http.server.tck.tests.MiscTest",
+    "io.micronaut.http.server.tck.tests.StatusTest",
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }
