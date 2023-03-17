@@ -1,1 +1,1 @@
-io.micronaut.http.server.tck.lambda.LambdaServerUnderTestProvider
+io.micronaut.http.server.tck.lambda.GatewayLambdaServerUnderTestProvider

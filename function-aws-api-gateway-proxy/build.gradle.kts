@@ -6,5 +6,6 @@ dependencies {
     api(mn.micronaut.http.server)
     api(mn.micronaut.http.client.core)
     api(projects.micronautFunctionAws)
+    api(mnServlet.micronaut.servlet.core)
     testImplementation(mn.micronaut.jackson.databind)
 }

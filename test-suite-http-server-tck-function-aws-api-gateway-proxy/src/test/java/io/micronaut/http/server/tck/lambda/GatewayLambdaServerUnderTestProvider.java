@@ -5,9 +5,9 @@ import io.micronaut.http.tck.ServerUnderTestProvider;
 
 import java.util.Map;
 
-public class LambdaServerUnderTestProvider implements ServerUnderTestProvider {
+public class GatewayLambdaServerUnderTestProvider implements ServerUnderTestProvider {
     @Override
     public ServerUnderTest getServer(Map<String, Object> properties) {
-        return new LambdaServerUnderTest(properties);
+        return new GatewayLambdaServerUnderTest(properties);
     }
 }

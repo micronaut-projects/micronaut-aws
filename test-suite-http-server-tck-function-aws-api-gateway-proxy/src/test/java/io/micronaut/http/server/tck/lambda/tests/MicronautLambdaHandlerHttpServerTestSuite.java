@@ -12,6 +12,8 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.HelloWorldTest",
     "io.micronaut.http.server.tck.tests.HeadersTest",
     "io.micronaut.http.server.tck.tests.StatusTest",
+    "io.micronaut.http.server.tck.tests.ResponseStatusTest",
+    "io.micronaut.http.server.tck.tests.FluxTest",
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }

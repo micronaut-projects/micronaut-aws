@@ -1,18 +1,3 @@
-/*
- * Copyright 2017-2023 original authors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package io.micronaut.aws.function.apigatewayproxy;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -29,11 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Adapts between a {@link APIGatewayProxyResponseEvent} to a {@link MutableHttpResponse}.
- *
- * @param <T> The HTTP Message body
- */
 public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpResponse<T> {
 
     private APIGatewayProxyResponseEvent event;
@@ -41,7 +21,6 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
     private Map<String, Cookie> cookies = new ConcurrentHashMap<>(2);
 
-    private T body;
     private int status = HttpStatus.OK.getCode();
     private String reason = HttpStatus.OK.getReason();
 
@@ -68,12 +47,11 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public Optional<T> getBody() {
-        return Optional.ofNullable(body);
+        return (Optional<T>) Optional.ofNullable(event.getBody());
     }
 
     @Override
     public <B> MutableHttpResponse<B> body(B body) {
-        this.body = (T) body;
         return (MutableHttpResponse<B>) this;
     }
 
@@ -91,11 +69,16 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public int code() {
-        return status;
+        return getStatus().getCode();
     }
 
     @Override
     public String reason() {
-        return reason;
+        return getStatus().getReason();
+    }
+
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.valueOf(event.getStatusCode());
     }
 }

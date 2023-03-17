@@ -51,6 +51,7 @@ configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog("micronaut-groovy")
     importMicronautCatalog("micronaut-mongodb")
     importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-servlet")
     importMicronautCatalog("micronaut-security")
     importMicronautCatalog("micronaut-views")
     importMicronautCatalog("micronaut-validation")
