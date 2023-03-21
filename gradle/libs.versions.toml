@@ -14,9 +14,9 @@ logback-json-classic = '0.1.5'
 micronaut-discovery = '4.0.0-M1'
 micronaut-groovy = '4.0.0-M1'
 micronaut-mongodb = '5.0.0-M1'
-micronaut-security = '4.0.0-SNAPSHOT'
+micronaut-security = '4.0.0-M1'
 micronaut-serde = '2.0.0-M1'
-micronaut-views = '4.0.0-SNAPSHOT'
+micronaut-views = '4.0.0-M1'
 micronaut-validation = "4.0.0-M2"
 
 managed-alexa-ask-sdk = "2.62.0"
