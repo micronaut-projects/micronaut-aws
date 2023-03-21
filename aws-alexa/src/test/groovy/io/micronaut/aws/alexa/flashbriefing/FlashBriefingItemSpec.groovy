@@ -6,7 +6,7 @@ import io.micronaut.aws.ApplicationContextSpecification
 import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Unroll
-import javax.validation.Validator
+import jakarta.validation.Validator
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId

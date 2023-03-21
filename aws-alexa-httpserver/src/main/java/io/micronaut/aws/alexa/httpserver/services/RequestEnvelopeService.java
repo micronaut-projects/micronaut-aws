@@ -21,7 +21,7 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.context.annotation.DefaultImplementation;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Process a {@link RequestEnvelope} and returns a {@link ResponseEnvelope} if it is capable of handling the request.
