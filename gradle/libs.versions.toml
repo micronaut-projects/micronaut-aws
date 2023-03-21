@@ -16,7 +16,7 @@ micronaut-graal = '4.0.0-SNAPSHOT'
 micronaut-groovy = '4.0.0-M1'
 micronaut-mongodb = '5.0.0-SNAPSHOT'
 micronaut-security = '4.0.0-SNAPSHOT'
-micronaut-serde = '2.0.0-SNAPSHOT'
+micronaut-serde = '2.0.0-M1'
 micronaut-views = '4.0.0-SNAPSHOT'
 micronaut-validation = "4.0.0-SNAPSHOT"
 
