@@ -61,6 +61,11 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
     }
 
     @Override
+    public Optional<Integer> getPort() {
+        return Optional.of(1234);
+    }
+
+    @Override
     public void close() throws IOException {
         function.close();
     }

@@ -213,6 +213,9 @@ final class ApiGatewayProxyServletRequest<B> implements
         @Override
         public List<String> getAll(CharSequence name) {
             if (name != null) {
+                if (requestEvent.getMultiValueQueryStringParameters() == null) {
+                    return Collections.emptyList();
+                }
                 return requestEvent.getMultiValueQueryStringParameters().get(name.toString());
             }
             return Collections.emptyList();
@@ -241,6 +244,9 @@ final class ApiGatewayProxyServletRequest<B> implements
         @Override
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             if (name != null) {
+                if (requestEvent.getQueryStringParameters() == null) {
+                    return Optional.empty();
+                }
                 Optional<String> v = Optional.ofNullable(requestEvent.getQueryStringParameters().get(name.toString()));
                 return v.flatMap(s -> conversionService.convert(s, conversionContext));
             }
