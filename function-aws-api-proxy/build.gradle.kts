@@ -33,8 +33,9 @@ dependencies {
     testImplementation(libs.jackson.afterburner)
     testImplementation(libs.servlet.api)
     testImplementation(libs.fileupload)
+    // We have JUnit4 tests
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 }
-
 spotless {
     java {
         targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java")
