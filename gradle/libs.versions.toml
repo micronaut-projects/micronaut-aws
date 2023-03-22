@@ -1,9 +1,9 @@
 [versions]
 
-micronaut = "4.0.0-SNAPSHOT"
+micronaut = "4.0.0-M1"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.0.0-SNAPSHOT"
-groovy = "4.0.9"
+groovy = "4.0.10"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
@@ -13,12 +13,12 @@ logback-json-classic = '0.1.5'
 
 micronaut-discovery = '4.0.0-SNAPSHOT'
 micronaut-graal = '4.0.0-SNAPSHOT'
-micronaut-groovy = '4.0.0-SNAPSHOT'
+micronaut-groovy = '4.0.0-M1'
 micronaut-mongodb = '5.0.0-SNAPSHOT'
 micronaut-security = '4.0.0-SNAPSHOT'
-micronaut-serde = '2.0.0-SNAPSHOT'
+micronaut-serde = '2.0.0-M1'
 micronaut-views = '4.0.0-SNAPSHOT'
-micronaut-validation = "4.0.0-SNAPSHOT"
+micronaut-validation = "4.0.0-M2"
 
 managed-alexa-ask-sdk = "2.62.0"
 managed-aws-java-sdk-v1 = '1.12.420'
