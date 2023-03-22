@@ -50,6 +50,7 @@ configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog("micronaut-discovery-client")
     importMicronautCatalog("micronaut-groovy")
     importMicronautCatalog("micronaut-mongodb")
+    importMicronautCatalog("micronaut-reactor")
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-servlet")
     importMicronautCatalog("micronaut-security")

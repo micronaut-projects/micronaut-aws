@@ -3,4 +3,5 @@ plugins {
 }
 dependencies {
     testImplementation(projects.micronautFunctionAwsApiGatewayProxy)
+    testImplementation(mnReactor.micronaut.reactor)
 }

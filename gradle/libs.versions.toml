@@ -15,6 +15,7 @@ micronaut-discovery = '4.0.0-SNAPSHOT'
 micronaut-graal = '4.0.0-SNAPSHOT'
 micronaut-groovy = '4.0.0-SNAPSHOT'
 micronaut-mongodb = '5.0.0-SNAPSHOT'
+micronaut-reactor = '3.0.0-M1'
 micronaut-security = '4.0.0-SNAPSHOT'
 micronaut-serde = '2.0.0-SNAPSHOT'
 micronaut-servlet = '4.0.0-SNAPSHOT'
@@ -49,6 +50,7 @@ micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discov
 micronaut-graal = { module = "io.micronaut:micronaut-graal", version.ref = "micronaut-graal" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
+micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
 micronaut-servlet = { module = "io.micronaut.servlet:micronaut-servlet-bom", version.ref = "micronaut-servlet" }
 micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
