@@ -17,6 +17,10 @@ package io.micronaut.aws.function.apigatewayproxy;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.function.apigatewayproxy.APIGatewayV2HTTPEventBinder;
+import io.micronaut.aws.function.apigatewayproxy.APIGatewayProxyResponseEventBinder;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
@@ -45,7 +49,9 @@ public class ApiGatewayBinderRegistry extends ServletBinderRegistry {
         List<RequestArgumentBinder> binders
     ) {
         super(mediaTypeCodecRegistry, conversionService, binders);
-        this.byType.put(APIGatewayProxyRequestEvent.class, new ApiGatewayRequestBinder());
-        this.byType.put(APIGatewayProxyResponseEvent.class, new ApiGatewayResponseBinder());
+        this.byType.put(APIGatewayProxyRequestEvent.class, new APIGatewayV2HTTPEventBinder());
+        this.byType.put(APIGatewayProxyResponseEvent.class, new APIGatewayProxyResponseEventBinder());
+        this.byType.put(APIGatewayV2HTTPResponse.class, new APIGatewayV2HTTPResponseBinder());
+        this.byType.put(APIGatewayV2HTTPEvent.class, new APIGatewayV2HTTPEventBinder());
     }
 }

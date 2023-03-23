@@ -26,7 +26,7 @@ import io.micronaut.http.HttpHeaders;
  * @since 3.10.6
  */
 @Internal
-final class HttpHeaderUtils {
+public final class HttpHeaderUtils {
 
     private HttpHeaderUtils() {
     }
