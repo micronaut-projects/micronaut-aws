@@ -19,7 +19,7 @@ import spock.lang.Subject
 
 import jakarta.inject.Named
 import jakarta.inject.Singleton
-import javax.validation.ConstraintViolationException
+import jakarta.validation.ConstraintViolationException
 
 class AlexaSkillBuilderSpec extends ApplicationContextSpecification {
 

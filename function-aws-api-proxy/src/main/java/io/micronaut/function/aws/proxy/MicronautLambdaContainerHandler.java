@@ -100,6 +100,9 @@ public final class MicronautLambdaContainerHandler
     private static final Logger LOG = LoggerFactory.getLogger(MicronautLambdaContainerHandler.class);
     private static final String TIMER_INIT = "MICRONAUT_COLD_START";
     private static final String TIMER_REQUEST = "MICRONAUT_HANDLE_REQUEST";
+
+    final Map<MediaType, BiFunction<Argument<?>, String, Optional<Object>>> mediaTypeBodyDecoder = new HashMap<>();
+
     private final ApplicationContextBuilder applicationContextBuilder;
     private final LambdaContainerState lambdaContainerEnvironment;
     private final BeanPropertyBinder beanPropertyBinder;
@@ -109,7 +112,6 @@ public final class MicronautLambdaContainerHandler
     private Router router;
     private ErrorResponseProcessor errorResponseProcessor;
     private RouteExecutor routeExecutor;
-    final Map<MediaType, BiFunction<Argument<?>, String, Optional<Object>>> mediaTypeBodyDecoder = new HashMap<>();
 
     /**
      * Default constructor.

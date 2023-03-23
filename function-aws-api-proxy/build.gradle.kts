@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(libs.micronaut.graal)
+    annotationProcessor(mn.micronaut.graal)
     compileOnly(mnSecurity.micronaut.security)
 
     implementation(mn.reactor)

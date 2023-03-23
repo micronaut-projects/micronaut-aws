@@ -557,14 +557,8 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Override
         public List<String> getAll(CharSequence name) {
             String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
-            if (!headers.containsKey(headerName)) {
-                return Collections.emptyList();
-            }
-            List<String> values = headers.get(headerName);
-            if (values == null) {
-                return Collections.emptyList();
-            }
-            return values;
+            return getAllIgnoreCase(headerName)
+                .orElse(Collections.emptyList());
         }
 
         @Nullable
@@ -613,6 +607,26 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         @Override
         public void setConversionService(ConversionService conversionService) {
             this.conversionService = conversionService;
+        }
+
+        @NonNull
+        private Optional<List<String>> getAllIgnoreCase(@Nullable String headerName) {
+            if (StringUtils.isEmpty(headerName)) {
+                return Optional.empty();
+            }
+            List<String> values = headers.get(headerName);
+            if (values != null) {
+                return Optional.of(values);
+            }
+            for (String k : headers.keySet()) {
+                if (k.equalsIgnoreCase(headerName)) {
+                    values = headers.get(k);
+                    if (values != null) {
+                        return Optional.of(values);
+                    }
+                }
+            }
+            return Optional.empty();
         }
     }
 

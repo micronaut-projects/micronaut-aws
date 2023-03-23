@@ -1,9 +1,9 @@
 [versions]
 
-micronaut = "4.0.0-SNAPSHOT"
+micronaut = "4.0.0-M1"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.0.0-SNAPSHOT"
-groovy = "4.0.9"
+groovy = "4.0.10"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
@@ -11,16 +11,15 @@ fileupload = '0.0.5'
 jetty = '9.4.50.v20221201'
 logback-json-classic = '0.1.5'
 
-micronaut-discovery = '4.0.0-SNAPSHOT'
-micronaut-graal = '4.0.0-SNAPSHOT'
-micronaut-groovy = '4.0.0-SNAPSHOT'
-micronaut-mongodb = '5.0.0-SNAPSHOT'
+micronaut-discovery = '4.0.0-M1'
+micronaut-groovy = '4.0.0-M1'
+micronaut-mongodb = '5.0.0-M1'
 micronaut-reactor = '3.0.0-M1'
 micronaut-security = '4.0.0-SNAPSHOT'
-micronaut-serde = '2.0.0-SNAPSHOT'
+micronaut-serde = '2.0.0-M1'
 micronaut-servlet = '4.0.0-SNAPSHOT'
-micronaut-views = '4.0.0-SNAPSHOT'
-micronaut-validation = "4.0.0-SNAPSHOT"
+micronaut-views = '4.0.0-M1'
+micronaut-validation = "4.0.0-M2"
 
 managed-alexa-ask-sdk = "2.62.0"
 managed-aws-java-sdk-v1 = '1.12.420'
@@ -47,7 +46,6 @@ micronaut-gradle-plugin = "3.7.4"
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
-micronaut-graal = { module = "io.micronaut:micronaut-graal", version.ref = "micronaut-graal" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
 micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }

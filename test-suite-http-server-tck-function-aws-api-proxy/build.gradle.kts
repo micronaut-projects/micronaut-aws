@@ -3,4 +3,5 @@ plugins {
 }
 dependencies {
     testImplementation(projects.micronautFunctionAwsApiProxy)
+    testImplementation(mnValidation.micronaut.validation)
 }

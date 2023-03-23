@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(libs.micronaut.graal)
+    annotationProcessor(mn.micronaut.graal)
     compileOnly(projects.micronautFunctionAwsApiProxy)
 
     api(mn.micronaut.http.client)
