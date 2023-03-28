@@ -12,12 +12,11 @@ jetty = '9.4.50.v20221201'
 logback-json-classic = '0.1.5'
 
 micronaut-discovery = '4.0.0-M1'
-micronaut-graal = '4.0.0-SNAPSHOT'
 micronaut-groovy = '4.0.0-M1'
-micronaut-mongodb = '5.0.0-SNAPSHOT'
-micronaut-security = '4.0.0-SNAPSHOT'
+micronaut-mongodb = '5.0.0-M1'
+micronaut-security = '4.0.0-M1'
 micronaut-serde = '2.0.0-M1'
-micronaut-views = '4.0.0-SNAPSHOT'
+micronaut-views = '4.0.0-M1'
 micronaut-validation = "4.0.0-M2"
 
 managed-alexa-ask-sdk = "2.62.0"
@@ -45,7 +44,6 @@ micronaut-gradle-plugin = "3.7.4"
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
-micronaut-graal = { module = "io.micronaut:micronaut-graal", version.ref = "micronaut-graal" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
