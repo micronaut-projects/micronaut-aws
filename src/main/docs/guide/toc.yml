@@ -23,7 +23,9 @@ sdkv2:
   endpointoverride: Endpoint override
   apiGatewayManagementApi: API Gateway Management API Client
   s3: S3
-  dynamodb: Dynamo DB
+  dynamodb:
+    title: DynamoDB
+    dynamodbConverters: DynamoDB TypeConverters
   ses: SES
   sns: SNS
   sqs: SQS

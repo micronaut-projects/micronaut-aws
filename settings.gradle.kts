@@ -15,6 +15,7 @@ rootProject.name = "aws-parent"
 
 include("aws-ua")
 include("aws-bom")
+include("dynamodb")
 include("function-aws")
 include("function-client-aws")
 include("function-aws-api-proxy")
