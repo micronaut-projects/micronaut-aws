@@ -2,7 +2,7 @@
 
 micronaut = "4.0.0-M1"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.0-SNAPSHOT"
+micronaut-test = "4.0.0-M1"
 groovy = "4.0.10"
 spock = "2.3-groovy-4.0"
 
