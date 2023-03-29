@@ -27,11 +27,21 @@ public final class AttributeValueUtils {
 
     }
 
+    /**
+     *
+     * @param value Value
+     * @return The Attribute value
+     */
     @NonNull
     public static AttributeValue s(@NonNull String value) {
         return AttributeValue.builder().s(value).build();
     }
 
+    /**
+     *
+     * @param value Value
+     * @return The Attribute value
+     */
     @NonNull
     public static AttributeValue n(@NonNull String value) {
         return AttributeValue.builder().n(value).build();
