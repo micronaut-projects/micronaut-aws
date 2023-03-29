@@ -32,8 +32,8 @@ import java.util.Optional;
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValuePeriodTypeConverter implements TypeConverter<AttributeValue, Period> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValuePeriodTypeConverter.class);
+public class AttributeValueToPeriodTypeConverter implements TypeConverter<AttributeValue, Period> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToPeriodTypeConverter.class);
 
     @Override
     public Optional<Period> convert(AttributeValue object, Class<Period> targetType, ConversionContext context) {

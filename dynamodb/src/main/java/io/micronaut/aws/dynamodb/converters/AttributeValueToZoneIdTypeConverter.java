@@ -22,30 +22,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.time.DateTimeException;
+import java.time.ZoneId;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link LocalDate}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link ZoneId} using {@link ZoneId#of(String)}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueLocalDateTypeConverter implements TypeConverter<AttributeValue, LocalDate> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueLocalDateTypeConverter.class);
+public class AttributeValueToZoneIdTypeConverter implements TypeConverter<AttributeValue, ZoneId> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToZoneIdTypeConverter.class);
 
     @Override
-    public Optional<LocalDate> convert(AttributeValue object, Class<LocalDate> targetType, ConversionContext context) {
+    public Optional<ZoneId> convert(AttributeValue object, Class<ZoneId> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
         String value = object.s();
         try {
-            return Optional.of(LocalDate.parse(value));
-        } catch (DateTimeParseException e) {
+            return Optional.of(ZoneId.of(value));
+        } catch (DateTimeException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Could not parse {} to LocalDate", value);
+                LOG.warn("Could not parse {} to ZoneId", value);
             }
             return Optional.empty();
         }

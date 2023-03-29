@@ -32,8 +32,8 @@ import java.util.UUID;
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueUUIDTypeConverter implements TypeConverter<AttributeValue, UUID> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueUUIDTypeConverter.class);
+public class AttributeValueToUUIDTypeConverter implements TypeConverter<AttributeValue, UUID> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToUUIDTypeConverter.class);
 
     @Override
     public Optional<UUID> convert(AttributeValue object, Class<UUID> targetType, ConversionContext context) {

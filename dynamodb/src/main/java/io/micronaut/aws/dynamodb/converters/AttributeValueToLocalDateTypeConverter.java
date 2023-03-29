@@ -22,27 +22,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.util.Locale;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Locale} with {@link Locale#forLanguageTag(String)}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link LocalDate}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueLocaleTypeConverter implements TypeConverter<AttributeValue, Locale> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueLocaleTypeConverter.class);
+public class AttributeValueToLocalDateTypeConverter implements TypeConverter<AttributeValue, LocalDate> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToLocalDateTypeConverter.class);
 
     @Override
-    public Optional<Locale> convert(AttributeValue object, Class<Locale> targetType, ConversionContext context) {
+    public Optional<LocalDate> convert(AttributeValue object, Class<LocalDate> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
         String value = object.s();
-        if (value == null) {
+        try {
+            return Optional.of(LocalDate.parse(value));
+        } catch (DateTimeParseException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Could not parse {} to LocalDate", value);
+            }
             return Optional.empty();
         }
-        return Optional.of(Locale.forLanguageTag(value));
     }
 }

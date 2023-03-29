@@ -22,32 +22,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.DateTimeException;
-import java.time.ZoneOffset;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link ZoneOffset} using {@link ZoneOffset#of(String)}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link Locale} with {@link Locale#forLanguageTag(String)}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueZoneOffsetTypeConverter implements TypeConverter<AttributeValue, ZoneOffset> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueZoneOffsetTypeConverter.class);
+public class AttributeValueToLocaleTypeConverter implements TypeConverter<AttributeValue, Locale> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToLocaleTypeConverter.class);
 
     @Override
-    public Optional<ZoneOffset> convert(AttributeValue object, Class<ZoneOffset> targetType, ConversionContext context) {
+    public Optional<Locale> convert(AttributeValue object, Class<Locale> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
         String value = object.s();
-        try {
-            return Optional.of(ZoneOffset.of(value));
-        } catch (DateTimeException e) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn("Could not parse {} to ZoneId", value);
-            }
+        if (value == null) {
             return Optional.empty();
         }
+        return Optional.of(Locale.forLanguageTag(value));
     }
 }

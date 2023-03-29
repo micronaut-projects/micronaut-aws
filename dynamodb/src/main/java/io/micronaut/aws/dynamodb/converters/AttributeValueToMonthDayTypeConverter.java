@@ -22,30 +22,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.DateTimeException;
-import java.time.ZoneId;
+import java.time.MonthDay;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link ZoneId} using {@link ZoneId#of(String)}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link java.time.MonthDay} using {@link java.time.MonthDay#parse(CharSequence)}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueZoneIdTypeConverter implements TypeConverter<AttributeValue, ZoneId> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueZoneIdTypeConverter.class);
+public class AttributeValueToMonthDayTypeConverter implements TypeConverter<AttributeValue, MonthDay> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToMonthDayTypeConverter.class);
 
     @Override
-    public Optional<ZoneId> convert(AttributeValue object, Class<ZoneId> targetType, ConversionContext context) {
+    public Optional<MonthDay> convert(AttributeValue object, Class<MonthDay> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
         String value = object.s();
+        if (value == null) {
+            return Optional.empty();
+        }
         try {
-            return Optional.of(ZoneId.of(value));
-        } catch (DateTimeException e) {
+            return Optional.of(MonthDay.parse(value));
+        } catch (DateTimeParseException e) {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Could not parse {} to ZoneId", value);
+                LOG.warn("Could not parse {} to MonthDay", value);
             }
             return Optional.empty();
         }

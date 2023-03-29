@@ -32,8 +32,8 @@ import java.util.Optional;
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueLocalDateTimeTypeConverter implements TypeConverter<AttributeValue, LocalDateTime> {
-    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueLocalDateTimeTypeConverter.class);
+public class AttributeValueToLocalDateTimeTypeConverter implements TypeConverter<AttributeValue, LocalDateTime> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToLocalDateTimeTypeConverter.class);
 
     @Override
     public Optional<LocalDateTime> convert(AttributeValue object, Class<LocalDateTime> targetType, ConversionContext context) {
