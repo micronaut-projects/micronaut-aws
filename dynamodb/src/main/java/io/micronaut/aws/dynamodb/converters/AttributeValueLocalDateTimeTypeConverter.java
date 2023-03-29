@@ -18,25 +18,36 @@ package io.micronaut.aws.dynamodb.converters;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Boolean}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link LocalDateTime}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueToBooleanTypeConverter implements TypeConverter<AttributeValue, Boolean> {
+public class AttributeValueLocalDateTimeTypeConverter implements TypeConverter<AttributeValue, LocalDateTime> {
+    private static final Logger LOG = LoggerFactory.getLogger(AttributeValueLocalDateTimeTypeConverter.class);
+
     @Override
-    public Optional<Boolean> convert(AttributeValue object, Class<Boolean> targetType, ConversionContext context) {
+    public Optional<LocalDateTime> convert(AttributeValue object, Class<LocalDateTime> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
-        if (object.bool() != null) {
-            return Optional.of(object.bool());
+        String value = object.s();
+        try {
+            return Optional.of(LocalDateTime.parse(value));
+        } catch (DateTimeParseException e) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Could not parse {} to LocalDateTime", value);
+            }
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 }

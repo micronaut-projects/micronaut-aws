@@ -15,28 +15,26 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Boolean}.
+ * {@link TypeConverter} from {@link LocalDateTime} to {@link AttributeValue}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueToBooleanTypeConverter implements TypeConverter<AttributeValue, Boolean> {
+public class LocalDateTimeToAttributeValueTypeConverter implements TypeConverter<LocalDateTime, AttributeValue> {
     @Override
-    public Optional<Boolean> convert(AttributeValue object, Class<Boolean> targetType, ConversionContext context) {
-        if (object == null) {
-            return Optional.empty();
-        }
-        if (object.bool() != null) {
-            return Optional.of(object.bool());
-        }
-        return Optional.empty();
+    public Optional<AttributeValue> convert(LocalDateTime object, Class<AttributeValue> targetType, ConversionContext context) {
+        return object != null ?
+            Optional.of(AttributeValueUtils.s(object.toString())) :
+                Optional.empty();
     }
 }
