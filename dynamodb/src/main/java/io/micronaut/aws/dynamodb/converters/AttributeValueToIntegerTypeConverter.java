@@ -15,26 +15,26 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
-import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
-import io.micronaut.core.util.StringUtils;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link CharSequence} to {@link AttributeValue}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link Integer}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class CharSequenceToAttributeValueTypeConverter implements TypeConverter<CharSequence, AttributeValue> {
+public class AttributeValueToIntegerTypeConverter implements TypeConverter<AttributeValue, Integer> {
+
     @Override
-    public Optional<AttributeValue> convert(CharSequence object, Class<AttributeValue> targetType, ConversionContext context) {
-        return StringUtils.isNotEmpty(object) ?
-            Optional.of(AttributeValueUtils.s(object.toString())) :
-                Optional.empty();
+    public Optional<Integer> convert(AttributeValue object, Class<Integer> targetType, ConversionContext context) {
+        if (object == null) {
+            return Optional.empty();
+        }
+        return Optional.of(Integer.valueOf(object.n()));
     }
 }

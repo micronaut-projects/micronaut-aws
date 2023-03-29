@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
 import jakarta.inject.Singleton;
@@ -33,7 +34,7 @@ public class LocalDateToAttributeValueTypeConverter implements TypeConverter<Loc
     @Override
     public Optional<AttributeValue> convert(LocalDate object, Class<AttributeValue> targetType, ConversionContext context) {
         return object != null ?
-            Optional.of(AttributeValue.builder().s(object.toString()).build()) :
+            Optional.of(AttributeValueUtils.s(object.toString())) :
                 Optional.empty();
     }
 }
