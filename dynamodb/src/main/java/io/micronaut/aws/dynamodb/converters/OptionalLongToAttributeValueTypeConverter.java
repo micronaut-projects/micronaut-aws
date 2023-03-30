@@ -15,30 +15,26 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Long} with {@link Long#valueOf(String)}.
+ * {@link TypeConverter} from {@link OptionalLong} to {@link AttributeValue}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueToLongTypeConverter implements TypeConverter<AttributeValue, Long> {
-
+public class OptionalLongToAttributeValueTypeConverter implements TypeConverter<OptionalLong, AttributeValue> {
     @Override
-    public Optional<Long> convert(AttributeValue object, Class<Long> targetType, ConversionContext context) {
-        if (object == null) {
-            return Optional.empty();
-        }
-        String value = object.n();
-        if (value == null) {
-            return Optional.empty();
-        }
-        return Optional.of(Long.valueOf(value));
+    public Optional<AttributeValue> convert(OptionalLong object, Class<AttributeValue> targetType, ConversionContext context) {
+        return object != null && object.isPresent() ?
+            Optional.of(AttributeValueUtils.n("" + object.getAsLong())) :
+                Optional.empty();
     }
 }

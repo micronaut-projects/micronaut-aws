@@ -21,17 +21,18 @@ import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Long} with {@link Long#valueOf(String)}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link OptionalLong} with {@link OptionalLong#of(long)} and {@link Long#valueOf(String)}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
 @Singleton
-public class AttributeValueToLongTypeConverter implements TypeConverter<AttributeValue, Long> {
+public class AttributeValueToOptionalLongTypeConverter implements TypeConverter<AttributeValue, OptionalLong> {
 
     @Override
-    public Optional<Long> convert(AttributeValue object, Class<Long> targetType, ConversionContext context) {
+    public Optional<OptionalLong> convert(AttributeValue object, Class<OptionalLong> targetType, ConversionContext context) {
         if (object == null) {
             return Optional.empty();
         }
@@ -39,6 +40,6 @@ public class AttributeValueToLongTypeConverter implements TypeConverter<Attribut
         if (value == null) {
             return Optional.empty();
         }
-        return Optional.of(Long.valueOf(value));
+        return Optional.of(OptionalLong.of(Long.valueOf(value)));
     }
 }
