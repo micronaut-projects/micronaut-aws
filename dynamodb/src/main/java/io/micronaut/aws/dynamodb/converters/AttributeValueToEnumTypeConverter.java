@@ -15,11 +15,10 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
-import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-
 import java.util.Optional;
 
 /**
@@ -28,7 +27,7 @@ import java.util.Optional;
  * @since 4.0.0
  * @param <T> Enum Type
  */
-@Singleton
+@Prototype
 public class AttributeValueToEnumTypeConverter<T extends Enum<T>> implements TypeConverter<AttributeValue, T> {
     @Override
     public Optional<T> convert(AttributeValue object, Class<T> targetType, ConversionContext context) {

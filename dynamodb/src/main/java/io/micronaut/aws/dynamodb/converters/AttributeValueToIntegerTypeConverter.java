@@ -15,9 +15,9 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
-import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Optional;
@@ -27,7 +27,7 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@Singleton
+@Prototype
 public class AttributeValueToIntegerTypeConverter implements TypeConverter<AttributeValue, Integer> {
 
     @Override

@@ -15,9 +15,9 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
-import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -31,7 +31,7 @@ import java.util.UUID;
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@Singleton
+@Prototype
 public class AttributeValueToUUIDTypeConverter implements TypeConverter<AttributeValue, UUID> {
     private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToUUIDTypeConverter.class);
 

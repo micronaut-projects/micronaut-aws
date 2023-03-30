@@ -15,9 +15,9 @@
  */
 package io.micronaut.aws.dynamodb.converters;
 
+import io.micronaut.context.annotation.Prototype;
 import io.micronaut.core.convert.ConversionContext;
 import io.micronaut.core.convert.TypeConverter;
-import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@Singleton
+@Prototype
 public class AttributeValueToURLTypeConverter implements TypeConverter<AttributeValue, URL> {
     private static final Logger LOG = LoggerFactory.getLogger(AttributeValueToURLTypeConverter.class);
 
