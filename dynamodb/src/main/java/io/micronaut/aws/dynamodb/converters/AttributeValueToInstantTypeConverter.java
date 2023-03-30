@@ -22,13 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 /**
- * {@link TypeConverter} from {@link AttributeValue} to {@link Instant} using {@link Instant#of(String)}.
+ * {@link TypeConverter} from {@link AttributeValue} to {@link Instant} using {@link Instant#parse(CharSequence)}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
