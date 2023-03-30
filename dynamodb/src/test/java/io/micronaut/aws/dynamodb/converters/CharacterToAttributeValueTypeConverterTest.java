@@ -1,3 +1,4 @@
+
 package io.micronaut.aws.dynamodb.converters;
 
 import io.micronaut.core.convert.ConversionService;
@@ -13,25 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 @MicronautTest(startApplication = false)
-class CharSequenceToAttributeValueTypeConverterTest {
+class CharacterToAttributeValueTypeConverterTest {
     @Test
     void charSequenceToAttributeValueTypeConverterTest(ConversionService conversionService) {
         assertNotNull(conversionService);
-        CharSequence cs = null;
+        Character cs = null;
         assertFalse(conversionService.convert(cs, Argument.of(AttributeValue.class)).isPresent());
-        cs = "";
-        assertFalse(conversionService.convert(cs, Argument.of(AttributeValue.class)).isPresent());
-        cs = "foo";
+        cs = 'f';
         Optional<AttributeValue> attributeValueOptional = conversionService.convert(cs, Argument.of(AttributeValue.class));
         assertTrue(attributeValueOptional.isPresent());
         AttributeValue attributeValue = attributeValueOptional.get();
-        assertEquals("foo" ,attributeValue.s());
+        assertEquals("f" ,attributeValue.s());
         assertEquals(AttributeValue.Type.S, attributeValue.type());
 
-        Optional<CharSequence> charSequenceOptional = conversionService.convert(attributeValue, Argument.of(CharSequence.class));
-        assertTrue(charSequenceOptional.isPresent());
-        assertEquals("foo", charSequenceOptional.get());
+        Optional<Character> valueOptional = conversionService.convert(attributeValue, Argument.of(Character.class));
+        assertTrue(valueOptional.isPresent());
+        assertEquals('f', valueOptional.get());
     }
 }
