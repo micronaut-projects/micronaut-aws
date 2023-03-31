@@ -135,16 +135,17 @@ class SessionStoreTest implements TestPropertyProvider {
                 .build();
         }
     }
+
     @Requires(property = "spec.name", value = "SessionStoreTest")
     @Singleton
     static class SessionRepository {
         private static final Logger LOG = LoggerFactory.getLogger(SessionRepository.class);
         private final SessionGenerator sessionGenerator;
-        private final DynamoDbConversionService<SessionItem> dynamoDbConversionService;
+        private final DynamoDbConversionService dynamoDbConversionService;
         private final DynamoRepository dynamoRepository;
 
         SessionRepository(SessionGenerator sessionGenerator,
-                          DynamoDbConversionService<SessionItem> dynamoDbConversionService,
+                          DynamoDbConversionService dynamoDbConversionService,
                           DynamoRepository dynamoRepository) {
             this.sessionGenerator = sessionGenerator;
             this.dynamoDbConversionService = dynamoDbConversionService;
@@ -171,18 +172,8 @@ class SessionStoreTest implements TestPropertyProvider {
 
         @NonNull
         public Optional<String> findUsernameBySessionId(@NonNull @NotBlank String sessionId) {
-            GetItemResponse getItemResponse = dynamoRepository.getItem(builder -> builder.key(Collections.singletonMap("sessionId", AttributeValueUtils.s(sessionId))));
-            if (!getItemResponse.hasItem()) {
-                return Optional.empty();
-            }
-            Map<String, AttributeValue> item = getItemResponse.item();
-            if (item == null) {
-                return Optional.empty();
-            }
-            if (!item.containsKey("username")) {
-                return Optional.empty();
-            }
-            return Optional.ofNullable(item.get("username").s());
+            return dynamoRepository.getItem(Collections.singletonMap("sessionId", AttributeValueUtils.s(sessionId)), User.class)
+                .map(User::getUsername);
         }
 
         public void deleteSessionsByUsername(@NonNull @NotBlank String username) {
@@ -354,4 +345,6 @@ class SessionStoreTest implements TestPropertyProvider {
             return password;
         }
     }
+
+
 }

@@ -26,25 +26,39 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.Put;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.PutItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+import software.amazon.awssdk.services.dynamodb.model.TransactWriteItem;
+import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsRequest;
+import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsResponse;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
-@Requires(beans = { DynamoDbClient.class, DynamoConfiguration.class })
+/**
+ * Utility class to simplifies operations with a {@link DynamoDbClient} working with a DynamoDB table whose name is specified by the bean {@link DynamoConfiguration#getTableName()}.
+ * @author Sergio del Amo
+ * @since 4.0.0
+ */
+@Requires(beans = { DynamoDbClient.class, DynamoConfiguration.class, DynamoDbConversionService.class })
 @Singleton
 public class DynamoRepository {
     private static final Logger LOG = LoggerFactory.getLogger(DynamoRepository.class);
     private final DynamoDbClient dynamoDbClient;
     private final DynamoConfiguration dynamoConfiguration;
 
+    private final DynamoDbConversionService dynamoDbConversionService;
+
     protected DynamoRepository(DynamoDbClient dynamoDbClient,
-                               DynamoConfiguration dynamoConfiguration) {
+                               DynamoConfiguration dynamoConfiguration,
+                               DynamoDbConversionService dynamoDbConversionService) {
         this.dynamoDbClient = dynamoDbClient;
         this.dynamoConfiguration = dynamoConfiguration;
+        this.dynamoDbConversionService = dynamoDbConversionService;
     }
 
     /**
@@ -175,5 +189,58 @@ public class DynamoRepository {
     @NonNull
     public QueryResponse query(@NonNull QueryRequest queryRequest) {
         return dynamoDbClient.query(queryRequest);
+    }
+
+    /**
+     *
+     * @param putBuilderConsumers PutBuilderConsumers
+     * @return The Transaction write Item response
+     */
+    @NonNull
+    public TransactWriteItemsResponse transactWriteItems(@NonNull Consumer<Put.Builder>... putBuilderConsumers) {
+        TransactWriteItem[] transactWriteItemArr = new TransactWriteItem[putBuilderConsumers.length];
+        int count = 0;
+        for (Consumer<Put.Builder> putBuilderConsumer : putBuilderConsumers) {
+            Put.Builder putBuidler = Put.builder()
+                .tableName(getDynamoConfiguration().getTableName());
+            putBuilderConsumer.accept(putBuidler);
+            transactWriteItemArr[count++] = TransactWriteItem.builder()
+                .put(putBuidler.build())
+                .build();
+        }
+        return dynamoDbClient.transactWriteItems(TransactWriteItemsRequest.builder()
+            .transactItems(transactWriteItemArr)
+            .build());
+    }
+
+    /**
+     *
+     * @param key Table Key
+     * @param targetType Target Type class
+     * @return An Optional Instance of the Target class if found.
+     * @param <T> Target Type
+     */
+    public <T> Optional<T> getItem(CompositeKey key, Class<T> targetType) {
+        Map<String, AttributeValue> keyMap = dynamoDbConversionService.convert(key);
+        return getItem(keyMap, targetType);
+    }
+
+    /**
+     *
+     * @param key Table Key
+     * @param targetType Target Type class
+     * @return An Optional Instance of the Target class if found.
+     * @param <T> Target Type
+     */
+    public <T> Optional<T> getItem(Map<String, AttributeValue> key, Class<T> targetType) {
+        GetItemResponse response = getItem(builder -> builder.key(key));
+        if (!response.hasItem()) {
+            return Optional.empty();
+        }
+        Map<String, AttributeValue> item = response.item();
+        if (item == null) {
+            return Optional.empty();
+        }
+        return Optional.of(dynamoDbConversionService.convert(item, targetType));
     }
 }

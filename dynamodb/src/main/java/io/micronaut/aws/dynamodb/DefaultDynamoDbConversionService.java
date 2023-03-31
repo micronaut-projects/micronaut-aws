@@ -27,10 +27,10 @@ import java.util.Map;
 
 /**
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link DynamoDbConversionService} which uses {@link ConversionService} to convert from and to {@link AttributeValue} map.
- * @param <S> Type to converter
+ *
  */
 @Singleton
-public class DefaultDynamoDbConversionService<S> implements DynamoDbConversionService<S> {
+public class DefaultDynamoDbConversionService implements DynamoDbConversionService {
 
     private final ConversionService conversionService;
 
@@ -39,7 +39,7 @@ public class DefaultDynamoDbConversionService<S> implements DynamoDbConversionSe
     }
 
     @Override
-    public Map<String, AttributeValue> convert(BeanWrapper<S> wrapper) {
+    public <S> Map<String, AttributeValue> convert(BeanWrapper<S> wrapper) {
         Map<String, AttributeValue> result = new HashMap<>();
         S bean = wrapper.getBean();
         for (BeanProperty<S, ?> beanProperty : wrapper.getBeanProperties()) {

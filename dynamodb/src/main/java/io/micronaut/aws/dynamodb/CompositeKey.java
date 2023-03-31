@@ -15,27 +15,42 @@
  */
 package io.micronaut.aws.dynamodb;
 
-import io.micronaut.context.annotation.DefaultImplementation;
+import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.beans.BeanWrapper;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import io.micronaut.core.beans.exceptions.IntrospectionException;
+
 import java.util.Map;
 
 /**
+ * Utility to map a composite key in a Dynamo DB single table design.
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@DefaultImplementation(DefaultDynamoDbConversionService.class)
-public interface DynamoDbConversionService {
-    @NonNull
-    <S> Map<String, AttributeValue> convert(@NonNull BeanWrapper<S> wrapper);
+public interface CompositeKey {
 
+    String KEY_PK = "pk";
+    String KEY_SK = "sk";
+
+    /**
+     *
+     * @return Primary Key
+     */
     @NonNull
-    default Map<String, AttributeValue> convert(@NonNull Object object) throws IntrospectionException {
-        return convert(BeanWrapper.getWrapper(object));
+    String getPk();
+
+    /**
+     *
+     * @return Sort Key
+     */
+    @NonNull
+    String getSk();
+
+    /**
+     *
+     * @return Composite Key Item representation.
+     */
+    @NonNull
+    default Map<String, AttributeValue> getKey() {
+        return Map.of(KEY_PK, AttributeValueUtils.s(getPk()), KEY_SK, AttributeValueUtils.s(getSk()));
     }
-
-    @NonNull
-    <T> T convert(@NonNull Map<String, AttributeValue> item, Class<T> targetType);
 }
