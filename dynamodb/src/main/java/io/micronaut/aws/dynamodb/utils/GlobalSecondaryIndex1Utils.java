@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.dynamodb;
+package io.micronaut.aws.dynamodb.utils;
 
-import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.aws.dynamodb.GlobalSecondaryIndex1;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
@@ -26,42 +24,29 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Global Secondary Index 5.
+ * Utility class to work with {@link io.micronaut.aws.dynamodb.GlobalSecondaryIndex1}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@Introspected
-public interface GlobalSecondaryIndex5 {
-    String KEY_GSI5_PK = "gsi5pk";
-    String KEY_GSI5_SK = "gsi5sk";
+public final class GlobalSecondaryIndex1Utils {
+    public static final String KEY_GSI1_PK = "gsi1pk";
+    public static final String KEY_GSI1_SK = "gsi1sk";
+
+    private GlobalSecondaryIndex1Utils() {
+    }
 
     @NonNull
-    default Optional<Map<String, AttributeValue>> getGsi5() {
-        if (getGsi5Pk() == null && getGsi5Sk() == null) {
+    public static Optional<Map<String, AttributeValue>> getGsi1(@NonNull GlobalSecondaryIndex1 gsi) {
+        if (gsi.getGsi1Pk() == null && gsi.getGsi1Sk() == null) {
             return Optional.empty();
         }
         Map<String, AttributeValue> result = new HashMap<>();
-        if (getGsi5Pk() != null) {
-            result.put(KEY_GSI5_PK, AttributeValueUtils.s(getGsi5Pk()));
+        if (gsi.getGsi1Pk() != null) {
+            result.put(KEY_GSI1_PK, AttributeValueUtils.s(gsi.getGsi1Pk()));
         }
-        if (getGsi5Sk() != null) {
-            result.put(KEY_GSI5_SK, AttributeValueUtils.s(getGsi5Sk()));
+        if (gsi.getGsi1Sk() != null) {
+            result.put(KEY_GSI1_SK, AttributeValueUtils.s(gsi.getGsi1Sk()));
         }
         return Optional.of(result);
     }
-
-    /**
-     *
-     * @return  Global Secondary Index 5 Primary Key
-     */
-    @Nullable
-    String getGsi5Pk();
-
-    /**
-     *
-     * @return  Global Secondary Index 5 Sort Key
-     */
-    @Nullable
-    String getGsi5Sk();
-
 }

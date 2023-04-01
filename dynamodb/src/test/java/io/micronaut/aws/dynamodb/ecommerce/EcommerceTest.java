@@ -1,0 +1,77 @@
+package io.micronaut.aws.dynamodb.ecommerce;
+
+import io.micronaut.aws.dynamodb.utils.DynamoDbLocal;
+import io.micronaut.context.annotation.Property;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.client.BlockingHttpClient;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+import io.micronaut.http.uri.UriBuilder;
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.micronaut.test.support.TestPropertyProvider;
+import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@Property(name = "dynamodb.table-name", value = EcommerceTest.TABLE_NAME)
+@Property(name = "spec.name", value = "EcommerceTest")
+@MicronautTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class EcommerceTest implements TestPropertyProvider {
+
+    public static final String TABLE_NAME = "ecommerce";
+    @Override
+    public Map<String, String> getProperties() {
+        return DynamoDbLocal.getProperties();
+    }
+
+    @Inject
+    @Client("/")
+    HttpClient httpClient;
+
+    @Test
+    void ecommerceTest() {
+        String username = "alexdebrie";
+        String path = "/customers";
+        String email = "alexdebrie1@gmail.com";
+        String name = "Alex DeBrie";
+        BlockingHttpClient client = httpClient.toBlocking();
+        Map body = Map.of("username", username, "email", email, "name", name);
+        HttpRequest<?> saveCustomerRequest = HttpRequest.POST(path, body);
+        HttpResponse<?> saveCustomerResponse = client.exchange(saveCustomerRequest);
+        assertEquals(HttpStatus.OK, saveCustomerResponse.getStatus());
+
+        HttpRequest<?> findCustomerRequest = HttpRequest.GET(UriBuilder.of(path).path(username).build());
+        HttpResponse<Customer> findCustomerResponse = client.exchange(findCustomerRequest, Customer.class);
+        assertEquals(HttpStatus.OK, findCustomerResponse.getStatus());
+        Customer customer = findCustomerResponse.body();
+        assertNotNull(customer);
+        assertEquals(username, customer.getUsername());
+        assertEquals(email, customer.getEmail());
+        assertEquals(name, customer.getName());
+        assertNull(customer.getAddresses());
+
+        Map orderBody = Map.of("address", Map.of("streetAddress", "123 1st Street", "postalCode", "10001", "country", "USA"),
+            "items", Collections.singletonList(Map.of("itemId", "1d45", "description", "Air Force 1s", "price", 15.99, "amount", 1)));
+
+        URI uri = UriBuilder.of(path).path(username).path("orders").build();
+        HttpRequest<?> saveOrderRequest = HttpRequest.POST(uri, orderBody);
+        HttpResponse<?> saveOrderResponse = client.exchange(saveOrderRequest);
+        assertEquals(HttpStatus.CREATED, saveOrderResponse.getStatus());
+        String location = saveOrderResponse.getHeaders().get(HttpHeaders.LOCATION);
+        assertNotNull(location);
+        HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
+        assertEquals(HttpStatus.OK, orderResponse.getStatus());
+    }
+}

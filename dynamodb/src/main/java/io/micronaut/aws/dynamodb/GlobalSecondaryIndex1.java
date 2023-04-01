@@ -15,15 +15,8 @@
  */
 package io.micronaut.aws.dynamodb;
 
-import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Global Secondary Index 1.
@@ -32,24 +25,6 @@ import java.util.Optional;
  */
 @Introspected
 public interface GlobalSecondaryIndex1 {
-
-    String KEY_GSI1_PK = "gsi1pk";
-    String KEY_GSI1_SK = "gsi1sk";
-
-    @NonNull
-    default Optional<Map<String, AttributeValue>> getGsi1() {
-        if (getGsi1Pk() == null && getGsi1Sk() == null) {
-            return Optional.empty();
-        }
-        Map<String, AttributeValue> result = new HashMap<>();
-        if (getGsi1Pk() != null) {
-            result.put(KEY_GSI1_PK, AttributeValueUtils.s(getGsi1Pk()));
-        }
-        if (getGsi1Sk() != null) {
-            result.put(KEY_GSI1_SK, AttributeValueUtils.s(getGsi1Sk()));
-        }
-        return Optional.of(result);
-    }
 
     /**
      *

@@ -35,6 +35,7 @@ import software.amazon.awssdk.services.dynamodb.model.TransactWriteItem;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsRequest;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsResponse;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -183,12 +184,32 @@ public class DynamoRepository {
 
     /**
      *
+     * @param builderConsumer Query Request Builder Consumer
+     * @return QueryResponse
+     */
+    @NonNull
+    public QueryResponse query(@Nullable Consumer<QueryRequest.Builder> builderConsumer) {
+        return query(queryRequestBuilder(builderConsumer));
+    }
+
+    /**
+     *
      * @param queryRequest Query Request
      * @return QueryResponse
      */
     @NonNull
     public QueryResponse query(@NonNull QueryRequest queryRequest) {
         return dynamoDbClient.query(queryRequest);
+    }
+
+    /**
+     *
+     * @param putBuilderConsumers PutBuilderConsumers
+     * @return The Transaction write Item response
+     */
+    @NonNull
+    public TransactWriteItemsResponse transactWriteItems(@NonNull List<Consumer<Put.Builder>> putBuilderConsumers) {
+        return transactWriteItems(putBuilderConsumers.stream().toArray(Consumer[]::new));
     }
 
     /**
@@ -242,5 +263,13 @@ public class DynamoRepository {
             return Optional.empty();
         }
         return Optional.of(dynamoDbConversionService.convert(item, targetType));
+    }
+
+    /**
+     *
+     * @return DynamoDB Conversion service.
+     */
+    public DynamoDbConversionService getDynamoDbConversionService() {
+        return dynamoDbConversionService;
     }
 }

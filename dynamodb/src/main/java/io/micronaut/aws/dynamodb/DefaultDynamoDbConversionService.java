@@ -16,14 +16,17 @@
 package io.micronaut.aws.dynamodb;
 
 import io.micronaut.core.beans.BeanIntrospection;
+import io.micronaut.core.beans.BeanIntrospector;
 import io.micronaut.core.beans.BeanProperty;
 import io.micronaut.core.beans.BeanWrapper;
+import io.micronaut.core.beans.exceptions.IntrospectionException;
 import io.micronaut.core.convert.ConversionService;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link DynamoDbConversionService} which uses {@link ConversionService} to convert from and to {@link AttributeValue} map.
@@ -43,8 +46,20 @@ public class DefaultDynamoDbConversionService implements DynamoDbConversionServi
         Map<String, AttributeValue> result = new HashMap<>();
         S bean = wrapper.getBean();
         for (BeanProperty<S, ?> beanProperty : wrapper.getBeanProperties()) {
-            conversionService.convert(beanProperty.get(bean), AttributeValue.class)
-                .ifPresent(attributeValue -> result.put(beanProperty.getName(), attributeValue));
+            Optional<AttributeValue> attributeValueOptional = conversionService.convert(beanProperty.get(bean), AttributeValue.class);
+            if (attributeValueOptional.isPresent()) {
+                AttributeValue attributeValue = attributeValueOptional.get();
+                result.put(beanProperty.getName(), attributeValue);
+            } else {
+                try {
+                    BeanWrapper valueWrapper = BeanWrapper.getWrapper(beanProperty.get(bean));
+                    Map<String, AttributeValue> valueWrapperMap = convert(valueWrapper);
+                    AttributeValue attributeValue = AttributeValue.builder().m(valueWrapperMap).build();
+                    result.put(beanProperty.getName(), attributeValue);
+                } catch (IntrospectionException e) {
+
+                }
+            }
         }
         return result;
     }
@@ -56,8 +71,15 @@ public class DefaultDynamoDbConversionService implements DynamoDbConversionServi
         int counter = 0;
         for (BeanProperty beanProperty : introspection.getBeanProperties()) {
             if (item.containsKey(beanProperty.getName())) {
-                arguments[counter++] = conversionService.convert(item.get(beanProperty.getName()), beanProperty.getType())
-                    .orElse(null);
+                if (BeanIntrospector.SHARED.findIntrospection(beanProperty.getType()).isPresent()) {
+                    Map<String, AttributeValue> m = item.get(beanProperty.getName()).m();
+                    if (m != null) {
+                        arguments[counter++] = convert(m, beanProperty.getType());
+                    }
+                } else {
+                    arguments[counter++] = conversionService.convert(item.get(beanProperty.getName()), beanProperty.getType())
+                        .orElse(null);
+                }
             } else {
                 arguments[counter++] = null;
             }

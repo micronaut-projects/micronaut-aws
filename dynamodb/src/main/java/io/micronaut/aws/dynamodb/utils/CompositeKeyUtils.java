@@ -13,28 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.dynamodb;
+package io.micronaut.aws.dynamodb.utils;
 
+import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.core.annotation.NonNull;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
+import java.util.Map;
 
 /**
- * Utility to map a composite key in a Dynamo DB single table design.
+ * Utility class to work with {@link CompositeKey}.
  * @author Sergio del Amo
  * @since 4.0.0
  */
-public interface CompositeKey {
+public final class CompositeKeyUtils {
+
+    public static final String KEY_PK = "pk";
+    public static final String KEY_SK = "sk";
+
+    private CompositeKeyUtils() {
+
+    }
 
     /**
      *
-     * @return Primary Key
+     * @return Composite Key Item representation.
      */
     @NonNull
-    String getPk();
-
-    /**
-     *
-     * @return Sort Key
-     */
-    @NonNull
-    String getSk();
+    Map<String, AttributeValue> getKey(@NonNull CompositeKey compositeKey) {
+        return Map.of(KEY_PK, AttributeValueUtils.s(compositeKey.getPk()), KEY_SK, AttributeValueUtils.s(compositeKey.getSk()));
+    }
 }
