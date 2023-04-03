@@ -1,9 +1,9 @@
 package io.micronaut.aws.dynamodb.ecommerce;
 
-import io.micronaut.aws.dynamodb.BaseItem;
-import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.DynamoDbConversionService;
 import io.micronaut.aws.dynamodb.DynamoRepository;
+import io.micronaut.aws.dynamodb.ecommerce.items.CustomerEmailRow;
+import io.micronaut.aws.dynamodb.ecommerce.items.CustomerRow;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
@@ -29,20 +29,16 @@ public class CustomerRepository {
         this.dynamoDbConversionService = dynamoDbConversionService;
     }
 
-    @NonNull
-    private CompositeKey customerItemKey(@NonNull String username) {
-        return new BaseItem("CUSTOMER#" + username, "CUSTOMER#" + username);
-    }
 
     void save(@NonNull @NotNull @Valid CreateCustomer customer) {
         CustomerEmail customerEmail = new CustomerEmail(customer.getUsername(), customer.getEmail());
-        CustomerItem customerItem = new CustomerItem(customerItemKey(customer.getUsername()), customerEmail.getUsername(), customer.getEmail(), customer.getName());
-        CustomerEmailItem customerEmailItem = new CustomerEmailItem("CUSTOMEREMAIL#" + customerEmail.getEmail(), "CUSTOMEREMAIL#" + customerEmail.getEmail(), customer.getEmail(), customer.getUsername());
+        CustomerRow customerRow = new CustomerRow(CustomerRow.keyOf(customer.getUsername()), customerEmail.getUsername(), customer.getEmail(), customer.getName());
+        CustomerEmailRow customerEmailRow = new CustomerEmailRow(CustomerEmailRow.keyOf(customer.getEmail()), customer.getEmail(), customer.getUsername());
 
-        Map<String, AttributeValue> customerItemMap = dynamoDbConversionService.convert(customerItem);
+        Map<String, AttributeValue> customerItemMap = dynamoDbConversionService.convert(customerRow);
         Consumer<Put.Builder> customerItemPutBuilder = builder -> builder.item(customerItemMap)
             .conditionExpression("attribute_not_exists(pk)");
-        Map<String, AttributeValue> customerEmailItemMap = dynamoDbConversionService.convert(customerEmailItem);
+        Map<String, AttributeValue> customerEmailItemMap = dynamoDbConversionService.convert(customerEmailRow);
         Consumer<Put.Builder> customerEmailItemPutBuilder = builder -> builder.item(customerEmailItemMap)
             .conditionExpression("attribute_not_exists(pk)");
         dynamoRepository.transactWriteItems(customerItemPutBuilder, customerEmailItemPutBuilder);
@@ -50,8 +46,8 @@ public class CustomerRepository {
 
     @NonNull
     public Optional<Customer> findByUsername(@NonNull String username) {
-        CompositeKey key = customerItemKey(username);
-        return dynamoRepository.getItem(key, Customer.class);
+        return dynamoRepository.getItem(CustomerRow.keyOf(username), CustomerRow.class)
+            .map(row -> new Customer(row.getUsername(), row.getEmail(), row.getName(), null));
 
     }
 }

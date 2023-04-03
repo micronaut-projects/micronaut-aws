@@ -16,7 +16,7 @@
 package io.micronaut.aws.dynamodb;
 
 import io.micronaut.aws.dynamodb.conf.DynamoConfiguration;
-import io.micronaut.aws.dynamodb.utils.CompositeKeyUtils;
+import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
@@ -245,8 +245,23 @@ public class DynamoRepository {
      * @param <T> Target Type
      */
     public <T> Optional<T> getItem(CompositeKey key, Class<T> targetType) {
-        Map<String, AttributeValue> keyMap = dynamoDbConversionService.convert(key);
+        Map<String, AttributeValue> keyMap = mapForKey(key);
         return getItem(keyMap, targetType);
+    }
+
+    /**
+     *
+     * @param key Key
+     * @return Key Map
+     */
+    @NonNull
+    public Map<String, AttributeValue> mapForKey(@NonNull CompositeKey key) {
+        if (key instanceof GlobalSecondaryIndex1) {
+            return Map.of(dynamoConfiguration.getGlobalSecondaryIndex1HashKey(), AttributeValueUtils.s(key.getPartionKey()),
+                dynamoConfiguration.getGlobalSecondaryIndex1SortKey(), AttributeValueUtils.s(key.getSortKey()));
+        }
+        return Map.of(dynamoConfiguration.getHashKey(), AttributeValueUtils.s(key.getPartionKey()),
+            dynamoConfiguration.getSortKey(), AttributeValueUtils.s(key.getSortKey()));
     }
 
     /**
@@ -340,7 +355,7 @@ public class DynamoRepository {
     @NonNull
     public UpdateItemRequest.Builder updateItemRequestBuilder(@NonNull CompositeKey key, @Nullable Consumer<UpdateItemRequest.Builder> builderConsumer) {
         UpdateItemRequest.Builder builder =  updateItemRequestBuilder();
-        builder.key(CompositeKeyUtils.getKey(key));
+        builder.key(mapForKey(key));
         if (builderConsumer != null) {
             builderConsumer.accept(builder);
         }

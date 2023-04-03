@@ -14,6 +14,8 @@ import io.micronaut.http.uri.UriBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import io.micronaut.http.annotation.Status;
+
+import java.util.List;
 import java.util.Optional;
 
 @Requires(property = "spec.name", value = "EcommerceTest")
@@ -39,6 +41,11 @@ class CustomerController {
         return HttpResponse.created(UriBuilder.of("/customers").path(username).path("orders").path(orderId).build());
     }
 
+    @Get("/{username}/orders")
+    List<Order> getOrders(@PathVariable String username) {
+        return orderRepository.findAllByUsername(username);
+    }
+
     @Get("/{username}/orders/{orderId}")
     @Status(HttpStatus.OK)
     public Optional<Order> findOrder(@PathVariable String username, @PathVariable String orderId) {
@@ -49,7 +56,6 @@ class CustomerController {
     @Status(HttpStatus.NO_CONTENT)
     void updateStatusForOrder(@PathVariable String username, @PathVariable String orderId, @Body("status") io.micronaut.aws.dynamodb.ecommerce.Status status) {
         orderRepository.updateStatusUsernameAndOrderId(username, orderId, status);
-
     }
 
     @Get("/{username}")

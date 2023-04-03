@@ -1,8 +1,9 @@
 package io.micronaut.aws.dynamodb.ecommerce.items;
 
-import io.micronaut.aws.dynamodb.BaseItem;
+import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.GlobalSecondaryIndex1;
+import io.micronaut.aws.dynamodb.SingleTableRowWithOneGlobalSecondaryIndex;
 import io.micronaut.aws.dynamodb.ecommerce.Address;
 import io.micronaut.aws.dynamodb.ecommerce.Status;
 import io.micronaut.core.annotation.Creator;
@@ -14,10 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Introspected
-public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
-
-    private final String gsi1Pk;
-    private final String gsi1Sk;
+public class OrderRow extends SingleTableRowWithOneGlobalSecondaryIndex {
 
     private final String type;
 
@@ -47,9 +45,7 @@ public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
                              Status status,
                              BigDecimal totalAmount,
                              Integer numberItems) {
-        super(pk, sk);
-        this.gsi1Pk = gsi1Pk;
-        this.gsi1Sk = gsi1Sk;
+        super(pk, sk, gsi1Pk, gsi1Sk);
         this.type = type;
         this.username = username;
         this.orderId = orderId;
@@ -59,7 +55,7 @@ public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
         this.totalAmount = totalAmount;
         this.numberItems = numberItems;
     }
-    
+
     public OrderRow(CompositeKey key,
                              GlobalSecondaryIndex1 gsi1,
                              String username,
@@ -69,7 +65,7 @@ public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
                              Status status,
                              BigDecimal totalAmount,
                              Integer numberItems) {
-        this(key.getPk(), key.getSk(), gsi1.getGsi1Pk(), gsi1.getGsi1Pk(),
+        this(key.getPartionKey(), key.getSortKey(), gsi1.getPartionKey(), gsi1.getSortKey(),
             OrderRow.class.getName(),
             username,
             orderId,
@@ -78,18 +74,6 @@ public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
             status,
             totalAmount,
             numberItems);
-    }
-
-    @Override
-    @Nullable
-    public String getGsi1Pk() {
-        return gsi1Pk;
-    }
-
-    @Override
-    @Nullable
-    public String getGsi1Sk() {
-        return gsi1Sk;
     }
 
     public String getType() {
@@ -124,35 +108,14 @@ public class OrderRow extends BaseItem implements GlobalSecondaryIndex1 {
         return numberItems;
     }
 
-
     @NonNull
     public static CompositeKey keyOf(@NonNull String username, @NonNull String orderId) {
-        return new CompositeKey() {
-            @Override
-            public String getPk() {
-                return "CUSTOMER#" + username;
-            }
-
-            @Override
-            public String getSk() {
-                return "ORDER#" + orderId;
-            }
-        };
+        return CompositeKey.of("CUSTOMER#" + username, "ORDER#" + orderId);
     }
 
     @NonNull
     public static GlobalSecondaryIndex1 gsi1Of(@NonNull String orderId) {
-        return new GlobalSecondaryIndex1() {
-            @Override
-            public String getGsi1Pk() {
-                return "ORDER#" + orderId;
-            }
-
-            @Override
-            public String getGsi1Sk() {
-                return "ORDER#" + orderId;
-            }
-        };
+        return GlobalSecondaryIndex1.of("ORDER#" + orderId, "ORDER#" + orderId);
     }
 
 }

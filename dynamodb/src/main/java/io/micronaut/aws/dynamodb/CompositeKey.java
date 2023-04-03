@@ -18,7 +18,7 @@ package io.micronaut.aws.dynamodb;
 import io.micronaut.core.annotation.NonNull;
 
 /**
- * Utility to map a composite key in a Dynamo DB single table design.
+ * Composite Key for an Amazon DynamodDB Single table design.
  * @author Sergio del Amo
  * @since 4.0.0
  */
@@ -26,15 +26,30 @@ public interface CompositeKey {
 
     /**
      *
-     * @return Primary Key
+     * @return Partition or Hash Key
      */
     @NonNull
-    String getPk();
+    String getPartionKey();
 
     /**
      *
      * @return Sort Key
      */
     @NonNull
-    String getSk();
+    String getSortKey();
+
+    @NonNull
+    static CompositeKey of(@NonNull String hashKey, @NonNull String sortKey) {
+        return new CompositeKey() {
+            @Override
+            public String getPartionKey() {
+                return hashKey;
+            }
+
+            @Override
+            public String getSortKey() {
+                return sortKey;
+            }
+        };
+    }
 }

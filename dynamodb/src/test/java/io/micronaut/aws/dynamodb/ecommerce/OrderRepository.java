@@ -1,10 +1,10 @@
 package io.micronaut.aws.dynamodb.ecommerce;
 
 import io.micronaut.aws.dynamodb.DynamoRepository;
+import io.micronaut.aws.dynamodb.ecommerce.items.CustomerRow;
 import io.micronaut.aws.dynamodb.ecommerce.items.OrderItemRow;
 import io.micronaut.aws.dynamodb.ecommerce.items.OrderRow;
 import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
-import io.micronaut.aws.dynamodb.utils.CompositeKeyUtils;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
@@ -66,7 +66,7 @@ public class OrderRepository {
         QueryResponse rsp = dynamoRepository.query(builder -> builder.indexName(BootStrap.INDEX_GSI1)
             .keyConditionExpression("#gsi1Pk = :gsi1Pk")
             .expressionAttributeNames(Collections.singletonMap("#gsi1Pk", BootStrap.INDEX_GSI1_PK))
-            .expressionAttributeValues(Collections.singletonMap(":gsi1Pk", AttributeValueUtils.s(OrderRow.gsi1Of(orderId).getGsi1Pk())))
+            .expressionAttributeValues(Collections.singletonMap(":gsi1Pk", AttributeValueUtils.s(OrderRow.gsi1Of(orderId).getPartionKey())))
             .scanIndexForward(false));
         if (!rsp.hasItems()) {
             return Optional.empty();
@@ -152,5 +152,28 @@ public class OrderRepository {
             totalAmount,
             numberItems
         );
+    }
+
+    @NonNull
+    public List<Order> findAllByUsername(@NonNull @NotBlank String username) {
+        QueryResponse queryResponse = dynamoRepository.query(builder -> builder.keyConditionExpression("#pk = :pk")
+            .expressionAttributeNames(Collections.singletonMap("#pk", "pk"))
+            .expressionAttributeValues(Collections.singletonMap(":pk", AttributeValueUtils.s(CustomerRow.keyOf(username).getPartionKey())))
+            .scanIndexForward(false)
+        );
+
+        if (!queryResponse.hasItems()) {
+            return Collections.emptyList();
+        }
+        List<Map<String, AttributeValue>> items = queryResponse.items();
+        if (items == null) {
+            return Collections.emptyList();
+        }
+        List<Order> result = new ArrayList<>();
+        for(Map<String, AttributeValue> item : items) {
+
+        }
+        return result;
+
     }
 }

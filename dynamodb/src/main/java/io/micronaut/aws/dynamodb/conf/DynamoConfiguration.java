@@ -20,7 +20,7 @@ import io.micronaut.core.annotation.NonNull;
 /**
  * Configuration to define the DynamoDB table name.
  * @author Sergio del Amo
- * @since XXXX
+ * @since 4.0.0
  */
 public interface DynamoConfiguration {
     /**
@@ -29,4 +29,32 @@ public interface DynamoConfiguration {
      */
     @NonNull
     String getTableName();
+
+    /**
+     *
+     * @return The DynamoDB Table Hash Key name
+     */
+    @NonNull
+    String getHashKey();
+
+    /**
+     *
+     * @return The DynamoDB Table Sort Key name
+     */
+    @NonNull
+    String getSortKey();
+
+    /**
+     *
+     * @return The DynamoDB Table Hash Key name for the Global Secondary Index 1.
+     */
+    @NonNull
+    String getGlobalSecondaryIndex1HashKey();
+
+    /**
+     *
+     * @return The DynamoDB Table Sort Key name for the Global Secondary Index 1.
+     */
+    @NonNull
+    String getGlobalSecondaryIndex1SortKey();
 }

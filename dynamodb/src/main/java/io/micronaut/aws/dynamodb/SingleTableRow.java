@@ -23,7 +23,7 @@ import jakarta.validation.constraints.NotBlank;
  * Base class to extend from in a DynamoDB Single table design.
  */
 @Introspected
-public class BaseItem implements CompositeKey {
+public class SingleTableRow {
     @NonNull
     @NotBlank
     private final String pk;
@@ -37,19 +37,25 @@ public class BaseItem implements CompositeKey {
      * @param pk Primary Key
      * @param sk Sort Key
      */
-    public BaseItem(String pk,
-                    String sk) {
+    public SingleTableRow(String pk,
+                          String sk) {
         this.pk = pk;
         this.sk = sk;
     }
 
-    @Override
+    /**
+     *
+     * @return Partition Key
+     */
     @NonNull
     public String getPk() {
         return pk;
     }
 
-    @Override
+    /**
+     *
+     * @return Sort Key
+     */
     @NonNull
     public String getSk() {
         return sk;

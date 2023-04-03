@@ -1,15 +1,15 @@
-package io.micronaut.aws.dynamodb.ecommerce;
+package io.micronaut.aws.dynamodb.ecommerce.items;
 
-import io.micronaut.aws.dynamodb.BaseItem;
+import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.core.annotation.Creator;
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.serde.annotation.Serdeable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-@Serdeable
-public class CustomerItem extends BaseItem {
+@Introspected
+public class CustomerRow extends SingleTableRow {
 
     @NonNull
     @NotBlank
@@ -25,15 +25,15 @@ public class CustomerItem extends BaseItem {
     private final String name;
 
     @Creator
-    public CustomerItem(String pk, String sk, String username, String email, String name) {
+    public CustomerRow(String pk, String sk, String username, String email, String name) {
         super(pk, sk);
         this.username = username;
         this.email = email;
         this.name = name;
     }
 
-    public CustomerItem(CompositeKey key, String username, String email, String name) {
-        super(key.getPk(), key.getSk());
+    public CustomerRow(CompositeKey key, String username, String email, String name) {
+        super(key.getPartionKey(), key.getSortKey());
         this.username = username;
         this.email = email;
         this.name = name;
@@ -49,5 +49,10 @@ public class CustomerItem extends BaseItem {
 
     public String getName() {
         return name;
+    }
+
+    @NonNull
+    public static CompositeKey keyOf(@NonNull String username) {
+        return CompositeKey.of("CUSTOMER#" + username, "CUSTOMER#" + username);
     }
 }

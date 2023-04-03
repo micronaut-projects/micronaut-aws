@@ -53,6 +53,20 @@ class EcommerceTest implements TestPropertyProvider {
         HttpResponse<?> saveCustomerResponse = client.exchange(saveCustomerRequest);
         assertEquals(HttpStatus.OK, saveCustomerResponse.getStatus());
 
+        findCustomer(client, path, username, email, name);
+
+        String location = saveOrder(client, path, username);
+        String orderId = findOrder(client, location);
+
+        updateOrderStatus(client, path, username, orderId, Status.CANCELLED);
+        HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
+        assertEquals(HttpStatus.OK, orderResponse.getStatus());
+        Order order = orderResponse.body();
+        assertNotNull(order);
+        assertEquals(Status.CANCELLED, order.getStatus());
+    }
+
+    private void findCustomer(BlockingHttpClient client, String path, String username, String email, String name) {
         HttpRequest<?> findCustomerRequest = HttpRequest.GET(UriBuilder.of(path).path(username).build());
         HttpResponse<Customer> findCustomerResponse = client.exchange(findCustomerRequest, Customer.class);
         assertEquals(HttpStatus.OK, findCustomerResponse.getStatus());
@@ -62,7 +76,9 @@ class EcommerceTest implements TestPropertyProvider {
         assertEquals(email, customer.getEmail());
         assertEquals(name, customer.getName());
         assertNull(customer.getAddresses());
+    }
 
+    private String saveOrder(BlockingHttpClient client, String path, String username) {
         Map orderBody = Map.of("address", Map.of("streetAddress", "123 1st Street", "postalCode", "10001", "country", "USA"),
             "items", Collections.singletonList(Map.of("itemId", "1d45", "description", "Air Force 1s", "price", 15.99, "amount", 1)));
 
@@ -72,6 +88,10 @@ class EcommerceTest implements TestPropertyProvider {
         assertEquals(HttpStatus.CREATED, saveOrderResponse.getStatus());
         String location = saveOrderResponse.getHeaders().get(HttpHeaders.LOCATION);
         assertNotNull(location);
+        return location;
+    }
+
+    private String findOrder(BlockingHttpClient client, String location) {
         HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
         assertEquals(HttpStatus.OK, orderResponse.getStatus());
         Order order = orderResponse.body();
@@ -88,9 +108,12 @@ class EcommerceTest implements TestPropertyProvider {
         assertEquals("1d45", order.getItems().get(0).getItemId());
         assertEquals(1, order.getItems().get(0).getAmount());
         assertEquals(new BigDecimal("15.99"), order.getItems().get(0).getPrice());
+        return order.getOrderId();
+    }
 
-        URI updateStatusUri = UriBuilder.of(path).path(username).path("orders").path(order.getOrderId()).path("status").build();
-        HttpResponse<?> updateStatusResponse = client.exchange(HttpRequest.PUT(updateStatusUri, Map.of("status", Status.CANCELLED)));
+    private void updateOrderStatus(BlockingHttpClient client, String path, String username, String orderId, Status status) {
+        URI updateStatusUri = UriBuilder.of(path).path(username).path("orders").path(orderId).path("status").build();
+        HttpResponse<?> updateStatusResponse = client.exchange(HttpRequest.PUT(updateStatusUri, Map.of("status", status)));
         assertEquals(HttpStatus.NO_CONTENT, updateStatusResponse.getStatus());
     }
 }

@@ -29,9 +29,30 @@ import jakarta.validation.constraints.NotBlank;
 @ConfigurationProperties("dynamodb")
 public class DynamoConfigurationProperties implements DynamoConfiguration {
 
+    public static final String DEFAULT_HASH_KEY = "pk";
+    public static final String DEFAULT_SORT_KEY = "sk";
+    public static final String DEFAULT_GSI1_HASH_KEY = "gsi1pk";
+    public static final String DEFAULT_GSI1_SORT_KEY = "gsi1sk";
+
     @NonNull
     @NotBlank
     private String tableName;
+
+    @NonNull
+    @NotBlank
+    private String hashKey = DEFAULT_HASH_KEY;
+
+    @NonNull
+    @NotBlank
+    private String sortKey = DEFAULT_SORT_KEY;
+
+    @NonNull
+    @NotBlank
+    private String globalSecondaryIndex1HashKey = DEFAULT_GSI1_HASH_KEY;
+
+    @NonNull
+    @NotBlank
+    private String globalSecondaryIndex1SortKey = DEFAULT_GSI1_SORT_KEY;
 
     /**
      *
@@ -45,6 +66,58 @@ public class DynamoConfigurationProperties implements DynamoConfiguration {
     @NonNull
     public String getTableName() {
         return tableName;
+    }
+
+    @Override
+    public String getHashKey() {
+        return hashKey;
+    }
+
+    /**
+     *
+     * @param hashKey The Table hash Key name. Default value: {@value #DEFAULT_HASH_KEY}.
+     */
+    public void setHashKey(String hashKey) {
+        this.hashKey = hashKey;
+    }
+
+    @Override
+    public String getSortKey() {
+        return sortKey;
+    }
+
+    /**
+     *
+     * @param sortKey The Table hash Key name. Default value: {@value #DEFAULT_SORT_KEY}.
+     */
+    public void setSortKey(String sortKey) {
+        this.sortKey = sortKey;
+    }
+
+    @Override
+    public String getGlobalSecondaryIndex1HashKey() {
+        return globalSecondaryIndex1HashKey;
+    }
+
+    /**
+     *
+     * @param globalSecondaryIndex1HashKey Global Secondary Index 1 hash Key name. Default value: {@value #DEFAULT_GSI1_HASH_KEY}.
+     */
+    public void setGlobalSecondaryIndex1HashKey(String globalSecondaryIndex1HashKey) {
+        this.globalSecondaryIndex1HashKey = globalSecondaryIndex1HashKey;
+    }
+
+    @Override
+    public String getGlobalSecondaryIndex1SortKey() {
+        return globalSecondaryIndex1SortKey;
+    }
+
+    /**
+     *
+     * @param globalSecondaryIndex1SortKey Global Secondary Index 1 hash Key name. Default value: {@value #DEFAULT_GSI1_SORT_KEY}.
+     */
+    public void setGlobalSecondaryIndex1SortKey(String globalSecondaryIndex1SortKey) {
+        this.globalSecondaryIndex1SortKey = globalSecondaryIndex1SortKey;
     }
 }
 

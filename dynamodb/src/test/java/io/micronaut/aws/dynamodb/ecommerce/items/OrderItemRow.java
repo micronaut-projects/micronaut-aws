@@ -1,6 +1,6 @@
 package io.micronaut.aws.dynamodb.ecommerce.items;
 
-import io.micronaut.aws.dynamodb.BaseItem;
+import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.GlobalSecondaryIndex1;
 import io.micronaut.core.annotation.Creator;
@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public class OrderItemRow extends BaseItem implements GlobalSecondaryIndex1 {
+public class OrderItemRow extends SingleTableRow {
 
     private final String gsi1Pk;
     private final String gsi1Sk;
@@ -76,10 +76,10 @@ public class OrderItemRow extends BaseItem implements GlobalSecondaryIndex1 {
                         BigDecimal price,
                         Integer amount,
                         BigDecimal totalCost) {
-        this(key.getPk(),
-            key.getSk(),
-            gsi1.getGsi1Pk(),
-            gsi1.getGsi1Sk(),
+        this(key.getPartionKey(),
+            key.getSortKey(),
+            gsi1.getPartionKey(),
+            gsi1.getSortKey(),
             OrderItemRow.class.getName(),
             orderId,
             itemId,
@@ -89,13 +89,11 @@ public class OrderItemRow extends BaseItem implements GlobalSecondaryIndex1 {
             totalCost);
     }
 
-    @Override
     @Nullable
     public String getGsi1Pk() {
         return gsi1Pk;
     }
 
-    @Override
     @Nullable
     public String getGsi1Sk() {
         return gsi1Sk;
@@ -132,32 +130,11 @@ public class OrderItemRow extends BaseItem implements GlobalSecondaryIndex1 {
     @NonNull
     public static CompositeKey keyOf(@NonNull String orderId, String itemId) {
         final String value = "ORDER#" + orderId + "#ITEM#" + itemId;
-        return new CompositeKey() {
-
-            @Override
-            public String getPk() {
-                return value;
-            }
-
-            @Override
-            public String getSk() {
-                return value;
-            }
-        };
+        return CompositeKey.of(value, value);
     }
 
     @NonNull
     public static GlobalSecondaryIndex1 gsi1Of(@NonNull String orderId, String itemId) {
-        return new GlobalSecondaryIndex1() {
-            @Override
-            public String getGsi1Pk() {
-                return "ORDER#" + orderId;
-            }
-
-            @Override
-            public String getGsi1Sk() {
-                return "ITEM#" + itemId;
-            }
-        };
+        return GlobalSecondaryIndex1.of("ORDER#" + orderId, "ITEM#" + itemId);
     }
 }

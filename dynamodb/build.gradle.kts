@@ -7,7 +7,6 @@ dependencies {
     api(libs.awssdk.dynamodb)
     implementation(mnValidation.micronaut.validation)
 
-
     testAnnotationProcessor(platform(mn.micronaut.core.bom))
     testAnnotationProcessor(mn.micronaut.inject.java)
 
@@ -18,6 +17,7 @@ dependencies {
 
     testImplementation(projects.micronautAwsSdkV2)
 
+    testAnnotationProcessor(mnSerde.micronaut.serde.processor)
     testImplementation(mnSerde.micronaut.serde.jackson)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.http.client)

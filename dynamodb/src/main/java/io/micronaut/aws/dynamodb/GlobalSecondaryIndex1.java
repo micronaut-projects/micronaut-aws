@@ -15,29 +15,26 @@
  */
 package io.micronaut.aws.dynamodb;
 
-import io.micronaut.core.annotation.Introspected;
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.annotation.NonNull;
 
 /**
- * Global Secondary Index 1.
+ * Marker for a Global Secondary Index 1 composite key.
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@Introspected
-public interface GlobalSecondaryIndex1 {
+public interface GlobalSecondaryIndex1 extends CompositeKey {
+    @NonNull
+    static GlobalSecondaryIndex1 of(@NonNull String hashKey, @NonNull String sortKey) {
+        return new GlobalSecondaryIndex1() {
+            @Override
+            public String getPartionKey() {
+                return hashKey;
+            }
 
-    /**
-     *
-     * @return  Global Secondary Index 1 Primary Key
-     */
-    @Nullable
-    String getGsi1Pk();
-
-    /**
-     *
-     * @return  Global Secondary Index 2 Sort Key
-     */
-    @Nullable
-    String getGsi1Sk();
-
+            @Override
+            public String getSortKey() {
+                return sortKey;
+            }
+        };
+    }
 }
