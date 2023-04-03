@@ -25,8 +25,10 @@ import jakarta.inject.Singleton;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * {@link io.micronaut.context.annotation.DefaultImplementation} of {@link DynamoDbConversionService} which uses {@link ConversionService} to convert from and to {@link AttributeValue} map.
@@ -46,18 +48,29 @@ public class DefaultDynamoDbConversionService implements DynamoDbConversionServi
         Map<String, AttributeValue> result = new HashMap<>();
         S bean = wrapper.getBean();
         for (BeanProperty<S, ?> beanProperty : wrapper.getBeanProperties()) {
-            Optional<AttributeValue> attributeValueOptional = conversionService.convert(beanProperty.get(bean), AttributeValue.class);
-            if (attributeValueOptional.isPresent()) {
-                AttributeValue attributeValue = attributeValueOptional.get();
-                result.put(beanProperty.getName(), attributeValue);
-            } else {
-                try {
-                    BeanWrapper valueWrapper = BeanWrapper.getWrapper(beanProperty.get(bean));
-                    Map<String, AttributeValue> valueWrapperMap = convert(valueWrapper);
-                    AttributeValue attributeValue = AttributeValue.builder().m(valueWrapperMap).build();
-                    result.put(beanProperty.getName(), attributeValue);
-                } catch (IntrospectionException e) {
 
+            if (isStringSet(bean, beanProperty)) {
+                Set<String> stringSet = new HashSet<>();
+                for (Object item : (Set) beanProperty.get(bean)) {
+                    stringSet.add(item.toString());
+                }
+                result.put(beanProperty.getName(), AttributeValue.builder().ss(stringSet).build());
+            } else {
+                Optional<AttributeValue> attributeValueOptional = conversionService.convert(beanProperty.get(bean), AttributeValue.class);
+                if (attributeValueOptional.isPresent()) {
+                    AttributeValue attributeValue = attributeValueOptional.get();
+                    result.put(beanProperty.getName(), attributeValue);
+                } else {
+
+
+                    try {
+                        BeanWrapper valueWrapper = BeanWrapper.getWrapper(beanProperty.get(bean));
+                        Map<String, AttributeValue> valueWrapperMap = convert(valueWrapper);
+                        AttributeValue attributeValue = AttributeValue.builder().m(valueWrapperMap).build();
+                        result.put(beanProperty.getName(), attributeValue);
+                    } catch (IntrospectionException e) {
+
+                    }
                 }
             }
         }
@@ -71,19 +84,37 @@ public class DefaultDynamoDbConversionService implements DynamoDbConversionServi
         int counter = 0;
         for (BeanProperty beanProperty : introspection.getBeanProperties()) {
             if (item.containsKey(beanProperty.getName())) {
-                if (BeanIntrospector.SHARED.findIntrospection(beanProperty.getType()).isPresent()) {
-                    Map<String, AttributeValue> m = item.get(beanProperty.getName()).m();
-                    if (m != null) {
-                        arguments[counter++] = convert(m, beanProperty.getType());
-                    }
+
+                AttributeValue attributeValue = item.get(beanProperty.getName());
+                if (attributeValue.hasSs()) {
+                    arguments[counter++] = conversionService.convert(attributeValue.ss(), beanProperty.getType()).orElse(null);
                 } else {
-                    arguments[counter++] = conversionService.convert(item.get(beanProperty.getName()), beanProperty.getType())
-                        .orElse(null);
+                    if (BeanIntrospector.SHARED.findIntrospection(beanProperty.getType()).isPresent()) {
+                        Map<String, AttributeValue> m = attributeValue.m();
+                        if (m != null) {
+                            arguments[counter++] = convert(m, beanProperty.getType());
+                        }
+                    } else {
+                        arguments[counter++] = conversionService.convert(attributeValue, beanProperty.getType())
+                            .orElse(null);
+                    }
                 }
             } else {
                 arguments[counter++] = null;
             }
         }
         return introspection.instantiate(arguments);
+    }
+
+    private <S> boolean isStringSet(S bean, BeanProperty<S, ?> beanProperty) {
+        if (!Set.class.isAssignableFrom(beanProperty.getType())) {
+            return false;
+        }
+        for (Object setItem : (Set) beanProperty.get(bean)) {
+            if (!CharSequence.class.isAssignableFrom(setItem.getClass())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -35,6 +35,7 @@ import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItem;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsRequest;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsResponse;
+import software.amazon.awssdk.services.dynamodb.model.Update;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemResponse;
 
@@ -66,7 +67,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param item DynamoDB Item
      * @return A PutItem Request builder with the table name populated via {@link DynamoConfiguration#getTableName()}.
      */
@@ -78,7 +78,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param item DynamoDB Item
      * @return A put Item Response
      */
@@ -88,8 +87,7 @@ public class DynamoRepository {
     }
 
     /**
-     *
-     * @param item DynamoDB Item
+     * @param item            DynamoDB Item
      * @param builderConsumer PutItem Request Builder consumer
      * @return A put Item Response
      */
@@ -109,7 +107,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param putItemRequest PutItem REquest
      * @return A PutItem Response
      */
@@ -123,7 +120,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @return The DynamoDB Client
      */
     public DynamoDbClient getDynamoDbClient() {
@@ -131,7 +127,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @return DynamoDB Configuration
      */
     public DynamoConfiguration getDynamoConfiguration() {
@@ -139,7 +134,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @return GetItemRequest Builder with the table name populated via {@link DynamoConfiguration#getTableName()}.
      */
     @NonNull
@@ -149,7 +143,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param builderConsumer GetItemRequest Builder consumer
      * @return Get Item Response
      */
@@ -162,7 +155,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @return QueryRequest Builder with the table name populated via {@link DynamoConfiguration#getTableName()}.
      */
     @NonNull
@@ -172,7 +164,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param builderConsumer Query Request Builder Consumer
      * @return Query Request
      */
@@ -186,7 +177,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param builderConsumer Query Request Builder Consumer
      * @return QueryResponse
      */
@@ -196,7 +186,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param queryRequest Query Request
      * @return QueryResponse
      */
@@ -206,7 +195,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param putBuilderConsumers PutBuilderConsumers
      * @return The Transaction write Item response
      */
@@ -216,7 +204,6 @@ public class DynamoRepository {
     }
 
     /**
-     *
      * @param putBuilderConsumers PutBuilderConsumers
      * @return The Transaction write Item response
      */
@@ -225,16 +212,55 @@ public class DynamoRepository {
         TransactWriteItem[] transactWriteItemArr = new TransactWriteItem[putBuilderConsumers.length];
         int count = 0;
         for (Consumer<Put.Builder> putBuilderConsumer : putBuilderConsumers) {
-            Put.Builder putBuidler = Put.builder()
-                .tableName(getDynamoConfiguration().getTableName());
-            putBuilderConsumer.accept(putBuidler);
-            transactWriteItemArr[count++] = TransactWriteItem.builder()
-                .put(putBuidler.build())
-                .build();
+            transactWriteItemArr[count++] = putTransactWriteItem(putBuilderConsumer);
         }
         return dynamoDbClient.transactWriteItems(TransactWriteItemsRequest.builder()
             .transactItems(transactWriteItemArr)
             .build());
+    }
+
+    /**
+     *
+     * @param puBuilderConsumer PutBuilderConsumer
+     * @return Transaction write item
+     */
+    public TransactWriteItem putTransactWriteItem(@Nullable Consumer<Put.Builder> puBuilderConsumer) {
+        Put.Builder putBuidler = Put.builder()
+            .tableName(getDynamoConfiguration().getTableName());
+        if (puBuilderConsumer != null) {
+            puBuilderConsumer.accept(putBuidler);
+        }
+        return TransactWriteItem.builder()
+            .put(putBuidler.build())
+            .build();
+    }
+
+    /**
+     *
+     * @param updateBuilderConsumer updateBuilderConsumer
+     * @return Transaction write item
+     */
+    public TransactWriteItem updateTransactWriteItem(@Nullable Consumer<Update.Builder> updateBuilderConsumer) {
+        Update.Builder updateBuilder = Update.builder()
+            .tableName(getDynamoConfiguration().getTableName());
+        if (updateBuilderConsumer != null) {
+            updateBuilderConsumer.accept(updateBuilder);
+        }
+        return TransactWriteItem.builder()
+            .update(updateBuilder.build())
+            .build();
+    }
+
+    /**
+     * @param transactWriteItemArr items to write
+     * @return The Transaction write Item response
+     */
+    @NonNull
+    public TransactWriteItemsResponse transactWriteItems(TransactWriteItem... transactWriteItemArr) {
+        return dynamoDbClient.transactWriteItems(TransactWriteItemsRequest.builder()
+            .transactItems(transactWriteItemArr)
+            .build());
+
     }
 
     /**

@@ -35,6 +35,11 @@ class CustomerController {
         customerRepository.save(customer);
     }
 
+    @Get("/{username}")
+    Optional<Customer> find(@PathVariable String username) {
+        return customerRepository.findByUsername(username);
+    }
+
     @Post("/{username}/orders")
     HttpResponse saveOrder(@PathVariable String username, @Body CreateOrder order) {
         String orderId = orderRepository.save(username, order);
@@ -56,10 +61,5 @@ class CustomerController {
     @Status(HttpStatus.NO_CONTENT)
     void updateStatusForOrder(@PathVariable String username, @PathVariable String orderId, @Body("status") io.micronaut.aws.dynamodb.ecommerce.Status status) {
         orderRepository.updateStatusUsernameAndOrderId(username, orderId, status);
-    }
-
-    @Get("/{username}")
-    Optional<Customer> find(@PathVariable String username) {
-        return customerRepository.findByUsername(username);
     }
 }

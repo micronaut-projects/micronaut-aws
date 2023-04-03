@@ -1,0 +1,32 @@
+package io.micronaut.aws.dynamodb.bigtimedeals.rows;
+
+import io.micronaut.aws.dynamodb.CompositeKey;
+import io.micronaut.aws.dynamodb.SingleTableRow;
+import io.micronaut.core.annotation.Creator;
+import io.micronaut.core.annotation.Introspected;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+
+@Introspected
+public class BrandContainer extends SingleTableRow {
+    public static final CompositeKey KEY = CompositeKey.of("BRANDS", "BRANDS");
+    private final Set<String> brands;
+
+    @Creator
+    public BrandContainer(String pk, String sk, String className, Set<String> brands) {
+        super(pk, sk, className);
+        this.brands = brands;
+    }
+
+    public BrandContainer() {
+        this(KEY.getPartionKey(), KEY.getSortKey(), BrandContainer.class.getName(), Collections.emptySet());
+    }
+
+    public Set<String> getBrands() {
+        return brands;
+    }
+
+}
