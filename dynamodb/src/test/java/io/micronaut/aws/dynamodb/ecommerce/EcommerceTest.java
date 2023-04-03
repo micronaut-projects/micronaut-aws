@@ -16,6 +16,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Map;
@@ -73,5 +74,23 @@ class EcommerceTest implements TestPropertyProvider {
         assertNotNull(location);
         HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
         assertEquals(HttpStatus.OK, orderResponse.getStatus());
+        Order order = orderResponse.body();
+        assertNotNull(order);
+        assertEquals(Status.PLACED, order.getStatus());
+        assertNotNull(order.getAddress());
+        assertEquals("123 1st Street", order.getAddress().getStreetAddress());
+        assertEquals("USA", order.getAddress().getCountry());
+        assertEquals("10001", order.getAddress().getPostalCode());
+        assertNotNull(order.getItems());
+        assertEquals(1, order.getItems().size());
+        assertNotNull(order.getOrderId());
+        assertEquals("Air Force 1s", order.getItems().get(0).getDescription());
+        assertEquals("1d45", order.getItems().get(0).getItemId());
+        assertEquals(1, order.getItems().get(0).getAmount());
+        assertEquals(new BigDecimal("15.99"), order.getItems().get(0).getPrice());
+
+        URI updateStatusUri = UriBuilder.of(path).path(username).path("orders").path(order.getOrderId()).path("status").build();
+        HttpResponse<?> updateStatusResponse = client.exchange(HttpRequest.PUT(updateStatusUri, Map.of("status", Status.CANCELLED)));
+        assertEquals(HttpStatus.NO_CONTENT, updateStatusResponse.getStatus());
     }
 }

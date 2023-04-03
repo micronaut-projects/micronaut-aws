@@ -36,11 +36,11 @@ public final class CompositeKeyUtils {
     }
 
     /**
-     *
-     * @return Composite Key Item representation.
+     * @param compositeKey  Composite key
+     * @return Composite Key as a Map. The value is calculated as {@link AttributeValueUtils#s(String)} of primary key and sort key.
      */
     @NonNull
-    Map<String, AttributeValue> getKey(@NonNull CompositeKey compositeKey) {
+    public static Map<String, AttributeValue> getKey(@NonNull CompositeKey compositeKey) {
         return Map.of(KEY_PK, AttributeValueUtils.s(compositeKey.getPk()), KEY_SK, AttributeValueUtils.s(compositeKey.getSk()));
     }
 }

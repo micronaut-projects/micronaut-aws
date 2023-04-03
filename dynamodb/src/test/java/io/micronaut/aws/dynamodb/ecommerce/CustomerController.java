@@ -9,6 +9,7 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Put;
 import io.micronaut.http.uri.UriBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -42,6 +43,13 @@ class CustomerController {
     @Status(HttpStatus.OK)
     public Optional<Order> findOrder(@PathVariable String username, @PathVariable String orderId) {
         return orderRepository.findByUsernameAndOrderId(username, orderId);
+    }
+
+    @Put("/{username}/orders/{orderId}/status")
+    @Status(HttpStatus.NO_CONTENT)
+    void updateStatusForOrder(@PathVariable String username, @PathVariable String orderId, @Body("status") io.micronaut.aws.dynamodb.ecommerce.Status status) {
+        orderRepository.updateStatusUsernameAndOrderId(username, orderId, status);
+
     }
 
     @Get("/{username}")

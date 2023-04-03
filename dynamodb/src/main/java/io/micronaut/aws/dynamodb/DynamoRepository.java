@@ -16,6 +16,7 @@
 package io.micronaut.aws.dynamodb;
 
 import io.micronaut.aws.dynamodb.conf.DynamoConfiguration;
+import io.micronaut.aws.dynamodb.utils.CompositeKeyUtils;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
@@ -34,6 +35,8 @@ import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItem;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsRequest;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsResponse;
+import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.UpdateItemResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -271,5 +274,76 @@ public class DynamoRepository {
      */
     public DynamoDbConversionService getDynamoDbConversionService() {
         return dynamoDbConversionService;
+    }
+
+    /**
+     * @param key compositeKey
+     * @param updateItemRequestBuilderConsumer Update Item Request Builder Consumer
+     * @return Update Item Response
+     */
+    @NonNull
+    public UpdateItemResponse updateItem(@NonNull CompositeKey key, @NonNull Consumer<UpdateItemRequest.Builder> updateItemRequestBuilderConsumer) {
+        return dynamoDbClient.updateItem(updateItemRequestBuilder(key, updateItemRequestBuilderConsumer).build());
+    }
+
+    /**
+     *
+     * @param updateItemRequestBuilderConsumer Update Item Request Builder Consumer
+     * @return Update Item Response
+     */
+    @NonNull
+    public UpdateItemResponse updateItem(@NonNull Consumer<UpdateItemRequest.Builder> updateItemRequestBuilderConsumer) {
+        return dynamoDbClient.updateItem(updateItemRequestBuilder(updateItemRequestBuilderConsumer).build());
+    }
+
+
+    /**
+     *
+     * @param updateItemRequestBuilder Update Item Request Builder
+     * @return Update Item Response
+     */
+    @NonNull
+    public UpdateItemResponse updateItem(@NonNull UpdateItemRequest.Builder updateItemRequestBuilder) {
+        return dynamoDbClient.updateItem(updateItemRequestBuilder.build());
+    }
+
+    /**
+     * Instantiates UpdateItem Request Builder, populates its table name with {@link DynamoConfiguration#getTableName()}.
+     * @return UpdateItem Request Builder
+     */
+    @NonNull
+    public UpdateItemRequest.Builder updateItemRequestBuilder() {
+        return UpdateItemRequest.builder()
+            .tableName(dynamoConfiguration.getTableName());
+    }
+
+    /**
+     * Instantiates UpdateItem Request Builder, populates its table name with {@link DynamoConfiguration#getTableName()} and passes it to the consumer.
+     * @param builderConsumer UpdateItem Request Builder Consumer
+     * @return UpdateItem Request Builder
+     */
+    @NonNull
+    public UpdateItemRequest.Builder updateItemRequestBuilder(@Nullable Consumer<UpdateItemRequest.Builder> builderConsumer) {
+        UpdateItemRequest.Builder builder =  updateItemRequestBuilder();
+        if (builderConsumer != null) {
+            builderConsumer.accept(builder);
+        }
+        return builder;
+    }
+
+    /**
+     * Instantiates UpdateItem Request Builder, populates its table name with {@link DynamoConfiguration#getTableName()} and passes it to the consumer.
+     * @param key Composite Key
+     * @param builderConsumer UpdateItem Request Builder Consumer
+     * @return UpdateItem Request Builder
+     */
+    @NonNull
+    public UpdateItemRequest.Builder updateItemRequestBuilder(@NonNull CompositeKey key, @Nullable Consumer<UpdateItemRequest.Builder> builderConsumer) {
+        UpdateItemRequest.Builder builder =  updateItemRequestBuilder();
+        builder.key(CompositeKeyUtils.getKey(key));
+        if (builderConsumer != null) {
+            builderConsumer.accept(builder);
+        }
+        return builder;
     }
 }

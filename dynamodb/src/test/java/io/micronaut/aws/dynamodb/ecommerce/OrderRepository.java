@@ -4,14 +4,17 @@ import io.micronaut.aws.dynamodb.DynamoRepository;
 import io.micronaut.aws.dynamodb.ecommerce.items.OrderItemRow;
 import io.micronaut.aws.dynamodb.ecommerce.items.OrderRow;
 import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
+import io.micronaut.aws.dynamodb.utils.CompositeKeyUtils;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.Put;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+import software.amazon.awssdk.services.dynamodb.model.ReturnValue;
 import software.amazon.awssdk.services.dynamodb.model.TransactWriteItemsResponse;
 
 import java.math.BigDecimal;
@@ -57,38 +60,6 @@ public class OrderRepository {
     }
 
     @NonNull
-    OrderItemRow orderItemRowOf(@NonNull String orderId, @NonNull @Valid Item orderItem) {
-        return new OrderItemRow(OrderItemRow.keyOf(orderId, orderItem.getItemId()),
-            OrderItemRow.gsi1Of(orderId, orderItem.getItemId()),
-            orderId,
-            orderItem.getItemId(),
-            orderItem.getDescription(),
-            orderItem.getPrice(),
-            orderItem.getAmount(),
-            orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getAmount())).setScale(SCALE, RoundingMode.HALF_UP)
-        );
-    }
-
-    @NonNull
-    OrderRow orderRowOf(@NonNull String username, @NonNull String orderId, @NonNull @Valid CreateOrder createOrder) {
-        BigDecimal totalAmount = createOrder.getItems().stream().map(Item::getPrice)
-            .reduce(BigDecimal.ZERO, BigDecimal::add)
-            .setScale(SCALE, RoundingMode.HALF_UP);
-
-        Integer numberItems = createOrder.getItems().size();
-        return new OrderRow(OrderRow.keyOf(username, orderId),
-            OrderRow.gsi1Of(orderId),
-            username,
-            orderId,
-            createOrder.getAddress(),
-            LocalDateTime.now(),
-            Status.PLACED,
-            totalAmount,
-            numberItems
-        );
-    }
-
-    @NonNull
     public Optional<Order> findByUsernameAndOrderId(@NonNull @NotBlank String username,
                                                     @NonNull @NotBlank String orderId) {
 
@@ -121,6 +92,18 @@ public class OrderRepository {
         }
         return Optional.of(orderOfOrderRow(orderRow, orderItemRows));
     }
+
+    public void updateStatusUsernameAndOrderId(@NonNull @NotBlank String username,
+                                               @NonNull @NotBlank String orderId,
+                                               @NonNull @NotNull Status status) {
+        dynamoRepository.updateItem(OrderRow.keyOf(username, orderId), builder -> builder
+            .conditionExpression("attribute_exists(pk)")
+            .updateExpression("SET #status = :status")
+            .expressionAttributeNames(Collections.singletonMap("#status", "status"))
+            .expressionAttributeValues(Collections.singletonMap(":status", AttributeValueUtils.s(status.toString())))
+            .returnValues(ReturnValue.ALL_NEW));
+    }
+
     @NonNull
     private Order orderOfOrderRow(@NonNull OrderRow orderRow, @NonNull List<OrderItemRow> orderItemRows) {
         return new Order(orderRow.getUsername(),
@@ -137,5 +120,37 @@ public class OrderRepository {
     private OrderItem orderItemOfOrderItemRow(@NonNull OrderItemRow orderItemRow) {
         return new OrderItem(orderItemRow.getOrderId(),
             orderItemRow.getItemId(), orderItemRow.getDescription(), orderItemRow.getPrice(), orderItemRow.getAmount());
+    }
+
+    @NonNull
+    private OrderItemRow orderItemRowOf(@NonNull String orderId, @NonNull @Valid Item orderItem) {
+        return new OrderItemRow(OrderItemRow.keyOf(orderId, orderItem.getItemId()),
+            OrderItemRow.gsi1Of(orderId, orderItem.getItemId()),
+            orderId,
+            orderItem.getItemId(),
+            orderItem.getDescription(),
+            orderItem.getPrice(),
+            orderItem.getAmount(),
+            orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getAmount())).setScale(SCALE, RoundingMode.HALF_UP)
+        );
+    }
+
+    @NonNull
+    private OrderRow orderRowOf(@NonNull String username, @NonNull String orderId, @NonNull @Valid CreateOrder createOrder) {
+        BigDecimal totalAmount = createOrder.getItems().stream().map(Item::getPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add)
+            .setScale(SCALE, RoundingMode.HALF_UP);
+
+        Integer numberItems = createOrder.getItems().size();
+        return new OrderRow(OrderRow.keyOf(username, orderId),
+            OrderRow.gsi1Of(orderId),
+            username,
+            orderId,
+            createOrder.getAddress(),
+            LocalDateTime.now(),
+            Status.PLACED,
+            totalAmount,
+            numberItems
+        );
     }
 }
