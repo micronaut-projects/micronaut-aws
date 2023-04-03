@@ -2,6 +2,7 @@ package io.micronaut.aws.dynamodb.ecommerce;
 
 import io.micronaut.aws.dynamodb.utils.DynamoDbLocal;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +58,7 @@ class EcommerceTest implements TestPropertyProvider {
         findCustomer(client, path, username, email, name);
 
         String location = saveOrder(client, path, username);
-        String orderId = findOrder(client, location);
+        String orderId = findOrder(client, location, Status.PLACED);
 
         updateOrderStatus(client, path, username, orderId, Status.CANCELLED);
         HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
@@ -64,6 +66,14 @@ class EcommerceTest implements TestPropertyProvider {
         Order order = orderResponse.body();
         assertNotNull(order);
         assertEquals(Status.CANCELLED, order.getStatus());
+
+        URI orderUri = UriBuilder.of(path).path(username).path("orders").build();
+        HttpResponse<List<Order>> ordersByUserResponse = client.exchange(HttpRequest.GET(orderUri), Argument.listOf(Order.class));
+        assertEquals(HttpStatus.OK, ordersByUserResponse.getStatus());
+        List<Order> orders = ordersByUserResponse.body();
+        assertNotNull(orders);
+        assertEquals(1, orders.size());
+        assertOrder(orders.get(0), Status.CANCELLED);
     }
 
     private void findCustomer(BlockingHttpClient client, String path, String username, String email, String name) {
@@ -91,16 +101,25 @@ class EcommerceTest implements TestPropertyProvider {
         return location;
     }
 
-    private String findOrder(BlockingHttpClient client, String location) {
+    private String findOrder(BlockingHttpClient client, String location, Status status) {
         HttpResponse<Order> orderResponse = client.exchange(location, Order.class);
         assertEquals(HttpStatus.OK, orderResponse.getStatus());
         Order order = orderResponse.body();
+        assertOrder(order, status);
+        assertOrderItems(order);
+        return order.getOrderId();
+    }
+
+    private void assertOrder(Order order, Status status) {
         assertNotNull(order);
-        assertEquals(Status.PLACED, order.getStatus());
+        assertEquals(status, order.getStatus());
         assertNotNull(order.getAddress());
         assertEquals("123 1st Street", order.getAddress().getStreetAddress());
         assertEquals("USA", order.getAddress().getCountry());
         assertEquals("10001", order.getAddress().getPostalCode());
+    }
+
+    private void assertOrderItems(Order order) {
         assertNotNull(order.getItems());
         assertEquals(1, order.getItems().size());
         assertNotNull(order.getOrderId());
@@ -108,7 +127,6 @@ class EcommerceTest implements TestPropertyProvider {
         assertEquals("1d45", order.getItems().get(0).getItemId());
         assertEquals(1, order.getItems().get(0).getAmount());
         assertEquals(new BigDecimal("15.99"), order.getItems().get(0).getPrice());
-        return order.getOrderId();
     }
 
     private void updateOrderStatus(BlockingHttpClient client, String path, String username, String orderId, Status status) {

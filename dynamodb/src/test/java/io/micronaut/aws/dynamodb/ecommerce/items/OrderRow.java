@@ -1,6 +1,5 @@
 package io.micronaut.aws.dynamodb.ecommerce.items;
 
-import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.GlobalSecondaryIndex1;
 import io.micronaut.aws.dynamodb.SingleTableRowWithOneGlobalSecondaryIndex;
@@ -9,7 +8,6 @@ import io.micronaut.aws.dynamodb.ecommerce.Status;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,6 +33,7 @@ public class OrderRow extends SingleTableRowWithOneGlobalSecondaryIndex {
     @Creator
     public OrderRow(String pk,
                              String sk,
+                             String className,
                              String gsi1Pk,
                              String gsi1Sk,
                              String type,
@@ -45,7 +44,7 @@ public class OrderRow extends SingleTableRowWithOneGlobalSecondaryIndex {
                              Status status,
                              BigDecimal totalAmount,
                              Integer numberItems) {
-        super(pk, sk, gsi1Pk, gsi1Sk);
+        super(pk, sk, className, gsi1Pk, gsi1Sk);
         this.type = type;
         this.username = username;
         this.orderId = orderId;
@@ -65,7 +64,7 @@ public class OrderRow extends SingleTableRowWithOneGlobalSecondaryIndex {
                              Status status,
                              BigDecimal totalAmount,
                              Integer numberItems) {
-        this(key.getPartionKey(), key.getSortKey(), gsi1.getPartionKey(), gsi1.getSortKey(),
+        this(key.getPartionKey(), key.getSortKey(), OrderRow.class.getName(), gsi1.getPartionKey(), gsi1.getSortKey(),
             OrderRow.class.getName(),
             username,
             orderId,

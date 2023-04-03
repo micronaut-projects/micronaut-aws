@@ -1,6 +1,7 @@
 package io.micronaut.aws.dynamodb.ecommerce;
 
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class Order {
                  Status status,
                  BigDecimal totalAmount,
                  Integer numberOfTimes,
-                 List<OrderItem> items) {
+                 @Nullable List<OrderItem> items) {
         this.username = username;
         this.orderId = orderId;
         this.address = address;

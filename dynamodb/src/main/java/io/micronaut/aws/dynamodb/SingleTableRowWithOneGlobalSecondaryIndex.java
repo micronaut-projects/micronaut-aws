@@ -16,23 +16,13 @@
 package io.micronaut.aws.dynamodb;
 
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import jakarta.validation.constraints.NotBlank;
 
 /**
  * Base class to extend from in a DynamoDB Single table design with a Global Secondary Index.
  */
 @Introspected
-public class SingleTableRowWithOneGlobalSecondaryIndex {
-    @NonNull
-    @NotBlank
-    private final String pk;
-
-    @NonNull
-    @NotBlank
-    private final String sk;
-
+public class SingleTableRowWithOneGlobalSecondaryIndex extends SingleTableRow {
     private final String gsi1Pk;
 
     private final String gsi1Sk;
@@ -41,35 +31,18 @@ public class SingleTableRowWithOneGlobalSecondaryIndex {
      *
      * @param pk Partition Key
      * @param sk Sort Key
+     * @param className Class Name
      * @param gsi1Pk Global Secondary Index 1 Partition Key
      * @param gsi1Sk Global Secondary Index 1 Sort Key
      */
     public SingleTableRowWithOneGlobalSecondaryIndex(String pk,
                                                      String sk,
+                                                     String className,
                                                      String gsi1Pk,
                                                      String gsi1Sk) {
-        this.pk = pk;
-        this.sk = sk;
+        super(pk, sk, className);
         this.gsi1Pk = gsi1Pk;
         this.gsi1Sk = gsi1Sk;
-    }
-
-    /**
-     *
-     * @return Partition Key
-     */
-    @NonNull
-    public String getPk() {
-        return pk;
-    }
-
-    /**
-     *
-     * @return Sort Key
-     */
-    @NonNull
-    public String getSk() {
-        return sk;
     }
 
     /**

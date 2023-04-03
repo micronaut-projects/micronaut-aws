@@ -32,15 +32,22 @@ public class SingleTableRow {
     @NotBlank
     private final String sk;
 
+    @NonNull
+    @NotBlank
+    private final String className;
+
     /**
      *
      * @param pk Primary Key
      * @param sk Sort Key
+     * @param className Class Name
      */
     public SingleTableRow(String pk,
-                          String sk) {
+                          String sk,
+                          String className) {
         this.pk = pk;
         this.sk = sk;
+        this.className = className;
     }
 
     /**
@@ -59,5 +66,13 @@ public class SingleTableRow {
     @NonNull
     public String getSk() {
         return sk;
+    }
+
+    /**
+     *
+     * @return Class Name
+     */
+    public String getClassName() {
+        return className;
     }
 }

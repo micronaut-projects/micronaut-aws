@@ -1,23 +1,16 @@
 package io.micronaut.aws.dynamodb.ecommerce.items;
 
-import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.GlobalSecondaryIndex1;
+import io.micronaut.aws.dynamodb.SingleTableRowWithOneGlobalSecondaryIndex;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public class OrderItemRow extends SingleTableRow {
-
-    private final String gsi1Pk;
-    private final String gsi1Sk;
-    @NonNull
-    @NotBlank
-    private final String type;
+public class OrderItemRow extends SingleTableRowWithOneGlobalSecondaryIndex {
 
     @NonNull
     @NotBlank
@@ -46,20 +39,16 @@ public class OrderItemRow extends SingleTableRow {
     @Creator
     public OrderItemRow(String pk,
                         String sk,
+                        String className,
                         String gsi1Pk,
                         String gsi1Sk,
-                        String type,
                         String orderId,
                         String itemId,
                         String description,
                         BigDecimal price,
                         Integer amount,
                         BigDecimal totalCost) {
-        super(pk, sk);
-
-        this.gsi1Pk = gsi1Pk;
-        this.gsi1Sk = gsi1Sk;
-        this.type = type;
+        super(pk, sk, className, gsi1Pk, gsi1Sk);
         this.orderId = orderId;
         this.itemId = itemId;
         this.description = description;
@@ -78,29 +67,15 @@ public class OrderItemRow extends SingleTableRow {
                         BigDecimal totalCost) {
         this(key.getPartionKey(),
             key.getSortKey(),
+            OrderItemRow.class.getName(),
             gsi1.getPartionKey(),
             gsi1.getSortKey(),
-            OrderItemRow.class.getName(),
             orderId,
             itemId,
             description,
             price,
             amount,
             totalCost);
-    }
-
-    @Nullable
-    public String getGsi1Pk() {
-        return gsi1Pk;
-    }
-
-    @Nullable
-    public String getGsi1Sk() {
-        return gsi1Sk;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String getOrderId() {

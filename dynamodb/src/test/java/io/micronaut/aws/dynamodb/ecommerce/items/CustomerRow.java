@@ -25,18 +25,15 @@ public class CustomerRow extends SingleTableRow {
     private final String name;
 
     @Creator
-    public CustomerRow(String pk, String sk, String username, String email, String name) {
-        super(pk, sk);
+    public CustomerRow(String pk, String sk, String className, String username, String email, String name) {
+        super(pk, sk, className);
         this.username = username;
         this.email = email;
         this.name = name;
     }
 
     public CustomerRow(CompositeKey key, String username, String email, String name) {
-        super(key.getPartionKey(), key.getSortKey());
-        this.username = username;
-        this.email = email;
-        this.name = name;
+        this(key.getPartionKey(), key.getSortKey(), CustomerRow.class.getName(), username, email, name);
     }
 
     public String getUsername() {

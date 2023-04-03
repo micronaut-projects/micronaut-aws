@@ -7,6 +7,8 @@ import io.micronaut.aws.dynamodb.ecommerce.items.OrderRow;
 import io.micronaut.aws.dynamodb.utils.AttributeValueUtils;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.util.CollectionUtils;
 import jakarta.inject.Singleton;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +35,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class OrderRepository {
     public static final int SCALE = 2;
+    public static final String KEY_CLASS_NAME = "className";
     private final DynamoRepository dynamoRepository;
     private final IdGenerator idGenerator;
 
@@ -62,7 +66,6 @@ public class OrderRepository {
     @NonNull
     public Optional<Order> findByUsernameAndOrderId(@NonNull @NotBlank String username,
                                                     @NonNull @NotBlank String orderId) {
-
         QueryResponse rsp = dynamoRepository.query(builder -> builder.indexName(BootStrap.INDEX_GSI1)
             .keyConditionExpression("#gsi1Pk = :gsi1Pk")
             .expressionAttributeNames(Collections.singletonMap("#gsi1Pk", BootStrap.INDEX_GSI1_PK))
@@ -71,26 +74,7 @@ public class OrderRepository {
         if (!rsp.hasItems()) {
             return Optional.empty();
         }
-        OrderRow orderRow = null;
-        List<OrderItemRow> orderItemRows = new ArrayList<>();
-        for (Map<String, AttributeValue> item : rsp.items()) {
-            if (item.containsKey("type")) {
-                String type = item.get("type").s();
-                if (type != null) {
-                    if (type.equals(OrderRow.class.getName())) {
-                        orderRow = dynamoRepository.getDynamoDbConversionService().convert(item, OrderRow.class);
-
-                    } else if (type.equals(OrderItemRow.class.getName())) {
-                        orderItemRows.add(dynamoRepository.getDynamoDbConversionService().convert(item, OrderItemRow.class));
-                    }
-                }
-            }
-        }
-
-        if (orderRow == null) {
-            return Optional.empty();
-        }
-        return Optional.of(orderOfOrderRow(orderRow, orderItemRows));
+        return ordersOfItems(rsp.items()).stream().findFirst();
     }
 
     public void updateStatusUsernameAndOrderId(@NonNull @NotBlank String username,
@@ -105,7 +89,51 @@ public class OrderRepository {
     }
 
     @NonNull
-    private Order orderOfOrderRow(@NonNull OrderRow orderRow, @NonNull List<OrderItemRow> orderItemRows) {
+    public List<Order> findAllByUsername(@NonNull @NotBlank String username) {
+        QueryResponse queryResponse = dynamoRepository.query(builder -> builder.keyConditionExpression("#pk = :pk")
+            .expressionAttributeNames(Collections.singletonMap("#pk", "pk"))
+            .expressionAttributeValues(Collections.singletonMap(":pk", AttributeValueUtils.s(CustomerRow.keyOf(username).getPartionKey())))
+            .scanIndexForward(false)
+        );
+        if (!queryResponse.hasItems()) {
+            return Collections.emptyList();
+        }
+        return ordersOfItems(queryResponse.items());
+    }
+
+    @NonNull
+    private List<Order> ordersOfItems(@NonNull List<Map<String, AttributeValue>> items) {
+        if (CollectionUtils.isEmpty(items)) {
+            return Collections.emptyList();
+        }
+        List<OrderRow> orderRows = new ArrayList<>();
+        Map<String, List<OrderItemRow>> orderItemRows = new HashMap<>();
+        for (Map<String, AttributeValue> item : items) {
+            if (item.containsKey(KEY_CLASS_NAME)) {
+                String type = item.get(KEY_CLASS_NAME).s();
+                if (type != null) {
+                    if (type.equals(OrderRow.class.getName())) {
+                        orderRows.add(dynamoRepository.getDynamoDbConversionService().convert(item, OrderRow.class));
+
+                    } else if (type.equals(OrderItemRow.class.getName())) {
+                        OrderItemRow orderItemRow = dynamoRepository.getDynamoDbConversionService().convert(item, OrderItemRow.class);
+                        if (!item.containsKey(orderItemRow.getOrderId())) {
+                            orderItemRows.put(orderItemRow.getOrderId(), new ArrayList<>());
+                        }
+                        orderItemRows.get(orderItemRow.getOrderId()).add(orderItemRow);
+                    }
+                }
+            }
+        }
+        List<Order> orders = new ArrayList<>();
+        for (OrderRow orderRow : orderRows) {
+            orders.add(orderOfOrderRow(orderRow, orderItemRows.get(orderRow.getOrderId())));
+        }
+        return orders;
+    }
+
+    @NonNull
+    private Order orderOfOrderRow(@NonNull OrderRow orderRow, @Nullable List<OrderItemRow> orderItemRows) {
         return new Order(orderRow.getUsername(),
             orderRow.getOrderId(),
             orderRow.getAddress(),
@@ -113,7 +141,8 @@ public class OrderRepository {
             orderRow.getStatus(),
             orderRow.getTotalAmount(),
             orderRow.getNumberItems(),
-            orderItemRows.stream().map(this::orderItemOfOrderItemRow).collect(Collectors.toList()));
+            orderItemRows == null ? Collections.emptyList() :
+                orderItemRows.stream().map(this::orderItemOfOrderItemRow).collect(Collectors.toList()));
     }
 
     @NonNull
@@ -154,26 +183,4 @@ public class OrderRepository {
         );
     }
 
-    @NonNull
-    public List<Order> findAllByUsername(@NonNull @NotBlank String username) {
-        QueryResponse queryResponse = dynamoRepository.query(builder -> builder.keyConditionExpression("#pk = :pk")
-            .expressionAttributeNames(Collections.singletonMap("#pk", "pk"))
-            .expressionAttributeValues(Collections.singletonMap(":pk", AttributeValueUtils.s(CustomerRow.keyOf(username).getPartionKey())))
-            .scanIndexForward(false)
-        );
-
-        if (!queryResponse.hasItems()) {
-            return Collections.emptyList();
-        }
-        List<Map<String, AttributeValue>> items = queryResponse.items();
-        if (items == null) {
-            return Collections.emptyList();
-        }
-        List<Order> result = new ArrayList<>();
-        for(Map<String, AttributeValue> item : items) {
-
-        }
-        return result;
-
-    }
 }
