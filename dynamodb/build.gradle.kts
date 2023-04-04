@@ -23,6 +23,8 @@ dependencies {
     testImplementation(mn.micronaut.http.client)
     testImplementation(platform(libs.testcontainers.bom))
     testImplementation(libs.testcontainers)
+
+    testImplementation(libs.ksuid)
 }
 micronautBuild {
     binaryCompatibility {

@@ -87,6 +87,17 @@ public class DynamoRepository {
     }
 
     /**
+     * @param item Item to be converted to {@literal Map<String,AttributeValue>}
+     * @param builderConsumer PutItem Request Builder consumer
+     * @return A put Item Response
+     */
+    public PutItemResponse putItem(@NonNull Object item,
+                                   @Nullable Consumer<PutItemRequest.Builder> builderConsumer) {
+        return putItem(dynamoDbConversionService.convert(item), builderConsumer);
+
+    }
+
+    /**
      * @param item            DynamoDB Item
      * @param builderConsumer PutItem Request Builder consumer
      * @return A put Item Response
