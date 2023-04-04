@@ -12,7 +12,9 @@ import jakarta.validation.constraints.NotNull;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Requires(property = "spec.name", value = "BigTimeDealsTest")
 @Singleton
@@ -42,5 +44,12 @@ public class BrandsRepository {
                 .expressionAttributeValues(Collections.singletonMap(":brand", AttributeValue.builder().ss(brand.getName()).build()))
             )
         );
+    }
+
+    @NonNull
+    public Set<String> listBrands() {
+        return dynamoRepository.getItem(BrandContainer.KEY, BrandContainer.class)
+            .map(BrandContainer::getBrands)
+            .orElseGet(Collections::emptySet);
     }
 }

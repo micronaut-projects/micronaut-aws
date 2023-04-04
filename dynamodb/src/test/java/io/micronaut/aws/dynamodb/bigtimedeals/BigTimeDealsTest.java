@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,7 +49,13 @@ class BigTimeDealsTest implements TestPropertyProvider {
 //
 //        HttpRequest<?> createDealRequest = HttpRequest.POST("/deals", new CreateDeal("8 day cruise!", "https://www.princess.com/...", new BigDecimal("1599"), "Travel",  brand));
 //        assertEquals(HttpStatus.CREATED, createBrandResponse.getStatus());
+    }
 
+    @Test
+    void category(BrandsRepository repository) {
+        repository.save(new CreateBrand("Bellroy", "http://Bellroy.com"));
+        repository.save(new CreateBrand("Apple", "https://apple.com"));
+        assertEquals(Set.of("Bellroy", "Apple"), repository.listBrands());
     }
 
 

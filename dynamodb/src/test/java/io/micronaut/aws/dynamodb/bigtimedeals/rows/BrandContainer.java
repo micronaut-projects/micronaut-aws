@@ -4,10 +4,9 @@ import io.micronaut.aws.dynamodb.CompositeKey;
 import io.micronaut.aws.dynamodb.SingleTableRow;
 import io.micronaut.core.annotation.Creator;
 import io.micronaut.core.annotation.Introspected;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import io.micronaut.core.annotation.Nullable;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
 
 @Introspected
@@ -16,7 +15,7 @@ public class BrandContainer extends SingleTableRow {
     private final Set<String> brands;
 
     @Creator
-    public BrandContainer(String pk, String sk, String className, Set<String> brands) {
+    public BrandContainer(String pk, String sk, @Nullable String className, Set<String> brands) {
         super(pk, sk, className);
         this.brands = brands;
     }

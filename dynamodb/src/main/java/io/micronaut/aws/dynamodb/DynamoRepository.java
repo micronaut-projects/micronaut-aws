@@ -154,6 +154,32 @@ public class DynamoRepository {
     }
 
     /**
+     *
+     * @param key Table Key
+     * @param targetType Target Type class
+     * @return An Optional Instance of the Target class if found.
+     * @param <T> Target Type
+     */
+    public <T> Optional<T> getItem(CompositeKey key, Class<T> targetType) {
+        Map<String, AttributeValue> keyMap = mapForKey(key);
+        return getItem(keyMap, targetType);
+    }
+
+    /**
+     * @param key {@link GetItemRequest.Builder#key}.
+     * @param builderConsumer GetItemRequest Builder consumer
+     * @return Get Item Response
+     */
+    public GetItemResponse getItem(CompositeKey key, @Nullable Consumer<GetItemRequest.Builder> builderConsumer) {
+        GetItemRequest.Builder builder = getItemBuilder();
+        builder.key(mapForKey(key));
+        if (builderConsumer != null) {
+            builderConsumer.accept(builder);
+        }
+        return dynamoDbClient.getItem(builder.build());
+    }
+
+    /**
      * @param builderConsumer GetItemRequest Builder consumer
      * @return Get Item Response
      */
@@ -271,19 +297,6 @@ public class DynamoRepository {
         return dynamoDbClient.transactWriteItems(TransactWriteItemsRequest.builder()
             .transactItems(transactWriteItemArr)
             .build());
-
-    }
-
-    /**
-     *
-     * @param key Table Key
-     * @param targetType Target Type class
-     * @return An Optional Instance of the Target class if found.
-     * @param <T> Target Type
-     */
-    public <T> Optional<T> getItem(CompositeKey key, Class<T> targetType) {
-        Map<String, AttributeValue> keyMap = mapForKey(key);
-        return getItem(keyMap, targetType);
     }
 
     /**
