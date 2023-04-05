@@ -26,7 +26,6 @@ dependencies {
     testImplementation(mnSecurity.micronaut.security)
     testImplementation(mnViews.micronaut.views.handlebars)
     testImplementation(libs.jackson.afterburner)
-    testImplementation(libs.servlet.api)
     testImplementation(libs.fileupload)
 }
 
