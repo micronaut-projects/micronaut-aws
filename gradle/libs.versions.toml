@@ -28,6 +28,7 @@ managed-aws-serverless-core = '1.9.2'
 managed-aws-cdk-lib='2.72.1'
 micronaut-starter = "3.8.8"
 slf4j = "2.0.7"
+servlet-api = "2.5"
 testcontainers = "1.17.6"
 javapoet = "1.13.0"
 
@@ -103,6 +104,7 @@ managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanage
 managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
+servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
 testcontainers-bom = { module = 'org.testcontainers:testcontainers-bom', version.ref = 'testcontainers' }
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
