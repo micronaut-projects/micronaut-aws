@@ -38,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +120,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
 
     private static Map<String, String> getHeaders(AwsProxyResponse awsProxyResponse) {
         Headers multiValueHeaders = awsProxyResponse.getMultiValueHeaders();
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new LinkedHashMap<>();
         for (Map.Entry<String, List<String>> entry : multiValueHeaders.entrySet()) {
             List<String> headerValues = entry.getValue();
             if (headerValues != null && headerValues.size() == 1) {
