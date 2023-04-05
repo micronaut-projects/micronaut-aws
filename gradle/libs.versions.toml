@@ -20,13 +20,13 @@ micronaut-views = '4.0.0-M1'
 micronaut-validation = "4.0.0-M2"
 
 managed-alexa-ask-sdk = "2.69.0"
-managed-aws-java-sdk-v1 = '1.12.420'
+managed-aws-java-sdk-v1 = '1.12.442'
 managed-aws-java-sdk-v2 = '2.20.39'
 managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.1'
-managed-aws-serverless-core = '1.9.1'
+managed-aws-serverless-core = '1.9.2'
 managed-aws-cdk-lib='2.72.1'
-micronaut-starter = "3.8.6"
+micronaut-starter = "3.8.8"
 slf4j = "2.0.7"
 testcontainers = "1.17.6"
 javapoet = "1.13.0"
