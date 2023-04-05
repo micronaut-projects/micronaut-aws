@@ -10,14 +10,11 @@ import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpMethod
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Status
 import spock.lang.AutoCleanup
 import spock.lang.Issue
-import spock.lang.PendingFeature
 import spock.lang.Shared
 import spock.lang.Specification
 
