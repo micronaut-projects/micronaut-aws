@@ -10,16 +10,20 @@ repositories {
 val micronautVersion: String by project
 
 dependencies {
-    testAnnotationProcessor(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testImplementation(platform(mn.micronaut.core.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 
-    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
+    testImplementation(platform(mn.micronaut.core.bom))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation(project(":function-aws"))
-    testImplementation(project(":function-client-aws"))
+    testImplementation(projects.micronautFunctionAws)
+    testImplementation(projects.micronautFunctionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -33,6 +37,6 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

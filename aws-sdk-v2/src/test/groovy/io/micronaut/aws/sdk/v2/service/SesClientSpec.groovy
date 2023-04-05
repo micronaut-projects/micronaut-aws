@@ -1,24 +1,20 @@
 package io.micronaut.aws.sdk.v2.service
 
-import io.micronaut.aws.sdk.v2.ApplicationContextSpecification
 import software.amazon.awssdk.services.ses.SesAsyncClient
 import software.amazon.awssdk.services.ses.SesClient
 
-class SesClientSpec extends ApplicationContextSpecification {
-
-    void "it can configure a sync client"() {
-        when:
-        SesClient client = applicationContext.getBean(SesClient)
-
-        then:
-        client.serviceName() == SesClient.SERVICE_NAME
+class SesClientSpec extends ServiceClientSpec<SesClient, SesAsyncClient> {
+    @Override
+    protected String serviceName() {
+        return SesClient.SERVICE_NAME
     }
 
-    void "it can configure an async client"() {
-        when:
-        SesAsyncClient client = applicationContext.getBean(SesAsyncClient)
+    @Override
+    protected SesClient getClient() {
+        applicationContext.getBean(SesClient)
+    }
 
-        then:
-        client.serviceName() == SesClient.SERVICE_NAME
+    protected SesAsyncClient getAsyncClient() {
+        applicationContext.getBean(SesAsyncClient)
     }
 }

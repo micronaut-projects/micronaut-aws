@@ -3,7 +3,6 @@ package io.micronaut.docs;
 //tag::imports[]
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Introspected;
-import javax.validation.constraints.NotBlank;
 //end::imports[]
 
 //tag::clazz[]
@@ -11,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 public class Book {
 
     @NonNull
-    @NotBlank
     private String name;
 
     public Book() {

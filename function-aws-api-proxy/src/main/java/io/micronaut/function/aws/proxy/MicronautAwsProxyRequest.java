@@ -17,9 +17,17 @@ package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.serverless.proxy.internal.SecurityUtils;
 import com.amazonaws.serverless.proxy.internal.jaxrs.AwsProxySecurityContext;
-import com.amazonaws.serverless.proxy.model.*;
+import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
+import com.amazonaws.serverless.proxy.model.ContainerConfig;
+import com.amazonaws.serverless.proxy.model.Headers;
+import com.amazonaws.serverless.proxy.model.MultiValuedTreeMap;
+import com.amazonaws.serverless.proxy.model.SingleValueHeaders;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
@@ -27,21 +35,40 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpParameters;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.MutableHttpParameters;
+import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import io.micronaut.http.simple.SimpleHttpParameters;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import javax.ws.rs.core.SecurityContext;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static com.amazonaws.serverless.proxy.RequestReader.*;
+import static com.amazonaws.serverless.proxy.RequestReader.ALB_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_EVENT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.API_GATEWAY_STAGE_VARS_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.JAX_SECURITY_CONTEXT_PROPERTY;
+import static com.amazonaws.serverless.proxy.RequestReader.LAMBDA_CONTEXT_PROPERTY;
 
 /**
  * Implementation of {@link HttpRequest} that backs onto a {@link AwsProxyRequest} object.
@@ -58,38 +85,43 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     private final AwsProxyRequest awsProxyRequest;
     private final HttpMethod httpMethod;
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
-    private final HttpHeaders headers;
-    private final HttpParameters parameters;
+    private final MutableHttpHeaders headers;
+    private final MutableHttpParameters parameters;
     private final String path;
     private final ContainerConfig config;
-    private Cookies cookies;
+    private final ConversionService conversionService;
+    private SimpleCookies cookies;
     private MicronautAwsProxyResponse<?> response;
     private T decodedBody;
 
     /**
      * Default constructor.
      *
-     * @param path            The path
-     * @param awsProxyRequest The underlying request
-     * @param securityContext The {@link SecurityContext}
-     * @param lambdaContext   The lambda context
-     * @param config          The container configuration
+     * @param path              The path
+     * @param awsProxyRequest   The underlying request
+     * @param securityContext   The {@link SecurityContext}
+     * @param lambdaContext     The lambda context
+     * @param config            The container configuration
+     * @param conversionService The conversion service
      */
     MicronautAwsProxyRequest(
             String path,
             AwsProxyRequest awsProxyRequest,
             SecurityContext securityContext,
             Context lambdaContext,
-            ContainerConfig config) {
+            ContainerConfig config,
+            ConversionService conversionService) {
         this.config = config;
         this.awsProxyRequest = awsProxyRequest;
         this.path = path;
+        this.conversionService = conversionService;
         final String httpMethod = awsProxyRequest.getHttpMethod();
         this.httpMethod = StringUtils.isNotEmpty(httpMethod) ? HttpMethod.valueOf(httpMethod) : HttpMethod.GET;
-        final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
-        this.headers = multiValueHeaders != null ? new AwsHeaders() : new SimpleHttpHeaders(ConversionService.SHARED);
+        this.headers = awsProxyRequest.getMultiValueHeaders() != null || awsProxyRequest.getHeaders() != null ?
+            new AwsHeaders(awsProxyRequest.getMultiValueHeaders(), awsProxyRequest.getHeaders(), conversionService) : new SimpleHttpHeaders(conversionService);
+
         final MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
-        this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(ConversionService.SHARED);
+        this.parameters = params != null ? new AwsParameters() : new SimpleHttpParameters(conversionService);
 
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
         setAttribute(API_GATEWAY_CONTEXT_PROPERTY, requestContext);
@@ -114,8 +146,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         if (securityContext == null) {
             return false;
         }
-        if (securityContext instanceof AwsProxySecurityContext) {
-            AwsProxySecurityContext awsProxySecurityContext = (AwsProxySecurityContext) securityContext;
+        if (securityContext instanceof AwsProxySecurityContext awsProxySecurityContext) {
             if (awsProxySecurityContext.getEvent() == null ||
                     awsProxySecurityContext.getEvent().getRequestContext() == null ||
                     awsProxySecurityContext.getEvent().getRequestContext().getIdentity() == null) {
@@ -159,7 +190,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @NonNull
     public Cookies getCookies() {
         if (cookies == null) {
-            SimpleCookies simpleCookies = new SimpleCookies(ConversionService.SHARED);
+            SimpleCookies simpleCookies = new SimpleCookies(conversionService);
             getHeaders().getAll(HttpHeaders.COOKIE).forEach(cookieValue -> {
                 List<HeaderValue> parsedHeaders = parseHeaderValue(cookieValue, ";", ",");
 
@@ -198,7 +229,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         }
 
         final Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        final SingleValueHeaders singleValueHeaders = awsProxyRequest.getHeaders();
+
+
         String hostHeader = multiValueHeaders != null ? multiValueHeaders.getFirst(HttpHeaders.HOST) : null;
+
+        hostHeader = hostHeader == null && singleValueHeaders != null ? singleValueHeaders.get(HttpHeaders.HOST) : null;
+
         final AwsProxyRequestContext requestContext = awsProxyRequest.getRequestContext();
 
         if (requestContext != null && !isValidHost(hostHeader, requestContext.getApiId(), region)) {
@@ -281,7 +318,7 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
     @NonNull
     public <T1> Optional<T1> getBody(Argument<T1> type) {
         if (decodedBody != null) {
-            return ConversionService.SHARED.convert(decodedBody, type);
+            return conversionService.convert(decodedBody, type);
         }
         final String body = awsProxyRequest.getBody();
         if (body != null) {
@@ -290,13 +327,13 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
                 if (type.getType().isInstance(bytes)) {
                     return (Optional<T1>) Optional.of(bytes);
                 }
-                return ConversionService.SHARED.convert(bytes, type);
+                return conversionService.convert(bytes, type);
             }
             if (type.getType().isInstance(body)) {
                 return (Optional<T1>) Optional.of(body);
             } else {
                 final byte[] bytes = body.getBytes(getCharacterEncoding());
-                return ConversionService.SHARED.convert(bytes, type);
+                return conversionService.convert(bytes, type);
             }
         }
         return Optional.empty();
@@ -420,13 +457,18 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         return "https";
     }
 
+    @Override
+    public MutableHttpRequest<T> mutate() {
+        return new MicronautAwsMutableProxyRequest();
+    }
+
     /**
      * Implementation of {@link HttpParameters} for AWS.
      *
      * @author graemerocher
      * @since 1.1
      */
-    private class AwsParameters implements HttpParameters {
+    private class AwsParameters implements MutableHttpParameters {
 
         private MultiValuedTreeMap<String, String> params = awsProxyRequest.getMultiValueQueryStringParameters();
 
@@ -464,54 +506,125 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             final String v = get(name);
             if (v != null) {
-                return ConversionService.SHARED.convert(v, conversionContext);
+                return conversionService.convert(v, conversionContext);
             }
             return Optional.empty();
+        }
+
+        @Override
+        public MutableHttpParameters add(CharSequence name, List<CharSequence> values) {
+            params.addAll(name.toString(), values.stream().map(CharSequence::toString).toList());
+            return this;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            // Not used
         }
     }
 
     /**
      * Implementation of {@link HttpHeaders} for AWS.
      */
-    private class AwsHeaders implements HttpHeaders {
+    private static class AwsHeaders implements MutableHttpHeaders {
 
-        private Headers multiValueHeaders = awsProxyRequest.getMultiValueHeaders();
+        private final Map<String, List<String>> headers;
+        private ConversionService conversionService;
+
+        public AwsHeaders(@Nullable Headers multivalueHeaders, @Nullable SingleValueHeaders singleValueHeaders, ConversionService conversionService) {
+            this.conversionService = conversionService;
+            if (multivalueHeaders == null && singleValueHeaders == null) {
+                headers = Collections.emptyMap();
+            } else {
+                headers = new HashMap<>();
+                if (multivalueHeaders != null) {
+                    for (String name : multivalueHeaders.keySet()) {
+                        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                        headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                        headers.get(headerName).addAll(multivalueHeaders.get(headerName));
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(singleValueHeaders)) {
+                    for (String name : singleValueHeaders.keySet()) {
+                        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                        headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+                        headers.get(headerName).add(singleValueHeaders.get(headerName));
+                    }
+                }
+            }
+        }
 
         @Override
         public List<String> getAll(CharSequence name) {
-            if (StringUtils.isNotEmpty(name)) {
-                final List<String> strings = multiValueHeaders.get(name.toString());
-                if (CollectionUtils.isNotEmpty(strings)) {
-                    return strings;
-                }
-            }
-            return Collections.emptyList();
+            String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
+            return getAllIgnoreCase(headerName)
+                .orElse(Collections.emptyList());
         }
 
         @Nullable
         @Override
         public String get(CharSequence name) {
-            if (StringUtils.isNotEmpty(name)) {
-                return multiValueHeaders.getFirst(name.toString());
+            List<String> values = getAll(name);
+            if (CollectionUtils.isEmpty(values)) {
+                return null;
             }
-            return null;
+            return values.get(0);
         }
 
         @Override
         public Set<String> names() {
-            return multiValueHeaders.keySet();
+            return headers.keySet();
         }
 
         @Override
         public Collection<List<String>> values() {
-            return multiValueHeaders.values();
+            return headers.values();
         }
 
         @Override
         public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
             final String v = get(name);
             if (v != null) {
-                return ConversionService.SHARED.convert(v, conversionContext);
+                return conversionService.convert(v, conversionContext);
+            }
+            return Optional.empty();
+        }
+
+        @Override
+        public MutableHttpHeaders add(CharSequence header, CharSequence value) {
+            String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(header.toString());
+            headers.computeIfAbsent(headerName, s -> new ArrayList<>());
+            headers.get(headerName).add(value.toString());
+            return this;
+        }
+
+        @Override
+        public MutableHttpHeaders remove(CharSequence header) {
+            headers.remove(HttpHeaderUtils.normalizeHttpHeaderCase(header.toString()));
+            return this;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            this.conversionService = conversionService;
+        }
+
+        @NonNull
+        private Optional<List<String>> getAllIgnoreCase(@Nullable String headerName) {
+            if (StringUtils.isEmpty(headerName)) {
+                return Optional.empty();
+            }
+            List<String> values = headers.get(headerName);
+            if (values != null) {
+                return Optional.of(values);
+            }
+            for (String k : headers.keySet()) {
+                if (k.equalsIgnoreCase(headerName)) {
+                    values = headers.get(k);
+                    if (values != null) {
+                        return Optional.of(values);
+                    }
+                }
             }
             return Optional.empty();
         }
@@ -577,6 +690,74 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
 
         public String getAttribute(String key) {
             return attributes.get(key);
+        }
+    }
+
+    private class MicronautAwsMutableProxyRequest implements MutableHttpRequest<T> {
+
+        private URI uri = MicronautAwsProxyRequest.this.getUri();
+        @Nullable
+        private Object body;
+
+        @Override
+        public MutableHttpRequest<T> cookie(Cookie cookie) {
+            MicronautAwsProxyRequest.this.cookies.put(cookie.getName(), cookie);
+            return this;
+        }
+
+        @Override
+        public MutableHttpRequest<T> uri(URI uri) {
+            this.uri = uri;
+            return this;
+        }
+
+        @Override
+        public <T1> MutableHttpRequest<T1> body(T1 body) {
+            this.body = body;
+            return (MutableHttpRequest<T1>) this;
+        }
+
+        @Override
+        public MutableHttpHeaders getHeaders() {
+            return headers;
+        }
+
+        @Override
+        public MutableConvertibleValues<Object> getAttributes() {
+            return MicronautAwsProxyRequest.this.getAttributes();
+        }
+
+        @Override
+        public Optional<T> getBody() {
+            if (body != null) {
+                return Optional.of((T) body);
+            }
+            return MicronautAwsProxyRequest.this.getBody();
+        }
+
+        @Override
+        public Cookies getCookies() {
+            return MicronautAwsProxyRequest.this.cookies;
+        }
+
+        @Override
+        public MutableHttpParameters getParameters() {
+            return MicronautAwsProxyRequest.this.parameters;
+        }
+
+        @Override
+        public HttpMethod getMethod() {
+            return MicronautAwsProxyRequest.this.getMethod();
+        }
+
+        @Override
+        public URI getUri() {
+            return this.uri;
+        }
+
+        @Override
+        public void setConversionService(ConversionService conversionService) {
+            // ignored, we use the parent
         }
     }
 }

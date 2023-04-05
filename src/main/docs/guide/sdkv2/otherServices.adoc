@@ -10,5 +10,5 @@ snippet::io.micronaut.aws.sdk.v2.RekognitionClientFactory[tags="class", project=
 <1> This method needs to be implemented so that the parent factory class knows how to create the builder. You may apply
     additional customisations to the builder here.
 <2> This method gives a chance to register a `BeanCreaterEventListener` over the builder, so that any builder can be
-    customised. Needs to be overriden to apply the `@Singleton` annotation.
-<3> This method builds the client. Needs to be overriden to apply the `@Bean` annotation.
+    customised. Needs to be overridden to apply the `@Singleton` annotation.
+<3> This method builds the client. Needs to be overridden to apply the `@Bean` annotation.

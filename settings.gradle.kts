@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "5.3.15"
+    id("io.micronaut.build.shared.settings") version "6.3.5"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -32,21 +32,24 @@ include("aws-sdk-v1")
 include("aws-sdk-v2")
 include("aws-cdk")
 include("aws-cloudwatch-logging")
+include("aws-apigateway")
 include("function-aws-test")
 include("test-suite")
 include("test-suite-aws-sdk-v2")
+include("test-suite-http-server-tck-function-aws-api-proxy")
 include("test-suite-groovy")
 include("test-suite-kotlin")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
-    importMicronautCatalog()
-}
+    useStandardizedProjectNames.set(true)
 
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven {
-            setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        }
-    }
+    addSnapshotRepository()
+    importMicronautCatalog()
+    importMicronautCatalog("micronaut-discovery-client")
+    importMicronautCatalog("micronaut-groovy")
+    importMicronautCatalog("micronaut-mongodb")
+    importMicronautCatalog("micronaut-serde")
+    importMicronautCatalog("micronaut-security")
+    importMicronautCatalog("micronaut-views")
+    importMicronautCatalog("micronaut-validation")
 }

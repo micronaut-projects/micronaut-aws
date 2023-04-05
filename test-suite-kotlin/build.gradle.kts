@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version ("1.7.20")
-    id("org.jetbrains.kotlin.kapt") version ("1.7.20")
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.kapt")
     id("io.micronaut.build.internal.aws-tests")
 
 }
@@ -12,15 +12,15 @@ repositories {
 val micronautVersion: String by project
 
 dependencies {
-    kaptTest("io.micronaut:micronaut-inject-java:$micronautVersion")
-
-    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation(projects.functionAws)
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.21")
-    testImplementation(projects.functionClientAws)
+    kaptTest(mn.micronaut.inject.java)
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(projects.micronautFunctionAws)
+    testImplementation(libs.kotlin.stdlib.jdk8)
+    testImplementation(projects.micronautFunctionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -30,13 +30,13 @@ tasks {
 
     named("compileTestKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "17"
             javaParameters = true
         }
     }
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

@@ -8,19 +8,13 @@ repositories {
     mavenCentral()
 }
 
-val micronautVersion: String by project
-val micronautTestVersion: String by project
-val spockVersion: String by project
-
 dependencies {
-    testCompileOnly("io.micronaut:micronaut-inject-groovy:$micronautVersion")
-    testImplementation("org.spockframework:spock-core:${spockVersion}") {
-        exclude(module = "groovy-all")
-    }
-    testImplementation("io.micronaut.test:micronaut-test-spock:$micronautTestVersion")
-    testImplementation(platform("io.micronaut:micronaut-bom:$micronautVersion"))
-    testImplementation(projects.functionAws)
-    testImplementation(projects.functionClientAws)
+    testCompileOnly(mn.micronaut.inject.groovy)
+    testImplementation(mnTest.micronaut.test.spock)
+    testImplementation(platform(mn.micronaut.core.bom))
+    testImplementation(projects.micronautFunctionAws)
+    testImplementation(projects.micronautFunctionClientAws)
+    testRuntimeOnly(mn.snakeyaml)
 }
 
 tasks {
@@ -30,6 +24,6 @@ tasks {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }

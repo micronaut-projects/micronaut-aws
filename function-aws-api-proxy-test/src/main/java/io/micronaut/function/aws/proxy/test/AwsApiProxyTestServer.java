@@ -35,8 +35,8 @@ import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.MalformedURLException;
@@ -208,6 +208,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             AwsProxyRequest awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
             AwsProxyResponse awsProxyResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
             responseAdapter.handle(request, awsProxyResponse, response);
+            baseRequest.setHandled(true);
         }
     }
 }

@@ -13,5 +13,9 @@
   {
     "name":"org.apache.commons.logging.impl.WeakHashtable",
     "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"software.amazon.awssdk.services.sts.internal.StsWebIdentityCredentialsProviderFactory",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
   }
 ]

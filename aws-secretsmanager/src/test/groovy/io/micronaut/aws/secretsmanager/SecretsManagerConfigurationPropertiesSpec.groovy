@@ -1,5 +1,4 @@
 package io.micronaut.aws.secretsmanager
-
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.inject.BeanDefinition
 

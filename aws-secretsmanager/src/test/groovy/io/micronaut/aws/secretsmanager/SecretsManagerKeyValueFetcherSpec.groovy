@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.BootstrapContextCompatible
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Requires
 import io.micronaut.inject.BeanDefinition
+import software.amazon.awssdk.awscore.exception.AwsErrorDetails
 import software.amazon.awssdk.awscore.exception.AwsServiceException
 import software.amazon.awssdk.core.exception.SdkClientException
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient
@@ -108,6 +109,14 @@ class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification 
                                 .name("/config/myapp_dev/oauthgoogle")
                                 .build()
                         )
+                        .nextToken("bar")
+                        .build()
+            } else if (listSecretsRequest.nextToken() == "bar") {
+                return (ListSecretsResponse) ListSecretsResponse.builder()
+                        .secretList(SecretListEntry.builder()
+                                .name("/config/myapp_dev/oauthmeta")
+                                .build()
+                        )
                         .nextToken(null)
                         .build()
             }
@@ -119,20 +128,26 @@ class SecretsManagerKeyValueFetcherSpec extends ApplicationContextSpecification 
                 InvalidParameterException, InvalidRequestException, DecryptionFailureException, InternalServiceErrorException,
                 AwsServiceException, SdkClientException, SecretsManagerException {
             if (getSecretValueRequest.secretId() == "/config/myapp_dev/oauthcompanyauthserver") {
-                return GetSecretValueResponse.builder()
+                return (GetSecretValueResponse) GetSecretValueResponse.builder()
                         .secretString('''\
-{
-  "micronaut.security.oauth2.clients.companyauthserver.client-id": "XXX",
-  "micronaut.security.oauth2.clients.companyauthserver.client-secret": "YYY"
-}''')
+                            {
+                              "micronaut.security.oauth2.clients.companyauthserver.client-id": "XXX",
+                              "micronaut.security.oauth2.clients.companyauthserver.client-secret": "YYY"
+                            }'''.stripIndent())
+                        .build()
+            } else if (getSecretValueRequest.secretId() == "/config/myapp_dev/oauthmeta") {
+                throw SecretsManagerException.builder()
+                        .awsErrorDetails(AwsErrorDetails.builder()
+                                .errorMessage("User is not authorized to perform operation")
+                                .build())
                         .build()
             } else if (getSecretValueRequest.secretId() == "/config/myapp_dev/oauthgoogle") {
-                return GetSecretValueResponse.builder()
+                return (GetSecretValueResponse) GetSecretValueResponse.builder()
                         .secretString('''\
-{
-  "micronaut.security.oauth2.clients.google.client-id": "ZZZ",
-  "micronaut.security.oauth2.clients.google.client-secret": "PPP"
-}''')
+                            {
+                              "micronaut.security.oauth2.clients.google.client-id": "ZZZ",
+                              "micronaut.security.oauth2.clients.google.client-secret": "PPP"
+                            }'''.stripIndent())
                         .build()
             }
             throw new UnsupportedOperationException();

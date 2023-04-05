@@ -3,10 +3,11 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.micronaut.validation)
-    implementation(mn.micronaut.validation)
-    api(projects.awsAlexa)
+    annotationProcessor(mnValidation.micronaut.validation.processor)
+    implementation(mnValidation.micronaut.validation)
+    api(projects.micronautAwsAlexa)
     implementation(mn.micronaut.http.server)
+    implementation(mn.micronaut.jackson.databind)
     api(libs.managed.alexa.ask.sdk.core)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.http.server.netty)

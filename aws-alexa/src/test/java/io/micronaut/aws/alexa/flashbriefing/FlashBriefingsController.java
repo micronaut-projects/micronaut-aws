@@ -3,7 +3,7 @@ package io.micronaut.aws.alexa.flashbriefing;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 
-import javax.validation.Validator;
+import jakarta.validation.Validator;
 import java.util.List;
 import java.util.stream.Collectors;
 

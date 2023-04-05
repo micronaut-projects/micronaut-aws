@@ -5,6 +5,7 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.PatternLayout
 import ch.qos.logback.classic.spi.LoggingEvent
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder
+import ch.qos.logback.core.read.ListAppender
 import io.micronaut.runtime.ApplicationConfiguration
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.runtime.server.event.ServerStartupEvent
@@ -106,7 +107,8 @@ class CloudWatchLoggingAppenderSpec extends Specification {
 
     void 'register multiple emergency appender'() {
         when:
-        def mockAppender = new MockAppender()
+        def mockAppender = new ListAppender()
+        mockAppender.name = "MockAppender"
         appender.queueSize = 100
         appender.publishPeriod = 100
         appender.encoder = new LayoutWrappingEncoder()
@@ -130,7 +132,8 @@ class CloudWatchLoggingAppenderSpec extends Specification {
 
     void 'detach emergency appender by name'() {
         when:
-        def mockAppender = new MockAppender()
+        def mockAppender = new ListAppender()
+        mockAppender.name = "MockAppender"
         appender.queueSize = 100
         appender.publishPeriod = 100
         appender.encoder = new LayoutWrappingEncoder()
@@ -143,7 +146,8 @@ class CloudWatchLoggingAppenderSpec extends Specification {
 
     void 'detach emergency appender by instance'() {
         when:
-        def mockAppender = new MockAppender()
+        def mockAppender = new ListAppender()
+        mockAppender.name = "MockAppender"
         appender.queueSize = 100
         appender.publishPeriod = 100
         appender.encoder = new LayoutWrappingEncoder()
@@ -156,7 +160,8 @@ class CloudWatchLoggingAppenderSpec extends Specification {
 
     void 'try to create iterator for emergency appender'() {
         when:
-        def mockAppender = new MockAppender()
+        def mockAppender = new ListAppender()
+        mockAppender.name = "MockAppender"
         appender.queueSize = 100
         appender.publishPeriod = 100
         appender.encoder = new LayoutWrappingEncoder()

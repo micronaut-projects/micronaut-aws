@@ -20,6 +20,7 @@ sdkv2:
     nettyClient: Netty client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
+  endpointoverride: Endpoint override
   apiGatewayManagementApi: API Gateway Management API Client
   s3: S3
   dynamodb: Dynamo DB
@@ -38,6 +39,7 @@ sdkv2:
     browsingTheLogs: Browsing the Logs
   advancedConfiguration: Advanced configuration
   otherServices: Other services
+amazonApiGateway: Amazon API Gateway
 lambda:
   title: AWS Lambda Support
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda

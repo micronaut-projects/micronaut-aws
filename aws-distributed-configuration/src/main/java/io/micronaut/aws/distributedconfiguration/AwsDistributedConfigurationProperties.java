@@ -20,6 +20,8 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link ConfigurationProperties} implementation of {@link AwsDistributedConfiguration}.
@@ -50,6 +52,9 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
 
     @NonNull
     String prefix = DEFAULT_PREFIX;
+
+    @NonNull
+    private List<String> prefixes = new ArrayList<>();
 
     @NonNull
     private String commonApplicationName = DEFAULT_COMMON_APPLICATION_NAME;
@@ -105,6 +110,16 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
      */
     public void setSearchCommonApplication(boolean searchCommonApplication) {
         this.searchCommonApplication = searchCommonApplication;
+    }
+
+    @Override
+    @NonNull
+    public List<String> getPrefixes() {
+        return prefixes;
+    }
+
+    public void setPrefixes(@NonNull List<String> prefixes) {
+        this.prefixes = prefixes;
     }
 
     @Override
