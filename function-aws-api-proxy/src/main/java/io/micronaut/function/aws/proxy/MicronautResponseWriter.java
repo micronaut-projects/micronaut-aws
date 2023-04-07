@@ -122,11 +122,11 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
         Headers multiValueHeaders = awsProxyResponse.getMultiValueHeaders();
         Map<String, String> headers = new LinkedHashMap<>();
         for (Map.Entry<String, List<String>> entry : multiValueHeaders.entrySet()) {
-            List<String> headerValues = entry.getValue();
-            if (headerValues != null) {
-                headerValues.stream().findFirst()
-                    .ifPresent(value -> headers.put(entry.getKey(), value));
-            }
+      Optional.ofNullable(entry.getValue())
+          .filter(not(List::isEmpty))
+          .map(List::stream)
+          .flatMap(Stream::findFirst)
+          .ifPresent(value -> headers.put(entry.getKey(), value));
         }
         return headers;
     }
