@@ -29,7 +29,7 @@ managed-aws-cdk-lib='2.73.0'
 micronaut-starter = "3.8.8"
 slf4j = "2.0.7"
 servlet-api = "2.5"
-testcontainers = "1.17.6"
+testcontainers = "1.18.0"
 javapoet = "1.13.0"
 
 # The following version should probably
