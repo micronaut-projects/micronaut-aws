@@ -523,8 +523,12 @@ public class MicronautAwsProxyRequest<T> implements HttpRequest<T> {
                 if (CollectionUtils.isNotEmpty(singleValueHeaders)) {
                     for (String name : singleValueHeaders.keySet()) {
                         String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
+                        String value = singleValueHeaders.get(headerName);
+                        if (headers.containsKey(headerName) && headers.get(headerName).contains(value)) {
+                            continue;
+                        }
                         headers.computeIfAbsent(headerName, s -> new ArrayList<>());
-                        headers.get(headerName).add(singleValueHeaders.get(headerName));
+                        headers.get(headerName).add(value);
                     }
                 }
             }
