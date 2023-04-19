@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -250,42 +250,50 @@ implements ch.qos.logback.core.spi.AppenderAttachable&lt;ch.qos.logback.classic.
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#isCreateGroupAndStream--">isCreateGroupAndStream</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i15" class="rowColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#isDispatchOnStart--">isDispatchOnStart</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>java.util.Iterator&lt;ch.qos.logback.core.Appender&lt;ch.qos.logback.classic.spi.ILoggingEvent&gt;&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#iteratorForAppenders--">iteratorForAppenders</a></span>()</code>&nbsp;</td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setCreateGroupAndStream-boolean-">setCreateGroupAndStream</a></span>(boolean&nbsp;createGroupAndStream)</code>&nbsp;</td>
 </tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setEncoder-ch.qos.logback.core.encoder.Encoder-">setEncoder</a></span>(ch.qos.logback.core.encoder.Encoder&lt;ch.qos.logback.classic.spi.ILoggingEvent&gt;&nbsp;encoder)</code>&nbsp;</td>
-</tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setGroupName-java.lang.String-">setGroupName</a></span>(java.lang.String&nbsp;groupName)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setDispatchOnStart-boolean-">setDispatchOnStart</a></span>(boolean&nbsp;dispatchOnStart)</code>&nbsp;</td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setMaxBatchSize-int-">setMaxBatchSize</a></span>(int&nbsp;maxBatchSize)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setEncoder-ch.qos.logback.core.encoder.Encoder-">setEncoder</a></span>(ch.qos.logback.core.encoder.Encoder&lt;ch.qos.logback.classic.spi.ILoggingEvent&gt;&nbsp;encoder)</code>&nbsp;</td>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setPublishPeriod-long-">setPublishPeriod</a></span>(long&nbsp;publishPeriod)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setGroupName-java.lang.String-">setGroupName</a></span>(java.lang.String&nbsp;groupName)</code>&nbsp;</td>
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setQueueSize-int-">setQueueSize</a></span>(int&nbsp;queueSize)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setMaxBatchSize-int-">setMaxBatchSize</a></span>(int&nbsp;maxBatchSize)</code>&nbsp;</td>
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setStreamName-java.lang.String-">setStreamName</a></span>(java.lang.String&nbsp;streamName)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setPublishPeriod-long-">setPublishPeriod</a></span>(long&nbsp;publishPeriod)</code>&nbsp;</td>
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#start--">start</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setQueueSize-int-">setQueueSize</a></span>(int&nbsp;queueSize)</code>&nbsp;</td>
 </tr>
 <tr id="i24" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setStreamName-java.lang.String-">setStreamName</a></span>(java.lang.String&nbsp;streamName)</code>&nbsp;</td>
+</tr>
+<tr id="i25" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#start--">start</a></span>()</code>&nbsp;</td>
+</tr>
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#stop--">stop</a></span>()</code>&nbsp;</td>
 </tr>
@@ -464,6 +472,24 @@ implements ch.qos.logback.core.spi.AppenderAttachable&lt;ch.qos.logback.classic.
 <li class="blockList">
 <h4>setCreateGroupAndStream</h4>
 <pre>public&nbsp;void&nbsp;setCreateGroupAndStream(boolean&nbsp;createGroupAndStream)</pre>
+</li>
+</ul>
+<a name="isDispatchOnStart--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isDispatchOnStart</h4>
+<pre>public&nbsp;boolean&nbsp;isDispatchOnStart()</pre>
+</li>
+</ul>
+<a name="setDispatchOnStart-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setDispatchOnStart</h4>
+<pre>public&nbsp;void&nbsp;setDispatchOnStart(boolean&nbsp;dispatchOnStart)</pre>
 </li>
 </ul>
 <a name="start--">
