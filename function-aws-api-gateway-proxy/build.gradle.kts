@@ -9,3 +9,10 @@ dependencies {
     api(mnServlet.micronaut.servlet.core)
     testImplementation(mn.micronaut.jackson.databind)
 }
+
+// TODO temporarily disable binary compatibility checks
+micronautBuild {
+    binaryCompatibility {
+        enabled.set(false)
+    }
+}

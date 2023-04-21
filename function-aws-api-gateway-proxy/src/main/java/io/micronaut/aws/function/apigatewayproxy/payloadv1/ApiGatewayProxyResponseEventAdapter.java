@@ -30,6 +30,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Adapts the {@link APIGatewayProxyResponseEvent} to a {@link MutableHttpResponse}.
+ * @param <T>
+ */
 public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpResponse<T> {
 
     private APIGatewayProxyResponseEvent event;

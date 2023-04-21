@@ -19,8 +19,6 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.aws.function.apigatewayproxy.APIGatewayV2HTTPEventBinder;
-import io.micronaut.aws.function.apigatewayproxy.APIGatewayProxyResponseEventBinder;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;

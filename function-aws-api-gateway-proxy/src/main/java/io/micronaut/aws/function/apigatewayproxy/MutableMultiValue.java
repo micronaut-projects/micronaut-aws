@@ -20,27 +20,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A mutable version of {@link MultiValue}.
+ */
 public class MutableMultiValue extends MultiValue {
+
     public MutableMultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
         super(conversionService, multi, single);
     }
 
+    /**
+     * Adds the given values to the existing values for the given name.
+     * @param name
+     * @param valuesToBeAdded
+     */
     public void add(CharSequence name, List<CharSequence> valuesToBeAdded) {
         String key = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
         values.computeIfAbsent(key, s -> new ArrayList<>());
         values.get(key).addAll(valuesToBeAdded.stream().map(CharSequence::toString).toList());
     }
 
+    /**
+     * Adds the given value to the existing values for the given name.
+     * @param name
+     * @param value
+     */
     public void add(CharSequence name, CharSequence value) {
         String key = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
         values.computeIfAbsent(key, s -> new ArrayList<>());
         values.get(key).add(value.toString());
     }
 
+    /**
+     * Removes the given header.
+     * @param header
+     */
     public void remove(CharSequence header) {
         values.remove(header.toString());
     }
 
+    /**
+     * Sets the conversion service.
+     * @param conversionService
+     */
     public void setConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
     }

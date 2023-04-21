@@ -23,10 +23,14 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.executor.FunctionInitializer;
 import io.micronaut.servlet.http.ServletHttpHandler;
 
+/**
+ * Handles requests from API Gateway using the v1 payload format.
+ */
 public class ApiGatewayProxyEventFunction extends FunctionInitializer implements
     RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ServletHttpHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> httpHandler;
+
     public ApiGatewayProxyEventFunction() {
         httpHandler = initializeHandler();
     }

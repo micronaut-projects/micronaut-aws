@@ -38,6 +38,7 @@ import java.util.Set;
 public class MultiMutableHttpHeaders implements MutableHttpHeaders {
     public static final String COMMA = ",";
     private final MutableMultiValue values;
+
     public MultiMutableHttpHeaders(ConversionService conversionService) {
         this(conversionService, Collections.emptyMap(), Collections.emptyMap());
     }
@@ -95,6 +96,10 @@ public class MultiMutableHttpHeaders implements MutableHttpHeaders {
         this.values.setConversionService(conversionService);
     }
 
+    /**
+     * Return the underlying multi-values.
+     * @return The multi-values
+     */
     @NonNull
     public Map<String, List<String>> getMulti() {
         Map<String, List<String>> result = new HashMap<>();
@@ -104,6 +109,10 @@ public class MultiMutableHttpHeaders implements MutableHttpHeaders {
         return result;
     }
 
+    /**
+     * Return the underlying single-values.
+     * @return The single-values
+     */
     public Map<String, String> getSingle() {
         Map<String, String> result = new HashMap<>();
         for (String key : values.names()) {

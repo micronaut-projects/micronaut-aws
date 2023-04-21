@@ -25,8 +25,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Implementation of {@link MutableHttpParameters} that uses a {@link MutableMultiValue} internally.
+ */
 public class MultiValueMutableHttpParameters  implements MutableHttpParameters {
+
     private final MutableMultiValue values;
+
     public MultiValueMutableHttpParameters(ConversionService conversionService,
                                            Map<String, List<String>> multiValue,
                                            Map<String, String> single) {
@@ -35,7 +40,7 @@ public class MultiValueMutableHttpParameters  implements MutableHttpParameters {
 
     @Override
     public MutableHttpParameters add(CharSequence name, List<CharSequence> valuesToBeAddded) {
-        values.add(name ,valuesToBeAddded);
+        values.add(name, valuesToBeAddded);
         return this;
     }
 

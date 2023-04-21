@@ -24,6 +24,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Factory for creating {@link APIGatewayProxyRequestEvent} v2 instances from {@link HttpRequest} instances.
+ */
 public final class APIGatewayProxyRequestEventFactory {
 
     private APIGatewayProxyRequestEventFactory() {

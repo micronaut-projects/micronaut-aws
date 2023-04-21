@@ -32,10 +32,14 @@ import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ *
+ */
 public class MultiValue implements ConvertibleMultiValues<String> {
 
     protected Map<String, List<String>> values;
     protected ConversionService conversionService;
+
     public MultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
         this.conversionService = conversionService;
         if (multi == null && single == null) {

@@ -16,7 +16,6 @@
 package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.cookie.Cookies;
@@ -25,10 +24,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Factory for creating {@link APIGatewayProxyRequestEvent} v1 instances from {@link HttpRequest} instances.
+ */
 public final class APIGatewayProxyRequestEventFactory {
 
     private APIGatewayProxyRequestEventFactory() {
-
     }
 
     public static APIGatewayProxyRequestEvent create(HttpRequest<?> request) {
