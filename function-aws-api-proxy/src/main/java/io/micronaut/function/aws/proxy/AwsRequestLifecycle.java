@@ -116,7 +116,7 @@ class AwsRequestLifecycle extends RequestLifecycle {
 
     @Nullable
     private static Argument<?> parseBodyArgument(@NonNull RouteMatch<?> finalRoute) {
-        Argument<?> bodyArgument = finalRoute.getBodyArgument().orElse(null);
+        Argument<?> bodyArgument = finalRoute.getRouteInfo().getBodyArgument().orElse(null);
         if (bodyArgument == null) {
             if (finalRoute instanceof MethodBasedRouteMatch methodBasedRouteMatch) {
                 bodyArgument = Arrays.stream(methodBasedRouteMatch.getArguments())
