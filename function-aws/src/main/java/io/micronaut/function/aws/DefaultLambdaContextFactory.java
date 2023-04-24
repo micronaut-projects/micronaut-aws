@@ -44,18 +44,18 @@ public class DefaultLambdaContextFactory implements LambdaContextFactory {
 
     @Override
     public void registerSingletons(@NonNull Context context) {
-        beanContext.registerSingleton(context);
+        beanContext.registerSingleton(Context.class, context);
         LambdaLogger logger = context.getLogger();
         if (logger != null) {
-            beanContext.registerSingleton(logger);
+            beanContext.registerSingleton(LambdaLogger.class, logger);
         }
         ClientContext clientContext = context.getClientContext();
         if (clientContext != null) {
-            beanContext.registerSingleton(clientContext);
+            beanContext.registerSingleton(ClientContext.class, clientContext);
         }
         CognitoIdentity identity = context.getIdentity();
         if (identity != null) {
-            beanContext.registerSingleton(identity);
+            beanContext.registerSingleton(CognitoIdentity.class, identity);
         }
     }
 }

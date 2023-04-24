@@ -39,6 +39,9 @@ class RuntimeApiSpec extends Specification {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
             assert lambadaRuntimeApi.responses['123456'].body == "Hello 123456"
+
+            assert lambadaRuntimeApi.responses['78910']
+            assert lambadaRuntimeApi.responses['78910'].body == "Hello 78910"
         }
 
         cleanup:
@@ -78,18 +81,25 @@ class RuntimeApiSpec extends Specification {
     static class MockLambadaRuntimeApi {
 
         Map<String, AwsProxyResponse> responses = [:]
+        List<AwsProxyRequest> requests = [createRequest("123456"), createRequest("78910")]
+        int count = 0;
 
         @Get("/2018-06-01/runtime/invocation/next")
         HttpResponse<AwsProxyRequest> next() {
-            def req = new AwsProxyRequest()
+            AwsProxyRequest req = requests.get(count++)
+            HttpResponse.ok(req)
+                    .header(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID, req.getRequestContext().getRequestId())
+        }
+
+        static AwsProxyRequest createRequest(String requestId) {
+            AwsProxyRequest req = new AwsProxyRequest()
             req.setPath('/hello/world')
             req.setHttpMethod("GET")
-            def context = new AwsProxyRequestContext()
-            context.setRequestId("123456")
+            AwsProxyRequestContext context = new AwsProxyRequestContext()
+            context.setRequestId(requestId)
             context.setIdentity(new ApiGatewayRequestIdentity())
             req.setRequestContext(context)
-            HttpResponse.ok(req)
-                    .header(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID, "123456")
+            req
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
