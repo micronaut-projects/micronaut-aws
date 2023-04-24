@@ -67,6 +67,8 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
     private int maxBatchSize = DEFAULT_MAX_BATCH_SIZE;
     private String groupName;
     private String streamName;
+    private boolean dispatchOnStart = false;
+    private volatile boolean dispatchThreadStarted = false;
 
     public int getQueueSize() {
         return queueSize;
@@ -120,6 +122,14 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
         this.createGroupAndStream = createGroupAndStream;
     }
 
+    public boolean isDispatchOnStart() {
+        return dispatchOnStart;
+    }
+
+    public void setDispatchOnStart(boolean dispatchOnStart) {
+        this.dispatchOnStart = dispatchOnStart;
+    }
+
     @Override
     public void start() {
         if (isStarted()) {
@@ -158,6 +168,13 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
 
         deque = queueFactory.newLinkedBlockingDeque(queueSize);
 
+        if (dispatchOnStart) {
+            startDispatch();
+        }
+        super.start();
+    }
+
+    private void startDispatch() {
         task = getContext().getScheduledExecutorService().scheduleAtFixedRate(() -> {
             try {
                 dispatchEvents();
@@ -165,7 +182,7 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
                 Thread.currentThread().interrupt();
             }
         }, 0, 100, TimeUnit.MILLISECONDS);
-        super.start();
+        dispatchThreadStarted = true;
     }
 
     @Override
@@ -181,6 +198,13 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
     protected void append(ILoggingEvent eventObject) {
         if (eventObject == null || !isStarted() || blackListLoggerName.contains(eventObject.getLoggerName())) {
             return;
+        }
+        if (!dispatchThreadStarted && !dispatchOnStart) {
+            synchronized(this) {
+                if (!dispatchThreadStarted) {
+                    startDispatch();
+                }
+            }
         }
 
         try {
@@ -347,7 +371,7 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             return false;
         }
     }
-    
+
     private PutLogEventsResponse putLogs(List<InputLogEvent> logEvents,
                                          String groupName,
                                          String streamName,

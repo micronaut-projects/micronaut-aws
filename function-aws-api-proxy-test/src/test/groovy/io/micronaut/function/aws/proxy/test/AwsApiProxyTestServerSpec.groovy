@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import spock.lang.Issue
 import spock.lang.Specification
 
 import jakarta.inject.Inject
@@ -67,6 +68,16 @@ class AwsApiProxyTestServerSpec extends Specification {
         !response.body.isPresent()
     }
 
+    @Issue('https://github.com/micronaut-projects/micronaut-aws/issues/1545')
+    void 'can return a ByteArray'() {
+        when:
+        HttpResponse<?> response = client.toBlocking()
+                .exchange(HttpRequest.GET('/byte-array'), byte[])
+
+        then:
+        response.status == HttpStatus.OK
+        response.body.get() == (1..256).collect { it as byte } as byte[]
+    }
 
     @Controller
     static class TestController {
@@ -88,6 +99,11 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Post(value = '/empty-body', processes = MediaType.TEXT_PLAIN)
         HttpResponse emptyBody(@Body String body) {
             return HttpResponse.noContent()
+        }
+
+        @Get(value = "/byte-array", produces = MediaType.APPLICATION_OCTET_STREAM)
+        HttpResponse<byte[]> byteArray() {
+            return HttpResponse.ok((1..256).collect { it as byte } as byte[])
         }
     }
 }

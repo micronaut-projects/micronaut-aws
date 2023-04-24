@@ -48,6 +48,10 @@ public abstract class MicronautRequestHandler<I, O> extends AbstractFunctionExec
     // See: https://github.com/aws/aws-xray-sdk-java/issues/251
     public static final String LAMBDA_TRACE_HEADER_PROP = "com.amazonaws.xray.traceHeader";
 
+
+    /**
+     * Logger for the application context creation errors.
+     */
     private static final Logger LOG = LoggerFactory.getLogger(MicronautRequestHandler.class);
 
     @SuppressWarnings("unchecked")

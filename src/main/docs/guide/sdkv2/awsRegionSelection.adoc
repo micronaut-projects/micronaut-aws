@@ -6,9 +6,9 @@ By default, AWS SDK v2 will attempt to determine the AWS region in the following
 
 For more information, check https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/java-dg-region-selection.html[the AWS documentation].
 
-If you still want to specify the region via configuration, you can do so in `application.yml`:
+If you still want to specify the region via configuration, you can do so in the application configuration file:
 
-[source,yaml]
+[configuration]
 ----
 aws:
   region: eu-west-1
