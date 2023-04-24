@@ -1,9 +1,10 @@
 Typically, the next step will be to provide an instance of
 api:aws.alexa.conf.AlexaSkillConfiguration[]. The easiest way to do that is to configure the skill id via configuration:
 
-```yaml
+[configuration]
+----
 alexa:
   skills:
     myskill:
       skill-id 'xxxx-yaaa-zz123'
-```
+----

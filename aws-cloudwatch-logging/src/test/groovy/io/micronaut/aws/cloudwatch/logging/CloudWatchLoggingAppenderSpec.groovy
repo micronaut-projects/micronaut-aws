@@ -3,6 +3,7 @@ package io.micronaut.aws.cloudwatch.logging
 import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.classic.PatternLayout
+import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.classic.spi.LoggingEvent
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder
 import ch.qos.logback.core.read.ListAppender
@@ -65,6 +66,7 @@ class CloudWatchLoggingAppenderSpec extends Specification {
     void 'test error queue size equal to 0'() {
         when:
         appender.queueSize = 0
+        appender.dispatchOnStart = true
         appender.start()
 
         then:
@@ -76,6 +78,7 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         when:
         appender.queueSize = 100
         appender.publishPeriod = 0
+        appender.dispatchOnStart = true
         appender.start()
 
         then:
@@ -86,6 +89,7 @@ class CloudWatchLoggingAppenderSpec extends Specification {
     void 'test error max batch size less or equal to 0'() {
         when:
         appender.maxBatchSize = 0
+        appender.dispatchOnStart = true
         appender.start()
 
         then:
@@ -98,6 +102,7 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         appender.queueSize = 100
         appender.publishPeriod = 100
         appender.encoder = null
+        appender.dispatchOnStart = true
         appender.start()
 
         then:
@@ -172,6 +177,49 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         thrown(UnsupportedOperationException)
     }
 
+    void 'test start dispatch on start'() {
+        given:
+        PollingConditions conditions = new PollingConditions(timeout: 10, initialDelay: 1.5, factor: 1.25)
+        LoggingEvent event = createEvent("name", Level.INFO, "testMessage", System.currentTimeMillis())
+
+        when:
+        appender.dispatchOnStart = true
+        appender.start()
+        appender.doAppend(event)
+
+        then:
+        conditions.eventually {
+            cloudWatchLogsClient.putLogsRequestList.size() == 1
+        }
+        cloudWatchLogsClient.putLogsRequestList.get(0).logEvents()[0].message().contains("testMessage")
+    }
+
+    void 'test start dispatch on append'() {
+        given:
+        PollingConditions conditions = new PollingConditions(timeout: 10, initialDelay: 1.5, factor: 1.25)
+        LoggingEvent event = createEvent("name", Level.INFO, "testMessage", System.currentTimeMillis())
+
+        when:
+        appender.groupName = "testGroup"
+        appender.streamName = "testStream"
+        appender.start()
+
+        then:
+        conditions.within(1) {
+            cloudWatchLogsClient.putLogsRequestList.size() == 0
+        }
+
+        when:
+        appender.doAppend(event)
+
+        then:
+        conditions.eventually {
+            cloudWatchLogsClient.putLogsRequestList.size() == 1
+        }
+        cloudWatchLogsClient.putLogsRequestList.get(0).logEvents()[0].message().contains("testMessage")
+        cloudWatchLogsClient.putLogsRequestList.get(0).logStreamName() == "testStream"
+    }
+
     void 'custom groupName and StreamName'() {
         given:
         def testGroup = "testGroup"
@@ -183,6 +231,7 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         when:
         appender.groupName = testGroup
         appender.streamName = testStream
+        appender.dispatchOnStart = true
         appender.start()
         appender.doAppend(event)
 

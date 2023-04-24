@@ -43,6 +43,7 @@ import software.amazon.awssdk.services.ssm.SsmClientBuilder;
 @Factory
 @BootstrapContextCompatible
 public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyncClientBuilder, SsmClient, SsmAsyncClient> {
+
     /**
      * Constructor.
      *
