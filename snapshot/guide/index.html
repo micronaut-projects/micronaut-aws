@@ -1086,14 +1086,64 @@ following JVM system properties:</p>
 <p>For more information, check <a href="https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/credentials.html">the AWS documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>If you still want to specify the credentials via configuration, you can do so in <code>application.yml</code>:</p>
+<p>If you still want to specify the credentials via configuration, you can do so in the application configuration file:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.accessKeyId=your_access_key_id_here
+aws.secretKey=your_secret_key_id_here
+aws.sessionToken=your_session_token_here</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
   accessKeyId: your_access_key_id_here
   secretKey: your_secret_key_id_here
   sessionToken: your_session_token_here</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  accessKeyId="your_access_key_id_here"
+  secretKey="your_secret_key_id_here"
+  sessionToken="your_session_token_here"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  accessKeyId = "your_access_key_id_here"
+  secretKey = "your_secret_key_id_here"
+  sessionToken = "your_session_token_here"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    accessKeyId = "your_access_key_id_here"
+    secretKey = "your_secret_key_id_here"
+    sessionToken = "your_session_token_here"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "accessKeyId": "your_access_key_id_here",
+    "secretKey": "your_secret_key_id_here",
+    "sessionToken": "your_session_token_here"
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -1126,12 +1176,52 @@ following JVM system properties:</p>
 <p>For more information, check <a href="https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/java-dg-region-selection.html">the AWS documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>If you still want to specify the region via configuration, you can do so in <code>application.yml</code>:</p>
+<p>If you still want to specify the region via configuration, you can do so in the application configuration file:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.region=eu-west-1</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
   region: eu-west-1</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  region="eu-west-1"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  region = "eu-west-1"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    region = "eu-west-1"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "region": "eu-west-1"
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -3167,7 +3257,14 @@ Each is configured by <code>AWSInvokeRequestDefinition</code> that allows settin
 <div class="paragraph">
 <p>For example, you invoke a function named <code>AwsLambdaFunctionName</code>, in the AWS Lambda console, with the following configuration:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.lambda.functions.analytics.function-name=AwsLambdaFunctionName</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
 aws:
@@ -3175,6 +3272,60 @@ aws:
     functions:
       analytics:
         function-name: 'AwsLambdaFunctionName'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  [aws.lambda]
+    [aws.lambda.functions]
+      [aws.lambda.functions.analytics]
+        function-name="AwsLambdaFunctionName"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  lambda {
+    functions {
+      analytics {
+        functionName = "AwsLambdaFunctionName"
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    lambda {
+      functions {
+        analytics {
+          function-name = "AwsLambdaFunctionName"
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "lambda": {
+      "functions": {
+        "analytics": {
+          "function-name": "AwsLambdaFunctionName"
+        }
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -3257,7 +3408,7 @@ internal interface AnalyticsClient {
 </div>
 </div>
 <div class="paragraph">
-<p>To configure credentials for invoking the function you can either define a <code>~/.aws/credentials</code> file or use <code>application.yml</code>. Micronaut registers a <a href="../api/io/micronaut/configurations/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a> that resolves AWS credentials from the Micronaut Environment.</p>
+<p>To configure credentials for invoking the function you can either define a <code>~/.aws/credentials</code> file or use the application configuration file. Micronaut registers a <a href="../api/io/micronaut/configurations/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a> that resolves AWS credentials from the Micronaut Environment.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -3388,12 +3539,59 @@ Function appFunction = MicronautFunction.create(ApplicationType.DEFAULT, graalVM
 <p>Typically, the next step will be to provide an instance of
 <a href="../api/io/micronaut/aws/alexa/conf/AlexaSkillConfiguration.html">AlexaSkillConfiguration</a>. The easiest way to do that is to configure the skill id via configuration:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">alexa.skills.myskill=skill-id 'xxxx-yaaa-zz123'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">alexa:
   skills:
     myskill:
       skill-id 'xxxx-yaaa-zz123'</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[alexa]
+  [alexa.skills]
+    myskill="skill-id \'xxxx-yaaa-zz123\'"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">alexa {
+  skills {
+    myskill = "skill-id 'xxxx-yaaa-zz123'"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  alexa {
+    skills {
+      myskill = "skill-id 'xxxx-yaaa-zz123'"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "alexa": {
+    "skills": {
+      "myskill": "skill-id 'xxxx-yaaa-zz123'"
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 
