@@ -66,7 +66,6 @@ class AwsLambdaInvokeSpec extends Specification {
         applicationContext.close()
     }
 
-    @Ignore
     void "test setup lambda config"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
