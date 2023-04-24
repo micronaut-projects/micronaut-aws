@@ -13,7 +13,8 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest",
     "|io.micronaut.http.server.tck.tests.ErrorHandlerTest", // 2 tests Fail as CORs headers are not added to the response after deserialization fails
     "io.micronaut.http.server.tck.tests.BodyTest", // Fails with a multi-value publisher as the body type
-    "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest"
+    "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest",
+    "io.micronaut.http.server.tck.tests.staticresources.StaticResourceTest", // https://github.com/micronaut-projects/micronaut-aws/issues/1361
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }
