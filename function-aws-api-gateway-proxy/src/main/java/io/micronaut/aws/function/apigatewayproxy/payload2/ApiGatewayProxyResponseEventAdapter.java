@@ -16,6 +16,7 @@
 package io.micronaut.aws.function.apigatewayproxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
@@ -36,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpResponse<T> {
 
-    private APIGatewayProxyResponseEvent event;
+    private APIGatewayV2HTTPResponse event;
     private final ConversionService conversionService;
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
     private Map<String, Cookie> cookies = new ConcurrentHashMap<>(2);
@@ -44,7 +45,7 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
     private int status = HttpStatus.OK.getCode();
     private String reason = HttpStatus.OK.getReason();
 
-    public ApiGatewayProxyResponseEventAdapter(APIGatewayProxyResponseEvent event, ConversionService conversionService) {
+    public ApiGatewayProxyResponseEventAdapter(APIGatewayV2HTTPResponse event, ConversionService conversionService) {
         this.event = event;
         this.conversionService = conversionService;
     }

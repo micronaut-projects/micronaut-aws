@@ -16,6 +16,7 @@
 package io.micronaut.aws.function.apigatewayproxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.cookie.Cookies;
@@ -30,10 +31,9 @@ import java.util.Map;
 public final class APIGatewayProxyRequestEventFactory {
 
     private APIGatewayProxyRequestEventFactory() {
-
     }
 
-    public static APIGatewayProxyRequestEvent create(HttpRequest<?> request) {
+    public static APIGatewayV2HTTPEvent create(HttpRequest<?> request) {
         Map<String, List<String>> headers = new LinkedHashMap<>();
         Map<String, List<String>> parameters = new LinkedHashMap<>();
         request.getHeaders().forEach(headers::put);
@@ -45,10 +45,17 @@ public final class APIGatewayProxyRequestEventFactory {
         } catch (UnsupportedOperationException e) {
             //not all request types support retrieving cookies
         }
-        return new APIGatewayProxyRequestEvent() {
+        return new APIGatewayV2HTTPEvent() {
             @Override
             public Map<String, String> getHeaders() {
                 return request.getHeaders().asMap(String.class, String.class);
+            }
+
+            @Override
+            public RequestContext getRequestContext() {
+                RequestContext requestContext = new RequestContext();
+
+                return super.getRequestContext();
             }
 
             @Override
@@ -66,6 +73,5 @@ public final class APIGatewayProxyRequestEventFactory {
                 return request.getBody(Argument.of(String.class)).orElse(null);
             }
         };
-
     }
 }

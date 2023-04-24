@@ -3,10 +3,11 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.APIGatewayProxyRequestEventFactory;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyEventFunction;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyResponseEventAdapter;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyServletResponse;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.function.apigatewayproxy.payload2.APIGatewayProxyRequestEventFactory;
+import io.micronaut.aws.function.apigatewayproxy.payload2.ApiGatewayProxyEventFunction;
+import io.micronaut.aws.function.apigatewayproxy.payload2.ApiGatewayProxyResponseEventAdapter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.ConversionService;
@@ -40,8 +41,8 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     @Override
     public <I, O> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType) {
-        APIGatewayProxyRequestEvent requestEvent = APIGatewayProxyRequestEventFactory.create(request);
-        APIGatewayProxyResponseEvent responseEvent = function.handleRequest(requestEvent, lambdaContext);
+        APIGatewayV2HTTPEvent requestEvent = APIGatewayProxyRequestEventFactory.create(request);
+        APIGatewayV2HTTPResponse responseEvent = function.handleRequest(requestEvent, lambdaContext);
         HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
 
         if (LOG.isDebugEnabled()) {
