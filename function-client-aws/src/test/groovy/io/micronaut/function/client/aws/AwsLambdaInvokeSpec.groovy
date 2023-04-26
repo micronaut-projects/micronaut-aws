@@ -25,9 +25,10 @@ import io.micronaut.function.client.FunctionInvokerChooser
 import io.micronaut.http.annotation.Body
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import spock.lang.Ignore
 import spock.lang.IgnoreIf
+import spock.lang.Issue
+import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import jakarta.inject.Named
@@ -66,6 +67,11 @@ class AwsLambdaInvokeSpec extends Specification {
         applicationContext.close()
     }
 
+    @Issue([
+            "https://github.com/micronaut-projects/micronaut-core/issues/9154",
+            "https://github.com/micronaut-projects/micronaut-core/pull/9155"
+    ])
+    @PendingFeature(reason = "This should start passing once we have an M3 of micronaut-core")
     void "test setup lambda config"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
