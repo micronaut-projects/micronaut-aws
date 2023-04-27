@@ -9,6 +9,7 @@ bouncycastle = '1.70'
 fileupload = '0.0.5'
 jetty = '11.0.15'
 logback-json-classic = '0.1.5'
+ksuid = '1.1.2'
 
 micronaut-discovery = '4.0.0-M1'
 micronaut-groovy = '4.0.0-M1'
@@ -85,6 +86,8 @@ junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
 junit-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api' }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
 aws-java-sdk-lambda = { module = 'com.amazonaws:aws-java-sdk-lambda' }
+
+ksuid = { module = "com.github.ksuid:ksuid", version.ref = 'ksuid' }
 
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
