@@ -5,5 +5,5 @@ plugins {
 }
 
 dependencies {
-
+    testImplementation(projects.micronautFunctionAwsApiProxy)
 }
