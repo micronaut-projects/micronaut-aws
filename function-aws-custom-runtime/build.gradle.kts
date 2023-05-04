@@ -6,7 +6,7 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
     compileOnly(projects.micronautFunctionAwsApiProxy)
 
-    api(mn.micronaut.http.client.jdk)
+    api(mn.micronaut.http.client)
     api(libs.managed.aws.lambda.events)
     api(projects.micronautAwsUa)
     testImplementation(projects.micronautFunctionAwsApiProxy) {
