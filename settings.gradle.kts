@@ -39,6 +39,7 @@ include("test-suite-aws-sdk-v2")
 include("test-suite-http-server-tck-function-aws-api-proxy")
 include("test-suite-groovy")
 include("test-suite-kotlin")
+include("test-suite-graal")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     useStandardizedProjectNames.set(true)
