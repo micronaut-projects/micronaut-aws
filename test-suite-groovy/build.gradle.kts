@@ -4,10 +4,6 @@ plugins {
     id("io.micronaut.build.internal.aws-tests")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     testCompileOnly(mn.micronaut.inject.groovy)
     testImplementation(mnTest.micronaut.test.spock)
