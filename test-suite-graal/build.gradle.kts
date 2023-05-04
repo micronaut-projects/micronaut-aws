@@ -8,3 +8,11 @@ dependencies {
     testImplementation(projects.micronautFunctionAwsApiProxy)
     testImplementation(projects.micronautFunctionAwsCustomRuntime)
 }
+
+graalvmNative {
+    binaries {
+        all {
+            buildArgs.add("--trace-class-initialization=org.slf4j.LoggerFactory")
+        }
+    }
+}
