@@ -6,4 +6,5 @@ plugins {
 
 dependencies {
     testImplementation(projects.micronautFunctionAwsApiProxy)
+    testImplementation(projects.micronautFunctionAwsCustomRuntime)
 }
