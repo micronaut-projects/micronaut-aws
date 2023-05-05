@@ -15,6 +15,7 @@
  */
 package io.micronaut.aws.function.apigatewayproxy;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.MutableHttpHeaders;
 
@@ -24,11 +25,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility methods for collapsing headers.
+ */
+@Internal
 public final class MapCollapseUtils {
 
     private MapCollapseUtils() {
-
     }
+
+    /**
+     * Collapse the headers into a single value map.
+     *
+     * @param headers The headers
+     * @return The map
+     */
     public static Map<String, String> getSingleValueHeaders(MutableHttpHeaders headers) {
         Map<String, String> result = new HashMap<>();
         for (String paramName : headers.names()) {
@@ -37,6 +48,12 @@ public final class MapCollapseUtils {
         return result;
     }
 
+    /**
+     * Collapse the headers into a multi value map.
+     *
+     * @param headers The headers
+     * @return The map
+     */
     public static Map<String, List<String>> getMulitHeaders(MutableHttpHeaders headers) {
         Map<String, List<String>> result = new HashMap<>();
         for (String paramName : headers.names()) {
@@ -45,7 +62,13 @@ public final class MapCollapseUtils {
         return result;
     }
 
-
+    /**
+     * Collapse the aws single and multi headers into a single value map.
+     *
+     * @param multi  The multi value map
+     * @param single The single value map
+     * @return The map
+     */
     public static Map<String, List<String>> collapse(Map<String, List<String>> multi, Map<String, String> single) {
         if (multi == null && single == null) {
             return Collections.emptyMap();
