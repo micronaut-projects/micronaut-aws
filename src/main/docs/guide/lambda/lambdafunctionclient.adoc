@@ -9,7 +9,7 @@ Each is configured by `AWSInvokeRequestDefinition` that allows setting any prope
 
 For example, you invoke a function named `AwsLambdaFunctionName`, in the AWS Lambda console, with the following configuration:
 
-[source, yaml]
+[configuration]
 ----
 include::test-suite/src/test/resources/application.yml[tags="config"]
 ----
@@ -24,6 +24,6 @@ Alternatively, you can remove the `@Named` annotation and match the method name 
 
 snippet::io.micronaut.docs.function.client.aws.methodnamed.AnalyticsClient[tags="clazz"]
 
-To configure credentials for invoking the function you can either define a `~/.aws/credentials` file or use `application.yml`. Micronaut registers a api:configurations.aws.EnvironmentAWSCredentialsProvider[] that resolves AWS credentials from the Micronaut Environment.
+To configure credentials for invoking the function you can either define a `~/.aws/credentials` file or use the application configuration file. Micronaut registers a api:configurations.aws.EnvironmentAWSCredentialsProvider[] that resolves AWS credentials from the Micronaut Environment.
 
 NOTE: To invoke a function Micronaut configures a `AWSLambdaAsyncClient` using api:function.client.aws.AWSLambdaConfiguration[] that allows configuring any of the properties of the `AWSLambdaAsyncClientBuilder` class.

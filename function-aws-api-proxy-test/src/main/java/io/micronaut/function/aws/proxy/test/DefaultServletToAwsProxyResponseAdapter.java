@@ -23,8 +23,10 @@ import io.micronaut.http.HttpMethod;
 
 import jakarta.annotation.Nonnull;
 import jakarta.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -84,8 +86,10 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
     @Nullable
     protected byte[] parseBodyAsBytes(AwsProxyResponse awsProxyResponse) {
         String body = awsProxyResponse.getBody();
-        return body == null ? null :
-                awsProxyResponse.isBase64Encoded() ? Base64.getDecoder().decode(body) : body.getBytes(getBodyCharset());
+        if (body == null) {
+            return null;
+        }
+        return awsProxyResponse.isBase64Encoded() ? Base64.getMimeDecoder().decode(body) : body.getBytes(getBodyCharset());
     }
 
     /**

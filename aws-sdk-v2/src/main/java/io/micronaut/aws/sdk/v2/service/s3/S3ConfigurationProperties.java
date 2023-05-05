@@ -18,9 +18,12 @@ package io.micronaut.aws.sdk.v2.service.s3;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.Nullable;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Configuration.Builder;
+
+import java.net.URI;
 
 /**
  * Configuration properties for S3.
@@ -33,6 +36,9 @@ public class S3ConfigurationProperties extends AWSConfiguration {
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"profileFile", "applyMutation"})
     private Builder builder = S3Configuration.builder();
+
+    @Nullable
+    private URI endpointOverride;
 
     /**
      * @return The builder

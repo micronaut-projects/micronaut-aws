@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "6.3.5"
+    id("io.micronaut.build.shared.settings") version "6.4.2"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -43,11 +43,10 @@ include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv1")
 include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv2")
 include("test-suite-groovy")
 include("test-suite-kotlin")
+include("test-suite-graal")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     useStandardizedProjectNames.set(true)
-
-    addSnapshotRepository()
     importMicronautCatalog()
     importMicronautCatalog("micronaut-discovery-client")
     importMicronautCatalog("micronaut-groovy")
