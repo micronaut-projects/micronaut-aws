@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.function.apigatewayproxy.payloadv1;
+package io.micronaut.aws.function.apigatewayproxy.payload1;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyServletRequest;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.type.Argument;
@@ -26,28 +25,28 @@ import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 import java.util.Optional;
 
 /**
- * Request binder for the APIGatewayProxyRequestEvent object.
+ * Request binder for the APIGatewayProxyResponseEvent object.
  *
  * @author Tim Yates
  * @since 4.0.0
  */
 @Internal
-public class APIGatewayProxyRequestEventBinder implements TypedRequestArgumentBinder<APIGatewayProxyRequestEvent> {
+public class APIGatewayProxyResponseEventBinder implements TypedRequestArgumentBinder<APIGatewayProxyResponseEvent> {
 
-    private static final Argument<APIGatewayProxyRequestEvent> TYPE = Argument.of(APIGatewayProxyRequestEvent.class);
+    static final Argument<APIGatewayProxyResponseEvent> TYPE = Argument.of(APIGatewayProxyResponseEvent.class);
 
     @Override
-    public Argument<APIGatewayProxyRequestEvent> argumentType() {
+    public Argument<APIGatewayProxyResponseEvent> argumentType() {
         return TYPE;
     }
 
     @Override
-    public BindingResult<APIGatewayProxyRequestEvent> bind(
-        ArgumentConversionContext<APIGatewayProxyRequestEvent> context,
+    public BindingResult<APIGatewayProxyResponseEvent> bind(
+        ArgumentConversionContext<APIGatewayProxyResponseEvent> context,
         HttpRequest<?> source
     ) {
         if (source instanceof ApiGatewayProxyServletRequest<?> req) {
-            return () -> Optional.of(req.getNativeRequest());
+            return () -> Optional.of(req.getResponse().getNativeResponse());
         }
         return BindingResult.UNSATISFIED;
     }
