@@ -40,6 +40,7 @@ import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.http.simple.cookies.SimpleCookies;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
@@ -77,7 +78,7 @@ public final class ApiGatewayProxyServletRequest<B> implements
     private final MediaTypeCodecRegistry codecRegistry;
     private final HttpMethod method;
     private URI uri;
-    private Cookies cookies;
+    private SimpleCookies cookies;
 
     private ConversionService conversionService;
     private MutableConvertibleValues<Object> attributes;
@@ -125,17 +126,25 @@ public final class ApiGatewayProxyServletRequest<B> implements
 
     @Override
     public Cookies getCookies() {
-        Cookies cookies = this.cookies;
+        SimpleCookies cookies = this.cookies;
         if (cookies == null) {
             synchronized (this) { // double check
                 cookies = this.cookies;
                 if (cookies == null) {
-                    cookies = new SimpleCookies(conversionService);
-                    this.cookies = cookies;
+                    this.cookies = new SimpleCookies(conversionService);
                 }
             }
         }
-        return cookies;
+        for (String cookie : getHeaders().getAll(HttpHeaders.COOKIE)) {
+            String[] parts = cookie.split(";");
+            for (String part : parts) {
+                String[] keyValue = part.split("=");
+                if (keyValue.length == 2) {
+                    this.cookies.put(keyValue[0], new SimpleCookie(keyValue[0], keyValue[1]));
+                }
+            }
+        }
+        return this.cookies;
     }
 
     @Override
