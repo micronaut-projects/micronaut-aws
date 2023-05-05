@@ -16,12 +16,13 @@
 package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
+import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
@@ -33,6 +34,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -45,7 +49,7 @@ import java.util.Optional;
 @Internal
 public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<APIGatewayProxyResponseEvent, B> {
 
-    private final MultiMutableHttpHeaders headers;
+    private final MutableHttpHeaders headers;
     private final ByteArrayOutputStream body = new ByteArrayOutputStream();
 
     private MutableConvertibleValues<Object> attributes;
@@ -54,7 +58,7 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
     private String reason = HttpStatus.OK.getReason();
 
     public ApiGatewayProxyServletResponse(ConversionService conversionService) {
-        this.headers = new MultiMutableHttpHeaders(conversionService);
+        this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
     }
 
     @Override
@@ -62,8 +66,9 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
         return new APIGatewayProxyResponseEvent()
             .withBody(body.toString())
             .withStatusCode(status)
-            .withMultiValueHeaders(headers.getMulti())
-            .withHeaders(headers.getSingle());
+            .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
+            .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
+
     }
 
     @Override

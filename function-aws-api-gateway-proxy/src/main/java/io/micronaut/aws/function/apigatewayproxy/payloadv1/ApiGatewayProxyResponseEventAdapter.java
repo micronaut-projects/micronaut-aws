@@ -16,11 +16,12 @@
 package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
+import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.util.ArgumentUtils;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
@@ -57,7 +58,7 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new MultiMutableHttpHeaders(conversionService, event.getMultiValueHeaders(), event.getHeaders());
+        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
     }
 
     @Override

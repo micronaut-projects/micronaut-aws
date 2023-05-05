@@ -16,12 +16,13 @@
 package io.micronaut.aws.function.apigatewayproxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
+import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
@@ -45,7 +46,7 @@ import java.util.Optional;
 @Internal
 public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpResponse<APIGatewayV2HTTPResponse, B> {
 
-    private final MultiMutableHttpHeaders headers;
+    private final MutableHttpHeaders headers;
     private final ByteArrayOutputStream body = new ByteArrayOutputStream();
 
     private MutableConvertibleValues<Object> attributes;
@@ -54,7 +55,7 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
     private String reason = HttpStatus.OK.getReason();
 
     public APIGatewayV2HTTPResponseServletResponse(ConversionService conversionService) {
-        this.headers = new MultiMutableHttpHeaders(conversionService);
+        this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
     }
 
     @Override
@@ -62,8 +63,8 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
         APIGatewayV2HTTPResponse resp = new APIGatewayV2HTTPResponse();
         resp.setBody(body.toString());
         resp.setStatusCode(status);
-        resp.setHeaders(headers.getSingle());
-        resp.setMultiValueHeaders(headers.getMulti());
+        resp.setMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers));
+        resp.setHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
         //TODO resp.setCookies;
         return resp;
     }

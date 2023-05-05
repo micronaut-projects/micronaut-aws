@@ -18,7 +18,6 @@ package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
-import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
 import io.micronaut.aws.function.apigatewayproxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
