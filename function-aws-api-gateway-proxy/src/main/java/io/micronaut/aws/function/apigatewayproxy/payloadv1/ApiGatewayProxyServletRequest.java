@@ -17,6 +17,7 @@ package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
 import io.micronaut.aws.function.apigatewayproxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
@@ -29,6 +30,7 @@ import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
@@ -166,7 +168,7 @@ public final class ApiGatewayProxyServletRequest<B> implements
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new MultiMutableHttpHeaders(conversionService, requestEvent.getMultiValueHeaders(), requestEvent.getHeaders());
+        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(requestEvent.getMultiValueHeaders(), requestEvent.getHeaders()), conversionService);
     }
 
     @Override

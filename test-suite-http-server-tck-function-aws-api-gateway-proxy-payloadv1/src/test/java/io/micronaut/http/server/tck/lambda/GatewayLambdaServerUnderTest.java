@@ -3,14 +3,13 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.APIGatewayProxyRequestEventFactory;
 import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyEventFunction;
 import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyResponseEventAdapter;
-import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyServletResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.type.Argument;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
@@ -32,10 +31,13 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
         this.function = new ApiGatewayProxyEventFunction(ApplicationContext
-            .builder(Environment.FUNCTION, Environment.GOOGLE_COMPUTE, Environment.TEST)
+            .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
+            .eagerInitConfiguration(true)
+            .eagerInitSingletons(true)
             .properties(properties)
             .deduceEnvironment(false)
             .start());
+
     }
 
     @Override

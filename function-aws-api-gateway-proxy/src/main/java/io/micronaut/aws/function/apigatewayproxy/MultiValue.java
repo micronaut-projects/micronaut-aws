@@ -48,16 +48,17 @@ public class MultiValue implements ConvertibleMultiValues<String> {
             values = new HashMap<>();
             if (multi != null) {
                 for (String name : multi.keySet()) {
-                    String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
-                    values.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    values.get(headerName).addAll(multi.get(headerName));
+                    values.computeIfAbsent(name, s -> new ArrayList<>());
+                    values.get(name).addAll(multi.get(name));
                 }
             }
             if (CollectionUtils.isNotEmpty(single)) {
                 for (String name : single.keySet()) {
-                    String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name);
-                    values.computeIfAbsent(headerName, s -> new ArrayList<>());
-                    values.get(headerName).add(single.get(headerName));
+                    values.computeIfAbsent(name, s -> new ArrayList<>());
+                    String value = single.get(name);
+                    if (!values.get(name).contains(value)) {
+                        values.get(name).add(value);
+                    }
                 }
             }
         }

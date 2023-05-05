@@ -17,16 +17,19 @@ package io.micronaut.aws.function.apigatewayproxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.aws.function.apigatewayproxy.MultiMutableHttpHeaders;
 import io.micronaut.aws.function.apigatewayproxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
@@ -48,7 +51,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -81,7 +88,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> implements
         ConversionService conversionService
     ) {
         this.requestEvent = requestEvent;
-        this.uri = URI.create(requestEvent.getRawPath());
+        this.uri = URI.create(requestEvent.getRequestContext().getHttp().getPath());
         HttpMethod parsedMethod;
         try {
             parsedMethod = HttpMethod.valueOf(requestEvent.getRequestContext().getHttp().getMethod());
@@ -159,12 +166,33 @@ public final class APIGatewayV2HTTPEventServletRequest<B> implements
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new MultiMutableHttpHeaders(conversionService, Collections.emptyMap(), requestEvent.getHeaders());
+        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(Collections.emptyMap(), requestEvent.getHeaders()), conversionService);
+    }
+
+    @NonNull
+    private static List<String> splitCommaSeparatedValue(@Nullable String value) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(value.split(","));
+    }
+
+    @NonNull
+    private static Map<String, List<String>> transformCommaSeparatedValue(@Nullable Map<String, String> input) {
+        if (input == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, List<String>> output = new HashMap<>();
+        for (String key : input.keySet()) {
+            output.put(key, splitCommaSeparatedValue(input.get(key)));
+        }
+        return output;
+
     }
 
     @Override
     public MutableHttpParameters getParameters() {
-        return new MultiValueMutableHttpParameters(conversionService, Collections.emptyMap(), requestEvent.getQueryStringParameters());
+        return new MultiValueMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
     }
 
     @Override

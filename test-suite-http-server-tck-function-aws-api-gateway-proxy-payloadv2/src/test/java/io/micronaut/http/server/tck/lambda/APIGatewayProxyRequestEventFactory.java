@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.function.apigatewayproxy.payload2;
+package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2CustomAuthorizerEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.type.Argument;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpVersion;
 import io.micronaut.http.cookie.Cookies;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Factory for creating {@link APIGatewayProxyRequestEvent} v2 instances from {@link HttpRequest} instances.
@@ -48,24 +53,43 @@ public final class APIGatewayProxyRequestEventFactory {
         return new APIGatewayV2HTTPEvent() {
             @Override
             public Map<String, String> getHeaders() {
-                return request.getHeaders().asMap(String.class, String.class);
+                Map<String, String> result = new HashMap<>();
+                for (String headerName : request.getHeaders().names()) {
+                    result.put(headerName, request.getHeaders().get(headerName));
+                }
+                return result;
+            }
+
+            @Override
+            public Map<String, String> getQueryStringParameters() {
+                Map<String, String> result = new HashMap<>();
+                for (String paramName : request.getParameters().names()) {
+                    result.put(paramName, String.join(",", request.getParameters().getAll(paramName)));
+                }
+                return result;
             }
 
             @Override
             public RequestContext getRequestContext() {
-                RequestContext requestContext = new RequestContext();
-
-                return super.getRequestContext();
+                RequestContext.RequestContextBuilder builder = RequestContext.builder();
+                RequestContext.Http.HttpBuilder httpBuilder = RequestContext.Http.builder()
+                    .withMethod(request.getMethodName())
+                    .withPath(request.getPath())
+                    .withUserAgent(request.getHeaders().get(HttpHeaders.USER_AGENT));
+                protocol(request.getHttpVersion()).ifPresent(httpBuilder::withProtocol);
+                builder.withHttp(httpBuilder.build());
+                return builder.build();
             }
 
-            @Override
-            public String getPath() {
-                return request.getPath();
-            }
-
-            @Override
-            public String getHttpMethod() {
-                return request.getMethodName();
+            private static Optional<String> protocol(HttpVersion httpVersion) {
+                if (httpVersion == HttpVersion.HTTP_1_0) {
+                    return Optional.of("HTTP/1.0");
+                } else if (httpVersion == HttpVersion.HTTP_1_1) {
+                    return Optional.of("HTTP/1.1");
+                } else if (httpVersion == HttpVersion.HTTP_2_0) {
+                    return Optional.of("HTTP/2.0");
+                }
+                return Optional.empty();
             }
 
             @Override
