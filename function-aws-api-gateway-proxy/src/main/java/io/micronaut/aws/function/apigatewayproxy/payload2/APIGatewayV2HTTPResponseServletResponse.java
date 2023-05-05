@@ -61,13 +61,13 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
 
     @Override
     public APIGatewayV2HTTPResponse getNativeResponse() {
-        APIGatewayV2HTTPResponse resp = new APIGatewayV2HTTPResponse();
-        resp.setBody(body.toString());
-        resp.setStatusCode(status);
-        resp.setMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers));
-        resp.setHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
-        //TODO resp.setCookies;
-        return resp;
+        return APIGatewayV2HTTPResponse.builder()
+            .withBody(body.toString())
+            .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
+            .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
+            .withStatusCode(status)
+            // .withCookies() // TODO: We need to handle cookies somehow
+            .build();
     }
 
     @Override
