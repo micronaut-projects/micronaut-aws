@@ -15,8 +15,6 @@
  */
 package io.micronaut.http.server.tck.lambda;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2CustomAuthorizerEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpHeaders;
@@ -31,11 +29,11 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Factory for creating {@link APIGatewayProxyRequestEvent} v2 instances from {@link HttpRequest} instances.
+ * Factory for creating {@link APIGatewayV2HTTPEvent} v2 instances from {@link HttpRequest} instances.
  */
-public final class APIGatewayProxyRequestEventFactory {
+public final class APIGatewayV2HTTPEventFactory {
 
-    private APIGatewayProxyRequestEventFactory() {
+    private APIGatewayV2HTTPEventFactory() {
     }
 
     public static APIGatewayV2HTTPEvent create(HttpRequest<?> request) {

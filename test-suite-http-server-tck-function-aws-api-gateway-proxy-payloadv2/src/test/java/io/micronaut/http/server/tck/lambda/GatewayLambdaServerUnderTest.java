@@ -38,7 +38,7 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     @Override
     public <I, O> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType) {
-        APIGatewayV2HTTPEvent requestEvent = APIGatewayProxyRequestEventFactory.create(request);
+        APIGatewayV2HTTPEvent requestEvent = APIGatewayV2HTTPEventFactory.create(request);
         APIGatewayV2HTTPResponse responseEvent = function.handleRequest(requestEvent, lambdaContext);
         HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
 
