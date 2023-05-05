@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.aws.function.apigatewayproxy;
+package io.micronaut.aws.function.apigatewayproxy.payloadv1;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.aws.function.apigatewayproxy.payload2.APIGatewayV2HTTPEventServletRequest;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import io.micronaut.aws.function.apigatewayproxy.payloadv1.ApiGatewayProxyServletRequest;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.type.Argument;
@@ -26,28 +26,28 @@ import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
 import java.util.Optional;
 
 /**
- * Request binder for the APIGatewayProxyResponseEvent object.
+ * Request binder for the APIGatewayProxyRequestEvent object.
  *
  * @author Tim Yates
  * @since 4.0.0
  */
 @Internal
-public class APIGatewayV2HTTPResponseBinder implements TypedRequestArgumentBinder<APIGatewayV2HTTPResponse> {
+public class APIGatewayProxyRequestEventBinder implements TypedRequestArgumentBinder<APIGatewayProxyRequestEvent> {
 
-    static final Argument<APIGatewayV2HTTPResponse> TYPE = Argument.of(APIGatewayV2HTTPResponse.class);
+    private static final Argument<APIGatewayProxyRequestEvent> TYPE = Argument.of(APIGatewayProxyRequestEvent.class);
 
     @Override
-    public Argument<APIGatewayV2HTTPResponse> argumentType() {
+    public Argument<APIGatewayProxyRequestEvent> argumentType() {
         return TYPE;
     }
 
     @Override
-    public BindingResult<APIGatewayV2HTTPResponse> bind(
-        ArgumentConversionContext<APIGatewayV2HTTPResponse> context,
+    public BindingResult<APIGatewayProxyRequestEvent> bind(
+        ArgumentConversionContext<APIGatewayProxyRequestEvent> context,
         HttpRequest<?> source
     ) {
-        if (source instanceof APIGatewayV2HTTPEventServletRequest<?> req) {
-            return () -> Optional.of(req.getResponse().getNativeResponse());
+        if (source instanceof ApiGatewayProxyServletRequest<?> req) {
+            return () -> Optional.of(req.getNativeRequest());
         }
         return BindingResult.UNSATISFIED;
     }

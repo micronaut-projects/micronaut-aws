@@ -19,6 +19,10 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.function.apigatewayproxy.payload2.APIGatewayV2HTTPEventBinder;
+import io.micronaut.aws.function.apigatewayproxy.payload2.APIGatewayV2HTTPResponseBinder;
+import io.micronaut.aws.function.apigatewayproxy.payloadv1.APIGatewayProxyRequestEventBinder;
+import io.micronaut.aws.function.apigatewayproxy.payloadv1.APIGatewayProxyResponseEventBinder;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
@@ -39,16 +43,18 @@ import java.util.List;
 @Singleton
 @Internal
 @Replaces(DefaultRequestBinderRegistry.class)
-public class ApiGatewayBinderRegistry extends ServletBinderRegistry {
+class ApiGatewayBinderRegistry extends ServletBinderRegistry {
 
-    public ApiGatewayBinderRegistry(
+    ApiGatewayBinderRegistry(
         MediaTypeCodecRegistry mediaTypeCodecRegistry,
         ConversionService conversionService,
         List<RequestArgumentBinder> binders
     ) {
         super(mediaTypeCodecRegistry, conversionService, binders);
-        this.byType.put(APIGatewayProxyRequestEvent.class, new APIGatewayV2HTTPEventBinder());
+        // v1
+        this.byType.put(APIGatewayProxyRequestEvent.class, new APIGatewayProxyRequestEventBinder());
         this.byType.put(APIGatewayProxyResponseEvent.class, new APIGatewayProxyResponseEventBinder());
+        // v2
         this.byType.put(APIGatewayV2HTTPResponse.class, new APIGatewayV2HTTPResponseBinder());
         this.byType.put(APIGatewayV2HTTPEvent.class, new APIGatewayV2HTTPEventBinder());
     }
