@@ -24,6 +24,7 @@ import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
@@ -112,6 +113,9 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
     @Override
     @SuppressWarnings("unchecked")
     public <T> MutableHttpResponse<T> body(@Nullable T body) {
+        if (body instanceof CharSequence && getContentType().isEmpty()) {
+            contentType(MediaType.TEXT_PLAIN_TYPE);
+        }
         this.bodyObject = (B) body;
         return (MutableHttpResponse<T>) this;
     }
