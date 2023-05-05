@@ -20,10 +20,8 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpVersion;
-import io.micronaut.http.cookie.Cookies;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,18 +35,8 @@ public final class APIGatewayV2HTTPEventFactory {
     }
 
     public static APIGatewayV2HTTPEvent create(HttpRequest<?> request) {
-        Map<String, List<String>> headers = new LinkedHashMap<>();
-        Map<String, List<String>> parameters = new LinkedHashMap<>();
-        request.getHeaders().forEach(headers::put);
-        request.getParameters().forEach(parameters::put);
-        try {
-            Cookies cookies = request.getCookies();
-            cookies.forEach((s, cookie) -> {
-            });
-        } catch (UnsupportedOperationException e) {
-            //not all request types support retrieving cookies
-        }
         return new APIGatewayV2HTTPEvent() {
+
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> result = new HashMap<>();
@@ -56,6 +44,11 @@ public final class APIGatewayV2HTTPEventFactory {
                     result.put(headerName, request.getHeaders().get(headerName));
                 }
                 return result;
+            }
+
+            @Override
+            public List<String> getCookies() {
+                return request.getHeaders().getAll(HttpHeaders.COOKIE);
             }
 
             @Override
@@ -69,25 +62,14 @@ public final class APIGatewayV2HTTPEventFactory {
 
             @Override
             public RequestContext getRequestContext() {
-                RequestContext.RequestContextBuilder builder = RequestContext.builder();
                 RequestContext.Http.HttpBuilder httpBuilder = RequestContext.Http.builder()
                     .withMethod(request.getMethodName())
                     .withPath(request.getPath())
                     .withUserAgent(request.getHeaders().get(HttpHeaders.USER_AGENT));
                 protocol(request.getHttpVersion()).ifPresent(httpBuilder::withProtocol);
-                builder.withHttp(httpBuilder.build());
-                return builder.build();
-            }
-
-            private static Optional<String> protocol(HttpVersion httpVersion) {
-                if (httpVersion == HttpVersion.HTTP_1_0) {
-                    return Optional.of("HTTP/1.0");
-                } else if (httpVersion == HttpVersion.HTTP_1_1) {
-                    return Optional.of("HTTP/1.1");
-                } else if (httpVersion == HttpVersion.HTTP_2_0) {
-                    return Optional.of("HTTP/2.0");
-                }
-                return Optional.empty();
+                return RequestContext.builder()
+                    .withHttp(httpBuilder.build())
+                    .build();
             }
 
             @Override
@@ -95,5 +77,16 @@ public final class APIGatewayV2HTTPEventFactory {
                 return request.getBody(Argument.of(String.class)).orElse(null);
             }
         };
+    }
+
+    private static Optional<String> protocol(HttpVersion httpVersion) {
+        if (httpVersion == HttpVersion.HTTP_1_0) {
+            return Optional.of("HTTP/1.0");
+        } else if (httpVersion == HttpVersion.HTTP_1_1) {
+            return Optional.of("HTTP/1.1");
+        } else if (httpVersion == HttpVersion.HTTP_2_0) {
+            return Optional.of("HTTP/2.0");
+        }
+        return Optional.empty();
     }
 }
