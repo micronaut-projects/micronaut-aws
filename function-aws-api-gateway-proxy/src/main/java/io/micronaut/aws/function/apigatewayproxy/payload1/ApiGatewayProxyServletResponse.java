@@ -16,6 +16,7 @@
 package io.micronaut.aws.function.apigatewayproxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.function.apigatewayproxy.GatewayContentHelpers;
 import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
@@ -37,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Base64;
 import java.util.Optional;
 
 /**
@@ -63,12 +65,21 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
 
     @Override
     public APIGatewayProxyResponseEvent getNativeResponse() {
-        return new APIGatewayProxyResponseEvent()
+        APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = new APIGatewayProxyResponseEvent()
             .withBody(body.toString())
             .withStatusCode(status)
             .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
 
+        if (GatewayContentHelpers.isBinary(getHeaders().getContentType().orElse(null))) {
+            apiGatewayProxyResponseEvent
+                .withIsBase64Encoded(true)
+                .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
+        } else {
+            apiGatewayProxyResponseEvent
+                .withBody(body.toString(getCharacterEncoding()));
+        }
+        return apiGatewayProxyResponseEvent;
     }
 
     @Override

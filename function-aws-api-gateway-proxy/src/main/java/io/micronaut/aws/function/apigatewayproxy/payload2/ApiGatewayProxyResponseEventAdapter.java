@@ -28,6 +28,7 @@ import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 
+import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,6 +70,9 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public Optional<T> getBody() {
+        if (event.getIsBase64Encoded()) {
+            return (Optional<T>) Optional.ofNullable(Base64.getMimeDecoder().decode(event.getBody()));
+        }
         return (Optional<T>) Optional.ofNullable(event.getBody());
     }
 

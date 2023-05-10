@@ -16,6 +16,7 @@
 package io.micronaut.aws.function.apigatewayproxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.function.apigatewayproxy.GatewayContentHelpers;
 import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
@@ -38,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Base64;
 import java.util.Optional;
 
 /**
@@ -64,13 +66,19 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
 
     @Override
     public APIGatewayV2HTTPResponse getNativeResponse() {
-        return APIGatewayV2HTTPResponse.builder()
-            .withBody(body.toString())
+        APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
             .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
-            .withStatusCode(status)
-            // .withCookies() // TODO: We need to handle cookies somehow
-            .build();
+            .withStatusCode(status);
+
+        if (GatewayContentHelpers.isBinary(getHeaders().getContentType().orElse(null))) {
+            apiGatewayV2HTTPResponseBuilder.withIsBase64Encoded(true)
+                .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
+        } else {
+            apiGatewayV2HTTPResponseBuilder.withBody(body.toString(getCharacterEncoding()));
+        }
+
+        return apiGatewayV2HTTPResponseBuilder.build();
     }
 
     @Override
