@@ -23,12 +23,15 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
+import io.micronaut.http.netty.cookies.NettyCookie;
 import io.micronaut.servlet.http.ServletHttpResponse;
+import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -82,6 +85,10 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
 
     @Override
     public MutableHttpResponse<B> cookie(Cookie cookie) {
+        if (cookie instanceof NettyCookie nettyCookie) {
+            final String encoded = ServerCookieEncoder.STRICT.encode(nettyCookie.getNettyCookie());
+            header(HttpHeaders.SET_COOKIE, encoded);
+        }
         return this;
     }
 

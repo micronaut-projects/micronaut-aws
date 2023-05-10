@@ -17,6 +17,7 @@ package io.micronaut.aws.function.apigatewayproxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.function.apigatewayproxy.AwsCookies;
 import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.aws.function.apigatewayproxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
@@ -40,8 +41,6 @@ import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
-import io.micronaut.http.simple.cookies.SimpleCookie;
-import io.micronaut.http.simple.cookies.SimpleCookies;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
@@ -78,7 +77,7 @@ public final class ApiGatewayProxyServletRequest<B> implements
     private final MediaTypeCodecRegistry codecRegistry;
     private final HttpMethod method;
     private URI uri;
-    private SimpleCookies cookies;
+    private Cookies cookies;
 
     private ConversionService conversionService;
     private MutableConvertibleValues<Object> attributes;
@@ -124,27 +123,20 @@ public final class ApiGatewayProxyServletRequest<B> implements
         return requestEvent;
     }
 
+    @NonNull
     @Override
     public Cookies getCookies() {
-        SimpleCookies cookies = this.cookies;
+        Cookies cookies = this.cookies;
         if (cookies == null) {
             synchronized (this) { // double check
                 cookies = this.cookies;
                 if (cookies == null) {
-                    this.cookies = new SimpleCookies(conversionService);
+                    cookies = new AwsCookies(getPath(), getHeaders(), conversionService);
+                    this.cookies = cookies;
                 }
             }
         }
-        for (String cookie : getHeaders().getAll(HttpHeaders.COOKIE)) {
-            String[] parts = cookie.split(";");
-            for (String part : parts) {
-                String[] keyValue = part.split("=");
-                if (keyValue.length == 2) {
-                    this.cookies.put(keyValue[0], new SimpleCookie(keyValue[0], keyValue[1]));
-                }
-            }
-        }
-        return this.cookies;
+        return cookies;
     }
 
     @Override

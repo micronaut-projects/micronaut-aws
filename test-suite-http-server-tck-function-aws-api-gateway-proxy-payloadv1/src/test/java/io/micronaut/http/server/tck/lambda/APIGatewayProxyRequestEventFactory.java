@@ -18,9 +18,14 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.type.Argument;
+import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.netty.cookies.NettyCookie;
+import io.netty.handler.codec.http.cookie.ClientCookieEncoder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,21 +41,41 @@ public final class APIGatewayProxyRequestEventFactory {
     }
 
     public static APIGatewayProxyRequestEvent create(HttpRequest<?> request) {
+        Map<String, String> headers = new LinkedHashMap<>();
+        Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
+        request.getHeaders().forEach((name, values) -> {
+            if (values.size() > 1) {
+                multiHeaders.put(name, values);
+            } else {
+                headers.put(name, values.get(0));
+            }
+        });
         try {
             Cookies cookies = request.getCookies();
+            boolean many = cookies.getAll().size() > 1;
             cookies.forEach((s, cookie) -> {
+                if (cookie instanceof NettyCookie nettyCookie) {
+                    if (many) {
+                        multiHeaders.computeIfAbsent(HttpHeaders.COOKIE, s1 -> new ArrayList<>())
+                            .add(ClientCookieEncoder.STRICT.encode(nettyCookie.getNettyCookie()));
+                    } else {
+                        headers.put(HttpHeaders.COOKIE, ClientCookieEncoder.STRICT.encode(nettyCookie.getNettyCookie()));
+                    }
+                }
             });
         } catch (UnsupportedOperationException e) {
             //not all request types support retrieving cookies
         }
         return new APIGatewayProxyRequestEvent() {
+
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> result = new HashMap<>();
-                for (String headerName : request.getHeaders().names()) {
-                    result.put(headerName, request.getHeaders().get(headerName));
-                }
-                return result;
+                return headers;
+            }
+
+            @Override
+            public Map<String, List<String>> getMultiValueHeaders() {
+                return multiHeaders;
             }
 
             @Override
@@ -86,6 +111,5 @@ public final class APIGatewayProxyRequestEventFactory {
                 return request.getBody(Argument.of(String.class)).orElse(null);
             }
         };
-
     }
 }
