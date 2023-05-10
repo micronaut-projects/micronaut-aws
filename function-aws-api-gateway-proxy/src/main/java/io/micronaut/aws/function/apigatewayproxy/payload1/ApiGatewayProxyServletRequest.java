@@ -17,32 +17,24 @@ package io.micronaut.aws.function.apigatewayproxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.function.apigatewayproxy.ApiGatewayServletRequest;
 import io.micronaut.aws.function.apigatewayproxy.AwsCookies;
 import io.micronaut.aws.function.apigatewayproxy.MapCollapseUtils;
 import io.micronaut.aws.function.apigatewayproxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
-import io.micronaut.core.convert.value.ConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
-import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
-import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpMethod;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
-import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
-import io.micronaut.servlet.http.MutableServletHttpRequest;
-import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
@@ -52,13 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
@@ -68,18 +53,14 @@ import java.util.Set;
  * @since 4.0.0
  */
 @Internal
-public final class ApiGatewayProxyServletRequest<B> implements
-    MutableServletHttpRequest<APIGatewayProxyRequestEvent, B>,
-    ServletExchange<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletRequest<B, APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final APIGatewayProxyRequestEvent requestEvent;
     private final ApiGatewayProxyServletResponse<?> response;
-    private final MediaTypeCodecRegistry codecRegistry;
     private final HttpMethod method;
     private URI uri;
     private Cookies cookies;
 
-    private ConversionService conversionService;
     private MutableConvertibleValues<Object> attributes;
 
     public ApiGatewayProxyServletRequest(
@@ -88,6 +69,7 @@ public final class ApiGatewayProxyServletRequest<B> implements
         MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService
     ) {
+        super(conversionService, codecRegistry);
         this.requestEvent = requestEvent;
         this.uri = URI.create(requestEvent.getPath());
         HttpMethod parsedMethod;
@@ -98,8 +80,6 @@ public final class ApiGatewayProxyServletRequest<B> implements
         }
         this.method = parsedMethod;
         this.response = response;
-        this.codecRegistry = codecRegistry;
-        this.conversionService = conversionService;
     }
 
     @Override
@@ -151,7 +131,6 @@ public final class ApiGatewayProxyServletRequest<B> implements
 
     @Override
     public MutableHttpRequest<B> cookie(Cookie cookie) {
-
         return this;
     }
 
@@ -192,36 +171,6 @@ public final class ApiGatewayProxyServletRequest<B> implements
     }
 
     @Override
-    @NonNull
-    public Optional<B> getBody() {
-        return Optional.empty();
-    }
-
-    @NonNull
-    @Override
-    public <T> Optional<T> getBody(@NonNull Argument<T> arg) {
-        if (arg == null) {
-            return Optional.empty();
-        }
-
-        final Class<T> type = arg.getType();
-        final MediaType contentType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
-
-        final MediaTypeCodec codec = codecRegistry.findCodec(contentType, type).orElse(null);
-        if (codec != null) {
-            if (ConvertibleValues.class == type) {
-                final Map map = codec.decode(Map.class, requestEvent.getBody());
-                ConvertibleValues result = ConvertibleValues.of(map);
-                return (Optional<T>) Optional.of(result);
-            } else {
-                final T value = codec.decode(arg, requestEvent.getBody());
-                return Optional.ofNullable(value);
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public ServletHttpRequest<APIGatewayProxyRequestEvent, ? super Object> getRequest() {
         return (ServletHttpRequest) this;
@@ -231,53 +180,5 @@ public final class ApiGatewayProxyServletRequest<B> implements
     @SuppressWarnings("unchecked")
     public ServletHttpResponse<APIGatewayProxyResponseEvent, ?> getResponse() {
         return response;
-    }
-
-    @Override
-    public void setConversionService(ConversionService conversionService) {
-        this.conversionService = conversionService;
-    }
-
-
-    private final class AwsHeaders implements HttpHeaders {
-
-        @Override
-        public List<String> getAll(CharSequence name) {
-            if (name != null && requestEvent.getMultiValueHeaders() != null) {
-                return requestEvent.getMultiValueHeaders().get(name.toString());
-            }
-            return Collections.emptyList();
-        }
-
-        @Nullable
-        @Override
-        public String get(CharSequence name) {
-            if (name != null && requestEvent.getHeaders() != null) {
-                return requestEvent.getHeaders().get(name.toString());
-            }
-            return null;
-        }
-
-        @Override
-        public Set<String> names() {
-            return new HashSet<>(requestEvent.getHeaders().keySet());
-        }
-
-        @Override
-        public Collection<List<String>> values() {
-            if (requestEvent.getMultiValueHeaders() == null) {
-                return Collections.emptyList();
-            }
-            return requestEvent.getMultiValueHeaders().values();
-        }
-
-        @Override
-        public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
-            if (name != null) {
-                Optional<String> v = Optional.ofNullable(requestEvent.getHeaders().get(name.toString()));
-                return v.flatMap(s -> conversionService.convert(s, conversionContext));
-            }
-            return Optional.empty();
-        }
     }
 }
