@@ -24,13 +24,10 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
-import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
-import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 
@@ -50,7 +47,7 @@ import java.util.Optional;
  * @param <RES> The response event type
  */
 @Internal
-public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
+public abstract class ApiGatewayServletRequest<T, REQ, RES> implements ServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
 
     protected Object body;
     protected ConversionService conversionService;
@@ -93,22 +90,6 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public URI getUri() {
         return uri;
-    }
-
-    @Override
-    public MutableHttpRequest<T> uri(URI uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    @Override
-    public MutableHttpRequest<T> cookie(Cookie cookie) {
-        return this;
-    }
-
-    @Override
-    public <T1> MutableHttpRequest<T1> body(T1 body) {
-        return (MutableHttpRequest<T1>) this;
     }
 
     @NonNull
@@ -196,10 +177,5 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     private boolean isFormSubmission(MediaType contentType) {
         return MediaType.MULTIPART_FORM_DATA_TYPE.equals(contentType);
-    }
-
-    @Override
-    public void setConversionService(ConversionService conversionService) {
-        this.conversionService = conversionService;
     }
 }

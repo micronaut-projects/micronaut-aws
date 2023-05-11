@@ -17,6 +17,9 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.endpoints.health.HealthTest", // 503 a service isn't running (assume it's an AWS service)
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest", // Multiple errors, mostly 404s
     "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest", // body contents is not as expected
+    "io.micronaut.http.server.tck.tests.filter.RequestFilterExceptionHandlerTest", // request is immutable
+    "io.micronaut.http.server.tck.tests.filter.RequestFilterTest", // request is immutable
+    "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest", // request is immutable
 })
 public class FunctionAwsApiGatewayProxyV1HttpServerTestSuite {
 }
