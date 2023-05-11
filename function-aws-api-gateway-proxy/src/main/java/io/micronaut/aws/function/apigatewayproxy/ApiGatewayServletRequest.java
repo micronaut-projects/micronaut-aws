@@ -28,6 +28,7 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
@@ -98,6 +99,16 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     public MutableHttpRequest<T> uri(URI uri) {
         this.uri = uri;
         return this;
+    }
+
+    @Override
+    public MutableHttpRequest<T> cookie(Cookie cookie) {
+        return this;
+    }
+
+    @Override
+    public <T1> MutableHttpRequest<T1> body(T1 body) {
+        return (MutableHttpRequest<T1>) this;
     }
 
     @NonNull

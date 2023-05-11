@@ -28,9 +28,7 @@ import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
-import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
-import io.micronaut.http.cookie.Cookie;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
@@ -79,16 +77,6 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         return new ByteArrayInputStream(
             body.getBytes(getCharacterEncoding())
         );
-    }
-
-    @Override
-    public MutableHttpRequest<B> cookie(Cookie cookie) {
-        return this;
-    }
-
-    @Override
-    public <T> MutableHttpRequest<T> body(T body) {
-        return null;
     }
 
     @Override
