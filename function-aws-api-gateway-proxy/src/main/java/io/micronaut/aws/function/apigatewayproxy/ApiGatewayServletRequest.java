@@ -15,19 +15,30 @@
  */
 package io.micronaut.aws.function.apigatewayproxy;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.ConvertibleValues;
+import io.micronaut.core.convert.value.MutableConvertibleValues;
+import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.type.Argument;
+import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.CodecException;
 import io.micronaut.http.codec.MediaTypeCodec;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import io.micronaut.http.cookie.Cookies;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
+import io.micronaut.servlet.http.ServletHttpRequest;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,11 +47,82 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     protected Object body;
     protected ConversionService conversionService;
+    protected final REQ requestEvent;
+    private URI uri;
+    private final HttpMethod httpMethod;
+    private Cookies cookies;
     private final MediaTypeCodecRegistry codecRegistry;
+    private MutableConvertibleValues<Object> attributes;
 
-    protected ApiGatewayServletRequest(ConversionService conversionService, MediaTypeCodecRegistry codecRegistry) {
+    protected ApiGatewayServletRequest(ConversionService conversionService, MediaTypeCodecRegistry codecRegistry, REQ request, URI uri, HttpMethod httpMethod) {
         this.conversionService = conversionService;
         this.codecRegistry = codecRegistry;
+        this.requestEvent = request;
+        this.uri = uri;
+        this.httpMethod = httpMethod;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public ServletHttpRequest<REQ, ? super Object> getRequest() {
+        return (ServletHttpRequest) this;
+    }
+
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return new BufferedReader(new InputStreamReader(getInputStream(), getCharacterEncoding()));
+    }
+
+    @Override
+    public REQ getNativeRequest() {
+        return requestEvent;
+    }
+
+    @Override
+    public HttpMethod getMethod() {
+        return httpMethod;
+    }
+
+    @Override
+    public URI getUri() {
+        return uri;
+    }
+
+    @Override
+    public MutableHttpRequest<T> uri(URI uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    @NonNull
+    @Override
+    public Cookies getCookies() {
+        Cookies cookies = this.cookies;
+        if (cookies == null) {
+            synchronized (this) { // double check
+                cookies = this.cookies;
+                if (cookies == null) {
+                    cookies = new AwsCookies(getPath(), getHeaders(), conversionService);
+                    this.cookies = cookies;
+                }
+            }
+        }
+        return cookies;
+    }
+
+    @Override
+    public MutableConvertibleValues<Object> getAttributes() {
+        MutableConvertibleValues<Object> attributes = this.attributes;
+        if (attributes == null) {
+            synchronized (this) { // double check
+                attributes = this.attributes;
+                if (attributes == null) {
+                    attributes = new MutableConvertibleValuesMap<>();
+                    this.attributes = attributes;
+                }
+            }
+        }
+        return attributes;
     }
 
     @Override
