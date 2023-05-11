@@ -15,7 +15,6 @@
  */
 package io.micronaut.aws.function.apigatewayproxy;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
@@ -42,6 +41,13 @@ import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Base class for all the versions of the Gateway events.
+ *
+ * @param <T> The body type
+ * @param <REQ> The request event type
+ * @param <RES> The response event type
+ */
 @Internal
 public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
 

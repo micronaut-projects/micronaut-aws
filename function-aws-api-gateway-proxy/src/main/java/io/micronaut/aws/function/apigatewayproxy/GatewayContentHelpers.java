@@ -23,9 +23,9 @@ import java.util.Set;
  * Helper methods for API Gateway content.
  */
 @Internal
-public class GatewayContentHelpers {
+public final class GatewayContentHelpers {
 
-    private final static Set<String> BINARY_CONTENT_TYPES = Set.of("application/octet-stream", "image/jpeg", "image/png", "image/gif");
+    private static final Set<String> BINARY_CONTENT_TYPES = Set.of("application/octet-stream", "image/jpeg", "image/png", "image/gif");
 
     private GatewayContentHelpers() {
     }
