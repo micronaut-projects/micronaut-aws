@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.aws.HandlerUtils;
 import io.micronaut.function.executor.FunctionInitializer;
 import io.micronaut.servlet.http.ServletHttpHandler;
 
@@ -37,6 +38,7 @@ public class ApiGatewayProxyEventFunction extends FunctionInitializer implements
 
     public ApiGatewayProxyEventFunction(ApplicationContext ctx) {
         super(ctx);
+        startThis(applicationContext);
         httpHandler = initializeHandler();
     }
 
@@ -50,6 +52,7 @@ public class ApiGatewayProxyEventFunction extends FunctionInitializer implements
 
     @Override
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent input, Context context) {
+        HandlerUtils.configureWithContext(this, context);
         return httpHandler.exchange(input, new APIGatewayV2HTTPResponse()).getResponse().getNativeResponse();
     }
 }
