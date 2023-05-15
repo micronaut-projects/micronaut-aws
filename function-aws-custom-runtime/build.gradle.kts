@@ -3,15 +3,16 @@ plugins {
 }
 
 dependencies {
-    annotationProcessor(mn.micronaut.graal)
     compileOnly(projects.micronautFunctionAwsApiProxy)
-
-    api(mn.micronaut.http.client)
     api(libs.managed.aws.lambda.events)
     api(projects.micronautAwsUa)
-    testImplementation(projects.micronautFunctionAwsApiProxy) {
-        exclude(group = "com.fasterxml.jackson.module", module = "jackson-module-afterburner")
-    }
-    testImplementation(mn.micronaut.inject.java)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.jackson.databind)
+    testImplementation(projects.micronautFunctionAws)
+
+    //Adding both causes
+    // Error instantiating bean of type  [io.micronaut.http.server.RouteExecutor]
+    // Message: Binder registry is not mutable
+    testImplementation(projects.micronautFunctionAwsApiProxy)
     testImplementation(mn.micronaut.http.server.netty)
 }

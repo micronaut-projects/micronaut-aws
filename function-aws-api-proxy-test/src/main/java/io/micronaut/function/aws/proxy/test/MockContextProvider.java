@@ -15,7 +15,6 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.NonNull;
 

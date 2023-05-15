@@ -21,9 +21,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -51,13 +50,16 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.logging.LogLevel;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -263,14 +265,17 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             log(LogLevel.TRACE, "HandlerResponseType and ResponseType are identical\n");
             return (ResponseType) handlerResponse;
 
-        } else if (responseType == APIGatewayProxyResponseEvent.class) {
+        } else if (responseType == APIGatewayProxyResponseEvent.class || responseType == APIGatewayV2HTTPResponse.class) {
             log(LogLevel.TRACE, "response type is APIGatewayProxyResponseEvent\n");
-            String json = serializeAsJsonString(handlerResponse);
-            if (json != null) {
-                return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
+            try {
+                byte[] json = json = serializeAsByteArray(handlerResponse);
+                if (json != null) {
+                    return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
+                }
+            } catch (IOException e) {
             }
             return (ResponseType) respond(HttpStatus.BAD_REQUEST,
-                    "Could not serialize " + handlerResponse.toString() + " as json",
+                "Could not serialize response as json".getBytes(),
                     MediaType.TEXT_PLAIN);
         }
         return null;
@@ -283,12 +288,13 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param contentType HTTP Header Content-Type value
      * @return a {@link APIGatewayProxyResponseEvent} populated with the supplied status, body and content type
      */
-    protected APIGatewayProxyResponseEvent respond(HttpStatus status, String body, String contentType) {
+    protected APIGatewayProxyResponseEvent respond(HttpStatus status, byte[] body, String contentType) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, contentType);
         response.setHeaders(headers);
-        response.setBody(body);
+        response.setIsBase64Encoded(true);
+        response.setBody(Base64.getEncoder().encodeToString(body));
         response.setStatusCode(status.getCode());
         logn(LogLevel.TRACE, "response: ", status.getCode(), " content type: ", headers.get(HttpHeaders.CONTENT_TYPE), " message ", body);
         return response;
@@ -299,17 +305,20 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      *
      * @param request Request obtained from the Runtime API
      * @return if the request and the handler type are the same, just return the request, if the request is of type {@link APIGatewayProxyRequestEvent} it attempts to build an object of type HandlerRequestType with the body of the request, else returns {@code null}
-     * @throws JsonProcessingException if underlying request body contains invalid content
-     * @throws JsonMappingException if the request body JSON structure does not match structure
+     * @throws IOException if underlying request body contains invalid content
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected HandlerRequestType createHandlerRequest(RequestType request) throws JsonProcessingException, JsonMappingException  {
+    protected HandlerRequestType createHandlerRequest(RequestType request) throws IOException {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
         } else if (request instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
             String content = apiGatewayProxyRequestEvent.getBody();
+            return valueFromContent(content, handlerRequestType);
+        } else if (request instanceof APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {
+            log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
+            String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         }
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
@@ -449,19 +458,15 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @return A JSON String of the supplied object
      */
     @Nullable
-    protected String serializeAsJsonString(Object value) {
+    protected byte[] serializeAsByteArray(Object value) throws IOException {
         if (value == null) {
             return null;
         }
         ApplicationContext applicationContext = getApplicationContext();
         if (applicationContext != null) {
-            if (applicationContext.containsBean(ObjectMapper.class)) {
-                ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
-                try {
-                    return objectMapper.writeValueAsString(value);
-                } catch (JsonProcessingException e) {
-                    return null;
-                }
+            if (applicationContext.containsBean(JsonMapper.class)) {
+                JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
+                return jsonMapper.writeValueAsBytes(value);
             }
         }
         return null;
@@ -473,22 +478,18 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param valueType Class Type to be read into
      * @param <T> Type to be read into
      * @return a new Class build from the JSON String
-     * @throws JsonProcessingException if underlying input contains invalid content
-     * @throws JsonMappingException if the input JSON structure does not match structure
+     * @throws IOException if underlying input contains invalid content
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected <T> T valueFromContent(String content, Class<T> valueType) throws JsonProcessingException, JsonMappingException {
+    protected <T> T valueFromContent(String content, Class<T> valueType) throws IOException {
         if (content == null) {
             return null;
         }
         ApplicationContext applicationContext = getApplicationContext();
-        if (applicationContext != null) {
-            if (applicationContext.containsBean(ObjectMapper.class)) {
-                ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
-
-                return objectMapper.readValue(content, valueType);
-            }
+        if (applicationContext != null && applicationContext.containsBean(JsonMapper.class)) {
+            JsonMapper objectMapper = applicationContext.getBean(JsonMapper.class);
+            return objectMapper.readValue(content, Argument.of(valueType));
         }
         return null;
     }

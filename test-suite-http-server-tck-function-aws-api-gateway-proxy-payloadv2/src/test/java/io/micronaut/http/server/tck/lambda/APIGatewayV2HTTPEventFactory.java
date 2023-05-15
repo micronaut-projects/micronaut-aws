@@ -16,11 +16,11 @@
 package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpVersion;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +29,7 @@ import java.util.Optional;
 /**
  * Factory for creating {@link APIGatewayV2HTTPEvent} v2 instances from {@link HttpRequest} instances.
  */
+@Internal
 public final class APIGatewayV2HTTPEventFactory {
 
     private APIGatewayV2HTTPEventFactory() {

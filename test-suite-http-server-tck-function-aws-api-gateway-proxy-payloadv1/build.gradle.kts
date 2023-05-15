@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    testImplementation(projects.micronautFunctionAwsApiGatewayProxy)
+    testImplementation(projects.micronautFunctionAwsApiProxy)
+    testImplementation(projects.micronautFunctionAwsApiProxyTest)
     testImplementation(mnReactor.micronaut.reactor)
-    testImplementation(projects.testSuiteUtilsLambda)
 }

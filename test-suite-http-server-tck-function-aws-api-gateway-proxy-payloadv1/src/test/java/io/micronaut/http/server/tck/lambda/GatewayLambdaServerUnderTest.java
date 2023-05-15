@@ -3,8 +3,9 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.function.apigatewayproxy.payload1.ApiGatewayProxyEventFunction;
-import io.micronaut.aws.function.apigatewayproxy.payload1.ApiGatewayProxyResponseEventAdapter;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
+import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyResponseEventAdapter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.ConversionService;
@@ -25,12 +26,14 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(GatewayLambdaServerUnderTest.class);
 
-    private ApiGatewayProxyEventFunction function;
+    private ApiGatewayProxyRequestEventFunction function;
     private Context lambdaContext;
 
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
-        this.function = new ApiGatewayProxyEventFunction(ApplicationContext
+        properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
+        properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
+        this.function = new ApiGatewayProxyRequestEventFunction(ApplicationContext
             .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
             .eagerInitConfiguration(true)
             .eagerInitSingletons(true)

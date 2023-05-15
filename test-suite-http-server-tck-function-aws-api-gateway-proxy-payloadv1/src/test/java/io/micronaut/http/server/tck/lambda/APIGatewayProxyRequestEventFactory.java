@@ -17,14 +17,13 @@ package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.type.Argument;
-import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.netty.cookies.NettyCookie;
 import io.netty.handler.codec.http.cookie.ClientCookieEncoder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,7 +39,8 @@ public final class APIGatewayProxyRequestEventFactory {
     private APIGatewayProxyRequestEventFactory() {
     }
 
-    public static APIGatewayProxyRequestEvent create(HttpRequest<?> request) {
+    @NonNull
+    public static APIGatewayProxyRequestEvent create(@NonNull HttpRequest<?> request) {
         Map<String, String> headers = new LinkedHashMap<>();
         Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
         request.getHeaders().forEach((name, values) -> {

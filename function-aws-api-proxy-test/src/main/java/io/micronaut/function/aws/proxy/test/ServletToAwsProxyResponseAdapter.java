@@ -15,17 +15,18 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 
 
+import io.micronaut.core.convert.ConversionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Writes the contents of a {@link AwsProxyResponse} to a {@link HttpServletResponse}.
+ * Writes the contents of a {@link APIGatewayV2HTTPResponse} to a {@link HttpServletResponse}.
  * @author Sergio del Amo
  */
 @DefaultImplementation(DefaultServletToAwsProxyResponseAdapter.class)
@@ -34,14 +35,15 @@ public interface ServletToAwsProxyResponseAdapter {
 
     /**
      *
-     * Writes the contents of a {@link AwsProxyResponse} to a {@link HttpServletResponse}.
+     * Writes the contents of a {@link APIGatewayV2HTTPResponse} to a {@link HttpServletResponse}.
      *
      * @param request Servlet Request
      * @param awsProxyResponse The AWS proxy response
      * @param response The Servlet Response
      * @throws IOException can be thrown while writing the response
      */
-    void handle(@NonNull HttpServletRequest request,
-                @NonNull AwsProxyResponse awsProxyResponse,
+    void handle(@NonNull ConversionService conversionService,
+                @NonNull HttpServletRequest request,
+                @NonNull APIGatewayV2HTTPResponse awsProxyResponse,
                 @NonNull HttpServletResponse response) throws IOException;
 }

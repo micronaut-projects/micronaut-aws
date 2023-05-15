@@ -15,12 +15,10 @@
  */
 package io.micronaut.function.aws.runtime;
 
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import io.micronaut.context.exceptions.ConfigurationException;
-import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 
 import java.net.MalformedURLException;
 
@@ -30,15 +28,11 @@ import java.net.MalformedURLException;
  * @author sdelamo
  * @since 2.0.0
  */
-public class MicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<AwsProxyRequest, AwsProxyResponse, AwsProxyRequest, AwsProxyResponse> {
+public class MicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent, APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     @Override
-    protected RequestHandler<AwsProxyRequest, AwsProxyResponse> createRequestHandler(String... args) {
-        try {
-            return new MicronautLambdaHandler(createApplicationContextBuilderWithArgs(args));
-        } catch (ContainerInitializationException e) {
-            throw new ConfigurationException("Exception thrown instantiating MicronautLambdaRuntimeHandler", e);
-        }
+    protected RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> createRequestHandler(String... args) {
+        return new ApiGatewayProxyRequestEventFunction(createApplicationContextBuilderWithArgs(args).build());
     }
 
     /**

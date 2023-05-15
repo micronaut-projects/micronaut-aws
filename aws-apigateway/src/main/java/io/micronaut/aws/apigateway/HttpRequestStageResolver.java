@@ -15,11 +15,12 @@
  */
 package io.micronaut.aws.apigateway;
 
-import com.amazonaws.serverless.proxy.RequestReader;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.servlet.http.ServletHttpRequest;
 import jakarta.inject.Singleton;
 
 import java.util.Optional;
@@ -29,14 +30,20 @@ import java.util.Optional;
  * @author Sergio del Amo
  * @since 3.10.0
  */
-@Requires(classes = {AwsProxyRequestContext.class, RequestReader.class, HttpRequest.class})
+@Requires(classes = {ServletHttpRequest.class, HttpRequest.class})
 @Singleton
 public class HttpRequestStageResolver implements StageResolver<HttpRequest<?>> {
     @Override
     @NonNull
     public Optional<String> resolve(@NonNull HttpRequest<?> request) {
-        return Optional.of(request)
-            .flatMap(req -> req.getAttribute(RequestReader.API_GATEWAY_CONTEXT_PROPERTY, AwsProxyRequestContext.class))
-            .map(AwsProxyRequestContext::getStage);
+        if (request instanceof ServletHttpRequest servletHttpRequest) {
+            Object nativeRequest = servletHttpRequest.getNativeRequest();
+            if (nativeRequest instanceof APIGatewayV2HTTPEvent aPIGatewayV2HTTPEvent) {
+                return Optional.of(aPIGatewayV2HTTPEvent.getRequestContext().getStage());
+            } else if (nativeRequest instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+                return Optional.of(apiGatewayProxyRequestEvent.getRequestContext().getStage());
+            }
+        }
+        return Optional.empty();
     }
 }

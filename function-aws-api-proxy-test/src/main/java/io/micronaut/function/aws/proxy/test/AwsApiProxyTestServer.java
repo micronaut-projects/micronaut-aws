@@ -15,16 +15,16 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.io.socket.SocketUtils;
-import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
+import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 import io.micronaut.http.server.HttpServerConfiguration;
 import io.micronaut.http.server.exceptions.HttpServerException;
 import io.micronaut.http.server.exceptions.ServerStartupException;
@@ -37,6 +37,9 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.BindException;
 import java.net.MalformedURLException;
@@ -176,38 +179,45 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     }
 
     private static class AwsProxyHandler extends AbstractHandler {
+        private static final Logger LOG = LoggerFactory.getLogger(AwsProxyHandler.class);
 
-        private final MicronautLambdaHandler lambdaHandler;
-
+        private final APIGatewayV2HTTPEventFunction lambdaHandler;
         private final ServletToAwsProxyRequestAdapter requestAdapter;
         private final ServletToAwsProxyResponseAdapter responseAdapter;
+        private final ConversionService conversionService;
         private final ContextProvider contextProvider;
 
-        public AwsProxyHandler(ApplicationContext proxyTestApplicationContext) throws ContainerInitializationException {
+        public AwsProxyHandler(ApplicationContext proxyTestApplicationContext) {
             ApplicationContextBuilder builder = ApplicationContext.builder();
             for (PropertySource propertySource : proxyTestApplicationContext.getEnvironment()
                     .getPropertySources()) {
                 builder = builder.propertySources(propertySource);
             }
-            lambdaHandler = new MicronautLambdaHandler(builder);
-
+            lambdaHandler = new APIGatewayV2HTTPEventFunction(builder.build());
             ApplicationContext ctx = lambdaHandler.getApplicationContext();
+            this.contextProvider = ctx.getBean(ContextProvider.class);
             this.requestAdapter = ctx.getBean(ServletToAwsProxyRequestAdapter.class);
             this.responseAdapter = ctx.getBean(ServletToAwsProxyResponseAdapter.class);
-            this.contextProvider = ctx.getBean(ContextProvider.class);
+            this.conversionService = ctx.getBean(ConversionService.class);
         }
 
         @Override
         public void destroy() {
             super.destroy();
-            this.lambdaHandler.close();
+            try {
+                this.lambdaHandler.close();
+            } catch (IOException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error("could not close Handler", e);
+                }
+            }
         }
 
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
                 throws IOException {
-            AwsProxyRequest awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
-            AwsProxyResponse awsProxyResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
-            responseAdapter.handle(request, awsProxyResponse, response);
+            APIGatewayV2HTTPEvent awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
+            APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
+            responseAdapter.handle(conversionService, request, apiGatewayV2HTTPResponse, response);
             baseRequest.setHandled(true);
         }
     }

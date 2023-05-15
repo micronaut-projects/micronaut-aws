@@ -15,13 +15,13 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.serverless.proxy.model.Headers;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.convert.ConversionService;
+import io.micronaut.function.aws.proxy.MultiValue;
 import io.micronaut.http.HttpMethod;
 
-import jakarta.annotation.Nonnull;
 import jakarta.inject.Singleton;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,10 +43,11 @@ import java.util.Map;
 @Singleton
 public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProxyResponseAdapter {
     @Override
-    public void handle(@NonNull HttpServletRequest request,
-                       @NonNull AwsProxyResponse awsProxyResponse,
+    public void handle(@NonNull ConversionService conversionService,
+                       @NonNull HttpServletRequest request,
+                       @NonNull APIGatewayV2HTTPResponse awsProxyResponse,
                        @NonNull HttpServletResponse response) throws IOException {
-        populateHeaders(awsProxyResponse, response);
+        populateHeaders(conversionService, awsProxyResponse, response);
         response.setStatus(awsProxyResponse.getStatusCode());
         HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
         if (httpMethod != HttpMethod.HEAD && httpMethod != HttpMethod.OPTIONS) {
@@ -63,18 +65,15 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
         }
     }
 
-    private void populateHeaders(@Nonnull AwsProxyResponse awsProxyResponse,
+    private void populateHeaders(@NonNull ConversionService conversionService,
+                                 @NonNull APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse,
                                  @NonNull HttpServletResponse response) {
-        Headers responseHeaders = awsProxyResponse.getMultiValueHeaders();
-        Map<String, String> headers = awsProxyResponse.getHeaders();
+        Map<String, String> singleHeaders = apiGatewayV2HTTPResponse.getHeaders();
+        Map<String, List<String>> multiValueHeaders = apiGatewayV2HTTPResponse.getMultiValueHeaders();
+        MultiValue entries = new MultiValue(conversionService, multiValueHeaders, singleHeaders);
 
-        responseHeaders.forEach((key, strings) -> {
-            for (String string : strings) {
-                response.addHeader(key, string);
-            }
-        });
-        if (headers != null) {
-            headers.forEach(response::addHeader);
+        for (String name: entries.names()) {
+            response.addHeader(name, String.join(",", entries.getAll(name)));
         }
     }
 
@@ -84,12 +83,12 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
      * @return The response's body bytes.
      */
     @Nullable
-    protected byte[] parseBodyAsBytes(AwsProxyResponse awsProxyResponse) {
+    protected byte[] parseBodyAsBytes(APIGatewayV2HTTPResponse awsProxyResponse) {
         String body = awsProxyResponse.getBody();
         if (body == null) {
             return null;
         }
-        return awsProxyResponse.isBase64Encoded() ? Base64.getMimeDecoder().decode(body) : body.getBytes(getBodyCharset());
+        return awsProxyResponse.getIsBase64Encoded() ? Base64.getMimeDecoder().decode(body) : body.getBytes(getBodyCharset());
     }
 
     /**
