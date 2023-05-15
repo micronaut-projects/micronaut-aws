@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -75,15 +76,19 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         }
     }
 
-        @Override
+    @Override
     public InputStream getInputStream() throws IOException {
+        return new ByteArrayInputStream(getBodyBytes());
+    }
+
+    @Override
+    public byte[] getBodyBytes() throws IOException {
         String body = requestEvent.getBody();
         if (StringUtils.isEmpty(body)) {
             throw new IOException("Empty Body");
         }
-        return new ByteArrayInputStream(
-            body.getBytes(getCharacterEncoding())
-        );
+        return requestEvent.getIsBase64Encoded() ?
+            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
     }
 
     @Override

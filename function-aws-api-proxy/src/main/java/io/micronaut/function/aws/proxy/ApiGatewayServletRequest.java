@@ -51,6 +51,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -88,11 +90,17 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         });
     }
 
+    public abstract byte[] getBodyBytes() throws IOException;
+
     @Nullable
     protected Object buildBody() {
         final MediaType contentType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
         if (isFormSubmission(contentType)) {
-            return getParameters().asMap();
+            try {
+                return new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
+            } catch (IOException e) {
+                throw new CodecException("Error decoding request body: " + e.getMessage(), e);
+            }
         } else {
             if (getContentLength() == 0) {
                 return null;

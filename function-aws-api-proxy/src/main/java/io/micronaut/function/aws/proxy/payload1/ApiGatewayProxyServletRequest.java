@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Base64;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
@@ -70,13 +71,18 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
 
     @Override
     public InputStream getInputStream() throws IOException {
+        return new ByteArrayInputStream(getBodyBytes());
+    }
+
+    @Override
+    public byte[] getBodyBytes() throws IOException {
         String body = requestEvent.getBody();
         if (StringUtils.isEmpty(body)) {
             throw new IOException("Empty Body");
         }
-        return new ByteArrayInputStream(
-            body.getBytes(getCharacterEncoding())
-        );
+        Boolean isBase64Encoded = requestEvent.getIsBase64Encoded();
+        return Boolean.TRUE.equals(isBase64Encoded) ?
+            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
     }
 
     @Override
