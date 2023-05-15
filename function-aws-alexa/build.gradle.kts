@@ -5,7 +5,6 @@ plugins {
 dependencies {
     annotationProcessor(mnValidation.micronaut.validation.processor)
     implementation(mnValidation.micronaut.validation)
-    implementation(mn.micronaut.runtime)
     implementation(projects.micronautFunctionAws)
     api(libs.managed.alexa.ask.sdk.lambda)
     api(projects.micronautAwsAlexa)

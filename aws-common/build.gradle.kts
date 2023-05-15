@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(mn.micronaut.runtime)
+    compileOnly(mn.micronaut.discovery.core)
     implementation(mn.micronaut.jackson.databind)
-    testImplementation(mn.micronaut.runtime)
+    testImplementation(mn.micronaut.discovery.core)
 }
