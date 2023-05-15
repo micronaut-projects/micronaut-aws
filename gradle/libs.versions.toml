@@ -1,8 +1,8 @@
 [versions]
-micronaut = "4.0.0-M2"
+micronaut = "4.0.0-M3"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.0.0-M3"
-groovy = "4.0.11"
+groovy = "4.0.12"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
@@ -16,10 +16,12 @@ micronaut-mongodb = '5.0.0-M1'
 micronaut-reactor = '3.0.0-M1'
 micronaut-security = '4.0.0-M3'
 micronaut-serde = '2.0.0-M5'
-micronaut-servlet = '4.0.0-M4'
+micronaut-servlet = '4.0.0-M5'
+micronaut-starter = "3.9.1"
 micronaut-views = '4.0.0-M1'
-micronaut-validation = "4.0.0-M5"
+micronaut-validation = "4.0.0-M6"
 micronaut-logging = "1.0.0-M1"
+
 managed-alexa-ask-sdk = "2.71.0"
 managed-aws-java-sdk-v1 = '1.12.468'
 managed-aws-java-sdk-v2 = '2.20.65'
@@ -27,7 +29,7 @@ managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.1'
 managed-aws-serverless-core = '1.9.3'
 managed-aws-cdk-lib='2.79.1'
-micronaut-starter = "3.9.1"
+
 slf4j = "2.0.7"
 servlet-api = "2.5"
 testcontainers = "1.18.1"
