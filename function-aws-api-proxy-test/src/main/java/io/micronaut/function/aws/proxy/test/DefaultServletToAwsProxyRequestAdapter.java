@@ -43,7 +43,6 @@ import java.util.Optional;
 @Singleton
 public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxyRequestAdapter {
 
-
     @Override
     @NonNull
     public APIGatewayV2HTTPEvent createAwsProxyRequest(@NonNull HttpServletRequest request) {
