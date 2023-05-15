@@ -29,9 +29,7 @@ import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
-import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
-import io.micronaut.http.cookie.Cookie;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 

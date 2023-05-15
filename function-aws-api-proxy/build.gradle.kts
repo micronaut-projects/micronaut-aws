@@ -10,3 +10,9 @@ dependencies {
     implementation(mn.micronaut.http.netty)
     testImplementation(mn.micronaut.jackson.databind)
 }
+
+spotless {
+    java {
+        targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java")
+    }
+}

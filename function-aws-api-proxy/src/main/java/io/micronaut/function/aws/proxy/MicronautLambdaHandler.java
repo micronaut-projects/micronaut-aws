@@ -44,7 +44,6 @@ public class MicronautLambdaHandler  implements RequestHandler<APIGatewayProxyRe
         this.delegate = new ApiGatewayProxyRequestEventFunction(applicationContext);
     }
 
-
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
         return delegate.handleRequest(input, context);

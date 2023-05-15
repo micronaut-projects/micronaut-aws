@@ -20,7 +20,6 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
-import io.micronaut.function.aws.HandlerUtils;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
 import jakarta.inject.Singleton;

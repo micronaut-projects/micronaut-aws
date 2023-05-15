@@ -51,8 +51,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -93,7 +91,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     public abstract byte[] getBodyBytes() throws IOException;
 
     @Nullable
-    protected Object buildBody() {
+    private Object buildBody() {
         final MediaType contentType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
         if (isFormSubmission(contentType)) {
             try {
