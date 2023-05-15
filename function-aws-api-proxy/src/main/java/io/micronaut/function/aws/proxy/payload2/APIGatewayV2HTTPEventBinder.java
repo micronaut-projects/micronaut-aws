@@ -21,6 +21,7 @@ import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
+import jakarta.inject.Singleton;
 
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ import java.util.Optional;
  * @since 4.0.0
  */
 @Internal
+@Singleton
 public class APIGatewayV2HTTPEventBinder implements TypedRequestArgumentBinder<APIGatewayV2HTTPEvent> {
 
     private static final Argument<APIGatewayV2HTTPEvent> TYPE = Argument.of(APIGatewayV2HTTPEvent.class);

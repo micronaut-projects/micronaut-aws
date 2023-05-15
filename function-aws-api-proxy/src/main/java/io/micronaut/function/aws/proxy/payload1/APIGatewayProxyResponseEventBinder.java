@@ -21,6 +21,7 @@ import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.bind.binders.TypedRequestArgumentBinder;
+import jakarta.inject.Singleton;
 
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ import java.util.Optional;
  * @author Tim Yates
  * @since 4.0.0
  */
+@Singleton
 @Internal
 public class APIGatewayProxyResponseEventBinder implements TypedRequestArgumentBinder<APIGatewayProxyResponseEvent> {
 
