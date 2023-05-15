@@ -3,8 +3,9 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.aws.function.apigatewayproxy.payload2.ApiGatewayProxyEventFunction;
-import io.micronaut.aws.function.apigatewayproxy.payload2.ApiGatewayProxyResponseEventAdapter;
+import io.micronaut.core.util.StringUtils;
+import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
+import io.micronaut.function.aws.proxy.payload2.ApiGatewayProxyResponseEventAdapter;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.ConversionService;
@@ -24,12 +25,14 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(GatewayLambdaServerUnderTest.class);
 
-    private ApiGatewayProxyEventFunction function;
+    private APIGatewayV2HTTPEventFunction function;
     private Context lambdaContext;
 
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
-        this.function = new ApiGatewayProxyEventFunction(ApplicationContext
+        properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
+        properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
+        this.function = new APIGatewayV2HTTPEventFunction(ApplicationContext
             .builder(Environment.FUNCTION, Environment.GOOGLE_COMPUTE, Environment.TEST)
             .properties(properties)
             .deduceEnvironment(false)

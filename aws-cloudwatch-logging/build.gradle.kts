@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(projects.micronautAwsSdkV2)
     api(libs.awssdk.cloudwatchlogs)
-    api(mn.micronaut.runtime)
     api(mnSerde.micronaut.serde.jackson)
 
     implementation(mnLogging.logback.classic)

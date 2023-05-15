@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package io.micronaut.function.aws.proxy;
 
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpHeaders;
 
 /**
@@ -25,7 +26,7 @@ import io.micronaut.http.HttpHeaders;
  * @since 3.10.6
  */
 @Internal
-final class HttpHeaderUtils {
+public final class HttpHeaderUtils {
 
     private HttpHeaderUtils() {
     }
@@ -219,6 +220,6 @@ final class HttpHeaderUtils {
         } else if (headerName.equalsIgnoreCase(HttpHeaders.X_AUTH_TOKEN)) {
             return HttpHeaders.X_AUTH_TOKEN;
         }
-        return headerName;
+        return StringUtils.capitalize(headerName.toLowerCase());
     }
 }

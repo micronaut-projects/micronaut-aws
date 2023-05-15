@@ -27,7 +27,6 @@ managed-aws-java-sdk-v1 = '1.12.468'
 managed-aws-java-sdk-v2 = '2.20.65'
 managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.1'
-managed-aws-serverless-core = '1.9.3'
 managed-aws-cdk-lib='2.79.1'
 
 micronaut-starter = "3.9.1"
@@ -109,7 +108,6 @@ managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', versi
 managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events'}
 
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
-managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }

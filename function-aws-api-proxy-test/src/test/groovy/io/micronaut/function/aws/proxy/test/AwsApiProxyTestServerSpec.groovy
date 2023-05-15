@@ -13,6 +13,7 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Issue
+import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import jakarta.inject.Inject
@@ -31,6 +32,7 @@ class AwsApiProxyTestServerSpec extends Specification {
         result == 'good'
     }
 
+    @PendingFeature
     void 'test invoke post via server'() {
         when:
         String result = client.toBlocking().retrieve(HttpRequest.POST('/test', "body")

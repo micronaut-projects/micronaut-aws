@@ -1,6 +1,5 @@
 package io.micronaut.function.aws.runtime
 
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
@@ -23,7 +22,6 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'CustomRuntimeForMicronautRequestHandlerSpec'])
         String serverUrl = "localhost:$embeddedServer.port"
 
-
         CustomAwsProxyEventMicronautLambdaRuntime customMicronautLambdaRuntime = new CustomAwsProxyEventMicronautLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
             customMicronautLambdaRuntime.run([] as String[])
@@ -36,7 +34,7 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            assert lambadaRuntimeApi.responses['123456'].body == '{"name":"Building Microservices","isbn":"XXX"}'
+            assert lambadaRuntimeApi.responses['123456'].body == '{"name":"Building Microservices","isbn":"XXX"}'.bytes.encodeBase64().toString()
         }
 
         cleanup:
@@ -60,7 +58,7 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
-        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body AwsProxyResponse proxyResponse) {
+        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body APIGatewayProxyResponseEvent proxyResponse) {
             responses[requestId] = proxyResponse
             return HttpResponse.accepted()
         }

@@ -1,10 +1,8 @@
 package io.micronaut.function.aws.runtime
 
-import com.amazonaws.serverless.proxy.model.ApiGatewayRequestIdentity
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest
-import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse
 import com.amazonaws.services.lambda.runtime.Context
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanProvider
 import io.micronaut.context.annotation.Any
@@ -80,30 +78,30 @@ class RuntimeApiSpec extends Specification {
     @Controller("/")
     static class MockLambadaRuntimeApi {
 
-        Map<String, AwsProxyResponse> responses = [:]
-        List<AwsProxyRequest> requests = [createRequest("123456"), createRequest("78910")]
+        Map<String, APIGatewayProxyResponseEvent> responses = [:]
+        List<APIGatewayProxyRequestEvent> requests = [createRequest("123456"), createRequest("78910")]
         int count = 0;
 
         @Get("/2018-06-01/runtime/invocation/next")
-        HttpResponse<AwsProxyRequest> next() {
-            AwsProxyRequest req = requests.get(count++)
+        HttpResponse<APIGatewayProxyRequestEvent> next() {
+            APIGatewayProxyRequestEvent req = requests.get(count++)
             HttpResponse.ok(req)
                     .header(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_AWS_REQUEST_ID, req.getRequestContext().getRequestId())
         }
 
-        static AwsProxyRequest createRequest(String requestId) {
-            AwsProxyRequest req = new AwsProxyRequest()
+        static APIGatewayProxyRequestEvent createRequest(String requestId) {
+            APIGatewayProxyRequestEvent req = new APIGatewayProxyRequestEvent()
             req.setPath('/hello/world')
             req.setHttpMethod("GET")
-            AwsProxyRequestContext context = new AwsProxyRequestContext()
+            APIGatewayProxyRequestEvent.ProxyRequestContext context = new APIGatewayProxyRequestEvent.ProxyRequestContext()
             context.setRequestId(requestId)
-            context.setIdentity(new ApiGatewayRequestIdentity())
+            context.setIdentity(new APIGatewayProxyRequestEvent.RequestIdentity())
             req.setRequestContext(context)
             req
         }
 
         @Post("/2018-06-01/runtime/invocation/{requestId}/response")
-        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body AwsProxyResponse proxyResponse) {
+        HttpResponse<?> response(@PathVariable("requestId") String requestId, @Body APIGatewayProxyResponseEvent proxyResponse) {
             responses[requestId] = proxyResponse
             return HttpResponse.accepted()
         }

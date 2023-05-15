@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,67 +15,38 @@
  */
 package io.micronaut.function.aws.proxy;
 
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
-import io.micronaut.context.ApplicationContextProvider;
-import io.micronaut.core.annotation.Introspected;
-
-import java.io.Closeable;
+import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
+import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 
 /**
- * AWS {@link RequestHandler} for {@link AwsProxyRequest} and {@link AwsProxyResponse}.
- * @author sdelamo
- * @since 2.0.0
+ * @deprecated Use {@link ApiGatewayProxyRequestEventFunction} or {@link APIGatewayV2HTTPEventFunction} instead.
  */
-@Introspected
-public class MicronautLambdaHandler implements RequestHandler<AwsProxyRequest, AwsProxyResponse>, ApplicationContextProvider, Closeable {
+@Deprecated(forRemoval = true)
+public class MicronautLambdaHandler  implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    protected final MicronautLambdaContainerHandler handler;
+    private final ApiGatewayProxyRequestEventFunction delegate;
 
-    /**
-     * Constructor.
-     * @throws ContainerInitializationException thrown intializing {@link MicronautLambdaHandler}
-     */
-    public MicronautLambdaHandler() throws ContainerInitializationException {
-        this.handler = new MicronautLambdaContainerHandler();
+    public MicronautLambdaHandler() {
+        this.delegate = new ApiGatewayProxyRequestEventFunction();
     }
 
-    /**
-     * Constructor.
-     * @param applicationContextBuilder Application Context Builder
-     * @throws ContainerInitializationException thrown initializing {@link MicronautLambdaHandler}
-     */
-    public MicronautLambdaHandler(ApplicationContextBuilder applicationContextBuilder) throws ContainerInitializationException {
-        this.handler = new MicronautLambdaContainerHandler(applicationContextBuilder);
+    public MicronautLambdaHandler(ApplicationContextBuilder applicationContextBuilder) {
+        this.delegate = new ApiGatewayProxyRequestEventFunction(applicationContextBuilder.build());
     }
 
-    /**
-     * Constructor.
-     * @param applicationContext Application Context (must be started already)
-     * @throws ContainerInitializationException thrown initializing {@link MicronautLambdaHandler}
-     */
-    public MicronautLambdaHandler(ApplicationContext applicationContext) throws ContainerInitializationException {
-        this.handler = new MicronautLambdaContainerHandler(applicationContext);
+    public MicronautLambdaHandler(ApplicationContext applicationContext) {
+        this.delegate = new ApiGatewayProxyRequestEventFunction(applicationContext);
     }
+
 
     @Override
-    public AwsProxyResponse handleRequest(AwsProxyRequest input, Context context) {
-
-        return handler.proxy(input, context);
-    }
-
-    @Override
-    public ApplicationContext getApplicationContext() {
-        return this.handler.getApplicationContext();
-    }
-
-    @Override
-    public void close() {
-        this.getApplicationContext().close();
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+        return delegate.handleRequest(input, context);
     }
 }
