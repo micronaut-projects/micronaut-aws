@@ -37,6 +37,7 @@ public interface ServletToAwsProxyResponseAdapter {
      *
      * Writes the contents of a {@link APIGatewayV2HTTPResponse} to a {@link HttpServletResponse}.
      *
+     * @param conversionService The conversion service
      * @param request Servlet Request
      * @param awsProxyResponse The AWS proxy response
      * @param response The Servlet Response

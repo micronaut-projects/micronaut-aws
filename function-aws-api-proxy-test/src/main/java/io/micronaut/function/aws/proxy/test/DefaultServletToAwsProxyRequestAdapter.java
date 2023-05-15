@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,11 +54,11 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
                 Map<String, String> result = new HashMap<>();
                 Enumeration<String> headerNames = request.getHeaderNames();
 
-                while(headerNames.hasMoreElements()) {
+                while (headerNames.hasMoreElements()) {
                     String headerName = headerNames.nextElement();
                     Enumeration<String> headerValues = request.getHeaders(headerName);
                     List<String> values = new ArrayList<>();
-                    while(headerValues.hasMoreElements()) {
+                    while (headerValues.hasMoreElements()) {
                         values.add(headerValues.nextElement());
                     }
                     result.put(headerName, String.join(",", values));
@@ -70,7 +70,7 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
             public List<String> getCookies() {
                 Enumeration<String> headerValues = request.getHeaders(HttpHeaders.COOKIE);
                 List<String> cookies = new ArrayList<>();
-                while(headerValues.hasMoreElements()) {
+                while (headerValues.hasMoreElements()) {
                     cookies.add(headerValues.nextElement());
                 }
                 return cookies;

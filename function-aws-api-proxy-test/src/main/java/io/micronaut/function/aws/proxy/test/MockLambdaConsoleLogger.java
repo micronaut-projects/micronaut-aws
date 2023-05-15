@@ -20,6 +20,9 @@ import io.micronaut.core.annotation.Internal;
 
 import java.nio.charset.Charset;
 
+/**
+ * Mock Lambda console logger.
+ */
 @Internal
 public class MockLambdaConsoleLogger implements LambdaLogger {
 
@@ -27,7 +30,6 @@ public class MockLambdaConsoleLogger implements LambdaLogger {
     public void log(String s) {
         System.out.println(s);
     }
-
 
     @Override
     public void log(byte[] bytes) {
