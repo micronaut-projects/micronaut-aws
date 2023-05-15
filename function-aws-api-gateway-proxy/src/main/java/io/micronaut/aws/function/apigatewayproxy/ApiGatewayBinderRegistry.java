@@ -27,6 +27,7 @@ import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.http.bind.DefaultRequestBinderRegistry;
+import io.micronaut.http.bind.binders.DefaultBodyAnnotationBinder;
 import io.micronaut.http.bind.binders.RequestArgumentBinder;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.ServletBinderRegistry;
@@ -37,20 +38,23 @@ import java.util.List;
 /**
  * Implementation of {@link ServletBinderRegistry} for AWS Gateway Proxy Events.
  *
+ * @param <T> The type
+ *
  * @author Tim Yates
  * @since 4.0.0
  */
 @Singleton
 @Internal
 @Replaces(DefaultRequestBinderRegistry.class)
-class ApiGatewayBinderRegistry extends ServletBinderRegistry {
+class ApiGatewayBinderRegistry<T> extends ServletBinderRegistry<T> {
 
     ApiGatewayBinderRegistry(
         MediaTypeCodecRegistry mediaTypeCodecRegistry,
         ConversionService conversionService,
-        List<RequestArgumentBinder> binders
+        List<RequestArgumentBinder> binders,
+        DefaultBodyAnnotationBinder<T> defaultBodyAnnotationBinder
     ) {
-        super(mediaTypeCodecRegistry, conversionService, binders);
+        super(mediaTypeCodecRegistry, conversionService, binders, defaultBodyAnnotationBinder);
         // v1
         this.byType.put(APIGatewayProxyRequestEvent.class, new APIGatewayProxyRequestEventBinder());
         this.byType.put(APIGatewayProxyResponseEvent.class, new APIGatewayProxyResponseEventBinder());
