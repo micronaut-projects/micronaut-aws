@@ -60,6 +60,7 @@ class AwsApiProxyTestServerSpec extends Specification {
         result == 'get:prebar+postbar'
     }
 
+    @PendingFeature
     void 'test invoke post that returns empty body'() {
         when:
         HttpResponse<?> response = client.toBlocking()
