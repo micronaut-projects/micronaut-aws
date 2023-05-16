@@ -128,9 +128,6 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
     @Override
     @SuppressWarnings("unchecked")
     public <T> MutableHttpResponse<T> body(@Nullable T body) {
-        if (body instanceof CharSequence && getContentType().isEmpty()) {
-            contentType(MediaType.TEXT_PLAIN_TYPE);
-        }
         this.bodyObject = (B) body;
         return (MutableHttpResponse<T>) this;
     }
