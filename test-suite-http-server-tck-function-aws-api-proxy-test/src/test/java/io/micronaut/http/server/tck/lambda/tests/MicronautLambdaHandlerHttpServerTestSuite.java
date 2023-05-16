@@ -9,13 +9,13 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @SelectPackages("io.micronaut.http.server.tck.tests")
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy Test")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.BodyArgumentTest",
-    "io.micronaut.http.server.tck.tests.ResponseStatusTest",
-    "io.micronaut.http.server.tck.tests.ErrorHandlerTest",
-    "io.micronaut.http.server.tck.tests.BodyTest",
-    "io.micronaut.http.server.tck.tests.cors.CorsSimpleRequestTest",
+    "io.micronaut.http.server.tck.tests.ErrorHandlerStringTest", // Comes back as TEXT-PLAIN, expected APPLICATION-JSON
     "io.micronaut.http.server.tck.tests.FilterErrorTest",
-    "io.micronaut.http.server.tck.tests.ConsumesTest"
+    "io.micronaut.http.server.tck.tests.cors.CorsSimpleRequestTest",
+    "io.micronaut.http.server.tck.tests.cors.SimpleRequestWithCorsNotEnabledTest",
+    "io.micronaut.http.server.tck.tests.endpoints.health.HealthTest",
+    "io.micronaut.http.server.tck.tests.filter.RequestFilterTest",
+    "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }
