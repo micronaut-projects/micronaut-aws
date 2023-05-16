@@ -183,5 +183,30 @@
     "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
     "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
     "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Constructor io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
   }
 ]

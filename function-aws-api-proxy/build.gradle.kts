@@ -17,3 +17,8 @@ spotless {
         targetExclude("**/io/micronaut/function/aws/proxy/QueryStringDecoder.java")
     }
 }
+
+// TODO: Remove this once we have replacements for security/MicronautLambdaAuthenticationFetcher.java etc...
+micronautBuild {
+    binaryCompatibility.enabled.set(false)
+}
