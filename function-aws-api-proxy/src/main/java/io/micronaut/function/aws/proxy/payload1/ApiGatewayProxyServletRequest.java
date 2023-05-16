@@ -17,13 +17,12 @@ package io.micronaut.function.aws.proxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
-import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.convert.ConversionService;
-import io.micronaut.core.convert.value.MutableConvertibleValues;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MutableHttpHeaders;
@@ -32,9 +31,7 @@ import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.Base64;
 
@@ -49,7 +46,6 @@ import java.util.Base64;
 public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletRequest<B, APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ApiGatewayProxyServletResponse<?> response;
-    private MutableConvertibleValues<Object> attributes;
 
     public ApiGatewayProxyServletRequest(
         APIGatewayProxyRequestEvent requestEvent,
@@ -70,19 +66,13 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     }
 
     @Override
-    public InputStream getInputStream() throws IOException {
-        return new ByteArrayInputStream(getBodyBytes());
-    }
-
-    @Override
     public byte[] getBodyBytes() throws IOException {
         String body = requestEvent.getBody();
         if (StringUtils.isEmpty(body)) {
             throw new IOException("Empty Body");
         }
         Boolean isBase64Encoded = requestEvent.getIsBase64Encoded();
-        return Boolean.TRUE.equals(isBase64Encoded) ?
-            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
+        return Boolean.TRUE.equals(isBase64Encoded) ? Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
     }
 
     @Override

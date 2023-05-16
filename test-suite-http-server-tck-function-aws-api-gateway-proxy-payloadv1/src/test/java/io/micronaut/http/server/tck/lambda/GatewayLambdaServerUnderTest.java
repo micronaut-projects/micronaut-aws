@@ -40,19 +40,21 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
             .properties(properties)
             .deduceEnvironment(false)
             .start());
-
     }
 
     @Override
     public <I, O> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType) {
         APIGatewayProxyRequestEvent requestEvent = APIGatewayProxyRequestEventFactory.create(request);
         APIGatewayProxyResponseEvent responseEvent = function.handleRequest(requestEvent, lambdaContext);
-        HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
+        HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter<>(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Response status: {}", response.getStatus());
         }
         if (response.getStatus().getCode() >= 400) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Response body: {}", response.getBody(String.class));
+            }
             throw new HttpClientResponseException("error " + response.getStatus().getReason() + " (" + response.getStatus().getCode() + ")", response);
         }
         return response;

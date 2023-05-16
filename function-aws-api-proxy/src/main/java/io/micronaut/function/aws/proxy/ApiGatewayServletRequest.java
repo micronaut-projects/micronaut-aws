@@ -46,6 +46,7 @@ import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.web.router.RouteMatch;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,6 +76,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private final MediaTypeCodecRegistry codecRegistry;
     private MutableConvertibleValues<Object> attributes;
     private Supplier<Optional<T>> body;
+    private T overriddenBody;
 
     protected ApiGatewayServletRequest(ConversionService conversionService, MediaTypeCodecRegistry codecRegistry, REQ request, URI uri, HttpMethod httpMethod) {
         this.conversionService = conversionService;
@@ -89,6 +91,11 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     }
 
     public abstract byte[] getBodyBytes() throws IOException;
+
+    @Override
+    public InputStream getInputStream() throws IOException {
+        return new ByteArrayInputStream(getBodyBytes());
+    }
 
     @Nullable
     private Object buildBody() {
@@ -231,6 +238,9 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @NonNull
     @Override
     public Optional<T> getBody() {
+        if (overriddenBody != null) {
+            return Optional.of(overriddenBody);
+        }
         return this.body.get();
     }
 
@@ -246,20 +256,20 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     @Override
     public MutableHttpRequest<T> cookie(Cookie cookie) {
-        //TODO
-        return (MutableHttpRequest<T>) this;
+        return this;
     }
 
     @Override
     public MutableHttpRequest<T> uri(URI uri) {
-        //TODO
-        return (MutableHttpRequest<T>) this;
+        this.uri = uri;
+        return this;
     }
 
     @Override
-    public <T> MutableHttpRequest<T> body(T body) {
-        //TODO
-        return (MutableHttpRequest<T>) this;
+    @SuppressWarnings("unchecked")
+    public <B> MutableHttpRequest<B> body(B body) {
+        this.overriddenBody = (T) body;
+        return (MutableHttpRequest<B>) this;
     }
 
     @Override

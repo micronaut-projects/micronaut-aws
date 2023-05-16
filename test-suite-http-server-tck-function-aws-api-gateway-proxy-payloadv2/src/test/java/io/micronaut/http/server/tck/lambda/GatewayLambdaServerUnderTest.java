@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 import io.micronaut.function.aws.proxy.payload2.ApiGatewayProxyResponseEventAdapter;
 import io.micronaut.context.ApplicationContext;
@@ -33,7 +34,7 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
         properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
         properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
         this.function = new APIGatewayV2HTTPEventFunction(ApplicationContext
-            .builder(Environment.FUNCTION, Environment.GOOGLE_COMPUTE, Environment.TEST)
+            .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
             .properties(properties)
             .deduceEnvironment(false)
             .start());
@@ -43,12 +44,15 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
     public <I, O> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType) {
         APIGatewayV2HTTPEvent requestEvent = APIGatewayV2HTTPEventFactory.create(request);
         APIGatewayV2HTTPResponse responseEvent = function.handleRequest(requestEvent, lambdaContext);
-        HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
+        HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter<>(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Response status: {}", response.getStatus());
         }
         if (response.getStatus().getCode() >= 400) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Response body: {}", response.getBody(String.class));
+            }
             throw new HttpClientResponseException("error " + response.getStatus().getReason() + " (" + response.getStatus().getCode() + ")", response);
         }
         return response;

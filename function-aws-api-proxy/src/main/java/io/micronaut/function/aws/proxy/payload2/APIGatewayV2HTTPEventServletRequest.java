@@ -17,14 +17,14 @@ package io.micronaut.function.aws.proxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
-import io.micronaut.function.aws.proxy.MapCollapseUtils;
-import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MutableHttpHeaders;
@@ -33,9 +33,7 @@ import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Base64;
@@ -72,11 +70,6 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         } catch (IllegalArgumentException e) {
             return HttpMethod.CUSTOM;
         }
-    }
-
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return new ByteArrayInputStream(getBodyBytes());
     }
 
     @Override
@@ -124,5 +117,4 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     public ServletHttpResponse<APIGatewayV2HTTPResponse, ?> getResponse() {
         return response;
     }
-
 }
