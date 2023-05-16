@@ -44,6 +44,7 @@ import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.web.router.RouteMatch;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -52,6 +53,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -72,18 +75,27 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     protected final REQ requestEvent;
     private URI uri;
     private final HttpMethod httpMethod;
+    private final Logger log;
     private Cookies cookies;
     private final MediaTypeCodecRegistry codecRegistry;
     private MutableConvertibleValues<Object> attributes;
     private Supplier<Optional<T>> body;
     private T overriddenBody;
 
-    protected ApiGatewayServletRequest(ConversionService conversionService, MediaTypeCodecRegistry codecRegistry, REQ request, URI uri, HttpMethod httpMethod) {
+    protected ApiGatewayServletRequest(
+        ConversionService conversionService,
+        MediaTypeCodecRegistry codecRegistry,
+        REQ request,
+        URI uri,
+        HttpMethod httpMethod,
+        Logger log
+    ) {
         this.conversionService = conversionService;
         this.codecRegistry = codecRegistry;
         this.requestEvent = request;
         this.uri = uri;
         this.httpMethod = httpMethod;
+        this.log = log;
         this.body = SupplierUtil.memoizedNonEmpty(() -> {
             T built = (T) buildBody();
             return Optional.ofNullable(built);
@@ -101,11 +113,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private Object buildBody() {
         final MediaType contentType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
         if (isFormSubmission(contentType)) {
-            try {
-                return new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
-            } catch (IOException e) {
-                throw new CodecException("Error decoding request body: " + e.getMessage(), e);
-            }
+            return getParameters().asMap();
         } else {
             if (getContentLength() == 0) {
                 return null;
@@ -270,6 +278,23 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     public <B> MutableHttpRequest<B> body(B body) {
         this.overriddenBody = (T) body;
         return (MutableHttpRequest<B>) this;
+    }
+
+    /**
+     * Parse the parameters from the body.
+     * @param queryStringParameters Any query string parameters
+     * @return The parameters
+     */
+    protected MultiValueMutableHttpParameters getParametersFromBody(Map<String, String> queryStringParameters) {
+        Map<String, List<String>> parameters = null;
+        try {
+            parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
+        } catch (IOException ignore) {
+            if (log.isDebugEnabled()) {
+                log.debug("Error decoding form data: " + ignore.getMessage(), ignore);
+            }
+        }
+        return new MultiValueMutableHttpParameters(conversionService, parameters, queryStringParameters);
     }
 
     @Override

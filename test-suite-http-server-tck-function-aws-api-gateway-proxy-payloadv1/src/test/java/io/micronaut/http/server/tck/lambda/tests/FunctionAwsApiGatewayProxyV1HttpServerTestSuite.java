@@ -1,7 +1,6 @@
 package io.micronaut.http.server.tck.lambda.tests;
 
 import org.junit.platform.suite.api.ExcludeClassNamePatterns;
-import org.junit.platform.suite.api.IncludeClassNamePatterns;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
@@ -15,9 +14,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest", // Multiple errors, mostly 404s
     "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest", // body contents is not as expected
-})
-@IncludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.BodyTest"
 })
 public class FunctionAwsApiGatewayProxyV1HttpServerTestSuite {
 }

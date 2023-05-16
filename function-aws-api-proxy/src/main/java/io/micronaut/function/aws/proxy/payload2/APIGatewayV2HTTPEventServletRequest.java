@@ -27,11 +27,14 @@ import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -52,6 +55,8 @@ import java.util.Map;
 @Internal
 public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServletRequest<B, APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(APIGatewayV2HTTPEventServletRequest.class);
+
     private final APIGatewayV2HTTPResponseServletResponse<Object> response;
 
     public APIGatewayV2HTTPEventServletRequest(
@@ -60,7 +65,14 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService
     ) {
-        super(conversionService, codecRegistry, requestEvent, URI.create(requestEvent.getRequestContext().getHttp().getPath()), parseMethod(requestEvent));
+        super(
+            conversionService,
+            codecRegistry,
+            requestEvent,
+            URI.create(requestEvent.getRequestContext().getHttp().getPath()),
+            parseMethod(requestEvent),
+            LOG
+        );
         this.response = response;
     }
 
@@ -109,7 +121,12 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
     @Override
     public MutableHttpParameters getParameters() {
-        return new MultiValueMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
+        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+        if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(mediaType) || MediaType.MULTIPART_FORM_DATA_TYPE.equals(mediaType)) {
+            return getParametersFromBody(requestEvent.getQueryStringParameters());
+        } else {
+            return new MultiValueMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
+        }
     }
 
     @Override

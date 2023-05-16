@@ -25,11 +25,14 @@ import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,6 +48,8 @@ import java.util.Base64;
 @Internal
 public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletRequest<B, APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ApiGatewayProxyServletRequest.class);
+
     private final ApiGatewayProxyServletResponse<?> response;
 
     public ApiGatewayProxyServletRequest(
@@ -53,7 +58,14 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService
     ) {
-        super(conversionService, codecRegistry, requestEvent, URI.create(requestEvent.getPath()), parseMethod(requestEvent));
+        super(
+            conversionService,
+            codecRegistry,
+            requestEvent,
+            URI.create(requestEvent.getPath()),
+            parseMethod(requestEvent),
+            LOG
+        );
         this.response = response;
     }
 
@@ -82,7 +94,12 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
 
     @Override
     public MutableHttpParameters getParameters() {
-        return new MultiValueMutableHttpParameters(conversionService, requestEvent.getMultiValueQueryStringParameters(), requestEvent.getQueryStringParameters());
+        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+        if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(mediaType) || MediaType.MULTIPART_FORM_DATA_TYPE.equals(mediaType)) {
+            return getParametersFromBody(requestEvent.getQueryStringParameters());
+        } else {
+            return new MultiValueMutableHttpParameters(conversionService, requestEvent.getMultiValueQueryStringParameters(), requestEvent.getQueryStringParameters());
+        }
     }
 
     @Override
