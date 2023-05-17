@@ -68,7 +68,7 @@ jobs:
       - name: "🔎 Run static analysis"
         if: env.SONAR_TOKEN != ''
         run: |
-          ./gradlew sonar --stacktrace
+          ./gradlew sonar
 
       - name: "📊 Publish Test Report"
         if: always()
