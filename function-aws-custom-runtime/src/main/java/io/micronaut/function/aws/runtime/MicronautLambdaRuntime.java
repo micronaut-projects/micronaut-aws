@@ -20,8 +20,6 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 
-import java.net.MalformedURLException;
-
 /**
  * Main entry for AWS API proxy with Micronaut.
  *
@@ -39,12 +37,7 @@ public class MicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<APIGa
      *
      * @param args Command Line args
      */
-    public static void main(String[] args) {
-        try {
-            new MicronautLambdaRuntime().run(args);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws Exception {
+        new MicronautLambdaRuntime().run(args);
     }
 }
