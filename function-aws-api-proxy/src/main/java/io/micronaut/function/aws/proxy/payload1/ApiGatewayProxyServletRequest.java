@@ -103,7 +103,6 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ServletHttpResponse<APIGatewayProxyResponseEvent, ?> getResponse() {
         return response;
     }

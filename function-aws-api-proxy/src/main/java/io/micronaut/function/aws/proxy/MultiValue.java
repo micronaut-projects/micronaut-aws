@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -42,43 +40,23 @@ public class MultiValue implements ConvertibleMultiValues<String> {
 
     public MultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
         this.conversionService = conversionService;
-        if (multi == null && single == null) {
-            values = Collections.emptyMap();
-        } else {
-            values = new HashMap<>();
-            if (multi != null) {
-                for (String name : multi.keySet()) {
-                    values.computeIfAbsent(name, s -> new ArrayList<>());
-                    values.get(name).addAll(multi.get(name));
-                }
-            }
-            if (CollectionUtils.isNotEmpty(single)) {
-                for (String name : single.keySet()) {
-                    values.computeIfAbsent(name, s -> new ArrayList<>());
-                    String value = single.get(name);
-                    if (!values.get(name).contains(value)) {
-                        values.get(name).add(value);
-                    }
-                }
-            }
-        }
+        this.values = MapCollapseUtils.collapse(multi, single);
     }
 
     @Override
     public List<String> getAll(CharSequence name) {
-        String headerName = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
-        return getAllIgnoreCase(headerName)
+        return getAllIgnoreCase(name.toString())
             .orElse(Collections.emptyList());
     }
 
     @Nullable
     @Override
     public String get(CharSequence name) {
-        List<String> values = getAll(name);
-        if (CollectionUtils.isEmpty(values)) {
+        List<String> valuesForName = getAll(name);
+        if (CollectionUtils.isEmpty(valuesForName)) {
             return null;
         }
-        return values.get(0);
+        return valuesForName.get(0);
     }
 
     @Override
@@ -109,12 +87,9 @@ public class MultiValue implements ConvertibleMultiValues<String> {
         if (l != null) {
             return Optional.of(l);
         }
-        for (String k : values.keySet()) {
-            if (k.equalsIgnoreCase(headerName)) {
-                l = values.get(k);
-                if (l != null) {
-                    return Optional.of(l);
-                }
+        for (var entry: values.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(headerName)) {
+                return Optional.of(entry.getValue());
             }
         }
         return Optional.empty();

@@ -113,8 +113,8 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
             return Collections.emptyMap();
         }
         Map<String, List<String>> output = new HashMap<>();
-        for (String key : input.keySet()) {
-            output.put(key, splitCommaSeparatedValue(input.get(key)));
+        for (var entry: input.entrySet()) {
+            output.put(entry.getKey(), splitCommaSeparatedValue(entry.getValue()));
         }
         return output;
     }
@@ -130,7 +130,6 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ServletHttpResponse<APIGatewayV2HTTPResponse, ?> getResponse() {
         return response;
     }

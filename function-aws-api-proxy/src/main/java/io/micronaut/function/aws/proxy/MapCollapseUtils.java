@@ -72,24 +72,21 @@ public final class MapCollapseUtils {
     public static Map<String, List<String>> collapse(Map<String, List<String>> multi, Map<String, String> single) {
         if (multi == null && single == null) {
             return Collections.emptyMap();
-        } else {
-            Map<String, List<String>> values = new HashMap<>();
-            if (multi != null) {
-                for (String name : multi.keySet()) {
-                    values.computeIfAbsent(name, s -> new ArrayList<>());
-                    values.get(name).addAll(multi.get(name));
-                }
-            }
-            if (CollectionUtils.isNotEmpty(single)) {
-                for (String name : single.keySet()) {
-                    if (values.containsKey(name)) {
-                        continue;
-                    }
-                    values.computeIfAbsent(name, s -> new ArrayList<>());
-                    values.get(name).add(single.get(name));
-                }
-            }
-            return values;
         }
+        Map<String, List<String>> values = new HashMap<>();
+        if (multi != null) {
+            for (var entry: multi.entrySet()) {
+                values.computeIfAbsent(entry.getKey(), s -> new ArrayList<>()).addAll(entry.getValue());
+            }
+        }
+        if (CollectionUtils.isNotEmpty(single)) {
+            for (var entry: single.entrySet()) {
+                List<String> strings = values.computeIfAbsent(entry.getKey(), s -> new ArrayList<>());
+                if (!strings.contains(entry.getValue())) {
+                    strings.add(entry.getValue());
+                }
+            }
+        }
+        return values;
     }
 }

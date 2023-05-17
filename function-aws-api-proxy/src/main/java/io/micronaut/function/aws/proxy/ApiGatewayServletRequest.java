@@ -67,6 +67,7 @@ import java.util.function.Supplier;
  * @param <RES> The response event type
  */
 @Internal
+@SuppressWarnings("java:S119") // More descriptive generics are better here
 public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
 
     private static final Set<Class<?>> RAW_BODY_TYPES = CollectionUtils.setOf(String.class, byte[].class, ByteBuffer.class, InputStream.class);
@@ -178,7 +179,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         }
     }
 
-    private Object decode(InputStream inputStream, MediaTypeCodec codec) throws IOException {
+    private Object decode(InputStream inputStream, MediaTypeCodec codec) {
         return codec.decode(Argument.of(byte[].class), inputStream);
     }
 
@@ -187,7 +188,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public ServletHttpRequest<REQ, ? super Object> getRequest() {
         return (ServletHttpRequest) this;
     }
@@ -215,32 +216,32 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @NonNull
     @Override
     public Cookies getCookies() {
-        Cookies cookies = this.cookies;
-        if (cookies == null) {
+        Cookies localCookies = this.cookies;
+        if (localCookies == null) {
             synchronized (this) { // double check
-                cookies = this.cookies;
-                if (cookies == null) {
-                    cookies = new AwsCookies(getPath(), getHeaders(), conversionService);
-                    this.cookies = cookies;
+                localCookies = this.cookies;
+                if (localCookies == null) {
+                    localCookies = new AwsCookies(getPath(), getHeaders(), conversionService);
+                    this.cookies = localCookies;
                 }
             }
         }
-        return cookies;
+        return localCookies;
     }
 
     @Override
     public MutableConvertibleValues<Object> getAttributes() {
-        MutableConvertibleValues<Object> attributes = this.attributes;
-        if (attributes == null) {
+        MutableConvertibleValues<Object> localAttributes = this.attributes;
+        if (localAttributes == null) {
             synchronized (this) { // double check
-                attributes = this.attributes;
-                if (attributes == null) {
-                    attributes = new MutableConvertibleValuesMap<>();
-                    this.attributes = attributes;
+                localAttributes = this.attributes;
+                if (localAttributes == null) {
+                    localAttributes = new MutableConvertibleValuesMap<>();
+                    this.attributes = localAttributes;
                 }
             }
         }
-        return attributes;
+        return localAttributes;
     }
 
     @NonNull
