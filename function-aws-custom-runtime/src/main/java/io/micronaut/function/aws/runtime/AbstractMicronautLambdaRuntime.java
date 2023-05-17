@@ -101,6 +101,7 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
                 com.amazonaws.services.lambda.runtime.events.SQSEvent.class
         }
 )
+@SuppressWarnings("java:S119") // More descriptive generics are better here
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
     @Nullable
@@ -134,7 +135,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     public void run(String... args) throws MalformedURLException {
         final URL runtimeApiURL = lookupRuntimeApiEndpoint();
         logn(LogLevel.DEBUG, "runtime endpoint: ", runtimeApiURL);
-        final Predicate<URL> loopUntil = (url) -> true;
+        final Predicate<URL> loopUntil = url -> true;
         startRuntimeApiEventLoop(runtimeApiURL, loopUntil, args);
     }
 
@@ -224,11 +225,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     @Nullable
     protected Object createEnvironmentHandler() {
-        String handler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
-        logn(LogLevel.DEBUG, "Handler: ", handler);
-        if (handler != null) {
-            Optional<Class<?>> handlerClassOptional = parseHandlerClass(handler);
-            logn(LogLevel.WARN, "No handler Class parsed for ", handler);
+        String localHandler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
+        logn(LogLevel.DEBUG, "Handler: ", localHandler);
+        if (localHandler != null) {
+            Optional<Class<?>> handlerClassOptional = parseHandlerClass(localHandler);
+            logn(LogLevel.WARN, "No handler Class parsed for ", localHandler);
             if (handlerClassOptional.isPresent()) {
                 log(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection\n");
                 Class handlerClass = handlerClassOptional.get();
@@ -268,15 +269,13 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         } else if (responseType == APIGatewayProxyResponseEvent.class || responseType == APIGatewayV2HTTPResponse.class) {
             log(LogLevel.TRACE, "response type is APIGatewayProxyResponseEvent\n");
             try {
-                byte[] json = json = serializeAsByteArray(handlerResponse);
+                byte[] json = serializeAsByteArray(handlerResponse);
                 if (json != null) {
                     return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
                 }
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
-            return (ResponseType) respond(HttpStatus.BAD_REQUEST,
-                "Could not serialize response as json".getBytes(),
-                    MediaType.TEXT_PLAIN);
+            return (ResponseType) respond(HttpStatus.BAD_REQUEST, "Could not serialize response as json".getBytes(), MediaType.TEXT_PLAIN);
         }
         return null;
     }
@@ -390,7 +389,6 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                             logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", e.getMessage(), sw);
                             try {
                                 blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, e.getMessage(), null, null)));
-
                             } catch (Throwable e2) {
                                 // swallow, nothing we can do...
                             }
@@ -463,11 +461,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             return null;
         }
         ApplicationContext applicationContext = getApplicationContext();
-        if (applicationContext != null) {
-            if (applicationContext.containsBean(JsonMapper.class)) {
-                JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
-                return jsonMapper.writeValueAsBytes(value);
-            }
+        if (applicationContext != null && applicationContext.containsBean(JsonMapper.class)) {
+            JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
+            return jsonMapper.writeValueAsBytes(value);
         }
         return null;
     }
@@ -569,6 +565,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         return new URL("http://" + runtimeApiEndpoint);
     }
 
+    @SuppressWarnings("rawtypes")
     private Class initTypeArgument(int index) {
         final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
                 getClass(),
