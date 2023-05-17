@@ -290,9 +290,9 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         Map<String, List<String>> parameters = null;
         try {
             parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
-        } catch (IOException ignore) {
+        } catch (IOException ex) {
             if (log.isDebugEnabled()) {
-                log.debug("Error decoding form data: " + ignore.getMessage(), ignore);
+                log.debug("Error decoding form data: " + ex.getMessage(), ex);
             }
         }
         return new MultiValueMutableHttpParameters(conversionService, parameters, queryStringParameters);

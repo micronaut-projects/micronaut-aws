@@ -43,8 +43,8 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
     private final MutableConvertibleValues<Object> attributes = new MutableConvertibleValuesMap<>();
     private Map<String, Cookie> cookies = new ConcurrentHashMap<>(2);
 
-    private int status = HttpStatus.OK.getCode();
-    private String reason = HttpStatus.OK.getReason();
+    private Integer status;
+    private String reason;
 
     public ApiGatewayProxyResponseEventAdapter(APIGatewayProxyResponseEvent event, ConversionService conversionService) {
         this.event = event;
@@ -94,16 +94,22 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public int code() {
+        if (status != null) {
+            return status;
+        }
         return getStatus().getCode();
     }
 
     @Override
     public String reason() {
+        if (reason != null) {
+            return reason;
+        }
         return getStatus().getReason();
     }
 
     @Override
     public HttpStatus getStatus() {
-        return HttpStatus.valueOf(event.getStatusCode());
+        return HttpStatus.valueOf(status == null ? event.getStatusCode() : status);
     }
 }

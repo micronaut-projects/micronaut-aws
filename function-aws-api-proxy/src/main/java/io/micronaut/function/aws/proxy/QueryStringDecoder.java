@@ -49,7 +49,7 @@ import java.util.Map;
  * limits the maximum number of decoded key-value parameter pairs, up to {@literal 1024} by
  * default, and you can configure it when you construct the decoder by passing an additional
  * integer parameter.
- *
+ * <p>
  * Note: Forked from Netty core.
  */
 @Internal

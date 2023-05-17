@@ -35,7 +35,6 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Base64;
@@ -83,12 +82,12 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
+    public OutputStream getOutputStream() {
         return body;
     }
 
     @Override
-    public BufferedWriter getWriter() throws IOException {
+    public BufferedWriter getWriter() {
         return new BufferedWriter(new OutputStreamWriter(body, getCharacterEncoding()));
     }
 

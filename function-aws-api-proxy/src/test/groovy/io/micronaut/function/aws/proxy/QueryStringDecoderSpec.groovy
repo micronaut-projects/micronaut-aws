@@ -8,8 +8,7 @@ class QueryStringDecoderSpec extends Specification {
             // "Caffé" but instead of putting the literal E-acute in the
             // source file, we directly use the UTF-8 encoding so as to
             // not rely on the platform's default encoding (not portable).
-            new byte[]{'C', 'a', 'f', 'f', (byte) 0xC3, (byte) 0xA9},
-            "UTF-8");
+            new byte[]{'C', 'a', 'f', 'f', (byte) 0xC3, (byte) 0xA9}, "UTF-8")
 
     void "basic"() {
         when:
@@ -69,8 +68,8 @@ class QueryStringDecoderSpec extends Specification {
 
     void "#expected is the same as #actual"() {
         when:
-        QueryStringDecoder ed = new QueryStringDecoder(expected);
-        QueryStringDecoder ad = new QueryStringDecoder(actual);
+        QueryStringDecoder ed = new QueryStringDecoder(expected)
+        QueryStringDecoder ad = new QueryStringDecoder(actual)
 
         then:
         ed.path() == ad.path()

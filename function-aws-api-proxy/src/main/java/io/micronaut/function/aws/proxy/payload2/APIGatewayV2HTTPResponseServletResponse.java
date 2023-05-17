@@ -26,7 +26,6 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
@@ -36,7 +35,6 @@ import io.netty.handler.codec.http.cookie.ServerCookieEncoder;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Base64;
@@ -82,12 +80,12 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
+    public OutputStream getOutputStream() {
         return body;
     }
 
     @Override
-    public BufferedWriter getWriter() throws IOException {
+    public BufferedWriter getWriter() {
         return new BufferedWriter(new OutputStreamWriter(body, getCharacterEncoding()));
     }
 
