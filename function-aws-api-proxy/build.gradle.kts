@@ -9,6 +9,7 @@ dependencies {
     api(mnServlet.micronaut.servlet.core)
     implementation(mnReactor.micronaut.reactor)
     implementation(mn.micronaut.http.netty)
+    compileOnly(mnSecurity.micronaut.security)
     testImplementation(mn.micronaut.jackson.databind)
 }
 
@@ -18,7 +19,3 @@ spotless {
     }
 }
 
-// TODO: Remove this once we have replacements for security/MicronautLambdaAuthenticationFetcher.java etc...
-micronautBuild {
-    binaryCompatibility.enabled.set(false)
-}
