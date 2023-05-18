@@ -122,7 +122,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     @Override
     public MutableHttpParameters getParameters() {
         MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
-        if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(mediaType) || MediaType.MULTIPART_FORM_DATA_TYPE.equals(mediaType)) {
+        if (isFormSubmission(mediaType)) {
             return getParametersFromBody(requestEvent.getQueryStringParameters());
         } else {
             return new MultiValueMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());

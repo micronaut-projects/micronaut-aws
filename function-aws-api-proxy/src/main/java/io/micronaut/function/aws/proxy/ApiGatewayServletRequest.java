@@ -259,7 +259,12 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         return getBody().map(t -> conversionService.convertRequired(t, arg));
     }
 
-    private boolean isFormSubmission(MediaType contentType) {
+    /**
+     *
+     * @param contentType Content Type
+     * @return returns true if the content type is either application/x-www-form-urlencoded or multipart/form-data
+     */
+    protected boolean isFormSubmission(MediaType contentType) {
         return MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(contentType) || MediaType.MULTIPART_FORM_DATA_TYPE.equals(contentType);
     }
 
