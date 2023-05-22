@@ -20,6 +20,7 @@ import com.amazonaws.serverless.proxy.ResponseWriter;
 import com.amazonaws.serverless.proxy.internal.testutils.Timer;
 import com.amazonaws.serverless.proxy.model.RequestSource;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.amazonaws.serverless.proxy.model.Headers;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.io.Writable;
@@ -37,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +69,7 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
             Context lambdaContext) throws InvalidResponseObjectException {
         Timer.start(TIMER_NAME);
         AwsProxyResponse awsProxyResponse = containerResponse.getAwsResponse();
+
         final Map<String, Cookie> cookies = containerResponse.getAllCookies();
         if (CollectionUtils.isNotEmpty(cookies)) {
             final List<String> values = ServerCookieEncoder.LAX.encode(cookies.values());
@@ -110,8 +113,21 @@ public class MicronautResponseWriter extends ResponseWriter<MicronautAwsProxyRes
                     status + " " +
                             Response.Status.fromStatusCode(status.getCode()).getReasonPhrase());
         }
-
+        awsProxyResponse.setHeaders(getHeaders(awsProxyResponse));
         Timer.stop(TIMER_NAME);
         return awsProxyResponse;
+    }
+
+    private static Map<String, String> getHeaders(AwsProxyResponse awsProxyResponse) {
+        Headers multiValueHeaders = awsProxyResponse.getMultiValueHeaders();
+        Map<String, String> headers = new LinkedHashMap<>();
+        for (Map.Entry<String, List<String>> entry : multiValueHeaders.entrySet()) {
+      Optional.ofNullable(entry.getValue())
+          .filter(not(List::isEmpty))
+          .map(List::stream)
+          .flatMap(Stream::findFirst)
+          .ifPresent(value -> headers.put(entry.getKey(), value));
+        }
+        return headers;
     }
 }
