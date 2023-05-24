@@ -1,7 +1,7 @@
 [versions]
-micronaut = "4.0.0-M2"
+micronaut = "4.0.0-M5"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.0-M1"
+micronaut-test = "4.0.0-M4"
 groovy = "4.0.11"
 spock = "2.3-groovy-4.0"
 
@@ -16,7 +16,7 @@ micronaut-mongodb = '5.0.0-M1'
 micronaut-security = '4.0.0-M1'
 micronaut-serde = '2.0.0-M1'
 micronaut-views = '4.0.0-M1'
-micronaut-validation = "4.0.0-M2"
+micronaut-validation = "4.0.0-M7"
 
 managed-alexa-ask-sdk = "2.71.0"
 managed-aws-java-sdk-v1 = '1.12.474'
@@ -37,7 +37,7 @@ graal = "22.3.2"
 kotlin = "1.8.21"
 
 # Micronaut
-micronaut-gradle-plugin = "4.0.0-M1"
+micronaut-gradle-plugin = "4.0.0-M4"
 
 [libraries]
 # Core
