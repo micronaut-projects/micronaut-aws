@@ -40,6 +40,9 @@ kotlin = "1.8.21"
 micronaut-gradle-plugin = "4.0.0-M1"
 
 [libraries]
+# Core
+micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
+
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
