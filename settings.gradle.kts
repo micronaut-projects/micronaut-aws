@@ -44,7 +44,6 @@ include("test-suite-graal")
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     useStandardizedProjectNames.set(true)
 
-    addSnapshotRepository()
     importMicronautCatalog()
     importMicronautCatalog("micronaut-discovery-client")
     importMicronautCatalog("micronaut-groovy")
