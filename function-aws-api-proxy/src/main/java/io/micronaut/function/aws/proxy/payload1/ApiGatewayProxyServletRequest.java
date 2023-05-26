@@ -29,6 +29,7 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
@@ -56,7 +57,8 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         APIGatewayProxyRequestEvent requestEvent,
         ApiGatewayProxyServletResponse<Object> response,
         MediaTypeCodecRegistry codecRegistry,
-        ConversionService conversionService
+        ConversionService conversionService,
+        BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
@@ -64,7 +66,8 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
             requestEvent,
             URI.create(requestEvent.getPath()),
             parseMethod(requestEvent),
-            LOG
+            LOG,
+            bodyBuilder
         );
         this.response = response;
     }

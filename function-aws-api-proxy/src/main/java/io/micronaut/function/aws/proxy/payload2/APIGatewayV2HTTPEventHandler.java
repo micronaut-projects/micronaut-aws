@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
 import jakarta.inject.Singleton;
@@ -47,7 +48,8 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(getApplicationContext().getConversionService()),
             getMediaTypeCodecRegistry(),
-            applicationContext.getConversionService()
+            applicationContext.getConversionService(),
+            applicationContext.getBean(BodyBuilder.class)
         );
     }
 }
