@@ -7,7 +7,7 @@ plugins {
 val micronautVersion: String by project
 
 dependencies {
-    kaptTest(mn.micronaut.inject.java)
+    kaptTest(mn.micronaut.inject.kotlin)
     testAnnotationProcessor(platform(mn.micronaut.core.bom))
     testImplementation(libs.junit.jupiter.api)
     testImplementation(mnTest.micronaut.test.junit5)
