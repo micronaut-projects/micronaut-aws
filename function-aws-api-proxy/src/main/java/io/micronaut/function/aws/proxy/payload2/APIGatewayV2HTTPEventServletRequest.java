@@ -24,7 +24,7 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
-import io.micronaut.function.aws.proxy.MultiValueMutableHttpParameters;
+import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
@@ -128,7 +128,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         if (isFormSubmission(mediaType)) {
             return getParametersFromBody(requestEvent.getQueryStringParameters());
         } else {
-            return new MultiValueMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
+            return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
         }
     }
 

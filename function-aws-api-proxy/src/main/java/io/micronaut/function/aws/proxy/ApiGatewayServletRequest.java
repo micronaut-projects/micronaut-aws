@@ -204,7 +204,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      * @param queryStringParameters Any query string parameters
      * @return The parameters
      */
-    protected MultiValueMutableHttpParameters getParametersFromBody(Map<String, String> queryStringParameters) {
+    protected MapListOfStringAndMapStringMutableHttpParameters getParametersFromBody(Map<String, String> queryStringParameters) {
         Map<String, List<String>> parameters = null;
         try {
             parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
@@ -213,7 +213,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
                 log.debug("Error decoding form data: " + ex.getMessage(), ex);
             }
         }
-        return new MultiValueMutableHttpParameters(conversionService, parameters, queryStringParameters);
+        return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, parameters, queryStringParameters);
     }
 
     @Override

@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.proxy;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.http.MutableHttpParameters;
@@ -28,13 +29,14 @@ import java.util.Set;
 /**
  * Implementation of {@link MutableHttpParameters} that uses a {@link MutableMapListOfStringAndMapStringConvertibleMultiValue} internally.
  */
-public class MultiValueMutableHttpParameters  implements MutableHttpParameters {
+@Internal
+public final class MapListOfStringAndMapStringMutableHttpParameters implements MutableHttpParameters {
 
     private final MutableMapListOfStringAndMapStringConvertibleMultiValue values;
 
-    public MultiValueMutableHttpParameters(ConversionService conversionService,
-                                           Map<String, List<String>> multiValue,
-                                           Map<String, String> single) {
+    public MapListOfStringAndMapStringMutableHttpParameters(ConversionService conversionService,
+                                                     Map<String, List<String>> multiValue,
+                                                     Map<String, String> single) {
         this.values = new MutableMapListOfStringAndMapStringConvertibleMultiValue(conversionService, multiValue, single);
     }
 
