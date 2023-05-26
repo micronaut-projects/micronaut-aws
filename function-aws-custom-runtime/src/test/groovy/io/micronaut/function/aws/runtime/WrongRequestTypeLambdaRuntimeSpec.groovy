@@ -10,13 +10,11 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
 class WrongRequestTypeLambdaRuntimeSpec extends Specification {
 
-    @PendingFeature(reason = "https://github.com/micronaut-projects/micronaut-core/pull/9243")
     void "invocation error endpoint of runtime api is called if wrong type is received"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'WrongRequestTypeLambdaRuntimeSpec'])

@@ -1,5 +1,8 @@
 introduction: Introduction
 releases: Release History
+mnawsfour:
+  title: Micronaut AWS 4.0
+  mnawsfourBreaks: Breaking Changes in Micronaut AWS 4.0
 mnawsthree:
   title: Micronaut AWS 3.0
   mnawsthreeBreaks: Breaking Changes in Micronaut AWS 3.0
@@ -55,13 +58,8 @@ lambda:
   mdc: MDC Logging
   lambdaTutorials: Micronaut AWS Lambda Tutorials
   lambdaTesting: Testing Lambda Handlers
-  objectmapperconfiguration: Object Mapper Configuration
   lambdaStreamHandler: MicronautRequestStreamHandler
   lambdafunctionclient: Invoke Lambda with @FunctionClient
-cdk:
-  title: AWS CDK
-  micronautFunctionFile: MicronautFunctionFile
-  micronautFunction: MicronautFunction
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration

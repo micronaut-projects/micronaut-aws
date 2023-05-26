@@ -1,0 +1,9 @@
+== CDK Moved
+
+`io.micronaut.aws:micronaut-aws-cdk` has been moved to the new coordinates `io.micronaut.starter:micronaut-starter-aws-cdk`.
+
+== micronaut-function-aws-api-proxy changes
+
+`micronaut-function-aws-api-proxy` no longer depends on https://github.com/awslabs/aws-serverless-java-container[AWS Serverless Java container]. Most of the modules classes have been deleted or changed.
+
+If you use `io.micronaut.function.aws.proxy.MicronautLambdaHandler` as your AWS Lambda handler, change it to api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] for https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0] orapi:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[] for payload format 2.0.

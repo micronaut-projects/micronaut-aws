@@ -4,14 +4,12 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.function.aws.MicronautRequestHandler
 import io.micronaut.http.HttpHeaders
 import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
 class TracingHeaderPropagationSysPropertySpec extends Specification {
 
     @RestoreSystemProperties
-    @PendingFeature(reason = "https://github.com/micronaut-projects/micronaut-core/pull/9243")
     void "Tracing header propagated as system property"() {
         given:
         String traceHeader = 'Root=1-5759e988-bd862e3fe1be46a994272793;Sampled=1'

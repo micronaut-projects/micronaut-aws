@@ -22,7 +22,6 @@ import spock.util.concurrent.PollingConditions
 
 class RuntimeApiSpec extends Specification {
 
-    @PendingFeature(reason = "https://github.com/micronaut-projects/micronaut-core/pull/9243")
     void "test runtime API loop"() {
         given:
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'RuntimeApiSpec'])

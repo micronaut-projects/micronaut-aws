@@ -1,0 +1,4 @@
+== What's new with Micronaut AWS 4
+
+`micronaut-function-aws-api-proxy` modules supports both Payload format version v1 and v2. For functions of type `Application`, use the handler api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] for https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0] and
+api:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[] for 2.0.

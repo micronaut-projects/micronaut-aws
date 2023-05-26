@@ -28,7 +28,7 @@ import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
  * @deprecated Use {@link ApiGatewayProxyRequestEventFunction} or {@link APIGatewayV2HTTPEventFunction} instead.
  */
 @Deprecated(forRemoval = true)
-public class MicronautLambdaHandler  implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class MicronautLambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ApiGatewayProxyRequestEventFunction delegate;
 
