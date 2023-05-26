@@ -19,7 +19,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
-import io.micronaut.function.aws.proxy.MultiValue;
+import io.micronaut.function.aws.proxy.MutableMapListOfStringAndMapStringConvertibleMultiValue;
 import io.micronaut.http.HttpMethod;
 
 import jakarta.inject.Singleton;
@@ -70,7 +70,7 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
                                  @NonNull HttpServletResponse response) {
         Map<String, String> singleHeaders = apiGatewayV2HTTPResponse.getHeaders();
         Map<String, List<String>> multiValueHeaders = apiGatewayV2HTTPResponse.getMultiValueHeaders();
-        MultiValue entries = new MultiValue(conversionService, multiValueHeaders, singleHeaders);
+        MutableMapListOfStringAndMapStringConvertibleMultiValue entries = new MutableMapListOfStringAndMapStringConvertibleMultiValue(conversionService, multiValueHeaders, singleHeaders);
 
         for (String name: entries.names()) {
             response.addHeader(name, String.join(",", entries.getAll(name)));

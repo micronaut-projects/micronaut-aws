@@ -26,16 +26,16 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Implementation of {@link MutableHttpParameters} that uses a {@link MutableMultiValue} internally.
+ * Implementation of {@link MutableHttpParameters} that uses a {@link MutableMapListOfStringAndMapStringConvertibleMultiValue} internally.
  */
 public class MultiValueMutableHttpParameters  implements MutableHttpParameters {
 
-    private final MutableMultiValue values;
+    private final MutableMapListOfStringAndMapStringConvertibleMultiValue values;
 
     public MultiValueMutableHttpParameters(ConversionService conversionService,
                                            Map<String, List<String>> multiValue,
                                            Map<String, String> single) {
-        this.values = new MutableMultiValue(conversionService, multiValue, single);
+        this.values = new MutableMapListOfStringAndMapStringConvertibleMultiValue(conversionService, multiValue, single);
     }
 
     @Override

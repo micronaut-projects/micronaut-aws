@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A mutable version of {@link MultiValue}.
+ * A mutable version of {@link MapListOfStringAndMapStringConvertibleMultiValue}.
  */
-public class MutableMultiValue extends MultiValue {
+public class MutableMapListOfStringAndMapStringConvertibleMultiValue extends MapListOfStringAndMapStringConvertibleMultiValue {
 
-    public MutableMultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
+    public MutableMapListOfStringAndMapStringConvertibleMultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
         super(conversionService, multi, single);
     }
 

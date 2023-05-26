@@ -3,11 +3,11 @@ package io.micronaut.function.aws.proxy
 import io.micronaut.core.convert.ConversionService
 import spock.lang.Specification
 
-class MultiValueSpec extends Specification {
+class MapListOfStringAndMapStringConvertibleMultiValueSpec extends Specification {
 
     void "works with empty maps"() {
         given:
-        def map = new MultiValue(ConversionService.SHARED, [:], [:])
+        def map = new MapListOfStringAndMapStringConvertibleMultiValue(ConversionService.SHARED, [:], [:])
 
         expect:
         map.empty
@@ -16,7 +16,7 @@ class MultiValueSpec extends Specification {
     void "works with just multi maps"() {
         given:
         def multi = ['foo': ['bar', 'baz']]
-        def map = new MultiValue(ConversionService.SHARED, multi, [:])
+        def map = new MapListOfStringAndMapStringConvertibleMultiValue(ConversionService.SHARED, multi, [:])
 
         expect:
         map.size() == 1
@@ -28,7 +28,7 @@ class MultiValueSpec extends Specification {
     void "works with single maps"() {
         given:
         def single = ['foo': 'bar']
-        def map = new MultiValue(ConversionService.SHARED, [:], single)
+        def map = new MapListOfStringAndMapStringConvertibleMultiValue(ConversionService.SHARED, [:], single)
 
         expect:
         map.size() == 1
@@ -41,7 +41,7 @@ class MultiValueSpec extends Specification {
         given:
         def multi = ['foo': ['bar', 'baz']]
         def single = ['foo': 'qux']
-        def map = new MultiValue(ConversionService.SHARED, multi, single)
+        def map = new MapListOfStringAndMapStringConvertibleMultiValue(ConversionService.SHARED, multi, single)
 
         expect:
         map.size() == 1

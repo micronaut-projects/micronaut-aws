@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.proxy;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ArgumentConversionContext;
@@ -31,14 +32,17 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- *
+ * Implementations of {@link ConvertibleMultiValues} which takes a Map with key string and value List of strings and another map with key string and value string to support classes such as {@link com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent}.
+ * @author Sergio del Amo
+ * @since 3.0.0
  */
-public class MultiValue implements ConvertibleMultiValues<String> {
+@Internal
+class MapListOfStringAndMapStringConvertibleMultiValue implements ConvertibleMultiValues<String> {
 
     protected Map<String, List<String>> values;
     protected ConversionService conversionService;
 
-    public MultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
+    MapListOfStringAndMapStringConvertibleMultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {
         this.conversionService = conversionService;
         this.values = MapCollapseUtils.collapse(multi, single);
     }
