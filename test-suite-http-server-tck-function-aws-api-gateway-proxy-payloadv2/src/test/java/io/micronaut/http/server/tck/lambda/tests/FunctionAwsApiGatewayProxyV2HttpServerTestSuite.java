@@ -12,8 +12,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v2 Event model")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest", // Multiple errors, mostly 404s
-    "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest", // body contents is not as expected
     "io.micronaut.http.server.tck.tests.constraintshandler.ControllerConstraintHandlerTest" // Broken in servlet
 })
 public class FunctionAwsApiGatewayProxyV2HttpServerTestSuite {
