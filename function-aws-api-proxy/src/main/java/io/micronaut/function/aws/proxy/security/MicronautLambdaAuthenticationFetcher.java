@@ -43,9 +43,9 @@ import java.util.Optional;
 @Singleton
 @Requires(classes = AuthenticationFetcher.class)
 public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher {
-    public static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
+    private static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
     private static final String CLAIM_SUB = "sub";
-    public static final String CLAIMS = "claims";
+    private static final String CLAIMS = "claims";
 
     @Override
     public Publisher<Authentication> fetchAuthentication(HttpRequest<?> request) {
@@ -81,7 +81,7 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
         Map<String, Object> authorizer = proxyRequestContext.getAuthorizer();
         if (authorizer.containsKey(CLAIM_SUB)) {
             return fetchAuthentication(authorizer);
-        } else if(authorizer.containsKey(CLAIMS)) {
+        } else if (authorizer.containsKey(CLAIMS)) {
             Object object = authorizer.get(CLAIMS);
             if (object instanceof Map) {
                 return fetchAuthentication((Map<String, Object>) object);
