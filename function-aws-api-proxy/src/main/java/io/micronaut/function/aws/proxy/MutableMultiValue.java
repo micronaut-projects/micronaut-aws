@@ -35,7 +35,7 @@ public class MutableMultiValue extends MultiValue {
      * @param valuesToBeAdded
      */
     public void add(CharSequence name, List<CharSequence> valuesToBeAdded) {
-        String key = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
+        String key = name.toString();
         values.computeIfAbsent(key, s -> new ArrayList<>());
         values.get(key).addAll(valuesToBeAdded.stream().map(CharSequence::toString).toList());
     }
@@ -46,7 +46,7 @@ public class MutableMultiValue extends MultiValue {
      * @param value
      */
     public void add(CharSequence name, CharSequence value) {
-        String key = HttpHeaderUtils.normalizeHttpHeaderCase(name.toString());
+        String key = name.toString();
         values.computeIfAbsent(key, s -> new ArrayList<>());
         values.get(key).add(value.toString());
     }
