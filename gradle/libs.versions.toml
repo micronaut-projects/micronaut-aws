@@ -1,7 +1,7 @@
 [versions]
-micronaut = "4.0.0-M3"
+micronaut = "4.0.0-M5"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.0-M3"
+micronaut-test = "4.0.0-M4"
 groovy = "4.0.12"
 spock = "2.3-groovy-4.0"
 
@@ -16,18 +16,19 @@ micronaut-mongodb = '5.0.0-M1'
 micronaut-reactor = '3.0.0-M1'
 micronaut-security = '4.0.0-M3'
 micronaut-serde = '2.0.0-M6'
-micronaut-servlet = '4.0.0-M5'
-micronaut-starter = "3.9.1"
+micronaut-servlet = '4.0.0-M6'
+micronaut-starter = "4.0.0-M2"
 micronaut-views = '4.0.0-M1'
-micronaut-validation = "4.0.0-M6"
-micronaut-logging = "1.0.0-M1"
+micronaut-logging = "1.0.0-M2"
+micronaut-validation = "4.0.0-M7"
 
 managed-alexa-ask-sdk = "2.71.0"
-managed-aws-java-sdk-v1 = '1.12.468'
-managed-aws-java-sdk-v2 = '2.20.65'
+managed-aws-java-sdk-v1 = '1.12.474'
+managed-aws-java-sdk-v2 = '2.20.71'
 managed-aws-lambda = '1.2.2'
-managed-aws-lambda-events = '3.11.1'
-managed-aws-cdk-lib='2.79.1'
+managed-aws-lambda-events = '3.11.2'
+managed-aws-cdk-lib='2.80.0'
+managed-aws-serverless-core = '1.9.3'
 
 slf4j = "2.0.7"
 servlet-api = "2.5"
@@ -40,9 +41,12 @@ graal = "22.3.2"
 kotlin = "1.8.21"
 
 # Micronaut
-micronaut-gradle-plugin = "4.0.0-M1"
+micronaut-gradle-plugin = "4.0.0-M4"
 
 [libraries]
+# Core
+micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
+
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-logging = { module = "io.micronaut.logging:micronaut-logging-bom", version.ref = "micronaut-logging" }
