@@ -37,7 +37,7 @@ import java.util.Set;
  *
  */
 @Internal
-public class AwsCookies implements Cookies {
+public final class AwsCookies implements Cookies {
 
     private final ConversionService conversionService;
     private final Map<CharSequence, Cookie> cookies;
