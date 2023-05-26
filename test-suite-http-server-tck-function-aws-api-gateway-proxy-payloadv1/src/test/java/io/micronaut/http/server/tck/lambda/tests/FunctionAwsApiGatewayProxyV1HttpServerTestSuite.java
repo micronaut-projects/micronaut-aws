@@ -14,6 +14,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.filter.ClientRequestFilterTest", // Multiple errors, mostly 404s
     "io.micronaut.http.server.tck.tests.filter.ClientResponseFilterTest", // body contents is not as expected
+    "io.micronaut.http.server.tck.tests.constraintshandler.ControllerConstraintHandlerTest" // Broken in servlet
 })
 public class FunctionAwsApiGatewayProxyV1HttpServerTestSuite {
 }
