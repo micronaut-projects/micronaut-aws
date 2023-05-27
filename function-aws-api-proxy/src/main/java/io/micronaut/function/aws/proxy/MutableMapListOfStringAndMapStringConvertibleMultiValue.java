@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.proxy;
 
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Map;
 /**
  * A mutable version of {@link MapListOfStringAndMapStringConvertibleMultiValue}.
  */
+@Internal
 public class MutableMapListOfStringAndMapStringConvertibleMultiValue extends MapListOfStringAndMapStringConvertibleMultiValue {
 
     public MutableMapListOfStringAndMapStringConvertibleMultiValue(ConversionService conversionService, Map<String, List<String>> multi, Map<String, String> single) {

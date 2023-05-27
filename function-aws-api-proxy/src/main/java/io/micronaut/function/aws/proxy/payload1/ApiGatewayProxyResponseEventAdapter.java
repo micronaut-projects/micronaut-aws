@@ -16,6 +16,7 @@
 package io.micronaut.function.aws.proxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
@@ -36,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Adapts the {@link APIGatewayProxyResponseEvent} to a {@link MutableHttpResponse}.
  * @param <T>
  */
+@Internal
 public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpResponse<T> {
 
     private APIGatewayProxyResponseEvent event;
