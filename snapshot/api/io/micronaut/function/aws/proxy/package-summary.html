@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -35,6 +31,7 @@ loadScripts(document, 'script');</script>
 <li class="nav-bar-cell1-rev">Package</li>
 <li>Class</li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../../index-all.html">Index</a></li>
 <li><a href="../../../../../help-doc.html#package">Help</a></li>
 </ul>
@@ -75,74 +72,62 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Classes to support exposing <code>FunctionBean</code> instances for AWS lambda</div>
 </div>
-<div class="col-first odd-row-color"><a href="cookie/package-summary.html">io.micronaut.function.aws.proxy.cookie</a></div>
+<div class="col-first odd-row-color"><a href="payload1/package-summary.html">io.micronaut.function.aws.proxy.payload1</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="security/package-summary.html">io.micronaut.function.aws.proxy.security</a></div>
+<div class="col-first even-row-color"><a href="payload2/package-summary.html">io.micronaut.function.aws.proxy.payload2</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="test/package-summary.html">io.micronaut.function.aws.proxy.test</a></div>
+<div class="col-first odd-row-color"><a href="security/package-summary.html">io.micronaut.function.aws.proxy.security</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../alexa/package-summary.html">io.micronaut.function.aws.alexa</a></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><a href="test/package-summary.html">io.micronaut.function.aws.proxy.test</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="../alexa/package-summary.html">io.micronaut.function.aws.alexa</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Classes to support exposing <code>FunctionBean</code> instances for AWS lambda Alexa Skills</div>
 </div>
-<div class="col-first odd-row-color"><a href="../event/package-summary.html">io.micronaut.function.aws.event</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="../event/package-summary.html">io.micronaut.function.aws.event</a></div>
+<div class="col-last even-row-color">
 <div class="block">Event classes to support AWS Lambda lifecycle.</div>
 </div>
-<div class="col-first even-row-color"><a href="../runtime/package-summary.html">io.micronaut.function.aws.runtime</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../test/package-summary.html">io.micronaut.function.aws.test</a></div>
+<div class="col-first odd-row-color"><a href="../runtime/package-summary.html">io.micronaut.function.aws.runtime</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="../test/package-summary.html">io.micronaut.function.aws.test</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </div>
 </li>
 <li>
 <div id="class-summary">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
-<div id="class-summary.tabpanel" role="tabpanel">
-<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
+<div class="caption"><span>Classes</span></div>
+<div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AbstractLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">AbstractLambdaContainerHandler</a>&lt;RequestType,<wbr>ResponseType,<wbr>ContainerRequestType,<wbr>ContainerResponseType&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ApiGatewayServletRequest.html" title="class in io.micronaut.function.aws.proxy">ApiGatewayServletRequest</a>&lt;T,<wbr>REQ,<wbr>RES&gt;</div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Abstract class that declares the basic methods and objects for implementations of <code>LambdaContainerHandler</code>.</div>
+<div class="block">Base class for all the versions of the Gateway events.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AwsObjectMapperFactory.html" title="class in io.micronaut.function.aws.proxy">AwsObjectMapperFactory</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AwsCookies.html" title="class in io.micronaut.function.aws.proxy">AwsCookies</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Factory class that creates an object mapper if the property "aws.proxy.shared-object-mapper" is set to true.</div>
+<div class="block">Implementation of <code>Cookies</code> for serverless.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MicronautAwsProxyConfiguration.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyConfiguration</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="GatewayContentHelpers.html" title="class in io.micronaut.function.aws.proxy">GatewayContentHelpers</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Configuration properties for the AWS proxy module.</div>
+<div class="block">Helper methods for API Gateway content.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MicronautAwsProxyExceptionHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyExceptionHandler</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MapCollapseUtils.html" title="class in io.micronaut.function.aws.proxy">MapCollapseUtils</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Default <code>ExceptionHandler</code> implementation.</div>
+<div class="block">Utility methods for collapsing headers.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MicronautAwsProxyRequest.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyRequest</a>&lt;T&gt;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MapListOfStringAndMapStringMutableHttpParameters.html" title="class in io.micronaut.function.aws.proxy">MapListOfStringAndMapStringMutableHttpParameters</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Implementation of <code>HttpRequest</code> that backs onto a <code>AwsProxyRequest</code> object.</div>
+<div class="block">Implementation of <code>MutableHttpParameters</code> that uses a <a href="MutableMapListOfStringAndMapStringConvertibleMultiValue.html" title="class in io.micronaut.function.aws.proxy"><code>MutableMapListOfStringAndMapStringConvertibleMultiValue</code></a> internally.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MicronautAwsProxyResponse.html" title="class in io.micronaut.function.aws.proxy">MicronautAwsProxyResponse</a>&lt;T&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Implementation of <code>MutableHttpResponse</code> for AWS API proxy.</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MicronautLambdaHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">Deprecated, for removal: This API element is subject to removal in a future version.
+<div class="deprecation-comment">Use <a href="payload1/ApiGatewayProxyRequestEventFunction.html" title="class in io.micronaut.function.aws.proxy.payload1"><code>ApiGatewayProxyRequestEventFunction</code></a> or <a href="payload2/APIGatewayV2HTTPEventFunction.html" title="class in io.micronaut.function.aws.proxy.payload2"><code>APIGatewayV2HTTPEventFunction</code></a> instead.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="MicronautLambdaContainerContext.html" title="interface in io.micronaut.function.aws.proxy">MicronautLambdaContainerContext</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">A context object to share state.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MicronautLambdaContainerHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaContainerHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Main entry for AWS API proxy with Micronaut.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MicronautLambdaHandler.html" title="class in io.micronaut.function.aws.proxy">MicronautLambdaHandler</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MutableMapListOfStringAndMapStringConvertibleMultiValue.html" title="class in io.micronaut.function.aws.proxy">MutableMapListOfStringAndMapStringConvertibleMultiValue</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">AWS <code>RequestHandler</code> for <code>AwsProxyRequest</code> and <code>AwsProxyResponse</code>.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MicronautResponseWriter.html" title="class in io.micronaut.function.aws.proxy">MicronautResponseWriter</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">Implementation of the <code>ResponseWriter</code> class for Micronaut.</div>
-</div>
+<div class="block">A mutable version of <code>MapListOfStringAndMapStringConvertibleMultiValue</code>.</div>
 </div>
 </div>
 </div>
