@@ -12,7 +12,7 @@ logback-json-classic = '0.1.5'
 
 micronaut-discovery = '4.0.0-M1'
 micronaut-groovy = '4.0.0-M1'
-micronaut-mongodb = '5.0.0-M1'
+micronaut-mongodb = '5.0.0-M2'
 micronaut-reactor = '3.0.0-M3'
 micronaut-security = '4.0.0-M3'
 micronaut-serde = '2.0.0-M8'
