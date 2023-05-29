@@ -7,4 +7,5 @@ dependencies {
     api(projects.micronautFunctionAwsApiProxy)
     implementation(libs.jetty.server)
     testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.jackson.databind)
 }

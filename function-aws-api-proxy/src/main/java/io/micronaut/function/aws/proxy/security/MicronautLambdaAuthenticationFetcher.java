@@ -15,136 +15,106 @@
  */
 package io.micronaut.function.aws.proxy.security;
 
-import com.amazonaws.serverless.proxy.model.ApiGatewayAuthorizerContext;
-import com.amazonaws.serverless.proxy.model.CognitoAuthorizerClaims;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Experimental;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.async.publisher.Publishers;
-import io.micronaut.function.aws.proxy.MicronautAwsProxyRequest;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.filters.AuthenticationFetcher;
+import io.micronaut.servlet.http.ServletHttpRequest;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 /**
- * An authentication fetcher for {@link CognitoAuthorizerClaims}.
+ * An authentication fetcher for Request Context Authorizer.
  *
- * @author graemerocher
- * @since 1.1
+ * @author sdelamo
+ * @since 4.0.0
  */
+@Experimental
 @Singleton
 @Requires(classes = AuthenticationFetcher.class)
 public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher {
-
-    public static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
-
-    /**
-     * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claims Names</a>
-     */
-    private static final List<String> REGISTERED_CLAIMS_NAMES = Arrays.asList("iss", "sub", "exp", "nbf", "iat", "jti", "aud");
-
-    /**
-     * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">Standard Claims</a>
-     */
-    private static final List<String> ID_TOKEN_STANDARD_CLAIMS_NAMES = Arrays.asList(
-            "name",
-            "given_name",
-            "family_name",
-            "middle_name",
-            "nickname",
-            "preferred_username",
-            "profile",
-            "picture",
-            "website",
-            "email",
-            "email_verified",
-            "gender",
-            "birthdate",
-            "zoneinfo",
-            "locale",
-            "phone_number",
-            "phone_number_verified",
-            "address",
-            "updated_at",
-            "auth_time",
-            "nonce",
-            "acr",
-            "amr",
-            "azp");
+    private static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
+    private static final String CLAIM_SUB = "sub";
+    private static final String CLAIMS = "claims";
 
     @Override
     public Publisher<Authentication> fetchAuthentication(HttpRequest<?> request) {
-        if (request instanceof MicronautAwsProxyRequest) {
-            MicronautAwsProxyRequest awsProxyRequest = (MicronautAwsProxyRequest) request;
-            final ApiGatewayAuthorizerContext authorizer = awsProxyRequest
-                    .getAwsProxyRequest()
-                    .getRequestContext()
-                    .getAuthorizer();
+        Optional<Authentication> optionalAuthentication = Optional.empty();
+        if (request instanceof ServletHttpRequest servletHttpRequest) {
+            Object nativeRequest = servletHttpRequest.getNativeRequest();
+            if (nativeRequest instanceof APIGatewayV2HTTPEvent aPIGatewayV2HTTPEvent) {
+                optionalAuthentication = fetchAuthentication(aPIGatewayV2HTTPEvent);
+            } else if (nativeRequest instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+                optionalAuthentication = fetchAuthentication(apiGatewayProxyRequestEvent);
+            }
+        }
+        if (optionalAuthentication.isEmpty()) {
+            optionalAuthentication = fetchAuthenticationFromHeader(request);
+        }
+        return optionalAuthentication.map(Publishers::just).orElseGet(Publishers::empty);
+    }
 
+    private Optional<Authentication> fetchAuthenticationFromHeader(HttpRequest<?> request) {
+        final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
+        if (v != null) {
+            return Optional.of(Authentication.build(
+                    v,
+                    Collections.emptyMap()
+                )
+            );
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Authentication> fetchAuthentication(APIGatewayProxyRequestEvent request) {
+        APIGatewayProxyRequestEvent.ProxyRequestContext proxyRequestContext = request.getRequestContext();
+        Map<String, Object> authorizer = proxyRequestContext.getAuthorizer();
+        if (authorizer.containsKey(CLAIM_SUB)) {
+            return fetchAuthentication(authorizer);
+        } else if (authorizer.containsKey(CLAIMS)) {
+            Object object = authorizer.get(CLAIMS);
+            if (object instanceof Map) {
+                return fetchAuthentication((Map<String, Object>) object);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Authentication> fetchAuthentication(APIGatewayV2HTTPEvent request) {
+        if (request.getRequestContext() != null) {
+            APIGatewayV2HTTPEvent.RequestContext.Authorizer authorizer = request.getRequestContext().getAuthorizer();
             if (authorizer != null) {
-                final CognitoAuthorizerClaims claims = authorizer.getClaims();
-                return Publishers.just(
-                        Authentication.build(
-                                authorizer.getPrincipalId(),
-                                attributesOfClaims(claims)
-                        )
-                );
-            } else {
-                final String v = request.getHeaders().get(HEADER_OIDC_IDENTITY);
-                if (v != null) {
-                    return Publishers.just(
-                            Authentication.build(
-                                    v,
-                                    Collections.emptyMap()
-                            )
-                    );
+                APIGatewayV2HTTPEvent.RequestContext.Authorizer.JWT jwt = authorizer.getJwt();
+                if (jwt != null) {
+                    if (jwt.getClaims() != null) {
+                        Map<String, Object> claims = new HashMap<>(jwt.getClaims());
+                        Object subject = claims.get(CLAIM_SUB);
+                        if (subject != null) {
+                            return Optional.of(Authentication.build(subject.toString(), claims));
+                        }
+                    }
                 }
             }
         }
-        return Publishers.empty();
+        return Optional.empty();
     }
 
-    /**
-     * @see <a href="https://tools.ietf.org/html/rfc7519#section-4.1">Registered Claims Names</a>
-     * @see <a href="https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims">Standard Claims</a>
-     * @param claims Cognito Claims
-     * @return A map of claims
-     */
-    protected Map<String, Object> attributesOfClaims(CognitoAuthorizerClaims claims) {
-        if (claims == null) {
-            return Collections.emptyMap();
+    @NonNull
+    private Optional<Authentication> fetchAuthentication(@NonNull Map<String, Object> claims) {
+        Object subject = claims.get(CLAIM_SUB);
+        if (subject != null) {
+            return Optional.of(Authentication.build(subject.toString(), claims));
         }
-
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("sub", claims.getSubject());
-        attributes.put("aud", claims.getAudience());
-        attributes.put("iss", claims.getIssuer());
-        attributes.put("token_use", claims.getTokenUse());
-        attributes.put("cognito:username", claims.getUsername());
-        attributes.put("preferred_username", claims.getUsername());
-        attributes.put("email", claims.getEmail());
-        attributes.put("email_verified", claims.isEmailVerified());
-        attributes.put("auth_time", claims.getAuthTime());
-        attributes.put("iat", claims.getIssuedAt());
-        attributes.put("exp", claims.getExpiration());
-
-        for (String claim : Stream.concat(ID_TOKEN_STANDARD_CLAIMS_NAMES.stream(), REGISTERED_CLAIMS_NAMES.stream())
-                .collect(Collectors.toList())) {
-            String value = claims.getClaim(claim);
-            if (value != null) {
-                attributes.putIfAbsent(claim, value);
-            }
-        }
-
-        return Collections.unmodifiableMap(attributes);
+        return Optional.empty();
     }
-
 }

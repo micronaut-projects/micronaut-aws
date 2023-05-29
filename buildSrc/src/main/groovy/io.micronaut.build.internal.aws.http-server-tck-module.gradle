@@ -13,7 +13,9 @@ dependencies {
     testImplementation(mn.micronaut.http.server.tck)
     testImplementation(libs.junit.platform.engine)
     testImplementation(libs.junit.jupiter.engine)
-    testRuntimeOnly(libs.logback.classic)
+    testRuntimeOnly(mnLogging.logback.classic)
+
+    testRuntimeOnly(mnValidation.micronaut.validation)
 }
 
 java {

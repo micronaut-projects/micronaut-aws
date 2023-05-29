@@ -1,8 +1,8 @@
 package io.micronaut.aws.apigateway
 
-import com.amazonaws.serverless.proxy.RequestReader
-import com.amazonaws.serverless.proxy.model.AwsProxyRequestContext
-import io.micronaut.http.HttpRequest
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent
+import io.micronaut.servlet.http.ServletHttpRequest
 import spock.lang.Specification
 
 class HttpRequestStageResolverSpec extends Specification {
@@ -10,11 +10,30 @@ class HttpRequestStageResolverSpec extends Specification {
     void "resolve stage from HttpRequest"() {
         given:
         HttpRequestStageResolver resolver = new HttpRequestStageResolver()
-        def context = Stub(AwsProxyRequestContext) {
+        def requestContextStub = Stub(APIGatewayV2HTTPEvent.RequestContext) {
             getStage() >> 'foo'
         }
-        def request = Stub(HttpRequest) {
-            getAttribute(RequestReader.API_GATEWAY_CONTEXT_PROPERTY, AwsProxyRequestContext.class) >> Optional.of(context)
+        def proxyRequestStub = Stub(APIGatewayV2HTTPEvent) {
+            getRequestContext() >> requestContextStub
+        }
+        def request = Stub(ServletHttpRequest) {
+            getNativeRequest() >> proxyRequestStub
+        }
+        expect:
+        'foo' == resolver.resolve(request).get()
+    }
+
+    void "resolve stage from HttpRequest"() {
+        given:
+        HttpRequestStageResolver resolver = new HttpRequestStageResolver()
+        def requestContextStub = Stub(APIGatewayProxyRequestEvent.ProxyRequestContext) {
+            getStage() >> 'foo'
+        }
+        def proxyRequestStub = Stub(APIGatewayProxyRequestEvent) {
+            getRequestContext() >> requestContextStub
+        }
+        def request = Stub(ServletHttpRequest) {
+            getNativeRequest() >> proxyRequestStub
         }
         expect:
         'foo' == resolver.resolve(request).get()

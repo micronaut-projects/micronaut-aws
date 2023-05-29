@@ -1,8 +1,8 @@
 [versions]
-micronaut = "4.0.0-M2"
+micronaut = "4.0.0-M5"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.0-M1"
-groovy = "4.0.11"
+micronaut-test = "4.0.0-M4"
+groovy = "4.0.12"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
@@ -13,10 +13,13 @@ logback-json-classic = '0.1.5'
 micronaut-discovery = '4.0.0-M1'
 micronaut-groovy = '4.0.0-M1'
 micronaut-mongodb = '5.0.0-M1'
-micronaut-security = '4.0.0-M1'
-micronaut-serde = '2.0.0-M1'
+micronaut-reactor = '3.0.0-M1'
+micronaut-security = '4.0.0-M3'
+micronaut-serde = '2.0.0-M6'
+micronaut-servlet = '4.0.0-M6'
 micronaut-views = '4.0.0-M1'
-micronaut-validation = "4.0.0-M2"
+micronaut-logging = "1.0.0-M2"
+micronaut-validation = "4.0.0-M7"
 
 managed-alexa-ask-sdk = "2.71.0"
 managed-aws-java-sdk-v1 = '1.12.477'
@@ -37,7 +40,7 @@ graal = "22.3.2"
 kotlin = "1.8.21"
 
 # Micronaut
-micronaut-gradle-plugin = "4.0.0-M1"
+micronaut-gradle-plugin = "4.0.0-M4"
 
 [libraries]
 # Core
@@ -45,10 +48,13 @@ micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'mi
 
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
+micronaut-logging = { module = "io.micronaut.logging:micronaut-logging-bom", version.ref = "micronaut-logging" }
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
+micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+micronaut-servlet = { module = "io.micronaut.servlet:micronaut-servlet-bom", version.ref = "micronaut-servlet" }
 micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
 micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.ref = "micronaut-views" }
 micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
@@ -93,8 +99,6 @@ logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
 jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
 
-micronaut-starter = { module = "io.micronaut.starter:micronaut-starter-api", version.ref = 'micronaut-starter'}
-
 managed-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
 managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-support', version.ref = 'managed-alexa-ask-sdk' }
@@ -103,7 +107,6 @@ managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', versi
 managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events'}
 
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
-managed-aws-serverless-core = { module = 'com.amazonaws.serverless:aws-serverless-java-container-core', version.ref = 'managed-aws-serverless-core' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }

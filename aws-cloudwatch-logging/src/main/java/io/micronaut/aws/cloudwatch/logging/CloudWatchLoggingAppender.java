@@ -200,7 +200,7 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             return;
         }
         if (!dispatchThreadStarted && !dispatchOnStart) {
-            synchronized(this) {
+            synchronized (this) {
                 if (!dispatchThreadStarted) {
                     startDispatch();
                 }
