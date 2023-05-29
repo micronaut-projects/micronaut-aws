@@ -10,7 +10,7 @@ fileupload = '0.0.5'
 jetty = '11.0.15'
 logback-json-classic = '0.1.5'
 
-micronaut-discovery = '4.0.0-M1'
+micronaut-discovery = '4.0.0-M2'
 micronaut-groovy = '4.0.0-M1'
 micronaut-mongodb = '5.0.0-M2'
 micronaut-reactor = '3.0.0-M3'
