@@ -23,7 +23,11 @@ import io.micronaut.test.annotation.TransactionMode;
 import io.micronaut.test.condition.TestActiveCondition;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation that can be applied to any JUnit 5 test to enable testing
@@ -105,4 +109,14 @@ public @interface MicronautLambdaTest {
      * @return true if {@link io.micronaut.runtime.EmbeddedApplication} should be started
      */
     boolean startApplication() default true;
+
+    /**
+     * By default, with JUnit 5 the test method parameters will be resolved to beans if possible.
+     * This behaviour can be problematic if in combination with the {@code ParameterizedTest} annotation.
+     * Setting this member to {@code false} will completely disable bean resolution for method parameters.
+     * <p>
+     *
+     * @return Whether to resolve test method parameters as beans.
+     */
+    boolean resolveParameters() default true;
 }
