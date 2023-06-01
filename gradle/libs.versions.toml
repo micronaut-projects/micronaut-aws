@@ -1,5 +1,5 @@
 [versions]
-micronaut = "3.8.8"
+micronaut = "3.9.2"
 micronaut-docs = "2.0.0"
 micronaut-test = "3.9.1"
 groovy = "3.0.13"
@@ -10,10 +10,10 @@ fileupload = '0.0.5'
 jetty = '9.4.51.v20230217'
 logback-json-classic = '0.1.5'
 managed-alexa-ask-sdk = "2.71.0"
-managed-aws-java-sdk-v1 = '1.12.468'
-managed-aws-java-sdk-v2 = '2.20.65'
+managed-aws-java-sdk-v1 = '1.12.477'
+managed-aws-java-sdk-v2 = '2.20.74'
 managed-aws-lambda = '1.2.2'
-micronaut-starter = "3.8.8"
+micronaut-starter = "3.9.2"
 managed-aws-lambda-events = '3.11.2'
 managed-aws-serverless-core = '1.9.3'
 managed-aws-cdk-lib='2.81.0'
