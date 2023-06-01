@@ -56,5 +56,4 @@ configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog("micronaut-security")
     importMicronautCatalog("micronaut-views")
     importMicronautCatalog("micronaut-validation")
-    importMicronautCatalog("micronaut-logging")
 }
