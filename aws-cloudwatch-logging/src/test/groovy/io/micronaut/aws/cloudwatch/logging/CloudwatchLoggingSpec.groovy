@@ -54,25 +54,23 @@ class CloudwatchLoggingSpec extends Specification {
             mockLogging.getPutLogsRequestList().size() != 0
         }
 
-        def putLogRequestList = ((MockLogging) logging).getPutLogsRequestList()
+        List<PutLogEventsRequest> putLogRequestList = ((MockLogging) logging).getPutLogsRequestList()
         putLogRequestList.stream().allMatch(x -> x.logGroupName() == applicationConfiguration.getName().get())
         putLogRequestList.stream().allMatch(x -> x.logStreamName() == testHost)
 
         ObjectMapper mapper = ObjectMapper.getDefault()
 
-        def logEntries = new ArrayList<Map<String, String>>()
+        List<Map<String, String>> logEntries = new ArrayList<Map<String, String>>()
 
-        putLogRequestList.forEach(
-                x -> {
-                    x.logEvents().stream().forEach(y -> logEntries.add(
-                            mapper.readValue(y.message(), HashMap.class) as Map<String, String>
-                    ))
-                }
-        )
+        for (PutLogEventsRequest x : putLogRequestList) {
+            for (InputLogEvent y : x.logEvents()) {
+                logEntries.add(mapper.readValue(y.message(), HashMap.class) as Map<String, String>)
+            }
+        }
 
-        logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.context.env.DefaultEnvironment')
-        logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.aws.cloudwatch.logging.CloudwatchLoggingSpec')
-        logEntries.stream().anyMatch(x -> x.message == logMessage)
+        logEntries.any {  it['logger'] == 'io.micronaut.context.DefaultApplicationContext$RuntimeConfiguredEnvironment' }
+        logEntries.any {  it['logger'] == 'io.micronaut.aws.cloudwatch.logging.CloudwatchLoggingSpec' }
+        logEntries.any {  it['message'] == logMessage }
         MockAppender.getEvents().size() == 0
 
         when:
