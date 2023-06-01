@@ -1,5 +1,5 @@
 [versions]
-micronaut = "3.8.8"
+micronaut = "3.9.2"
 micronaut-docs = "2.0.0"
 micronaut-test = "3.9.1"
 groovy = "3.0.13"
@@ -16,7 +16,7 @@ managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.1'
 managed-aws-serverless-core = '1.9.2'
 managed-aws-cdk-lib='2.73.0'
-micronaut-starter = "3.8.8"
+micronaut-starter = "3.9.2"
 servlet-api = "2.5"
 slf4j = "1.7.36"
 javapoet = "1.13.0"

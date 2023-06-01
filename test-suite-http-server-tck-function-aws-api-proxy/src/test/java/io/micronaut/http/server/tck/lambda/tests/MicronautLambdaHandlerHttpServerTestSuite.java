@@ -15,7 +15,9 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.BodyTest",
     "io.micronaut.http.server.tck.tests.OctetTest",
     "io.micronaut.http.server.tck.tests.endpoints.health.HealthTest",
-    "io.micronaut.http.server.tck.tests.staticresources.StaticResourceTest"
+    "io.micronaut.http.server.tck.tests.staticresources.StaticResourceTest",
+    "io.micronaut.http.server.tck.tests.cors.CrossOriginTest",
+    "io.micronaut.http.server.tck.tests.constraintshandler.ControllerConstraintHandlerTest"
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }
