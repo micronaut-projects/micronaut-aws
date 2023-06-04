@@ -42,7 +42,7 @@ import java.util.Optional;
 @Experimental
 @Singleton
 @Requires(classes = AuthenticationFetcher.class)
-public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher {
+public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetcher<HttpRequest<?>> {
     private static final String HEADER_OIDC_IDENTITY = "x-amzn-oidc-identity";
     private static final String CLAIM_SUB = "sub";
     private static final String CLAIMS = "claims";
