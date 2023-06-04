@@ -75,7 +75,9 @@ final class CloudWatchLoggingClient implements ApplicationEventListener<ServerSt
     }
 
     static synchronized void destroy() {
-        CloudWatchLoggingClient.logging.close();
+        if (CloudWatchLoggingClient.logging != null) {
+            CloudWatchLoggingClient.logging.close();
+        }
         CloudWatchLoggingClient.logging = null;
         CloudWatchLoggingClient.host = null;
         CloudWatchLoggingClient.appName = null;
