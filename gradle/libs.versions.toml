@@ -11,7 +11,7 @@ jetty = '11.0.15'
 logback-json-classic = '0.1.5'
 
 micronaut-discovery = "4.0.0-M3"
-micronaut-groovy = "4.0.0-M1"
+micronaut-groovy = "4.0.0-M2"
 micronaut-logging = "1.0.0-M3"
 micronaut-mongodb = "5.0.0-M2"
 micronaut-reactor = "3.0.0-M4"
