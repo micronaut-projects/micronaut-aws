@@ -9,7 +9,8 @@ dependencies {
 
     implementation(mnLogging.logback.classic)
     implementation(libs.logback.json.classic) {
-        exclude(group = "ch.qos.logback")
+        // Exclude group and module for the POM
+        exclude(group = "ch.qos.logback", module = "logback-classic")
     }
 
     testRuntimeOnly(mn.snakeyaml)
