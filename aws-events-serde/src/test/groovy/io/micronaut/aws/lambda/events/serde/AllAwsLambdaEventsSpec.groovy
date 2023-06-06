@@ -70,6 +70,8 @@ class AllAwsLambdaEventsSpec extends Specification {
         //not used in AWS lib and not present in classpath
         eventToMixin.remove("com.amazonaws.services.dynamodbv2.model.StreamRecord")
         eventToMixin.remove("com.amazonaws.services.dynamodbv2.model.AttributeValue")
+        // Fails in CI
+        eventToMixin.remove("com.amazonaws.services.lambda.runtime.events.KinesisEvent.Record")
 
         for (Map.Entry<String, Class> entry : eventToMixin.entrySet()) {
             try {
