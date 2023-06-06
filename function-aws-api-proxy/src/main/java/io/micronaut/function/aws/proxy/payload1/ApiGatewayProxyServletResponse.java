@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.proxy.payload1;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import io.micronaut.function.aws.proxy.GatewayContentHelpers;
+import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
@@ -51,6 +51,7 @@ import java.util.Optional;
 public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<APIGatewayProxyResponseEvent, B> {
 
     private final MutableHttpHeaders headers;
+    private final BinaryContentConfiguration binaryContentConfiguration;
     private final ByteArrayOutputStream body = new ByteArrayOutputStream();
 
     private MutableConvertibleValues<Object> attributes;
@@ -58,8 +59,9 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
     private int status = HttpStatus.OK.getCode();
     private String reason = HttpStatus.OK.getReason();
 
-    public ApiGatewayProxyServletResponse(ConversionService conversionService) {
+    public ApiGatewayProxyServletResponse(ConversionService conversionService, BinaryContentConfiguration binaryContentConfiguration) {
         this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
+        this.binaryContentConfiguration = binaryContentConfiguration;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class ApiGatewayProxyServletResponse<B> implements ServletHttpResponse<AP
             .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
 
-        if (GatewayContentHelpers.isBinary(getHeaders().getContentType().orElse(null))) {
+        if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {
             apiGatewayProxyResponseEvent
                 .withIsBase64Encoded(true)
                 .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));

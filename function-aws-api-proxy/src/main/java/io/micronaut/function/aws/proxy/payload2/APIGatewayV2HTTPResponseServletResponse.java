@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.proxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.function.aws.proxy.GatewayContentHelpers;
+import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
@@ -51,6 +51,7 @@ import java.util.Optional;
 public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpResponse<APIGatewayV2HTTPResponse, B> {
 
     private final MutableHttpHeaders headers;
+    private final BinaryContentConfiguration binaryContentConfiguration;
     private final ByteArrayOutputStream body = new ByteArrayOutputStream();
 
     private MutableConvertibleValues<Object> attributes;
@@ -58,8 +59,9 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
     private int status = HttpStatus.OK.getCode();
     private String reason = HttpStatus.OK.getReason();
 
-    public APIGatewayV2HTTPResponseServletResponse(ConversionService conversionService) {
+    public APIGatewayV2HTTPResponseServletResponse(ConversionService conversionService, BinaryContentConfiguration binaryContentConfiguration) {
         this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
+        this.binaryContentConfiguration = binaryContentConfiguration;
     }
 
     @Override
@@ -69,8 +71,9 @@ public class APIGatewayV2HTTPResponseServletResponse<B> implements ServletHttpRe
             .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
             .withStatusCode(status);
 
-        if (GatewayContentHelpers.isBinary(getHeaders().getContentType().orElse(null))) {
-            apiGatewayV2HTTPResponseBuilder.withIsBase64Encoded(true)
+        if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {
+            apiGatewayV2HTTPResponseBuilder
+                .withIsBase64Encoded(true)
                 .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
         } else {
             apiGatewayV2HTTPResponseBuilder.withBody(body.toString(getCharacterEncoding()));

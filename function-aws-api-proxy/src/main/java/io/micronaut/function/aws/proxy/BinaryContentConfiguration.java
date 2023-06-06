@@ -16,31 +16,50 @@
 package io.micronaut.function.aws.proxy;
 
 import io.micronaut.core.annotation.Internal;
+import jakarta.inject.Singleton;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Helper methods for API Gateway content.
+ * Bean to check if response content is binary and should be base 64 encoded
  */
 @Internal
-public final class GatewayContentHelpers {
+@Singleton
+public final class BinaryContentConfiguration {
 
-    private static final Set<String> BINARY_CONTENT_TYPES = Set.of("application/octet-stream", "image/jpeg", "image/png", "image/gif");
+    private final Set<String> binaryContentTypes = new HashSet<>();
 
-    private GatewayContentHelpers() {
+    public BinaryContentConfiguration() {
+        binaryContentTypes.addAll(Set.of(
+                "application/octet-stream",
+                "image/jpeg",
+                "image/png",
+                "image/gif",
+                "application/zip"
+        ));
+    }
+
+    /**
+     * Add a content type to the list of binary content types.
+     *
+     * @param contentType The content type to add
+     */
+    public void addBinaryContentType(String contentType) {
+        binaryContentTypes.add(contentType);
     }
 
     /**
      * @param contentType The content type
      * @return True if the content type is encoded as binary
      */
-    public static boolean isBinary(String contentType) {
+    public boolean isBinary(String contentType) {
         if (contentType != null) {
             int semidx = contentType.indexOf(';');
             if (semidx > -1) {
-                return BINARY_CONTENT_TYPES.contains(contentType.substring(0, semidx).trim());
+                return binaryContentTypes.contains(contentType.substring(0, semidx).trim());
             } else {
-                return BINARY_CONTENT_TYPES.contains(contentType.trim());
+                return binaryContentTypes.contains(contentType.trim());
             }
         }
         return false;
