@@ -25,9 +25,9 @@ import io.micronaut.serde.annotation.SerdeImport;
  * @author Dan Hollingsworth
  * @since 4.0.0
  */
+
+@SerdeImport(value = KinesisEvent.KinesisEventRecord.class)
 @SerdeImport(value = KinesisEvent.Record.class, mixin = KinesisEventMixin.RecordMixin.class)
-@SerdeImport(KinesisEvent.KinesisEventRecord.class)
-@SerdeImport(KinesisEvent.Record.class)
 @SerdeImport(value = KinesisEvent.class, mixin = KinesisEventMixin.class)
 public class KinesisEventSerde {
 }
