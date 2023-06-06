@@ -15,10 +15,14 @@
  */
 package io.micronaut.aws.sdk.v2.service.s3;
 
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Named;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -27,7 +31,6 @@ import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3AsyncClientBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
-
 import jakarta.inject.Singleton;
 
 /**
@@ -47,23 +50,30 @@ public class S3ClientFactory extends AwsClientFactory<S3ClientBuilder, S3AsyncCl
      * @param credentialsProvider The credentials provider
      * @param regionProvider The region provider
      * @param configuration The service configuration
+     * @param userAgentProvider User-Agent Provider
+     * @param awsServiceConfiguration  AWS Service Configuration
      */
-    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider,
-                           S3ConfigurationProperties configuration) {
-        super(credentialsProvider, regionProvider);
+    public S3ClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                           AwsRegionProviderChain regionProvider,
+                           S3ConfigurationProperties configuration,
+                           @Nullable UserAgentProvider userAgentProvider,
+                           @Nullable @Named(S3Client.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
         this.configuration = configuration;
     }
 
     @Override
     protected S3ClientBuilder createSyncBuilder() {
-        return S3Client.builder()
-                .serviceConfiguration(configuration.getBuilder().build());
+        S3ClientBuilder builder = S3Client.builder();
+        builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override
     protected S3AsyncClientBuilder createAsyncBuilder() {
-        return S3AsyncClient.builder()
-                .serviceConfiguration(configuration.getBuilder().build());
+        S3AsyncClientBuilder builder = S3AsyncClient.builder();
+        builder.serviceConfiguration(configuration.getBuilder().build());
+        return builder;
     }
 
     @Override

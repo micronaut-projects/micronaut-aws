@@ -15,10 +15,15 @@
  */
 package io.micronaut.aws.sdk.v2.service.dynamodb;
 
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -28,8 +33,6 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClientBuilder;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder;
 
-import jakarta.inject.Singleton;
-
 /**
  * Factory that creates a Dynamo DB client.
  *
@@ -38,15 +41,19 @@ import jakarta.inject.Singleton;
  */
 @Factory
 public class DynamoDbClientFactory extends AwsClientFactory<DynamoDbClientBuilder, DynamoDbAsyncClientBuilder, DynamoDbClient, DynamoDbAsyncClient> {
-
     /**
      * Constructor.
      *
      * @param credentialsProvider The credentials provider
      * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent Provider
+     * @param awsServiceConfiguration  AWS Service Configuration
      */
-    protected DynamoDbClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    protected DynamoDbClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                    AwsRegionProviderChain regionProvider,
+                                    @Nullable UserAgentProvider userAgentProvider,
+                                    @Nullable @Named(DynamoDbClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     @Override

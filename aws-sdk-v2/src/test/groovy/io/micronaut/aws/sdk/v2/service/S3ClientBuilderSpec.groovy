@@ -18,6 +18,6 @@ class S3ClientBuilderSpec extends ApplicationContextSpecification {
 
         then:
         noExceptionThrown()
-        builder.clientConfiguration.attributes.configuration.get(SdkClientOption.RETRY_POLICY).retryMode() == RetryMode.LEGACY
+        builder.syncClientConfiguration().option(SdkClientOption.RETRY_POLICY).retryMode() == RetryMode.LEGACY
     }
 }

@@ -21,6 +21,7 @@ class AwsDistributedConfigurationSpec extends Specification {
                 'spec.name': 'AwsDistributedConfigurationSpec',
                 'aws.distributed-configuration.delimiter': '-',
                 'aws.distributed-configuration.prefix': 'foo',
+                'aws.distributed-configuration.prefixes': ['foo', 'bar'],
                 'aws.distributed-configuration.common-application-name': 'bar',
         ]
         when:
@@ -30,6 +31,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         then:
         awsDistributedConfiguration.delimiter == '-'
         awsDistributedConfiguration.prefix == 'foo'
+        awsDistributedConfiguration.prefixes == ['foo', 'bar']
         awsDistributedConfiguration.commonApplicationName == 'bar'
 
         cleanup:
@@ -48,6 +50,7 @@ class AwsDistributedConfigurationSpec extends Specification {
         then:
         awsDistributedConfiguration.delimiter == '/'
         awsDistributedConfiguration.prefix == '/config/'
+        awsDistributedConfiguration.prefixes == []
         awsDistributedConfiguration.commonApplicationName == 'application'
 
         cleanup:
@@ -87,6 +90,44 @@ class AwsDistributedConfigurationSpec extends Specification {
         'otherapp'  | 'foo' || 'application_fooYYY'
     }
 
+    @RestoreSystemProperties
+    void "multiple prefixes are used to read from secrets" (String appName,
+                                                            String env,
+                                                            List<String> prefixes,
+                                                            String expectedSecret,
+                                                            String expectedToken){
+        given:
+        System.setProperty(Environment.BOOTSTRAP_CONTEXT_PROPERTY, StringUtils.TRUE)
+        Map<String, Object> properties = [
+                'spec.name': 'AwsDistributedConfigurationSpec',
+                'micronaut.application.name': appName,
+                'micronaut.config-client.enabled': true,
+                'aws.distributed-configuration.prefixes': prefixes,
+                'aws.distributed-configuration.delimiter': '/',
+        ]
+
+        when:
+        EmbeddedServer embeddedServer = env ? ApplicationContext.run(EmbeddedServer, properties, env) : ApplicationContext.run(EmbeddedServer,  properties)
+        ApplicationContext context = embeddedServer.applicationContext
+        Optional<String> clientSecretOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-secret', String)
+        Optional<String> clientIdOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-id', String)
+
+        then:
+        clientSecretOptional.isPresent()
+        clientSecretOptional.get() == expectedSecret
+        clientIdOptional.isPresent()
+        clientIdOptional.get() == expectedToken
+
+        cleanup:
+        context.close()
+        embeddedServer.close()
+
+      where:
+      appName    | env   | prefixes                | expectedSecret    | expectedToken
+      'myapp'    | 'foo' | ['/config/', '/other/'] | 'myapp_fooYYY'    | 'myapp_fooXXX'
+      'otherapp' | null  | ['/demo/']              | 'otherapp_fooYYY' | 'otherapp_fooXXX'
+    }
+
     @Requires(beans = [AwsDistributedConfiguration, KeyValueFetcher])
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
@@ -97,6 +138,12 @@ class AwsDistributedConfigurationSpec extends Specification {
                                               MockKeyValuesFetcher keyValueFetcher,
                                               ApplicationConfiguration applicationConfiguration) {
             super(awsDistributedConfiguration, keyValueFetcher, applicationConfiguration)
+        }
+
+        @Override
+        @NonNull
+        protected String adaptPropertyKey(String originalKey, String groupName) {
+            return originalKey
         }
 
         @Override
@@ -132,14 +179,22 @@ class AwsDistributedConfigurationSpec extends Specification {
                 '/config/myapp_foo/OpenID':
                         [
                                 'micronaut.security.oauth2.clients.companyauthserver.client-secret': 'myapp_fooYYY'
+                        ],
+                '/other/myapp_foo/OpenID':
+                        [
+                                'micronaut.security.oauth2.clients.companyauthserver.client-id': 'myapp_fooXXX'
+                        ],
+                '/demo/otherapp/OpenID':
+                        [
+                                'micronaut.security.oauth2.clients.companyauthserver.client-secret': 'otherapp_fooYYY',
+                                'micronaut.security.oauth2.clients.companyauthserver.client-id': 'otherapp_fooXXX'
                         ]
-
         ]
 
         @Override
-        Optional<Map> keyValuesByPrefix(@NonNull String prefix) {
+        Optional<Map<String, Map>> keyValuesByPrefix(@NonNull String prefix) {
             String k = m.keySet().find { it.startsWith(prefix) }
-            (k) ? Optional.of(m[k]) : Optional.empty()
+            (k) ? Optional.of([(k): m[k]] as Map<String, Map>) : Optional.empty()
         }
     }
 }

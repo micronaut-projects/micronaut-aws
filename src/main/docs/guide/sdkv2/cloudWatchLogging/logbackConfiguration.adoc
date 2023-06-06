@@ -1,0 +1,28 @@
+
+Edit a `src/main/resources/logback.xml` file and make it look like this:
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH" />
+    </root>
+</configuration>
+----
+You can customize your JsonLayout with additional parameters the are available on official docs of https://javadoc.io/static/ch.qos.logback.contrib/logback-json-classic/0.1.5/ch/qos/logback/contrib/json/classic/JsonLayout.html[Logback's JsonLayout].
+
+The `CloudWatchLoggingAppender` supports blacklisting the loggers by specifying the logger name. That might come handy if you want to use `level=DEBUG` or `level=TRACE` for the root logger level.

@@ -1,0 +1,28 @@
+plugins {
+    id "io.micronaut.build.internal.aws-base"
+    id("java-library")
+}
+
+dependencies {
+    testAnnotationProcessor(platform(mn.micronaut.core.bom))
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testImplementation(platform(mn.micronaut.core.bom))
+    testImplementation(mn.micronaut.inject.java)
+
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.http.server.tck)
+    testImplementation(libs.junit.platform.engine)
+    testImplementation(libs.junit.jupiter.engine)
+    testRuntimeOnly(mnLogging.logback.classic)
+
+    testRuntimeOnly(mnValidation.micronaut.validation)
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+}

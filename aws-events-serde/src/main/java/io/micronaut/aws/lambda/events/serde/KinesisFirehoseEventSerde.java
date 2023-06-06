@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.events.KinesisFirehoseEvent;
 import io.micronaut.serde.annotation.SerdeImport;
 
-import java.nio.ByteBuffer;
-
 /**
  * {@link SerdeImport} for {@link KinesisFirehoseEvent}.
  *
  * @author Dan Hollingsworth
+ * @since 4.0.0
  */
 @SerdeImport(KinesisFirehoseEvent.Record.class)
 @SerdeImport(KinesisFirehoseEvent.class)

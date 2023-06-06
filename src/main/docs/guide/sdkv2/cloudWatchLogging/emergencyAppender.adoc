@@ -1,0 +1,35 @@
+Since this appender is queuing up log messages and then writing them remotely, there are a number of situations which might result in log messages not getting remoted correctly. To address such scenarios you can configure the emergency appender to preserve those messages.
+
+Inside your `src/main/resources/logback.xml` you should add a new appender, in the example it is `STDOUT`. Inside the `CloudWatchLoggingAppender` add `appender-ref` that points to the new crated appender.
+
+.src/main/resources/logback.xml
+[source,xml]
+----
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <appender-ref ref="STDOUT"/>
+        <!-- <blackListLoggerName>example.app.Application</blackListLoggerName> -->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <!-- <groupName>customGroupName</groupName> -->
+        <!-- <streamName>customStreamName</streamName> -->
+        <!-- <createGroupAndStream>true</createGroupAndStream> -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH" />
+    </root>
+</configuration>
+----

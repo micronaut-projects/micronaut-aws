@@ -1,0 +1,15 @@
+plugins {
+    id("io.micronaut.build.internal.aws-module")
+}
+
+def userAgentProviderGenerator = tasks.register("userAgentProviderGenerator", io.micronaut.internal.aws.tasks.UserAgentProviderGeneratorTask) {
+    version.set(micronautVersion)
+    outputDirectory.set(layout.buildDirectory.dir("generated/user-agent"))
+}
+sourceSets.main.java.srcDir(userAgentProviderGenerator)
+
+spotless {
+    java {
+        targetExclude("**/Generated*.java")
+    }
+}

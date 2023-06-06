@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2021 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,12 @@ package io.micronaut.aws.lambda.events.serde;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.serialization.events.mixins.SQSEventMixin;
 import io.micronaut.serde.annotation.SerdeImport;
-import jakarta.inject.Singleton;
 
 /**
  * {@link SerdeImport} for {@link SQSEvent}.
  *
  * @author Sergio del Amo
- * @since 1.0.0
+ * @since 4.0.0
  */
 @SerdeImport(value = SQSEvent.MessageAttribute.class)
 @SerdeImport(value = SQSEvent.SQSMessage.class, mixin = SQSEventMixin.SQSMessageMixin.class)

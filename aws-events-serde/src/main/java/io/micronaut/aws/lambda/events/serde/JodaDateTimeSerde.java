@@ -32,12 +32,12 @@ import java.io.IOException;
  * {@link NullableSerde} implementation for JODA {@link DateTime}.
  *
  * @author Sergio del Amo
- * @since 1.0.0
+ * @since 4.0.0
  */
 @Singleton
 @Requires(classes = DateTime.class)
 @TypeHint(typeNames = {"org.joda.time.format.DateTimeFormatter", "org.joda.time.format.ISODateTimeFormat", "org.joda.time.ReadableInstant"})
-public class JodaDateTimeSerde implements NullableSerde<DateTime> {//TODO unit test
+public class JodaDateTimeSerde implements NullableSerde<DateTime> {
 
     @Override
     public void serialize(@NonNull Encoder encoder,

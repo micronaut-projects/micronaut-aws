@@ -15,13 +15,13 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Adapts from {@link HttpServletRequest} to {@link AwsProxyRequest}.
+ * Adapts from {@link HttpServletRequest} to {@link APIGatewayV2HTTPEvent}.
  * @author Sergio del Amo
  */
 @FunctionalInterface
@@ -33,6 +33,6 @@ public interface ServletToAwsProxyRequestAdapter {
      * @return An AWS Proxy request built from the servlet request supplied as a parameter
      */
     @NonNull
-    AwsProxyRequest createAwsProxyRequest(@NonNull HttpServletRequest request);
+    APIGatewayV2HTTPEvent createAwsProxyRequest(@NonNull HttpServletRequest request);
 
 }

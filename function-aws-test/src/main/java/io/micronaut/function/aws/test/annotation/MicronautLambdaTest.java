@@ -84,7 +84,7 @@ public @interface MicronautLambdaTest {
 
     /**
      * The application context builder to use to construct the context. Note that some builder
-     * methods may be called to set Lambda-specific configuration (e.g. eager initialization &
+     * methods may be called to set Lambda-specific configuration (e.g. eager initialization and
      * additional environments).
      * @return The builder
      */
@@ -105,4 +105,14 @@ public @interface MicronautLambdaTest {
      * @return true if {@link io.micronaut.runtime.EmbeddedApplication} should be started
      */
     boolean startApplication() default true;
+
+    /**
+     * By default, with JUnit 5 the test method parameters will be resolved to beans if possible.
+     * This behaviour can be problematic if in combination with the {@code ParameterizedTest} annotation.
+     * Setting this member to {@code false} will completely disable bean resolution for method parameters.
+     * <p>
+     *
+     * @return Whether to resolve test method parameters as beans.
+     */
+    boolean resolveParameters() default true;
 }

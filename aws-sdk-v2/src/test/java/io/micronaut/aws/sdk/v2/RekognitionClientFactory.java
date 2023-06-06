@@ -1,9 +1,14 @@
 package io.micronaut.aws.sdk.v2;
 
+import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
@@ -13,15 +18,22 @@ import software.amazon.awssdk.services.rekognition.RekognitionAsyncClientBuilder
 import software.amazon.awssdk.services.rekognition.RekognitionClient;
 import software.amazon.awssdk.services.rekognition.RekognitionClientBuilder;
 
-import jakarta.inject.Singleton;
-
 @Requires(property = "spec.name", value = "AwsClientFactorySpec")
 //tag::class[]
 @Factory
 public class RekognitionClientFactory extends AwsClientFactory<RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient> {
-
-    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider, AwsRegionProviderChain regionProvider) {
-        super(credentialsProvider, regionProvider);
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     * @param awsServiceConfiguration  AWS Service Configuration
+     */
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       @Nullable UserAgentProvider userAgentProvider,
+                                       @Nullable @Named(RekognitionClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration);
     }
 
     // Sync client

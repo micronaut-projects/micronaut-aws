@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.events.DynamodbTimeWindowEvent;
 import com.amazonaws.services.lambda.runtime.events.models.TimeWindow;
-import com.amazonaws.services.lambda.runtime.serialization.events.mixins.DynamodbEventMixin;
+import com.amazonaws.services.lambda.runtime.serialization.events.mixins.DynamodbTimeWindowEventMixin;
 import io.micronaut.serde.annotation.SerdeImport;
 
 /**
  * {@link SerdeImport} for {@link DynamodbTimeWindowEvent}.
  *
  * @author Dan Hollingsworth
+ * @since 4.0.0
  */
 @SerdeImport(TimeWindow.class)
-@SerdeImport(value = DynamodbTimeWindowEvent.class, mixin = DynamodbEventMixin.class)
+@SerdeImport(value = DynamodbTimeWindowEvent.class, mixin = DynamodbTimeWindowEventMixin.class)
 public class DynamodbTimeWindowEventSerde {
 
 }

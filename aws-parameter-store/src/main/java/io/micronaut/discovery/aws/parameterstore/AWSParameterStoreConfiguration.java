@@ -98,7 +98,7 @@ public class AWSParameterStoreConfiguration implements Toggleable  {
     }
 
     /**
-     * Use auto-decryption via MKS for SecureString parameters. Default value ({@value #DEFAULT_SECURE}).
+     * Use auto-decryption via KMS for SecureString parameters. Default value ({@value #DEFAULT_SECURE}).
      * If set to false, you will not get unencrypted values.
      *
      * @param useSecureParameters True if secure parameters should be used

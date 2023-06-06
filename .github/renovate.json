@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "addLabels": ["type: dependency-upgrade"],
+  "schedule": [
+    "after 10pm every day"
+  ],
+  "prHourlyLimit": 1,
+  "prConcurrentLimit": 20,
+  "timezone": "Europe/Prague",
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["actions.*"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}

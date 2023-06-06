@@ -6,6 +6,7 @@ import software.amazon.awssdk.services.s3.S3Client
 
 class S3ClientSpec extends ApplicationContextSpecification {
 
+
     void "it can configure an S3 client"() {
         when:
         S3Client client = applicationContext.getBean(S3Client)

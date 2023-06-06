@@ -1,0 +1,15 @@
+To use an API Gateway Management Api client, add the following dependency:
+
+dependency:apigatewaymanagementapi[groupId="software.amazon.awssdk"]
+
+Then, the following beans will be created:
+
+* `software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClientBuilder`
+* `software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiClient`.
+
+And:
+
+* `software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClientBuilder`
+* `software.amazon.awssdk.services.apigatewaymanagementapi.ApiGatewayManagementApiAsyncClient`.
+
+The HTTP client, credentials and region will be configured as per described in the <<sdkv2, SDK v2 documentation>>.

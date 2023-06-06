@@ -1,0 +1,122 @@
+[versions]
+micronaut = "4.0.0-M6"
+micronaut-docs = "2.0.0"
+micronaut-test = "4.0.0-M6"
+groovy = "4.0.12"
+spock = "2.3-groovy-4.0"
+
+bouncycastle = '1.70'
+fileupload = '0.0.5'
+jetty = '11.0.15'
+logback-json-classic = '0.1.5'
+assertj = '3.24.2'
+
+micronaut-discovery = "4.0.0-M3"
+micronaut-groovy = "4.0.0-M1"
+micronaut-logging = "1.0.0-M3"
+micronaut-mongodb = "5.0.0-M2"
+micronaut-reactor = "3.0.0-M4"
+micronaut-security = "4.0.0-M5"
+micronaut-serde = "2.0.0-M9"
+micronaut-servlet = "4.0.0-M7"
+micronaut-views = "4.0.0-M4"
+micronaut-validation = "4.0.0-M9"
+
+managed-alexa-ask-sdk = "2.71.0"
+managed-aws-java-sdk-v1 = '1.12.481'
+managed-aws-java-sdk-v2 = '2.20.74'
+managed-aws-lambda = '1.2.2'
+managed-aws-lambda-events = '3.11.2'
+managed-aws-lambda-java-serialization = '1.1.2'
+
+managed-aws-serverless-core = '1.9.3'
+micronaut-starter = "3.9.2"
+slf4j = "2.0.7"
+servlet-api = "2.5"
+testcontainers = "1.18.1"
+javapoet = "1.13.0"
+
+# The following version should probably
+# be defined in Micronaut Graal but it's not shipped with a BOM yet
+graal = "22.3.2"
+kotlin = "1.8.21"
+
+# Micronaut
+micronaut-gradle-plugin = "4.0.0-M4"
+
+[libraries]
+# Core
+
+
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+
+micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
+micronaut-logging = { module = "io.micronaut.discovery:micronaut-logging-bom", version.ref = "micronaut-logging" }
+micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
+micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
+micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
+micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
+micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+micronaut-servlet = { module = "io.micronaut.servlet:micronaut-servlet-bom", version.ref = "micronaut-servlet" }
+micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
+micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.ref = "micronaut-views" }
+micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
+
+alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
+assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }
+aws-ssm = { module = 'software.amazon.awssdk:ssm' }
+awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
+awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
+awssdk-cloudwatchlogs = { module = 'software.amazon.awssdk:cloudwatchlogs'}
+awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }
+awssdk-netty-nio-client = { module = 'software.amazon.awssdk:netty-nio-client' }
+awssdk-rekognition = { module = 'software.amazon.awssdk:rekognition' }
+awssdk-s3 = { module = 'software.amazon.awssdk:s3' }
+awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager' }
+awssdk-servicediscovery = { module = 'software.amazon.awssdk:servicediscovery' }
+awssdk-ses = { module = 'software.amazon.awssdk:ses' }
+awssdk-sns = { module = 'software.amazon.awssdk:sns' }
+awssdk-sqs = { module = 'software.amazon.awssdk:sqs' }
+awssdk-ssm = { module = 'software.amazon.awssdk:ssm' }
+awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection-client' }
+
+kotlin-stdlib-jdk8 = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk8', version.ref = 'kotlin' }
+
+boms-aws-java-sdk-v1 = { module = 'com.amazonaws:aws-java-sdk-bom', version.ref = 'managed-aws-java-sdk-v1' }
+boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'managed-aws-java-sdk-v2' }
+
+bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.ref = 'bouncycastle'}
+fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
+graal-sdk = { module = 'org.graalvm.sdk:graal-sdk', version.ref = 'graal' }
+jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
+jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
+jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
+junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
+junit-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api' }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
+aws-java-sdk-lambda = { module = 'com.amazonaws:aws-java-sdk-lambda' }
+
+logback-classic = { module = "ch.qos.logback:logback-classic" }
+logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }
+jackson-databind = { module = 'com.fasterxml.jackson.core:jackson-databind' }
+
+managed-alexa-ask-sdk = { module = 'com.amazon.alexa:ask-sdk', version.ref = 'managed-alexa-ask-sdk' }
+managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version.ref = 'managed-alexa-ask-sdk' }
+managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-support', version.ref = 'managed-alexa-ask-sdk' }
+managed-aws-java-sdk-core = { module = 'com.amazonaws:aws-java-sdk-core', version.ref = 'managed-aws-java-sdk-v1' }
+managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', version.ref = 'managed-aws-lambda'}
+managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events' }
+managed-aws-lambda-java-serialization = { module = 'com.amazonaws:aws-lambda-java-serialization', version.ref = 'managed-aws-lambda-java-serialization' }
+
+managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
+managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
+
+servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
+testcontainers-bom = { module = 'org.testcontainers:testcontainers-bom', version.ref = 'testcontainers' }
+testcontainers = { module = 'org.testcontainers:testcontainers' }
+testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
+testcontainers-spock = { module = 'org.testcontainers:spock' }
+# Gradle
+
+gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

@@ -1,0 +1,15 @@
+plugins {
+    id 'io.micronaut.build.internal.aws-tests'
+    id 'org.graalvm.buildtools.native'
+}
+
+graalvmNative {
+    metadataRepository {
+        enabled = true
+    }
+    binaries {
+        all {
+            resources.autodetect()
+        }
+    }
+}

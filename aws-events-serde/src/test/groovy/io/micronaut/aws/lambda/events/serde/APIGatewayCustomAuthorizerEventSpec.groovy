@@ -43,9 +43,7 @@ class APIGatewayCustomAuthorizerEventSpec extends Specification {
         APIGatewayCustomAuthorizerEvent event = objectMapper.readValue(json, APIGatewayCustomAuthorizerEvent)
 
         then:
-        "hi" + f
         event
-        1 == 2
         "TOKEN" == event.type
         "incoming-client-token" == event.authorizationToken
         "arn:aws:execute-api:us-east-1:123456789012:example/prod/POST/{proxy+}" == event.methodArn

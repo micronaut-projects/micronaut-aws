@@ -1,0 +1,812 @@
+[
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.AwsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.AwsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$ObjectMapper0$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig",
+    "member": "Constructor io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautAwsProxyResponse$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig",
+    "member": "Constructor io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaContainerHandler$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Constructor io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$MicronautLambdaHandler$IntrospectionRef",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Field SERVER_INFO",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Field lambdaContext",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.AbstractLambdaContainerHandler(java.lang.Class,java.lang.Class,com.amazonaws.serverless.proxy.RequestReader,com.amazonaws.serverless.proxy.ResponseWriter,com.amazonaws.serverless.proxy.SecurityContextWriter,com.amazonaws.serverless.proxy.ExceptionHandler)",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.AwsObjectMapperFactory",
+    "member": "Constructor io.micronaut.function.aws.proxy.AwsObjectMapperFactory()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyConfiguration",
+    "member": "Field PREFIX",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyConfiguration",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautAwsProxyConfiguration()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyExceptionHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautAwsProxyExceptionHandler(io.micronaut.function.aws.proxy.MicronautLambdaContainerContext)",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyExceptionHandler",
+    "member": "Implemented interface com.amazonaws.serverless.proxy.ExceptionHandler",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyRequest",
+    "member": "Implemented interface io.micronaut.core.attr.AttributeHolder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyRequest",
+    "member": "Implemented interface io.micronaut.core.attr.MutableAttributeHolder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyRequest",
+    "member": "Implemented interface io.micronaut.http.HttpRequest",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyRequest",
+    "member": "Implemented interface io.micronaut.http.HttpMessage",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.core.attr.AttributeHolder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface java.io.Closeable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.core.attr.MutableAttributeHolder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.http.MutableHttpMessage",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.http.MutableHttpResponse",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.http.HttpResponse",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface java.lang.AutoCloseable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautAwsProxyResponse",
+    "member": "Implemented interface io.micronaut.http.HttpMessage",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "member": "Implemented interface io.micronaut.function.aws.MicronautLambdaContext",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerContext",
+    "member": "Implemented interface io.micronaut.context.ApplicationContextProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler(io.micronaut.context.ApplicationContextBuilder)",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler(io.micronaut.context.ApplicationContext)",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Implemented interface java.io.Closeable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Implemented interface io.micronaut.context.ApplicationContextProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaContainerHandler",
+    "member": "Implemented interface java.lang.AutoCloseable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Field handler",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Implemented interface java.io.Closeable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Implemented interface io.micronaut.context.ApplicationContextProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Implemented interface java.lang.AutoCloseable",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyPrincipalBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$AwsProxyRequestContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.$ContextArgumentBinder$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.RequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.TypedRequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder",
+    "member": "Implemented interface io.micronaut.core.bind.TypeArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyPrincipalBinder",
+    "member": "Implemented interface io.micronaut.core.bind.ArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.RequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.TypedRequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.TypeArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.ArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.RequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.TypedRequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.TypeArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.AwsProxyRequestContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.ArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.RequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.http.bind.binders.TypedRequestArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.TypeArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.bind.ContextArgumentBinder",
+    "member": "Implemented interface io.micronaut.core.bind.ArgumentBinder",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.factory.MicronautAwsProxyResponseFactory",
+    "member": "Constructor io.micronaut.function.aws.proxy.model.factory.MicronautAwsProxyResponseFactory()",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.model.factory.MicronautAwsProxyResponseFactory",
+    "member": "Implemented interface io.micronaut.http.HttpResponseFactory",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.security.MicronautLambdaAuthenticationFetcher",
+    "member": "Field HEADER_OIDC_IDENTITY",
+    "reason": "Micronaut AWS API proxy module changed"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference()",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.AwsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.AwsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.cloudwatchlogs.CloudwatchLogsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.dynamodb.DynamoDbClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.gatewaymanagement.ApiGatewayManagementApiClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.s3.S3ClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.secretsmanager.SecretsManagerClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.servicediscovery.ServiceDiscoveryAsyncClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ses.SesClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ses.SesClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ses.SesClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ses.SesClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sns.SnsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.sqs.SqsClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory",
+    "member": "Constructor io.micronaut.aws.sdk.v2.service.ssm.SsmClientFactory(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_AWS_REQUEST_ID",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_MEMORY_SIZE",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_NAME",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_REMAINING_TIME",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_XRAY_TRACE_ID",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_ARN",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.function.aws.MicronautRequestHandler",
+    "member": "Field MDC_DEFAULT_FUNCTION_VERSION",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerConfigurationClient(io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration,io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher,io.micronaut.runtime.ApplicationConfiguration)",
+    "reason": "Remove deprecated code in next mayor version"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.sdk.v2.service.$AwsClientFactory$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Constructor io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
+    "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  }
+]

@@ -21,15 +21,16 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
+import io.micronaut.context.env.CommandLinePropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.annotation.TypeHint;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.cli.CommandLine;
@@ -39,28 +40,30 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautLambdaContext;
-import io.micronaut.function.aws.MicronautRequestHandler;
+import io.micronaut.function.aws.XRayUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.DefaultHttpClientConfiguration;
 import io.micronaut.http.client.HttpClient;
-import io.micronaut.context.env.CommandLinePropertySource;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.logging.LogLevel;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
-
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -98,13 +101,11 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
                 com.amazonaws.services.lambda.runtime.events.SQSEvent.class
         }
 )
+@SuppressWarnings("java:S119") // More descriptive generics are better here
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
-
-    static final String USER_AGENT_VALUE = String.format(
-            "micronaut/%s-%s",
-            System.getProperty("java.vendor.version"),
-            AbstractMicronautLambdaRuntime.class.getPackage().getImplementationVersion());
+    @Nullable
+    protected String userAgent;
 
     protected Object handler;
 
@@ -134,8 +135,18 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     public void run(String... args) throws MalformedURLException {
         final URL runtimeApiURL = lookupRuntimeApiEndpoint();
         logn(LogLevel.DEBUG, "runtime endpoint: ", runtimeApiURL);
-        final Predicate<URL> loopUntil = (url) -> true;
+        final Predicate<URL> loopUntil = url -> true;
         startRuntimeApiEventLoop(runtimeApiURL, loopUntil, args);
+    }
+
+    /**
+     * Uses {@link UserAgentProvider} to populate {@link AbstractMicronautLambdaRuntime#userAgent}.
+     */
+    protected void populateUserAgent() {
+        if (getApplicationContext().containsBean(UserAgentProvider.class)) {
+            UserAgentProvider userAgentProvider = getApplicationContext().getBean(UserAgentProvider.class);
+            this.userAgent = userAgentProvider.userAgent();
+        }
     }
 
     /**
@@ -153,8 +164,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
 
     @Override
     public ApplicationContext getApplicationContext() {
-        if (handler instanceof ApplicationContextProvider) {
-            return ((ApplicationContextProvider) handler).getApplicationContext();
+        if (handler instanceof ApplicationContextProvider applicationContextProvider) {
+            return applicationContextProvider.getApplicationContext();
         }
         return null;
     }
@@ -214,11 +225,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     @Nullable
     protected Object createEnvironmentHandler() {
-        String handler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
-        logn(LogLevel.DEBUG, "Handler: ", handler);
-        if (handler != null) {
-            Optional<Class> handlerClassOptional = parseHandlerClass(handler);
-            logn(LogLevel.WARN, "No handler Class parsed for ", handler);
+        String localHandler = getEnv(ReservedRuntimeEnvironmentVariables.HANDLER);
+        logn(LogLevel.DEBUG, "Handler: ", localHandler);
+        if (localHandler != null) {
+            Optional<Class<?>> handlerClassOptional = parseHandlerClass(localHandler);
+            logn(LogLevel.WARN, "No handler Class parsed for ", localHandler);
             if (handlerClassOptional.isPresent()) {
                 log(LogLevel.DEBUG, "Handler Class parsed. Instantiating it via introspection\n");
                 Class handlerClass = handlerClassOptional.get();
@@ -234,7 +245,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param handler handler in format file.method, where file is the name of the file without an extension, and method is the name of a method or function that's defined in the file.
      * @return Empty or an Optional with the referenced class.
      */
-    protected Optional<Class> parseHandlerClass(@NonNull String handler) {
+    protected Optional<Class<?>> parseHandlerClass(@NonNull String handler) {
         String[] arr = handler.split("::");
         if (arr.length > 0) {
             return ClassUtils.forName(arr[0], null);
@@ -255,15 +266,16 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             log(LogLevel.TRACE, "HandlerResponseType and ResponseType are identical\n");
             return (ResponseType) handlerResponse;
 
-        } else if (responseType == APIGatewayProxyResponseEvent.class) {
+        } else if (responseType == APIGatewayProxyResponseEvent.class || responseType == APIGatewayV2HTTPResponse.class) {
             log(LogLevel.TRACE, "response type is APIGatewayProxyResponseEvent\n");
-            String json = serializeAsJsonString(handlerResponse);
-            if (json != null) {
-                return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
+            try {
+                byte[] json = serializeAsByteArray(handlerResponse);
+                if (json != null) {
+                    return (ResponseType) respond(HttpStatus.OK, json, MediaType.APPLICATION_JSON);
+                }
+            } catch (IOException ignored) {
             }
-            return (ResponseType) respond(HttpStatus.BAD_REQUEST,
-                    "Could not serialize " + handlerResponse.toString() + " as json",
-                    MediaType.TEXT_PLAIN);
+            return (ResponseType) respond(HttpStatus.BAD_REQUEST, "Could not serialize response as json".getBytes(), MediaType.TEXT_PLAIN);
         }
         return null;
     }
@@ -275,12 +287,13 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param contentType HTTP Header Content-Type value
      * @return a {@link APIGatewayProxyResponseEvent} populated with the supplied status, body and content type
      */
-    protected APIGatewayProxyResponseEvent respond(HttpStatus status, String body, String contentType) {
+    protected APIGatewayProxyResponseEvent respond(HttpStatus status, byte[] body, String contentType) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpHeaders.CONTENT_TYPE, contentType);
         response.setHeaders(headers);
-        response.setBody(body);
+        response.setIsBase64Encoded(true);
+        response.setBody(Base64.getEncoder().encodeToString(body));
         response.setStatusCode(status.getCode());
         logn(LogLevel.TRACE, "response: ", status.getCode(), " content type: ", headers.get(HttpHeaders.CONTENT_TYPE), " message ", body);
         return response;
@@ -291,17 +304,20 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      *
      * @param request Request obtained from the Runtime API
      * @return if the request and the handler type are the same, just return the request, if the request is of type {@link APIGatewayProxyRequestEvent} it attempts to build an object of type HandlerRequestType with the body of the request, else returns {@code null}
-     * @throws JsonProcessingException if underlying request body contains invalid content
-     * @throws JsonMappingException if the request body JSON structure does not match structure
+     * @throws IOException if underlying request body contains invalid content
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected HandlerRequestType createHandlerRequest(RequestType request) throws JsonProcessingException, JsonMappingException  {
+    protected HandlerRequestType createHandlerRequest(RequestType request) throws IOException {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
-        } else if (request instanceof APIGatewayProxyRequestEvent) {
+        } else if (request instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
-            String content = ((APIGatewayProxyRequestEvent) request).getBody();
+            String content = apiGatewayProxyRequestEvent.getBody();
+            return valueFromContent(content, handlerRequestType);
+        } else if (request instanceof APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {
+            log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
+            String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         }
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
@@ -325,6 +341,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             if (applicationContext == null) {
                 throw new ConfigurationException("Application Context is null");
             }
+            populateUserAgent();
             final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
             config.setReadIdleTimeout(null);
             config.setReadTimeout(null);
@@ -336,8 +353,10 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(
-                            HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI).header(USER_AGENT, USER_AGENT_VALUE), Argument.of(requestType));
+                    MutableHttpRequest<?> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
+                    applicationContext.findBean(UserAgentProvider.class)
+                        .ifPresent(userAgentProvider -> nextInvocationHttpRequest.header(USER_AGENT, userAgentProvider.userAgent()));
+                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
                     final RequestType request = response.body();
                     if (request != null) {
                         logn(LogLevel.DEBUG, "request body ", request);
@@ -359,7 +378,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                                 log(LogLevel.TRACE, "handler response received\n");
                                 final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
                                 log(LogLevel.TRACE, "sending function response\n");
-                                blockingHttpClient.exchange(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse));
+                                blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
                             } else {
                                 log(LogLevel.WARN, "request id is empty\n");
                             }
@@ -369,8 +388,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                             e.printStackTrace(new PrintWriter(sw));
                             logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", e.getMessage(), sw);
                             try {
-                                blockingHttpClient.exchange(invocationErrorRequest(requestId, e.getMessage(), null, null));
-
+                                blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, e.getMessage(), null, null)));
                             } catch (Throwable e2) {
                                 // swallow, nothing we can do...
                             }
@@ -378,8 +396,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                     }
                 }
             } finally {
-                if (handler instanceof Closeable) {
-                    ((Closeable) handler).close();
+                if (handler instanceof Closeable closeable) {
+                    closeable.close();
                 }
                 if (endpointClient != null) {
                     endpointClient.close();
@@ -393,6 +411,19 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     }
 
     /**
+     * If the request is {@link MutableHttpRequest} and {@link AbstractMicronautLambdaRuntime#userAgent} is not null,
+     * it adds an HTTP Header User-Agent.
+     * @param request HTTP Request
+     * @return The HTTP Request decorated
+     */
+    protected HttpRequest decorateWithUserAgent(HttpRequest<?> request) {
+        if (userAgent != null && request instanceof MutableHttpRequest mutableHttpRequest) {
+            return mutableHttpRequest.header(USER_AGENT, userAgent);
+        }
+        return request;
+    }
+
+    /**
      * Get the X-Ray tracing header from the Lambda-Runtime-Trace-Id header in the API response.
      * Set the _X_AMZN_TRACE_ID environment variable with the same value for the X-Ray SDK to use.
      * @param headers next API Response HTTP Headers
@@ -402,7 +433,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         String traceId = headers.get(LambdaRuntimeInvocationResponseHeaders.LAMBDA_RUNTIME_TRACE_ID);
         logn(LogLevel.DEBUG, "Trace id: ", traceId, '\n');
         if (StringUtils.isNotEmpty(traceId)) {
-            System.setProperty(MicronautRequestHandler.LAMBDA_TRACE_HEADER_PROP, traceId);
+            System.setProperty(XRayUtils.LAMBDA_TRACE_HEADER_PROP, traceId);
         }
     }
 
@@ -413,7 +444,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      */
     protected void reportInitializationError(URL runtimeApiURL, Throwable e) {
         try (HttpClient endpointClient = HttpClient.create(runtimeApiURL)) {
-            endpointClient.toBlocking().exchange(initializationErrorRequest(e.getMessage(), null, null));
+            endpointClient.toBlocking().exchange(decorateWithUserAgent(initializationErrorRequest(e.getMessage(), null, null)));
         } catch (Throwable e2) {
             // swallow, nothing we can do...
         }
@@ -425,20 +456,14 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @return A JSON String of the supplied object
      */
     @Nullable
-    protected String serializeAsJsonString(Object value) {
+    protected byte[] serializeAsByteArray(Object value) throws IOException {
         if (value == null) {
             return null;
         }
         ApplicationContext applicationContext = getApplicationContext();
-        if (applicationContext != null) {
-            if (applicationContext.containsBean(ObjectMapper.class)) {
-                ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
-                try {
-                    return objectMapper.writeValueAsString(value);
-                } catch (JsonProcessingException e) {
-                    return null;
-                }
-            }
+        if (applicationContext != null && applicationContext.containsBean(JsonMapper.class)) {
+            JsonMapper jsonMapper = applicationContext.getBean(JsonMapper.class);
+            return jsonMapper.writeValueAsBytes(value);
         }
         return null;
     }
@@ -449,22 +474,18 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param valueType Class Type to be read into
      * @param <T> Type to be read into
      * @return a new Class build from the JSON String
-     * @throws JsonProcessingException if underlying input contains invalid content
-     * @throws JsonMappingException if the input JSON structure does not match structure
+     * @throws IOException if underlying input contains invalid content
      *   expected for result type (or has other mismatch issues)
      */
     @Nullable
-    protected <T> T valueFromContent(String content, Class<T> valueType) throws JsonProcessingException, JsonMappingException {
+    protected <T> T valueFromContent(String content, Class<T> valueType) throws IOException {
         if (content == null) {
             return null;
         }
         ApplicationContext applicationContext = getApplicationContext();
-        if (applicationContext != null) {
-            if (applicationContext.containsBean(ObjectMapper.class)) {
-                ObjectMapper objectMapper = applicationContext.getBean(ObjectMapper.class);
-
-                return objectMapper.readValue(content, valueType);
-            }
+        if (applicationContext != null && applicationContext.containsBean(JsonMapper.class)) {
+            JsonMapper objectMapper = applicationContext.getBean(JsonMapper.class);
+            return objectMapper.readValue(content, Argument.of(valueType));
         }
         return null;
     }
@@ -544,6 +565,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
         return new URL("http://" + runtimeApiEndpoint);
     }
 
+    @SuppressWarnings("rawtypes")
     private Class initTypeArgument(int index) {
         final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
                 getClass(),

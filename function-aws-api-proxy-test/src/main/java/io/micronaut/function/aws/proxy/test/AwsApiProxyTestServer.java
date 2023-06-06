@@ -15,34 +15,36 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.context.env.Environment;
-import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.io.socket.SocketUtils;
-import io.micronaut.function.aws.proxy.MicronautLambdaHandler;
-import io.micronaut.http.server.HttpServerConfiguration;
-import io.micronaut.http.server.exceptions.HttpServerException;
-import io.micronaut.http.server.exceptions.ServerStartupException;
-import io.micronaut.runtime.ApplicationConfiguration;
-import io.micronaut.runtime.server.EmbeddedServer;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.AbstractHandler;
-
-import jakarta.inject.Singleton;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.BindException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.env.Environment;
+import io.micronaut.context.env.PropertySource;
+import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.convert.ConversionService;
+import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
+import io.micronaut.http.server.HttpServerConfiguration;
+import io.micronaut.http.server.exceptions.HttpServerException;
+import io.micronaut.http.server.exceptions.ServerStartupException;
+import io.micronaut.runtime.ApplicationConfiguration;
+import io.micronaut.runtime.server.EmbeddedServer;
+import jakarta.inject.Singleton;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation that spins up an HTTP server based on Jetty that proxies request to a Lambda.
@@ -69,14 +71,14 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
         if (portOpt.isPresent()) {
             Integer port = portOpt.get();
             if (port == -1) {
-                return new ServerPort(true, SocketUtils.findAvailableTcpPort());
+                return new ServerPort(true, 0);
 
             } else {
                 return new ServerPort(false, port);
             }
         } else {
             if (applicationContext.getEnvironment().getActiveNames().contains(Environment.TEST)) {
-                return new ServerPort(true, SocketUtils.findAvailableTcpPort());
+                return new ServerPort(true, 0);
             } else {
                 return new ServerPort(false, 8080);
             }
@@ -86,27 +88,13 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     @Override
     public EmbeddedServer start() {
         if (running.compareAndSet(false, true)) {
-            int retryCount = 0;
             int port = serverPort.getPort();
-            while (retryCount <= 3) {
-                try {
-                    this.server = new Server(port);
-                    this.server.setHandler(new AwsProxyHandler());
-                    this.server.start();
-                    break;
-                } catch (BindException e) {
-                    if (serverPort.isRandom()) {
-                        port = SocketUtils.findAvailableTcpPort();
-                        retryCount++;
-                    } else {
-                        throw new ServerStartupException(e.getMessage(), e);
-                    }
-                } catch (Exception e) {
-                    throw new ServerStartupException(e.getMessage(), e);
-                }
-            }
-            if (server == null) {
-                throw new HttpServerException("No available ports");
+            try {
+                this.server = new Server(port);
+                this.server.setHandler(new AwsProxyHandler(applicationContext));
+                this.server.start();
+            } catch (Exception e) {
+                throw new ServerStartupException(e.getMessage(), e);
             }
         }
         return this;
@@ -126,7 +114,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
 
     @Override
     public int getPort() {
-        return serverPort.getPort();
+        return server.getURI().getPort();
     }
 
     @Override
@@ -174,32 +162,46 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     }
 
     private static class AwsProxyHandler extends AbstractHandler {
+        private static final Logger LOG = LoggerFactory.getLogger(AwsProxyHandler.class);
 
-        private final MicronautLambdaHandler lambdaHandler;
-
+        private final APIGatewayV2HTTPEventFunction lambdaHandler;
         private final ServletToAwsProxyRequestAdapter requestAdapter;
         private final ServletToAwsProxyResponseAdapter responseAdapter;
+        private final ConversionService conversionService;
         private final ContextProvider contextProvider;
 
-        public AwsProxyHandler() throws ContainerInitializationException {
-            lambdaHandler = new MicronautLambdaHandler();
+        public AwsProxyHandler(ApplicationContext proxyTestApplicationContext) {
+            ApplicationContextBuilder builder = ApplicationContext.builder();
+            for (PropertySource propertySource : proxyTestApplicationContext.getEnvironment()
+                    .getPropertySources()) {
+                builder = builder.propertySources(propertySource);
+            }
+            lambdaHandler = new APIGatewayV2HTTPEventFunction(builder.build());
             ApplicationContext ctx = lambdaHandler.getApplicationContext();
+            this.contextProvider = ctx.getBean(ContextProvider.class);
             this.requestAdapter = ctx.getBean(ServletToAwsProxyRequestAdapter.class);
             this.responseAdapter = ctx.getBean(ServletToAwsProxyResponseAdapter.class);
-            this.contextProvider = ctx.getBean(ContextProvider.class);
+            this.conversionService = ctx.getBean(ConversionService.class);
         }
 
         @Override
         public void destroy() {
             super.destroy();
-            this.lambdaHandler.close();
+            try {
+                this.lambdaHandler.close();
+            } catch (IOException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error("could not close Handler", e);
+                }
+            }
         }
 
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
                 throws IOException {
-            AwsProxyRequest awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
-            AwsProxyResponse awsProxyResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
-            responseAdapter.handle(request, awsProxyResponse, response);
+            APIGatewayV2HTTPEvent awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
+            APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
+            responseAdapter.handle(conversionService, request, apiGatewayV2HTTPResponse, response);
+            baseRequest.setHandled(true);
         }
     }
 }

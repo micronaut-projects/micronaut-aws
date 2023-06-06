@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import io.micronaut.serde.annotation.SerdeImport;
  * {@link SerdeImport} for {@link S3EventNotification}.
  *
  * @author Sergio del Amo
- * @since 3.3.0
+ * @since 4.0.0
  */
 @SerdeImport(value = S3EventNotification.class)
 @SerdeImport(value = S3EventNotification.RequestParametersEntity.class)
