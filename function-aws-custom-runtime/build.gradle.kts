@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor(mn.micronaut.graal)
     compileOnly(projects.micronautFunctionAwsApiProxy)
     api(libs.managed.aws.lambda.events)
     api(projects.micronautAwsUa)
