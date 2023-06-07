@@ -9,6 +9,7 @@ bouncycastle = '1.70'
 fileupload = '0.0.5'
 jetty = '11.0.15'
 logback-json-classic = '0.1.5'
+assertj = '3.24.2'
 
 micronaut-discovery = "4.0.0-M3"
 micronaut-groovy = "4.0.0-M1"
@@ -16,7 +17,7 @@ micronaut-logging = "1.0.0-M3"
 micronaut-mongodb = "5.0.0-M2"
 micronaut-reactor = "3.0.0-M4"
 micronaut-security = "4.0.0-M5"
-micronaut-serde = "2.0.0-M8"
+micronaut-serde = "2.0.0-M9"
 micronaut-servlet = "4.0.0-M7"
 micronaut-views = "4.0.0-M4"
 micronaut-validation = "4.0.0-M9"
@@ -26,6 +27,8 @@ managed-aws-java-sdk-v1 = '1.12.481'
 managed-aws-java-sdk-v2 = '2.20.74'
 managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.2'
+managed-aws-lambda-java-serialization = '1.1.2'
+
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
 slf4j = "2.0.7"
@@ -60,7 +63,7 @@ micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.r
 micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
 
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
-
+assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
@@ -102,7 +105,8 @@ managed-alexa-ask-sdk-core = { module = 'com.amazon.alexa:ask-sdk-core', version
 managed-alexa-ask-sdk-lambda = { module = 'com.amazon.alexa:ask-sdk-lambda-support', version.ref = 'managed-alexa-ask-sdk' }
 managed-aws-java-sdk-core = { module = 'com.amazonaws:aws-java-sdk-core', version.ref = 'managed-aws-java-sdk-v1' }
 managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', version.ref = 'managed-aws-lambda'}
-managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events'}
+managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events' }
+managed-aws-lambda-java-serialization = { module = 'com.amazonaws:aws-lambda-java-serialization', version.ref = 'managed-aws-lambda-java-serialization' }
 
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }

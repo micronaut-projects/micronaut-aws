@@ -26,6 +26,7 @@ include("aws-sdk-v2")
 include("aws-secretsmanager")
 include("aws-service-discovery")
 include("aws-ua")
+include("aws-lambda-events-serde")
 
 include("function-aws")
 include("function-aws-alexa")

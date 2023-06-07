@@ -1,0 +1,26 @@
+{
+  "principalId": "test-principalId",
+  "policyDocument": {
+    "version": "test-version",
+    "statement": [
+      {
+        "action": "test-action",
+        "effect": "test-effect",
+        "resource": [
+          "test-resource1",
+          "test-resource2"
+        ],
+        "condition": {
+          "foo": {
+            "bar": true
+          }
+        }
+      }
+    ]
+  },
+  "context": {
+    "test-contextKey1": 1,
+    "test-contextKey2": true,
+    "test-contextKey3": "test-contextVal3"
+  }
+}

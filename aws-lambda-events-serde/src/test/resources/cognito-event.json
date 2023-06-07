@@ -1,0 +1,11 @@
+{
+  "version": "2",
+  "triggerSource": "test-triggerSource",
+  "region": "us-east-1",
+  "userPoolId": "test-userPoolId",
+  "userName": "test-userName",
+  "callerContext": {
+    "awsSdkVersion": "test-awsSdkVersion",
+    "clientId": "test-clientId"
+  }
+}

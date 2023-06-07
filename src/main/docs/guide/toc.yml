@@ -45,6 +45,7 @@ sdkv2:
 amazonApiGateway: Amazon API Gateway
 lambda:
   title: AWS Lambda Support
+  eventsLambdaSerde: AWS Lambda Events Serialization
   applicationtypesforawslambda: Micronaut Application Types for AWS Lambda
   awslambdaconsiderations: AWS Lambda Considerations
   awslambdaruntimes: AWS Lambda Runtimes

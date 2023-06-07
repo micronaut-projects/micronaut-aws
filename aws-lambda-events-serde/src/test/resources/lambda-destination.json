@@ -1,0 +1,21 @@
+{
+  "version": "test-version",
+  "timestamp": "2020-01-02T15:50-04:00",
+  "requestContext": {
+    "requestId": "test-requestId",
+    "functionArn": "test-functionArn",
+    "condition": "test-condition",
+    "approximateInvokeCount": 2
+  },
+  "requestPayload": {
+    "test-payloadKey1": 1,
+    "test-payloadKey2": true,
+    "test-payloadKey3": "test-payloadVal3"
+  },
+  "responseContext": {
+    "test-requestContextKey": "test-requestContextVal"
+  },
+  "responsePayload": {
+    "test-responsePayloadKey": "test-responsePayloadVal"
+  }
+}

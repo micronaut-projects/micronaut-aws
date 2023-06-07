@@ -1,0 +1,4 @@
+{
+  "isAuthorized":true,
+  "context":{"test-contextKey1":"test-contextVal1", "test-contextKey2":"test-contextVal2"}
+}

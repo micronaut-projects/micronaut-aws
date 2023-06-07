@@ -1,0 +1,57 @@
+{
+  "resource": "test-resource",
+  "path": "test-path",
+  "httpMethod": "test-httpMethod",
+  "headers": {
+    "test-headersKey1": "test-headersVal1",
+    "test-headersKey2": "test-headersVal2"
+  },
+  "multiValueHeaders": {
+    "test-headersKey1": [
+      "test-headersVal1",
+      "test-headersVal2"
+    ],
+    "test-headersKey2": [
+      "test-headersVal3",
+      "test-headersVal4"
+    ]
+  },
+  "queryStringParameters": {
+    "test-queryKey1": "test-queryVal1",
+    "test-queryKey2": "test-queryVal2"
+  },
+  "multiValueQueryStringParameters": {
+    "test-queryKey1": [
+      "test-queryVal1",
+      "test-queryVal2"
+    ],
+    "test-queryKey2": [
+      "test-queryVal3",
+      "test-queryVal4"
+    ]
+  },
+  "pathParameters": {
+    "test-pathKey1": "test-pathVal1",
+    "test-pathKey2": "test-pathVal2"
+  },
+  "stageVariables": {
+    "test-stageKey1": "test-stageVal1",
+    "test-stageKey2": "test-stageVal2"
+  },
+  "requestContext": {
+    "cognitoIdentityPoolId": "test-cognitoIdentityPoolId",
+    "accountId": "test-accountId",
+    "cognitoIdentityId": "test-cognitoIdentityId",
+    "caller": "test-caller",
+    "apiKey": "test-apiKey",
+    "sourceIp": "test-sourceIp",
+    "cognitoAuthenticationType": "test-cognitoAuthenticationType",
+    "cognitoAuthenticationProvider": "test-cognitoAuthenticationProvider",
+    "userArn": "test-userArn",
+    "userAgent": "test-userAgent",
+    "user": "test-user",
+    "accessKey": "test-accessKey"
+  },
+  "body": "test-body",
+  "base64Encoded": true
+}

@@ -1,0 +1,57 @@
+{
+  "version":"test-version",
+  "routeKey":"test-routeKey",
+  "rawPath":"test-rawPath",
+  "rawQueryString":"test-rawQueryString",
+  "cookies":["test-cookie1", "test-cookie2"],
+  "headers":{"test-headerKey1":"test-headerVal1", "test-headerKey2":"test-headerVal2"},
+  "queryStringParameters":{"test-queryKey1":"test-queryVal1", "test-queryKey2":"test-queryVal2"},
+  "pathParameters":{"test-pathKey1":"test-pathVal1", "test-pathKey2":"test-pathVal2"},
+  "stageVariables":{"test-stageKey1":"test-stageVal1", "test-stageKey2":"test-stageVal2"},
+  "body":"test-body",
+  "isBase64Encoded":false,
+  "requestContext":
+  {
+    "routeKey":"test-routeKey",
+    "accountId":"test-accountId",
+    "stage":"test-stage",
+    "apiId":"test-apiId",
+    "domainName":"test-domainName",
+    "domainPrefix":"test-domainPrefix",
+    "time":"test-time",
+    "timeEpoch":12345,
+    "http":
+    {
+      "method":"test-method",
+      "path":"test-path",
+      "protocol":"test-protocol",
+      "sourceIp":"test-sourceIp",
+      "userAgent":"test-userAgent"
+    },
+    "authorizer":
+    {
+      "jwt":
+      {
+        "claims":{"test-claimKey1":"test-claimVal1", "test-claimKey2":"test-claimVal2"},
+        "scopes":["test-scope1","test-scope2"]
+      },
+      "lambda":{"test-lambdaKey1":1, "test-lambdaKey2":true, "test-lambdaKey3":"test-lambdaVal3"},
+      "iam":
+      {
+        "accessKey":"test-accessKey",
+        "accountId":"test-accountId",
+        "callerId":"test-callerId",
+        "cognitoIdentity":
+        {
+          "amr":["test-amr1", "test-amr2"],
+          "identityId":"test-identityId",
+          "identityPoolId":"test-identityPoolId"
+        },
+        "principalOrgId":"test-principalOrgId",
+        "userArn":"test-userArn",
+        "userId":"test-userId"
+      }
+    },
+    "requestId":"test-requestId"
+  }
+}

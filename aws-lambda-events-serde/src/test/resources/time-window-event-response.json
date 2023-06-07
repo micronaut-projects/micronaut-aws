@@ -1,0 +1,8 @@
+{
+  "state": {"test-stateKey1":"test-stateVal1", "test-stateKey2":"test-stateVal2"},
+  "batchItemFailures":
+  [
+    {"itemIdentifier":"test-itemIdentifier1"},
+    {"itemIdentifier":"test-itemIdentifier2"}
+  ]
+}

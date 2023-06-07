@@ -1,0 +1,15 @@
+{
+  "account":"test-account",
+  "region":"test-region",
+  "detail":
+  {
+    "test-detailKey1": 1,
+    "test-detailKey2": true,
+    "test-detailKey3":"test-detailVal3"
+  },
+  "detail-type":"test-detailType",
+  "source":"test-source",
+  "id":"test-id",
+  "time":"2020-01-02T15:50-04:00",
+  "resources":["test-resource1","test-resource2"]
+}
