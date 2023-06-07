@@ -1,3 +1,3 @@
 If you want to use https://micronaut-projects.github.io/micronaut-serialization/latest/guide/[Micronaut Serialization] with https://github.com/aws/aws-lambda-java-libs/tree/main/aws-lambda-java-events[AWS Lambda Java Events] add the following dependency:
 
-dependency:micronaut-aws-events-serde[groupId="io.micronaut.aws"]
+dependency:micronaut-aws-lambda-events-serde[groupId="io.micronaut.aws"]
