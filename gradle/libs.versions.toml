@@ -23,7 +23,7 @@ micronaut-views = "4.0.0-M4"
 micronaut-validation = "4.0.0-M9"
 
 managed-alexa-ask-sdk = "2.71.0"
-managed-aws-java-sdk-v1 = '1.12.481'
+managed-aws-java-sdk-v1 = '1.12.483'
 managed-aws-java-sdk-v2 = '2.20.80'
 managed-aws-lambda = '1.2.2'
 managed-aws-lambda-events = '3.11.2'
