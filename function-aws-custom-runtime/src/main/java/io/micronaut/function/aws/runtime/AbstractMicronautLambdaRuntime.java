@@ -64,6 +64,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_FIELDS;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_METHODS;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_CONSTRUCTORS;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_FIELDS;
+import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_METHODS;
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -79,7 +87,15 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
  * @since 2.0.0
  */
 @TypeHint(
-        accessType = {TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS, TypeHint.AccessType.ALL_PUBLIC},
+        accessType = {
+            ALL_PUBLIC,
+            ALL_DECLARED_CONSTRUCTORS,
+            ALL_PUBLIC_CONSTRUCTORS,
+            ALL_DECLARED_METHODS,
+            ALL_DECLARED_FIELDS,
+            ALL_PUBLIC_METHODS,
+            ALL_PUBLIC_FIELDS
+        },
         value = {
                 com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
                 com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
