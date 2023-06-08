@@ -1,6 +1,5 @@
 package example;
 
-import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
@@ -27,11 +26,11 @@ public class S3BucketController {
         this.s3Client = s3Client;
     }
 
-    @Post
-    public Result createBucket(@Body example.Bucket bucket) {
+    @Post("/{bucketName}")
+    public Result createBucket(String bucketName) {
         try {
             CreateBucketRequest createBucketRequest = CreateBucketRequest.builder()
-                .bucket(bucket.getName())
+                .bucket(bucketName)
                 .createBucketConfiguration(CreateBucketConfiguration.builder().build())
                 .build();
             CreateBucketResponse response = s3Client.createBucket(createBucketRequest);
@@ -62,11 +61,11 @@ public class S3BucketController {
         }
     }
 
-    @Delete
-    public Result deleteBucket(@Body example.Bucket bucket) {
+    @Delete("/{bucketName}")
+    public Result deleteBucket(String bucketName) {
         try {
             DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder()
-                .bucket(bucket.getName())
+                .bucket(bucketName)
                 .build();
 
             DeleteBucketResponse response = s3Client.deleteBucket(deleteBucketRequest);

@@ -27,14 +27,16 @@ public class S3BucketTest {
 
     @Test
     void test() {
+        String bucketName = "test-bucket";
+
         // create a new bucket
-        HttpRequest createBucketRequest = HttpRequest.POST("/s3/buckets", new Bucket("test-bucket"));
+        HttpRequest createBucketRequest = HttpRequest.POST("/s3/buckets/" + bucketName, "");
         HttpResponse<Result> createBucketResponse = httpClient.toBlocking().exchange(createBucketRequest, Result.class);
         Optional<Result> createBucketResult = createBucketResponse.getBody();
 
         assertTrue(createBucketResult.isPresent());
         assertEquals(String.valueOf(HttpStatus.OK.getCode()), createBucketResult.get().getStatus());
-        assertTrue(createBucketResult.get().getMessage().contains("test-bucket"));
+        assertTrue(createBucketResult.get().getMessage().contains(bucketName));
 
         // list buckets
         ListBucketsResult listBucketsResult = httpClient.toBlocking().retrieve("/s3/buckets", ListBucketsResult.class);
@@ -43,10 +45,10 @@ public class S3BucketTest {
         assertEquals(String.valueOf(HttpStatus.OK.getCode()), listBucketsResult.getStatus());
         assertNotNull(listBucketsResult.getBuckets());
         assertEquals(1, listBucketsResult.getBuckets().size());
-        assertEquals("test-bucket", listBucketsResult.getBuckets().get(0));
+        assertEquals(bucketName, listBucketsResult.getBuckets().get(0));
 
         // delete the bucket
-        HttpRequest deleteBucketRequest = HttpRequest.DELETE("/s3/buckets", new Bucket("test-bucket"));
+        HttpRequest deleteBucketRequest = HttpRequest.DELETE("/s3/buckets/" + bucketName, "");
         HttpResponse<Result> deleteBucketResponse = httpClient.toBlocking().exchange(deleteBucketRequest, Result.class);
         Optional<Result> deleteBucketResult = deleteBucketResponse.getBody();
 
