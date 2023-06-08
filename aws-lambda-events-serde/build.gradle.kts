@@ -4,10 +4,10 @@ plugins {
 
 dependencies {
     annotationProcessor(mnSerde.micronaut.serde.processor)
-    implementation(mnSerde.micronaut.serde.jackson)
-    implementation(libs.managed.aws.lambda.events)
-    testImplementation(libs.assertj.core)
+    api(libs.managed.aws.lambda.events)
+    api(mnSerde.micronaut.serde.jackson)
     implementation(libs.managed.aws.lambda.java.serialization)
+    testImplementation(libs.assertj.core)
 }
 
 micronautBuild {

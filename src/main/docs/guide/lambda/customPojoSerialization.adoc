@@ -1,0 +1,9 @@
+`micronaut-function-aws` provides an implementation of `com.amazonaws.services.lambda.runtime.CustomPojoSerializer` which is loaded via SPI. This `CustomPojoSerialization` avoids your Micronaut function to pay a double hit on performances when using a serialization library inside the Lambda function.
+
+You need to add a dependency to either https://micronaut-projects.github.io/micronaut-serialization/latest/guide[Micronaut Serialization]
+
+dependency:micronaut-serde-jackson[groupId="io.micronaut.serde"]
+
+or to Micronaut Jackson Databind:
+
+dependency:micronaut-jackson-databind[groupId="io.micronaut"]
