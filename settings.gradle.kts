@@ -44,6 +44,7 @@ include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv1")
 include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv2")
 include("test-suite-http-server-tck-function-aws-api-proxy-test")
 include("test-suite-kotlin")
+include("test-suite-s3")
 
 configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     useStandardizedProjectNames.set(true)
