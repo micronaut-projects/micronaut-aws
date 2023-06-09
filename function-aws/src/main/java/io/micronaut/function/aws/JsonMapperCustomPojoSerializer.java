@@ -41,7 +41,7 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
         try {
             return (T) jsonMapper.readValue(input, Argument.of(type));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CustomPojoSerializerException(e);
         }
     }
 
@@ -50,7 +50,7 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
         try {
             return (T) jsonMapper.readValue(input, Argument.of(type));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CustomPojoSerializerException(e);
         }
     }
 
@@ -60,7 +60,7 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
         try {
             jsonMapper.writeValue(output, argumentType, value);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CustomPojoSerializerException(e);
         }
     }
 }
