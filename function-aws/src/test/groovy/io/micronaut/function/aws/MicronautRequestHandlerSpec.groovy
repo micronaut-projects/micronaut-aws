@@ -18,6 +18,7 @@ package io.micronaut.function.aws
 import com.amazonaws.services.lambda.runtime.Context
 import groovy.transform.Canonical
 import io.micronaut.context.env.Environment
+import io.micronaut.serde.annotation.Serdeable
 import spock.lang.Specification
 
 import jakarta.inject.Inject
@@ -72,6 +73,7 @@ class MicronautRequestHandlerSpec extends Specification {
         }
     }
 
+    @Serdeable
     @Canonical
     static class Point {
         Integer x,y

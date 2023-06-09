@@ -18,6 +18,7 @@ package io.micronaut.function.aws
 import com.amazonaws.services.lambda.runtime.Context
 import io.micronaut.context.env.Environment
 import io.micronaut.function.FunctionBean
+import io.micronaut.serde.annotation.Serdeable
 import spock.lang.Specification
 
 import java.util.function.Function
@@ -92,6 +93,7 @@ class MicronautRequestStreamHandlerSpec extends Specification{
         output.toString() == 'value 20'
     }
 
+    @Serdeable
     static class Book {
         String title
     }
