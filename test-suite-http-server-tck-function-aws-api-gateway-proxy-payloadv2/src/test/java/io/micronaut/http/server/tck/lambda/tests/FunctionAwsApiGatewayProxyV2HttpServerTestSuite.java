@@ -12,7 +12,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v2 Event model")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.filter.RequestFilterTest", // Broken in servlet
     "io.micronaut.http.server.tck.tests.MissingBodyAnnotationTest",
     "io.micronaut.http.server.tck.tests.StreamTest"
 })
