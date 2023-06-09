@@ -1,6 +1,0 @@
-[
-  {
-    "name":"software.amazon.awssdk.services.sts.internal.StsWebIdentityCredentialsProviderFactory",
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  }
-]
