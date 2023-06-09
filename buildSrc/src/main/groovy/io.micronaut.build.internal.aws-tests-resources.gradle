@@ -1,0 +1,10 @@
+plugins {
+    id 'io.micronaut.test-resources'
+}
+
+micronaut {
+    testResources {
+        clientTimeout = 300
+        version = libs.versions.micronaut.testresources.get()
+    }
+}
