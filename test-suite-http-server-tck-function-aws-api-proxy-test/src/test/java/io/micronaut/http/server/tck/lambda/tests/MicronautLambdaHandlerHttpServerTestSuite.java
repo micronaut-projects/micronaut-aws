@@ -15,7 +15,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.endpoints.health.HealthTest",
     "io.micronaut.http.server.tck.tests.filter.RequestFilterTest",
     "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
-    "io.micronaut.http.server.tck.tests.constraintshandler.ControllerConstraintHandlerTest" // Broken in servlet
 })
 public class MicronautLambdaHandlerHttpServerTestSuite {
 }

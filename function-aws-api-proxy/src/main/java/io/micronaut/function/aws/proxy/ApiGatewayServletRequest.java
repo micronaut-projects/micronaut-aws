@@ -34,6 +34,7 @@ import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
+import io.micronaut.servlet.http.ParsedBodyHolder;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -57,7 +58,7 @@ import java.util.function.Supplier;
  */
 @Internal
 @SuppressWarnings("java:S119") // More descriptive generics are better here
-public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
+public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES>, ParsedBodyHolder<T> {
 
     private static final Set<Class<?>> RAW_BODY_TYPES = CollectionUtils.setOf(String.class, byte[].class, ByteBuffer.class, InputStream.class);
 
@@ -70,6 +71,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private final MediaTypeCodecRegistry codecRegistry;
     private MutableConvertibleValues<Object> attributes;
     private Supplier<Optional<T>> body;
+    private T parsedBody;
     private T overriddenBody;
 
     protected ApiGatewayServletRequest(
@@ -88,7 +90,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         this.httpMethod = httpMethod;
         this.log = log;
         this.body = SupplierUtil.memoizedNonEmpty(() -> {
-            T built = (T) bodyBuilder.buildBody(this::getInputStream, this);
+            T built = parsedBody != null ? parsedBody :  (T) bodyBuilder.buildBody(this::getInputStream, this);
             return Optional.ofNullable(built);
         });
     }
@@ -219,5 +221,10 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public void setConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
+    }
+
+    @Override
+    public void setParsedBody(T body) {
+        this.parsedBody = body;
     }
 }
