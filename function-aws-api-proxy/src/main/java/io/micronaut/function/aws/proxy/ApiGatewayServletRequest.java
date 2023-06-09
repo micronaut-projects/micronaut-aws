@@ -234,7 +234,6 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         this.parsedBody = body;
     }
 
-
     @Override
     public @Nullable ByteBuffer<?> contents() {
         try {
