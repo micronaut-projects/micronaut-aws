@@ -6,9 +6,7 @@ dependencies {
     api(mn.micronaut.function)
     api(libs.managed.aws.lambda.core)
     implementation(mn.micronaut.json.core)
-    testImplementation(mnMongo.micronaut.mongo.sync) {
-        exclude(group = "io.micronaut.reactor")
-    }
+    testImplementation(mnMongo.micronaut.mongo.sync)
     testImplementation(platform(libs.testcontainers.bom))
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.testcontainers.mongodb)
