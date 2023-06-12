@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,7 +72,9 @@ loadScripts(document, 'script');</script>
 <h1 title="Class APIGatewayV2HTTPResponseServletResponse" class="title">Class APIGatewayV2HTTPResponseServletResponse&lt;B&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../AbstractServletHttpResponse.html" title="class in io.micronaut.function.aws.proxy">io.micronaut.function.aws.proxy.AbstractServletHttpResponse</a>&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr>B&gt;
 <div class="inheritance">io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPResponseServletResponse&lt;B&gt;</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
@@ -86,8 +88,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="annotations">@Internal
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">APIGatewayV2HTTPResponseServletResponse&lt;B&gt;</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr>B&gt;</span></div>
+<span class="extends-implements">extends <a href="../AbstractServletHttpResponse.html" title="class in io.micronaut.function.aws.proxy">AbstractServletHttpResponse</a>&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr>B&gt;</span></div>
 <div class="block">Implementation of <code>ServletHttpResponse</code> for AWS API Gateway Proxy.</div>
 <dl class="notes">
 <dt>Since:</dt>
@@ -98,14 +99,25 @@ implements io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.servic
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-io.micronaut.function.aws.proxy.AbstractServletHttpResponse">Fields inherited from class&nbsp;io.micronaut.function.aws.proxy.<a href="../AbstractServletHttpResponse.html" title="class in io.micronaut.function.aws.proxy">AbstractServletHttpResponse</a></h3>
+<code><a href="../AbstractServletHttpResponse.html#binaryContentConfiguration">binaryContentConfiguration</a>, <a href="../AbstractServletHttpResponse.html#body">body</a>, <a href="../AbstractServletHttpResponse.html#headers">headers</a>, <a href="../AbstractServletHttpResponse.html#status">status</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
 <h2>Constructor Summary</h2>
 <div class="caption"><span>Constructors</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Constructor</div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier</div>
+<div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.micronaut.core.convert.ConversionService,io.micronaut.function.aws.proxy.BinaryContentConfiguration)" class="member-name-link">APIGatewayV2HTTPResponseServletResponse</a><wbr>(io.micronaut.core.convert.ConversionService&nbsp;conversionService,
  <a href="../BinaryContentConfiguration.html" title="class in io.micronaut.function.aws.proxy">BinaryContentConfiguration</a>&nbsp;binaryContentConfiguration)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -123,43 +135,15 @@ implements io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.servic
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T&gt;&nbsp;io.micronaut.http.MutableHttpResponse&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#body(T)" class="member-name-link">body</a><wbr>(T&nbsp;body)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#code()" class="member-name-link">code</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cookie(io.micronaut.http.cookie.Cookie)" class="member-name-link">cookie</a><wbr>(io.micronaut.http.cookie.Cookie&nbsp;cookie)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.core.convert.value.MutableConvertibleValues&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttributes()" class="member-name-link">getAttributes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBody()" class="member-name-link">getBody</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.http.MutableHttpHeaders</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeaders()" class="member-name-link">getHeaders</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNativeResponse()" class="member-name-link">getNativeResponse</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutputStream()" class="member-name-link">getOutputStream</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/BufferedWriter.html" title="class or interface in java.io" class="external-link">BufferedWriter</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWriter()" class="member-name-link">getWriter</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reason()" class="member-name-link">reason</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#status(int,java.lang.CharSequence)" class="member-name-link">status</a><wbr>(int&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a>&nbsp;message)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-io.micronaut.function.aws.proxy.AbstractServletHttpResponse">Methods inherited from class&nbsp;io.micronaut.function.aws.proxy.<a href="../AbstractServletHttpResponse.html" title="class in io.micronaut.function.aws.proxy">AbstractServletHttpResponse</a></h3>
+<code><a href="../AbstractServletHttpResponse.html#body(T)">body</a>, <a href="../AbstractServletHttpResponse.html#code()">code</a>, <a href="../AbstractServletHttpResponse.html#cookie(io.micronaut.http.cookie.Cookie)">cookie</a>, <a href="../AbstractServletHttpResponse.html#getAttributes()">getAttributes</a>, <a href="../AbstractServletHttpResponse.html#getBody()">getBody</a>, <a href="../AbstractServletHttpResponse.html#getHeaders()">getHeaders</a>, <a href="../AbstractServletHttpResponse.html#getOutputStream()">getOutputStream</a>, <a href="../AbstractServletHttpResponse.html#getWriter()">getWriter</a>, <a href="../AbstractServletHttpResponse.html#reason()">reason</a>, <a href="../AbstractServletHttpResponse.html#status(int,java.lang.CharSequence)">status</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -198,7 +182,7 @@ implements io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.servic
 <li>
 <section class="detail" id="&lt;init&gt;(io.micronaut.core.convert.ConversionService,io.micronaut.function.aws.proxy.BinaryContentConfiguration)">
 <h3>APIGatewayV2HTTPResponseServletResponse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">APIGatewayV2HTTPResponseServletResponse</span><wbr><span class="parameters">(io.micronaut.core.convert.ConversionService&nbsp;conversionService,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">APIGatewayV2HTTPResponseServletResponse</span><wbr><span class="parameters">(io.micronaut.core.convert.ConversionService&nbsp;conversionService,
  <a href="../BinaryContentConfiguration.html" title="class in io.micronaut.function.aws.proxy">BinaryContentConfiguration</a>&nbsp;binaryContentConfiguration)</span></div>
 </section>
 </li>
@@ -214,120 +198,6 @@ implements io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.servic
 <section class="detail" id="getNativeResponse()">
 <h3>getNativeResponse</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse</span>&nbsp;<span class="element-name">getNativeResponse</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getNativeResponse</code>&nbsp;in interface&nbsp;<code>io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr><a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOutputStream()">
-<h3>getOutputStream</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a></span>&nbsp;<span class="element-name">getOutputStream</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getOutputStream</code>&nbsp;in interface&nbsp;<code>io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr><a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getWriter()">
-<h3>getWriter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/BufferedWriter.html" title="class or interface in java.io" class="external-link">BufferedWriter</a></span>&nbsp;<span class="element-name">getWriter</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getWriter</code>&nbsp;in interface&nbsp;<code>io.micronaut.servlet.http.ServletHttpResponse&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,<wbr><a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="cookie(io.micronaut.http.cookie.Cookie)">
-<h3>cookie</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</span>&nbsp;<span class="element-name">cookie</span><wbr><span class="parameters">(io.micronaut.http.cookie.Cookie&nbsp;cookie)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>cookie</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getHeaders()">
-<h3>getHeaders</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.micronaut.http.MutableHttpHeaders</span>&nbsp;<span class="element-name">getHeaders</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getHeaders</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpMessage&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-<dt>Specified by:</dt>
-<dd><code>getHeaders</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.MutableHttpMessage&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAttributes()">
-<h3>getAttributes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.micronaut.core.convert.value.MutableConvertibleValues&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">getAttributes</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getAttributes</code>&nbsp;in interface&nbsp;<code>io.micronaut.core.attr.AttributeHolder</code></dd>
-<dt>Specified by:</dt>
-<dd><code>getAttributes</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpMessage&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-<dt>Specified by:</dt>
-<dd><code>getAttributes</code>&nbsp;in interface&nbsp;<code>io.micronaut.core.attr.MutableAttributeHolder</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getBody()">
-<h3>getBody</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</span>&nbsp;<span class="element-name">getBody</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>getBody</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpMessage&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="body(T)">
-<h3 id="body(java.lang.Object)">body</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">io.micronaut.http.MutableHttpResponse&lt;T&gt;</span>&nbsp;<span class="element-name">body</span><wbr><span class="parameters">(@Nullable
- T&nbsp;body)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>body</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.MutableHttpMessage&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-<dt>Specified by:</dt>
-<dd><code>body</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="status(int,java.lang.CharSequence)">
-<h3>status</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</span>&nbsp;<span class="element-name">status</span><wbr><span class="parameters">(int&nbsp;status,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/CharSequence.html" title="class or interface in java.lang" class="external-link">CharSequence</a>&nbsp;message)</span></div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>status</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.MutableHttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="code()">
-<h3>code</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">code</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>code</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="reason()">
-<h3>reason</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">reason</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>reason</code>&nbsp;in interface&nbsp;<code>io.micronaut.http.HttpResponse&lt;<a href="APIGatewayV2HTTPResponseServletResponse.html" title="type parameter in APIGatewayV2HTTPResponseServletResponse">B</a>&gt;</code></dd>
-</dl>
 </section>
 </li>
 </ul>

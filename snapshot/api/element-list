@@ -41,6 +41,7 @@ io.micronaut.function.aws
 io.micronaut.function.aws.alexa
 io.micronaut.function.aws.event
 io.micronaut.function.aws.proxy
+io.micronaut.function.aws.proxy.alb
 io.micronaut.function.aws.proxy.payload1
 io.micronaut.function.aws.proxy.payload2
 io.micronaut.function.aws.proxy.security

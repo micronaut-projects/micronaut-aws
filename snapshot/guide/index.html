@@ -304,6 +304,9 @@ any configuration that needs to configure an AWS SDK client.</p>
 <a href="../api/io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html">APIGatewayV2HTTPEventFunction</a> for 2.0.</p>
 </li>
 <li>
+<p><code>micronaut-function-aws-api-proxy</code> modules supports application load balancer events. For functions of type <code>Application</code>, use the handler <a href="../api/io/micronaut/function/aws/proxy/alb/ApplicationLoadBalancerFunction.html">ApplicationLoadBalancerFunction</a></p>
+</li>
+<li>
 <p>New dependency to use <a href="#eventsSerde">Micronaut Serialization with AWS Lambda Events</a>.</p>
 </li>
 <li>
@@ -2725,11 +2728,29 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html">APIGatewayV2HTTPEventFunction</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2.0</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="https://github.com/aws/aws-lambda-java-libs/blob/master/aws-lambda-java-core/src/main/java/com/amazonaws/services/lambda/runtime/RequestHandler.java">RequestHandler</a>&lt;ApplicationLoadBalancerRequestEvent,ApplicationLoadBalancerResponseEvent&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../api/io/micronaut/function/aws/proxy/alb/ApplicationLoadBalancerFunction.html">ApplicationLoadBalancerFunction</a></p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>For functions of type <code>Application</code>, use the handler <a href="../api/io/micronaut/function/aws/proxy/payload1/ApiGatewayProxyRequestEventFunction.html">ApiGatewayProxyRequestEventFunction</a> for <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">Payload format version 1.0</a> and
- <a href="../api/io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html">APIGatewayV2HTTPEventFunction</a> for 2.0.</p>
+<p>For functions of type <code>Application</code>, use the handler:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="../api/io/micronaut/function/aws/proxy/payload1/ApiGatewayProxyRequestEventFunction.html">ApiGatewayProxyRequestEventFunction</a> for <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">Payload format version 1.0</a></p>
+</li>
+<li>
+<p><a href="../api/io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html">APIGatewayV2HTTPEventFunction</a> for payload format 2.0.</p>
+</li>
+<li>
+<p><a href="../api/io/micronaut/function/aws/proxy/alb/ApplicationLoadBalancerFunction.html">ApplicationLoadBalancerFunction</a> for Application Load Balancer event.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>To resolve that class you need to add the <code>micronaut-function-aws-api-proxy</code> dependency to your build.</p>
@@ -2749,18 +2770,6 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<code>micronaut-function-aws-api-proxy</code> supports only <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">Payload format version 1.0</a>.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>For Serverless Functions the decision to use one <code>MicronautRequestHandler</code> or <code>MicronautRequestStreamHandler</code> depends on how you want to handle the input and output types.</p>
@@ -2912,7 +2921,7 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<code>AfterExecutionEvent</code> is not published by either <a href="../api/io/micronaut/function/aws/proxy/payload1/ApiGatewayProxyRequestEventFunction.html">ApiGatewayProxyRequestEventFunction</a> or
+<code>AfterExecutionEvent</code> is not published by either <a href="../api/io/micronaut/function/aws/proxy/alb/ApplicationLoadBalancerFunction.html">ApplicationLoadBalancerFunction</a>, <a href="../api/io/micronaut/function/aws/proxy/payload1/ApiGatewayProxyRequestEventFunction.html">ApiGatewayProxyRequestEventFunction</a> or
 <a href="../api/io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html">APIGatewayV2HTTPEventFunction</a> handlers.
 </td>
 </tr>
