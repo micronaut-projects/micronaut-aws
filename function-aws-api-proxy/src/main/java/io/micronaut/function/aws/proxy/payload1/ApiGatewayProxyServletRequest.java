@@ -21,14 +21,8 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
-import io.micronaut.function.aws.proxy.MapCollapseUtils;
-import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
-import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
-import io.micronaut.http.HttpMethod;
-import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
-import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
@@ -56,28 +50,18 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     public ApiGatewayProxyServletRequest(
         APIGatewayProxyRequestEvent requestEvent,
         ApiGatewayProxyServletResponse<Object> response,
-        MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService,
         BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
-            codecRegistry,
             requestEvent,
             URI.create(requestEvent.getPath()),
-            parseMethod(requestEvent),
+            parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
         );
         this.response = response;
-    }
-
-    private static HttpMethod parseMethod(APIGatewayProxyRequestEvent requestEvent) {
-        try {
-            return HttpMethod.valueOf(requestEvent.getHttpMethod());
-        } catch (IllegalArgumentException e) {
-            return HttpMethod.CUSTOM;
-        }
     }
 
     @Override
@@ -92,17 +76,12 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(requestEvent.getMultiValueHeaders(), requestEvent.getHeaders()), conversionService);
+        return getHeaders(requestEvent::getHeaders, requestEvent::getMultiValueHeaders);
     }
 
     @Override
     public MutableHttpParameters getParameters() {
-        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
-        if (isFormSubmission(mediaType)) {
-            return getParametersFromBody(requestEvent.getQueryStringParameters());
-        } else {
-            return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, requestEvent.getMultiValueQueryStringParameters(), requestEvent.getQueryStringParameters());
-        }
+        return getParameters(requestEvent::getQueryStringParameters, requestEvent::getMultiValueQueryStringParameters);
     }
 
     @Override

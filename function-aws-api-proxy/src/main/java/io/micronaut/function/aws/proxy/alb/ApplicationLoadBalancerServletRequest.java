@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.proxy.payload2;
+package io.micronaut.function.aws.proxy.alb;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
@@ -30,33 +30,32 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collections;
 
 /**
- * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
+ * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
  *
  * @param <B> The body type
- * @author Tim Yates
+ * @author Sergio del Amo
  * @since 4.0.0
  */
 @Internal
-public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServletRequest<B, APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletRequest<B, ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(APIGatewayV2HTTPEventServletRequest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationLoadBalancerServletRequest.class);
 
-    private final APIGatewayV2HTTPResponseServletResponse<Object> response;
+    private final ApplicationLoadBalancerServletResponse<Object> response;
 
-    public APIGatewayV2HTTPEventServletRequest(
-        APIGatewayV2HTTPEvent requestEvent,
-        APIGatewayV2HTTPResponseServletResponse<Object> response,
+    public ApplicationLoadBalancerServletRequest(
+        ApplicationLoadBalancerRequestEvent requestEvent,
+        ApplicationLoadBalancerServletResponse<Object> response,
         ConversionService conversionService,
         BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getRequestContext().getHttp().getPath()),
-            parseMethod(() -> requestEvent.getRequestContext().getHttp().getMethod()),
+            URI.create(requestEvent.getPath()),
+            parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
         );
@@ -70,16 +69,16 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return getHeaders(requestEvent::getHeaders, Collections::emptyMap);
+        return getHeaders(requestEvent::getHeaders, requestEvent::getMultiValueHeaders);
     }
 
     @Override
     public MutableHttpParameters getParameters() {
-        return getParameters(Collections::emptyMap, () -> transformCommaSeparatedValue(requestEvent.getQueryStringParameters()));
+        return getParameters(requestEvent::getQueryStringParameters, requestEvent::getMultiValueQueryStringParameters);
     }
 
     @Override
-    public ServletHttpResponse<APIGatewayV2HTTPResponse, ?> getResponse() {
+    public ServletHttpResponse<ApplicationLoadBalancerResponseEvent, ?> getResponse() {
         return response;
     }
 }

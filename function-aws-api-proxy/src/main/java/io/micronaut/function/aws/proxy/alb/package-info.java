@@ -13,26 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.proxy.test;
-
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import io.micronaut.core.annotation.Internal;
-
-import java.nio.charset.Charset;
-
 /**
- * Mock Lambda console logger.
+ * Classes related to a {@link com.amazonaws.services.lambda.runtime.RequestHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
+ * @since 4.0.0
+ * @author Sergio del Amo
  */
-@Internal
-public class MockLambdaConsoleLogger implements LambdaLogger {
-
-    @Override
-    public void log(String s) {
-        System.out.println(s);
-    }
-
-    @Override
-    public void log(byte[] bytes) {
-        System.out.println(new String(bytes, Charset.defaultCharset()));
-    }
-}
+package io.micronaut.function.aws.proxy.alb;

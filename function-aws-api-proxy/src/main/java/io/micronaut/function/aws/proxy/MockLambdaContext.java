@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.proxy.test;
+package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.services.lambda.runtime.ClientContext;
 import com.amazonaws.services.lambda.runtime.CognitoIdentity;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import io.micronaut.core.annotation.Internal;
 
 /**
- * Mock Lambda context.
+ * Implementation of {@link com.amazonaws.services.lambda.runtime.Context} which returns null for every overriden method. For example ot use it in tests.
+ * @author Sergio del Amo
+ * @since 4.0.0
  */
-@Internal
 public class MockLambdaContext implements Context {
 
     //-------------------------------------------------------------
     // Variables - Private - Static
     //-------------------------------------------------------------
 
-    private static LambdaLogger logger = new MockLambdaConsoleLogger();
+    private static LambdaLogger logger = new SystemOutLambdaLogger();
 
     //-------------------------------------------------------------
     // Implementation - Context

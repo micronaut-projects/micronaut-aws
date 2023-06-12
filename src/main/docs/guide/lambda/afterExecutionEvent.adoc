@@ -2,5 +2,5 @@ AWS Lambda runtime will reuse the instances of your handler classes but the Java
 
 To subscribe to `AfterExecutionEvent` create a `@Singleton` class which implements `ApplicationEventListener<AfterExecutionEvent>`.  Learn more about https://docs.micronaut.io/latest/guide/#contextEvents[Context Events].
 
-IMPORTANT: `AfterExecutionEvent` is not published by either api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] or
+IMPORTANT: `AfterExecutionEvent` is not published by either api:function.aws.proxy.alb.ApplicationLoadBalancerFunction[], api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] or
 api:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[] handlers.

@@ -15,9 +15,10 @@
  */
 package io.micronaut.http.server.tck.lambda;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.type.Argument;
 import io.micronaut.function.aws.proxy.test.BodyUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
@@ -25,7 +26,6 @@ import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.netty.cookies.NettyCookie;
 import io.micronaut.json.JsonMapper;
 import io.netty.handler.codec.http.cookie.ClientCookieEncoder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,16 +33,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Factory for creating {@link APIGatewayProxyRequestEvent} v1 instances from {@link HttpRequest} instances.
+ * Factory for creating {@link ApplicationLoadBalancerRequestEvent} instances from {@link HttpRequest} instances.
  */
 @Internal
-public final class APIGatewayProxyRequestEventFactory {
+public final class ApplicationLoadBalancerRequestEventFactory {
 
-    private APIGatewayProxyRequestEventFactory() {
+    private ApplicationLoadBalancerRequestEventFactory() {
     }
 
     @NonNull
-    public static APIGatewayProxyRequestEvent create(@NonNull HttpRequest<?> request, JsonMapper jsonMapper) {
+    public static ApplicationLoadBalancerRequestEvent create(@NonNull HttpRequest<?> request, JsonMapper jsonMapper) {
         Map<String, String> headers = new LinkedHashMap<>();
         Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
         request.getHeaders().forEach((name, values) -> {
@@ -68,7 +68,7 @@ public final class APIGatewayProxyRequestEventFactory {
         } catch (UnsupportedOperationException e) {
             //not all request types support retrieving cookies
         }
-        return new APIGatewayProxyRequestEvent() {
+        return new ApplicationLoadBalancerRequestEvent() {
 
             @Override
             public Map<String, String> getHeaders() {
