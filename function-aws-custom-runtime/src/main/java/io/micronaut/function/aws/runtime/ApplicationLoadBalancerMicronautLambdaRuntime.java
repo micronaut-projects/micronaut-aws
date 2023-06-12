@@ -20,6 +20,12 @@ import io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 
+/**
+ * Main entry for AWS ALB with Micronaut.
+ *
+ * @author sdelamo
+ * @since 2.0.0
+ */
 public class ApplicationLoadBalancerMicronautLambdaRuntime extends AbstractMicronautLambdaRuntime<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent, ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
 
     @Override

@@ -323,6 +323,12 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         }
     }
 
+    /**
+     *
+     * @param singleHeaders Single value headers
+     * @param multiValueHeaders Multi-value headers
+     * @return The combined mutable headers
+     */
     @NonNull
     protected MutableHttpHeaders getHeaders(@NonNull Supplier<Map<String, String>> singleHeaders, @NonNull Supplier<Map<String, List<String>>> multiValueHeaders) {
         return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
