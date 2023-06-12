@@ -19,10 +19,12 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerReque
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.type.Argument;
+import io.micronaut.function.aws.proxy.test.BodyUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.netty.cookies.NettyCookie;
+import io.micronaut.json.JsonMapper;
 import io.netty.handler.codec.http.cookie.ClientCookieEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ public final class ApplicationLoadBalancerRequestEventFactory {
     }
 
     @NonNull
-    public static ApplicationLoadBalancerRequestEvent create(@NonNull HttpRequest<?> request) {
+    public static ApplicationLoadBalancerRequestEvent create(@NonNull HttpRequest<?> request, JsonMapper jsonMapper) {
         Map<String, String> headers = new LinkedHashMap<>();
         Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
         request.getHeaders().forEach((name, values) -> {
@@ -108,7 +110,12 @@ public final class ApplicationLoadBalancerRequestEventFactory {
 
             @Override
             public String getBody() {
-                return request.getBody(Argument.of(String.class)).orElse(null);
+                return request.getBody()
+                    .flatMap(b -> BodyUtils.bodyAsString(jsonMapper,
+                        () -> request.getContentType().orElse(null),
+                        request::getCharacterEncoding,
+                        () -> b)
+                    ).orElse(null);
             }
         };
     }

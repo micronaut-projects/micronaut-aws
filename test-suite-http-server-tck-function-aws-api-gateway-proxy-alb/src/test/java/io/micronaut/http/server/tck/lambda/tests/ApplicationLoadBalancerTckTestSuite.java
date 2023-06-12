@@ -12,7 +12,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy Application Load Balancer Event")
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.MissingBodyAnnotationTest",
     "io.micronaut.http.server.tck.tests.StreamTest"
 })
 public class ApplicationLoadBalancerTckTestSuite {

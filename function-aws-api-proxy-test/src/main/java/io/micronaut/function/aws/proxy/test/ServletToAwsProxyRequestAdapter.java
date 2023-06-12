@@ -35,4 +35,6 @@ public interface ServletToAwsProxyRequestAdapter {
     @NonNull
     APIGatewayV2HTTPEvent createAwsProxyRequest(@NonNull HttpServletRequest request);
 
+
+
 }
