@@ -18,12 +18,9 @@ package io.micronaut.function.aws.proxy.alb;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
-import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventServletRequest;
-import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -34,9 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.

@@ -23,6 +23,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -97,24 +98,24 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
             ALL_PUBLIC_FIELDS
         },
         value = {
-                com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
-                com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
-                com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
-                com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
-                com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
-
-                com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
-                com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
-
-                com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
-                com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,
-                com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class,
-                com.amazonaws.services.lambda.runtime.events.CognitoEvent.class,
-                com.amazonaws.services.lambda.runtime.events.ConfigEvent.class,
-                com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class,
-                com.amazonaws.services.lambda.runtime.events.LexEvent.class,
-                com.amazonaws.services.lambda.runtime.events.SNSEvent.class,
-                com.amazonaws.services.lambda.runtime.events.SQSEvent.class
+            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent.class,
+            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
+            com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
+            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
+            com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
+            com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,
+            com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class,
+            com.amazonaws.services.lambda.runtime.events.CognitoEvent.class,
+            com.amazonaws.services.lambda.runtime.events.ConfigEvent.class,
+            com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class,
+            com.amazonaws.services.lambda.runtime.events.LexEvent.class,
+            com.amazonaws.services.lambda.runtime.events.SNSEvent.class,
+            com.amazonaws.services.lambda.runtime.events.SQSEvent.class
         }
 )
 @SuppressWarnings("java:S119") // More descriptive generics are better here
@@ -327,8 +328,12 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     protected HandlerRequestType createHandlerRequest(RequestType request) throws IOException {
         if (requestType == handlerRequestType) {
             return (HandlerRequestType) request;
+        } else if (request instanceof ApplicationLoadBalancerRequestEvent applicationLoadBalancerRequestEvent) {
+            log(LogLevel.TRACE, "request of type ApplicationLoadBalancerRequestEvent");
+            String content = applicationLoadBalancerRequestEvent.getBody();
+            return valueFromContent(content, handlerRequestType);
         } else if (request instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
-            log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent\n");
+            log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent");
             String content = apiGatewayProxyRequestEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         } else if (request instanceof APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {

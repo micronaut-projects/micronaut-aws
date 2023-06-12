@@ -91,7 +91,7 @@ public final class MapCollapseUtils {
     }
 
     /**
-     * Collapse a map whose value is a list of strings into a map whose value is a comma separated string
+     * Collapse a map whose value is a list of strings into a map whose value is a comma separated string.
      *
      * @param input Map with key String and value List of Strings
      * @return Map with key String and value String with comma separated values

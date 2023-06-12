@@ -32,7 +32,6 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
-import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
@@ -55,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -235,13 +235,20 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         this.conversionService = conversionService;
     }
 
-    protected byte[] getBodyBytes(Supplier<String> bodySupplier, Supplier<Boolean> base64EncodedSupplier) throws IOException {
-        String body = bodySupplier.get();
-        if (StringUtils.isEmpty(body)) {
+    /**
+     *
+     * @param bodySupplier HTTP Request's Body Supplier
+     * @param base64EncodedSupplier Whether the body is Base 64 encoded
+     * @return body bytes
+     * @throws IOException if the body is empty
+     */
+    protected byte[] getBodyBytes(@NonNull Supplier<String> bodySupplier, @NonNull BooleanSupplier base64EncodedSupplier) throws IOException {
+        String requestBody = bodySupplier.get();
+        if (StringUtils.isEmpty(requestBody)) {
             throw new IOException("Empty Body");
         }
-        return base64EncodedSupplier.get() ?
-            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
+        return base64EncodedSupplier.getAsBoolean() ?
+            Base64.getDecoder().decode(requestBody) : requestBody.getBytes(getCharacterEncoding());
     }
 
     @NonNull
@@ -264,11 +271,17 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         return output;
     }
 
+    /**
+     *
+     * @param queryStringParametersSupplier Query String parameters as a map with key string and value string
+     * @param multiQueryStringParametersSupplier Query String parameters as a map with key string and value list of strings
+     * @return Mutable HTTP parameters
+     */
     @NonNull
-    protected MutableHttpParameters getParameters(@NonNull Supplier<Map<String, String>> queryStringParamtersSupplier,
-                                                  @NonNull Supplier<Map<String, List<String>>> multiQueryStringParamtersSupplier) {
-        Map<String, List<String>> multi = multiQueryStringParamtersSupplier.get();
-        Map<String, String> single = queryStringParamtersSupplier.get();
+    protected MutableHttpParameters getParameters(@NonNull Supplier<Map<String, String>> queryStringParametersSupplier,
+                                                  @NonNull Supplier<Map<String, List<String>>> multiQueryStringParametersSupplier) {
+        Map<String, List<String>> multi = multiQueryStringParametersSupplier.get();
+        Map<String, String> single = queryStringParametersSupplier.get();
         MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
         if (isFormSubmission(mediaType)) {
             return getParametersFromBody(MapCollapseUtils.collapse(MapCollapseUtils.collapse(multi, single)));
