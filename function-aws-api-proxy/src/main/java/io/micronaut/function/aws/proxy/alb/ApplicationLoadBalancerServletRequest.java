@@ -20,7 +20,6 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRespo
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
-import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventServletRequest;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -42,7 +41,7 @@ import java.net.URI;
 @Internal
 public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletRequest<B, ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(APIGatewayV2HTTPEventServletRequest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationLoadBalancerServletRequest.class);
 
     private final ApplicationLoadBalancerServletResponse<Object> response;
 
