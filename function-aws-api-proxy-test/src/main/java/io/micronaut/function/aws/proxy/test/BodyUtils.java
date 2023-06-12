@@ -34,6 +34,7 @@ import java.util.function.Supplier;
  */
 @Internal
 public final class BodyUtils {
+
     private static final Logger LOG = LoggerFactory.getLogger(BodyUtils.class);
 
     private BodyUtils() {
@@ -49,8 +50,8 @@ public final class BodyUtils {
         boolean mapFromJson = mediaType == null || mediaType.equals(MediaType.APPLICATION_JSON_TYPE);
         if (body instanceof CharSequence) {
             return Optional.of(body.toString());
-        } else if (body instanceof byte[]) {
-            return Optional.of(new String(((byte[]) body), characterEncodingSupplier.get()));
+        } else if (body instanceof byte[] bytes) {
+            return Optional.of(new String(bytes, characterEncodingSupplier.get()));
         } else if (mapFromJson) {
             try {
                 return Optional.of(jsonMapper.writeValueAsString(body));
