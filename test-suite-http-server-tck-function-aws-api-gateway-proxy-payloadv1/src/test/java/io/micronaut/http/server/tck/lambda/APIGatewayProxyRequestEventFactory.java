@@ -18,17 +18,21 @@ package io.micronaut.http.server.tck.lambda;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.netty.cookies.NettyCookie;
+import io.micronaut.json.JsonMapper;
 import io.netty.handler.codec.http.cookie.ClientCookieEncoder;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Factory for creating {@link APIGatewayProxyRequestEvent} v1 instances from {@link HttpRequest} instances.
@@ -40,7 +44,7 @@ public final class APIGatewayProxyRequestEventFactory {
     }
 
     @NonNull
-    public static APIGatewayProxyRequestEvent create(@NonNull HttpRequest<?> request) {
+    public static APIGatewayProxyRequestEvent create(@NonNull HttpRequest<?> request, JsonMapper jsonMapper) {
         Map<String, String> headers = new LinkedHashMap<>();
         Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
         request.getHeaders().forEach((name, values) -> {
@@ -66,6 +70,23 @@ public final class APIGatewayProxyRequestEventFactory {
         } catch (UnsupportedOperationException e) {
             //not all request types support retrieving cookies
         }
+        Function<Object, String> maybeConvertBody = body -> {
+            // Assume no content type == json
+            boolean mapFromJson = request.getContentType().map(MediaType.APPLICATION_JSON_TYPE::equals).orElse(true);
+            if (body instanceof CharSequence) {
+                return body.toString();
+            } else if (body instanceof byte[]) {
+                return new String(((byte[]) body), request.getCharacterEncoding());
+            } else if (mapFromJson) {
+                try {
+                    return jsonMapper.writeValueAsString(body);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            return null;
+        };
         return new APIGatewayProxyRequestEvent() {
 
             @Override
@@ -108,7 +129,7 @@ public final class APIGatewayProxyRequestEventFactory {
 
             @Override
             public String getBody() {
-                return request.getBody(Argument.of(String.class)).orElse(null);
+                return request.getBody().map(maybeConvertBody).orElse(null);
             }
         };
     }

@@ -15,6 +15,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.http.tck.ServerUnderTest;
+import io.micronaut.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,21 +29,23 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     private APIGatewayV2HTTPEventFunction function;
     private Context lambdaContext;
+    private final ApplicationContext ctx;
 
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
         properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
         properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
-        this.function = new APIGatewayV2HTTPEventFunction(ApplicationContext
+        ctx = ApplicationContext
             .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
             .properties(properties)
             .deduceEnvironment(false)
-            .start());
+            .start();
+        this.function = new APIGatewayV2HTTPEventFunction(ctx);
     }
 
     @Override
     public <I, O> HttpResponse<O> exchange(HttpRequest<I> request, Argument<O> bodyType) {
-        APIGatewayV2HTTPEvent requestEvent = APIGatewayV2HTTPEventFactory.create(request);
+        APIGatewayV2HTTPEvent requestEvent = APIGatewayV2HTTPEventFactory.create(request, ctx.getBean(JsonMapper.class));
         APIGatewayV2HTTPResponse responseEvent = function.handleRequest(requestEvent, lambdaContext);
         HttpResponse<O> response = new ApiGatewayProxyResponseEventAdapter<>(responseEvent, function.getApplicationContext().getBean(ConversionService.class));
 
