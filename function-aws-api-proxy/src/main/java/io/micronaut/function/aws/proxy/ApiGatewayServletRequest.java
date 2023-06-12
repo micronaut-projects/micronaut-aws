@@ -21,12 +21,14 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
+import io.micronaut.core.execution.ExecutionFlow;
 import io.micronaut.core.io.buffer.ByteBuffer;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.FullHttpRequest;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
@@ -38,6 +40,8 @@ import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
+import io.micronaut.servlet.http.ParsedBodyHolder;
+import io.micronaut.servlet.http.ByteArrayByteBuffer;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -66,7 +70,7 @@ import java.util.function.Supplier;
  */
 @Internal
 @SuppressWarnings("java:S119") // More descriptive generics are better here
-public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES> {
+public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES>, FullHttpRequest<T>, ParsedBodyHolder<T> {
 
     private static final Set<Class<?>> RAW_BODY_TYPES = CollectionUtils.setOf(String.class, byte[].class, ByteBuffer.class, InputStream.class);
 
@@ -78,7 +82,10 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private Cookies cookies;
     private MutableConvertibleValues<Object> attributes;
     private Supplier<Optional<T>> body;
+    private T parsedBody;
     private T overriddenBody;
+
+    private ByteArrayByteBuffer<T> servletByteBuffer;
 
     protected ApiGatewayServletRequest(
         ConversionService conversionService,
@@ -94,7 +101,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         this.httpMethod = httpMethod;
         this.log = log;
         this.body = SupplierUtil.memoizedNonEmpty(() -> {
-            T built = (T) bodyBuilder.buildBody(this::getInputStream, this);
+            T built = parsedBody != null ? parsedBody :  (T) bodyBuilder.buildBody(this::getInputStream, this);
             return Optional.ofNullable(built);
         });
     }
@@ -111,7 +118,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return new ByteArrayInputStream(getBodyBytes());
+        return servletByteBuffer != null ? servletByteBuffer.toInputStream() : new ByteArrayInputStream(getBodyBytes());
     }
 
     @Override
@@ -233,6 +240,32 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public void setConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
+    }
+
+    @Override
+    public void setParsedBody(T body) {
+        this.parsedBody = body;
+    }
+
+    @Override
+    public @Nullable ByteBuffer<?> contents() {
+        try {
+            if (servletByteBuffer == null) {
+                this.servletByteBuffer = new ByteArrayByteBuffer<>(getInputStream().readAllBytes());
+            }
+            return servletByteBuffer;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error getting all body contents", e);
+        }
+    }
+
+    @Override
+    public @Nullable ExecutionFlow<ByteBuffer<?>> bufferContents() {
+        ByteBuffer<?> contents = contents();
+        if (contents == null) {
+            return null;
+        }
+        return ExecutionFlow.just(contents);
     }
 
     /**
