@@ -131,16 +131,16 @@ implements io.micronaut.serde.util.NullableSerde&lt;org.joda.time.DateTime&gt;</
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.joda.time.DateTime</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull org.joda.time.DateTime</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deserializeNonNull(io.micronaut.serde.Decoder,io.micronaut.serde.Deserializer.DecoderContext,io.micronaut.core.type.Argument)" class="member-name-link">deserializeNonNull</a><wbr>(io.micronaut.serde.Decoder&nbsp;decoder,
  io.micronaut.serde.Deserializer.DecoderContext&nbsp;decoderContext,
  io.micronaut.core.type.Argument&lt;? super org.joda.time.DateTime&gt;&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serialize(io.micronaut.serde.Encoder,io.micronaut.serde.Serializer.EncoderContext,io.micronaut.core.type.Argument,org.joda.time.DateTime)" class="member-name-link">serialize</a><wbr>(io.micronaut.serde.Encoder&nbsp;encoder,
- io.micronaut.serde.Serializer.EncoderContext&nbsp;context,
- io.micronaut.core.type.Argument&lt;? extends org.joda.time.DateTime&gt;&nbsp;type,
- org.joda.time.DateTime&nbsp;value)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serialize(io.micronaut.serde.Encoder,io.micronaut.serde.Serializer.EncoderContext,io.micronaut.core.type.Argument,org.joda.time.DateTime)" class="member-name-link">serialize</a><wbr>(@NonNull io.micronaut.serde.Encoder&nbsp;encoder,
+ @NonNull io.micronaut.serde.Serializer.EncoderContext&nbsp;context,
+ @NonNull io.micronaut.core.type.Argument&lt;? extends org.joda.time.DateTime&gt;&nbsp;type,
+ @NonNull org.joda.time.DateTime&nbsp;value)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -186,13 +186,13 @@ implements io.micronaut.serde.util.NullableSerde&lt;org.joda.time.DateTime&gt;</
 <section class="detail" id="serialize(io.micronaut.serde.Encoder,io.micronaut.serde.Serializer.EncoderContext,io.micronaut.core.type.Argument,org.joda.time.DateTime)">
 <h3>serialize</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">serialize</span><wbr><span class="parameters">(@NonNull
- io.micronaut.serde.Encoder&nbsp;encoder,
+ @NonNull io.micronaut.serde.Encoder&nbsp;encoder,
  @NonNull
- io.micronaut.serde.Serializer.EncoderContext&nbsp;context,
+ @NonNull io.micronaut.serde.Serializer.EncoderContext&nbsp;context,
  @NonNull
- io.micronaut.core.type.Argument&lt;? extends org.joda.time.DateTime&gt;&nbsp;type,
+ @NonNull io.micronaut.core.type.Argument&lt;? extends org.joda.time.DateTime&gt;&nbsp;type,
  @NonNull
- org.joda.time.DateTime&nbsp;value)</span>
+ @NonNull org.joda.time.DateTime&nbsp;value)</span>
                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -206,10 +206,10 @@ implements io.micronaut.serde.util.NullableSerde&lt;org.joda.time.DateTime&gt;</
 <section class="detail" id="deserializeNonNull(io.micronaut.serde.Decoder,io.micronaut.serde.Deserializer.DecoderContext,io.micronaut.core.type.Argument)">
 <h3>deserializeNonNull</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.joda.time.DateTime</span>&nbsp;<span class="element-name">deserializeNonNull</span><wbr><span class="parameters">(io.micronaut.serde.Decoder&nbsp;decoder,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull org.joda.time.DateTime</span>&nbsp;<span class="element-name">deserializeNonNull</span><wbr><span class="parameters">(io.micronaut.serde.Decoder&nbsp;decoder,
  io.micronaut.serde.Deserializer.DecoderContext&nbsp;decoderContext,
  io.micronaut.core.type.Argument&lt;? super org.joda.time.DateTime&gt;&nbsp;type)</span>
-                                          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+                                                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>deserializeNonNull</code>&nbsp;in interface&nbsp;<code>io.micronaut.serde.util.NullableDeserializer&lt;org.joda.time.DateTime&gt;</code></dd>

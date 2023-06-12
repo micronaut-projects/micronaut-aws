@@ -120,14 +120,14 @@ implements <a href="ServletToAwsProxyResponseAdapter.html" title="interface in i
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBodyCharset()" class="member-name-link">getBodyCharset</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)" class="member-name-link">handle</a><wbr>(io.micronaut.core.convert.ConversionService&nbsp;conversionService,
- jakarta.servlet.http.HttpServletRequest&nbsp;request,
- com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
- jakarta.servlet.http.HttpServletResponse&nbsp;response)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)" class="member-name-link">handle</a><wbr>(@NonNull io.micronaut.core.convert.ConversionService&nbsp;conversionService,
+ @NonNull jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ @NonNull com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
+ @NonNull jakarta.servlet.http.HttpServletResponse&nbsp;response)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Writes the contents of a <code>APIGatewayV2HTTPResponse</code> to a <code>HttpServletResponse</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected byte[]</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @io.micronaut.core.annotation.Nullable byte[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseBodyAsBytes(com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse)" class="member-name-link">parseBodyAsBytes</a><wbr>(com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the response's body bytes considering whether the body was Base64 encoded.</div>
@@ -167,13 +167,13 @@ implements <a href="ServletToAwsProxyResponseAdapter.html" title="interface in i
 <section class="detail" id="handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)">
 <h3>handle</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">handle</span><wbr><span class="parameters">(@NonNull
- io.micronaut.core.convert.ConversionService&nbsp;conversionService,
+ @NonNull io.micronaut.core.convert.ConversionService&nbsp;conversionService,
  @NonNull
- jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ @NonNull jakarta.servlet.http.HttpServletRequest&nbsp;request,
  @NonNull
- com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
+ @NonNull com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
  @NonNull
- jakarta.servlet.http.HttpServletResponse&nbsp;response)</span>
+ @NonNull jakarta.servlet.http.HttpServletResponse&nbsp;response)</span>
             throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="ServletToAwsProxyResponseAdapter.html#handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)">ServletToAwsProxyResponseAdapter</a></code></span></div>
 <div class="block">Writes the contents of a <code>APIGatewayV2HTTPResponse</code> to a <code>HttpServletResponse</code>.</div>
@@ -194,7 +194,7 @@ implements <a href="ServletToAwsProxyResponseAdapter.html" title="interface in i
 <section class="detail" id="parseBodyAsBytes(com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse)">
 <h3>parseBodyAsBytes</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">parseBodyAsBytes</span><wbr><span class="parameters">(com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse)</span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@io.micronaut.core.annotation.Nullable byte[]</span>&nbsp;<span class="element-name">parseBodyAsBytes</span><wbr><span class="parameters">(com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse)</span></div>
 <div class="block">Returns the response's body bytes considering whether the body was Base64 encoded.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

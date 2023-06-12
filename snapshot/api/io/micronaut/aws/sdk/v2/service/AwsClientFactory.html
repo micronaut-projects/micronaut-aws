@@ -108,7 +108,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></code></div>
+<div class="col-first even-row-color"><code>protected final @Nullable <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></code></div>
 <div class="col-second even-row-color"><code><a href="#configuration" class="member-name-link">configuration</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain</code></div>
@@ -117,7 +117,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected final software.amazon.awssdk.regions.providers.AwsRegionProviderChain</code></div>
 <div class="col-second even-row-color"><code><a href="#regionProvider" class="member-name-link">regionProvider</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a></code></div>
+<div class="col-first odd-row-color"><code>protected final @Nullable <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#userAgentProvider" class="member-name-link">userAgentProvider</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -135,8 +135,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected </code></div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain,software.amazon.awssdk.regions.providers.AwsRegionProviderChain,io.micronaut.aws.ua.UserAgentProvider,io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration)" class="member-name-link">AwsClientFactory</a><wbr>(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
  software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider,
- <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider,
- <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a>&nbsp;configuration)</code></div>
+ @Nullable <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider,
+ @Nullable <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a>&nbsp;configuration)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor.</div>
 </div>
@@ -217,14 +217,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="configuration">
 <h3>configuration</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></span>&nbsp;<span class="element-name">configuration</span></div>
+</span><span class="modifiers">protected final</span>&nbsp;<span class="return-type">@Nullable <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></span>&nbsp;<span class="element-name">configuration</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="userAgentProvider">
 <h3>userAgentProvider</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a></span>&nbsp;<span class="element-name">userAgentProvider</span></div>
+</span><span class="modifiers">protected final</span>&nbsp;<span class="return-type">@Nullable <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a></span>&nbsp;<span class="element-name">userAgentProvider</span></div>
 </section>
 </li>
 </ul>
@@ -241,9 +241,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">AwsClientFactory</span><wbr><span class="parameters">(software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain&nbsp;credentialsProvider,
  software.amazon.awssdk.regions.providers.AwsRegionProviderChain&nbsp;regionProvider,
  @Nullable
- <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider,
+ @Nullable <a href="../../../ua/UserAgentProvider.html" title="interface in io.micronaut.aws.ua">UserAgentProvider</a>&nbsp;userAgentProvider,
  @Nullable
- <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a>&nbsp;configuration)</span></div>
+ @Nullable <a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a>&nbsp;configuration)</span></div>
 <div class="block">Constructor.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

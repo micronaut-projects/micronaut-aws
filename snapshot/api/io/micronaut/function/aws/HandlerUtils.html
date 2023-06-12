@@ -100,8 +100,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#configureWithContext(io.micronaut.context.ApplicationContextProvider,com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">configureWithContext</a><wbr>(io.micronaut.context.ApplicationContextProvider&nbsp;applicationContextProvider,
- com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#configureWithContext(io.micronaut.context.ApplicationContextProvider,com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">configureWithContext</a><wbr>(@NonNull io.micronaut.context.ApplicationContextProvider&nbsp;applicationContextProvider,
+ @Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">It uses <a href="LambdaContextFactory.html" title="interface in io.micronaut.function.aws"><code>LambdaContextFactory</code></a> to registers Lambda Context beans as singletons in the bean context.</div>
 </div>
@@ -126,9 +126,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="configureWithContext(io.micronaut.context.ApplicationContextProvider,com.amazonaws.services.lambda.runtime.Context)">
 <h3>configureWithContext</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">configureWithContext</span><wbr><span class="parameters">(@NonNull
- io.micronaut.context.ApplicationContextProvider&nbsp;applicationContextProvider,
+ @NonNull io.micronaut.context.ApplicationContextProvider&nbsp;applicationContextProvider,
  @Nullable
- com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</span></div>
+ @Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;lambdaContext)</span></div>
 <div class="block">It uses <a href="LambdaContextFactory.html" title="interface in io.micronaut.function.aws"><code>LambdaContextFactory</code></a> to registers Lambda Context beans as singletons in the bean context.
  It uses <a href="DiagnosticInfoPopulator.html" title="interface in io.micronaut.function.aws"><code>DiagnosticInfoPopulator</code></a> to populate the MDC context with Lambda Context values.</div>
 <dl class="notes">

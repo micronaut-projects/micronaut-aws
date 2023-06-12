@@ -151,13 +151,13 @@ implements <a href="DiagnosticInfoPopulator.html" title="interface in io.microna
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mdcput(java.lang.String,java.lang.String)" class="member-name-link">mdcput</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;val)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mdcput(java.lang.String,java.lang.String)" class="member-name-link">mdcput</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;val)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Put a diagnostic context value.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#populateMappingDiagnosticContextValues(com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">populateMappingDiagnosticContextValues</a><wbr>(com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#populateMappingDiagnosticContextValues(com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">populateMappingDiagnosticContextValues</a><wbr>(@NonNull com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Populate MDC with Lambda Context values.</div>
 </div>
@@ -307,7 +307,7 @@ implements <a href="DiagnosticInfoPopulator.html" title="interface in io.microna
 <section class="detail" id="populateMappingDiagnosticContextValues(com.amazonaws.services.lambda.runtime.Context)">
 <h3>populateMappingDiagnosticContextValues</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">populateMappingDiagnosticContextValues</span><wbr><span class="parameters">(@NonNull
- com.amazonaws.services.lambda.runtime.Context&nbsp;context)</span></div>
+ @NonNull com.amazonaws.services.lambda.runtime.Context&nbsp;context)</span></div>
 <div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="DiagnosticInfoPopulator.html#populateMappingDiagnosticContextValues(com.amazonaws.services.lambda.runtime.Context)">DiagnosticInfoPopulator</a></code></span></div>
 <div class="block">Populate MDC with Lambda Context values.</div>
 <dl class="notes">
@@ -328,9 +328,9 @@ implements <a href="DiagnosticInfoPopulator.html" title="interface in io.microna
 <section class="detail" id="mdcput(java.lang.String,java.lang.String)">
 <h3>mdcput</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">mdcput</span><wbr><span class="parameters">(@NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  @NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;val)</span>
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;val)</span>
                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
 <div class="block">Put a diagnostic context value.</div>
 <dl class="notes">

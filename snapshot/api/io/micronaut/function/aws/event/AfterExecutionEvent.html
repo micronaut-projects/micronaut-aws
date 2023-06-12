@@ -104,26 +104,26 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#failure(com.amazonaws.services.lambda.runtime.Context,java.lang.Throwable)" class="member-name-link">failure</a><wbr>(com.amazonaws.services.lambda.runtime.Context&nbsp;context,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#failure(com.amazonaws.services.lambda.runtime.Context,java.lang.Throwable)" class="member-name-link">failure</a><wbr>(@Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;context,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;exception)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a new <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an exception been thrown.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.amazonaws.services.lambda.runtime.Context</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable com.amazonaws.services.lambda.runtime.Context</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContext()" class="member-name-link">getContext</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getException()" class="member-name-link">getException</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutput()" class="member-name-link">getOutput</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSuccess()" class="member-name-link">isSuccess</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#success(com.amazonaws.services.lambda.runtime.Context,java.lang.Object)" class="member-name-link">success</a><wbr>(com.amazonaws.services.lambda.runtime.Context&nbsp;context,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;output)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#success(com.amazonaws.services.lambda.runtime.Context,java.lang.Object)" class="member-name-link">success</a><wbr>(@Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;context,
+ @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;output)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a new <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an optional result of the execution.</div>
 </div>
@@ -148,9 +148,9 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="success(com.amazonaws.services.lambda.runtime.Context,java.lang.Object)">
 <h3>success</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></span>&nbsp;<span class="element-name">success</span><wbr><span class="parameters">(@Nullable
- com.amazonaws.services.lambda.runtime.Context&nbsp;context,
+ @Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;context,
  @Nullable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;output)</span></div>
+ @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;output)</span></div>
 <div class="block">Creates a new <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an optional result of the execution.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -165,7 +165,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="failure(com.amazonaws.services.lambda.runtime.Context,java.lang.Throwable)">
 <h3>failure</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event">AfterExecutionEvent</a></span>&nbsp;<span class="element-name">failure</span><wbr><span class="parameters">(@Nullable
- com.amazonaws.services.lambda.runtime.Context&nbsp;context,
+ @Nullable com.amazonaws.services.lambda.runtime.Context&nbsp;context,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;exception)</span></div>
 <div class="block">Creates a new <a href="AfterExecutionEvent.html" title="class in io.micronaut.function.aws.event"><code>AfterExecutionEvent</code></a> with an exception been thrown.</div>
 <dl class="notes">
@@ -191,7 +191,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getOutput()">
 <h3>getOutput</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getOutput</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">getOutput</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the optional result of the execution</dd>
@@ -202,7 +202,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getException()">
 <h3>getException</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a></span>&nbsp;<span class="element-name">getException</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a></span>&nbsp;<span class="element-name">getException</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the optional exception which has been thrown</dd>
@@ -213,7 +213,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getContext()">
 <h3>getContext</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">com.amazonaws.services.lambda.runtime.Context</span>&nbsp;<span class="element-name">getContext</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable com.amazonaws.services.lambda.runtime.Context</span>&nbsp;<span class="element-name">getContext</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the optional Lambda context</dd>

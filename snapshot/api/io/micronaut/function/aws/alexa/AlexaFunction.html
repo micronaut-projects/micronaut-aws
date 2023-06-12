@@ -136,7 +136,7 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected io.micronaut.context.ApplicationContext</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @NonNull io.micronaut.context.ApplicationContext</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#buildApplicationContext()" class="member-name-link">buildApplicationContext</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
@@ -150,7 +150,7 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html" title="class or interface in java.io" class="external-link">OutputStream</a>&nbsp;output,
  com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected io.micronaut.context.ApplicationContextBuilder</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @NonNull io.micronaut.context.ApplicationContextBuilder</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newApplicationContextBuilder()" class="member-name-link">newApplicationContextBuilder</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Builds a new builder.</div>
@@ -211,7 +211,7 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <section class="detail" id="newApplicationContextBuilder()">
 <h3>newApplicationContextBuilder</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">io.micronaut.context.ApplicationContextBuilder</span>&nbsp;<span class="element-name">newApplicationContextBuilder</span>()</div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@NonNull io.micronaut.context.ApplicationContextBuilder</span>&nbsp;<span class="element-name">newApplicationContextBuilder</span>()</div>
 <div class="block">Builds a new builder.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -223,7 +223,7 @@ implements com.amazonaws.services.lambda.runtime.RequestStreamHandler, <a href="
 <section class="detail" id="buildApplicationContext()">
 <h3>buildApplicationContext</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">io.micronaut.context.ApplicationContext</span>&nbsp;<span class="element-name">buildApplicationContext</span>()</div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@NonNull io.micronaut.context.ApplicationContext</span>&nbsp;<span class="element-name">buildApplicationContext</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>returns the current application context or starts a new one.</dd>

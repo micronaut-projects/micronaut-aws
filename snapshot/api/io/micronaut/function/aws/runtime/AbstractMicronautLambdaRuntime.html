@@ -134,7 +134,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">ResponseType</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#responseType" class="member-name-link">responseType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color"><code>protected @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#userAgent" class="member-name-link">userAgent</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -172,19 +172,19 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>io.micronaut.context.ApplicationContextBuilder</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createApplicationContextBuilderWithArgs(java.lang.String...)" class="member-name-link">createApplicationContextBuilderWithArgs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createEnvironmentHandler()" class="member-name-link">createEnvironmentHandler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createHandler(java.lang.String...)" class="member-name-link">createHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerRequestType</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createHandlerRequest(RequestType)" class="member-name-link">createHandlerRequest</a><wbr>(<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">RequestType</a>&nbsp;request)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected com.amazonaws.services.lambda.runtime.RequestHandler&lt;<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerRequestType</a>,<wbr><a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerResponseType</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @Nullable com.amazonaws.services.lambda.runtime.RequestHandler&lt;<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerRequestType</a>,<wbr><a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerResponseType</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRequestHandler(java.lang.String...)" class="member-name-link">createRequestHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected com.amazonaws.services.lambda.runtime.RequestStreamHandler</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @Nullable com.amazonaws.services.lambda.runtime.RequestStreamHandler</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRequestStreamHandler(java.lang.String...)" class="member-name-link">createRequestStreamHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">ResponseType</a></code></div>
@@ -220,7 +220,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <div class="block">Log with a line break.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseHandlerClass(java.lang.String)" class="member-name-link">parseHandlerClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;handler)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#parseHandlerClass(java.lang.String)" class="member-name-link">parseHandlerClass</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;handler)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#populateUserAgent()" class="member-name-link">populateUserAgent</a>()</code></div>
@@ -248,15 +248,15 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts the runtime API event loop.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected byte[]</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @io.micronaut.core.annotation.Nullable byte[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#serializeAsByteArray(java.lang.Object)" class="member-name-link">serializeAsByteArray</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldLog(io.micronaut.logging.LogLevel)" class="member-name-link">shouldLog</a><wbr>(io.micronaut.logging.LogLevel&nbsp;level)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRuntimeApiEventLoop(java.net.URL,java.util.function.Predicate,java.lang.String...)" class="member-name-link">startRuntimeApiEventLoop</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&nbsp;runtimeApiURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&gt;&nbsp;loopUntil,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRuntimeApiEventLoop(java.net.URL,java.util.function.Predicate,java.lang.String...)" class="member-name-link">startRuntimeApiEventLoop</a><wbr>(@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&nbsp;runtimeApiURL,
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&gt;&nbsp;loopUntil,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts the runtime API event loop.</div>
@@ -292,7 +292,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="userAgent">
 <h3>userAgent</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userAgent</span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">userAgent</span></div>
 </section>
 </li>
 <li>
@@ -406,7 +406,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="createRequestHandler(java.lang.String...)">
 <h3>createRequestHandler</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">com.amazonaws.services.lambda.runtime.RequestHandler&lt;<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerRequestType</a>,<wbr><a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerResponseType</a>&gt;</span>&nbsp;<span class="element-name">createRequestHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@Nullable com.amazonaws.services.lambda.runtime.RequestHandler&lt;<a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerRequestType</a>,<wbr><a href="AbstractMicronautLambdaRuntime.html" title="type parameter in AbstractMicronautLambdaRuntime">HandlerResponseType</a>&gt;</span>&nbsp;<span class="element-name">createRequestHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>args</code> - Command Line Args</dd>
@@ -419,7 +419,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="createRequestStreamHandler(java.lang.String...)">
 <h3>createRequestStreamHandler</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">com.amazonaws.services.lambda.runtime.RequestStreamHandler</span>&nbsp;<span class="element-name">createRequestStreamHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@Nullable com.amazonaws.services.lambda.runtime.RequestStreamHandler</span>&nbsp;<span class="element-name">createRequestStreamHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>args</code> - Command Line Args</dd>
@@ -432,7 +432,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="createHandler(java.lang.String...)">
 <h3>createHandler</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>args</code> - Command Line Args</dd>
@@ -446,7 +446,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="createEnvironmentHandler()">
 <h3>createEnvironmentHandler</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createEnvironmentHandler</span>()</div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">createEnvironmentHandler</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>A Handler by instantiating the class referenced by the environment variable <a href="ReservedRuntimeEnvironmentVariables.html#HANDLER"><code>ReservedRuntimeEnvironmentVariables.HANDLER</code></a> via Introspection. Otherwise, it returns <code>null</code>.</dd>
@@ -457,7 +457,7 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="parseHandlerClass(java.lang.String)">
 <h3>parseHandlerClass</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&gt;</span>&nbsp;<span class="element-name">parseHandlerClass</span><wbr><span class="parameters">(@NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;handler)</span></div>
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;handler)</span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>handler</code> - handler in format file.method, where file is the name of the file without an extension, and method is the name of a method or function that's defined in the file.</dd>
@@ -518,9 +518,9 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="startRuntimeApiEventLoop(java.net.URL,java.util.function.Predicate,java.lang.String...)">
 <h3>startRuntimeApiEventLoop</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startRuntimeApiEventLoop</span><wbr><span class="parameters">(@NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&nbsp;runtimeApiURL,
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&nbsp;runtimeApiURL,
  @NonNull
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&gt;&nbsp;loopUntil,
+ @NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URL.html" title="class or interface in java.net" class="external-link">URL</a>&gt;&nbsp;loopUntil,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>...&nbsp;args)</span></div>
 <div class="block">Starts the runtime API event loop.</div>
 <dl class="notes">
@@ -574,8 +574,8 @@ implements io.micronaut.context.ApplicationContextProvider, <a href="AwsLambdaRu
 <section class="detail" id="serializeAsByteArray(java.lang.Object)">
 <h3>serializeAsByteArray</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">serializeAsByteArray</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span>
-                               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type">@io.micronaut.core.annotation.Nullable byte[]</span>&nbsp;<span class="element-name">serializeAsByteArray</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</span>
+                                                                      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>value</code> - Object to be serialized</dd>

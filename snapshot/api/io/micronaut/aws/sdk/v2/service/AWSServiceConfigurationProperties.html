@@ -135,14 +135,14 @@ implements <a href="AWSServiceConfiguration.html" title="interface in io.microna
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpointOverride()" class="member-name-link">getEndpointOverride</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceName()" class="member-name-link">getServiceName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndpointOverride(java.net.URI)" class="member-name-link">setEndpointOverride</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;endpointOverride)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndpointOverride(java.net.URI)" class="member-name-link">setEndpointOverride</a><wbr>(@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;endpointOverride)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide a URI to override the endpoint with which the AWS SDK should communicate.</div>
 </div>
@@ -210,7 +210,7 @@ implements <a href="AWSServiceConfiguration.html" title="interface in io.microna
 <section class="detail" id="getEndpointOverride()">
 <h3>getEndpointOverride</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></span>&nbsp;<span class="element-name">getEndpointOverride</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></span>&nbsp;<span class="element-name">getEndpointOverride</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="AWSServiceConfiguration.html#getEndpointOverride()">getEndpointOverride</a></code>&nbsp;in interface&nbsp;<code><a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></code></dd>
@@ -225,7 +225,7 @@ implements <a href="AWSServiceConfiguration.html" title="interface in io.microna
 <section class="detail" id="getServiceName()">
 <h3>getServiceName</h3>
 <div class="member-signature"><span class="annotations">@NonNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServiceName</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NonNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServiceName</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="AWSServiceConfiguration.html#getServiceName()">getServiceName</a></code>&nbsp;in interface&nbsp;<code><a href="AWSServiceConfiguration.html" title="interface in io.micronaut.aws.sdk.v2.service">AWSServiceConfiguration</a></code></dd>
@@ -238,7 +238,7 @@ implements <a href="AWSServiceConfiguration.html" title="interface in io.microna
 <section class="detail" id="setEndpointOverride(java.net.URI)">
 <h3>setEndpointOverride</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEndpointOverride</span><wbr><span class="parameters">(@Nullable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;endpointOverride)</span></div>
+ @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a>&nbsp;endpointOverride)</span></div>
 <div class="block">Provide a URI to override the endpoint with which the AWS SDK should communicate. Optional. Defaults to `null`.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

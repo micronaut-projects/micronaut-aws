@@ -104,10 +104,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)" class="member-name-link">handle</a><wbr>(io.micronaut.core.convert.ConversionService&nbsp;conversionService,
- jakarta.servlet.http.HttpServletRequest&nbsp;request,
- com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
- jakarta.servlet.http.HttpServletResponse&nbsp;response)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)" class="member-name-link">handle</a><wbr>(@NonNull io.micronaut.core.convert.ConversionService&nbsp;conversionService,
+ @NonNull jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ @NonNull com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
+ @NonNull jakarta.servlet.http.HttpServletResponse&nbsp;response)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Writes the contents of a <code>APIGatewayV2HTTPResponse</code> to a <code>HttpServletResponse</code>.</div>
 </div>
@@ -129,13 +129,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="handle(io.micronaut.core.convert.ConversionService,jakarta.servlet.http.HttpServletRequest,com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse,jakarta.servlet.http.HttpServletResponse)">
 <h3>handle</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">handle</span><wbr><span class="parameters">(@NonNull
- io.micronaut.core.convert.ConversionService&nbsp;conversionService,
+ @NonNull io.micronaut.core.convert.ConversionService&nbsp;conversionService,
  @NonNull
- jakarta.servlet.http.HttpServletRequest&nbsp;request,
+ @NonNull jakarta.servlet.http.HttpServletRequest&nbsp;request,
  @NonNull
- com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
+ @NonNull com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&nbsp;awsProxyResponse,
  @NonNull
- jakarta.servlet.http.HttpServletResponse&nbsp;response)</span>
+ @NonNull jakarta.servlet.http.HttpServletResponse&nbsp;response)</span>
      throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Writes the contents of a <code>APIGatewayV2HTTPResponse</code> to a <code>HttpServletResponse</code>.</div>
 <dl class="notes">
