@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy.test;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.core.annotation.NonNull;
 
+import io.micronaut.function.aws.proxy.MockLambdaContext;
 import jakarta.inject.Singleton;
 
 /**
