@@ -21,7 +21,6 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
-import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -58,19 +57,11 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
             conversionService,
             requestEvent,
             URI.create(requestEvent.getPath()),
-            parseMethod(requestEvent),
+            parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
         );
         this.response = response;
-    }
-
-    private static HttpMethod parseMethod(APIGatewayProxyRequestEvent requestEvent) {
-        try {
-            return HttpMethod.valueOf(requestEvent.getHttpMethod());
-        } catch (IllegalArgumentException e) {
-            return HttpMethod.CUSTOM;
-        }
     }
 
     @Override
