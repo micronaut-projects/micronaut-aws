@@ -8,9 +8,12 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.ApplicationContextBuilder
 import io.micronaut.context.annotation.Requires
+import io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction
 import io.micronaut.http.HttpMethod
@@ -69,6 +72,36 @@ class BinaryContentConfigurationSpec extends Specification {
         APIGatewayV2HTTPEvent request = v2Request("/context", HttpMethod.GET)
         Context context = createContext()
         APIGatewayV2HTTPResponse response = handler.handleRequest(request, context)
+
+        then:
+        handler.applicationContext.containsBean(BinaryContentConfiguration)
+        response.isBase64Encoded
+
+        when:
+        def zis = new ZipInputStream(new ByteArrayInputStream(Base64.mimeDecoder.decode(response.body.getBytes())))
+
+        then:
+        with(zis.nextEntry) {
+            name == 'test.txt'
+            new String(zis.readAllBytes(), StandardCharsets.UTF_8) == 'test'
+        }
+
+        cleanup:
+        handler.close()
+    }
+
+    void "test application load balancer binary content configuration"() {
+        given:
+        ApplicationContextBuilder ctxBuilder = ApplicationContext.builder().properties(
+                'micronaut.security.enabled': false,
+                'spec.name': 'BinaryContentConfigurationSpec'
+        )
+        ApplicationLoadBalancerFunction handler = new ApplicationLoadBalancerFunction(ctxBuilder.build())
+
+        when:
+        ApplicationLoadBalancerRequestEvent request = applicationLoadBalancerRequest("/context", HttpMethod.GET)
+        Context context = createContext()
+        ApplicationLoadBalancerResponseEvent response = handler.handleRequest(request, context)
 
         then:
         handler.applicationContext.containsBean(BinaryContentConfiguration)
@@ -151,6 +184,38 @@ class BinaryContentConfigurationSpec extends Specification {
         handler.close()
     }
 
+    void "test application loadbalancer binary content types can be updated"() {
+        given:
+        ApplicationContextBuilder ctxBuilder = ApplicationContext.builder().properties(
+                'micronaut.security.enabled': false,
+                'spec.name': 'BinaryContentConfigurationSpec'
+        )
+        ApplicationContext ctx = ctxBuilder.build()
+        ApplicationLoadBalancerFunction handler = new ApplicationLoadBalancerFunction(ctx)
+        BinaryContentConfiguration binaryContentConfiguration = ctx.getBean(BinaryContentConfiguration)
+
+        when:
+        ApplicationLoadBalancerRequestEvent request = applicationLoadBalancerRequest("/context/plain", HttpMethod.GET)
+        Context context = createContext()
+        ApplicationLoadBalancerResponseEvent response = handler.handleRequest(request, context)
+
+        then:
+        !response.isBase64Encoded
+        response.body == 'ok'
+
+        when:
+        binaryContentConfiguration.addBinaryContentType(MediaType.TEXT_PLAIN)
+        request = applicationLoadBalancerRequest("/context/plain", HttpMethod.GET)
+        response = handler.handleRequest(request, context)
+
+        then:
+        response.isBase64Encoded
+        new String(Base64.mimeDecoder.decode(response.body.getBytes()), StandardCharsets.UTF_8) == 'ok'
+
+        cleanup:
+        handler.close()
+    }
+
     private static APIGatewayProxyRequestEvent v1Request(String path, HttpMethod method = HttpMethod.GET) {
         new APIGatewayProxyRequestEvent().withPath(path).withHttpMethod(method.toString())
     }
@@ -176,6 +241,13 @@ class BinaryContentConfigurationSpec extends Specification {
             getClientContext() >> Mock(ClientContext)
             getLogger() >> Mock(LambdaLogger)
         }
+    }
+
+    private static ApplicationLoadBalancerRequestEvent applicationLoadBalancerRequest(String path, HttpMethod httpMethod) {
+        ApplicationLoadBalancerRequestEvent requestEvent = new ApplicationLoadBalancerRequestEvent();
+        requestEvent.setPath(path)
+        requestEvent.setHttpMethod(httpMethod.toString())
+        requestEvent
     }
 
     @Requires(property = "spec.name", value = "BinaryContentConfigurationSpec")

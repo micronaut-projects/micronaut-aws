@@ -13,41 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.function.aws.proxy.payload2;
+package io.micronaut.function.aws.proxy.alb;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.context.ApplicationContext;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
-import jakarta.inject.Singleton;
 
 /**
- * Implementation of {@link ServletHttpHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
+ * Implementation of {@link ServletHttpHandler} for AWS Gateway Proxy Events.
  *
- * @author Tim Yates
+ * @author Sergio del Amo
  * @since 4.0.0
  */
-@Internal
-@Singleton
-public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
-
-    public APIGatewayV2HTTPEventHandler(ApplicationContext applicationContext) {
+public class ApplicationLoadBalancerHandler extends ServletHttpHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
+    public ApplicationLoadBalancerHandler(ApplicationContext applicationContext) {
         super(applicationContext, applicationContext.getBean(ConversionService.class));
     }
 
     @Override
-    protected ServletExchange<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> createExchange(
-        APIGatewayV2HTTPEvent request,
-        APIGatewayV2HTTPResponse response
+    protected ServletExchange<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> createExchange(
+        ApplicationLoadBalancerRequestEvent request,
+        ApplicationLoadBalancerResponseEvent response
     ) {
-        return new APIGatewayV2HTTPEventServletRequest<>(
+        return new ApplicationLoadBalancerServletRequest<>(
             request,
-            new APIGatewayV2HTTPResponseServletResponse<>(
+            new ApplicationLoadBalancerServletResponse<>(
                 getApplicationContext().getConversionService(),
                 getApplicationContext().getBean(BinaryContentConfiguration.class)
             ),

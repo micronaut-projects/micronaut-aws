@@ -8,6 +8,9 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent
+import io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.ApplicationContextBuilder
@@ -73,6 +76,29 @@ class LambdaContextSpec extends Specification {
         handler.close()
     }
 
+    void "for application load balancer Lambda Context beans are registered"() {
+        given:
+        Map<String, Object> properties = CollectionUtils.mapOf('micronaut.security.enabled', false, "spec.name", "LambdaContextSpec")
+        ApplicationContextBuilder ctxBuilder = ApplicationContext.builder().properties(properties)
+        ApplicationLoadBalancerFunction handler =
+                new ApplicationLoadBalancerFunction(ctxBuilder.build())
+
+        when:
+        ApplicationLoadBalancerRequestEvent request = applicationLoadBalancerRequest("/context", HttpMethod.GET)
+        Context context = createContext()
+        ApplicationLoadBalancerResponseEvent response = handler.handleRequest(request, context)
+
+        then:
+        handler.applicationContext.containsBean(Context)
+        handler.applicationContext.containsBean(LambdaLogger)
+        handler.applicationContext.containsBean(CognitoIdentity)
+        handler.applicationContext.containsBean(ClientContext)
+        "XXX" == response.body
+
+        cleanup:
+        handler.close()
+    }
+
     void "v2 verify LambdaLogger CognitoIdentity and ClientContext are not registered if null"() {
         Map<String, Object> properties = CollectionUtils.mapOf('micronaut.security.enabled', false, "spec.name", "LambdaContextSpec")
         ApplicationContextBuilder ctxBuilder = ApplicationContext.builder().properties(properties)
@@ -111,6 +137,35 @@ class LambdaContextSpec extends Specification {
         APIGatewayV2HTTPEvent request = v2Request("/context")
         Context context = createContextWithoutCollaborators()
         APIGatewayV2HTTPResponse response = handler.handleRequest(request, context)
+
+        then:
+        handler.applicationContext.containsBean(Context)
+        and: 'LambdaLogger is not registered if Lambda Context::getLambdaLogger is null'
+        !handler.applicationContext.containsBean(LambdaLogger)
+
+        and: 'CognitoIdentity is not registered if Lambda Context::getIdentity is null"'
+        !handler.applicationContext.containsBean(CognitoIdentity)
+
+        and: 'ClientContext is not registered if Lambda Context::getClientContext is null"'
+        !handler.applicationContext.containsBean(ClientContext)
+
+        and:
+        "XXX" == response.body
+
+        cleanup:
+        handler.close()
+    }
+
+    void "applicationLoadBalancer verify LambdaLogger CognitoIdentity and ClientContext are not registered if null"() {
+        Map<String, Object> properties = CollectionUtils.mapOf('micronaut.security.enabled', false, "spec.name", "LambdaContextSpec")
+        ApplicationContextBuilder ctxBuilder = ApplicationContext.builder().properties(properties)
+        ApplicationLoadBalancerFunction handler =
+                new ApplicationLoadBalancerFunction(ctxBuilder.build())
+
+        when:
+        ApplicationLoadBalancerRequestEvent request = applicationLoadBalancerRequest("/context", HttpMethod.GET)
+        Context context = createContextWithoutCollaborators()
+        ApplicationLoadBalancerResponseEvent response = handler.handleRequest(request, context)
 
         then:
         handler.applicationContext.containsBean(Context)
@@ -199,5 +254,12 @@ class LambdaContextSpec extends Specification {
         APIGatewayV2HTTPEvent.builder()
                 .withRequestContext(requestContext)
                 .build()
+    }
+
+    private static ApplicationLoadBalancerRequestEvent applicationLoadBalancerRequest(String path, HttpMethod httpMethod) {
+        ApplicationLoadBalancerRequestEvent requestEvent = new ApplicationLoadBalancerRequestEvent();
+        requestEvent.setPath(path)
+        requestEvent.setHttpMethod(httpMethod.toString())
+        requestEvent
     }
 }
