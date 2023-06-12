@@ -56,13 +56,11 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     public ApiGatewayProxyServletRequest(
         APIGatewayProxyRequestEvent requestEvent,
         ApiGatewayProxyServletResponse<Object> response,
-        MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService,
         BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
-            codecRegistry,
             requestEvent,
             URI.create(requestEvent.getPath()),
             parseMethod(requestEvent),
@@ -92,17 +90,12 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(requestEvent.getMultiValueHeaders(), requestEvent.getHeaders()), conversionService);
+        return getHeaders(requestEvent::getHeaders, requestEvent::getMultiValueHeaders);
     }
 
     @Override
     public MutableHttpParameters getParameters() {
-        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
-        if (isFormSubmission(mediaType)) {
-            return getParametersFromBody(requestEvent.getQueryStringParameters());
-        } else {
-            return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, requestEvent.getMultiValueQueryStringParameters(), requestEvent.getQueryStringParameters());
-        }
+        return getParameters(requestEvent::getQueryStringParameters, requestEvent::getMultiValueQueryStringParameters);
     }
 
     @Override

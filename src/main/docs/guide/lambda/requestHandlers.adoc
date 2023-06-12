@@ -26,17 +26,21 @@ The https://github.com/aws/aws-lambda-java-libs/tree/master/aws-lambda-java-core
 | `https://github.com/aws/aws-lambda-java-libs/blob/master/aws-lambda-java-core/src/main/java/com/amazonaws/services/lambda/runtime/RequestHandler.java[RequestHandler]<APIGatewayV2HTTPEvent,APIGatewayV2HTTPResponse>`
 | api:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[]
 | 2.0
+| Application
+| `https://github.com/aws/aws-lambda-java-libs/blob/master/aws-lambda-java-core/src/main/java/com/amazonaws/services/lambda/runtime/RequestHandler.java[RequestHandler]<ApplicationLoadBalancerRequestEvent,ApplicationLoadBalancerResponseEvent>`
+| api:function.aws.proxy.alb.ApplicationLoadBalancerFunction[]
+|
 |===
 
-For functions of type `Application`, use the handler api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] for https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0] and
- api:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[] for 2.0.
+For functions of type `Application`, use the handler:
 
+* api:function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction[] for https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0]
+* api:function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction[] for 2.0.
+* api:function.aws.proxy.alb.ApplicationLoadBalancerFunction[] Application Load Balancer event.
 
 To resolve that class you need to add the `micronaut-function-aws-api-proxy` dependency to your build.
 
 dependency:micronaut-function-aws-api-proxy[]
-
-NOTE: `micronaut-function-aws-api-proxy` supports only https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format[Payload format version 1.0].
 
 For Serverless Functions the decision to use one `MicronautRequestHandler` or `MicronautRequestStreamHandler` depends on how you want to handle the input and output types.
 

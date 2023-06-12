@@ -17,15 +17,20 @@ package io.micronaut.function.aws.proxy;
 
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.io.buffer.ByteBuffer;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.codec.MediaTypeCodecRegistry;
 import io.micronaut.http.cookie.Cookie;
@@ -42,6 +47,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,14 +76,12 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private final HttpMethod httpMethod;
     private final Logger log;
     private Cookies cookies;
-    private final MediaTypeCodecRegistry codecRegistry;
     private MutableConvertibleValues<Object> attributes;
     private Supplier<Optional<T>> body;
     private T overriddenBody;
 
     protected ApiGatewayServletRequest(
         ConversionService conversionService,
-        MediaTypeCodecRegistry codecRegistry,
         REQ request,
         URI uri,
         HttpMethod httpMethod,
@@ -82,7 +89,6 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         BodyBuilder bodyBuilder
     ) {
         this.conversionService = conversionService;
-        this.codecRegistry = codecRegistry;
         this.requestEvent = request;
         this.uri = uri;
         this.httpMethod = httpMethod;
@@ -94,6 +100,14 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     }
 
     public abstract byte[] getBodyBytes() throws IOException;
+
+    protected static HttpMethod parseMethod(Supplier<String> httpMethodConsumer) {
+        try {
+            return HttpMethod.valueOf(httpMethodConsumer.get());
+        } catch (IllegalArgumentException e) {
+            return HttpMethod.CUSTOM;
+        }
+    }
 
     @Override
     public InputStream getInputStream() throws IOException {
@@ -219,5 +233,52 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public void setConversionService(ConversionService conversionService) {
         this.conversionService = conversionService;
+    }
+
+    protected byte[] getBodyBytes(Supplier<String> bodySupplier, Supplier<Boolean> base64EncodedSupplier) throws IOException {
+        String body = bodySupplier.get();
+        if (StringUtils.isEmpty(body)) {
+            throw new IOException("Empty Body");
+        }
+        return base64EncodedSupplier.get() ?
+            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
+    }
+
+    @NonNull
+    protected static List<String> splitCommaSeparatedValue(@Nullable String value) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(value.split(","));
+    }
+
+    @NonNull
+    protected static Map<String, List<String>> transformCommaSeparatedValue(@Nullable Map<String, String> input) {
+        if (input == null) {
+            return Collections.emptyMap();
+        }
+        Map<String, List<String>> output = new HashMap<>();
+        for (var entry: input.entrySet()) {
+            output.put(entry.getKey(), splitCommaSeparatedValue(entry.getValue()));
+        }
+        return output;
+    }
+
+    @NonNull
+    protected MutableHttpParameters getParameters(@NonNull Supplier<Map<String, String>> queryStringParamtersSupplier,
+                                                  @NonNull Supplier<Map<String, List<String>>> multiQueryStringParamtersSupplier) {
+        Map<String, List<String>> multi = multiQueryStringParamtersSupplier.get();
+        Map<String, String> single = queryStringParamtersSupplier.get();
+        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+        if (isFormSubmission(mediaType)) {
+            return getParametersFromBody(MapCollapseUtils.collapse(MapCollapseUtils.collapse(multi, single)));
+        } else {
+            return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, multi, single);
+        }
+    }
+
+    @NonNull
+    protected MutableHttpHeaders getHeaders(@NonNull Supplier<Map<String, String>> singleHeaders, @NonNull Supplier<Map<String, List<String>>> multiValueHeaders) {
+        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
     }
 }

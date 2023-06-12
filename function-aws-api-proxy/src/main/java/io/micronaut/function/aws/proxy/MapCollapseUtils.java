@@ -89,4 +89,18 @@ public final class MapCollapseUtils {
         }
         return values;
     }
+
+    /**
+     * Collapse a map whose value is a list of strings into a map whose value is a comma separated string
+     *
+     * @param input Map with key String and value List of Strings
+     * @return Map with key String and value String with comma separated values
+     */
+    public static Map<String, String> collapse(Map<String, List<String>> input) {
+        Map<String, String> result = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : input.entrySet()) {
+            result.put(entry.getKey(), String.join(",", entry.getValue()));
+        }
+        return result;
+    }
 }

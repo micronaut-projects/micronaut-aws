@@ -51,7 +51,6 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
                 getApplicationContext().getConversionService(),
                 getApplicationContext().getBean(BinaryContentConfiguration.class)
             ),
-            getMediaTypeCodecRegistry(),
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)
         );

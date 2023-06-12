@@ -19,15 +19,13 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerReque
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
-import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
-import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventServletRequest;
-import io.micronaut.http.*;
-import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
@@ -36,7 +34,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
@@ -55,78 +55,37 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
     public ApplicationLoadBalancerServletRequest(
         ApplicationLoadBalancerRequestEvent requestEvent,
         ApplicationLoadBalancerServletResponse<Object> response,
-        MediaTypeCodecRegistry codecRegistry,
         ConversionService conversionService,
         BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
-            codecRegistry,
             requestEvent,
             URI.create(requestEvent.getPath()),
-            parseMethod(requestEvent),
+            parseMethod(() -> requestEvent.getHttpMethod()),
             LOG,
             bodyBuilder
         );
         this.response = response;
     }
 
-    private static HttpMethod parseMethod(ApplicationLoadBalancerRequestEvent requestEvent) {
-        try {
-            return HttpMethod.valueOf(requestEvent.getHttpMethod());
-        } catch (IllegalArgumentException e) {
-            return HttpMethod.CUSTOM;
-        }
-    }
-
     @Override
     public byte[] getBodyBytes() throws IOException {
-        String body = requestEvent.getBody();
-        if (StringUtils.isEmpty(body)) {
-            throw new IOException("Empty Body");
-        }
-        return requestEvent.getIsBase64Encoded() ?
-            Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());
+        return getBodyBytes(requestEvent::getBody, requestEvent::getIsBase64Encoded);
     }
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(requestEvent.getMultiValueHeaders(), requestEvent.getHeaders()), conversionService);
-    }
-
-    @NonNull
-    private static List<String> splitCommaSeparatedValue(@Nullable String value) {
-        if (value == null) {
-            return Collections.emptyList();
-        }
-        return Arrays.asList(value.split(","));
-    }
-
-    @NonNull
-    private static Map<String, List<String>> transformCommaSeparatedValue(@Nullable Map<String, String> input) {
-        if (input == null) {
-            return Collections.emptyMap();
-        }
-        Map<String, List<String>> output = new HashMap<>();
-        for (var entry: input.entrySet()) {
-            output.put(entry.getKey(), splitCommaSeparatedValue(entry.getValue()));
-        }
-        return output;
+        return getHeaders(requestEvent::getHeaders, requestEvent::getMultiValueHeaders);
     }
 
     @Override
     public MutableHttpParameters getParameters() {
-        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
-        if (isFormSubmission(mediaType)) {
-            return getParametersFromBody(requestEvent.getQueryStringParameters());
-        } else {
-            return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, transformCommaSeparatedValue(requestEvent.getQueryStringParameters()), Collections.emptyMap());
-        }
+        return getParameters(requestEvent::getQueryStringParameters, requestEvent::getMultiValueQueryStringParameters);
     }
 
     @Override
     public ServletHttpResponse<ApplicationLoadBalancerResponseEvent, ?> getResponse() {
         return response;
     }
-
 }
