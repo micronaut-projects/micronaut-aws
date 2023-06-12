@@ -1,7 +1,7 @@
 [versions]
-micronaut = "4.0.0-M6"
+micronaut = "4.0.0-M7"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.0-M6"
+micronaut-test = "4.0.0-M7"
 micronaut-testresources = "2.0.0-M9"
 groovy = "4.0.12"
 spock = "2.3-groovy-4.0"
@@ -13,15 +13,15 @@ logback-json-classic = '0.1.5'
 assertj = '3.24.2'
 
 micronaut-discovery = "4.0.0-M3"
-micronaut-groovy = "4.0.0-M1"
-micronaut-logging = "1.0.0-M3"
-micronaut-mongodb = "5.0.0-M2"
-micronaut-reactor = "3.0.0-M4"
-micronaut-security = "4.0.0-M5"
-micronaut-serde = "2.0.0-M9"
-micronaut-servlet = "4.0.0-M7"
-micronaut-views = "4.0.0-M4"
-micronaut-validation = "4.0.0-M9"
+micronaut-groovy = "4.0.0-M3"
+micronaut-logging = "1.0.0-M4"
+micronaut-mongodb = "5.0.0-M4"
+micronaut-reactor = "3.0.0-M6"
+micronaut-security = "4.0.0-M6"
+micronaut-serde = "2.0.0-M10"
+micronaut-servlet = "4.0.0-M8"
+micronaut-views = "4.0.0-M5"
+micronaut-validation = "4.0.0-M10"
 
 managed-alexa-ask-sdk = "2.71.0"
 managed-aws-java-sdk-v1 = '1.12.483'
@@ -43,7 +43,7 @@ graal = "22.3.2"
 kotlin = "1.8.21"
 
 # Micronaut
-micronaut-gradle-plugin = "4.0.0-M4"
+micronaut-gradle-plugin = "4.0.0-M3"
 
 [libraries]
 # Core

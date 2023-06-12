@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Bean to check if response content is binary and should be base 64 encoded
+ * Bean to check if response content is binary and should be base 64 encoded.
  */
 @Internal
 @Singleton
