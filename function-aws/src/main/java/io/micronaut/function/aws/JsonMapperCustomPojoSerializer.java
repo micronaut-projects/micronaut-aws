@@ -56,7 +56,7 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
             .flatMap(jsonMapperSupplier -> {
                 try {
                     return Stream.of(jsonMapperSupplier.get());
-                } catch(Exception e) {
+                } catch (Exception e) {
                     return Stream.empty();
                 }
             })
