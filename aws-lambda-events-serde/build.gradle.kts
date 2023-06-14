@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    annotationProcessor(mn.micronaut.graal)
     annotationProcessor(mnSerde.micronaut.serde.processor)
     api(mnSerde.micronaut.serde.api)
     api(libs.managed.aws.lambda.events)
