@@ -16,8 +16,8 @@
 package io.micronaut.function.aws.runtime;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 
 /**

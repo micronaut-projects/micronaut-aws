@@ -1,8 +1,8 @@
 package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyResponseEventAdapter;

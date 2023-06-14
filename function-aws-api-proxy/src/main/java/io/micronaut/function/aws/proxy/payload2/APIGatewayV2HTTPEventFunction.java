@@ -17,8 +17,8 @@ package io.micronaut.function.aws.proxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.aws.HandlerUtils;
 import io.micronaut.function.executor.FunctionInitializer;

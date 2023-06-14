@@ -15,8 +15,7 @@
  */
 package io.micronaut.function.aws.proxy.payload2;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.core.convert.ConversionService;
@@ -35,7 +34,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Adapts the v2 {@link APIGatewayProxyResponseEvent} to a {@link MutableHttpResponse}.
+ * Adapts the v2 {@link APIGatewayV2HTTPResponse} to a {@link MutableHttpResponse}.
  * @param <T> The body type
  */
 @Internal

@@ -15,7 +15,7 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 

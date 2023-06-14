@@ -15,8 +15,8 @@
  */
 package io.micronaut.function.aws.proxy.security;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;

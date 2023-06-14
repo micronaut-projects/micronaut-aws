@@ -16,24 +16,44 @@
 package io.micronaut.aws.lambda.events;
 
 import io.micronaut.core.annotation.Creator;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+/**
+ * Port of AWS Lambda Events class which represents an APIGatewayV2HTTPEvent.
+ * This class adds Serdeable, nullability annotations, @Creator annotations and removes Lombok.
+ * @see <a href="https://github.com/aws/aws-lambda-java-libs/blob/main/aws-lambda-java-events/src/main/java/com/amazonaws/services/lambda/runtime/events/APIGatewayV2HTTPEvent.java">APIGatewayV2HTTPEvent</a>
+ * @author Sergio del Amo
+ * @since 4.0.0
+ */
 @Serdeable
 public class APIGatewayV2HTTPEvent {
+    @Nullable
     private String version;
+
+    @Nullable
     private String routeKey;
+
+    @Nullable
     private String rawPath;
+
+    @Nullable
     private String rawQueryString;
 
     @Nullable
     private List<String> cookies;
+
+    @Nullable
     private Map<String, String> headers;
+
     @Nullable
     private Map<String, String> queryStringParameters;
+
     @Nullable
     private Map<String, String> pathParameters;
 
@@ -42,15 +62,25 @@ public class APIGatewayV2HTTPEvent {
 
     @Nullable
     private String body;
+
     private boolean isBase64Encoded;
+
+    @Nullable
     private RequestContext requestContext;
 
-    public static APIGatewayV2HTTPEventBuilder builder() {
-        return new APIGatewayV2HTTPEventBuilder();
-    }
-
     @Creator
-    public APIGatewayV2HTTPEvent(String version, String routeKey, String rawPath, String rawQueryString, @Nullable List<String> cookies, Map<String, String> headers, @Nullable Map<String, String> queryStringParameters, @Nullable Map<String, String> pathParameters, @Nullable Map<String, String> stageVariables, @Nullable String body, boolean isBase64Encoded, RequestContext requestContext) {
+    public APIGatewayV2HTTPEvent(@Nullable String version,
+                                 @Nullable String routeKey,
+                                 @Nullable String rawPath,
+                                 @Nullable String rawQueryString,
+                                 @Nullable List<String> cookies,
+                                 @Nullable Map<String, String> headers,
+                                 @Nullable Map<String, String> queryStringParameters,
+                                 @Nullable Map<String, String> pathParameters,
+                                 @Nullable Map<String, String> stageVariables,
+                                 @Nullable String body,
+                                 boolean isBase64Encoded,
+                                 @Nullable RequestContext requestContext) {
         this.version = version;
         this.routeKey = routeKey;
         this.rawPath = rawPath;
@@ -65,18 +95,31 @@ public class APIGatewayV2HTTPEvent {
         this.requestContext = requestContext;
     }
 
+    public APIGatewayV2HTTPEvent() {
+    }
+
+    @NonNull
+    public static APIGatewayV2HTTPEventBuilder builder() {
+        return new APIGatewayV2HTTPEventBuilder();
+    }
+
+
+    @Nullable
     public String getVersion() {
         return this.version;
     }
 
+    @Nullable
     public String getRouteKey() {
         return this.routeKey;
     }
 
+    @Nullable
     public String getRawPath() {
         return this.rawPath;
     }
 
+    @Nullable
     public String getRawQueryString() {
         return this.rawQueryString;
     }
@@ -86,14 +129,17 @@ public class APIGatewayV2HTTPEvent {
         return this.cookies;
     }
 
+    @Nullable
     public Map<String, String> getHeaders() {
         return this.headers;
     }
 
+    @Nullable
     public Map<String, String> getQueryStringParameters() {
         return this.queryStringParameters;
     }
 
+    @Nullable
     public Map<String, String> getPathParameters() {
         return this.pathParameters;
     }
@@ -112,23 +158,24 @@ public class APIGatewayV2HTTPEvent {
         return this.isBase64Encoded;
     }
 
+    @Nullable
     public RequestContext getRequestContext() {
         return this.requestContext;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(@Nullable String version) {
         this.version = version;
     }
 
-    public void setRouteKey(String routeKey) {
+    public void setRouteKey(@Nullable String routeKey) {
         this.routeKey = routeKey;
     }
 
-    public void setRawPath(String rawPath) {
+    public void setRawPath(@Nullable String rawPath) {
         this.rawPath = rawPath;
     }
 
-    public void setRawQueryString(String rawQueryString) {
+    public void setRawQueryString(@Nullable String rawQueryString) {
         this.rawQueryString = rawQueryString;
     }
 
@@ -136,7 +183,7 @@ public class APIGatewayV2HTTPEvent {
         this.cookies = cookies;
     }
 
-    public void setHeaders(Map<String, String> headers) {
+    public void setHeaders(@Nullable Map<String, String> headers) {
         this.headers = headers;
     }
 
@@ -160,190 +207,81 @@ public class APIGatewayV2HTTPEvent {
         this.isBase64Encoded = isBase64Encoded;
     }
 
-    public void setRequestContext(RequestContext requestContext) {
+    public void setRequestContext(@Nullable RequestContext requestContext) {
         this.requestContext = requestContext;
-    }
-
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (!(o instanceof APIGatewayV2HTTPEvent)) {
-            return false;
-        } else {
-            APIGatewayV2HTTPEvent other = (APIGatewayV2HTTPEvent)o;
-            if (!other.canEqual(this)) {
-                return false;
-            } else if (this.getIsBase64Encoded() != other.getIsBase64Encoded()) {
-                return false;
-            } else {
-                label145: {
-                    Object this$version = this.getVersion();
-                    Object other$version = other.getVersion();
-                    if (this$version == null) {
-                        if (other$version == null) {
-                            break label145;
-                        }
-                    } else if (this$version.equals(other$version)) {
-                        break label145;
-                    }
-
-                    return false;
-                }
-
-                Object this$routeKey = this.getRouteKey();
-                Object other$routeKey = other.getRouteKey();
-                if (this$routeKey == null) {
-                    if (other$routeKey != null) {
-                        return false;
-                    }
-                } else if (!this$routeKey.equals(other$routeKey)) {
-                    return false;
-                }
-
-                Object this$rawPath = this.getRawPath();
-                Object other$rawPath = other.getRawPath();
-                if (this$rawPath == null) {
-                    if (other$rawPath != null) {
-                        return false;
-                    }
-                } else if (!this$rawPath.equals(other$rawPath)) {
-                    return false;
-                }
-
-                label124: {
-                    Object this$rawQueryString = this.getRawQueryString();
-                    Object other$rawQueryString = other.getRawQueryString();
-                    if (this$rawQueryString == null) {
-                        if (other$rawQueryString == null) {
-                            break label124;
-                        }
-                    } else if (this$rawQueryString.equals(other$rawQueryString)) {
-                        break label124;
-                    }
-
-                    return false;
-                }
-
-                Object this$cookies = this.getCookies();
-                Object other$cookies = other.getCookies();
-                if (this$cookies == null) {
-                    if (other$cookies != null) {
-                        return false;
-                    }
-                } else if (!this$cookies.equals(other$cookies)) {
-                    return false;
-                }
-
-                Object this$headers = this.getHeaders();
-                Object other$headers = other.getHeaders();
-                if (this$headers == null) {
-                    if (other$headers != null) {
-                        return false;
-                    }
-                } else if (!this$headers.equals(other$headers)) {
-                    return false;
-                }
-
-                label103: {
-                    Object this$queryStringParameters = this.getQueryStringParameters();
-                    Object other$queryStringParameters = other.getQueryStringParameters();
-                    if (this$queryStringParameters == null) {
-                        if (other$queryStringParameters == null) {
-                            break label103;
-                        }
-                    } else if (this$queryStringParameters.equals(other$queryStringParameters)) {
-                        break label103;
-                    }
-
-                    return false;
-                }
-
-                Object this$pathParameters = this.getPathParameters();
-                Object other$pathParameters = other.getPathParameters();
-                if (this$pathParameters == null) {
-                    if (other$pathParameters != null) {
-                        return false;
-                    }
-                } else if (!this$pathParameters.equals(other$pathParameters)) {
-                    return false;
-                }
-
-                label89: {
-                    Object this$stageVariables = this.getStageVariables();
-                    Object other$stageVariables = other.getStageVariables();
-                    if (this$stageVariables == null) {
-                        if (other$stageVariables == null) {
-                            break label89;
-                        }
-                    } else if (this$stageVariables.equals(other$stageVariables)) {
-                        break label89;
-                    }
-
-                    return false;
-                }
-
-                Object this$body = this.getBody();
-                Object other$body = other.getBody();
-                if (this$body == null) {
-                    if (other$body != null) {
-                        return false;
-                    }
-                } else if (!this$body.equals(other$body)) {
-                    return false;
-                }
-
-                Object this$requestContext = this.getRequestContext();
-                Object other$requestContext = other.getRequestContext();
-                if (this$requestContext == null) {
-                    if (other$requestContext == null) {
-                        return true;
-                    }
-                } else if (this$requestContext.equals(other$requestContext)) {
-                    return true;
-                }
-
-                return false;
-            }
-        }
     }
 
     protected boolean canEqual(Object other) {
         return other instanceof APIGatewayV2HTTPEvent;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        APIGatewayV2HTTPEvent that = (APIGatewayV2HTTPEvent) o;
+
+        if (isBase64Encoded != that.isBase64Encoded) {
+            return false;
+        }
+        if (!Objects.equals(version, that.version)) {
+            return false;
+        }
+        if (!Objects.equals(routeKey, that.routeKey)) {
+            return false;
+        }
+        if (!Objects.equals(rawPath, that.rawPath)) {
+            return false;
+        }
+        if (!Objects.equals(rawQueryString, that.rawQueryString)) {
+            return false;
+        }
+        if (!Objects.equals(cookies, that.cookies)) {
+            return false;
+        }
+        if (!Objects.equals(headers, that.headers)) {
+            return false;
+        }
+        if (!Objects.equals(queryStringParameters, that.queryStringParameters)) {
+            return false;
+        }
+        if (!Objects.equals(pathParameters, that.pathParameters)) {
+            return false;
+        }
+        if (!Objects.equals(stageVariables, that.stageVariables)) {
+            return false;
+        }
+        if (!Objects.equals(body, that.body)) {
+            return false;
+        }
+        return Objects.equals(requestContext, that.requestContext);
+    }
+
+    @Override
     public int hashCode() {
-        int result = 1;
-        result = result * 59 + (this.getIsBase64Encoded() ? 79 : 97);
-        Object $version = this.getVersion();
-        result = result * 59 + ($version == null ? 43 : $version.hashCode());
-        Object $routeKey = this.getRouteKey();
-        result = result * 59 + ($routeKey == null ? 43 : $routeKey.hashCode());
-        Object $rawPath = this.getRawPath();
-        result = result * 59 + ($rawPath == null ? 43 : $rawPath.hashCode());
-        Object $rawQueryString = this.getRawQueryString();
-        result = result * 59 + ($rawQueryString == null ? 43 : $rawQueryString.hashCode());
-        Object $cookies = this.getCookies();
-        result = result * 59 + ($cookies == null ? 43 : $cookies.hashCode());
-        Object $headers = this.getHeaders();
-        result = result * 59 + ($headers == null ? 43 : $headers.hashCode());
-        Object $queryStringParameters = this.getQueryStringParameters();
-        result = result * 59 + ($queryStringParameters == null ? 43 : $queryStringParameters.hashCode());
-        Object $pathParameters = this.getPathParameters();
-        result = result * 59 + ($pathParameters == null ? 43 : $pathParameters.hashCode());
-        Object $stageVariables = this.getStageVariables();
-        result = result * 59 + ($stageVariables == null ? 43 : $stageVariables.hashCode());
-        Object $body = this.getBody();
-        result = result * 59 + ($body == null ? 43 : $body.hashCode());
-        Object $requestContext = this.getRequestContext();
-        result = result * 59 + ($requestContext == null ? 43 : $requestContext.hashCode());
+        int result = version != null ? version.hashCode() : 0;
+        result = 31 * result + (routeKey != null ? routeKey.hashCode() : 0);
+        result = 31 * result + (rawPath != null ? rawPath.hashCode() : 0);
+        result = 31 * result + (rawQueryString != null ? rawQueryString.hashCode() : 0);
+        result = 31 * result + (cookies != null ? cookies.hashCode() : 0);
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        result = 31 * result + (queryStringParameters != null ? queryStringParameters.hashCode() : 0);
+        result = 31 * result + (pathParameters != null ? pathParameters.hashCode() : 0);
+        result = 31 * result + (stageVariables != null ? stageVariables.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
+        result = 31 * result + (isBase64Encoded ? 1 : 0);
+        result = 31 * result + (requestContext != null ? requestContext.hashCode() : 0);
         return result;
     }
 
+    @NonNull
     public String toString() {
         return "APIGatewayV2HTTPEvent(version=" + this.getVersion() + ", routeKey=" + this.getRouteKey() + ", rawPath=" + this.getRawPath() + ", rawQueryString=" + this.getRawQueryString() + ", cookies=" + this.getCookies() + ", headers=" + this.getHeaders() + ", queryStringParameters=" + this.getQueryStringParameters() + ", pathParameters=" + this.getPathParameters() + ", stageVariables=" + this.getStageVariables() + ", body=" + this.getBody() + ", isBase64Encoded=" + this.getIsBase64Encoded() + ", requestContext=" + this.getRequestContext() + ")";
-    }
-
-    public APIGatewayV2HTTPEvent() {
     }
 
     public static class APIGatewayV2HTTPEventBuilder {
@@ -365,70 +303,84 @@ public class APIGatewayV2HTTPEvent {
         APIGatewayV2HTTPEventBuilder() {
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withVersion(String version) {
             this.version = version;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withRouteKey(String routeKey) {
             this.routeKey = routeKey;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withRawPath(String rawPath) {
             this.rawPath = rawPath;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withRawQueryString(String rawQueryString) {
             this.rawQueryString = rawQueryString;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withCookies(List<String> cookies) {
             this.cookies = cookies;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withHeaders(Map<String, String> headers) {
             this.headers = headers;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withQueryStringParameters(Map<String, String> queryStringParameters) {
             this.queryStringParameters = queryStringParameters;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withPathParameters(Map<String, String> pathParameters) {
             this.pathParameters = pathParameters;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withStageVariables(Map<String, String> stageVariables) {
             this.stageVariables = stageVariables;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withBody(String body) {
             this.body = body;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withIsBase64Encoded(boolean isBase64Encoded) {
             this.isBase64Encoded = isBase64Encoded;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEventBuilder withRequestContext(RequestContext requestContext) {
             this.requestContext = requestContext;
             return this;
         }
 
+        @NonNull
         public APIGatewayV2HTTPEvent build() {
             return new APIGatewayV2HTTPEvent(this.version, this.routeKey, this.rawPath, this.rawQueryString, this.cookies, this.headers, this.queryStringParameters, this.pathParameters, this.stageVariables, this.body, this.isBase64Encoded, this.requestContext);
         }
 
+        @NonNull
         public String toString() {
             return "APIGatewayV2HTTPEvent.APIGatewayV2HTTPEventBuilder(version=" + this.version + ", routeKey=" + this.routeKey + ", rawPath=" + this.rawPath + ", rawQueryString=" + this.rawQueryString + ", cookies=" + this.cookies + ", headers=" + this.headers + ", queryStringParameters=" + this.queryStringParameters + ", pathParameters=" + this.pathParameters + ", stageVariables=" + this.stageVariables + ", body=" + this.body + ", isBase64Encoded=" + this.isBase64Encoded + ", requestContext=" + this.requestContext + ")";
         }
@@ -436,26 +388,56 @@ public class APIGatewayV2HTTPEvent {
 
     @Serdeable
     public static class RequestContext {
+        @Nullable
         private String routeKey;
+
+        @Nullable
         private String accountId;
+
+        @Nullable
         private String stage;
+
+        @Nullable
         private String apiId;
+
+        @Nullable
         private String domainName;
+
+        @Nullable
         private String domainPrefix;
+
+        @Nullable
         private String time;
+
+        @Nullable
         private long timeEpoch;
+
+        @Nullable
         private Http http;
 
         @Nullable
         private Authorizer authorizer;
+
+        @Nullable
         private String requestId;
 
+        @NonNull
         public static RequestContextBuilder builder() {
             return new RequestContextBuilder();
         }
 
         @Creator
-        public RequestContext(String routeKey, String accountId, String stage, String apiId, String domainName, String domainPrefix, String time, long timeEpoch, Http http, @Nullable Authorizer authorizer, String requestId) {
+        public RequestContext(@Nullable String routeKey,
+                              @Nullable String accountId,
+                              @Nullable String stage,
+                              @Nullable String apiId,
+                              @Nullable String domainName,
+                              @Nullable String domainPrefix,
+                              @Nullable String time,
+                              long timeEpoch,
+                              @Nullable Http http,
+                              @Nullable Authorizer authorizer,
+                              @Nullable String requestId) {
             this.routeKey = routeKey;
             this.accountId = accountId;
             this.stage = stage;
@@ -469,38 +451,50 @@ public class APIGatewayV2HTTPEvent {
             this.requestId = requestId;
         }
 
+        public RequestContext() {
+        }
+
+        @Nullable
         public String getRouteKey() {
             return this.routeKey;
         }
 
+        @Nullable
         public String getAccountId() {
             return this.accountId;
         }
 
+        @Nullable
         public String getStage() {
             return this.stage;
         }
 
+        @Nullable
         public String getApiId() {
             return this.apiId;
         }
 
+        @Nullable
         public String getDomainName() {
             return this.domainName;
         }
 
+        @Nullable
         public String getDomainPrefix() {
             return this.domainPrefix;
         }
 
+        @Nullable
         public String getTime() {
             return this.time;
         }
 
+        @Nullable
         public long getTimeEpoch() {
             return this.timeEpoch;
         }
 
+        @Nullable
         public Http getHttp() {
             return this.http;
         }
@@ -510,27 +504,28 @@ public class APIGatewayV2HTTPEvent {
             return this.authorizer;
         }
 
+        @Nullable
         public String getRequestId() {
             return this.requestId;
         }
 
-        public void setRouteKey(String routeKey) {
+        public void setRouteKey(@Nullable String routeKey) {
             this.routeKey = routeKey;
         }
 
-        public void setAccountId(String accountId) {
+        public void setAccountId(@Nullable String accountId) {
             this.accountId = accountId;
         }
 
-        public void setStage(String stage) {
+        public void setStage(@Nullable String stage) {
             this.stage = stage;
         }
 
-        public void setApiId(String apiId) {
+        public void setApiId(@Nullable String apiId) {
             this.apiId = apiId;
         }
 
-        public void setDomainName(String domainName) {
+        public void setDomainName(@Nullable String domainName) {
             this.domainName = domainName;
         }
 
@@ -538,7 +533,7 @@ public class APIGatewayV2HTTPEvent {
             this.domainPrefix = domainPrefix;
         }
 
-        public void setTime(String time) {
+        public void setTime(@Nullable String time) {
             this.time = time;
         }
 
@@ -546,7 +541,7 @@ public class APIGatewayV2HTTPEvent {
             this.timeEpoch = timeEpoch;
         }
 
-        public void setHttp(Http http) {
+        public void setHttp(@Nullable Http http) {
             this.http = http;
         }
 
@@ -554,175 +549,77 @@ public class APIGatewayV2HTTPEvent {
             this.authorizer = authorizer;
         }
 
-        public void setRequestId(String requestId) {
+        public void setRequestId(@Nullable String requestId) {
             this.requestId = requestId;
         }
 
+        @Override
         public boolean equals(Object o) {
-            if (o == this) {
+            if (this == o) {
                 return true;
-            } else if (!(o instanceof RequestContext)) {
-                return false;
-            } else {
-                RequestContext other = (RequestContext)o;
-                if (!other.canEqual(this)) {
-                    return false;
-                } else if (this.getTimeEpoch() != other.getTimeEpoch()) {
-                    return false;
-                } else {
-                    Object this$routeKey = this.getRouteKey();
-                    Object other$routeKey = other.getRouteKey();
-                    if (this$routeKey == null) {
-                        if (other$routeKey != null) {
-                            return false;
-                        }
-                    } else if (!this$routeKey.equals(other$routeKey)) {
-                        return false;
-                    }
-
-                    Object this$accountId = this.getAccountId();
-                    Object other$accountId = other.getAccountId();
-                    if (this$accountId == null) {
-                        if (other$accountId != null) {
-                            return false;
-                        }
-                    } else if (!this$accountId.equals(other$accountId)) {
-                        return false;
-                    }
-
-                    label119: {
-                        Object this$stage = this.getStage();
-                        Object other$stage = other.getStage();
-                        if (this$stage == null) {
-                            if (other$stage == null) {
-                                break label119;
-                            }
-                        } else if (this$stage.equals(other$stage)) {
-                            break label119;
-                        }
-
-                        return false;
-                    }
-
-                    label112: {
-                        Object this$apiId = this.getApiId();
-                        Object other$apiId = other.getApiId();
-                        if (this$apiId == null) {
-                            if (other$apiId == null) {
-                                break label112;
-                            }
-                        } else if (this$apiId.equals(other$apiId)) {
-                            break label112;
-                        }
-
-                        return false;
-                    }
-
-                    Object this$domainName = this.getDomainName();
-                    Object other$domainName = other.getDomainName();
-                    if (this$domainName == null) {
-                        if (other$domainName != null) {
-                            return false;
-                        }
-                    } else if (!this$domainName.equals(other$domainName)) {
-                        return false;
-                    }
-
-                    Object this$domainPrefix = this.getDomainPrefix();
-                    Object other$domainPrefix = other.getDomainPrefix();
-                    if (this$domainPrefix == null) {
-                        if (other$domainPrefix != null) {
-                            return false;
-                        }
-                    } else if (!this$domainPrefix.equals(other$domainPrefix)) {
-                        return false;
-                    }
-
-                    label91: {
-                        Object this$time = this.getTime();
-                        Object other$time = other.getTime();
-                        if (this$time == null) {
-                            if (other$time == null) {
-                                break label91;
-                            }
-                        } else if (this$time.equals(other$time)) {
-                            break label91;
-                        }
-
-                        return false;
-                    }
-
-                    Object this$http = this.getHttp();
-                    Object other$http = other.getHttp();
-                    if (this$http == null) {
-                        if (other$http != null) {
-                            return false;
-                        }
-                    } else if (!this$http.equals(other$http)) {
-                        return false;
-                    }
-
-                    Object this$authorizer = this.getAuthorizer();
-                    Object other$authorizer = other.getAuthorizer();
-                    if (this$authorizer == null) {
-                        if (other$authorizer != null) {
-                            return false;
-                        }
-                    } else if (!this$authorizer.equals(other$authorizer)) {
-                        return false;
-                    }
-
-                    Object this$requestId = this.getRequestId();
-                    Object other$requestId = other.getRequestId();
-                    if (this$requestId == null) {
-                        if (other$requestId != null) {
-                            return false;
-                        }
-                    } else if (!this$requestId.equals(other$requestId)) {
-                        return false;
-                    }
-
-                    return true;
-                }
             }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            RequestContext that = (RequestContext) o;
+
+            if (timeEpoch != that.timeEpoch) {
+                return false;
+            }
+            if (!Objects.equals(routeKey, that.routeKey)) {
+                return false;
+            }
+            if (!Objects.equals(accountId, that.accountId)) {
+                return false;
+            }
+            if (!Objects.equals(stage, that.stage)) {
+                return false;
+            }
+            if (!Objects.equals(apiId, that.apiId)) {
+                return false;
+            }
+            if (!Objects.equals(domainName, that.domainName)) {
+                return false;
+            }
+            if (!Objects.equals(domainPrefix, that.domainPrefix)) {
+                return false;
+            }
+            if (!Objects.equals(time, that.time)) {
+                return false;
+            }
+            if (!Objects.equals(http, that.http)) {
+                return false;
+            }
+            if (!Objects.equals(authorizer, that.authorizer)) {
+                return false;
+            }
+            return Objects.equals(requestId, that.requestId);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = routeKey != null ? routeKey.hashCode() : 0;
+            result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
+            result = 31 * result + (stage != null ? stage.hashCode() : 0);
+            result = 31 * result + (apiId != null ? apiId.hashCode() : 0);
+            result = 31 * result + (domainName != null ? domainName.hashCode() : 0);
+            result = 31 * result + (domainPrefix != null ? domainPrefix.hashCode() : 0);
+            result = 31 * result + (time != null ? time.hashCode() : 0);
+            result = 31 * result + (int) (timeEpoch ^ (timeEpoch >>> 32));
+            result = 31 * result + (http != null ? http.hashCode() : 0);
+            result = 31 * result + (authorizer != null ? authorizer.hashCode() : 0);
+            result = 31 * result + (requestId != null ? requestId.hashCode() : 0);
+            return result;
         }
 
         protected boolean canEqual(Object other) {
             return other instanceof RequestContext;
         }
 
-        public int hashCode() {
-            int result = 1;
-            long $timeEpoch = this.getTimeEpoch();
-            result = result * 59 + (int)($timeEpoch >>> 32 ^ $timeEpoch);
-            Object $routeKey = this.getRouteKey();
-            result = result * 59 + ($routeKey == null ? 43 : $routeKey.hashCode());
-            Object $accountId = this.getAccountId();
-            result = result * 59 + ($accountId == null ? 43 : $accountId.hashCode());
-            Object $stage = this.getStage();
-            result = result * 59 + ($stage == null ? 43 : $stage.hashCode());
-            Object $apiId = this.getApiId();
-            result = result * 59 + ($apiId == null ? 43 : $apiId.hashCode());
-            Object $domainName = this.getDomainName();
-            result = result * 59 + ($domainName == null ? 43 : $domainName.hashCode());
-            Object $domainPrefix = this.getDomainPrefix();
-            result = result * 59 + ($domainPrefix == null ? 43 : $domainPrefix.hashCode());
-            Object $time = this.getTime();
-            result = result * 59 + ($time == null ? 43 : $time.hashCode());
-            Object $http = this.getHttp();
-            result = result * 59 + ($http == null ? 43 : $http.hashCode());
-            Object $authorizer = this.getAuthorizer();
-            result = result * 59 + ($authorizer == null ? 43 : $authorizer.hashCode());
-            Object $requestId = this.getRequestId();
-            result = result * 59 + ($requestId == null ? 43 : $requestId.hashCode());
-            return result;
-        }
-
+        @NonNull
         public String toString() {
             return "APIGatewayV2HTTPEvent.RequestContext(routeKey=" + this.getRouteKey() + ", accountId=" + this.getAccountId() + ", stage=" + this.getStage() + ", apiId=" + this.getApiId() + ", domainName=" + this.getDomainName() + ", domainPrefix=" + this.getDomainPrefix() + ", time=" + this.getTime() + ", timeEpoch=" + this.getTimeEpoch() + ", http=" + this.getHttp() + ", authorizer=" + this.getAuthorizer() + ", requestId=" + this.getRequestId() + ")";
-        }
-
-        public RequestContext() {
         }
 
         public static class RequestContextBuilder {
@@ -741,65 +638,78 @@ public class APIGatewayV2HTTPEvent {
             RequestContextBuilder() {
             }
 
+            @NonNull
             public RequestContextBuilder withRouteKey(String routeKey) {
                 this.routeKey = routeKey;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withAccountId(String accountId) {
                 this.accountId = accountId;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withStage(String stage) {
                 this.stage = stage;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withApiId(String apiId) {
                 this.apiId = apiId;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withDomainName(String domainName) {
                 this.domainName = domainName;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withDomainPrefix(String domainPrefix) {
                 this.domainPrefix = domainPrefix;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withTime(String time) {
                 this.time = time;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withTimeEpoch(long timeEpoch) {
                 this.timeEpoch = timeEpoch;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withHttp(Http http) {
                 this.http = http;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withAuthorizer(Authorizer authorizer) {
                 this.authorizer = authorizer;
                 return this;
             }
 
+            @NonNull
             public RequestContextBuilder withRequestId(String requestId) {
                 this.requestId = requestId;
                 return this;
             }
 
+            @NonNull
             public RequestContext build() {
                 return new RequestContext(this.routeKey, this.accountId, this.stage, this.apiId, this.domainName, this.domainPrefix, this.time, this.timeEpoch, this.http, this.authorizer, this.requestId);
             }
 
+            @NonNull
             public String toString() {
                 return "APIGatewayV2HTTPEvent.RequestContext.RequestContextBuilder(routeKey=" + this.routeKey + ", accountId=" + this.accountId + ", stage=" + this.stage + ", apiId=" + this.apiId + ", domainName=" + this.domainName + ", domainPrefix=" + this.domainPrefix + ", time=" + this.time + ", timeEpoch=" + this.timeEpoch + ", http=" + this.http + ", authorizer=" + this.authorizer + ", requestId=" + this.requestId + ")";
             }
@@ -807,114 +717,93 @@ public class APIGatewayV2HTTPEvent {
 
         @Serdeable
         public static class CognitoIdentity {
+            @Nullable
             private List<String> amr;
+
+            @Nullable
             private String identityId;
+
+            @Nullable
             private String identityPoolId;
 
+            @NonNull
             public static CognitoIdentityBuilder builder() {
                 return new CognitoIdentityBuilder();
             }
 
             @Creator
-            public CognitoIdentity(List<String> amr, String identityId, String identityPoolId) {
+            public CognitoIdentity(@Nullable List<String> amr,
+                                   @Nullable String identityId,
+                                   @Nullable String identityPoolId) {
                 this.amr = amr;
                 this.identityId = identityId;
                 this.identityPoolId = identityPoolId;
             }
 
-            public List<String> getAmr() {
+            public CognitoIdentity() {
+            }
+
+            @Nullable public List<String> getAmr() {
                 return this.amr;
             }
 
+            @Nullable
             public String getIdentityId() {
                 return this.identityId;
             }
 
+            @Nullable
             public String getIdentityPoolId() {
                 return this.identityPoolId;
             }
 
-            public void setAmr(List<String> amr) {
+            public void setAmr(@Nullable List<String> amr) {
                 this.amr = amr;
             }
 
-            public void setIdentityId(String identityId) {
+            public void setIdentityId(@Nullable String identityId) {
                 this.identityId = identityId;
             }
 
-            public void setIdentityPoolId(String identityPoolId) {
+            public void setIdentityPoolId(@Nullable String identityPoolId) {
                 this.identityPoolId = identityPoolId;
             }
 
+            @Override
             public boolean equals(Object o) {
-                if (o == this) {
+                if (this == o) {
                     return true;
-                } else if (!(o instanceof CognitoIdentity)) {
-                    return false;
-                } else {
-                    CognitoIdentity other = (CognitoIdentity)o;
-                    if (!other.canEqual(this)) {
-                        return false;
-                    } else {
-                        label47: {
-                            Object this$amr = this.getAmr();
-                            Object other$amr = other.getAmr();
-                            if (this$amr == null) {
-                                if (other$amr == null) {
-                                    break label47;
-                                }
-                            } else if (this$amr.equals(other$amr)) {
-                                break label47;
-                            }
-
-                            return false;
-                        }
-
-                        Object this$identityId = this.getIdentityId();
-                        Object other$identityId = other.getIdentityId();
-                        if (this$identityId == null) {
-                            if (other$identityId != null) {
-                                return false;
-                            }
-                        } else if (!this$identityId.equals(other$identityId)) {
-                            return false;
-                        }
-
-                        Object this$identityPoolId = this.getIdentityPoolId();
-                        Object other$identityPoolId = other.getIdentityPoolId();
-                        if (this$identityPoolId == null) {
-                            if (other$identityPoolId != null) {
-                                return false;
-                            }
-                        } else if (!this$identityPoolId.equals(other$identityPoolId)) {
-                            return false;
-                        }
-
-                        return true;
-                    }
                 }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
+
+                CognitoIdentity that = (CognitoIdentity) o;
+
+                if (!Objects.equals(amr, that.amr)) {
+                    return false;
+                }
+                if (!Objects.equals(identityId, that.identityId)) {
+                    return false;
+                }
+                return Objects.equals(identityPoolId, that.identityPoolId);
+            }
+
+            @Override
+            public int hashCode() {
+                int result = amr != null ? amr.hashCode() : 0;
+                result = 31 * result + (identityId != null ? identityId.hashCode() : 0);
+                result = 31 * result + (identityPoolId != null ? identityPoolId.hashCode() : 0);
+                return result;
             }
 
             protected boolean canEqual(Object other) {
                 return other instanceof CognitoIdentity;
             }
 
-            public int hashCode() {
-                int result = 1;
-                Object $amr = this.getAmr();
-                result = result * 59 + ($amr == null ? 43 : $amr.hashCode());
-                Object $identityId = this.getIdentityId();
-                result = result * 59 + ($identityId == null ? 43 : $identityId.hashCode());
-                Object $identityPoolId = this.getIdentityPoolId();
-                result = result * 59 + ($identityPoolId == null ? 43 : $identityPoolId.hashCode());
-                return result;
-            }
-
+            @NonNull
             public String toString() {
                 return "APIGatewayV2HTTPEvent.RequestContext.CognitoIdentity(amr=" + this.getAmr() + ", identityId=" + this.getIdentityId() + ", identityPoolId=" + this.getIdentityPoolId() + ")";
-            }
-
-            public CognitoIdentity() {
             }
 
             public static class CognitoIdentityBuilder {
@@ -925,25 +814,30 @@ public class APIGatewayV2HTTPEvent {
                 CognitoIdentityBuilder() {
                 }
 
+                @NonNull
                 public CognitoIdentityBuilder withAmr(List<String> amr) {
                     this.amr = amr;
                     return this;
                 }
 
+                @NonNull
                 public CognitoIdentityBuilder withIdentityId(String identityId) {
                     this.identityId = identityId;
                     return this;
                 }
 
+                @NonNull
                 public CognitoIdentityBuilder withIdentityPoolId(String identityPoolId) {
                     this.identityPoolId = identityPoolId;
                     return this;
                 }
 
+                @NonNull
                 public CognitoIdentity build() {
                     return new CognitoIdentity(this.amr, this.identityId, this.identityPoolId);
                 }
 
+                @NonNull
                 public String toString() {
                     return "APIGatewayV2HTTPEvent.RequestContext.CognitoIdentity.CognitoIdentityBuilder(amr=" + this.amr + ", identityId=" + this.identityId + ", identityPoolId=" + this.identityPoolId + ")";
                 }
@@ -952,263 +846,197 @@ public class APIGatewayV2HTTPEvent {
 
         @Serdeable
         public static class IAM {
+            @Nullable
             private String accessKey;
+
+            @Nullable
             private String accountId;
+
+            @Nullable
             private String callerId;
+
+            @Nullable
             private CognitoIdentity cognitoIdentity;
+
+            @Nullable
             private String principalOrgId;
+
+            @Nullable
             private String userArn;
+
+            @Nullable
             private String userId;
 
+            @Creator
+            public IAM(@Nullable String accessKey,
+                       @Nullable String accountId,
+                       @Nullable String callerId,
+                       @Nullable CognitoIdentity cognitoIdentity,
+                       @Nullable String principalOrgId,
+                       @Nullable String userArn,
+                       @Nullable String userId) {
+                this.accessKey = accessKey;
+                this.accountId = accountId;
+                this.callerId = callerId;
+                this.cognitoIdentity = cognitoIdentity;
+                this.principalOrgId = principalOrgId;
+                this.userArn = userArn;
+                this.userId = userId;
+            }
+
+            public IAM() {
+            }
+
+            @NonNull
             public static IAMBuilder builder() {
                 return new IAMBuilder();
             }
 
-            @Creator
-            public IAM(String accessKey, String accountId, String callerId, CognitoIdentity cognitoIdentity, String principalOrgId, String userArn, String userId) {
-                this.accessKey = accessKey;
-                this.accountId = accountId;
-                this.callerId = callerId;
-                this.cognitoIdentity = cognitoIdentity;
-                this.principalOrgId = principalOrgId;
-                this.userArn = userArn;
-                this.userId = userId;
-            }
-
+            @Nullable
             public String getAccessKey() {
                 return this.accessKey;
             }
 
+            @Nullable
             public String getAccountId() {
                 return this.accountId;
             }
 
+            @Nullable
             public String getCallerId() {
                 return this.callerId;
             }
 
+            @Nullable
             public CognitoIdentity getCognitoIdentity() {
                 return this.cognitoIdentity;
             }
 
+            @Nullable
             public String getPrincipalOrgId() {
                 return this.principalOrgId;
             }
 
+            @Nullable
             public String getUserArn() {
                 return this.userArn;
             }
 
+            @Nullable
             public String getUserId() {
                 return this.userId;
             }
 
-            public void setAccessKey(String accessKey) {
+            public void setAccessKey(@Nullable String accessKey) {
                 this.accessKey = accessKey;
             }
 
-            public void setAccountId(String accountId) {
+            public void setAccountId(@Nullable String accountId) {
                 this.accountId = accountId;
             }
 
-            public void setCallerId(String callerId) {
+            public void setCallerId(@Nullable String callerId) {
                 this.callerId = callerId;
             }
 
-            public void setCognitoIdentity(CognitoIdentity cognitoIdentity) {
+            public void setCognitoIdentity(@Nullable CognitoIdentity cognitoIdentity) {
                 this.cognitoIdentity = cognitoIdentity;
             }
 
-            public void setPrincipalOrgId(String principalOrgId) {
+            public void setPrincipalOrgId(@Nullable String principalOrgId) {
                 this.principalOrgId = principalOrgId;
             }
 
-            public void setUserArn(String userArn) {
+            public void setUserArn(@Nullable String userArn) {
                 this.userArn = userArn;
             }
 
-            public void setUserId(String userId) {
+            public void setUserId(@Nullable String userId) {
                 this.userId = userId;
-            }
-
-            public boolean equals(Object o) {
-                if (o == this) {
-                    return true;
-                } else if (!(o instanceof IAM)) {
-                    return false;
-                } else {
-                    IAM other = (IAM)o;
-                    if (!other.canEqual(this)) {
-                        return false;
-                    } else {
-                        label95: {
-                            Object this$accessKey = this.getAccessKey();
-                            Object other$accessKey = other.getAccessKey();
-                            if (this$accessKey == null) {
-                                if (other$accessKey == null) {
-                                    break label95;
-                                }
-                            } else if (this$accessKey.equals(other$accessKey)) {
-                                break label95;
-                            }
-
-                            return false;
-                        }
-
-                        Object this$accountId = this.getAccountId();
-                        Object other$accountId = other.getAccountId();
-                        if (this$accountId == null) {
-                            if (other$accountId != null) {
-                                return false;
-                            }
-                        } else if (!this$accountId.equals(other$accountId)) {
-                            return false;
-                        }
-
-                        Object this$callerId = this.getCallerId();
-                        Object other$callerId = other.getCallerId();
-                        if (this$callerId == null) {
-                            if (other$callerId != null) {
-                                return false;
-                            }
-                        } else if (!this$callerId.equals(other$callerId)) {
-                            return false;
-                        }
-
-                        label74: {
-                            Object this$cognitoIdentity = this.getCognitoIdentity();
-                            Object other$cognitoIdentity = other.getCognitoIdentity();
-                            if (this$cognitoIdentity == null) {
-                                if (other$cognitoIdentity == null) {
-                                    break label74;
-                                }
-                            } else if (this$cognitoIdentity.equals(other$cognitoIdentity)) {
-                                break label74;
-                            }
-
-                            return false;
-                        }
-
-                        label67: {
-                            Object this$principalOrgId = this.getPrincipalOrgId();
-                            Object other$principalOrgId = other.getPrincipalOrgId();
-                            if (this$principalOrgId == null) {
-                                if (other$principalOrgId == null) {
-                                    break label67;
-                                }
-                            } else if (this$principalOrgId.equals(other$principalOrgId)) {
-                                break label67;
-                            }
-
-                            return false;
-                        }
-
-                        Object this$userArn = this.getUserArn();
-                        Object other$userArn = other.getUserArn();
-                        if (this$userArn == null) {
-                            if (other$userArn != null) {
-                                return false;
-                            }
-                        } else if (!this$userArn.equals(other$userArn)) {
-                            return false;
-                        }
-
-                        Object this$userId = this.getUserId();
-                        Object other$userId = other.getUserId();
-                        if (this$userId == null) {
-                            if (other$userId != null) {
-                                return false;
-                            }
-                        } else if (!this$userId.equals(other$userId)) {
-                            return false;
-                        }
-
-                        return true;
-                    }
-                }
             }
 
             protected boolean canEqual(Object other) {
                 return other instanceof IAM;
             }
 
-            public int hashCode() {
-                int result = 1;
-                Object $accessKey = this.getAccessKey();
-                result = result * 59 + ($accessKey == null ? 43 : $accessKey.hashCode());
-                Object $accountId = this.getAccountId();
-                result = result * 59 + ($accountId == null ? 43 : $accountId.hashCode());
-                Object $callerId = this.getCallerId();
-                result = result * 59 + ($callerId == null ? 43 : $callerId.hashCode());
-                Object $cognitoIdentity = this.getCognitoIdentity();
-                result = result * 59 + ($cognitoIdentity == null ? 43 : $cognitoIdentity.hashCode());
-                Object $principalOrgId = this.getPrincipalOrgId();
-                result = result * 59 + ($principalOrgId == null ? 43 : $principalOrgId.hashCode());
-                Object $userArn = this.getUserArn();
-                result = result * 59 + ($userArn == null ? 43 : $userArn.hashCode());
-                Object $userId = this.getUserId();
-                result = result * 59 + ($userId == null ? 43 : $userId.hashCode());
-                return result;
-            }
-
+            @NonNull
             public String toString() {
                 return "APIGatewayV2HTTPEvent.RequestContext.IAM(accessKey=" + this.getAccessKey() + ", accountId=" + this.getAccountId() + ", callerId=" + this.getCallerId() + ", cognitoIdentity=" + this.getCognitoIdentity() + ", principalOrgId=" + this.getPrincipalOrgId() + ", userArn=" + this.getUserArn() + ", userId=" + this.getUserId() + ")";
             }
 
-            public IAM() {
-            }
-
             public static class IAMBuilder {
+
+                @Nullable
                 private String accessKey;
+
+                @Nullable
                 private String accountId;
+
+                @Nullable
                 private String callerId;
+
+                @Nullable
                 private CognitoIdentity cognitoIdentity;
+
+                @Nullable
                 private String principalOrgId;
+
+                @Nullable
                 private String userArn;
+
+                @Nullable
                 private String userId;
 
                 IAMBuilder() {
                 }
 
+                @NonNull
                 public IAMBuilder withAccessKey(String accessKey) {
                     this.accessKey = accessKey;
                     return this;
                 }
 
-                public IAMBuilder withAccountId(String accountId) {
+                @NonNull public IAMBuilder withAccountId(String accountId) {
                     this.accountId = accountId;
                     return this;
                 }
 
+                @NonNull
                 public IAMBuilder withCallerId(String callerId) {
                     this.callerId = callerId;
                     return this;
                 }
 
+                @NonNull
                 public IAMBuilder withCognitoIdentity(CognitoIdentity cognitoIdentity) {
                     this.cognitoIdentity = cognitoIdentity;
                     return this;
                 }
 
+                @NonNull
                 public IAMBuilder withPrincipalOrgId(String principalOrgId) {
                     this.principalOrgId = principalOrgId;
                     return this;
                 }
 
+                @NonNull
                 public IAMBuilder withUserArn(String userArn) {
                     this.userArn = userArn;
                     return this;
                 }
 
+                @NonNull
                 public IAMBuilder withUserId(String userId) {
                     this.userId = userId;
                     return this;
                 }
 
+                @NonNull
                 public IAM build() {
                     return new IAM(this.accessKey, this.accountId, this.callerId, this.cognitoIdentity, this.principalOrgId, this.userArn, this.userId);
                 }
 
+                @NonNull
                 public String toString() {
                     return "APIGatewayV2HTTPEvent.RequestContext.IAM.IAMBuilder(accessKey=" + this.accessKey + ", accountId=" + this.accountId + ", callerId=" + this.callerId + ", cognitoIdentity=" + this.cognitoIdentity + ", principalOrgId=" + this.principalOrgId + ", userArn=" + this.userArn + ", userId=" + this.userId + ")";
                 }
@@ -1217,15 +1045,21 @@ public class APIGatewayV2HTTPEvent {
 
         @Serdeable
         public static class Http {
-            private String method;
-            private String path;
-            private String protocol;
-            private String sourceIp;
-            private String userAgent;
 
-            public static HttpBuilder builder() {
-                return new HttpBuilder();
-            }
+            @Nullable
+            private String method;
+
+            @Nullable
+            private String path;
+
+            @Nullable
+            private String protocol;
+
+            @Nullable
+            private String sourceIp;
+
+            @Nullable
+            private String userAgent;
 
             @Creator
             public Http(String method, String path, String protocol, String sourceIp, String userAgent) {
@@ -1236,143 +1070,104 @@ public class APIGatewayV2HTTPEvent {
                 this.userAgent = userAgent;
             }
 
+            public Http() {
+            }
+
+            @NonNull
+            public static HttpBuilder builder() {
+                return new HttpBuilder();
+            }
+
+
+            @NonNull
             public String getMethod() {
                 return this.method;
             }
 
+            @NonNull
             public String getPath() {
                 return this.path;
             }
 
+            @NonNull
             public String getProtocol() {
                 return this.protocol;
             }
 
+            @NonNull
             public String getSourceIp() {
                 return this.sourceIp;
             }
 
+            @NonNull
             public String getUserAgent() {
                 return this.userAgent;
             }
 
-            public void setMethod(String method) {
+            public void setMethod(@NonNull String method) {
                 this.method = method;
             }
 
-            public void setPath(String path) {
+            public void setPath(@NonNull String path) {
                 this.path = path;
             }
 
-            public void setProtocol(String protocol) {
+            public void setProtocol(@NonNull String protocol) {
                 this.protocol = protocol;
             }
 
-            public void setSourceIp(String sourceIp) {
+            public void setSourceIp(@NonNull String sourceIp) {
                 this.sourceIp = sourceIp;
             }
 
-            public void setUserAgent(String userAgent) {
+            public void setUserAgent(@NonNull String userAgent) {
                 this.userAgent = userAgent;
             }
 
-            public boolean equals(Object o) {
-                if (o == this) {
-                    return true;
-                } else if (!(o instanceof Http)) {
-                    return false;
-                } else {
-                    Http other = (Http)o;
-                    if (!other.canEqual(this)) {
-                        return false;
-                    } else {
-                        label71: {
-                            Object this$method = this.getMethod();
-                            Object other$method = other.getMethod();
-                            if (this$method == null) {
-                                if (other$method == null) {
-                                    break label71;
-                                }
-                            } else if (this$method.equals(other$method)) {
-                                break label71;
-                            }
-
-                            return false;
-                        }
-
-                        Object this$path = this.getPath();
-                        Object other$path = other.getPath();
-                        if (this$path == null) {
-                            if (other$path != null) {
-                                return false;
-                            }
-                        } else if (!this$path.equals(other$path)) {
-                            return false;
-                        }
-
-                        label57: {
-                            Object this$protocol = this.getProtocol();
-                            Object other$protocol = other.getProtocol();
-                            if (this$protocol == null) {
-                                if (other$protocol == null) {
-                                    break label57;
-                                }
-                            } else if (this$protocol.equals(other$protocol)) {
-                                break label57;
-                            }
-
-                            return false;
-                        }
-
-                        Object this$sourceIp = this.getSourceIp();
-                        Object other$sourceIp = other.getSourceIp();
-                        if (this$sourceIp == null) {
-                            if (other$sourceIp != null) {
-                                return false;
-                            }
-                        } else if (!this$sourceIp.equals(other$sourceIp)) {
-                            return false;
-                        }
-
-                        Object this$userAgent = this.getUserAgent();
-                        Object other$userAgent = other.getUserAgent();
-                        if (this$userAgent == null) {
-                            if (other$userAgent == null) {
-                                return true;
-                            }
-                        } else if (this$userAgent.equals(other$userAgent)) {
-                            return true;
-                        }
-
-                        return false;
-                    }
-                }
-            }
 
             protected boolean canEqual(Object other) {
                 return other instanceof Http;
             }
 
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
+
+                Http http = (Http) o;
+
+                if (!Objects.equals(method, http.method)) {
+                    return false;
+                }
+                if (!Objects.equals(path, http.path)) {
+                    return false;
+                }
+                if (!Objects.equals(protocol, http.protocol)) {
+                    return false;
+                }
+                if (!Objects.equals(sourceIp, http.sourceIp)) {
+                    return false;
+                }
+                return Objects.equals(userAgent, http.userAgent);
+            }
+
+            @Override
             public int hashCode() {
-                int result = 1;
-                Object $method = this.getMethod();
-                result = result * 59 + ($method == null ? 43 : $method.hashCode());
-                Object $path = this.getPath();
-                result = result * 59 + ($path == null ? 43 : $path.hashCode());
-                Object $protocol = this.getProtocol();
-                result = result * 59 + ($protocol == null ? 43 : $protocol.hashCode());
-                Object $sourceIp = this.getSourceIp();
-                result = result * 59 + ($sourceIp == null ? 43 : $sourceIp.hashCode());
-                Object $userAgent = this.getUserAgent();
-                result = result * 59 + ($userAgent == null ? 43 : $userAgent.hashCode());
+                int result = method != null ? method.hashCode() : 0;
+                result = 31 * result + (path != null ? path.hashCode() : 0);
+                result = 31 * result + (protocol != null ? protocol.hashCode() : 0);
+                result = 31 * result + (sourceIp != null ? sourceIp.hashCode() : 0);
+                result = 31 * result + (userAgent != null ? userAgent.hashCode() : 0);
                 return result;
             }
 
+            @NonNull
             public String toString() {
                 return "APIGatewayV2HTTPEvent.RequestContext.Http(method=" + this.getMethod() + ", path=" + this.getPath() + ", protocol=" + this.getProtocol() + ", sourceIp=" + this.getSourceIp() + ", userAgent=" + this.getUserAgent() + ")";
-            }
-
-            public Http() {
             }
 
             public static class HttpBuilder {
@@ -1385,35 +1180,42 @@ public class APIGatewayV2HTTPEvent {
                 HttpBuilder() {
                 }
 
+                @NonNull
                 public HttpBuilder withMethod(String method) {
                     this.method = method;
                     return this;
                 }
 
+                @NonNull
                 public HttpBuilder withPath(String path) {
                     this.path = path;
                     return this;
                 }
 
+                @NonNull
                 public HttpBuilder withProtocol(String protocol) {
                     this.protocol = protocol;
                     return this;
                 }
 
+                @NonNull
                 public HttpBuilder withSourceIp(String sourceIp) {
                     this.sourceIp = sourceIp;
                     return this;
                 }
 
+                @NonNull
                 public HttpBuilder withUserAgent(String userAgent) {
                     this.userAgent = userAgent;
                     return this;
                 }
 
+                @NonNull
                 public Http build() {
                     return new Http(this.method, this.path, this.protocol, this.sourceIp, this.userAgent);
                 }
 
+                @NonNull
                 public String toString() {
                     return "APIGatewayV2HTTPEvent.RequestContext.Http.HttpBuilder(method=" + this.method + ", path=" + this.path + ", protocol=" + this.protocol + ", sourceIp=" + this.sourceIp + ", userAgent=" + this.userAgent + ")";
                 }
@@ -1422,13 +1224,12 @@ public class APIGatewayV2HTTPEvent {
 
         @Serdeable
         public static class Authorizer {
+            @Nullable
             private JWT jwt;
+            @Nullable
             private Map<String, Object> lambda;
+            @Nullable
             private IAM iam;
-
-            public static AuthorizerBuilder builder() {
-                return new AuthorizerBuilder();
-            }
 
             @Creator
             public Authorizer(JWT jwt, Map<String, Object> lambda, IAM iam) {
@@ -1437,99 +1238,69 @@ public class APIGatewayV2HTTPEvent {
                 this.iam = iam;
             }
 
+            public Authorizer() {
+            }
+
+            @NonNull
+            public static AuthorizerBuilder builder() {
+                return new AuthorizerBuilder();
+            }
+
+            @Nullable
             public JWT getJwt() {
                 return this.jwt;
             }
 
+            @Nullable
             public Map<String, Object> getLambda() {
                 return this.lambda;
             }
 
+            @Nullable
             public IAM getIam() {
                 return this.iam;
             }
 
-            public void setJwt(JWT jwt) {
+            public void setJwt(@Nullable JWT jwt) {
                 this.jwt = jwt;
             }
 
-            public void setLambda(Map<String, Object> lambda) {
+            public void setLambda(@Nullable Map<String, Object> lambda) {
                 this.lambda = lambda;
             }
 
-            public void setIam(IAM iam) {
+            public void setIam(@Nullable IAM iam) {
                 this.iam = iam;
             }
 
+            @Override
             public boolean equals(Object o) {
-                if (o == this) {
-                    return true;
-                } else if (!(o instanceof Authorizer)) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                Authorizer that = (Authorizer) o;
+
+                if (!Objects.equals(jwt, that.jwt)) return false;
+                if (!Objects.equals(lambda, that.lambda))
                     return false;
-                } else {
-                    Authorizer other = (Authorizer)o;
-                    if (!other.canEqual(this)) {
-                        return false;
-                    } else {
-                        label47: {
-                            Object this$jwt = this.getJwt();
-                            Object other$jwt = other.getJwt();
-                            if (this$jwt == null) {
-                                if (other$jwt == null) {
-                                    break label47;
-                                }
-                            } else if (this$jwt.equals(other$jwt)) {
-                                break label47;
-                            }
+                return Objects.equals(iam, that.iam);
+            }
 
-                            return false;
-                        }
-
-                        Object this$lambda = this.getLambda();
-                        Object other$lambda = other.getLambda();
-                        if (this$lambda == null) {
-                            if (other$lambda != null) {
-                                return false;
-                            }
-                        } else if (!this$lambda.equals(other$lambda)) {
-                            return false;
-                        }
-
-                        Object this$iam = this.getIam();
-                        Object other$iam = other.getIam();
-                        if (this$iam == null) {
-                            if (other$iam != null) {
-                                return false;
-                            }
-                        } else if (!this$iam.equals(other$iam)) {
-                            return false;
-                        }
-
-                        return true;
-                    }
-                }
+            @Override
+            public int hashCode() {
+                int result = jwt != null ? jwt.hashCode() : 0;
+                result = 31 * result + (lambda != null ? lambda.hashCode() : 0);
+                result = 31 * result + (iam != null ? iam.hashCode() : 0);
+                return result;
             }
 
             protected boolean canEqual(Object other) {
                 return other instanceof Authorizer;
             }
 
-            public int hashCode() {
-                int result = 1;
-                Object $jwt = this.getJwt();
-                result = result * 59 + ($jwt == null ? 43 : $jwt.hashCode());
-                Object $lambda = this.getLambda();
-                result = result * 59 + ($lambda == null ? 43 : $lambda.hashCode());
-                Object $iam = this.getIam();
-                result = result * 59 + ($iam == null ? 43 : $iam.hashCode());
-                return result;
-            }
-
+            @NonNull
             public String toString() {
                 return "APIGatewayV2HTTPEvent.RequestContext.Authorizer(jwt=" + this.getJwt() + ", lambda=" + this.getLambda() + ", iam=" + this.getIam() + ")";
-            }
-
-            public Authorizer() {
             }
 
             public static class AuthorizerBuilder {
@@ -1540,25 +1311,30 @@ public class APIGatewayV2HTTPEvent {
                 AuthorizerBuilder() {
                 }
 
-                public AuthorizerBuilder withJwt(JWT jwt) {
+                @NonNull
+                public AuthorizerBuilder withJwt(@Nullable JWT jwt) {
                     this.jwt = jwt;
                     return this;
                 }
 
-                public AuthorizerBuilder withLambda(Map<String, Object> lambda) {
+                @NonNull
+                public AuthorizerBuilder withLambda(@Nullable Map<String, Object> lambda) {
                     this.lambda = lambda;
                     return this;
                 }
 
-                public AuthorizerBuilder withIam(IAM iam) {
+                @NonNull
+                public AuthorizerBuilder withIam(@Nullable IAM iam) {
                     this.iam = iam;
                     return this;
                 }
 
+                @NonNull
                 public Authorizer build() {
                     return new Authorizer(this.jwt, this.lambda, this.iam);
                 }
 
+                @NonNull
                 public String toString() {
                     return "APIGatewayV2HTTPEvent.RequestContext.Authorizer.AuthorizerBuilder(jwt=" + this.jwt + ", lambda=" + this.lambda + ", iam=" + this.iam + ")";
                 }
@@ -1566,111 +1342,105 @@ public class APIGatewayV2HTTPEvent {
 
             @Serdeable
             public static class JWT {
+                @Nullable
                 private Map<String, String> claims;
+
+                @Nullable
                 private List<String> scopes;
 
+                @NonNull
                 public static JWTBuilder builder() {
                     return new JWTBuilder();
                 }
 
                 @Creator
-                public JWT(Map<String, String> claims, List<String> scopes) {
+                public JWT(@Nullable Map<String, String> claims, @Nullable List<String> scopes) {
                     this.claims = claims;
                     this.scopes = scopes;
                 }
 
+                public JWT() {
+                }
+
+                @Nullable
                 public Map<String, String> getClaims() {
                     return this.claims;
                 }
 
+                @Nullable
                 public List<String> getScopes() {
                     return this.scopes;
                 }
 
-                public void setClaims(Map<String, String> claims) {
+                public void setClaims(@Nullable Map<String, String> claims) {
                     this.claims = claims;
                 }
 
-                public void setScopes(List<String> scopes) {
+                public void setScopes(@Nullable List<String> scopes) {
                     this.scopes = scopes;
-                }
-
-                public boolean equals(Object o) {
-                    if (o == this) {
-                        return true;
-                    } else if (!(o instanceof JWT)) {
-                        return false;
-                    } else {
-                        JWT other = (JWT)o;
-                        if (!other.canEqual(this)) {
-                            return false;
-                        } else {
-                            Object this$claims = this.getClaims();
-                            Object other$claims = other.getClaims();
-                            if (this$claims == null) {
-                                if (other$claims != null) {
-                                    return false;
-                                }
-                            } else if (!this$claims.equals(other$claims)) {
-                                return false;
-                            }
-
-                            Object this$scopes = this.getScopes();
-                            Object other$scopes = other.getScopes();
-                            if (this$scopes == null) {
-                                if (other$scopes != null) {
-                                    return false;
-                                }
-                            } else if (!this$scopes.equals(other$scopes)) {
-                                return false;
-                            }
-
-                            return true;
-                        }
-                    }
                 }
 
                 protected boolean canEqual(Object other) {
                     return other instanceof JWT;
                 }
 
+                @Override
+                public boolean equals(Object o) {
+                    if (this == o) {
+                        return true;
+                    }
+                    if (o == null || getClass() != o.getClass()) {
+                        return false;
+                    }
+
+                    JWT jwt = (JWT) o;
+
+                    if (!Objects.equals(claims, jwt.claims)) {
+                        return false;
+                    }
+                    return Objects.equals(scopes, jwt.scopes);
+                }
+
+                @Override
                 public int hashCode() {
-                    int result = 1;
-                    Object $claims = this.getClaims();
-                    result = result * 59 + ($claims == null ? 43 : $claims.hashCode());
-                    Object $scopes = this.getScopes();
-                    result = result * 59 + ($scopes == null ? 43 : $scopes.hashCode());
+                    int result = claims != null ? claims.hashCode() : 0;
+                    result = 31 * result + (scopes != null ? scopes.hashCode() : 0);
                     return result;
                 }
 
+                @NonNull
                 public String toString() {
                     return "APIGatewayV2HTTPEvent.RequestContext.Authorizer.JWT(claims=" + this.getClaims() + ", scopes=" + this.getScopes() + ")";
                 }
 
-                public JWT() {
-                }
-
                 public static class JWTBuilder {
+                    @Nullable
                     private Map<String, String> claims;
+
+                    @Nullable
                     private List<String> scopes;
 
                     JWTBuilder() {
                     }
 
-                    public JWTBuilder withClaims(Map<String, String> claims) {
+                    @NonNull
+                    public JWTBuilder withClaims(@Nullable Map<String, String> claims) {
                         this.claims = claims;
                         return this;
                     }
 
-                    public JWTBuilder withScopes(List<String> scopes) {
+                    @NonNull
+                    public JWTBuilder withScopes(@Nullable List<String> scopes) {
                         this.scopes = scopes;
                         return this;
                     }
 
+                    @NonNull
                     public JWT build() {
                         return new JWT(this.claims, this.scopes);
                     }
 
+                    @NonNull
                     public String toString() {
                         return "APIGatewayV2HTTPEvent.RequestContext.Authorizer.JWT.JWTBuilder(claims=" + this.claims + ", scopes=" + this.scopes + ")";
                     }

@@ -15,8 +15,8 @@
  */
 package io.micronaut.function.aws.proxy.alb;
 
-import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
+import io.micronaut.aws.lambda.events.ApplicationLoadBalancerRequestEvent;
+import io.micronaut.aws.lambda.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;

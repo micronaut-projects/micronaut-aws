@@ -1,8 +1,8 @@
 package io.micronaut.function.aws.runtime
 
 import com.amazonaws.services.lambda.runtime.Context
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
+import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent
+import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanProvider
 import io.micronaut.context.annotation.Any
@@ -16,7 +16,6 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Produces
 import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 

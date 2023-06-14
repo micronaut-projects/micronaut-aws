@@ -1,8 +1,8 @@
 package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
+import io.micronaut.aws.lambda.events.ApplicationLoadBalancerRequestEvent;
+import io.micronaut.aws.lambda.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.convert.ConversionService;

@@ -12,4 +12,5 @@ dependencies {
     testImplementation(libs.testcontainers.mongodb)
     testImplementation(libs.testcontainers)
     testImplementation(projects.micronautAwsLambdaEventsSerde)
+    testImplementation(mnSerde.micronaut.serde.jackson)
 }

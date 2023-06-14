@@ -15,7 +15,7 @@
  */
 package io.micronaut.http.server.tck.lambda;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.function.aws.proxy.test.BodyUtils;
 import io.micronaut.http.HttpHeaders;

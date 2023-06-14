@@ -19,11 +19,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaRuntime;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
+import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent;
+import io.micronaut.aws.lambda.events.APIGatewayV2HTTPResponse;
+import io.micronaut.aws.lambda.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -66,13 +66,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_CONSTRUCTORS;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_FIELDS;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_DECLARED_METHODS;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_CONSTRUCTORS;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_FIELDS;
-import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_METHODS;
 import static io.micronaut.http.HttpHeaders.USER_AGENT;
 
 /**
@@ -87,37 +80,7 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
  * @author sdelamo
  * @since 2.0.0
  */
-@TypeHint(
-        accessType = {
-            ALL_PUBLIC,
-            ALL_DECLARED_CONSTRUCTORS,
-            ALL_PUBLIC_CONSTRUCTORS,
-            ALL_DECLARED_METHODS,
-            ALL_DECLARED_FIELDS,
-            ALL_PUBLIC_METHODS,
-            ALL_PUBLIC_FIELDS
-        },
-        value = {
-            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CognitoEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ConfigEvent.class,
-            com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class,
-            com.amazonaws.services.lambda.runtime.events.LexEvent.class,
-            com.amazonaws.services.lambda.runtime.events.SNSEvent.class,
-            com.amazonaws.services.lambda.runtime.events.SQSEvent.class
-        }
-)
+
 @SuppressWarnings("java:S119") // More descriptive generics are better here
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
         implements ApplicationContextProvider, AwsLambdaRuntimeApi {
@@ -340,7 +303,17 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
             String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);
+        } else if (request instanceof io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+            log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent");
+            String content = apiGatewayProxyRequestEvent.getBody();
+            return valueFromContent(content, handlerRequestType);
+        } else if (request instanceof io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {
+            log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
+            String content = apiGatewayV2HTTPEvent.getBody();
+            return valueFromContent(content, handlerRequestType);
         }
+
+
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
         return null;
     }
