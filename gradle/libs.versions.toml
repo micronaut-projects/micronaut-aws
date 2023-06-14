@@ -39,7 +39,7 @@ javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "22.3.2"
+graal = "23.0.0"
 kotlin = "1.8.21"
 
 # Micronaut
