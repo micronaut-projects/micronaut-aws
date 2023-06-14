@@ -16,13 +16,18 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.order.OrderUtil;
 import io.micronaut.core.type.Argument;
 import io.micronaut.json.JsonMapper;
+import io.micronaut.json.JsonMapperSupplier;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
+import java.util.ServiceLoader;
+import java.util.stream.Stream;
 
 /**
  * Provides an implementation of {@link CustomPojoSerializer} which is loaded via SPI. This implementation avoids paying a double hit on performance when using a serialization library inside the Lambda function.
@@ -33,8 +38,32 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
     private JsonMapper jsonMapper;
 
     public JsonMapperCustomPojoSerializer() {
-        this.jsonMapper = JsonMapper.createDefault();
+        this.jsonMapper = createDefault();
     }
+
+    // https://github.com/micronaut-projects/micronaut-core/pull/9445
+    private @NonNull JsonMapper createDefault() {
+        return ServiceLoader.load(JsonMapperSupplier.class).stream()
+            .flatMap(p -> {
+                try {
+                    JsonMapperSupplier supplier = p.get();
+                    return Stream.ofNullable(supplier);
+                } catch (Exception e) {
+                    return Stream.empty();
+                }
+            })
+            .sorted(OrderUtil.COMPARATOR)
+            .flatMap(jsonMapperSupplier -> {
+                try {
+                    return Stream.of(jsonMapperSupplier.get());
+                } catch(Exception e) {
+                    return Stream.empty();
+                }
+            })
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("No JsonMapper implementation found"));
+    }
+
 
     @Override
     public <T> T fromJson(InputStream input, Type type) {
