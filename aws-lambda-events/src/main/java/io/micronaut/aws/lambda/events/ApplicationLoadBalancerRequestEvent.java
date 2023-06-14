@@ -31,6 +31,10 @@ import java.util.Objects;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@SuppressWarnings({
+    "checkstyle:MissingJavadocType",
+    "checkstyle:DesignForExtension"
+})
 @Serdeable
 public class ApplicationLoadBalancerRequestEvent implements Serializable, Cloneable {
     @Nullable
@@ -88,7 +92,6 @@ public class ApplicationLoadBalancerRequestEvent implements Serializable, Clonea
     public Map<String, String> getHeaders() {
         return this.headers;
     }
-
 
     @Nullable
     public Map<String, List<String>> getMultiValueHeaders() {
@@ -238,6 +241,7 @@ public class ApplicationLoadBalancerRequestEvent implements Serializable, Clonea
         protected boolean canEqual(Object other) {
             return other instanceof RequestContext;
         }
+
         @NonNull
         public String toString() {
             return "ApplicationLoadBalancerRequestEvent.RequestContext(elb=" + this.getElb() + ")";
@@ -257,6 +261,7 @@ public class ApplicationLoadBalancerRequestEvent implements Serializable, Clonea
         public void setTargetGroupArn(@Nullable String targetGroupArn) {
             this.targetGroupArn = targetGroupArn;
         }
+
         protected boolean canEqual(Object other) {
             return other instanceof Elb;
         }

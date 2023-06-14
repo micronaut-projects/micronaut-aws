@@ -31,6 +31,10 @@ import java.util.Objects;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@SuppressWarnings({
+    "checkstyle:MissingJavadocType",
+    "checkstyle:DesignForExtension"
+})
 @Serdeable
 public class APIGatewayV2HTTPResponse {
     private int statusCode;

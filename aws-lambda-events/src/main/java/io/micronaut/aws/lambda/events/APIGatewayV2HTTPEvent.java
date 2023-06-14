@@ -31,6 +31,10 @@ import java.util.Objects;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@SuppressWarnings({
+    "checkstyle:MissingJavadocType",
+    "checkstyle:DesignForExtension"
+})
 @Serdeable
 public class APIGatewayV2HTTPEvent {
     @Nullable
@@ -68,6 +72,9 @@ public class APIGatewayV2HTTPEvent {
     @Nullable
     private RequestContext requestContext;
 
+    public APIGatewayV2HTTPEvent() {
+    }
+
     @Creator
     public APIGatewayV2HTTPEvent(@Nullable String version,
                                  @Nullable String routeKey,
@@ -95,14 +102,10 @@ public class APIGatewayV2HTTPEvent {
         this.requestContext = requestContext;
     }
 
-    public APIGatewayV2HTTPEvent() {
-    }
-
     @NonNull
     public static APIGatewayV2HTTPEventBuilder builder() {
         return new APIGatewayV2HTTPEventBuilder();
     }
-
 
     @Nullable
     public String getVersion() {
@@ -285,12 +288,25 @@ public class APIGatewayV2HTTPEvent {
     }
 
     public static class APIGatewayV2HTTPEventBuilder {
+        @Nullable
         private String version;
+
+        @Nullable
         private String routeKey;
+
+        @Nullable
         private String rawPath;
+
+        @Nullable
         private String rawQueryString;
+
+        @Nullable
         private List<String> cookies;
+
+        @Nullable
         private Map<String, String> headers;
+
+        @Nullable
         private Map<String, String> queryStringParameters;
 
         @Nullable
@@ -300,65 +316,62 @@ public class APIGatewayV2HTTPEvent {
         private boolean isBase64Encoded;
         private RequestContext requestContext;
 
-        APIGatewayV2HTTPEventBuilder() {
-        }
-
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withVersion(String version) {
+        public APIGatewayV2HTTPEventBuilder withVersion(@Nullable String version) {
             this.version = version;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withRouteKey(String routeKey) {
+        public APIGatewayV2HTTPEventBuilder withRouteKey(@Nullable String routeKey) {
             this.routeKey = routeKey;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withRawPath(String rawPath) {
+        public APIGatewayV2HTTPEventBuilder withRawPath(@Nullable String rawPath) {
             this.rawPath = rawPath;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withRawQueryString(String rawQueryString) {
+        public APIGatewayV2HTTPEventBuilder withRawQueryString(@Nullable String rawQueryString) {
             this.rawQueryString = rawQueryString;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withCookies(List<String> cookies) {
+        public APIGatewayV2HTTPEventBuilder withCookies(@Nullable List<String> cookies) {
             this.cookies = cookies;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withHeaders(Map<String, String> headers) {
+        public APIGatewayV2HTTPEventBuilder withHeaders(@Nullable Map<String, String> headers) {
             this.headers = headers;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withQueryStringParameters(Map<String, String> queryStringParameters) {
+        public APIGatewayV2HTTPEventBuilder withQueryStringParameters(@Nullable Map<String, String> queryStringParameters) {
             this.queryStringParameters = queryStringParameters;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withPathParameters(Map<String, String> pathParameters) {
+        public APIGatewayV2HTTPEventBuilder withPathParameters(@Nullable Map<String, String> pathParameters) {
             this.pathParameters = pathParameters;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withStageVariables(Map<String, String> stageVariables) {
+        public APIGatewayV2HTTPEventBuilder withStageVariables(@Nullable Map<String, String> stageVariables) {
             this.stageVariables = stageVariables;
             return this;
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withBody(String body) {
+        public APIGatewayV2HTTPEventBuilder withBody(@Nullable String body) {
             this.body = body;
             return this;
         }
@@ -370,7 +383,7 @@ public class APIGatewayV2HTTPEvent {
         }
 
         @NonNull
-        public APIGatewayV2HTTPEventBuilder withRequestContext(RequestContext requestContext) {
+        public APIGatewayV2HTTPEventBuilder withRequestContext(@Nullable RequestContext requestContext) {
             this.requestContext = requestContext;
             return this;
         }
@@ -421,9 +434,7 @@ public class APIGatewayV2HTTPEvent {
         @Nullable
         private String requestId;
 
-        @NonNull
-        public static RequestContextBuilder builder() {
-            return new RequestContextBuilder();
+        public RequestContext() {
         }
 
         @Creator
@@ -451,7 +462,9 @@ public class APIGatewayV2HTTPEvent {
             this.requestId = requestId;
         }
 
-        public RequestContext() {
+        @NonNull
+        public static RequestContextBuilder builder() {
+            return new RequestContextBuilder();
         }
 
         @Nullable
@@ -623,77 +636,94 @@ public class APIGatewayV2HTTPEvent {
         }
 
         public static class RequestContextBuilder {
+            @Nullable
             private String routeKey;
+
+            @Nullable
             private String accountId;
+
+            @Nullable
             private String stage;
+
+            @Nullable
             private String apiId;
+
+            @Nullable
             private String domainName;
+
+            @Nullable
             private String domainPrefix;
+
+            @Nullable
             private String time;
+
             private long timeEpoch;
+
+            @Nullable
             private Http http;
+
+            @Nullable
             private Authorizer authorizer;
+
+            @Nullable
             private String requestId;
 
-            RequestContextBuilder() {
-            }
-
             @NonNull
-            public RequestContextBuilder withRouteKey(String routeKey) {
+            public RequestContextBuilder withRouteKey(@Nullable String routeKey) {
                 this.routeKey = routeKey;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withAccountId(String accountId) {
+            public RequestContextBuilder withAccountId(@Nullable String accountId) {
                 this.accountId = accountId;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withStage(String stage) {
+            public RequestContextBuilder withStage(@Nullable String stage) {
                 this.stage = stage;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withApiId(String apiId) {
+            public RequestContextBuilder withApiId(@Nullable String apiId) {
                 this.apiId = apiId;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withDomainName(String domainName) {
+            public RequestContextBuilder withDomainName(@Nullable String domainName) {
                 this.domainName = domainName;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withDomainPrefix(String domainPrefix) {
+            public RequestContextBuilder withDomainPrefix(@Nullable String domainPrefix) {
                 this.domainPrefix = domainPrefix;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withTime(String time) {
+            public RequestContextBuilder withTime(@Nullable String time) {
                 this.time = time;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withTimeEpoch(long timeEpoch) {
+            public RequestContextBuilder withTimeEpoch(@Nullable long timeEpoch) {
                 this.timeEpoch = timeEpoch;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withHttp(Http http) {
+            public RequestContextBuilder withHttp(@Nullable Http http) {
                 this.http = http;
                 return this;
             }
 
             @NonNull
-            public RequestContextBuilder withAuthorizer(Authorizer authorizer) {
+            public RequestContextBuilder withAuthorizer(@Nullable Authorizer authorizer) {
                 this.authorizer = authorizer;
                 return this;
             }
@@ -726,9 +756,7 @@ public class APIGatewayV2HTTPEvent {
             @Nullable
             private String identityPoolId;
 
-            @NonNull
-            public static CognitoIdentityBuilder builder() {
-                return new CognitoIdentityBuilder();
+            public CognitoIdentity() {
             }
 
             @Creator
@@ -740,7 +768,9 @@ public class APIGatewayV2HTTPEvent {
                 this.identityPoolId = identityPoolId;
             }
 
-            public CognitoIdentity() {
+            @NonNull
+            public static CognitoIdentityBuilder builder() {
+                return new CognitoIdentityBuilder();
             }
 
             @Nullable public List<String> getAmr() {
@@ -807,27 +837,29 @@ public class APIGatewayV2HTTPEvent {
             }
 
             public static class CognitoIdentityBuilder {
+                @Nullable
                 private List<String> amr;
+
+                @Nullable
                 private String identityId;
+
+                @Nullable
                 private String identityPoolId;
 
-                CognitoIdentityBuilder() {
-                }
-
                 @NonNull
-                public CognitoIdentityBuilder withAmr(List<String> amr) {
+                public CognitoIdentityBuilder withAmr(@Nullable List<String> amr) {
                     this.amr = amr;
                     return this;
                 }
 
                 @NonNull
-                public CognitoIdentityBuilder withIdentityId(String identityId) {
+                public CognitoIdentityBuilder withIdentityId(@Nullable String identityId) {
                     this.identityId = identityId;
                     return this;
                 }
 
                 @NonNull
-                public CognitoIdentityBuilder withIdentityPoolId(String identityPoolId) {
+                public CognitoIdentityBuilder withIdentityPoolId(@Nullable String identityPoolId) {
                     this.identityPoolId = identityPoolId;
                     return this;
                 }
@@ -867,6 +899,9 @@ public class APIGatewayV2HTTPEvent {
             @Nullable
             private String userId;
 
+            public IAM() {
+            }
+
             @Creator
             public IAM(@Nullable String accessKey,
                        @Nullable String accountId,
@@ -882,9 +917,6 @@ public class APIGatewayV2HTTPEvent {
                 this.principalOrgId = principalOrgId;
                 this.userArn = userArn;
                 this.userId = userId;
-            }
-
-            public IAM() {
             }
 
             @NonNull
@@ -987,46 +1019,43 @@ public class APIGatewayV2HTTPEvent {
                 @Nullable
                 private String userId;
 
-                IAMBuilder() {
-                }
-
                 @NonNull
-                public IAMBuilder withAccessKey(String accessKey) {
+                public IAMBuilder withAccessKey(@Nullable String accessKey) {
                     this.accessKey = accessKey;
                     return this;
                 }
 
-                @NonNull public IAMBuilder withAccountId(String accountId) {
+                @NonNull public IAMBuilder withAccountId(@Nullable String accountId) {
                     this.accountId = accountId;
                     return this;
                 }
 
                 @NonNull
-                public IAMBuilder withCallerId(String callerId) {
+                public IAMBuilder withCallerId(@Nullable String callerId) {
                     this.callerId = callerId;
                     return this;
                 }
 
                 @NonNull
-                public IAMBuilder withCognitoIdentity(CognitoIdentity cognitoIdentity) {
+                public IAMBuilder withCognitoIdentity(@Nullable CognitoIdentity cognitoIdentity) {
                     this.cognitoIdentity = cognitoIdentity;
                     return this;
                 }
 
                 @NonNull
-                public IAMBuilder withPrincipalOrgId(String principalOrgId) {
+                public IAMBuilder withPrincipalOrgId(@Nullable String principalOrgId) {
                     this.principalOrgId = principalOrgId;
                     return this;
                 }
 
                 @NonNull
-                public IAMBuilder withUserArn(String userArn) {
+                public IAMBuilder withUserArn(@Nullable String userArn) {
                     this.userArn = userArn;
                     return this;
                 }
 
                 @NonNull
-                public IAMBuilder withUserId(String userId) {
+                public IAMBuilder withUserId(@Nullable String userId) {
                     this.userId = userId;
                     return this;
                 }
@@ -1061,8 +1090,15 @@ public class APIGatewayV2HTTPEvent {
             @Nullable
             private String userAgent;
 
+            public Http() {
+            }
+
             @Creator
-            public Http(String method, String path, String protocol, String sourceIp, String userAgent) {
+            public Http(@Nullable String method,
+                        @Nullable String path,
+                        @Nullable String protocol,
+                        @Nullable String sourceIp,
+                        @Nullable String userAgent) {
                 this.method = method;
                 this.path = path;
                 this.protocol = protocol;
@@ -1070,14 +1106,10 @@ public class APIGatewayV2HTTPEvent {
                 this.userAgent = userAgent;
             }
 
-            public Http() {
-            }
-
             @NonNull
             public static HttpBuilder builder() {
                 return new HttpBuilder();
             }
-
 
             @NonNull
             public String getMethod() {
@@ -1123,7 +1155,6 @@ public class APIGatewayV2HTTPEvent {
             public void setUserAgent(@NonNull String userAgent) {
                 this.userAgent = userAgent;
             }
-
 
             protected boolean canEqual(Object other) {
                 return other instanceof Http;
@@ -1171,41 +1202,47 @@ public class APIGatewayV2HTTPEvent {
             }
 
             public static class HttpBuilder {
+                @Nullable
                 private String method;
+
+                @Nullable
                 private String path;
+
+                @Nullable
                 private String protocol;
+
+                @Nullable
                 private String sourceIp;
+
+                @Nullable
                 private String userAgent;
 
-                HttpBuilder() {
-                }
-
                 @NonNull
-                public HttpBuilder withMethod(String method) {
+                public HttpBuilder withMethod(@Nullable String method) {
                     this.method = method;
                     return this;
                 }
 
                 @NonNull
-                public HttpBuilder withPath(String path) {
+                public HttpBuilder withPath(@Nullable String path) {
                     this.path = path;
                     return this;
                 }
 
                 @NonNull
-                public HttpBuilder withProtocol(String protocol) {
+                public HttpBuilder withProtocol(@Nullable String protocol) {
                     this.protocol = protocol;
                     return this;
                 }
 
                 @NonNull
-                public HttpBuilder withSourceIp(String sourceIp) {
+                public HttpBuilder withSourceIp(@Nullable String sourceIp) {
                     this.sourceIp = sourceIp;
                     return this;
                 }
 
                 @NonNull
-                public HttpBuilder withUserAgent(String userAgent) {
+                public HttpBuilder withUserAgent(@Nullable String userAgent) {
                     this.userAgent = userAgent;
                     return this;
                 }
@@ -1231,14 +1268,16 @@ public class APIGatewayV2HTTPEvent {
             @Nullable
             private IAM iam;
 
+            public Authorizer() {
+            }
+
             @Creator
-            public Authorizer(JWT jwt, Map<String, Object> lambda, IAM iam) {
+            public Authorizer(@Nullable JWT jwt,
+                              @Nullable Map<String, Object> lambda,
+                              @Nullable IAM iam) {
                 this.jwt = jwt;
                 this.lambda = lambda;
                 this.iam = iam;
-            }
-
-            public Authorizer() {
             }
 
             @NonNull
@@ -1275,14 +1314,21 @@ public class APIGatewayV2HTTPEvent {
 
             @Override
             public boolean equals(Object o) {
-                if (this == o) return true;
-                if (o == null || getClass() != o.getClass()) return false;
+                if (this == o) {
+                    return true;
+                }
+                if (o == null || getClass() != o.getClass()) {
+                    return false;
+                }
 
                 Authorizer that = (Authorizer) o;
 
-                if (!Objects.equals(jwt, that.jwt)) return false;
-                if (!Objects.equals(lambda, that.lambda))
+                if (!Objects.equals(jwt, that.jwt)) {
                     return false;
+                }
+                if (!Objects.equals(lambda, that.lambda)) {
+                    return false;
+                }
                 return Objects.equals(iam, that.iam);
             }
 
@@ -1304,12 +1350,14 @@ public class APIGatewayV2HTTPEvent {
             }
 
             public static class AuthorizerBuilder {
+                @Nullable
                 private JWT jwt;
-                private Map<String, Object> lambda;
-                private IAM iam;
 
-                AuthorizerBuilder() {
-                }
+                @Nullable
+                private Map<String, Object> lambda;
+
+                @Nullable
+                private IAM iam;
 
                 @NonNull
                 public AuthorizerBuilder withJwt(@Nullable JWT jwt) {
@@ -1348,11 +1396,6 @@ public class APIGatewayV2HTTPEvent {
                 @Nullable
                 private List<String> scopes;
 
-                @NonNull
-                public static JWTBuilder builder() {
-                    return new JWTBuilder();
-                }
-
                 @Creator
                 public JWT(@Nullable Map<String, String> claims, @Nullable List<String> scopes) {
                     this.claims = claims;
@@ -1360,6 +1403,11 @@ public class APIGatewayV2HTTPEvent {
                 }
 
                 public JWT() {
+                }
+
+                @NonNull
+                public static JWTBuilder builder() {
+                    return new JWTBuilder();
                 }
 
                 @Nullable
@@ -1419,9 +1467,6 @@ public class APIGatewayV2HTTPEvent {
 
                     @Nullable
                     private List<String> scopes;
-
-                    JWTBuilder() {
-                    }
 
                     @NonNull
                     public JWTBuilder withClaims(@Nullable Map<String, String> claims) {

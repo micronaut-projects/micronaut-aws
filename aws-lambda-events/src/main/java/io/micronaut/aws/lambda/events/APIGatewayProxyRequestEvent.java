@@ -31,6 +31,10 @@ import java.util.Objects;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@SuppressWarnings({
+    "checkstyle:MissingJavadocType",
+    "checkstyle:DesignForExtension"
+})
 @Serdeable
 public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
 
@@ -76,7 +80,463 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
     private Boolean isBase64Encoded;
 
     /**
-     * class that represents proxy request context
+     * @return The payload format version
+     */
+    @Nullable
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version The payload format version
+     */
+    public void setVersion(@Nullable String version) {
+        this.version = version;
+    }
+
+    /**
+     * @param version The payload format version
+     * @return the APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withVersion(@Nullable String version) {
+        this.setVersion(version);
+        return this;
+    }
+
+    /**
+     * @return The resource path defined in API Gateway
+     */
+    @Nullable
+    public String getResource() {
+        return resource;
+    }
+
+    /**
+     * @param resource The resource path defined in API Gateway
+     */
+    public void setResource(@Nullable String resource) {
+        this.resource = resource;
+    }
+
+    /**
+     * @param resource The resource path defined in API Gateway
+     * @return the APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withResource(@Nullable String resource) {
+        this.setResource(resource);
+        return this;
+    }
+
+    /**
+     * @return The url path for the caller
+     */
+    @Nullable
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path The url path for the caller
+     */
+    public void setPath(@Nullable String path) {
+        this.path = path;
+    }
+
+    /**
+     * @param path The url path for the caller
+     * @return APIGatewayProxyRequestEvent object
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withPath(@Nullable String path) {
+        this.setPath(path);
+        return this;
+    }
+
+    /**
+     * @return The HTTP method used
+     */
+    @Nullable
+    public String getHttpMethod() {
+        return httpMethod;
+    }
+
+    /**
+     * @param httpMethod The HTTP method used
+     */
+    public void setHttpMethod(@Nullable String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
+
+    /**
+     * @param httpMethod The HTTP method used
+     * @return APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withHttpMethod(@Nullable String httpMethod) {
+        this.setHttpMethod(httpMethod);
+        return this;
+    }
+
+    /**
+     * @return The headers sent with the request
+     */
+    @Nullable
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    /**
+     * @param headers The headers sent with the request
+     */
+    public void setHeaders(@Nullable Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    /**
+     * @param headers The headers sent with the request
+     * @return APIGatewayProxyRequestEvent object
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withHeaders(@Nullable Map<String, String> headers) {
+        this.setHeaders(headers);
+        return this;
+    }
+
+    /**
+     * @return The multi value headers sent with the request
+     */
+    @Nullable
+    public Map<String, List<String>> getMultiValueHeaders() {
+        return multiValueHeaders;
+    }
+
+    /**
+     * @param multiValueHeaders The multi value headers sent with the request
+     */
+    public void setMultiValueHeaders(@Nullable Map<String, List<String>> multiValueHeaders) {
+        this.multiValueHeaders = multiValueHeaders;
+    }
+
+    /**
+     * @param multiValueHeaders The multi value headers sent with the request
+     * @return APIGatewayProxyRequestEvent object
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withMultiValueHeaders(@Nullable Map<String, List<String>> multiValueHeaders) {
+        this.setMultiValueHeaders(multiValueHeaders);
+        return this;
+    }
+
+    /**
+     * @return The query string parameters that were part of the request
+     */
+    @Nullable
+    public Map<String, String> getQueryStringParameters() {
+        return queryStringParameters;
+    }
+
+    /**
+     * @param queryStringParameters The query string parameters that were part of the request
+     */
+    public void setQueryStringParameters(@Nullable Map<String, String> queryStringParameters) {
+        this.queryStringParameters = queryStringParameters;
+    }
+
+    /**
+     * @param queryStringParameters The query string parameters that were part of the request
+     * @return APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withQueryStringParameters(@Nullable Map<String, String> queryStringParameters) {
+        this.setQueryStringParameters(queryStringParameters);
+        return this;
+    }
+
+    /**
+     * @return The multi value query string parameters that were part of the request
+     */
+    @Nullable
+    public Map<String, List<String>> getMultiValueQueryStringParameters() {
+        return multiValueQueryStringParameters;
+    }
+
+    /**
+     * @param multiValueQueryStringParameters The multi value query string parameters that were part of the request
+     */
+    public void setMultiValueQueryStringParameters(@Nullable Map<String, List<String>> multiValueQueryStringParameters) {
+        this.multiValueQueryStringParameters = multiValueQueryStringParameters;
+    }
+
+    /**
+     * @param multiValueQueryStringParameters The multi value query string parameters that were part of the request
+     * @return APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withMultiValueQueryStringParameters(@Nullable Map<String, List<String>> multiValueQueryStringParameters) {
+        this.setMultiValueQueryStringParameters(multiValueQueryStringParameters);
+        return this;
+    }
+
+    /**
+     * @return The path parameters that were part of the request
+     */
+    @Nullable
+    public Map<String, String> getPathParameters() {
+        return pathParameters;
+    }
+
+    /**
+     * @param pathParameters The path parameters that were part of the request
+     */
+    public void setPathParameters(@Nullable Map<String, String> pathParameters) {
+        this.pathParameters = pathParameters;
+    }
+
+    /**
+     * @param pathParameters The path parameters that were part of the request
+     * @return APIGatewayProxyRequestEvent object
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withPathParameters(@Nullable Map<String, String> pathParameters) {
+        this.setPathParameters(pathParameters);
+        return this;
+    }
+
+    /**
+     * @return The stage variables defined for the stage in API Gateway
+     */
+    @Nullable
+    public Map<String, String> getStageVariables() {
+        return stageVariables;
+    }
+
+    /**
+     * @param stageVariables The stage variables defined for the stage in API Gateway
+     */
+    public void setStageVariables(@Nullable Map<String, String> stageVariables) {
+        this.stageVariables = stageVariables;
+    }
+
+    /**
+     * @param stageVariables The stage variables defined for the stage in API Gateway
+     * @return APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withStageVariables(@Nullable Map<String, String> stageVariables) {
+        this.setStageVariables(stageVariables);
+        return this;
+    }
+
+    /**
+     * @return The request context for the request
+     */
+    @Nullable
+    public ProxyRequestContext getRequestContext() {
+        return requestContext;
+    }
+
+    /**
+     * @param requestContext The request context for the request
+     */
+    public void setRequestContext(@Nullable ProxyRequestContext requestContext) {
+        this.requestContext = requestContext;
+    }
+
+    /**
+     * @param requestContext The request context for the request
+     * @return APIGatewayProxyRequestEvent object
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withRequestContext(@Nullable ProxyRequestContext requestContext) {
+        this.setRequestContext(requestContext);
+        return this;
+    }
+
+    /**
+     * @return The HTTP request body.
+     */
+    @Nullable
+    public String getBody() {
+        return body;
+    }
+
+    /**
+     * @param body The HTTP request body.
+     */
+    public void setBody(@Nullable String body) {
+        this.body = body;
+    }
+
+    /**
+     * @param body The HTTP request body
+     * @return APIGatewayProxyRequestEvent
+     */
+    public APIGatewayProxyRequestEvent withBody(@Nullable String body) {
+        this.setBody(body);
+        return this;
+    }
+
+    /**
+     * @return whether the body String is base64 encoded.
+     */
+    @Nullable
+    public Boolean getIsBase64Encoded() {
+        return this.isBase64Encoded;
+    }
+
+    /**
+     * @param isBase64Encoded Whether the body String is base64 encoded
+     */
+    public void setIsBase64Encoded(@Nullable Boolean isBase64Encoded) {
+        this.isBase64Encoded = isBase64Encoded;
+    }
+
+    /**
+     * @param isBase64Encoded Whether the body String is base64 encoded
+     * @return APIGatewayProxyRequestEvent
+     */
+    @NonNull
+    public APIGatewayProxyRequestEvent withIsBase64Encoded(@Nullable Boolean isBase64Encoded) {
+        this.setIsBase64Encoded(isBase64Encoded);
+        return this;
+    }
+
+    /**
+     * Returns a string representation of this object; useful for testing and debugging.
+     *
+     * @return A string representation of this object.
+     *
+     * @see Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        if (getVersion() != null) {
+            sb.append("version: ").append(getVersion()).append(",");
+        }
+        if (getResource() != null) {
+            sb.append("resource: ").append(getResource()).append(",");
+        }
+        if (getPath() != null) {
+            sb.append("path: ").append(getPath()).append(",");
+        }
+        if (getHttpMethod() != null) {
+            sb.append("httpMethod: ").append(getHttpMethod()).append(",");
+        }
+        if (getHeaders() != null) {
+            sb.append("headers: ").append(getHeaders().toString()).append(",");
+        }
+        if (getMultiValueHeaders() != null) {
+            sb.append("multiValueHeaders: ").append(getMultiValueHeaders().toString()).append(",");
+        }
+        if (getQueryStringParameters() != null) {
+            sb.append("queryStringParameters: ").append(getQueryStringParameters().toString()).append(",");
+        }
+        if (getMultiValueQueryStringParameters() != null) {
+            sb.append("multiValueQueryStringParameters: ").append(getMultiValueQueryStringParameters().toString()).append(",");
+        }
+        if (getPathParameters() != null) {
+            sb.append("pathParameters: ").append(getPathParameters().toString()).append(",");
+        }
+        if (getStageVariables() != null) {
+            sb.append("stageVariables: ").append(getStageVariables().toString()).append(",");
+        }
+        if (getRequestContext() != null) {
+            sb.append("requestContext: ").append(getRequestContext().toString()).append(",");
+        }
+        if (getBody() != null) {
+            sb.append("body: ").append(getBody()).append(",");
+        }
+        if (getIsBase64Encoded() != null) {
+            sb.append("isBase64Encoded: ").append(getIsBase64Encoded());
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        APIGatewayProxyRequestEvent that = (APIGatewayProxyRequestEvent) o;
+
+        if (!Objects.equals(version, that.version)) {
+            return false;
+        }
+        if (!Objects.equals(resource, that.resource)) {
+            return false;
+        }
+        if (!Objects.equals(path, that.path)) {
+            return false;
+        }
+        if (!Objects.equals(httpMethod, that.httpMethod)) {
+            return false;
+        }
+        if (!Objects.equals(headers, that.headers)) {
+            return false;
+        }
+        if (!Objects.equals(multiValueHeaders, that.multiValueHeaders)) {
+            return false;
+        }
+        if (!Objects.equals(queryStringParameters, that.queryStringParameters)) {
+            return false;
+        }
+        if (!Objects.equals(multiValueQueryStringParameters, that.multiValueQueryStringParameters)) {
+            return false;
+        }
+        if (!Objects.equals(pathParameters, that.pathParameters)) {
+            return false;
+        }
+        if (!Objects.equals(stageVariables, that.stageVariables)) {
+            return false;
+        }
+        if (!Objects.equals(requestContext, that.requestContext)) {
+            return false;
+        }
+        if (!Objects.equals(body, that.body)) {
+            return false;
+        }
+        return Objects.equals(isBase64Encoded, that.isBase64Encoded);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = version != null ? version.hashCode() : 0;
+        result = 31 * result + (resource != null ? resource.hashCode() : 0);
+        result = 31 * result + (path != null ? path.hashCode() : 0);
+        result = 31 * result + (httpMethod != null ? httpMethod.hashCode() : 0);
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        result = 31 * result + (multiValueHeaders != null ? multiValueHeaders.hashCode() : 0);
+        result = 31 * result + (queryStringParameters != null ? queryStringParameters.hashCode() : 0);
+        result = 31 * result + (multiValueQueryStringParameters != null ? multiValueQueryStringParameters.hashCode() : 0);
+        result = 31 * result + (pathParameters != null ? pathParameters.hashCode() : 0);
+        result = 31 * result + (stageVariables != null ? stageVariables.hashCode() : 0);
+        result = 31 * result + (requestContext != null ? requestContext.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
+        result = 31 * result + (isBase64Encoded != null ? isBase64Encoded.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    @NonNull
+    public APIGatewayProxyRequestEvent clone() {
+        try {
+            return (APIGatewayProxyRequestEvent) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException("Got a CloneNotSupportedException from Object.clone()", e);
+        }
+    }
+
+    /**
+     * class that represents proxy request context.
      */
     @Serdeable
     public static class ProxyRequestContext implements Serializable, Cloneable {
@@ -506,13 +966,14 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
 
         /**
          * @param domainPrefix The first label of the domainName. This is often used as a caller/customer identifier.
-         * @return
+         * @return ProxyRequestContext object
          */
         @NonNull
         public ProxyRequestContext withDomainPrefix(@Nullable String domainPrefix) {
             this.setDomainPrefix(domainPrefix);
             return this;
         }
+
         /**
          * @return The request protocol, for example, HTTP/1.1.
          */
@@ -549,40 +1010,57 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("{");
-            if (getAccountId() != null)
+            if (getAccountId() != null) {
                 sb.append("accountId: ").append(getAccountId()).append(",");
-            if (getResourceId() != null)
+            }
+            if (getResourceId() != null) {
                 sb.append("resourceId: ").append(getResourceId()).append(",");
-            if (getStage() != null)
+            }
+            if (getStage() != null) {
                 sb.append("stage: ").append(getStage()).append(",");
-            if (getRequestId() != null)
+            }
+            if (getRequestId() != null) {
                 sb.append("requestId: ").append(getRequestId()).append(",");
-            if (getIdentity() != null)
+            }
+            if (getIdentity() != null) {
                 sb.append("identity: ").append(getIdentity().toString()).append(",");
-            if (getResourcePath() != null)
+            }
+            if (getResourcePath() != null) {
                 sb.append("resourcePath: ").append(getResourcePath()).append(",");
-            if (getHttpMethod() != null)
+            }
+            if (getHttpMethod() != null) {
                 sb.append("httpMethod: ").append(getHttpMethod()).append(",");
-            if (getApiId() != null)
+            }
+            if (getApiId() != null) {
                 sb.append("apiId: ").append(getApiId()).append(",");
-            if (getPath() != null)
+            }
+            if (getPath() != null) {
                 sb.append("path: ").append(getPath()).append(",");
-            if (getAuthorizer() != null)
+            }
+            if (getAuthorizer() != null) {
                 sb.append("authorizer: ").append(getAuthorizer().toString());
-            if (getOperationName() != null)
+            }
+            if (getOperationName() != null) {
                 sb.append("operationName: ").append(getOperationName().toString());
-            if (getExtendedRequestId() != null)
+            }
+            if (getExtendedRequestId() != null) {
                 sb.append("extendedRequestId: ").append(getExtendedRequestId()).append(",");
-            if (getRequestTime() != null)
+            }
+            if (getRequestTime() != null) {
                 sb.append("requestTime: ").append(getRequestTime()).append(",");
-            if (getProtocol() != null)
+            }
+            if (getProtocol() != null) {
                 sb.append("protocol: ").append(getProtocol()).append(",");
-            if (getRequestTimeEpoch() != null)
+            }
+            if (getRequestTimeEpoch() != null) {
                 sb.append("requestTimeEpoch: ").append(getRequestTimeEpoch()).append(",");
-            if (getDomainPrefix() != null)
+            }
+            if (getDomainPrefix() != null) {
                 sb.append("domainPrefix: ").append(getDomainPrefix()).append(",");
-            if (getDomainName() != null)
+            }
+            if (getDomainName() != null) {
                 sb.append("domainName: ").append(getDomainName());
+            }
             sb.append("}");
             return sb.toString();
         }
@@ -916,7 +1394,7 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
 
         /**
          * @param cognitoAuthenticationType The Cognito authentication type used for authentication
-         * @return
+         * @return RequestIdentity object
          */
         @NonNull
         public RequestIdentity withCognitoAuthenticationType(@Nullable String cognitoAuthenticationType) {
@@ -1060,32 +1538,45 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append("{");
-            if (getCognitoIdentityPoolId() != null)
+            if (getCognitoIdentityPoolId() != null) {
                 sb.append("cognitoIdentityPoolId: ").append(getCognitoIdentityPoolId()).append(",");
-            if (getAccountId() != null)
+            }
+            if (getAccountId() != null) {
                 sb.append("accountId: ").append(getAccountId()).append(",");
-            if (getCognitoIdentityId() != null)
+            }
+            if (getCognitoIdentityId() != null) {
                 sb.append("cognitoIdentityId: ").append(getCognitoIdentityId()).append(",");
-            if (getCaller() != null)
+            }
+            if (getCaller() != null) {
                 sb.append("caller: ").append(getCaller()).append(",");
-            if (getApiKey() != null)
+            }
+            if (getApiKey() != null) {
                 sb.append("apiKey: ").append(getApiKey()).append(",");
-            if (getPrincipalOrgId() != null)
+            }
+            if (getPrincipalOrgId() != null) {
                 sb.append("principalOrgId: ").append(getPrincipalOrgId()).append(",");
-            if (getSourceIp() != null)
+            }
+            if (getSourceIp() != null) {
                 sb.append("sourceIp: ").append(getSourceIp()).append(",");
-            if (getCognitoAuthenticationType() != null)
+            }
+            if (getCognitoAuthenticationType() != null) {
                 sb.append("eventTriggerConfigId: ").append(getCognitoAuthenticationType()).append(",");
-            if (getCognitoAuthenticationProvider() != null)
+            }
+            if (getCognitoAuthenticationProvider() != null) {
                 sb.append("cognitoAuthenticationProvider: ").append(getCognitoAuthenticationProvider()).append(",");
-            if (getUserArn() != null)
+            }
+            if (getUserArn() != null) {
                 sb.append("userArn: ").append(getUserArn()).append(",");
-            if (getUserAgent() != null)
+            }
+            if (getUserAgent() != null) {
                 sb.append("userAgent: ").append(getUserAgent()).append(",");
-            if (getUser() != null)
+            }
+            if (getUser() != null) {
                 sb.append("user: ").append(getUser()).append(",");
-            if (getAccessKey() != null)
+            }
+            if (getAccessKey() != null) {
                 sb.append("accessKey: ").append(getAccessKey());
+            }
             sb.append("}");
             return sb.toString();
         }
@@ -1169,447 +1660,4 @@ public class APIGatewayProxyRequestEvent implements Serializable, Cloneable {
         }
     }
 
-    /**
-     * @return The payload format version
-     */
-    @Nullable
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * @param version The payload format version
-     */
-    public void setVersion(@Nullable String version) {
-        this.version = version;
-    }
-
-    /**
-     * @param version The payload format version
-     * @return
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withVersion(@Nullable String version) {
-        this.setVersion(version);
-        return this;
-    }
-
-    /**
-     * @return The resource path defined in API Gateway
-     */
-    @Nullable
-    public String getResource() {
-        return resource;
-    }
-
-    /**
-     * @param resource The resource path defined in API Gateway
-     */
-    public void setResource(@Nullable String resource) {
-        this.resource = resource;
-    }
-
-    /**
-     * @param resource The resource path defined in API Gateway
-     * @return
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withResource(@Nullable String resource) {
-        this.setResource(resource);
-        return this;
-    }
-
-    /**
-     * @return The url path for the caller
-     */
-    @Nullable
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * @param path The url path for the caller
-     */
-    public void setPath(@Nullable String path) {
-        this.path = path;
-    }
-
-    /**
-     * @param path The url path for the caller
-     * @return APIGatewayProxyRequestEvent object
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withPath(@Nullable String path) {
-        this.setPath(path);
-        return this;
-    }
-
-    /**
-     * @return The HTTP method used
-     */
-    @Nullable
-    public String getHttpMethod() {
-        return httpMethod;
-    }
-
-    /**
-     * @param httpMethod The HTTP method used
-     */
-    public void setHttpMethod(@Nullable String httpMethod) {
-        this.httpMethod = httpMethod;
-    }
-
-    /**
-     * @param httpMethod The HTTP method used
-     * @return APIGatewayProxyRequestEvent
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withHttpMethod(@Nullable String httpMethod) {
-        this.setHttpMethod(httpMethod);
-        return this;
-    }
-
-    /**
-     * @return The headers sent with the request
-     */
-    @Nullable
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    /**
-     * @param headers The headers sent with the request
-     */
-    public void setHeaders(@Nullable Map<String, String> headers) {
-        this.headers = headers;
-    }
-
-    /**
-     * @param headers The headers sent with the request
-     * @return APIGatewayProxyRequestEvent object
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withHeaders(@Nullable Map<String, String> headers) {
-        this.setHeaders(headers);
-        return this;
-    }
-
-    /**
-     * @return The multi value headers sent with the request
-     */
-    @Nullable
-    public Map<String, List<String>> getMultiValueHeaders() {
-        return multiValueHeaders;
-    }
-
-    /**
-     * @param multiValueHeaders The multi value headers sent with the request
-     */
-    public void setMultiValueHeaders(@Nullable Map<String, List<String>> multiValueHeaders) {
-        this.multiValueHeaders = multiValueHeaders;
-    }
-
-    /**
-     * @param multiValueHeaders The multi value headers sent with the request
-     * @return APIGatewayProxyRequestEvent object
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withMultiValueHeaders(@Nullable Map<String, List<String>> multiValueHeaders) {
-        this.setMultiValueHeaders(multiValueHeaders);
-        return this;
-    }
-
-    /**
-     * @return The query string parameters that were part of the request
-     */
-    @Nullable
-    public Map<String, String> getQueryStringParameters() {
-        return queryStringParameters;
-    }
-
-    /**
-     * @param queryStringParameters The query string parameters that were part of the request
-     */
-    public void setQueryStringParameters(@Nullable Map<String, String> queryStringParameters) {
-        this.queryStringParameters = queryStringParameters;
-    }
-
-    /**
-     * @param queryStringParameters The query string parameters that were part of the request
-     * @return APIGatewayProxyRequestEvent
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withQueryStringParameters(@Nullable Map<String, String> queryStringParameters) {
-        this.setQueryStringParameters(queryStringParameters);
-        return this;
-    }
-
-    /**
-     * @return The multi value query string parameters that were part of the request
-     */
-    @Nullable
-    public Map<String, List<String>> getMultiValueQueryStringParameters() {
-        return multiValueQueryStringParameters;
-    }
-
-    /**
-     * @param multiValueQueryStringParameters The multi value query string parameters that were part of the request
-     */
-    public void setMultiValueQueryStringParameters(@Nullable Map<String, List<String>> multiValueQueryStringParameters) {
-        this.multiValueQueryStringParameters = multiValueQueryStringParameters;
-    }
-
-    /**
-     * @param multiValueQueryStringParameters The multi value query string parameters that were part of the request
-     * @return APIGatewayProxyRequestEvent
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withMultiValueQueryStringParameters(@Nullable Map<String, List<String>> multiValueQueryStringParameters) {
-        this.setMultiValueQueryStringParameters(multiValueQueryStringParameters);
-        return this;
-    }
-
-    /**
-     * @return The path parameters that were part of the request
-     */
-    @Nullable
-    public Map<String, String> getPathParameters() {
-        return pathParameters;
-    }
-
-    /**
-     * @param pathParameters The path parameters that were part of the request
-     */
-    public void setPathParameters(@Nullable Map<String, String> pathParameters) {
-        this.pathParameters = pathParameters;
-    }
-
-    /**
-     * @param pathParameters The path parameters that were part of the request
-     * @return APIGatewayProxyRequestEvent object
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withPathParameters(@Nullable Map<String, String> pathParameters) {
-        this.setPathParameters(pathParameters);
-        return this;
-    }
-
-    /**
-     * @return The stage variables defined for the stage in API Gateway
-     */
-    @Nullable
-    public Map<String, String> getStageVariables() {
-        return stageVariables;
-    }
-
-    /**
-     * @param stageVariables The stage variables defined for the stage in API Gateway
-     */
-    public void setStageVariables(@Nullable Map<String, String> stageVariables) {
-        this.stageVariables = stageVariables;
-    }
-
-    /**
-     * @param stageVariables The stage variables defined for the stage in API Gateway
-     * @return APIGatewayProxyRequestEvent
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withStageVariables(@Nullable Map<String, String> stageVariables) {
-        this.setStageVariables(stageVariables);
-        return this;
-    }
-
-    /**
-     * @return The request context for the request
-     */
-    @Nullable
-    public ProxyRequestContext getRequestContext() {
-        return requestContext;
-    }
-
-    /**
-     * @param requestContext The request context for the request
-     */
-    public void setRequestContext(@Nullable ProxyRequestContext requestContext) {
-        this.requestContext = requestContext;
-    }
-
-    /**
-     * @param requestContext The request context for the request
-     * @return APIGatewayProxyRequestEvent object
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withRequestContext(@Nullable ProxyRequestContext requestContext) {
-        this.setRequestContext(requestContext);
-        return this;
-    }
-
-    /**
-     * @return The HTTP request body.
-     */
-    @Nullable
-    public String getBody() {
-        return body;
-    }
-
-    /**
-     * @param body The HTTP request body.
-     */
-    public void setBody(@Nullable String body) {
-        this.body = body;
-    }
-
-    /**
-     * @param body The HTTP request body
-     * @return APIGatewayProxyRequestEvent
-     */
-    public APIGatewayProxyRequestEvent withBody(@Nullable String body) {
-        this.setBody(body);
-        return this;
-    }
-
-    /**
-     * @return whether the body String is base64 encoded.
-     */
-    @Nullable
-    public Boolean getIsBase64Encoded() {
-        return this.isBase64Encoded;
-    }
-
-    /**
-     * @param isBase64Encoded Whether the body String is base64 encoded
-     */
-    public void setIsBase64Encoded(@Nullable Boolean isBase64Encoded) {
-        this.isBase64Encoded = isBase64Encoded;
-    }
-
-    /**
-     * @param isBase64Encoded Whether the body String is base64 encoded
-     * @return APIGatewayProxyRequestEvent
-     */
-    @NonNull
-    public APIGatewayProxyRequestEvent withIsBase64Encoded(@Nullable Boolean isBase64Encoded) {
-        this.setIsBase64Encoded(isBase64Encoded);
-        return this;
-    }
-
-    /**
-     * Returns a string representation of this object; useful for testing and debugging.
-     *
-     * @return A string representation of this object.
-     *
-     * @see Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        if (getVersion() != null)
-            sb.append("version: ").append(getVersion()).append(",");
-        if (getResource() != null)
-            sb.append("resource: ").append(getResource()).append(",");
-        if (getPath() != null)
-            sb.append("path: ").append(getPath()).append(",");
-        if (getHttpMethod() != null)
-            sb.append("httpMethod: ").append(getHttpMethod()).append(",");
-        if (getHeaders() != null)
-            sb.append("headers: ").append(getHeaders().toString()).append(",");
-        if (getMultiValueHeaders() != null)
-            sb.append("multiValueHeaders: ").append(getMultiValueHeaders().toString()).append(",");
-        if (getQueryStringParameters() != null)
-            sb.append("queryStringParameters: ").append(getQueryStringParameters().toString()).append(",");
-        if (getMultiValueQueryStringParameters() != null)
-            sb.append("multiValueQueryStringParameters: ").append(getMultiValueQueryStringParameters().toString()).append(",");
-        if (getPathParameters() != null)
-            sb.append("pathParameters: ").append(getPathParameters().toString()).append(",");
-        if (getStageVariables() != null)
-            sb.append("stageVariables: ").append(getStageVariables().toString()).append(",");
-        if (getRequestContext() != null)
-            sb.append("requestContext: ").append(getRequestContext().toString()).append(",");
-        if (getBody() != null)
-            sb.append("body: ").append(getBody()).append(",");
-        if (getIsBase64Encoded() != null)
-            sb.append("isBase64Encoded: ").append(getIsBase64Encoded());
-        sb.append("}");
-        return sb.toString();
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        APIGatewayProxyRequestEvent that = (APIGatewayProxyRequestEvent) o;
-
-        if (!Objects.equals(version, that.version)) {
-            return false;
-        }
-        if (!Objects.equals(resource, that.resource)) {
-            return false;
-        }
-        if (!Objects.equals(path, that.path)) {
-            return false;
-        }
-        if (!Objects.equals(httpMethod, that.httpMethod)) {
-            return false;
-        }
-        if (!Objects.equals(headers, that.headers)) {
-            return false;
-        }
-        if (!Objects.equals(multiValueHeaders, that.multiValueHeaders)) {
-            return false;
-        }
-        if (!Objects.equals(queryStringParameters, that.queryStringParameters)) {
-            return false;
-        }
-        if (!Objects.equals(multiValueQueryStringParameters, that.multiValueQueryStringParameters)) {
-            return false;
-        }
-        if (!Objects.equals(pathParameters, that.pathParameters)) {
-            return false;
-        }
-        if (!Objects.equals(stageVariables, that.stageVariables)) {
-            return false;
-        }
-        if (!Objects.equals(requestContext, that.requestContext)) {
-            return false;
-        }
-        if (!Objects.equals(body, that.body)) {
-            return false;
-        }
-        return Objects.equals(isBase64Encoded, that.isBase64Encoded);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = version != null ? version.hashCode() : 0;
-        result = 31 * result + (resource != null ? resource.hashCode() : 0);
-        result = 31 * result + (path != null ? path.hashCode() : 0);
-        result = 31 * result + (httpMethod != null ? httpMethod.hashCode() : 0);
-        result = 31 * result + (headers != null ? headers.hashCode() : 0);
-        result = 31 * result + (multiValueHeaders != null ? multiValueHeaders.hashCode() : 0);
-        result = 31 * result + (queryStringParameters != null ? queryStringParameters.hashCode() : 0);
-        result = 31 * result + (multiValueQueryStringParameters != null ? multiValueQueryStringParameters.hashCode() : 0);
-        result = 31 * result + (pathParameters != null ? pathParameters.hashCode() : 0);
-        result = 31 * result + (stageVariables != null ? stageVariables.hashCode() : 0);
-        result = 31 * result + (requestContext != null ? requestContext.hashCode() : 0);
-        result = 31 * result + (body != null ? body.hashCode() : 0);
-        result = 31 * result + (isBase64Encoded != null ? isBase64Encoded.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    @NonNull
-    public APIGatewayProxyRequestEvent clone() {
-        try {
-            return (APIGatewayProxyRequestEvent) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException("Got a CloneNotSupportedException from Object.clone()", e);
-        }
-    }
 }

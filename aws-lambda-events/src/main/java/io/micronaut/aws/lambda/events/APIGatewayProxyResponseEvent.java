@@ -31,6 +31,10 @@ import java.util.Objects;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@SuppressWarnings({
+    "checkstyle:MissingJavadocType",
+    "checkstyle:DesignForExtension"
+})
 @Serdeable
 public class APIGatewayProxyResponseEvent implements Serializable, Cloneable {
 
@@ -189,14 +193,18 @@ public class APIGatewayProxyResponseEvent implements Serializable, Cloneable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
-        if (getStatusCode() != null)
+        if (getStatusCode() != null) {
             sb.append("statusCode: ").append(getStatusCode()).append(",");
-        if (getHeaders() != null)
+        }
+        if (getHeaders() != null) {
             sb.append("headers: ").append(getHeaders().toString()).append(",");
-        if (getMultiValueHeaders() != null)
+        }
+        if (getMultiValueHeaders() != null) {
             sb.append("multiValueHeaders: ").append(getMultiValueHeaders().toString()).append(",");
-        if (getBody() != null)
+        }
+        if (getBody() != null) {
             sb.append("body: ").append(getBody());
+        }
         sb.append("}");
         return sb.toString();
     }
@@ -246,5 +254,4 @@ public class APIGatewayProxyResponseEvent implements Serializable, Cloneable {
             throw new IllegalStateException("Got a CloneNotSupportedException from Object.clone()", e);
         }
     }
-
 }
