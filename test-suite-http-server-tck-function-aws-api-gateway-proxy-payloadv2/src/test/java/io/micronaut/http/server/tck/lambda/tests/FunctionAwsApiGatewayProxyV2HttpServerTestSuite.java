@@ -11,8 +11,5 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v2 Event model")
-@ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.StreamTest",
-})
 public class FunctionAwsApiGatewayProxyV2HttpServerTestSuite {
 }
