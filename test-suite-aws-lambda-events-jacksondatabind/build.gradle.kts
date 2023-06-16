@@ -5,6 +5,5 @@ plugins {
 dependencies {
     testImplementation(mn.micronaut.jackson.databind)
     testImplementation(projects.micronautFunctionAws)
-    testImplementation(projects.micronautAwsLambdaEvents)
     testImplementation(projects.micronautAwsLambdaEventsSerde)
 }

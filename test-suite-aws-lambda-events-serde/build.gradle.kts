@@ -5,6 +5,5 @@ plugins {
 dependencies {
     testImplementation(mnSerde.micronaut.serde.jackson)
     testImplementation(projects.micronautFunctionAws)
-    testImplementation(projects.micronautAwsLambdaEvents)
     testImplementation(projects.micronautAwsLambdaEventsSerde)
 }

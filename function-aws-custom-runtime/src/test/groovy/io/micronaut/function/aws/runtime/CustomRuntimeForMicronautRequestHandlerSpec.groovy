@@ -1,7 +1,7 @@
 package io.micronaut.function.aws.runtime
 
-import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent
-import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.Requires
 import io.micronaut.http.HttpHeaders

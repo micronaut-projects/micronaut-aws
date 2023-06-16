@@ -15,7 +15,7 @@
  */
 package io.micronaut.http.server.tck.lambda;
 
-import io.micronaut.aws.lambda.events.ApplicationLoadBalancerRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.function.aws.proxy.test.BodyUtils;

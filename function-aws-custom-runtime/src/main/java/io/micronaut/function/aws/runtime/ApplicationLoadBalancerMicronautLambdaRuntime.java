@@ -17,8 +17,8 @@ package io.micronaut.function.aws.runtime;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction;
-import io.micronaut.aws.lambda.events.ApplicationLoadBalancerRequestEvent;
-import io.micronaut.aws.lambda.events.ApplicationLoadBalancerResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 
 /**
  * Main entry for AWS ALB with Micronaut.

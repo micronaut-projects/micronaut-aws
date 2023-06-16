@@ -17,15 +17,15 @@ package io.micronaut.function.aws.proxy;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
-import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 
 /**
- * @deprecated Use {@link ApiGatewayProxyRequestEventFunction} or {@link APIGatewayV2HTTPEventFunction} instead.
+ * @deprecated Use {@link ApiGatewayProxyRequestEventFunction}, {@link APIGatewayV2HTTPEventFunction} or {@link io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction} instead.
  */
 @Deprecated(forRemoval = true, since = "4.0.0")
 public class MicronautLambdaHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {

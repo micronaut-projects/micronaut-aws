@@ -1,8 +1,8 @@
 package io.micronaut.function.aws.runtime
 
 import com.amazonaws.services.lambda.runtime.Context
-import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent
-import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanProvider
 import io.micronaut.context.annotation.Any

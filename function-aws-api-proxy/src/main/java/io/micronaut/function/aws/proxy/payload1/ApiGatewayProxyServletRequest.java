@@ -15,8 +15,8 @@
  */
 package io.micronaut.function.aws.proxy.payload1;
 
-import io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent;
-import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;

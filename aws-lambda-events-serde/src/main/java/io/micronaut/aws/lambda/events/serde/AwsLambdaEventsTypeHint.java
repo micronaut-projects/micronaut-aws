@@ -46,7 +46,7 @@ import static io.micronaut.core.annotation.TypeHint.AccessType.ALL_PUBLIC_METHOD
         com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
         com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
         com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
-        com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.class,
         com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
         com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
         com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,

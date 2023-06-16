@@ -19,7 +19,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaRuntime;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import io.micronaut.aws.lambda.events.*;
+import com.amazonaws.services.lambda.runtime.events.*;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
@@ -293,11 +293,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
             String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);
-        } else if (request instanceof io.micronaut.aws.lambda.events.APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+        } else if (request instanceof com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayProxyRequestEvent");
             String content = apiGatewayProxyRequestEvent.getBody();
             return valueFromContent(content, handlerRequestType);
-        } else if (request instanceof io.micronaut.aws.lambda.events.APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {
+        } else if (request instanceof com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent apiGatewayV2HTTPEvent) {
             log(LogLevel.TRACE, "request of type APIGatewayV2HTTPEvent\n");
             String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);

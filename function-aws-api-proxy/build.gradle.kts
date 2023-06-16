@@ -5,7 +5,7 @@ dependencies {
     api(mn.micronaut.http.server)
     api(mn.micronaut.http.client.core)
     api(projects.micronautFunctionAws)
-    api(projects.micronautAwsLambdaEvents)
+    api(libs.managed.aws.lambda.events)
     api(mnServlet.micronaut.servlet.core)
     implementation(mnReactor.micronaut.reactor)
     implementation(mn.micronaut.http.netty)

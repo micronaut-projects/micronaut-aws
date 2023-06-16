@@ -15,8 +15,8 @@
  */
 package io.micronaut.function.aws.proxy.alb;
 
-import io.micronaut.aws.lambda.events.APIGatewayProxyResponseEvent;
-import io.micronaut.aws.lambda.events.ApplicationLoadBalancerResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
