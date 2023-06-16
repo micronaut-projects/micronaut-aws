@@ -148,7 +148,8 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
 
     @Override
     public ApplicationContext getApplicationContext() {
-        return applicationContext;
+        // Return the applicationContext of the handler constructed below, not that of the test-server
+        return ((AwsProxyHandler)server.getHandler()).getApplicationContext();
     }
 
     @Override
@@ -182,6 +183,10 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             this.requestAdapter = ctx.getBean(ServletToAwsProxyRequestAdapter.class);
             this.responseAdapter = ctx.getBean(ServletToAwsProxyResponseAdapter.class);
             this.conversionService = ctx.getBean(ConversionService.class);
+        }
+
+        ApplicationContext getApplicationContext() {
+            return lambdaHandler.getApplicationContext();
         }
 
         @Override
