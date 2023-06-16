@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,12 +149,12 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     @Override
     public ApplicationContext getApplicationContext() {
         // Return the applicationContext of the handler constructed below, not that of the test-server
-        return ((AwsProxyHandler)server.getHandler()).getApplicationContext();
+        return ((AwsProxyHandler) server.getHandler()).getApplicationContext();
     }
 
     @Override
     public ApplicationConfiguration getApplicationConfiguration() {
-        return applicationContext.getBean(ApplicationConfiguration.class);
+        return getApplicationContext().getBean(ApplicationConfiguration.class);
     }
 
     @Override
@@ -173,8 +173,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
 
         public AwsProxyHandler(ApplicationContext proxyTestApplicationContext) {
             ApplicationContextBuilder builder = ApplicationContext.builder();
-            for (PropertySource propertySource : proxyTestApplicationContext.getEnvironment()
-                    .getPropertySources()) {
+            for (PropertySource propertySource : proxyTestApplicationContext.getEnvironment().getPropertySources()) {
                 builder = builder.propertySources(propertySource);
             }
             lambdaHandler = new APIGatewayV2HTTPEventFunction(builder.build());
@@ -201,8 +200,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             }
         }
 
-        public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
-                throws IOException {
+        public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
             APIGatewayV2HTTPEvent awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
             APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
             responseAdapter.handle(conversionService, request, apiGatewayV2HTTPResponse, response);
