@@ -12,7 +12,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.FilterErrorTest",
     "io.micronaut.http.server.tck.tests.cors.CorsSimpleRequestTest", // We seem to have 2 instances of RefreshCounter!?
     "io.micronaut.http.server.tck.tests.cors.SimpleRequestWithCorsNotEnabledTest",
-    "io.micronaut.http.server.tck.tests.endpoints.health.HealthTest",
     "io.micronaut.http.server.tck.tests.filter.RequestFilterTest",
     "io.micronaut.http.server.tck.tests.filter.ResponseFilterTest",
 })

@@ -1,0 +1,3 @@
+endpoints:
+  health:
+    service-ready-indicator-enabled: false

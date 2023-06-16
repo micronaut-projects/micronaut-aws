@@ -6,4 +6,5 @@ dependencies {
     testImplementation(projects.micronautFunctionAwsApiProxyTest)
     testImplementation(projects.micronautFunctionAwsApiProxy)
     testImplementation(mnValidation.micronaut.validation)
+    testRuntimeOnly(mn.snakeyaml)
 }
