@@ -1,29 +1,14 @@
 package io.micronaut.aws.lambda.events;
 
-import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
-import org.junit.jupiter.api.Test;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import java.io.File;
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ApiGatewayV2EventTest {
-
-    @Test
-    void testDeserializationOfAPIGatewayV2HttpEvent() throws IOException {
-        JsonMapperCustomPojoSerializer serializer = new JsonMapperCustomPojoSerializer();
-        File f = new File("src/test/resources/apiGatewayV2HTTPEvent.json");
-        assertTrue(f.exists());
-
-        String json = FileUtils.text(f);
-        assertNotNull(json);
-
-        APIGatewayV2HTTPEvent event = assertDoesNotThrow(() -> serializer.fromJson(json, APIGatewayV2HTTPEvent.class));
-        expectedEvent(event);
+public final class APIGatewayV2HttpEventUtils {
+    private APIGatewayV2HttpEventUtils() {
     }
 
-    void expectedEvent(APIGatewayV2HTTPEvent event) {
+    public static void expectedEvent(APIGatewayV2HTTPEvent event) {
         assertEquals("2.0",event.getVersion());
         assertEquals("$default",event.getRouteKey());
         assertEquals("/",event.getRawPath());
