@@ -4,49 +4,97 @@ on:
     branches:
       - test-parallel-native
 jobs:
-  build_matrix:
-    if: github.repository != 'micronaut-projects/micronaut-project-template'
-    runs-on: ubuntu-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-      GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USERNAME }}
-      GRADLE_ENTERPRISE_CACHE_PASSWORD: ${{ secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD }}
-    outputs:
-      matrix: ${{ steps.build-matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build Matrix
-        uses: micronaut-projects/github-actions/graalvm/build-matrix@latest-graalvm-changes
-        id: build-matrix
   build:
-    needs: build_matrix
     if: github.repository != 'micronaut-projects/micronaut-project-template'
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 6
-      matrix: ${{ fromJson(needs.build_matrix.outputs.matrix) }}
+      matrix:
+        distribution: [ 'graalvm-community']
+        java: ['17']
     env:
       GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       GRADLE_ENTERPRISE_CACHE_USERNAME: ${{ secrets.GRADLE_ENTERPRISE_CACHE_USERNAME }}
       GRADLE_ENTERPRISE_CACHE_PASSWORD: ${{ secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD }}
+      GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ secrets.GH_TOKEN_PUBLIC_REPOS_READONLY }}
+      GH_USERNAME: ${{ secrets.GH_USERNAME }}
+      TESTCONTAINERS_RYUK_DISABLED: true
+      PREDICTIVE_TEST_SELECTION: "${{ github.event_name == 'pull_request' && 'true' || 'false' }}"
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Pre-Build Steps
-        uses: micronaut-projects/github-actions/graalvm/pre-build@latest-graalvm-changes
-        id: pre-build
-        with:
-          java: 'dev'
-      - name: Build Steps
-        uses: micronaut-projects/github-actions/graalvm/build@master
-        id: build
-        env:
-          GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ secrets.GH_TOKEN_PUBLIC_REPOS_READONLY }}
-          GH_USERNAME: ${{ secrets.GH_USERNAME }}
-        with:
-          nativeTestTask: ${{ matrix.native_test_task }}
-      - name: Post-Build Steps
-        uses: micronaut-projects/github-actions/graalvm/post-build@master
-        id: post-build
-        with:
-          java: 'dev'
+      # https://github.com/actions/virtual-environments/issues/709
+      - name: "🗑 Free disk space"
+        run: |
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo apt-get clean
+          df -h
 
+      - name: "📥 Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "🔧 Setup GraalVM CE"
+        uses: graalvm/setup-graalvm@v1
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.java }}
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "🔧 Setup Gradle"
+        uses: gradle/gradle-build-action@v2
+
+      - name: "❓ Optional setup step"
+        run: |
+          [ -f ./setup.sh ] && ./setup.sh || [ ! -f ./setup.sh ]
+
+      - name: "🛠 Build with Gradle"
+        id: gradle
+        run: |
+          ./gradlew check --no-daemon --continue
+
+      - name: "🔎 Run static analysis"
+        if: env.SONAR_TOKEN != ''
+        run: |
+          ./gradlew sonar
+
+      - name: "📊 Publish Test Report"
+        if: always()
+        uses: mikepenz/action-junit-report@v3
+        with:
+          check_name: Java CI / Test Report (${{ matrix.java }})
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          check_retries: 'true'
+
+      - name: "📜 Upload binary compatibility check results"
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: binary-compatibility-reports
+          path: "**/build/reports/binary-compatibility-*.html"
+
+      - name: "📦 Publish to Sonatype Snapshots"
+        if: success() && github.event_name == 'push' && matrix.java == '17'
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        run: ./gradlew publishToSonatype docs --no-daemon
+
+      - name: "❓ Determine docs target repository"
+        uses: haya14busa/action-cond@v1
+        id: docs_target
+        with:
+          cond: ${{ github.repository == 'micronaut-projects/micronaut-core' }}
+          if_true: "micronaut-projects/micronaut-docs"
+          if_false: ${{ github.repository }}
+
+      - name: "📑 Publish to Github Pages"
+        if: success() && github.event_name == 'push' && matrix.java == '17'
+        uses: micronaut-projects/github-pages-deploy-action@master
+        env:
+          TARGET_REPOSITORY: ${{ steps.docs_target.outputs.value }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build/docs
