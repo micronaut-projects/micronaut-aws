@@ -64,7 +64,6 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
             .orElseThrow(() -> new IllegalStateException("No JsonMapper implementation found"));
     }
 
-
     @Override
     public <T> T fromJson(InputStream input, Type type) {
         try {

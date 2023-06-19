@@ -88,39 +88,39 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
  * @since 2.0.0
  */
 @TypeHint(
-        accessType = {
-            ALL_PUBLIC,
-            ALL_DECLARED_CONSTRUCTORS,
-            ALL_PUBLIC_CONSTRUCTORS,
-            ALL_DECLARED_METHODS,
-            ALL_DECLARED_FIELDS,
-            ALL_PUBLIC_METHODS,
-            ALL_PUBLIC_FIELDS
-        },
-        value = {
-            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
-            com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class,
-            com.amazonaws.services.lambda.runtime.events.CognitoEvent.class,
-            com.amazonaws.services.lambda.runtime.events.ConfigEvent.class,
-            com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class,
-            com.amazonaws.services.lambda.runtime.events.LexEvent.class,
-            com.amazonaws.services.lambda.runtime.events.SNSEvent.class,
-            com.amazonaws.services.lambda.runtime.events.SQSEvent.class
-        }
+    accessType = {
+        ALL_PUBLIC,
+        ALL_DECLARED_CONSTRUCTORS,
+        ALL_PUBLIC_CONSTRUCTORS,
+        ALL_DECLARED_METHODS,
+        ALL_DECLARED_FIELDS,
+        ALL_PUBLIC_METHODS,
+        ALL_PUBLIC_FIELDS
+    },
+    value = {
+        com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent.class,
+        com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.ProxyRequestContext.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.RequestIdentity.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent.class,
+        com.amazonaws.services.lambda.runtime.events.ScheduledEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyRequestEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2ProxyResponseEvent.class,
+        com.amazonaws.services.lambda.runtime.events.CloudFrontEvent.class,
+        com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent.class,
+        com.amazonaws.services.lambda.runtime.events.CodeCommitEvent.class,
+        com.amazonaws.services.lambda.runtime.events.CognitoEvent.class,
+        com.amazonaws.services.lambda.runtime.events.ConfigEvent.class,
+        com.amazonaws.services.lambda.runtime.events.IoTButtonEvent.class,
+        com.amazonaws.services.lambda.runtime.events.LexEvent.class,
+        com.amazonaws.services.lambda.runtime.events.SNSEvent.class,
+        com.amazonaws.services.lambda.runtime.events.SQSEvent.class
+    }
 )
 @SuppressWarnings("java:S119") // More descriptive generics are better here
 public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, HandlerRequestType, HandlerResponseType>
-        implements ApplicationContextProvider, AwsLambdaRuntimeApi {
+    implements ApplicationContextProvider, AwsLambdaRuntimeApi {
     @Nullable
     protected String userAgent;
 
@@ -194,8 +194,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     public ApplicationContextBuilder createApplicationContextBuilderWithArgs(String... args) {
         CommandLine commandLine = CommandLine.parse(args);
         return ApplicationContext.builder()
-                .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
-                .propertySources(new CommandLinePropertySource(commandLine));
+            .environments(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+            .propertySources(new CommandLinePropertySource(commandLine));
     }
 
     /**
@@ -341,6 +341,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             String content = apiGatewayV2HTTPEvent.getBody();
             return valueFromContent(content, handlerRequestType);
         }
+
         log(LogLevel.TRACE, "createHandlerRequest return null\n");
         return null;
     }
@@ -368,9 +369,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             config.setReadTimeout(null);
             config.setConnectTimeout(null);
             final HttpClient endpointClient = applicationContext.createBean(
-                    HttpClient.class,
-                    runtimeApiURL,
-                    config);
+                HttpClient.class,
+                runtimeApiURL,
+                config);
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
@@ -589,8 +590,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     @SuppressWarnings("rawtypes")
     private Class initTypeArgument(int index) {
         final Class[] args = GenericTypeUtils.resolveSuperTypeGenericArguments(
-                getClass(),
-                AbstractMicronautLambdaRuntime.class
+            getClass(),
+            AbstractMicronautLambdaRuntime.class
         );
         if (ArrayUtils.isNotEmpty(args) && args.length > index) {
             return args[index];

@@ -6,7 +6,6 @@ dependencies {
     compileOnly(projects.micronautFunctionAwsApiProxy)
     compileOnly(libs.managed.aws.lambda.events)
     testImplementation(projects.micronautFunctionAwsApiProxy)
-    testImplementation(libs.managed.aws.lambda.events)
 }
 micronautBuild {
     binaryCompatibility {
