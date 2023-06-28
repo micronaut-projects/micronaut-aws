@@ -8,10 +8,15 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ApplicationLoadBalancerRequestEventTest {
+
     @Test
+    @SuppressWarnings("java:S1313") // IP usage is safe here
     void testDeserializationOfApplicationLoadBalancerRequestEvent() throws IOException {
         JsonMapperCustomPojoSerializer serializer = new JsonMapperCustomPojoSerializer();
         String json = FileUtils.text(this.getClass().getClassLoader(), "albRequest.json").orElse(null);

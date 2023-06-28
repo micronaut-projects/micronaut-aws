@@ -4,12 +4,18 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRespo
 import io.micronaut.aws.lambda.events.FileUtils;
 import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ApplicationLoadBalancerResponseEventTest {
+
     @Test
     void testDeserializationOfApplicationLoadBalancerResponseEvent() throws IOException {
         JsonMapperCustomPojoSerializer serializer = new JsonMapperCustomPojoSerializer();
