@@ -1,0 +1,18 @@
+{
+    "statusCode": 200,
+    "statusDescription": null,
+    "isBase64Encoded": false,
+    "headers": {
+        "Date": "Wed, 28 Jun 2023 09:50:16 GMT",
+        "Content-Type": "application/json"
+    },
+    "multiValueHeaders": {
+        "Date": [
+            "Wed, 28 Jun 2023 09:50:16 GMT"
+        ],
+        "Content-Type": [
+            "application/json"
+        ]
+    },
+    "body": "{\"message\":\"Will it Blend?\"}"
+}

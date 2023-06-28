@@ -1,0 +1,21 @@
+{
+    "requestContext": {
+        "elb": {
+            "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:646307737039:targetgroup/fubar-dev-tg/97533b9b279f7d7f"
+        }
+    },
+    "httpMethod": "GET",
+    "path": "/",
+    "queryStringParameters": {},
+    "headers": {
+        "accept": "*/*",
+        "host": "fubar-dev-alb-376753725.us-east-1.elb.amazonaws.com",
+        "user-agent": "curl/7.88.1",
+        "x-amzn-trace-id": "Root=1-649c0255-6789eb512889f9cd6bc9193c",
+        "x-forwarded-for": "80.26.234.66",
+        "x-forwarded-port": "80",
+        "x-forwarded-proto": "http"
+    },
+    "body": "",
+    "isBase64Encoded": false
+}
