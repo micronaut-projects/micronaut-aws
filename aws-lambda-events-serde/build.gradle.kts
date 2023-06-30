@@ -13,6 +13,8 @@ dependencies {
 
 micronautBuild {
     binaryCompatibility {
-        enabled.set(false)
+        enabled.set(true)
+        // TODO required for now. Remove after Micronaut 4 release
+        baselineVersion.set("4.0.0-M11")
     }
 }
