@@ -1,5 +1,65 @@
 [
   {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6()",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5()",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Micronaut Framework 4 changes"
+  },
+  {
     "type": "io.micronaut.function.aws.proxy.$AwsObjectMapperFactory$Definition$Reference",
     "member": "Field $ANNOTATION_METADATA",
     "reason": "Micronaut AWS API proxy module changed"
@@ -807,6 +867,186 @@
   {
     "type": "io.micronaut.function.aws.runtime.$AbstractMicronautLambdaRuntime$ReflectConfig",
     "member": "Implemented interface io.micronaut.core.graal.GraalReflectionConfigurer",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreTokenGenerationEventSerde$IntrospectionRef6",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3()",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
     "reason": "Bean definition changes for Micronaut 4.0.0"
   }
 ]
