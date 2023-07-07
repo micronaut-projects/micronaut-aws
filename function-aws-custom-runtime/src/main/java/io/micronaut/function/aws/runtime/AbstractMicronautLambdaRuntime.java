@@ -98,6 +98,14 @@ import static io.micronaut.http.HttpHeaders.USER_AGENT;
         ALL_PUBLIC_FIELDS
     },
     value = {
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.Authorizer.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.Authorizer.JWT.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.Http.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.IAM.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.CognitoIdentity.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent.RequestContext.class,
+        com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse.class,
         com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent.class,
         com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent.class,
         com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent.class,
