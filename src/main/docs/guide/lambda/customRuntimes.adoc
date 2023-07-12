@@ -1,4 +1,4 @@
-e https://www.graalvm.org/[GraalVM] is a universal virtual machine which allows to compile Java programs to https://www.graalvm.org/reference-manual/native-image/[native executables].
+https://www.graalvm.org/[GraalVM] is a universal virtual machine which allows to compile Java programs to https://www.graalvm.org/reference-manual/native-image/[native executables].
 
 The introduction of https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html[AWS Lambda custom runtimes] enables cold startup improvements for Java applications running in AWS Lambda.
 
