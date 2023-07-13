@@ -2,8 +2,3 @@ plugins {
     id "io.micronaut.build.internal.aws-base"
     id "io.micronaut.build.internal.module"
 }
-micronautBuild {
-    binaryCompatibility {
-        baselineVersion = "4.0.0-M11"
-    }
-}

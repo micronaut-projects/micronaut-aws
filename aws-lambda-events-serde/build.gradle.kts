@@ -10,11 +10,3 @@ dependencies {
     testImplementation(libs.assertj.core)
     testImplementation(mnSerde.micronaut.serde.jackson)
 }
-
-micronautBuild {
-    binaryCompatibility {
-        enabled.set(true)
-        // TODO required for now. Remove after Micronaut 4 release
-        baselineVersion.set("4.0.0-M11")
-    }
-}
