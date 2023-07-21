@@ -11,6 +11,7 @@ dependencies {
     implementation(mn.micronaut.http.netty)
     compileOnly(mnSecurity.micronaut.security)
     testImplementation(mn.micronaut.jackson.databind)
+    testImplementation(mnViews.micronaut.views.handlebars)
 }
 
 spotless {
