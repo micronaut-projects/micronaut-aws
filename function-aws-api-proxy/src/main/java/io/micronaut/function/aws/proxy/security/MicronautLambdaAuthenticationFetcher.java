@@ -79,6 +79,9 @@ public class MicronautLambdaAuthenticationFetcher implements AuthenticationFetch
     private Optional<Authentication> fetchAuthentication(APIGatewayProxyRequestEvent request) {
         APIGatewayProxyRequestEvent.ProxyRequestContext proxyRequestContext = request.getRequestContext();
         Map<String, Object> authorizer = proxyRequestContext.getAuthorizer();
+        if (authorizer == null) {
+            return Optional.empty();
+        }
         if (authorizer.containsKey(CLAIM_SUB)) {
             return fetchAuthentication(authorizer);
         } else if (authorizer.containsKey(CLAIMS)) {
