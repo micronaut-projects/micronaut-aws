@@ -1,1 +1,1 @@
-io.micronaut.http.tck.EmbeddedServerUnderTestProvider
+io.micronaut.http.server.tck.lambda.EmbeddedServerUnderTestProviderReplacement

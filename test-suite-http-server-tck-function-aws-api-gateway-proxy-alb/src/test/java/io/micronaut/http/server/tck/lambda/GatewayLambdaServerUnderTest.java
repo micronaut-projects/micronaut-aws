@@ -29,19 +29,21 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
     private static final Logger LOG = LoggerFactory.getLogger(GatewayLambdaServerUnderTest.class);
 
     private ApplicationLoadBalancerFunction function;
+    private ApplicationContext applicationContext;
     private Context lambdaContext;
 
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
         properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
         properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
-        this.function = new ApplicationLoadBalancerFunction(ApplicationContext
+        this.applicationContext = ApplicationContext
             .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
             .eagerInitConfiguration(true)
             .eagerInitSingletons(true)
             .properties(properties)
             .deduceEnvironment(false)
-            .start());
+            .start();
+        this.function = new ApplicationLoadBalancerFunction(applicationContext);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     @Override
     public void close() throws IOException {
+        applicationContext.close();
         function.close();
     }
 }
