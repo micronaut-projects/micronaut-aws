@@ -118,7 +118,15 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return servletByteBuffer != null ? servletByteBuffer.toInputStream() : new ByteArrayInputStream(getBodyBytes());
+        if (servletByteBuffer == null) {
+            // Read all the input stream into memory, so we can parse it multiple times (where we need different formats)
+            this.servletByteBuffer = new ByteArrayByteBuffer<>(getBodyBytes());
+        }
+        if (parsedBody != null) {
+            // We have already parsed a body, this is a second call to getInputStream probably for a different type, so reset the reader.
+            this.servletByteBuffer.readerIndex(0);
+        }
+        return servletByteBuffer.toInputStream();
     }
 
     @Override
