@@ -136,6 +136,7 @@ class BinaryContentConfigurationSpec extends Specification {
         APIGatewayProxyResponseEvent response = handler.handleRequest(request, context)
 
         then:
+        response.isBase64Encoded != null
         !response.isBase64Encoded
         response.body == 'ok'
 

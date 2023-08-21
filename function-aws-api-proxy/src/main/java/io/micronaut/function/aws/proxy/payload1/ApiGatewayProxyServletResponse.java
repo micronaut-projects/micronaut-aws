@@ -52,6 +52,7 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
                 .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
         } else {
             apiGatewayProxyResponseEvent
+                .withIsBase64Encoded(false)
                 .withBody(body.toString(getCharacterEncoding()));
         }
         return apiGatewayProxyResponseEvent;
