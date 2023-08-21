@@ -80,6 +80,7 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
 
     @Override
     public void close() throws IOException {
+        ctx.close();
         function.close();
     }
 }
