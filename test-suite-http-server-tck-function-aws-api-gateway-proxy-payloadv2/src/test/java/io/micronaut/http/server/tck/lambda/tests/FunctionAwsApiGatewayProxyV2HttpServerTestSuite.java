@@ -10,6 +10,9 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests",
     "io.micronaut.http.server.tck.lambda.tests"
 })
+@ExcludeClassNamePatterns({
+    "io.micronaut.http.server.tck.tests.FilterProxyTest" // Immmutable request
+})
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v2 Event model")
 public class FunctionAwsApiGatewayProxyV2HttpServerTestSuite {
 }
