@@ -1,0 +1,15 @@
+openapi: 3.0.1
+info:
+  description: My API
+paths:
+  /:
+    get:
+      operationId: index
+      responses:
+        "200":
+          description: index 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
