@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.UriUtils;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -29,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Collections;
 
 /**
@@ -55,7 +55,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getRequestContext().getHttp().getPath()),
+            UriUtils.toURI(requestEvent.getRawPath(), requestEvent.getRawQueryString()),
             parseMethod(() -> requestEvent.getRequestContext().getHttp().getMethod()),
             LOG,
             bodyBuilder

@@ -253,6 +253,7 @@ class LambdaContextSpec extends Specification {
                 .build()
         APIGatewayV2HTTPEvent.builder()
                 .withRequestContext(requestContext)
+                .withRawPath(path)
                 .build()
     }
 

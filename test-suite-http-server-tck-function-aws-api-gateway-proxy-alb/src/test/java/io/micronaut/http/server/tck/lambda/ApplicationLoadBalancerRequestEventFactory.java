@@ -83,7 +83,11 @@ public final class ApplicationLoadBalancerRequestEventFactory {
             public Map<String, String> getQueryStringParameters() {
                 Map<String, String> result = new HashMap<>();
                 for (String paramName : request.getParameters().names()) {
-                    result.put(paramName, request.getParameters().get(paramName));
+                    List<String> values = request.getParameters().getAll(paramName);
+                    if (values.size() == 1) {
+                        result.put(paramName, values.get(0));
+                    }
+
                 }
                 return result;
             }
@@ -92,7 +96,10 @@ public final class ApplicationLoadBalancerRequestEventFactory {
             public Map<String, List<String>> getMultiValueQueryStringParameters() {
                 Map<String, List<String>> result = new HashMap<>();
                 for (String paramName : request.getParameters().names()) {
-                    result.put(paramName, request.getParameters().getAll(paramName));
+                    List<String> values = request.getParameters().getAll(paramName);
+                    if (values.size() > 1) {
+                        result.put(paramName, values);
+                    }
                 }
                 return result;
             }

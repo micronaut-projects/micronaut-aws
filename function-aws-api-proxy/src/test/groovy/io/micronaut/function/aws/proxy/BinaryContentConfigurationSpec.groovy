@@ -230,6 +230,7 @@ class BinaryContentConfigurationSpec extends Specification {
                 .withHttp(http)
                 .build()
         APIGatewayV2HTTPEvent.builder()
+                .withRawPath(path)
                 .withRequestContext(requestContext)
                 .build()
     }

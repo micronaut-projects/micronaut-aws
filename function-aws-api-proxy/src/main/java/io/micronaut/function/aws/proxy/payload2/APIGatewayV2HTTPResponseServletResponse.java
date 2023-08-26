@@ -42,7 +42,7 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
     public APIGatewayV2HTTPResponse getNativeResponse() {
         APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
-            .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
+            .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
             .withStatusCode(status);
 
         if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {

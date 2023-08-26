@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Factory for creating {@link APIGatewayV2HTTPEvent} v2 instances from {@link HttpRequest} instances.
@@ -39,6 +41,20 @@ public final class APIGatewayV2HTTPEventFactory {
 
     public static APIGatewayV2HTTPEvent create(HttpRequest<?> request, JsonMapper jsonMapper) {
         return new APIGatewayV2HTTPEvent() {
+
+            @Override
+            public String getRawPath() {
+                return request.getPath();
+            }
+
+            @Override
+            public String getRawQueryString() {
+                return request.getParameters().asMap().entrySet().stream()
+                    .map(entry -> entry.getValue().stream()
+                        .map(value -> entry.getKey() + "=" + value)
+                        .collect(Collectors.joining("&")))
+                    .collect(Collectors.joining("&"));
+            }
 
             @Override
             public Map<String, String> getHeaders() {

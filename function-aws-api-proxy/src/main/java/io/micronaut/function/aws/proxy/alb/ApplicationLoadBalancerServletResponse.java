@@ -40,7 +40,7 @@ public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHt
     public ApplicationLoadBalancerResponseEvent getNativeResponse() {
         ApplicationLoadBalancerResponseEvent nativeResponse = new ApplicationLoadBalancerResponseEvent();
         nativeResponse.setHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
-        nativeResponse.setMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers));
+        nativeResponse.setMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers));
         nativeResponse.setStatusCode(status);
         if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {
             nativeResponse.setIsBase64Encoded(true);

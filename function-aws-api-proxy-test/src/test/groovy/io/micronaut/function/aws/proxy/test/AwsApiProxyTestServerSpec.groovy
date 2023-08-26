@@ -79,6 +79,18 @@ class AwsApiProxyTestServerSpec extends Specification {
         response.body.get() == (1..256).collect { it as byte } as byte[]
     }
 
+    void 'return full uri when requested'() {
+        given:
+        def uri = "/uri?queryParam=queryValue&queryParam=queryValue2"
+        when:
+        HttpResponse<String> response = client.toBlocking()
+                .exchange(HttpRequest.GET(uri), String)
+
+        then:
+        response.status == HttpStatus.OK
+        response.body.get().toString() == uri
+    }
+
     @Controller
     static class TestController {
         @Get(value = '/test', produces = MediaType.TEXT_PLAIN)
@@ -104,6 +116,11 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Get(value = "/byte-array", produces = MediaType.APPLICATION_OCTET_STREAM)
         HttpResponse<byte[]> byteArray() {
             return HttpResponse.ok((1..256).collect { it as byte } as byte[])
+        }
+
+        @Get(value = "/uri", produces = MediaType.TEXT_PLAIN)
+        HttpResponse<String> uri(HttpRequest<?> request) {
+            return HttpResponse.ok(request.getUri().toASCIIString())
         }
     }
 }

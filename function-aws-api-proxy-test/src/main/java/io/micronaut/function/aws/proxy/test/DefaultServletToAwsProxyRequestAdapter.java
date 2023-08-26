@@ -50,6 +50,16 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
         return new APIGatewayV2HTTPEvent() {
 
             @Override
+            public String getRawPath() {
+                return request.getRequestURI();
+            }
+
+            @Override
+            public String getRawQueryString() {
+                return request.getQueryString();
+            }
+
+            @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> result = new HashMap<>();
                 Enumeration<String> headerNames = request.getHeaderNames();

@@ -20,6 +20,7 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRespo
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.UriUtils;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -29,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
@@ -54,7 +54,9 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getPath()),
+            UriUtils.toURI(requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder

@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.UriUtils;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -30,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Base64;
 
 /**
@@ -56,7 +56,9 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getPath()),
+            UriUtils.toURI(requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
