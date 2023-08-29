@@ -55,7 +55,11 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getRequestContext().getHttp().getPath()),
+            ApiGatewayServletRequest.buildUri(
+                requestEvent.getRequestContext().getHttp().getPath(),
+                requestEvent.getQueryStringParameters(),
+                Collections.emptyMap()
+            ),
             parseMethod(() -> requestEvent.getRequestContext().getHttp().getMethod()),
             LOG,
             bodyBuilder

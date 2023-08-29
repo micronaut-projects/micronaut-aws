@@ -56,7 +56,11 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getPath()),
+            ApiGatewayServletRequest.buildUri(
+                requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()
+            ),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder

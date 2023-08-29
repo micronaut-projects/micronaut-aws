@@ -36,6 +36,7 @@ import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
@@ -107,6 +108,17 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     }
 
     public abstract byte[] getBodyBytes() throws IOException;
+
+    protected static URI buildUri(
+        String path,
+        Map<String,String> queryParameters,
+        Map<String,List<String>> multiQueryParameters
+    ) {
+        UriBuilder uriBuilder = UriBuilder.of(path);
+        queryParameters.forEach((key, value) -> splitCommaSeparatedValue(value).forEach(token -> uriBuilder.queryParam(key, token)));
+        multiQueryParameters.forEach((key, values) -> values.forEach(value -> uriBuilder.queryParam(key, value)));
+        return uriBuilder.build();
+    }
 
     protected static HttpMethod parseMethod(Supplier<String> httpMethodConsumer) {
         try {
