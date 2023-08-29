@@ -43,7 +43,7 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
         APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = new APIGatewayProxyResponseEvent()
             .withBody(body.toString())
             .withStatusCode(status)
-            .withMultiValueHeaders(MapCollapseUtils.getMulitHeaders(headers))
+            .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
 
         if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {

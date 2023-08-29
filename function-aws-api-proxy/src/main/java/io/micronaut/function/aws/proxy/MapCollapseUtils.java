@@ -54,7 +54,7 @@ public final class MapCollapseUtils {
      * @param headers The headers
      * @return The map
      */
-    public static Map<String, List<String>> getMulitHeaders(MutableHttpHeaders headers) {
+    public static Map<String, List<String>> getMultiHeaders(MutableHttpHeaders headers) {
         Map<String, List<String>> result = new HashMap<>();
         for (String paramName : headers.names()) {
             result.put(paramName, headers.getAll(paramName));
