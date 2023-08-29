@@ -120,8 +120,8 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      */
     protected static URI buildUri(
         String path,
-        Map<String,String> queryParameters,
-        Map<String,List<String>> multiQueryParameters
+        Map<String, String> queryParameters,
+        Map<String, List<String>> multiQueryParameters
     ) {
         UriBuilder uriBuilder = UriBuilder.of(path);
         queryParameters.forEach((key, value) -> splitCommaSeparatedValue(value).forEach(token -> uriBuilder.queryParam(key, token)));
