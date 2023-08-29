@@ -1,5 +1,96 @@
 [
   {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4()",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2()",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolMigrateUserEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3()",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason":  "Introspection changes"
+  },
+
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason":  "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPreAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason":  "Introspection changes"
+  },
+  {
     "type": "io.micronaut.aws.lambda.events.serde.$S3EventNotificationSerde$IntrospectionRef6",
     "member": "Field $ANNOTATION_METADATA",
     "reason": "Micronaut Framework 4 changes"
