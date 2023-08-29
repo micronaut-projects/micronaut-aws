@@ -54,7 +54,11 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
         super(
             conversionService,
             requestEvent,
-            ApiGatewayServletRequest.buildUri(requestEvent.getPath(), requestEvent.getQueryStringParameters(), requestEvent.getMultiValueQueryStringParameters()),
+            ApiGatewayServletRequest.buildUri(
+                requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()
+            ),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
