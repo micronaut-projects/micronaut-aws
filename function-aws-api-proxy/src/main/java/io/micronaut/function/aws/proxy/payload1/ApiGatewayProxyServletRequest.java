@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.Base64;
 
 /**
@@ -56,7 +55,11 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getPath()),
+            ApiGatewayServletRequest.buildUri(
+                requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()
+            ),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder

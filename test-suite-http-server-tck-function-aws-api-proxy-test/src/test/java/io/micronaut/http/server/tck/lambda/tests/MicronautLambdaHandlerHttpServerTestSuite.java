@@ -6,7 +6,10 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SelectPackages("io.micronaut.http.server.tck.tests")
+@SelectPackages({
+    "io.micronaut.http.server.tck.tests",
+    "io.micronaut.http.server.tck.lambda.tests"
+})
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.LocalErrorReadingBodyTest", // Binding body different type (e.g. a String in error handler)
     "io.micronaut.http.server.tck.tests.FilterProxyTest" // Immmutable request

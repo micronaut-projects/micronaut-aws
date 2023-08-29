@@ -36,6 +36,7 @@ import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
@@ -107,6 +108,30 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     }
 
     public abstract byte[] getBodyBytes() throws IOException;
+
+    /**
+     * Given a path and the query params from the event, build a URI.
+     *
+     * @param path the request path
+     * @param queryParameters the query parameters from the event
+     * @param multiQueryParameters the multi-value query parameters from the event
+     * @return the URI
+     * @since 4.0.3
+     */
+    protected static URI buildUri(
+        String path,
+        @Nullable Map<String, String> queryParameters,
+        @Nullable Map<String, List<String>> multiQueryParameters
+    ) {
+        UriBuilder uriBuilder = UriBuilder.of(path);
+        if (queryParameters != null) {
+            queryParameters.forEach((key, value) -> splitCommaSeparatedValue(value).forEach(token -> uriBuilder.queryParam(key, token)));
+        }
+        if (multiQueryParameters != null) {
+            multiQueryParameters.forEach((key, values) -> values.forEach(value -> uriBuilder.queryParam(key, value)));
+        }
+        return uriBuilder.build();
+    }
 
     protected static HttpMethod parseMethod(Supplier<String> httpMethodConsumer) {
         try {

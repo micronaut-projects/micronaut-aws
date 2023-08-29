@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
@@ -54,7 +53,11 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
         super(
             conversionService,
             requestEvent,
-            URI.create(requestEvent.getPath()),
+            ApiGatewayServletRequest.buildUri(
+                requestEvent.getPath(),
+                requestEvent.getQueryStringParameters(),
+                requestEvent.getMultiValueQueryStringParameters()
+            ),
             parseMethod(requestEvent::getHttpMethod),
             LOG,
             bodyBuilder
