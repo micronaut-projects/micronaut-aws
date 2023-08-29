@@ -109,6 +109,15 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     public abstract byte[] getBodyBytes() throws IOException;
 
+    /**
+     * Given a path and the query params from the event, build a URI.
+     *
+     * @param path the request path
+     * @param queryParameters the query parameters from the event
+     * @param multiQueryParameters the multi-value query parameters from the event
+     * @return the URI
+     * @since 4.0.3
+     */
     protected static URI buildUri(
         String path,
         Map<String,String> queryParameters,
