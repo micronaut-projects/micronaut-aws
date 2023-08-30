@@ -1,5 +1,6 @@
 package io.micronaut.function.aws.proxy.test
 
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -79,6 +80,19 @@ class AwsApiProxyTestServerSpec extends Specification {
         response.body.get() == (1..256).collect { it as byte } as byte[]
     }
 
+    @Issue('https://github.com/micronaut-projects/micronaut-aws/issues/1858')
+    void 'can return a ByteArray'() {
+        when:
+        HttpResponse<?> response = client.toBlocking()
+                .exchange(HttpRequest.GET('/multiple-headers'))
+
+        then:
+        response.status == HttpStatus.OK
+        response.headers.getAll(HttpHeaders.LINK) ==
+                ['<https://example1.com>; rel="next"', '<https://example2.com>; rel="prev"']
+        response.headers.get(HttpHeaders.CACHE_CONTROL) == "no-cache"
+    }
+
     @Controller
     static class TestController {
         @Get(value = '/test', produces = MediaType.TEXT_PLAIN)
@@ -104,6 +118,14 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Get(value = "/byte-array", produces = MediaType.APPLICATION_OCTET_STREAM)
         HttpResponse<byte[]> byteArray() {
             return HttpResponse.ok((1..256).collect { it as byte } as byte[])
+        }
+
+        @Get(value = '/multiple-headers', processes = MediaType.TEXT_PLAIN)
+        HttpResponse emptyBody() {
+            return HttpResponse.ok()
+                        .header(HttpHeaders.LINK, '<https://example1.com>; rel="next"')
+                        .header(HttpHeaders.LINK, '<https://example2.com>; rel="prev"')
+                        .header(HttpHeaders.CACHE_CONTROL,  "no-cache")
         }
     }
 }
