@@ -1,0 +1,121 @@
+[
+  {
+    "name": "io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender",
+    "queryAllPublicMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      },
+      {
+        "name": "setCreateGroupAndStream",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setDispatchOnStart",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setEncoder",
+        "parameterTypes": [
+          "ch.qos.logback.core.encoder.Encoder"
+        ]
+      },
+      {
+        "name": "setGroupName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setMaxBatchSize",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "setPublishPeriod",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setQueueSize",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "setStreamName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter",
+    "queryAllPublicMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ch.qos.logback.core.encoder.LayoutWrappingEncoder",
+    "queryAllPublicMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      },
+      {
+        "name": "setLayout",
+        "parameterTypes": [
+          "ch.qos.logback.core.Layout"
+        ]
+      },
+      {
+        "name": "setParent",
+        "parameterTypes": [
+          "ch.qos.logback.core.spi.ContextAware"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ch.qos.logback.contrib.json.classic.JsonLayout",
+    "queryAllPublicMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "name": "ch.qos.logback.contrib.json.JsonLayoutBase",
+    "methods": [
+      {
+        "name": "setJsonFormatter",
+        "parameterTypes": [
+          "ch.qos.logback.contrib.json.JsonFormatter"
+        ]
+      }
+    ]
+  }
+]
