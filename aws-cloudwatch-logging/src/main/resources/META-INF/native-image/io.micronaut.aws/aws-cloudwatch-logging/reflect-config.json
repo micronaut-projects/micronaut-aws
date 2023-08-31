@@ -10,6 +10,12 @@
         ]
       },
       {
+        "name": "addBlackListLoggerName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
         "name": "setCreateGroupAndStream",
         "parameterTypes": [
           "boolean"
