@@ -1,0 +1,30 @@
+<configuration>
+
+    <appender name='STDOUT' class='ch.qos.logback.core.ConsoleAppender'>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CLOUDWATCH" class="io.micronaut.aws.cloudwatch.logging.CloudWatchLoggingAppender">
+        <appender-ref ref="STDOUT"/>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="io.micronaut.aws.cloudwatch.logging.CloudWatchJsonFormatter" />
+            </layout>
+        </encoder>
+        <blackListLoggerName>testLogger1</blackListLoggerName>
+        <blackListLoggerName>testLogger2</blackListLoggerName>
+        <createGroupAndStream>false</createGroupAndStream>
+        <groupName>testGroupName</groupName>
+        <streamName>testStreamName</streamName>
+        <dispatchOnStart>false</dispatchOnStart>
+        <queueSize>50</queueSize>
+        <publishPeriod>200</publishPeriod>
+        <maxBatchSize>15</maxBatchSize>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CLOUDWATCH" />
+    </root>
+</configuration>
