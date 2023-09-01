@@ -40,6 +40,9 @@ public class ApplicationLoadBalancerHandler extends ServletHttpHandler<Applicati
         ApplicationLoadBalancerRequestEvent request,
         ApplicationLoadBalancerResponseEvent response
     ) {
+        if (LOG.isTraceEnabled()) {
+            LOG.info("Request: {}", request);
+        }
         return new ApplicationLoadBalancerServletRequest<>(
             request,
             new ApplicationLoadBalancerServletResponse<>(

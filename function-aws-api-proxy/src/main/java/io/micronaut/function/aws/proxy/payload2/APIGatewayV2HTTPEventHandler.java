@@ -45,6 +45,9 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
         APIGatewayV2HTTPEvent request,
         APIGatewayV2HTTPResponse response
     ) {
+        if (LOG.isTraceEnabled()) {
+            LOG.info("Request: {}", request);
+        }
         return new APIGatewayV2HTTPEventServletRequest<>(
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(
