@@ -1,0 +1,13 @@
+To smooth the developer experience when you use the `micronaut-function-aws-api-proxy` dependency, Micronaut AWS offers the `micronaut-function-aws-api-proxy-test` dependency.
+
+Add it as a `developmentOnly` dependency so that it is used when you run the app locally:
+
+dependency:micronaut-function-aws-api-proxy-test[groupId="io.micronaut.aws",scope="developmentOnly"]
+
+and to the test classpath:
+
+dependency:micronaut-function-aws-api-proxy-test[groupId="io.micronaut.aws",scope="test"]
+
+This dependency starts a Jetty server, allowing you to have the same developer experience (run the app while developing or test it with `@MicronautTest`) as when you use a  runtime such as Netty.
+
+image::proxy-test.jpg[Micronaut AWS API Proxy Test]
