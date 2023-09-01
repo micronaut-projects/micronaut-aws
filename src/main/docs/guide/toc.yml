@@ -50,6 +50,7 @@ lambda:
   awslambdaruntimes: AWS Lambda Runtimes
   applicationtyperuntimedependencies: Application Types, Lambda Runtimes, Dependencies
   lambdatriggers: Lambda Triggers
+  lambdaTest: AWS Lambda Test
   lambdacontext: Lambda Context
   requestHandlers: Lambda Handlers
   customPojoSerialization: Serialization
