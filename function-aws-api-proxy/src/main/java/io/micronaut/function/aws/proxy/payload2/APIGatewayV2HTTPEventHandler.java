@@ -25,6 +25,8 @@ import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link ServletHttpHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
@@ -35,6 +37,7 @@ import jakarta.inject.Singleton;
 @Internal
 @Singleton
 public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+    private static final Logger LOG = LoggerFactory.getLogger(APIGatewayV2HTTPEventHandler.class);
 
     public APIGatewayV2HTTPEventHandler(ApplicationContext applicationContext) {
         super(applicationContext, applicationContext.getBean(ConversionService.class));
