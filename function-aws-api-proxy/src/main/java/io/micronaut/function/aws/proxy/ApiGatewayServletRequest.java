@@ -74,6 +74,7 @@ import java.util.function.Supplier;
 public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES>, FullHttpRequest<T>, ParsedBodyHolder<T> {
 
     private static final Set<Class<?>> RAW_BODY_TYPES = CollectionUtils.setOf(String.class, byte[].class, ByteBuffer.class, InputStream.class);
+    private static final String SLASH = "/";
 
     protected ConversionService conversionService;
     protected final REQ requestEvent;
@@ -119,11 +120,11 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      * @since 4.0.3
      */
     protected static URI buildUri(
-        String path,
+        @Nullable String path,
         @Nullable Map<String, String> queryParameters,
         @Nullable Map<String, List<String>> multiQueryParameters
     ) {
-        UriBuilder uriBuilder = UriBuilder.of(path);
+        UriBuilder uriBuilder = UriBuilder.of(path == null ? SLASH : path);
         if (queryParameters != null) {
             queryParameters.forEach((key, value) -> splitCommaSeparatedValue(value).forEach(token -> uriBuilder.queryParam(key, token)));
         }
