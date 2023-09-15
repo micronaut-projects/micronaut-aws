@@ -34,7 +34,7 @@ managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
 slf4j = "2.0.7"
 servlet-api = "2.5"
-testcontainers = "1.18.1"
+testcontainers = "1.19.0"
 javapoet = "1.13.0"
 
 # The following version should probably
