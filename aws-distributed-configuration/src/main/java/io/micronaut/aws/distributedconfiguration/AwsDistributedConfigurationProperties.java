@@ -46,9 +46,13 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
 
     public static final boolean DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS = true;
 
+    public static final boolean DEFAULT_DEFAULT_CONFIG_ENABLED = true;
+
     private boolean searchActiveEnvironments = DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS;
 
     private boolean searchCommonApplication = DEFAULT_SEARCH_COMMON_APPLICATION;
+
+    private boolean defaultConfigEnabled = DEFAULT_DEFAULT_CONFIG_ENABLED;
 
     @NonNull
     String prefix = DEFAULT_PREFIX;
@@ -148,5 +152,24 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
      */
     public void setCommonApplicationName(@NonNull String commonApplicationName) {
         this.commonApplicationName = commonApplicationName;
+    }
+
+    /**
+     * Whether to load the default config files (`/config/application`, `/config/[APPLICATION_NAME], `/config/application_${env}`, `/config/[APPLICATION_NAME]_${env}`). Default value: {@value #DEFAULT_DEFAULT_CONFIG_ENABLED}.
+     * @return Whether to load the default config files.
+     * @since 4.1.0
+     */
+    @Override
+    public boolean isDefaultConfigEnabled() {
+        return defaultConfigEnabled;
+    }
+
+    /**
+     *
+     * @param defaultConfigEnabled Whether to load the default config files.
+     * @since 4.1.0
+     */
+    public void setDefaultConfigEnabled(boolean defaultConfigEnabled) {
+        this.defaultConfigEnabled = defaultConfigEnabled;
     }
 }

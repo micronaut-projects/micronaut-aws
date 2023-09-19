@@ -76,4 +76,11 @@ public interface AwsDistributedConfiguration {
      * @return Whether paths with active environment names should be searched or not.
      */
     boolean isSearchActiveEnvironments();
+
+    /**
+     *
+     * @return Whether to load the default config files.
+     * @since 4.1.0
+     */
+    boolean isDefaultConfigEnabled();
 }
