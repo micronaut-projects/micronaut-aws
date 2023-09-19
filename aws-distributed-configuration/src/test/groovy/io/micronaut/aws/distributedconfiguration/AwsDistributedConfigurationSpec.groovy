@@ -128,6 +128,69 @@ class AwsDistributedConfigurationSpec extends Specification {
       'otherapp' | null  | ['/demo/']              | 'otherapp_fooYYY' | 'otherapp_fooXXX'
     }
 
+    @RestoreSystemProperties
+    void "configuration resolution precedence, explicitly with default config files"() {
+        given:
+        System.setProperty(Environment.BOOTSTRAP_CONTEXT_PROPERTY, StringUtils.TRUE)
+        Map<String, Object> properties = [
+                'spec.name': 'AwsDistributedConfigurationSpec',
+                'micronaut.application.name': appName,
+                'micronaut.config-client.enabled': true,
+                'aws.distributed-configuration.default-config-enabled': true,
+        ]
+
+        when:
+        EmbeddedServer embeddedServer = env ? ApplicationContext.run(EmbeddedServer, properties, env) : ApplicationContext.run(EmbeddedServer,  properties)
+        ApplicationContext context = embeddedServer.applicationContext
+        Optional<String> clientSecretOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-secret', String)
+
+        then:
+        clientSecretOptional.isPresent()
+        clientSecretOptional.get() == expected
+
+        cleanup:
+        context.close()
+        embeddedServer.close()
+
+        where:
+        appName     | env   || expected
+        'myapp'     | 'foo' || 'myapp_fooYYY'
+        'myapp'     | null  || 'myappYYY'
+        'otherapp'  | null  || 'applicationYYY'
+        'otherapp'  | 'foo' || 'application_fooYYY'
+    }
+
+    @RestoreSystemProperties
+    void "configuration resolution precedence, but without default config files"() {
+        given:
+        System.setProperty(Environment.BOOTSTRAP_CONTEXT_PROPERTY, StringUtils.TRUE)
+        Map<String, Object> properties = [
+                'spec.name': 'AwsDistributedConfigurationSpec',
+                'micronaut.application.name': appName,
+                'micronaut.config-client.enabled': true,
+                'aws.distributed-configuration.default-config-enabled': false,
+        ]
+
+        when:
+        EmbeddedServer embeddedServer = env ? ApplicationContext.run(EmbeddedServer, properties, env) : ApplicationContext.run(EmbeddedServer,  properties)
+        ApplicationContext context = embeddedServer.applicationContext
+        Optional<String> clientSecretOptional = context.getProperty('micronaut.security.oauth2.clients.companyauthserver.client-secret', String)
+
+        then:
+        clientSecretOptional.isEmpty()
+
+        cleanup:
+        context.close()
+        embeddedServer.close()
+
+        where:
+        appName     | env
+        'myapp'     | 'foo'
+        'myapp'     | null
+        'otherapp'  | null
+        'otherapp'  | 'foo'
+    }
+
     @Requires(beans = [AwsDistributedConfiguration, KeyValueFetcher])
     @Requires(property = 'spec.name', value = 'AwsDistributedConfigurationSpec')
     @BootstrapContextCompatible
