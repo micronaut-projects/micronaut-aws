@@ -151,23 +151,24 @@ public abstract class AwsDistributedConfigurationClient implements Configuration
     @NonNull
     private List<String> generateConfigurationResolutionPrefixes(@NonNull Environment environment) {
         List<String> configurationResolutionPrefixes = new ArrayList<>();
-        if (awsDistributedConfiguration.isDefaultConfigEnabled()) {
-            if (applicationName != null) {
-                if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
-                    for (String name : environment.getActiveNames()) {
-                        configurationResolutionPrefixes.addAll(prefix(applicationName, name));
-                    }
+        if (!awsDistributedConfiguration.isDefaultConfigEnabled()) {
+            return configurationResolutionPrefixes;
+        }
+        if (applicationName != null) {
+            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
+                for (String name : environment.getActiveNames()) {
+                    configurationResolutionPrefixes.addAll(prefix(applicationName, name));
                 }
-                configurationResolutionPrefixes.addAll(prefix(applicationName));
             }
-            if (awsDistributedConfiguration.isSearchCommonApplication()) {
-                if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
-                    for (String name : environment.getActiveNames()) {
-                        configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
-                    }
+            configurationResolutionPrefixes.addAll(prefix(applicationName));
+        }
+        if (awsDistributedConfiguration.isSearchCommonApplication()) {
+            if (awsDistributedConfiguration.isSearchActiveEnvironments()) {
+                for (String name : environment.getActiveNames()) {
+                    configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName(), name));
                 }
-                configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName()));
             }
+            configurationResolutionPrefixes.addAll(prefix(awsDistributedConfiguration.getCommonApplicationName()));
         }
         return configurationResolutionPrefixes;
     }
