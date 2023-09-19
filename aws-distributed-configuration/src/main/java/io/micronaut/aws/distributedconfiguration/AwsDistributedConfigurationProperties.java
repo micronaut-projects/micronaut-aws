@@ -143,7 +143,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
     }
 
     /**
-     * Default Application name. Default value ({@value #DEFAULT_COMMON_APPLICATION_NAME}.
+     * Default Application name. Default value ({@value #DEFAULT_COMMON_APPLICATION_NAME}).
      * @param commonApplicationName Default Application name. e.g. application
      */
     public void setCommonApplicationName(@NonNull String commonApplicationName) {
