@@ -32,7 +32,7 @@ managed-aws-lambda-java-serialization = '1.1.2'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
-slf4j = "2.0.7"
+slf4j = "2.0.9"
 servlet-api = "2.5"
 testcontainers = "1.19.0"
 javapoet = "1.13.0"
