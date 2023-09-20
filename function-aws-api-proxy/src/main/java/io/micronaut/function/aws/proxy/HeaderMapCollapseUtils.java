@@ -27,8 +27,9 @@ import java.util.Map;
  * Utility methods for collapsing HTTP Headers.
  */
 @Internal
-public class HeaderMapCollapseUtils {
+public final class HeaderMapCollapseUtils {
     private static final List<String> HEADERS_ALLOWING_COMMAS = Arrays.asList(HttpHeaders.DATE, HttpHeaders.USER_AGENT);
+
     private HeaderMapCollapseUtils() {
 
     }
