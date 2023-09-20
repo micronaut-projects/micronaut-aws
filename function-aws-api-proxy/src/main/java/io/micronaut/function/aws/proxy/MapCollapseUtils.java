@@ -16,9 +16,13 @@
 package io.micronaut.function.aws.proxy;
 
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +34,8 @@ import java.util.Map;
  */
 @Internal
 public final class MapCollapseUtils {
+
+    private static final List<String> HEADERS_ALLOWING_COMMAS = Arrays.asList(HttpHeaders.DATE, HttpHeaders.USER_AGENT);
 
     private MapCollapseUtils() {
     }
@@ -81,9 +87,20 @@ public final class MapCollapseUtils {
         }
         if (CollectionUtils.isNotEmpty(single)) {
             for (var entry: single.entrySet()) {
-                List<String> strings = values.computeIfAbsent(entry.getKey(), s -> new ArrayList<>());
-                if (!strings.contains(entry.getValue())) {
-                    strings.add(entry.getValue());
+                String headerName = entry.getKey();
+                List<String> strings = values.computeIfAbsent(headerName, s -> new ArrayList<>());
+                String value = entry.getValue();
+                if (HEADERS_ALLOWING_COMMAS.contains(headerName)) {
+                    if (!strings.contains(value)) {
+                        strings.add(value);
+                    }
+                } else {
+                    for (String v : splitCommaSeparatedValue(value)) {
+                        v = v.trim();
+                        if (!strings.contains(v)) {
+                            strings.add(v);
+                        }
+                    }
                 }
             }
         }
@@ -102,5 +119,13 @@ public final class MapCollapseUtils {
             result.put(entry.getKey(), String.join(",", entry.getValue()));
         }
         return result;
+    }
+
+    @NonNull
+    private static List<String> splitCommaSeparatedValue(@Nullable String value) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(value.split(","));
     }
 }

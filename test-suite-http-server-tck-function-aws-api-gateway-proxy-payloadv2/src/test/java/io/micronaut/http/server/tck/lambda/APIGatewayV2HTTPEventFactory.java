@@ -33,6 +33,7 @@ import java.util.Optional;
  */
 @Internal
 public final class APIGatewayV2HTTPEventFactory {
+    private final static String COMMA = ",";
 
     private APIGatewayV2HTTPEventFactory() {
     }
@@ -44,7 +45,7 @@ public final class APIGatewayV2HTTPEventFactory {
             public Map<String, String> getHeaders() {
                 Map<String, String> result = new HashMap<>();
                 for (String headerName : request.getHeaders().names()) {
-                    result.put(headerName, request.getHeaders().get(headerName));
+                    result.put(headerName, String.join(COMMA, request.getHeaders().getAll(headerName)));
                 }
                 return result;
             }
