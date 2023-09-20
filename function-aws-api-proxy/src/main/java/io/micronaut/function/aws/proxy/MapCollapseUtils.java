@@ -88,23 +88,28 @@ public final class MapCollapseUtils {
         if (CollectionUtils.isNotEmpty(single)) {
             for (var entry: single.entrySet()) {
                 String headerName = entry.getKey();
-                List<String> strings = values.computeIfAbsent(headerName, s -> new ArrayList<>());
-                String value = entry.getValue();
-                if (HEADERS_ALLOWING_COMMAS.contains(headerName)) {
-                    if (!strings.contains(value)) {
-                        strings.add(value);
-                    }
-                } else {
-                    for (String v : splitCommaSeparatedValue(value)) {
-                        v = v.trim();
-                        if (!strings.contains(v)) {
-                            strings.add(v);
-                        }
-                    }
-                }
+                List<String> headerValues = values.computeIfAbsent(headerName, s -> new ArrayList<>());
+                populateHeaderValues(headerName, entry.getValue(), headerValues);
             }
         }
         return values;
+    }
+
+    private static void populateHeaderValues(@NonNull String headerName,
+                                      @NonNull String headerValue,
+                                      List<String> headerValues) {
+        if (HEADERS_ALLOWING_COMMAS.contains(headerName)) {
+            if (!headerValues.contains(headerValue)) {
+                headerValues.add(headerValue);
+            }
+        } else {
+            for (String v : splitCommaSeparatedValue(headerValue)) {
+                v = v.trim();
+                if (!headerValues.contains(v)) {
+                    headerValues.add(v);
+                }
+            }
+        }
     }
 
     /**
