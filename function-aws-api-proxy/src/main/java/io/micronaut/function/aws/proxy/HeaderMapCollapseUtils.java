@@ -23,9 +23,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Utility methods for collapsing HTTP Headers.
+ */
 @Internal
 public class HeaderMapCollapseUtils {
     private static final List<String> HEADERS_ALLOWING_COMMAS = Arrays.asList(HttpHeaders.DATE, HttpHeaders.USER_AGENT);
+    private HeaderMapCollapseUtils() {
+
+    }
 
     /**
      * Collapse the aws single and multi headers into a single value map.
