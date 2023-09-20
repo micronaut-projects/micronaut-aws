@@ -49,7 +49,7 @@ public class ApiGatewayProxyEventHandler extends ServletHttpHandler<APIGatewayPr
         APIGatewayProxyResponseEvent response
     ) {
         if (LOG.isTraceEnabled()) {
-            LOG.info("Request: {}", request);
+            LOG.trace("Request: {}", request);
         }
         return new ApiGatewayProxyServletRequest<>(
             request,
