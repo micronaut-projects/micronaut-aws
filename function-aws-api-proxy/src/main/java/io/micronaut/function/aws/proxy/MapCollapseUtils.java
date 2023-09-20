@@ -19,7 +19,6 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.CollectionUtils;
-import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 
 import java.util.Arrays;
@@ -35,7 +34,10 @@ import java.util.Map;
 @Internal
 public final class MapCollapseUtils {
 
-    private static final List<String> HEADERS_ALLOWING_COMMAS = Arrays.asList(HttpHeaders.DATE, HttpHeaders.USER_AGENT);
+    /**
+     * Comma.
+     */
+    public static final String COMMA = ",";
 
     private MapCollapseUtils() {
     }
@@ -49,7 +51,7 @@ public final class MapCollapseUtils {
     public static Map<String, String> getSingleValueHeaders(MutableHttpHeaders headers) {
         Map<String, String> result = new HashMap<>();
         for (String paramName : headers.names()) {
-            result.put(paramName, headers.get(paramName));
+            result.put(paramName, String.join(COMMA, headers.getAll(paramName)));
         }
         return result;
     }
@@ -75,7 +77,25 @@ public final class MapCollapseUtils {
      * @param single The single value map
      * @return The map
      */
-    public static Map<String, List<String>> collapse(Map<String, List<String>> multi, Map<String, String> single) {
+    public static Map<String, List<String>> collapse(@Nullable Map<String, List<String>> multi,
+                                                      @Nullable Map<String, String> single) {
+        return collapse(multi, single, null, null);
+    }
+
+    /**
+     * Collapse the aws single and multi headers into a single value map.
+     *
+     * @param multi  The multi value map
+     * @param single The single value map
+     * @param splitRegex Regular expression to split the map value with
+     * @param dontSplitKeys Collection of keys which should not be split
+     * @return The map
+     */
+
+    public static Map<String, List<String>> collapse(@Nullable Map<String, List<String>> multi,
+                                                     @Nullable Map<String, String> single,
+                                                     @Nullable String splitRegex,
+                                                     @Nullable List<String> dontSplitKeys) {
         if (multi == null && single == null) {
             return Collections.emptyMap();
         }
@@ -89,21 +109,30 @@ public final class MapCollapseUtils {
             for (var entry: single.entrySet()) {
                 String headerName = entry.getKey();
                 List<String> headerValues = values.computeIfAbsent(headerName, s -> new ArrayList<>());
-                populateHeaderValues(headerName, entry.getValue(), headerValues);
+                if (dontSplitKeys != null && splitRegex != null) {
+                    populateHeaderValues(headerName, entry.getValue(), splitRegex, dontSplitKeys, headerValues);
+                } else {
+                    String v = entry.getValue();
+                    if (!headerValues.contains(v)) {
+                        headerValues.add(v);
+                    }
+                }
             }
         }
         return values;
     }
 
     private static void populateHeaderValues(@NonNull String headerName,
-                                      @NonNull String headerValue,
-                                      List<String> headerValues) {
-        if (HEADERS_ALLOWING_COMMAS.contains(headerName)) {
+                                             @NonNull String headerValue,
+                                             @NonNull String regex,
+                                             @NonNull List<String> dontSplitKeys,
+                                             @NonNull List<String> headerValues) {
+        if (dontSplitKeys.contains(headerName)) {
             if (!headerValues.contains(headerValue)) {
                 headerValues.add(headerValue);
             }
         } else {
-            for (String v : splitCommaSeparatedValue(headerValue)) {
+            for (String v : split(headerValue, regex)) {
                 v = v.trim();
                 if (!headerValues.contains(v)) {
                     headerValues.add(v);
@@ -121,16 +150,16 @@ public final class MapCollapseUtils {
     public static Map<String, String> collapse(Map<String, List<String>> input) {
         Map<String, String> result = new HashMap<>();
         for (Map.Entry<String, List<String>> entry : input.entrySet()) {
-            result.put(entry.getKey(), String.join(",", entry.getValue()));
+            result.put(entry.getKey(), String.join(COMMA, entry.getValue()));
         }
         return result;
     }
 
     @NonNull
-    private static List<String> splitCommaSeparatedValue(@Nullable String value) {
+    private static List<String> split(@Nullable String value, @NonNull String regex) {
         if (value == null) {
             return Collections.emptyList();
         }
-        return Arrays.asList(value.split(","));
+        return Arrays.asList(value.split(regex));
     }
 }

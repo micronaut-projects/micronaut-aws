@@ -33,7 +33,7 @@ class MapCollapseUtilsSpec extends Specification {
         event.setHeaders(headers)
 
         when:
-        MutableHttpHeaders httpHeaders = new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(Collections.emptyMap(), event.getHeaders()), conversionService);
+        MutableHttpHeaders httpHeaders = new CaseInsensitiveMutableHttpHeaders(HeaderMapCollapseUtils.collapse(Collections.emptyMap(), event.getHeaders()), conversionService);
 
         then:
         noExceptionThrown()
@@ -64,7 +64,7 @@ class MapCollapseUtilsSpec extends Specification {
         request.setMultiValueHeaders(multiValueHeaders)
 
         when:
-        MutableHttpHeaders httpHeaders = new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(request.getMultiValueHeaders(), request.getHeaders()), conversionService);
+        MutableHttpHeaders httpHeaders = new CaseInsensitiveMutableHttpHeaders(HeaderMapCollapseUtils.collapse(request.getMultiValueHeaders(), request.getHeaders()), conversionService);
 
         then:
         noExceptionThrown()

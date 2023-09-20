@@ -357,6 +357,6 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      */
     @NonNull
     protected MutableHttpHeaders getHeaders(@NonNull Supplier<Map<String, String>> singleHeaders, @NonNull Supplier<Map<String, List<String>>> multiValueHeaders) {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
+        return new CaseInsensitiveMutableHttpHeaders(HeaderMapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
     }
 }

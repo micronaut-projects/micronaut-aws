@@ -22,7 +22,7 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.util.ArgumentUtils;
-import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.HeaderMapCollapseUtils;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
@@ -62,7 +62,7 @@ public class ApplicationLoadBalancerResponseEventAdapter<T> implements MutableHt
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
+        return new CaseInsensitiveMutableHttpHeaders(HeaderMapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
     }
 
     @Override

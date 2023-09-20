@@ -17,7 +17,7 @@ package io.micronaut.function.aws.proxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.HeaderMapCollapseUtils;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
@@ -61,7 +61,7 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
+        return new CaseInsensitiveMutableHttpHeaders(HeaderMapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
     }
 
     @Override
