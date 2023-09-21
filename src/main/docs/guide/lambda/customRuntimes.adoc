@@ -33,3 +33,8 @@ mvn package -Dpackaging=native-image -Dexec.mainClass=io.micronaut.function.aws.
 ----
 
 When you generate a project with Micronaut CLI or https://launch.micronaut.io[Micronaut Launch] with `aws-lambda` and `graalvm` features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.
+
+Micronaut Framework needs an http client to poll the Lambda Runtime when you deploy as a native executable. Add the following dependency to satisfy this requirement.
+
+dependency:micronaut-http-client[groupId="io.micronaut"]
+
