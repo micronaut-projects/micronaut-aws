@@ -3090,6 +3090,25 @@ When a new instance handles its first request it has to start the JVM and load y
 <div class="paragraph">
 <p>When you generate a project with Micronaut CLI or <a href="https://launch.micronaut.io">Micronaut Launch</a> with <code>aws-lambda</code> and <code>graalvm</code> features, the output includes the necessary files to generate a ZIP file to distribute your functions as a GraalVM Native Image executed from a AWS Lambda custom runtime.</p>
 </div>
+<div class="paragraph">
+<p>Micronaut Framework needs an <a href="https://docs.micronaut.io/latest/guide/#httpClient">HTTP client</a> to poll the Lambda Runtime when you deploy as a native executable. Add the following dependency to satisfy this requirement.</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut:micronaut-http-client")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-http-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
 
 <h2 id="mdc"><a class="anchor" href="#mdc"></a>10.14 MDC Logging</h2>
 
