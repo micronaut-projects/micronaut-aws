@@ -44,7 +44,7 @@ public final class APIGatewayV2HTTPEventFactory {
             public Map<String, String> getHeaders() {
                 Map<String, String> result = new HashMap<>();
                 for (String headerName : request.getHeaders().names()) {
-                    result.put(headerName, request.getHeaders().get(headerName));
+                    result.put(headerName, String.join(",", request.getHeaders().getAll(headerName)));
                 }
                 return result;
             }
