@@ -25,6 +25,8 @@ import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link ServletHttpHandler} for AWS Gateway Proxy Events.
@@ -35,6 +37,7 @@ import jakarta.inject.Singleton;
 @Internal
 @Singleton
 public class ApiGatewayProxyEventHandler extends ServletHttpHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+    private static final Logger LOG = LoggerFactory.getLogger(ApiGatewayProxyEventHandler.class);
 
     public ApiGatewayProxyEventHandler(ApplicationContext applicationContext) {
         super(applicationContext, applicationContext.getBean(ConversionService.class));
@@ -45,6 +48,9 @@ public class ApiGatewayProxyEventHandler extends ServletHttpHandler<APIGatewayPr
         APIGatewayProxyRequestEvent request,
         APIGatewayProxyResponseEvent response
     ) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Request: {}", request);
+        }
         return new ApiGatewayProxyServletRequest<>(
             request,
             new ApiGatewayProxyServletResponse<>(

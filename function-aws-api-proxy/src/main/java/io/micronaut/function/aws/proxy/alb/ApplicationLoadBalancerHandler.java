@@ -23,6 +23,8 @@ import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link ServletHttpHandler} for AWS Gateway Proxy Events.
@@ -31,6 +33,8 @@ import io.micronaut.servlet.http.ServletHttpHandler;
  * @since 4.0.0
  */
 public class ApplicationLoadBalancerHandler extends ServletHttpHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationLoadBalancerHandler.class);
+
     public ApplicationLoadBalancerHandler(ApplicationContext applicationContext) {
         super(applicationContext, applicationContext.getBean(ConversionService.class));
     }
@@ -40,6 +44,9 @@ public class ApplicationLoadBalancerHandler extends ServletHttpHandler<Applicati
         ApplicationLoadBalancerRequestEvent request,
         ApplicationLoadBalancerResponseEvent response
     ) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Request: {}", request);
+        }
         return new ApplicationLoadBalancerServletRequest<>(
             request,
             new ApplicationLoadBalancerServletResponse<>(
