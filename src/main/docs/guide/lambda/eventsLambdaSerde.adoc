@@ -1,3 +1,6 @@
 If you want to use https://micronaut-projects.github.io/micronaut-serialization/latest/guide/[Micronaut Serialization] with https://github.com/aws/aws-lambda-java-libs/tree/main/aws-lambda-java-events[AWS Lambda Java Events] add the following dependency:
 
 dependency:micronaut-aws-lambda-events-serde[groupId="io.micronaut.aws"]
+
+`micronaut-aws-lambda-events-serde` provides an implementation of `com.amazonaws.services.lambda.runtime.CustomPojoSerializer` which is loaded via SPI.
+This `CustomPojoSerialization` avoids your Micronaut function paying a double hit on performance when using a serialization library inside the Lambda function.
