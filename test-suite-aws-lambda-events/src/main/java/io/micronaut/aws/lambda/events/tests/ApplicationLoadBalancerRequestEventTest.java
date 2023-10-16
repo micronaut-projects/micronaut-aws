@@ -1,5 +1,6 @@
 package io.micronaut.aws.lambda.events.tests;
 
+import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.aws.lambda.events.FileUtils;
 import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
@@ -18,10 +19,9 @@ public class ApplicationLoadBalancerRequestEventTest {
     @Test
     @SuppressWarnings("java:S1313") // IP usage is safe here
     void testDeserializationOfApplicationLoadBalancerRequestEvent() throws IOException {
-        JsonMapperCustomPojoSerializer serializer = new JsonMapperCustomPojoSerializer();
         String json = FileUtils.text(this.getClass().getClassLoader(), "albRequest.json").orElse(null);
         assertNotNull(json);
-        ApplicationLoadBalancerRequestEvent event = assertDoesNotThrow(() -> serializer.fromJson(json, ApplicationLoadBalancerRequestEvent.class));
+        ApplicationLoadBalancerRequestEvent event = assertDoesNotThrow(() -> CustomPojoSerializerUtils.serializeFromJson(json, ApplicationLoadBalancerRequestEvent.class));
         assertEquals("arn:aws:elasticloadbalancing:us-east-1:646307737039:targetgroup/fubar-dev-tg/97533b9b279f7d7f", event.getRequestContext().getElb().getTargetGroupArn());
         assertEquals("GET", event.getHttpMethod());
         assertEquals("/", event.getPath());

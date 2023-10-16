@@ -1,5 +1,6 @@
 package io.micronaut.aws.lambda.events.tests;
 
+import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.aws.lambda.events.FileUtils;
 import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
@@ -18,10 +19,9 @@ public class ApplicationLoadBalancerResponseEventTest {
 
     @Test
     void testDeserializationOfApplicationLoadBalancerResponseEvent() throws IOException {
-        JsonMapperCustomPojoSerializer serializer = new JsonMapperCustomPojoSerializer();
         String json = FileUtils.text(this.getClass().getClassLoader(), "albResponse.json").orElse(null);
         assertNotNull(json);
-        ApplicationLoadBalancerResponseEvent event = assertDoesNotThrow(() -> serializer.fromJson(json, ApplicationLoadBalancerResponseEvent.class));
+        ApplicationLoadBalancerResponseEvent event = assertDoesNotThrow(() -> CustomPojoSerializerUtils.serializeFromJson(json, ApplicationLoadBalancerResponseEvent.class));
         assertEquals(200, event.getStatusCode());
         assertNull(event.getStatusDescription());
         assertFalse(event.getIsBase64Encoded());
