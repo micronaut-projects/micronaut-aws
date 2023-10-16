@@ -1,9 +1,7 @@
 package io.micronaut.aws.lambda.events.tests;
 
-import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent;
 import io.micronaut.aws.lambda.events.FileUtils;
-import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

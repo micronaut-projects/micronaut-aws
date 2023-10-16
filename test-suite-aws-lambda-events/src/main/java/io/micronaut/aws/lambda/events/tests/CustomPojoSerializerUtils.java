@@ -9,6 +9,9 @@ import java.util.ServiceLoader;
 
 public final class CustomPojoSerializerUtils {
 
+    private CustomPojoSerializerUtils() {
+    }
+
     public static CustomPojoSerializer loadSerializer()  {
 
         ServiceLoader<CustomPojoSerializer> loader = ServiceLoader.load(CustomPojoSerializer.class);
@@ -31,7 +34,7 @@ public final class CustomPojoSerializerUtils {
             return customPojoSerializer.fromJson(input, eventClass);
         }
 
-        PojoSerializer pojoSerializer = loadSerializer(eventClass);
-        return (T) pojoSerializer.fromJson(input);
+        PojoSerializer<T> pojoSerializer = loadSerializer(eventClass);
+        return pojoSerializer.fromJson(input);
     }
 }
