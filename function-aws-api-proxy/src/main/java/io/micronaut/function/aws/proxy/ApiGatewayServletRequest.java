@@ -125,11 +125,10 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         @Nullable Map<String, List<String>> multiQueryParameters
     ) {
         UriBuilder uriBuilder = UriBuilder.of(path == null ? SLASH : path);
-        if (queryParameters != null) {
-            queryParameters.forEach((key, value) -> splitCommaSeparatedValue(value).forEach(token -> uriBuilder.queryParam(key, token)));
-        }
-        if (multiQueryParameters != null) {
-            multiQueryParameters.forEach((key, values) -> values.forEach(value -> uriBuilder.queryParam(key, value)));
+        if (CollectionUtils.isNotEmpty(multiQueryParameters)) {
+            multiQueryParameters.forEach((key, values) -> uriBuilder.queryParam(key, values.toArray()));
+        } else if (CollectionUtils.isNotEmpty(queryParameters)) {
+            queryParameters.forEach(uriBuilder::queryParam);
         }
         return uriBuilder.build();
     }
