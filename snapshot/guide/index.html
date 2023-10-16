@@ -2892,29 +2892,7 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 
 
 <div class="paragraph">
-<p><code>micronaut-function-aws</code> provides an implementation of <code>com.amazonaws.services.lambda.runtime.CustomPojoSerializer</code> which is loaded via SPI. This <code>CustomPojoSerialization</code> avoids your Micronaut function to pay a double hit on performances when using a serialization library inside the Lambda function.</p>
-</div>
-<div class="paragraph">
-<p>You need to add a dependency to either <a href="https://micronaut-projects.github.io/micronaut-serialization/latest/guide">Micronaut Serialization</a></p>
-</div>
-<div class="paragraph">
-<p>        <div class="listingblock multi-language-sample">
-<div class="title"></div>
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.serde:micronaut-serde-jackson")</span></code></pre>
-</div>
-</div>
-<div class="listingblock multi-language-sample">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
-    &lt;groupId&gt;io.micronaut.serde&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-serde-jackson&lt;/artifactId&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div></p>
-</div>
-<div class="paragraph">
-<p>or to Micronaut Jackson Databind:</p>
+<p>You need to add a dependency to Micronaut Jackson Databind:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -2928,6 +2906,25 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-jackson-databind&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>or a dependency to <a href="https://micronaut-projects.github.io/micronaut-serialization/latest/guide">Micronaut Serialization</a></p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.serde:micronaut-serde-jackson")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.serde&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-serde-jackson&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
@@ -2960,6 +2957,10 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
+</div>
+<div class="paragraph">
+<p><code>micronaut-aws-lambda-events-serde</code> provides an implementation of <code>com.amazonaws.services.lambda.runtime.CustomPojoSerializer</code> which is loaded via SPI.
+This <code>CustomPojoSerialization</code> avoids your Micronaut function paying a double hit on performance when using a serialization library inside the Lambda function.</p>
 </div>
 
 <h2 id="afterExecutionEvent"><a class="anchor" href="#afterExecutionEvent"></a>10.11 AfterExecutionEvent</h2>
