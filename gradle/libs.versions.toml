@@ -14,7 +14,7 @@ assertj = '3.24.2'
 
 micronaut-discovery = "4.0.3"
 micronaut-groovy = "4.0.1"
-micronaut-logging = "1.0.0"
+micronaut-logging = "1.1.2"
 micronaut-mongodb = "5.0.1"
 micronaut-reactor = "3.0.3"
 micronaut-security = "4.1.0"
