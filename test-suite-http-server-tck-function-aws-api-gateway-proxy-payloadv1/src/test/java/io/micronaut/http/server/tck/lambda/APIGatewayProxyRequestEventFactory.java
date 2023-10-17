@@ -38,6 +38,8 @@ import java.util.Map;
 @Internal
 public final class APIGatewayProxyRequestEventFactory {
 
+    private static final String COMMA = ",";
+
     private APIGatewayProxyRequestEventFactory() {
     }
 
@@ -45,13 +47,11 @@ public final class APIGatewayProxyRequestEventFactory {
     public static APIGatewayProxyRequestEvent create(@NonNull HttpRequest<?> request, JsonMapper jsonMapper) {
         Map<String, String> headers = new LinkedHashMap<>();
         Map<String, List<String>> multiHeaders = new LinkedHashMap<>();
-        request.getHeaders().forEach((name, values) -> {
-            if (values.size() > 1) {
-                multiHeaders.put(name, values);
-            } else {
-                headers.put(name, values.get(0));
-            }
-        });
+
+        for (String headerName : request.getHeaders().names()) {
+            multiHeaders.put(headerName, request.getHeaders().getAll(headerName));
+            headers.put(headerName, String.join(COMMA, request.getHeaders().getAll(headerName)));
+        }
         try {
             Cookies cookies = request.getCookies();
             boolean many = cookies.getAll().size() > 1;

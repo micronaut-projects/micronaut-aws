@@ -1,14 +1,14 @@
 [versions]
-micronaut = "4.0.5"
+micronaut = "4.0.6"
 micronaut-docs = "2.0.0"
-micronaut-test = "4.0.1"
+micronaut-test = "4.0.2"
 micronaut-testresources = "2.0.0"
 groovy = "4.0.13"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
-fileupload = '0.0.5'
-jetty = '11.0.15'
+fileupload = '0.0.6'
+jetty = '11.0.16'
 logback-json-classic = '0.1.5'
 assertj = '3.24.2'
 
@@ -19,31 +19,32 @@ micronaut-mongodb = "5.0.1"
 micronaut-reactor = "3.0.2"
 micronaut-security = "4.0.4"
 micronaut-serde = "2.0.2"
-micronaut-servlet = "4.0.4"
+micronaut-servlet = "4.0.5"
 micronaut-views = "4.0.1"
-micronaut-validation = "4.0.1"
+micronaut-validation = "4.0.3"
 
-managed-alexa-ask-sdk = "2.71.0"
-managed-aws-java-sdk-v1 = '1.12.539'
-managed-aws-java-sdk-v2 = '2.20.136'
+managed-alexa-ask-sdk = "2.86.0"
+managed-aws-java-sdk-v1 = '1.12.566'
+managed-aws-java-sdk-v2 = '2.20.162'
 managed-aws-lambda = '1.2.3'
-managed-aws-lambda-events = '3.11.2'
+managed-aws-lambda-events = '3.11.3'
 managed-aws-lambda-java-serialization = '1.1.2'
+aws-lambda-java-runtime-interface-client = '2.4.1'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
-slf4j = "2.0.7"
+slf4j = "2.0.9"
 servlet-api = "2.5"
-testcontainers = "1.18.1"
+testcontainers = "1.19.1"
 javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "23.0.1"
-kotlin = "1.8.21"
+graal = "23.1.0"
+kotlin = "1.9.10"
 
 # Micronaut
-micronaut-gradle-plugin = "4.0.2"
+micronaut-gradle-plugin = "4.0.4"
 
 [libraries]
 # Core
@@ -109,6 +110,7 @@ managed-aws-java-sdk-core = { module = 'com.amazonaws:aws-java-sdk-core', versio
 managed-aws-lambda-core = { module = 'com.amazonaws:aws-lambda-java-core', version.ref = 'managed-aws-lambda'}
 managed-aws-lambda-events = { module = 'com.amazonaws:aws-lambda-java-events', version.ref = 'managed-aws-lambda-events' }
 managed-aws-lambda-java-serialization = { module = 'com.amazonaws:aws-lambda-java-serialization', version.ref = 'managed-aws-lambda-java-serialization' }
+aws-lambda-java-runtimeinterfaceclient = { module = 'com.amazonaws:aws-lambda-java-runtime-interface-client', version.ref = 'aws-lambda-java-runtime-interface-client' }
 
 managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanager', version.ref = 'managed-aws-java-sdk-v2' }
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }

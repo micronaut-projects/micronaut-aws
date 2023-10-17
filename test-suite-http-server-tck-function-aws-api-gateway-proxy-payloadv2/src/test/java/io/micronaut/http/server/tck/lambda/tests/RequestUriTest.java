@@ -26,28 +26,58 @@ import io.micronaut.http.uri.UriBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.Optional;
 
 import static io.micronaut.http.tck.TestScenario.asserts;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//TODO Delete when https://github.com/micronaut-projects/micronaut-core/pull/9791
 @SuppressWarnings({
     "java:S5960", // We're allowed assertions, as these are used in tests only
     "checkstyle:MissingJavadocType",
     "checkstyle:DesignForExtension"
 })
-public class RequestUriContainsQueryValueTest {
+public class RequestUriTest {
 
-    public static final String SPEC_NAME = "RequestUriContainsQueryValueTest";
+    public static final String SPEC_NAME = "RequestUriTest";
 
     @Test
     void testRequestUriContainsQueryValue() throws IOException {
+        URI uri = UriBuilder.of("/requesturi")
+            .queryParam("A", "foo")
+            .queryParam("B", "bar")
+            .build();
         asserts(SPEC_NAME,
-            HttpRequest.GET(UriBuilder.of("/requesturi").queryParam("foo", "bar").build()),
+            HttpRequest.GET(uri),
             (server, request) -> AssertionUtils.assertDoesNotThrow(server, request,
                 HttpResponseAssertion.builder()
                     .status(HttpStatus.OK)
-                    .body("/requesturi?foo=bar")
+                    .assertResponse(httpResponse -> {
+                        Optional<String> resultOptional = httpResponse.getBody(String.class);
+                        assertTrue(resultOptional.isPresent());
+                        String result = resultOptional.get();
+                        assertNotNull(result);
+                        assertEquals(1, countOcurrences(result, "A=foo"));
+                        assertEquals(1, countOcurrences(result, "B=bar"));
+                    })
                     .build()));
+    }
+
+    private static int countOcurrences(String str, String findStr) {
+        int lastIndex = 0;
+        int count = 0;
+        while (lastIndex != -1) {
+
+            lastIndex = str.indexOf(findStr, lastIndex);
+
+            if (lastIndex != -1) {
+                count++;
+                lastIndex += findStr.length();
+            }
+        }
+        return count;
     }
 
     @Requires(property = "spec.name", value = SPEC_NAME)

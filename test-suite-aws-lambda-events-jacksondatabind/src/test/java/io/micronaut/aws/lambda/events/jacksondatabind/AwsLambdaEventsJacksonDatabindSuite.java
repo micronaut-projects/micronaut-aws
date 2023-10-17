@@ -5,7 +5,10 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SelectPackages("io.micronaut.aws.lambda.events.tests")
+@SelectPackages({
+    "io.micronaut.aws.lambda.events.tests",
+    "io.micronaut.aws.lambda.events.jacksondatabind.tests"
+})
 @SuiteDisplayName("AWS Lambda Events TCK for JacksonDatabind")
 public class AwsLambdaEventsJacksonDatabindSuite {
 }
