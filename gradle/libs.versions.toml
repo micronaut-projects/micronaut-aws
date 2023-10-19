@@ -3,7 +3,7 @@ micronaut = "4.1.9"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.0.2"
 micronaut-testresources = "2.0.0"
-groovy = "4.0.13"
+groovy = "4.0.15"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
@@ -53,7 +53,6 @@ micronaut-gradle-plugin = "4.1.1"
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
-micronaut-logging = { module = "io.micronaut.discovery:micronaut-logging-bom", version.ref = "micronaut-logging" }
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
 micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
