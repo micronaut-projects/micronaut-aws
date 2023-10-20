@@ -22,16 +22,11 @@ tasks {
     named("test", Test::class) {
         useJUnitPlatform()
     }
-
-    named("compileTestKotlin", org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class) {
-        kotlinOptions {
-            jvmTarget = "17"
-            javaParameters = true
-        }
-    }
 }
 
-java {
-    sourceCompatibility = JavaVersion.toVersion("17")
-    targetCompatibility = JavaVersion.toVersion("17")
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+
 }
