@@ -13,7 +13,9 @@ io.micronaut.aws.alexa.ssml
 io.micronaut.aws.apigateway
 io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
+io.micronaut.aws.lambda.events
 io.micronaut.aws.lambda.events.serde
+io.micronaut.aws.lambda.events.tests
 io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
 io.micronaut.aws.sdk.v2.client.apache
