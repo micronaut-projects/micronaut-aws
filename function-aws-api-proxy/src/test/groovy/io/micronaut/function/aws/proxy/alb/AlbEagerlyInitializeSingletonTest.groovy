@@ -10,7 +10,7 @@ class AlbEagerlyInitializeSingletonTest extends Specification {
         ApplicationLoadBalancerFunction handler = new ApplicationLoadBalancerFunction()
 
         expect:
-        SingletonBean.PACKAGE == ApplicationLoadBalancerFunction.packageName
+        SingletonBean.PACKAGE[ApplicationLoadBalancerFunction.packageName]
 
         cleanup:
         handler.close()

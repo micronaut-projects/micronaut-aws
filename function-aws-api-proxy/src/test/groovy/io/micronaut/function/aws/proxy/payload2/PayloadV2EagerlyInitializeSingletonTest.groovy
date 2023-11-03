@@ -10,7 +10,7 @@ class PayloadV2EagerlyInitializeSingletonTest extends Specification {
         APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction()
 
         expect:
-        SingletonBean.PACKAGE == APIGatewayV2HTTPEventFunction.packageName
+        SingletonBean.PACKAGE[APIGatewayV2HTTPEventFunction.packageName]
 
         cleanup:
         handler.close()

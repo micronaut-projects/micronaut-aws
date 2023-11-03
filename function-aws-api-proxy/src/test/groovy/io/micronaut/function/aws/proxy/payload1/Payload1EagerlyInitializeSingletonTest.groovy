@@ -10,7 +10,7 @@ class Payload1EagerlyInitializeSingletonTest extends Specification {
         ApiGatewayProxyRequestEventFunction handler = new ApiGatewayProxyRequestEventFunction()
 
         expect:
-        SingletonBean.PACKAGE == ApiGatewayProxyRequestEventFunction.packageName
+        SingletonBean.PACKAGE[ApiGatewayProxyRequestEventFunction.packageName]
 
         cleanup:
         handler.close()

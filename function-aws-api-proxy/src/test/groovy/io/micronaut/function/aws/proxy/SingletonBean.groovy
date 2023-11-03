@@ -3,12 +3,16 @@ package io.micronaut.function.aws.proxy
 import io.micronaut.context.ApplicationContext
 import jakarta.inject.Singleton
 
+import java.util.concurrent.ConcurrentHashMap
+
 @Singleton
 class SingletonBean {
 
-    static String PACKAGE = null;
+    static Map<String, Boolean> PACKAGE = new ConcurrentHashMap<>(3);
 
     SingletonBean(ApplicationContext ctx) {
-        PACKAGE = ctx.environment.packages.find()
+        ctx.environment.packages.find()?.with {
+            PACKAGE[it] = true
+        }
     }
 }

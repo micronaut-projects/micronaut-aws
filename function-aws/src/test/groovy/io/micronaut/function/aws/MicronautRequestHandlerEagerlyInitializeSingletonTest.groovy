@@ -9,7 +9,7 @@ class MicronautRequestHandlerEagerlyInitializeSingletonTest extends Specificatio
         FunctionRequestHandler handler = new FunctionRequestHandler()
 
         expect:
-        SingletonBean.PACKAGE == FunctionRequestHandler.packageName
+        SingletonBean.PACKAGE[FunctionRequestHandler.packageName]
 
         cleanup:
         handler.close()
