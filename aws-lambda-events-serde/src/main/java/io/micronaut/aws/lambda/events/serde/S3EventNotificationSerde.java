@@ -24,7 +24,7 @@ import io.micronaut.serde.annotation.SerdeImport;
  * @author Sergio del Amo
  * @since 4.0.0
  */
-@SerdeImport(value = S3EventNotification.class)
+@SerdeImport(value = S3EventNotification.class, mixin = S3EventSerde.S3EventMixin.class)
 @SerdeImport(value = S3EventNotification.RequestParametersEntity.class)
 @SerdeImport(value = S3EventNotification.ResponseElementsEntity.class)
 @SerdeImport(value = S3EventNotification.S3ObjectEntity.class)

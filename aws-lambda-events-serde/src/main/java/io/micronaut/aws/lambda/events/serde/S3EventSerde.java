@@ -15,9 +15,12 @@
  */
 package io.micronaut.aws.lambda.events.serde;
 
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.micronaut.serde.annotation.SerdeImport;
+
+import java.util.List;
 
 /**
  * {@link SerdeImport} for {@link S3Event}.
@@ -26,9 +29,13 @@ import io.micronaut.serde.annotation.SerdeImport;
  * @since 4.0.0
  */
 @SerdeImport(S3EventNotification.S3EventNotificationRecord.class)
-@SerdeImport(S3EventNotification.class)
+@SerdeImport(value = S3EventNotification.class, mixin = S3EventSerde.S3EventMixin.class)
 @SerdeImport(S3EventNotification.S3Entity.class)
-@SerdeImport(S3Event.class)
+@SerdeImport(value = S3Event.class, mixin = S3EventSerde.S3EventMixin.class)
 public class S3EventSerde {
 
+    public interface S3EventMixin {
+        @JsonProperty("Records") List<?> getRecords();
+        @JsonProperty("Records") void setRecords(List<?> records);
+    }
 }

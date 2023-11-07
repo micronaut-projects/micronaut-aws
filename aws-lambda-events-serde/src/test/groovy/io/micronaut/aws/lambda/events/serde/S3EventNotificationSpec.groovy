@@ -5,7 +5,6 @@ import io.micronaut.context.BeanContext
 import io.micronaut.serde.ObjectMapper
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 @MicronautTest(startApplication = false)
@@ -16,7 +15,6 @@ class S3EventNotificationSpec extends Specification {
     @Inject
     BeanContext beanContext
 
-    @PendingFeature
     void "S3EventNotification can be serialized"() {
         given:
         File f = new File("src/test/resources/s3-put.json")
@@ -30,7 +28,8 @@ class S3EventNotificationSpec extends Specification {
 
         then:
         event
-        event.records
+        event.records != null
+        event.records.size() > 0
     }
 
 }
