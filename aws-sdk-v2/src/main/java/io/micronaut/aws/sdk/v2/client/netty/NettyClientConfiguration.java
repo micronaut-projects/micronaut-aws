@@ -45,10 +45,7 @@ public class NettyClientConfiguration extends AWSConfiguration {
      */
     public NettyNioAsyncHttpClient.Builder getBuilder() {
         ProxyConfiguration proxyConfig = proxy.build();
-        if (proxyConfig.scheme() == null &&
-                proxyConfig.host() == null &&
-                proxy.useSystemPropertyValues(false).build().nonProxyHosts().isEmpty()
-        ) {
+        if (proxyConfig.host() == null) {
             return builder;
         } else {
             return builder.proxyConfiguration(proxyConfig);
