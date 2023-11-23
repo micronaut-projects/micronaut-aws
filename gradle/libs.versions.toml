@@ -24,7 +24,7 @@ micronaut-views = "4.0.1"
 micronaut-validation = "4.0.3"
 
 managed-alexa-ask-sdk = "2.86.0"
-managed-aws-java-sdk-v1 = '1.12.586'
+managed-aws-java-sdk-v1 = '1.12.595'
 managed-aws-java-sdk-v2 = '2.20.162'
 managed-aws-lambda = '1.2.3'
 managed-aws-lambda-events = '3.11.3'
@@ -35,7 +35,7 @@ managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
 slf4j = "2.0.9"
 servlet-api = "2.5"
-testcontainers = "1.19.1"
+testcontainers = "1.19.3"
 javapoet = "1.13.0"
 
 # The following version should probably
