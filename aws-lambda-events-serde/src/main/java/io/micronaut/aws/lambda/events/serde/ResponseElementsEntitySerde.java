@@ -50,10 +50,14 @@ public class ResponseElementsEntitySerde implements Serde<S3EventNotification.Re
     @Override
     public void serialize(@NonNull Encoder encoder, @NonNull EncoderContext context, @NonNull Argument<? extends S3EventNotification.ResponseElementsEntity> type, S3EventNotification.@NonNull ResponseElementsEntity value) throws IOException {
         encoder.encodeObject(type);
-        encoder.encodeKey(X_AMZ_ID_2);
-        encoder.encodeString(value.getxAmzId2());
-        encoder.encodeKey(X_AMZ_REQUEST_ID);
-        encoder.encodeString(value.getxAmzRequestId());
+        if (value.getxAmzId2() != null) {
+            encoder.encodeKey(X_AMZ_ID_2);
+            encoder.encodeString(value.getxAmzId2());
+        }
+        if (value.getxAmzRequestId() != null) {
+            encoder.encodeKey(X_AMZ_REQUEST_ID);
+            encoder.encodeString(value.getxAmzRequestId());
+        }
         encoder.finishStructure();
     }
 }
