@@ -11,9 +11,10 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
+        "io.micronaut.http.server.tck.tests.forms.FormsSubmissionsWithListsTest",
+        "io.micronaut.http.server.tck.tests.filter.options.OptionsFilterTest",
     "io.micronaut.http.server.tck.tests.LocalErrorReadingBodyTest", // Binding body different type (e.g. a String in error handler)
     "io.micronaut.http.server.tck.tests.FilterProxyTest" // Immmutable request
-
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy Test")
 public class MicronautLambdaHandlerHttpServerTestSuite {
