@@ -11,7 +11,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
-        "io.micronaut.http.server.tck.tests.HeadersTest", // https://github.com/micronaut-projects/micronaut-aws/issues/1861
+        "io.micronaut.http.server.tck.tests.filter.options.OptionsFilterTest",
         "io.micronaut.http.server.tck.tests.FilterProxyTest" // Immmutable request
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v1 Event model")
