@@ -38,9 +38,9 @@ public class HttpRequestStageResolver implements StageResolver<HttpRequest<?>> {
     public Optional<String> resolve(@NonNull HttpRequest<?> request) {
         if (request instanceof ServletHttpRequest servletHttpRequest) {
             Object nativeRequest = servletHttpRequest.getNativeRequest();
-            if (nativeRequest instanceof APIGatewayV2HTTPEvent aPIGatewayV2HTTPEvent) {
+            if (nativeRequest instanceof APIGatewayV2HTTPEvent aPIGatewayV2HTTPEvent && aPIGatewayV2HTTPEvent.getRequestContext() != null) {
                 return Optional.of(aPIGatewayV2HTTPEvent.getRequestContext().getStage());
-            } else if (nativeRequest instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent) {
+            } else if (nativeRequest instanceof APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent && apiGatewayProxyRequestEvent.getRequestContext() != null) {
                 return Optional.of(apiGatewayProxyRequestEvent.getRequestContext().getStage());
             }
         }
