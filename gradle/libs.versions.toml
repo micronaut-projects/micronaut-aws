@@ -27,7 +27,7 @@ managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.595'
 managed-aws-java-sdk-v2 = '2.21.29'
 managed-aws-lambda = '1.2.3'
-managed-aws-lambda-events = '3.11.3'
+managed-aws-lambda-events = '3.11.4'
 managed-aws-lambda-java-serialization = '1.1.4'
 aws-lambda-java-runtime-interface-client = '2.4.1'
 
