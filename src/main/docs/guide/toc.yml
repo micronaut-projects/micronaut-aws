@@ -63,6 +63,7 @@ lambda:
   lambdaTesting: Testing Lambda Handlers
   lambdaStreamHandler: MicronautRequestStreamHandler
   lambdafunctionclient: Invoke Lambda with @FunctionClient
+  lambdaGuides: AWS Lambda Guides
 alexa:
   title: Alexa Support
   alexaskillconfiguration: Alexa Skill Configuration
