@@ -19,7 +19,7 @@ import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerReque
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.convert.ConversionService;
-import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
+import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
@@ -44,7 +44,7 @@ public class ApplicationLoadBalancerHandler extends ServletHttpHandler<Applicati
             request,
             new ApplicationLoadBalancerServletResponse<>(
                 getApplicationContext().getConversionService(),
-                getApplicationContext().getBean(BinaryContentConfiguration.class)
+                getApplicationContext().getBean(BinaryTypeConfiguration.class)
             ),
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)

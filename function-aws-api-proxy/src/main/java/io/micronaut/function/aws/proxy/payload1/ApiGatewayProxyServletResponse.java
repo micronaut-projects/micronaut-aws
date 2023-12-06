@@ -18,8 +18,8 @@ package io.micronaut.function.aws.proxy.payload1;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
-import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
@@ -34,8 +34,9 @@ import java.util.Base64;
  */
 @Internal
 public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpResponse<APIGatewayProxyResponseEvent, B> {
-    protected ApiGatewayProxyServletResponse(ConversionService conversionService, BinaryContentConfiguration binaryContentConfiguration) {
-        super(conversionService, binaryContentConfiguration);
+
+    protected ApiGatewayProxyServletResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
+        super(conversionService, binaryTypeConfiguration);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
             .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
 
-        if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {
+        if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             apiGatewayProxyResponseEvent
                 .withIsBase64Encoded(true)
                 .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
