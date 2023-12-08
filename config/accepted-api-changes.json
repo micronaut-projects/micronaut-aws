@@ -1259,5 +1259,95 @@
     "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
     "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
     "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1()",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef1",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2()",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3()",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2ProxyRequestEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes"
   }
 ]
