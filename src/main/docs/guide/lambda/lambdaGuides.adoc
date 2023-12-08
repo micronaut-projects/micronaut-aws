@@ -1,0 +1,10 @@
+Read the following guides to learn more abut AWS Lambda:
+
+- https://guides.micronaut.io/latest/micronaut-aws-lambda-eventbridge-event.html[Micronaut AWS Lambda and a cron job]
+- https://guides.micronaut.io/latest/micronaut-aws-lambda-s3-event.html[Micronaut AWS Lambda and s3 event]
+- https://guides.micronaut.io/latest/micronaut-aws-secretsmanager-rotation.html[Secret rotation AWS Lambda and secrets manager]
+- https://guides.micronaut.io/latest/mn-application-aws-lambda-graalvm.html[Deploy a Micronaut application as a graalvm native executable to AWS Lambda]
+- https://guides.micronaut.io/latest/mn-application-aws-lambda-java-runtime.html[Deploy a Micronaut application to AWS Lambda Java 17 runtime]
+- https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda.html[Deploy a serverless Micronaut function to AWS Lambda Java 17 runtime]
+- https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda-function-url.html[AWS Lambda function URL and a Micronaut function]
+- https://guides.micronaut.io/latest/mn-serverless-function-aws-lambda-graalvm.html[Deploy a Micronaut function as a GraalVM native executable to AWS Lambda]

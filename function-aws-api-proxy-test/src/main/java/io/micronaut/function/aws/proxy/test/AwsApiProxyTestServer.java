@@ -88,7 +88,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
     @Override
     public EmbeddedServer start() {
         if (running.compareAndSet(false, true)) {
-            int port = serverPort.getPort();
+            int port = serverPort.port();
             try {
                 this.server = new Server(port);
                 this.server.setHandler(new AwsProxyHandler(applicationContext));
@@ -206,5 +206,8 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
             responseAdapter.handle(conversionService, request, apiGatewayV2HTTPResponse, response);
             baseRequest.setHandled(true);
         }
+    }
+
+    private record ServerPort(boolean random, Integer port) {
     }
 }

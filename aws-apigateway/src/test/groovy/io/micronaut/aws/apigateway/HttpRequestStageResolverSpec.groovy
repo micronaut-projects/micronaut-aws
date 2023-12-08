@@ -23,6 +23,19 @@ class HttpRequestStageResolverSpec extends Specification {
         'foo' == resolver.resolve(request).get()
     }
 
+    void "no npe if no context"() {
+        HttpRequestStageResolver resolver = new HttpRequestStageResolver()
+        def proxyRequestStub = Stub(APIGatewayV2HTTPEvent) {
+            getRequestContext() >> null
+        }
+        def request = Stub(ServletHttpRequest) {
+            getNativeRequest() >> proxyRequestStub
+        }
+
+        expect:
+        resolver.resolve(request).isEmpty()
+    }
+
     void "resolve stage from HttpRequest"() {
         given:
         HttpRequestStageResolver resolver = new HttpRequestStageResolver()
