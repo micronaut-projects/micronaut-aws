@@ -16,9 +16,10 @@
 package io.micronaut.function.aws.proxy.alb;
 
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
-import io.micronaut.function.aws.proxy.BinaryContentConfiguration;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
 
 import java.util.Base64;
@@ -30,10 +31,11 @@ import java.util.Base64;
  * @author Sergio del Amo
  * @since 4.0.0
  */
+@Internal
 public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHttpResponse<ApplicationLoadBalancerResponseEvent, B> {
 
-    protected ApplicationLoadBalancerServletResponse(ConversionService conversionService, BinaryContentConfiguration binaryContentConfiguration) {
-        super(conversionService, binaryContentConfiguration);
+    protected ApplicationLoadBalancerServletResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
+        super(conversionService, binaryTypeConfiguration);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHt
         nativeResponse.setHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
         nativeResponse.setMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers));
         nativeResponse.setStatusCode(status);
-        if (binaryContentConfiguration.isBinary(getHeaders().getContentType().orElse(null))) {
+        if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             nativeResponse.setIsBase64Encoded(true);
             nativeResponse.setBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
         } else {

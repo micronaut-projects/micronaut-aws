@@ -20,7 +20,12 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
-import io.micronaut.http.*;
+import io.micronaut.function.BinaryTypeConfiguration;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.netty.cookies.NettyCookie;
 import io.micronaut.servlet.http.ServletHttpResponse;
@@ -44,14 +49,14 @@ public abstract class AbstractServletHttpResponse<R, B> implements ServletHttpRe
     protected final ByteArrayOutputStream body = new ByteArrayOutputStream();
     protected int status = HttpStatus.OK.getCode();
     protected  final MutableHttpHeaders headers;
-    protected final BinaryContentConfiguration binaryContentConfiguration;
+    protected final BinaryTypeConfiguration binaryTypeConfiguration;
     private MutableConvertibleValues<Object> attributes;
     private B bodyObject;
     private String reason = HttpStatus.OK.getReason();
 
-    protected AbstractServletHttpResponse(ConversionService conversionService, BinaryContentConfiguration binaryContentConfiguration) {
+    protected AbstractServletHttpResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
         this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
-        this.binaryContentConfiguration = binaryContentConfiguration;
+        this.binaryTypeConfiguration = binaryTypeConfiguration;
     }
 
     @Override

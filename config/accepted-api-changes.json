@@ -1139,5 +1139,125 @@
     "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsFirehoseInputPreprocessingEventSerde$IntrospectionRef3",
     "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
     "reason": "Bean definition changes for Micronaut 4.0.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4()",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef4",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5()",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolDefineAuthChallengeEventSerde$IntrospectionRef5",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection changes in Micronaut 4.2.0"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Constructor io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference()",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanContextConditional",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.beans.BeanInfo",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataDelegate",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadata",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.QualifiedBeanType",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.core.type.ArgumentCoercible",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanType",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.$BinaryContentConfiguration$Definition$Reference",
+    "member": "Implemented interface io.micronaut.inject.BeanDefinitionReference",
+    "reason": "Deleted BinaryContentConfiguration for 4.2.0 (Micronaut 4.3.0)"
   }
 ]
