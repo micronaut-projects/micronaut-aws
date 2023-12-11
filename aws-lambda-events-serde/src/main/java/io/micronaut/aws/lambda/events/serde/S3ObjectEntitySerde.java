@@ -15,6 +15,8 @@
  */
 package io.micronaut.aws.lambda.events.serde;
 
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonGetter;
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
@@ -22,23 +24,40 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.type.Argument;
 import io.micronaut.json.tree.JsonNode;
 import io.micronaut.serde.Decoder;
-import io.micronaut.serde.Encoder;
-import io.micronaut.serde.Serde;
+import io.micronaut.serde.Deserializer;
+import io.micronaut.serde.annotation.SerdeImport;
+import io.micronaut.serde.annotation.Serdeable;
+import io.micronaut.serde.exceptions.SerdeException;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * This seems to be necessary because Serde was not picking the appropriate constructor {@link com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification.S3ObjectEntity(String, Long, String, String, String)}.
  */
 @Internal
 @Singleton
-public class S3ObjectEntitySerde implements Serde<S3EventNotification.S3ObjectEntity> {
-    private final String KEY = "key";
-    private final String SIZE = "size";
-    private final String ETAG = "eTag";
-    private final String VERSION_ID = "versionId";
-    private final String SEQUENCER = "sequencer";
+@SerdeImport(value = S3EventNotification.S3ObjectEntity.class, mixin = S3ObjectEntitySerde.S3ObjectEntityMixin.class, deserializable = false)
+public class S3ObjectEntitySerde implements Deserializer<S3EventNotification.S3ObjectEntity> {
+    private static final String KEY = "key";
+    private static final String SIZE = "size";
+    private static final String ETAG = "eTag";
+    private static final String VERSION_ID = "versionId";
+    private static final String SEQUENCER = "sequencer";
+
+    @Override
+    public @NonNull Deserializer<S3EventNotification.S3ObjectEntity> createSpecific(DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws SerdeException {
+        Argument<S3ObjectEntityDes> arg = Argument.of(S3ObjectEntityDes.class);
+        Deserializer<? extends S3ObjectEntityDes> specific = context.findDeserializer(S3ObjectEntityDes.class).createSpecific(context, arg);
+        return new Deserializer<>() {
+            @Override
+            public @Nullable S3EventNotification.S3ObjectEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
+                return specific.deserialize(decoder, context, arg).actual;
+            }
+        };
+    }
 
     @Override
     public @Nullable S3EventNotification.S3ObjectEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
@@ -62,29 +81,35 @@ public class S3ObjectEntitySerde implements Serde<S3EventNotification.S3ObjectEn
         return new  S3EventNotification.S3ObjectEntity(key, size, eTag, versionId, sequencer);
     }
 
-    @Override
-    public void serialize(@NonNull Encoder encoder, @NonNull EncoderContext context, @NonNull Argument<? extends S3EventNotification.S3ObjectEntity> type, S3EventNotification.@NonNull S3ObjectEntity value) throws IOException {
-        encoder.encodeObject(type);
-        if (value.getKey() != null) {
-            encoder.encodeKey(KEY);
-            encoder.encodeString(value.getKey());
+    @Serdeable.Deserializable
+    static final class S3ObjectEntityDes {
+        final S3EventNotification.S3ObjectEntity actual;
+
+        S3ObjectEntityDes(
+            @JsonProperty(KEY) String key,
+            @JsonProperty(SIZE) Long size,
+            @JsonProperty(ETAG) String eTag,
+            @JsonProperty(VERSION_ID) String versionId,
+            @JsonProperty(SEQUENCER) String sequencer
+        ) {
+            actual = new S3EventNotification.S3ObjectEntity(key, size, eTag, versionId, sequencer);
         }
-        if (value.getSize() != null) {
-            encoder.encodeKey(SIZE);
-            encoder.encodeLong(value.getSize());
-        }
-        if (value.geteTag() != null) {
-            encoder.encodeKey(ETAG);
-            encoder.encodeString(value.geteTag());
-        }
-        if (value.getVersionId() != null) {
-            encoder.encodeKey(VERSION_ID);
-            encoder.encodeString(value.getVersionId());
-        }
-        if (value.getSequencer() != null) {
-            encoder.encodeKey(SEQUENCER);
-            encoder.encodeString(value.getSequencer());
-        }
-        encoder.finishStructure();
+    }
+
+    interface S3ObjectEntityMixin {
+        @JsonGetter(KEY)
+        String getKey();
+
+        @JsonGetter(SIZE)
+        Long getSizeAsLong();
+
+        @JsonGetter(ETAG)
+        String geteTag();
+
+        @JsonGetter(VERSION_ID)
+        String getVersionId();
+
+        @JsonGetter(SEQUENCER)
+        String getSequencer();
     }
 }

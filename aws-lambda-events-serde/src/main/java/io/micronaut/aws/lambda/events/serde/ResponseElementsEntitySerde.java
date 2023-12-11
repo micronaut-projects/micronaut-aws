@@ -15,49 +15,66 @@
  */
 package io.micronaut.aws.lambda.events.serde;
 
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonCreator;
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonGetter;
+import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.type.Argument;
-import io.micronaut.json.tree.JsonNode;
 import io.micronaut.serde.Decoder;
-import io.micronaut.serde.Encoder;
-import io.micronaut.serde.Serde;
+import io.micronaut.serde.Deserializer;
+import io.micronaut.serde.annotation.SerdeImport;
+import io.micronaut.serde.annotation.Serdeable;
+import io.micronaut.serde.exceptions.SerdeException;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @see <a href="https://github.com/aws/aws-lambda-java-libs/blob/main/aws-lambda-java-serialization/src/main/java/com/amazonaws/services/lambda/runtime/serialization/events/serializers/S3EventSerializer.java#L526-L553">Custom Serialization for ResponseElementsEntity</a>
  */
 @Internal
 @Singleton
-public class ResponseElementsEntitySerde implements Serde<S3EventNotification.ResponseElementsEntity> {
+@SerdeImport(value = S3EventNotification.ResponseElementsEntity.class, mixin = ResponseElementsEntitySerde.ResponseElementsEntityMixin.class, deserializable = false)
+public class ResponseElementsEntitySerde implements Deserializer<S3EventNotification.ResponseElementsEntity> {
     private static final String X_AMZ_ID_2 = "x-amz-id-2";
     private static final String X_AMZ_REQUEST_ID = "x-amz-request-id";
 
     @Override
-    public @Nullable S3EventNotification.ResponseElementsEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
-        JsonNode node = decoder.decodeNode();
-        JsonNode xAmzId2Node = node.get(X_AMZ_ID_2);
-        String xAmzId2 = xAmzId2Node != null ? xAmzId2Node.getStringValue() : null;
-        JsonNode xAmzRequestIdNode = node.get(X_AMZ_REQUEST_ID);
-        String xAmzRequestId = xAmzRequestIdNode != null ? xAmzRequestIdNode.getStringValue() : null;
-        return new S3EventNotification.ResponseElementsEntity(xAmzId2, xAmzRequestId);
+    public @NonNull Deserializer<S3EventNotification.ResponseElementsEntity> createSpecific(DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws SerdeException {
+        Argument<ResponseElementsEntityDes> arg = Argument.of(ResponseElementsEntityDes.class);
+        Deserializer<? extends ResponseElementsEntityDes> specific = context.findDeserializer(ResponseElementsEntityDes.class).createSpecific(context, arg);
+        return new Deserializer<>() {
+            @Override
+            public @Nullable S3EventNotification.ResponseElementsEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
+                return specific.deserialize(decoder, context, arg).actual;
+            }
+        };
     }
 
     @Override
-    public void serialize(@NonNull Encoder encoder, @NonNull EncoderContext context, @NonNull Argument<? extends S3EventNotification.ResponseElementsEntity> type, S3EventNotification.@NonNull ResponseElementsEntity value) throws IOException {
-        encoder.encodeObject(type);
-        if (value.getxAmzId2() != null) {
-            encoder.encodeKey(X_AMZ_ID_2);
-            encoder.encodeString(value.getxAmzId2());
+    public @Nullable S3EventNotification.ResponseElementsEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
+        throw new UnsupportedEncodingException("Specific deserializer required");
+    }
+
+    @Serdeable.Deserializable
+    static final class ResponseElementsEntityDes {
+        final S3EventNotification.ResponseElementsEntity actual;
+
+        @JsonCreator
+        ResponseElementsEntityDes(@JsonProperty(X_AMZ_ID_2) String xAmzId2, @JsonProperty(X_AMZ_REQUEST_ID) String xAmzRequestId) {
+            this.actual = new S3EventNotification.ResponseElementsEntity(xAmzId2, xAmzRequestId);
         }
-        if (value.getxAmzRequestId() != null) {
-            encoder.encodeKey(X_AMZ_REQUEST_ID);
-            encoder.encodeString(value.getxAmzRequestId());
-        }
-        encoder.finishStructure();
+    }
+
+    interface ResponseElementsEntityMixin {
+        @JsonGetter(X_AMZ_ID_2)
+        String getxAmzId2();
+
+        @JsonGetter(X_AMZ_REQUEST_ID)
+        String getxAmzRequestId();
     }
 }
