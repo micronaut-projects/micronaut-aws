@@ -31,8 +31,6 @@ import io.micronaut.serde.exceptions.SerdeException;
 import jakarta.inject.Singleton;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 /**
  * This seems to be necessary because Serde was not picking the appropriate constructor {@link com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification.S3ObjectEntity(String, Long, String, String, String)}.
