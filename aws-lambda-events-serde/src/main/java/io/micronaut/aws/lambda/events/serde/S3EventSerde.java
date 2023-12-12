@@ -17,7 +17,6 @@ package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonGetter;
 import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
-import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.micronaut.core.annotation.Internal;
