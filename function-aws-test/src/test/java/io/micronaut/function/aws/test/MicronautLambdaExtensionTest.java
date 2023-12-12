@@ -15,12 +15,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MicronautLambdaTest
-public class MicronautLambdaExtensionTest {
+class MicronautLambdaExtensionTest {
+
     @Inject
     ApplicationContext context;
 
     @Test
-    public void testContextProperlyConfigured() {
+    void testContextProperlyConfigured() {
         Set<String> expectedNames = new HashSet<>(Arrays.asList("test", "function", "lambda"));
         assertNotNull(context);
         assertEquals(context.getEnvironment().getActiveNames(), expectedNames);
