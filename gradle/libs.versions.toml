@@ -37,6 +37,7 @@ slf4j = "2.0.10"
 servlet-api = "2.5"
 testcontainers = "1.19.3"
 javapoet = "1.13.0"
+mockito = '5.8.0'
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
@@ -119,6 +120,8 @@ testcontainers-bom = { module = 'org.testcontainers:testcontainers-bom', version
 testcontainers = { module = 'org.testcontainers:testcontainers' }
 testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
 testcontainers-spock = { module = 'org.testcontainers:spock' }
+mockito = { module = 'org.mockito:mockito-core', version.ref = 'mockito' }
+
 # Gradle
 
 gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
