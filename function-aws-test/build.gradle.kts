@@ -9,6 +9,7 @@ dependencies {
 
     testAnnotationProcessor(mn.micronaut.inject.java)
 
+    testImplementation("org.mockito:mockito-core:5.3.1")
     testRuntimeOnly(libs.junit.jupiter.engine)
     testRuntimeOnly(mn.snakeyaml)
     testRuntimeOnly(mnSerde.micronaut.serde.jackson)
