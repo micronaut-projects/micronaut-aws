@@ -54,7 +54,6 @@ class S3EventNotificationSpec extends Specification {
         assertionsS3Event(event)
     }
 
-    @PendingFeature
     void "S3Event can be deserialized with s3-put"() {
         given:
         File f = new File("src/test/resources/s3-put.json")
@@ -70,7 +69,6 @@ class S3EventNotificationSpec extends Specification {
         assertionsS3Put(event)
     }
 
-    @PendingFeature
     void "S3Event can be serialized with s3-event"() {
         given:
         File f = new File("src/test/resources/s3-event.json")

@@ -59,24 +59,7 @@ public class S3ObjectEntitySerde implements Deserializer<S3EventNotification.S3O
 
     @Override
     public @Nullable S3EventNotification.S3ObjectEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
-        JsonNode node = decoder.decodeNode();
-
-        JsonNode keyNode = node.get(KEY);
-        String key = keyNode != null ? keyNode.getStringValue() : null;
-
-        JsonNode sizeNode = node.get(SIZE);
-        Long size = sizeNode != null ? sizeNode.getLongValue() : null;
-
-        JsonNode eTagNode = node.get(ETAG);
-        String eTag = eTagNode != null ? eTagNode.getStringValue() : null;
-
-        JsonNode versionIdNode = node.get(VERSION_ID);
-        String versionId = versionIdNode != null ? versionIdNode.getStringValue() : null;
-
-        JsonNode sequencerNode = node.get(SEQUENCER);
-        String sequencer = sequencerNode != null ? sequencerNode.getStringValue() : null;
-
-        return new  S3EventNotification.S3ObjectEntity(key, size, eTag, versionId, sequencer);
+        throw new UnsupportedOperationException("Use specific deserializer");
     }
 
     @Serdeable.Deserializable
