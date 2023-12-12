@@ -1379,5 +1379,96 @@
     "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef1",
     "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
     "reason": "Introspection changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0()",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$APIGatewayV2WebSocketResponseSerde$IntrospectionRef0",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2()",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3()",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$S3EventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Introspection Changes"
   }
+
 ]
