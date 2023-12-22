@@ -55,15 +55,9 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      * Lambda deployment.
      */
     public MicronautRequestStreamHandler() {
-        // initialize the application context in the constructor
-        // this is faster in Lambda as init cost is giving higher processor priority
-        // see https://github.com/micronaut-projects/micronaut-aws/issues/18#issuecomment-530903419
-        try {
-            buildApplicationContext(null);
-        } catch (Exception e) {
-            LOG.error("Exception initializing handler: " + e.getMessage(), e);
-            throw e;
-        }
+        buildApplicationContext(null);
+        startEnvironment(applicationContext);
+        injectIntoApplicationContext();
     }
 
     /**
@@ -72,6 +66,12 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
      */
     public MicronautRequestStreamHandler(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        startEnvironment(applicationContext);
+        injectIntoApplicationContext();
+    }
+
+    private void injectIntoApplicationContext() {
+        applicationContext.inject(this);
     }
 
     @Override
@@ -91,7 +91,12 @@ public class MicronautRequestStreamHandler extends StreamFunctionExecutor<Contex
 
     @Override
     protected ApplicationContext buildApplicationContext(Context context) {
-        return super.buildApplicationContext(context);
+        try {
+            return super.buildApplicationContext(context);
+        } catch (Exception e) {
+            LOG.error("Exception initializing handler: " + e.getMessage(), e);
+            throw e;
+        }
     }
 
     @NonNull
