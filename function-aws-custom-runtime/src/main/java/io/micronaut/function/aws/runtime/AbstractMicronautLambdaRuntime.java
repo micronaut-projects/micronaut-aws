@@ -54,6 +54,9 @@ import io.micronaut.http.client.HttpClient;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.logging.LogLevel;
 
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -355,6 +358,21 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
     }
 
     /**
+     * Creates a GET request for the {@value #NEXT_INVOCATION_URI} endpoint.
+     * If a bean of type {@link UserAgentProvider} exists, it adds an HTTP Header User-Agent to the request.
+     * @param userAgentProvider UseAgent Provider
+     * @return a Mutable HTTP Request to the {@value #NEXT_INVOCATION_URI} endpoint.
+     */
+    @NonNull
+    protected MutableHttpRequest<?> createNextInvocationHttpRequest(@Nullable UserAgentProvider userAgentProvider) {
+        MutableHttpRequest<?> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
+        if (userAgentProvider != null) {
+            nextInvocationHttpRequest.header(USER_AGENT, userAgentProvider.userAgent());
+        }
+        return nextInvocationHttpRequest;
+    }
+
+    /**
      * Starts the runtime API event loop.
      *
      * @param runtimeApiURL             The runtime API URL.
@@ -371,6 +389,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             if (applicationContext == null) {
                 throw new ConfigurationException("Application Context is null");
             }
+            UserAgentProvider userAgentProvider = applicationContext.findBean(UserAgentProvider.class).orElse(null);
             populateUserAgent();
             final DefaultHttpClientConfiguration config = new DefaultHttpClientConfiguration();
             config.setReadIdleTimeout(null);
@@ -383,46 +402,11 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
             try {
                 while (loopUntil.test(runtimeApiURL)) {
-                    MutableHttpRequest<?> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
-                    applicationContext.findBean(UserAgentProvider.class)
-                        .ifPresent(userAgentProvider -> nextInvocationHttpRequest.header(USER_AGENT, userAgentProvider.userAgent()));
-                    final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
-                    final RequestType request = response.body();
-                    if (request != null) {
-                        logn(LogLevel.DEBUG, "request body ", request);
-
-                        HandlerRequestType handlerRequest = createHandlerRequest(request);
-                        final HttpHeaders headers = response.getHeaders();
-                        propagateTraceId(headers);
-
-                        final Context context = new RuntimeContext(headers);
-                        final String requestId = context.getAwsRequestId();
-                        logn(LogLevel.DEBUG, "request id ", requestId, " found");
-                        try {
-                            if (StringUtils.isNotEmpty(requestId)) {
-                                log(LogLevel.TRACE, "invoking handler\n");
-                                HandlerResponseType handlerResponse = null;
-                                if (handler instanceof RequestHandler) {
-                                    handlerResponse = ((RequestHandler<HandlerRequestType, HandlerResponseType>) handler).handleRequest(handlerRequest, context);
-                                }
-                                log(LogLevel.TRACE, "handler response received\n");
-                                final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
-                                log(LogLevel.TRACE, "sending function response\n");
-                                blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
-                            } else {
-                                log(LogLevel.WARN, "request id is empty\n");
-                            }
-
-                        } catch (Throwable e) {
-                            final StringWriter sw = new StringWriter();
-                            e.printStackTrace(new PrintWriter(sw));
-                            logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", e.getMessage(), sw);
-                            try {
-                                blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, e.getMessage(), null, null)));
-                            } catch (Throwable e2) {
-                                // swallow, nothing we can do...
-                            }
-                        }
+                    MutableHttpRequest<?> nextInvocationHttpRequest = createNextInvocationHttpRequest(userAgentProvider);
+                    if (handler instanceof RequestStreamHandler) {
+                        eventForRequestStreamHandlerHandler(blockingHttpClient, nextInvocationHttpRequest);
+                    } else if (handler instanceof RequestHandler<?, ?>) {
+                        eventForRequestHandler(blockingHttpClient, nextInvocationHttpRequest);
                     }
                 }
             } finally {
@@ -437,6 +421,107 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             e.printStackTrace();
             logn(LogLevel.ERROR, "Request loop failed with: ", e.getMessage());
             reportInitializationError(runtimeApiURL, e);
+        }
+    }
+
+    /**
+     * It handles an invocation event with a handler of type {@link RequestHandler}.
+     * @param blockingHttpClient Blocking HTTP Client
+     * @param nextInvocationHttpRequest Next Invocation HTTP Request
+     * @throws IOException Exception thrown while invoking the handler
+     */
+    protected void eventForRequestHandler(@NonNull BlockingHttpClient blockingHttpClient,
+                                          @NonNull MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
+        final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
+        final RequestType request = response.body();
+        if (request != null) {
+            logn(LogLevel.DEBUG, "request body ", request);
+            Context context = createRuntimeContext(response);
+            final String requestId = context.getAwsRequestId();
+            HandlerRequestType handlerRequest = createHandlerRequest(request);
+            try {
+                if (StringUtils.isNotEmpty(requestId)) {
+                    log(LogLevel.TRACE, "invoking handler\n");
+                    HandlerResponseType handlerResponse = null;
+                    if (handler instanceof RequestHandler) {
+                        handlerResponse = ((RequestHandler<HandlerRequestType, HandlerResponseType>) handler).handleRequest(handlerRequest, context);
+                    }
+                    log(LogLevel.TRACE, "handler response received\n");
+                    final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
+                    log(LogLevel.TRACE, "sending function response\n");
+                    blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
+                } else {
+                    log(LogLevel.WARN, "request id is empty\n");
+                }
+            } catch (Throwable e) {
+                handleInvocationThrowable(blockingHttpClient, requestId, e);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param blockingHttpClient Blocking HTTP Client
+     * @param requestId AWS Request ID retried via {@link Context#getAwsRequestId()}
+     * @param exception Execption thrown invoking the handler
+     */
+    protected void handleInvocationThrowable(@NonNull BlockingHttpClient blockingHttpClient,
+                                             @NonNull String requestId,
+                                             @NonNull Throwable exception) {
+        final StringWriter sw = new StringWriter();
+        exception.printStackTrace(new PrintWriter(sw));
+        logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", exception.getMessage(), sw);
+        try {
+            blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, exception.getMessage(), null, null)));
+        } catch (Throwable e2) {
+            // swallow, nothing we can do...
+        }
+    }
+
+    /**
+     *
+     * @param response Next Invocation Response
+     * @return a new {@link Context} backed by a {@link RuntimeContext} populated with the HTTP Headers of the Invocation Response.
+     */
+    protected Context createRuntimeContext(HttpResponse<?> response) {
+        final HttpHeaders headers = response.getHeaders();
+        propagateTraceId(headers);
+        final Context context = new RuntimeContext(headers);
+        final String requestId = context.getAwsRequestId();
+        logn(LogLevel.DEBUG, "request id ", requestId, " found");
+        return context;
+    }
+
+    /**
+     * It handles an invocation event with a handler of type {@link RequestStreamHandler}.
+     * @param blockingHttpClient Blocking HTTP Client
+     * @param nextInvocationHttpRequest Next Invocation HTTP Request
+     * @throws IOException Exception thrown while invoking the handler
+     */
+    protected void eventForRequestStreamHandlerHandler(@NonNull BlockingHttpClient blockingHttpClient,
+                                                       MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
+        if (handler instanceof RequestStreamHandler requestStreamHandler) {
+            final HttpResponse<byte[]> response = blockingHttpClient.exchange(nextInvocationHttpRequest, byte[].class);
+            final byte[] request = response.body();
+            if (request != null) {
+                Context context = createRuntimeContext(response);
+                String requestId = context.getAwsRequestId();
+                if (StringUtils.isNotEmpty(requestId)) {
+                    try (InputStream inputStream = new ByteArrayInputStream(request)) {
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                        log(LogLevel.TRACE, "invoking handler\n");
+                        requestStreamHandler.handleRequest(inputStream, outputStream, context);
+                        log(LogLevel.TRACE, "handler response received\n");
+                        byte[] handlerResponse = outputStream.toByteArray();
+                        log(LogLevel.TRACE, "sending function response\n");
+                        blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, handlerResponse)));
+                    } catch (Throwable e) {
+                        handleInvocationThrowable(blockingHttpClient, requestId, e);
+                    }
+                }
+            } else {
+                log(LogLevel.WARN, "request id is empty\n");
+            }
         }
     }
 
