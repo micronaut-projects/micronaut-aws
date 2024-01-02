@@ -429,25 +429,23 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                                                      @NonNull MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
         final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
         final RequestType request = response.body();
-        if (request != null) {
+        if (request != null && handler instanceof RequestHandler) {
             logn(LogLevel.DEBUG, "request body ", request);
             Context context = createRuntimeContext(response);
             final String requestId = context.getAwsRequestId();
             HandlerRequestType handlerRequest = createHandlerRequest(request);
             try {
-                if (StringUtils.isNotEmpty(requestId)) {
-                    log(LogLevel.TRACE, "invoking handler\n");
-                    HandlerResponseType handlerResponse = null;
-                    if (handler instanceof RequestHandler) {
-                        handlerResponse = ((RequestHandler<HandlerRequestType, HandlerResponseType>) handler).handleRequest(handlerRequest, context);
-                    }
-                    log(LogLevel.TRACE, "handler response received\n");
-                    final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
-                    log(LogLevel.TRACE, "sending function response\n");
-                    blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
-                } else {
+                if (StringUtils.isEmpty(requestId)) {
                     log(LogLevel.WARN, "request id is empty\n");
+                    return;
                 }
+                log(LogLevel.TRACE, "invoking handler\n");
+                HandlerResponseType handlerResponse = null;
+                handlerResponse = ((RequestHandler<HandlerRequestType, HandlerResponseType>) handler).handleRequest(handlerRequest, context);
+                log(LogLevel.TRACE, "handler response received\n");
+                final ResponseType functionResponse = (handlerResponse == null || handlerResponse instanceof Void) ? null : createResponse(handlerResponse);
+                log(LogLevel.TRACE, "sending function response\n");
+                blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, functionResponse == null ? "" : functionResponse)));
             } catch (Exception e) {
                 handleInvocationException(blockingHttpClient, requestId, e);
             }
