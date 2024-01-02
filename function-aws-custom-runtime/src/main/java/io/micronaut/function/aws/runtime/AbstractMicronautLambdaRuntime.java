@@ -395,29 +395,24 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
             config.setReadIdleTimeout(null);
             config.setReadTimeout(null);
             config.setConnectTimeout(null);
-            final HttpClient endpointClient = applicationContext.createBean(
-                HttpClient.class,
-                runtimeApiURL,
-                config);
-            final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
-            try {
-                while (loopUntil.test(runtimeApiURL)) {
-                    MutableHttpRequest<?> nextInvocationHttpRequest = createNextInvocationHttpRequest(userAgentProvider);
-                    if (handler instanceof RequestStreamHandler) {
-                        eventForRequestStreamHandlerHandler(blockingHttpClient, nextInvocationHttpRequest);
-                    } else if (handler instanceof RequestHandler<?, ?>) {
-                        eventForRequestHandler(blockingHttpClient, nextInvocationHttpRequest);
+            try (HttpClient endpointClient = applicationContext.createBean(HttpClient.class, runtimeApiURL, config)) {
+                final BlockingHttpClient blockingHttpClient = endpointClient.toBlocking();
+                try {
+                    while (loopUntil.test(runtimeApiURL)) {
+                        MutableHttpRequest<?> nextInvocationHttpRequest = createNextInvocationHttpRequest(userAgentProvider);
+                        if (handler instanceof RequestStreamHandler) {
+                            handleInvocationForRequestStreamHandler(blockingHttpClient, nextInvocationHttpRequest);
+                        } else if (handler instanceof RequestHandler<?, ?>) {
+                            handleInvocationForRequestHandler(blockingHttpClient, nextInvocationHttpRequest);
+                        }
+                    }
+                } finally {
+                    if (handler instanceof Closeable closeable) {
+                        closeable.close();
                     }
                 }
-            } finally {
-                if (handler instanceof Closeable closeable) {
-                    closeable.close();
-                }
-                if (endpointClient != null) {
-                    endpointClient.close();
-                }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logn(LogLevel.ERROR, "Request loop failed with: ", e.getMessage());
             reportInitializationError(runtimeApiURL, e);
@@ -430,8 +425,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param nextInvocationHttpRequest Next Invocation HTTP Request
      * @throws IOException Exception thrown while invoking the handler
      */
-    protected void eventForRequestHandler(@NonNull BlockingHttpClient blockingHttpClient,
-                                          @NonNull MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
+    protected void handleInvocationForRequestHandler(@NonNull BlockingHttpClient blockingHttpClient,
+                                                     @NonNull MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
         final HttpResponse<RequestType> response = blockingHttpClient.exchange(nextInvocationHttpRequest, Argument.of(requestType));
         final RequestType request = response.body();
         if (request != null) {
@@ -453,8 +448,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                 } else {
                     log(LogLevel.WARN, "request id is empty\n");
                 }
-            } catch (Throwable e) {
-                handleInvocationThrowable(blockingHttpClient, requestId, e);
+            } catch (Exception e) {
+                handleInvocationException(blockingHttpClient, requestId, e);
             }
         }
     }
@@ -465,15 +460,15 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param requestId AWS Request ID retried via {@link Context#getAwsRequestId()}
      * @param exception Execption thrown invoking the handler
      */
-    protected void handleInvocationThrowable(@NonNull BlockingHttpClient blockingHttpClient,
+    protected void handleInvocationException(@NonNull BlockingHttpClient blockingHttpClient,
                                              @NonNull String requestId,
-                                             @NonNull Throwable exception) {
+                                             @NonNull Exception exception) {
         final StringWriter sw = new StringWriter();
         exception.printStackTrace(new PrintWriter(sw));
         logn(LogLevel.WARN, "Invocation with requestId [", requestId, "] failed: ", exception.getMessage(), sw);
         try {
             blockingHttpClient.exchange(decorateWithUserAgent(invocationErrorRequest(requestId, exception.getMessage(), null, null)));
-        } catch (Throwable e2) {
+        } catch (Exception e2) {
             // swallow, nothing we can do...
         }
     }
@@ -496,10 +491,9 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * It handles an invocation event with a handler of type {@link RequestStreamHandler}.
      * @param blockingHttpClient Blocking HTTP Client
      * @param nextInvocationHttpRequest Next Invocation HTTP Request
-     * @throws IOException Exception thrown while invoking the handler
      */
-    protected void eventForRequestStreamHandlerHandler(@NonNull BlockingHttpClient blockingHttpClient,
-                                                       MutableHttpRequest<?> nextInvocationHttpRequest) throws IOException {
+    protected void handleInvocationForRequestStreamHandler(@NonNull BlockingHttpClient blockingHttpClient,
+                                                           MutableHttpRequest<?> nextInvocationHttpRequest) {
         if (handler instanceof RequestStreamHandler requestStreamHandler) {
             final HttpResponse<byte[]> response = blockingHttpClient.exchange(nextInvocationHttpRequest, byte[].class);
             final byte[] request = response.body();
@@ -515,8 +509,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
                         byte[] handlerResponse = outputStream.toByteArray();
                         log(LogLevel.TRACE, "sending function response\n");
                         blockingHttpClient.exchange(decorateWithUserAgent(invocationResponseRequest(requestId, handlerResponse)));
-                    } catch (Throwable e) {
-                        handleInvocationThrowable(blockingHttpClient, requestId, e);
+                    } catch (Exception e) {
+                        handleInvocationException(blockingHttpClient, requestId, e);
                     }
                 }
             } else {
@@ -531,8 +525,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @param request HTTP Request
      * @return The HTTP Request decorated
      */
-    protected HttpRequest decorateWithUserAgent(HttpRequest<?> request) {
-        if (userAgent != null && request instanceof MutableHttpRequest mutableHttpRequest) {
+    protected HttpRequest<?> decorateWithUserAgent(HttpRequest<?> request) {
+        if (userAgent != null && request instanceof MutableHttpRequest<?> mutableHttpRequest) {
             return mutableHttpRequest.header(USER_AGENT, userAgent);
         }
         return request;

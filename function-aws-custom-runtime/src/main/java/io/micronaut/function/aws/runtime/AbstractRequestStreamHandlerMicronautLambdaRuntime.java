@@ -33,6 +33,7 @@ import java.io.OutputStream;
  */
 public abstract class AbstractRequestStreamHandlerMicronautLambdaRuntime<RequestType, ResponseType> extends AbstractMicronautLambdaRuntime<RequestType, ResponseType, InputStream, OutputStream> {
 
+    @Override
     protected void validateHandler() throws ConfigurationException {
         super.validateHandler();
         if (!(handler instanceof RequestStreamHandler)) {
