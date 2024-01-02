@@ -9,6 +9,7 @@ import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
+import io.micronaut.json.JsonMapper
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
@@ -20,6 +21,7 @@ class CustomRuntimeForMicronautRequestStreamHandlerSpec extends Specification {
         EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, ['spec.name': 'CustomRuntimeForMicronautRequestStreamHandlerSpec'])
         String serverUrl = "localhost:$embeddedServer.port"
 
+        JsonMapper jsonMapper = embeddedServer.getApplicationContext().getBean(JsonMapper)
         FunctionLambdaRuntime customMicronautLambdaRuntime = new FunctionLambdaRuntime(serverUrl)
         Thread t = new Thread({ ->
             customMicronautLambdaRuntime.run([] as String[])
@@ -32,7 +34,7 @@ class CustomRuntimeForMicronautRequestStreamHandlerSpec extends Specification {
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            //assert lambadaRuntimeApi.responses['123456'].body == '{"name":"Building Microservices","isbn":"XXX"}'.bytes.encodeBase64().toString()
+            assert '{"message":"Hello World"}' == lambadaRuntimeApi.responses['123456'].body
         }
 
         cleanup:
