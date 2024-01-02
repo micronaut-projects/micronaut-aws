@@ -28,7 +28,7 @@ managed-aws-java-sdk-v1 = '1.12.610'
 managed-aws-java-sdk-v2 = '2.21.43'
 managed-aws-lambda = '1.2.3'
 managed-aws-lambda-events = '3.11.4'
-managed-aws-lambda-java-serialization = '1.1.4'
+managed-aws-lambda-java-serialization = '1.1.5'
 aws-lambda-java-runtime-interface-client = '2.4.1'
 
 managed-aws-serverless-core = '1.9.3'
@@ -41,7 +41,7 @@ javapoet = "1.13.0"
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "23.1.1"
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 
 # Micronaut
 micronaut-gradle-plugin = "4.2.0"
