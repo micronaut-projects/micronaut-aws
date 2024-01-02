@@ -364,8 +364,8 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * @return a Mutable HTTP Request to the {@value #NEXT_INVOCATION_URI} endpoint.
      */
     @NonNull
-    protected MutableHttpRequest createNextInvocationHttpRequest(@Nullable UserAgentProvider userAgentProvider) {
-        MutableHttpRequest<?> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
+    protected <T> MutableHttpRequest<T> createNextInvocationHttpRequest(@Nullable UserAgentProvider userAgentProvider) {
+        MutableHttpRequest<T> nextInvocationHttpRequest = HttpRequest.GET(AwsLambdaRuntimeApi.NEXT_INVOCATION_URI);
         if (userAgentProvider != null) {
             nextInvocationHttpRequest.header(USER_AGENT, userAgentProvider.userAgent());
         }
