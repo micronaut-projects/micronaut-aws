@@ -361,6 +361,7 @@ public abstract class AbstractMicronautLambdaRuntime<RequestType, ResponseType, 
      * Creates a GET request for the {@value #NEXT_INVOCATION_URI} endpoint.
      * If a bean of type {@link UserAgentProvider} exists, it adds an HTTP Header User-Agent to the request.
      * @param userAgentProvider UseAgent Provider
+     * @param <T> The Http request type
      * @return a Mutable HTTP Request to the {@value #NEXT_INVOCATION_URI} endpoint.
      */
     @NonNull
