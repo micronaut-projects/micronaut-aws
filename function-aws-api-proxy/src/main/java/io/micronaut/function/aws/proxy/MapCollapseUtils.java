@@ -81,6 +81,9 @@ public final class MapCollapseUtils {
         }
         if (CollectionUtils.isNotEmpty(single)) {
             for (var entry: single.entrySet()) {
+                if (values.containsKey(entry.getKey())) {
+                    continue;
+                }
                 List<String> strings = values.computeIfAbsent(entry.getKey(), s -> new ArrayList<>());
                 if (!strings.contains(entry.getValue())) {
                     strings.add(entry.getValue());

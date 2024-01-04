@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.MapCollapseUtils;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
@@ -31,10 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
@@ -84,7 +82,8 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     @Override
     public MutableHttpHeaders getHeaders() {
         Map<String, List<String>> multiValueHeaders = requestEvent.getMultiValueHeaders();
-        return new CaseInsensitiveMutableHttpHeaders(multiValueHeaders != null ? multiValueHeaders : Collections.emptyMap(), conversionService);
+        Map<String, String> singleValueHeaders = requestEvent.getHeaders();
+        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders, singleValueHeaders), conversionService);
     }
 
     @Override
