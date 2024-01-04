@@ -4,8 +4,6 @@ import com.amazonaws.services.lambda.runtime.ClientContext
 import com.amazonaws.services.lambda.runtime.CognitoIdentity
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.LambdaLogger
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
-import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent
 import io.micronaut.context.ApplicationContext

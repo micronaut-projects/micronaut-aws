@@ -1,7 +1,6 @@
 package io.micronaut.function.aws.proxy
 
 import io.micronaut.core.convert.ConversionService
-import spock.lang.Narrative
 import spock.lang.See
 import spock.lang.Specification
 
