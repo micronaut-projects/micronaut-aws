@@ -59,3 +59,15 @@ With api:function.aws.MicronautRequestHandler[], it is expected that you supply 
 | Raw streams
 | api:function.aws.MicronautRequestStreamHandler[]
 |===
+
+
+== Handler Formats
+
+https://docs.aws.amazon.com/lambda/latest/dg/java-handler.html[AWS Lambda Handler] supports two formats:
+
+* `package.Class::method` – Full format. For example: example.Handler::handleRequest.
+* `package.Class` – Abbreviated format for classes that implement a handler interface. For example: example.Handler.
+
+IMPORTANT: **Micronaut AWS supports only the abbreviated format**. For example, do not use `io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction::handleRequest`. Instead, use `io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction`.
+
+
