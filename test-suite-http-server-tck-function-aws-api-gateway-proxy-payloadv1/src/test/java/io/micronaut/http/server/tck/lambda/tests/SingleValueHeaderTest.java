@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import static io.micronaut.http.tck.TestScenario.asserts;
 
-public class SingleValueHeaderTest {
+class SingleValueHeaderTest {
     private static final String SPEC_NAME = "SingleValueHeaderTest";
 
     @Test
