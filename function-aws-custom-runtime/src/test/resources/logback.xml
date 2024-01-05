@@ -14,4 +14,5 @@
     <!--<logger name="io.micronaut.discovery" level="TRACE"/>-->
     <logger name="io.micronaut.http" level="debug"/>
     <!--<logger name="io.micronaut.context" level="TRACE"/>-->
+    <logger name="io.micronaut.http.client" level="TRACE"/>
 </configuration>
