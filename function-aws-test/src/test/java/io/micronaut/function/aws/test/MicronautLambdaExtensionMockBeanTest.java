@@ -22,11 +22,13 @@ class MicronautLambdaExtensionMockBeanTest {
     EagerSingleton eagerSingleton;
 
     @Test
-    void testSingletonIsSingle() {
-        when(eagerSingleton.hello("world")).thenReturn("hello world");
-        TestHandler handler = new TestHandler(context);
-        assertEquals("hello world", handler.execute("world"));
-        verify(eagerSingleton).hello("world");
+    void testSingletonIsSingle() throws Exception {
+        try (TestHandler handler = new TestHandler(context)) {
+            when(eagerSingleton.hello("world")).thenReturn("hello world");
+            when(eagerSingleton.hello("world")).thenReturn("hello world");
+            assertEquals("hello world", handler.execute("world"));
+            verify(eagerSingleton).hello("world");
+        }
     }
 
     @MockBean(EagerSingleton.class)
