@@ -1,10 +1,11 @@
 package io.micronaut.function.aws.test;
 
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.function.aws.MicronautRequestHandler;
+import io.micronaut.context.annotation.Property;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import io.micronaut.test.annotation.MockBean;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,46 +14,43 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @MicronautLambdaTest
+@Property(name = "spec.name", value = "MicronautLambdaExtensionMockBeanTest")
 class MicronautLambdaExtensionMockBeanTest {
 
     @Inject
-    ApplicationContext context;
+    FriendlySingleton friendlySingleton;
 
     @Inject
-    EagerSingleton eagerSingleton;
+    TestHandler testHandler;
+
+    @MockBean(FriendlySingleton.class)
+    FriendlySingleton mockFriendlySingleton() {
+        return mock(FriendlySingleton.class);
+    }
 
     @Test
     void testSingletonIsSingle() throws Exception {
-        try (TestHandler handler = new TestHandler(context)) {
-            when(eagerSingleton.hello("world")).thenReturn("hello world");
-            when(eagerSingleton.hello("world")).thenReturn("hello world");
-            assertEquals("hello world", handler.execute("world"));
-            verify(eagerSingleton).hello("world");
-        }
+        when(friendlySingleton.hello("world")).thenReturn("hello world");
+        assertEquals("hello world", testHandler.execute("world"));
+        verify(friendlySingleton).hello("world");
     }
 
-    @MockBean(EagerSingleton.class)
-    EagerSingleton eagerSingleton() {
-        return mock(EagerSingleton.class);
-    }
+    @Singleton
+    @Requires(property = "spec.name", value = "MicronautLambdaExtensionMockBeanTest")
+    static class TestHandler {
 
-    static class TestHandler extends MicronautRequestHandler<String, String> {
+        private final FriendlySingleton singleton;
 
-        @Inject
-        EagerSingleton singleton;
-
-        //used in AWS
-        public TestHandler() {
+        TestHandler(FriendlySingleton singleton) {
+            this.singleton = singleton;
         }
 
-        //used in tests
-        public TestHandler(ApplicationContext applicationContext) {
-            super(applicationContext);
-        }
-
-        @Override
         public String execute(String input) {
             return singleton.hello(input);
         }
+    }
+
+    interface FriendlySingleton {
+        String hello(String name);
     }
 }
