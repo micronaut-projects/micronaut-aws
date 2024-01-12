@@ -8,7 +8,7 @@ dependencies {
     api(libs.managed.aws.lambda.events)
     api(mnServlet.micronaut.servlet.core)
     implementation(mnReactor.micronaut.reactor)
-    implementation(mn.micronaut.http.netty)
+    implementation(mn.micronaut.http.cookie.netty)
     compileOnly(mnSecurity.micronaut.security)
     testImplementation(mn.micronaut.jackson.databind)
     testImplementation(mnViews.micronaut.views.handlebars)
