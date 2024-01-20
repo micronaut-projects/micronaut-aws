@@ -12,7 +12,7 @@ jetty = '11.0.19'
 logback-json-classic = '0.1.5'
 assertj = '3.25.1'
 
-micronaut-discovery = "4.1.0"
+micronaut-discovery = "4.2.0"
 micronaut-groovy = "4.2.0"
 micronaut-logging = "1.1.2"
 micronaut-mongodb = "5.1.0"
