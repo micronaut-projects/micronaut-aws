@@ -21,6 +21,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.BinaryTypeConfiguration;
+import io.micronaut.function.aws.proxy.cookies.CookieDecoder;
+import io.micronaut.function.aws.proxy.cookies.CookieEncoder;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
@@ -49,9 +51,11 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(
                 getApplicationContext().getConversionService(),
-                getApplicationContext().getBean(BinaryTypeConfiguration.class)
+                getApplicationContext().getBean(BinaryTypeConfiguration.class),
+                    getApplicationContext().getBean(CookieEncoder.class)
             ),
             applicationContext.getConversionService(),
+                getApplicationContext().getBean(CookieDecoder.class),
             applicationContext.getBean(BodyBuilder.class)
         );
     }

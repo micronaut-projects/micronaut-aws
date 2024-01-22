@@ -22,6 +22,7 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.cookies.CookieDecoder;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
@@ -54,10 +55,12 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
         APIGatewayProxyRequestEvent requestEvent,
         ApiGatewayProxyServletResponse<Object> response,
         ConversionService conversionService,
+        CookieDecoder cookieDecoder,
         BodyBuilder bodyBuilder
     ) {
         super(
             conversionService,
+                cookieDecoder,
             requestEvent,
             ApiGatewayServletRequest.buildUri(
                 requestEvent.getPath(),

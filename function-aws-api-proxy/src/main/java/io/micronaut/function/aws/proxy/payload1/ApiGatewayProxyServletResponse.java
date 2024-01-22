@@ -21,6 +21,7 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.cookies.CookieEncoder;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
 import java.util.Base64;
@@ -35,8 +36,11 @@ import java.util.Base64;
 @Internal
 public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpResponse<APIGatewayProxyResponseEvent, B> {
 
-    protected ApiGatewayProxyServletResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
-        super(conversionService, binaryTypeConfiguration);
+    protected ApiGatewayProxyServletResponse(ConversionService conversionService,
+                                             BinaryTypeConfiguration binaryTypeConfiguration,
+                                             CookieEncoder cookieEncoder
+                                             ) {
+        super(conversionService, binaryTypeConfiguration, cookieEncoder);
     }
 
     @Override

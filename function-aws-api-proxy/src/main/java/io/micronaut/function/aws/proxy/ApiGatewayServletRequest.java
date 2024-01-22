@@ -27,6 +27,7 @@ import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
+import io.micronaut.function.aws.proxy.cookies.CookieDecoder;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.FullHttpRequest;
 import io.micronaut.http.HttpMethod;
@@ -77,6 +78,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private static final String SLASH = "/";
 
     protected ConversionService conversionService;
+    protected CookieDecoder cookieDecoder;
     protected final REQ requestEvent;
     private URI uri;
     private final HttpMethod httpMethod;
@@ -91,6 +93,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     protected ApiGatewayServletRequest(
         ConversionService conversionService,
+        CookieDecoder cookieDecoder,
         REQ request,
         URI uri,
         HttpMethod httpMethod,
@@ -98,6 +101,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         BodyBuilder bodyBuilder
     ) {
         this.conversionService = conversionService;
+        this.cookieDecoder = cookieDecoder;
         this.requestEvent = request;
         this.uri = uri;
         this.httpMethod = httpMethod;
@@ -180,7 +184,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
             synchronized (this) { // double check
                 localCookies = this.cookies;
                 if (localCookies == null) {
-                    localCookies = new AwsCookies(getPath(), getHeaders(), conversionService);
+                    localCookies = new AwsCookies(getHeaders(), conversionService, cookieDecoder);
                     this.cookies = localCookies;
                 }
             }
