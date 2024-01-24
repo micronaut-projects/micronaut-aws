@@ -21,13 +21,13 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
-import io.micronaut.http.netty.cookies.NettyCookie;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
+import io.micronaut.http.cookie.ServerCookieDecoder;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -51,18 +51,11 @@ public final class AwsCookies implements Cookies {
         this.conversionService = conversionService;
         String value = headers.get(HttpHeaders.COOKIE);
         if (value != null) {
-            cookies = new LinkedHashMap<>(10);
-            Set<io.netty.handler.codec.http.cookie.Cookie> nettyCookies = ServerCookieDecoder.STRICT.decode(value);
-            for (io.netty.handler.codec.http.cookie.Cookie nettyCookie : nettyCookies) {
-                String cookiePath = nettyCookie.path();
-                if (cookiePath != null) {
-                    if (path.startsWith(cookiePath)) {
-                        cookies.put(nettyCookie.name(), new NettyCookie(nettyCookie));
-                    }
-                } else {
-                    cookies.put(nettyCookie.name(), new NettyCookie(nettyCookie));
-                }
-            }
+            List<Cookie> decodeCookies = ServerCookieDecoder.INSTANCE.decode(value);
+            cookies = new LinkedHashMap<>(decodeCookies.size());
+            decodeCookies.stream()
+                .filter(cookie -> cookie.getPath() == null || path.startsWith(cookie.getPath()))
+                .forEach(cookie -> cookies.put(cookie.getName(), cookie));
         } else {
             cookies = Collections.emptyMap();
         }
