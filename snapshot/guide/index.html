@@ -4164,6 +4164,9 @@ public class FlashBriefingsController {
 <div class="paragraph">
 <p>You can create environment-specific configurations as well by including the environment name after an underscore <code>_</code>. For example if <code>micronaut.application.name</code> is set to <code>helloworld</code>, specifying configuration values under <code>helloworld_test</code> will be applied only to the <code>test</code> environment.</p>
 </div>
+<div class="paragraph">
+<p>Note the trailing slash in the configuration names.</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configuration Resolution Precedence</caption>
 <colgroup>
@@ -4181,22 +4184,22 @@ public class FlashBriefingsController {
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application/</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝🔝</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]/</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration, example <code>/config/hello-world</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝🔝🔝</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application_prod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/application_prod/</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Configuration shared by all applications for the <code>prod</code> <a href="https://docs.micronaut.io/latest/guide/#environments">Environment</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">🔝🔝🔝🔝</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]_prod</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/config/[APPLICATION_NAME]_prod/</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Application-specific configuration for an active <a href="https://docs.micronaut.io/latest/guide/#environments">Environment</a></p></td>
 </tr>
 </tbody>
