@@ -119,6 +119,11 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
         return prefixes;
     }
 
+    /**
+     * List of prefixes for AWS Distributed Configuration resources names. If it is non-empty, {@link AwsDistributedConfiguration#getPrefix()} is not used.
+     *
+     * @param prefixes the list of prefixes
+     */
     public void setPrefixes(@NonNull List<String> prefixes) {
         this.prefixes = prefixes;
     }
