@@ -77,6 +77,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
     }
 
     /**
+     * Search additional paths suffixed with each active environment. e.g. /config/application_ec2 Default value ({@value #DEFAULT_SEARCH_ACTIVE_ENVIRONMENTS}).
      * @return Search active environment paths
      */
     @Override
@@ -96,7 +97,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
     }
 
     /**
-     *
+     *  Whether paths for the Default Application name should be searched or not. Default value ({@value #DEFAULT_SEARCH_COMMON_APPLICATION}).
      * @return Whether paths for the {@link AwsDistributedConfiguration#getCommonApplicationName()} should be searched or not.
      */
     @Override
@@ -143,7 +144,7 @@ public class AwsDistributedConfigurationProperties implements AwsDistributedConf
     }
 
     /**
-     * Default Application name. Default value ({@value #DEFAULT_COMMON_APPLICATION_NAME}.
+     * Default Application name. Default value ({@value #DEFAULT_COMMON_APPLICATION_NAME}).
      * @param commonApplicationName Default Application name. e.g. application
      */
     public void setCommonApplicationName(@NonNull String commonApplicationName) {
