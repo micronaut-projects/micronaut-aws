@@ -77,6 +77,7 @@ alexa:
 distributedconfiguration:
   title: Distributed Configuration
   distributedconfigurationsecretsmanager: AWS Secrets Manager
+  distributedconfigurationsecretsmanagersearch: Prefixes used for searching secrets
   parametersStore: AWS System Manager Parameter Store
 repository: Repository
 thirdPartyLibraries: Third-party libraries
