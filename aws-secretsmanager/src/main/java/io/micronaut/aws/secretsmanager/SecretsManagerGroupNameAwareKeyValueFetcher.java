@@ -15,19 +15,19 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.json.JsonMapper;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
 import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +51,7 @@ public class SecretsManagerGroupNameAwareKeyValueFetcher extends SecretsManagerK
      * @param objectMapper Object Mapper
      */
     public SecretsManagerGroupNameAwareKeyValueFetcher(SecretsManagerClient secretsClient,
-                                                       ObjectMapper objectMapper) {
+                                                       JsonMapper objectMapper) {
         super(secretsClient, objectMapper);
     }
 
@@ -64,7 +64,7 @@ public class SecretsManagerGroupNameAwareKeyValueFetcher extends SecretsManagerK
             try {
                 keyValues.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
                 result.put(secret.name(), keyValues);
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
                 }

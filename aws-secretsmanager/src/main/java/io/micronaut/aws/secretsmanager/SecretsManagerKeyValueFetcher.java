@@ -15,12 +15,11 @@
  */
 package io.micronaut.aws.secretsmanager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
@@ -38,6 +37,8 @@ import software.amazon.awssdk.services.secretsmanager.model.ResourceNotFoundExce
 import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry;
 import software.amazon.awssdk.services.secretsmanager.model.SecretsManagerException;
 import jakarta.inject.Singleton;
+
+import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,7 @@ public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
     private static final Logger LOG = LoggerFactory.getLogger(SecretsManagerKeyValueFetcher.class);
 
     protected final SecretsManagerClient secretsClient;
-    protected final ObjectMapper objectMapper;
+    protected final JsonMapper objectMapper;
 
     /**
      *
@@ -66,7 +67,7 @@ public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
      * @param objectMapper Object Mapper
      */
     public SecretsManagerKeyValueFetcher(SecretsManagerClient secretsClient,
-                                         ObjectMapper objectMapper) {
+                                         JsonMapper objectMapper) {
         this.secretsClient = secretsClient;
         this.objectMapper = objectMapper;
     }
@@ -124,12 +125,12 @@ public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
      * @param result a map that collects the results
      */
     @NonNull
-    protected void addSecretDetailsToResults(SecretListEntry secret, Map result) {
+    protected void addSecretDetailsToResults(SecretListEntry secret, Map result)  {
         Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
         if (secretValueOptional.isPresent()) {
             try {
                 result.putAll(objectMapper.readValue(secretValueOptional.get(), Map.class));
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("could not read secret ({}) value from JSON to Map", secret.name());
                 }

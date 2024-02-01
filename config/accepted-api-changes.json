@@ -1559,6 +1559,20 @@
     "type": "io.micronaut.aws.lambda.events.serde.$KinesisAnalyticsStreamsInputPreprocessingEventSerde$IntrospectionRef3",
     "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
     "reason": "Introspection Changes"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerGroupNameAwareKeyValueFetcher",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerGroupNameAwareKeyValueFetcher(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,com.fasterxml.jackson.databind.ObjectMapper)",
+    "reason": "Use JsonMapper instead. It is an experimental class"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Field objectMapper",
+    "reason": "Use JsonMapper instead. It is an experimental class"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
+    "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,com.fasterxml.jackson.databind.ObjectMapper)",
+    "reason": "Use JsonMapper instead. It is an experimental class"
   }
-
 ]
