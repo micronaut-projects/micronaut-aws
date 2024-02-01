@@ -239,7 +239,9 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-distributedconfigurationsecretsmanager"><a href="#distributedconfigurationsecretsmanager"><strong>12.1</strong><span>AWS Secrets Manager</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>12.2</strong><span>AWS System Manager Parameter Store</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-distributedconfigurationsecretsmanagersearch"><a href="#distributedconfigurationsecretsmanagersearch"><strong>12.2</strong><span>Prefixes used for searching secrets</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>12.3</strong><span>AWS System Manager Parameter Store</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>13</strong><span>Repository</span></a></div>
         
@@ -4386,7 +4388,256 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <p>To learn more about the Micronaut environments, go to <a href="https://docs.micronaut.io/latest/guide/#environments">Environments</a></p>
 </div>
 
-<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>12.2 AWS System Manager Parameter Store</h2>
+<h2 id="distributedconfigurationsecretsmanagersearch"><a class="anchor" href="#distributedconfigurationsecretsmanagersearch"></a>12.2 Prefixes used for searching secrets</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/distributedconfigurationsecretsmanagersearch.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>If your application name is <code>micronautguide</code> and it has the following <a href="https://micronaut-projects.github.io/micronaut-core/latest/guide/#environments">active environments</a> <code>ec2</code>, <code>cloud</code>, and <code>lambda</code>. The following configuration prefixes are searched:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/config/micronautguide_ec2/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide_cloud/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide_lambda/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide/</code></p>
+</li>
+<li>
+<p><code>/config/application_ec2/</code></p>
+</li>
+<li>
+<p><code>/config/application_cloud/</code></p>
+</li>
+<li>
+<p><code>/config/application_lambda/</code></p>
+</li>
+<li>
+<p><code>/config/application/</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you set:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-active-environments:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
+    distributed-configuration:
+        search-active-environments:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  distributed-configuration="search-active-environments:false"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  distributedConfiguration = "search-active-environments:false"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    distributed-configuration = "search-active-environments:false"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "distributed-configuration": "search-active-environments:false"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The following prefixes are searched:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/config/micronautguide/</code></p>
+</li>
+<li>
+<p><code>/config/application/</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you set:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-common-application:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
+    distributed-configuration:
+        search-common-application:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  distributed-configuration="search-common-application:false"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  distributedConfiguration = "search-common-application:false"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    distributed-configuration = "search-common-application:false"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "distributed-configuration": "search-common-application:false"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The following prefixes are searched:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/config/micronautguide_ec2/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide_cloud/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide_lambda/</code></p>
+</li>
+<li>
+<p><code>/config/micronautguide/</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By setting both:</p>
+</div>
+<div class="paragraph">
+<p>If you set:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-active-environments:false search-common-application:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
+    distributed-configuration:
+        search-active-environments:false
+        search-common-application:false</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+  distributed-configuration="search-active-environments:false search-common-application:false"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  distributedConfiguration = "search-active-environments:false search-common-application:false"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    distributed-configuration = "search-active-environments:false search-common-application:false"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "distributed-configuration": "search-active-environments:false search-common-application:false"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Only the following prefix is searched:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/config/micronautguide/</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Reducing the number of prefixes reduces the application&#8217;s startup.
+</td>
+</tr>
+</table>
+</div>
+
+<h2 id="parametersStore"><a class="anchor" href="#parametersStore"></a>12.3 AWS System Manager Parameter Store</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/distributedconfiguration/parametersStore.adoc"'>
