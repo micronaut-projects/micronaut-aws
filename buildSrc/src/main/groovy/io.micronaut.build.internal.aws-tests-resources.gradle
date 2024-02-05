@@ -5,6 +5,6 @@ plugins {
 micronaut {
     testResources {
         clientTimeout = 300
-        version = libs.versions.micronaut.testresources.get()
+        version = libs.versions.micronaut.test.resources.get()
     }
 }

@@ -2,7 +2,6 @@
 micronaut = "4.3.3"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.2.0"
-micronaut-testresources = "2.3.1"
 groovy = "4.0.15"
 spock = "2.3-groovy-4.0"
 
@@ -20,6 +19,7 @@ micronaut-reactor = "3.2.1"
 micronaut-security = "4.6.0"
 micronaut-serde = "2.8.1"
 micronaut-servlet = "4.5.0"
+micronaut-test-resources="2.3.2"
 micronaut-views = "5.1.0"
 micronaut-validation = "4.4.0"
 
@@ -35,7 +35,6 @@ managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
 slf4j = "2.0.11"
 servlet-api = "2.5"
-testcontainers = "1.19.3"
 javapoet = "1.13.0"
 
 # The following version should probably
@@ -60,6 +59,7 @@ micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", ver
 micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
 micronaut-servlet = { module = "io.micronaut.servlet:micronaut-servlet-bom", version.ref = "micronaut-servlet" }
 micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
+micronaut-test-resources = { module = "io.micronaut.testresources:micronaut-test-resources-bom", version.ref = "micronaut-test-resources" }
 micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.ref = "micronaut-views" }
 micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
 
@@ -115,10 +115,6 @@ managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanage
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
-testcontainers-bom = { module = 'org.testcontainers:testcontainers-bom', version.ref = 'testcontainers' }
-testcontainers = { module = 'org.testcontainers:testcontainers' }
-testcontainers-mongodb = { module = 'org.testcontainers:mongodb' }
-testcontainers-spock = { module = 'org.testcontainers:spock' }
 # Gradle
 
 gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }

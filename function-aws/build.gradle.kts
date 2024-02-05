@@ -7,10 +7,8 @@ dependencies {
     api(libs.managed.aws.lambda.core)
     implementation(mn.micronaut.json.core)
     testImplementation(mnMongo.micronaut.mongo.sync)
-    testImplementation(platform(libs.testcontainers.bom))
-    testImplementation(libs.testcontainers.spock)
-    testImplementation(libs.testcontainers.mongodb)
-    testImplementation(libs.testcontainers)
+    testImplementation(mnTestResources.testcontainers.core)
+    testImplementation(mnTestResources.testcontainers.mongodb)
     testImplementation(projects.micronautAwsLambdaEventsSerde)
     testImplementation(mnSerde.micronaut.serde.jackson)
 }
