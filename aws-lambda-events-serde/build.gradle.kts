@@ -7,6 +7,6 @@ dependencies {
     api(mnSerde.micronaut.serde.api)
     api(libs.managed.aws.lambda.events)
     implementation(libs.managed.aws.lambda.java.serialization)
-    testImplementation(libs.assertj.core)
+    testImplementation(mnTest.assertj.core)
     testImplementation(mnSerde.micronaut.serde.jackson)
 }
