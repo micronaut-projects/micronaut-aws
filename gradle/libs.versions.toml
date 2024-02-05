@@ -43,7 +43,7 @@ graal = "23.1.2"
 kotlin = "1.9.22"
 
 # Micronaut
-micronaut-gradle-plugin = "4.2.1"
+micronaut-gradle-plugin = "4.3.1"
 
 [libraries]
 # Core
