@@ -76,52 +76,5 @@
         ]
       }
     ]
-  },
-  {
-    "name": "ch.qos.logback.core.encoder.LayoutWrappingEncoder",
-    "queryAllPublicMethods": true,
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": [
-
-        ]
-      },
-      {
-        "name": "setLayout",
-        "parameterTypes": [
-          "ch.qos.logback.core.Layout"
-        ]
-      },
-      {
-        "name": "setParent",
-        "parameterTypes": [
-          "ch.qos.logback.core.spi.ContextAware"
-        ]
-      }
-    ]
-  },
-  {
-    "name": "ch.qos.logback.contrib.json.JsonLayoutBase",
-    "methods": [
-      {
-        "name": "setJsonFormatter",
-        "parameterTypes": [
-          "ch.qos.logback.contrib.json.JsonFormatter"
-        ]
-      }
-    ]
-  },
-  {
-    "name": "ch.qos.logback.contrib.json.classic.JsonLayout",
-    "queryAllPublicMethods": true,
-    "methods": [
-      {
-        "name": "<init>",
-        "parameterTypes": [
-
-        ]
-      }
-    ]
   }
 ]
