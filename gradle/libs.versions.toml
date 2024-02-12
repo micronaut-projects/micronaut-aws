@@ -32,7 +32,7 @@ aws-lambda-java-runtime-interface-client = '2.4.1'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
-slf4j = "2.0.11"
+slf4j = "2.0.12"
 servlet-api = "2.5"
 javapoet = "1.13.0"
 
