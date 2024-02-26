@@ -1574,5 +1574,95 @@
     "type": "io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher",
     "member": "Constructor io.micronaut.aws.secretsmanager.SecretsManagerKeyValueFetcher(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,com.fasterxml.jackson.databind.ObjectMapper)",
     "reason": "Use JsonMapper instead. It is an experimental class"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2()",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3()",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$CognitoUserPoolPostAuthenticationEventSerde$IntrospectionRef3",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Field $ANNOTATION_METADATA",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Constructor io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2()",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationSource",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.annotation.AnnotationMetadataProvider",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.naming.Named",
+    "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
+    "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
+    "reason": "Serialization changes"
   }
 ]
