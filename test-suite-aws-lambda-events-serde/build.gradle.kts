@@ -4,6 +4,7 @@ plugins {
 }
 dependencies {
     testImplementation(projects.testSuiteAwsLambdaEvents)
+    testImplementation(projects.micronautFunctionAwsApiProxy)
     testImplementation(mnSerde.micronaut.serde.jackson)
     testImplementation(projects.micronautAwsLambdaEventsSerde)
 }
