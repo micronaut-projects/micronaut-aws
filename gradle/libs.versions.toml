@@ -1,5 +1,5 @@
 [versions]
-micronaut = "4.3.3"
+micronaut = "4.3.9"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.2.0"
 groovy = "4.0.15"
@@ -15,7 +15,7 @@ micronaut-groovy = "4.2.0"
 micronaut-logging = "1.2.2"
 micronaut-mongodb = "5.2.0"
 micronaut-reactor = "3.2.1"
-micronaut-security = "4.6.0"
+micronaut-security = "4.6.5"
 micronaut-serde = "2.8.1"
 micronaut-servlet = "4.5.0"
 micronaut-test-resources="2.3.3"
@@ -32,7 +32,7 @@ aws-lambda-java-runtime-interface-client = '2.4.1'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
-slf4j = "2.0.11"
+slf4j = "2.0.12"
 servlet-api = "2.5"
 javapoet = "1.13.0"
 

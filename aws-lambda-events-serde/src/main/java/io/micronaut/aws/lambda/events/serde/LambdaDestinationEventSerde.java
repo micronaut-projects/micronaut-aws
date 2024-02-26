@@ -24,7 +24,6 @@ import io.micronaut.serde.annotation.SerdeImport;
  * @author Dan Hollingsworth
  * @since 4.0.0
  */
-@SerdeImport(Object.class)
 @SerdeImport(LambdaDestinationEvent.RequestContext.class)
 @SerdeImport(LambdaDestinationEvent.class)
 public class LambdaDestinationEventSerde {
