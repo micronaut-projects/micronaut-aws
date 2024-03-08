@@ -2,14 +2,14 @@ package io.micronaut.aws.lambda.events.serde
 
 import com.amazonaws.services.lambda.runtime.events.S3Event
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification
-import io.micronaut.serde.ObjectMapper
+import io.micronaut.json.JsonMapper
 import spock.lang.Shared
 import spock.lang.Specification
 
 class S3EventNotificationSpec extends Specification {
 
     @Shared
-    ObjectMapper objectMapper = CustomPojoSerializerUtils.getObjectMapper()
+    JsonMapper objectMapper = CustomPojoSerializerUtils.getJsonMapper()
 
     void "S3EventNotification can be serialized with s3-put"() {
         given:

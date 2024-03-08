@@ -1,6 +1,7 @@
 package io.micronaut.aws.lambda.events.serde
 
 import com.amazonaws.services.lambda.runtime.CustomPojoSerializer
+import io.micronaut.json.JsonMapper
 import io.micronaut.serde.ObjectMapper
 
 import javax.naming.ConfigurationException
@@ -21,11 +22,11 @@ class CustomPojoSerializerUtils {
                 .orElseThrow(() -> new RuntimeException("No CustomPojoSerializer found"))
     }
 
-    static ObjectMapper getObjectMapper() {
-        CustomPojoSerializer pojoSerializer = CustomPojoSerializerUtils.customPojoSerializer()
+    static JsonMapper getJsonMapper() {
+        CustomPojoSerializer pojoSerializer = customPojoSerializer()
         if (pojoSerializer instanceof SerdeCustomPojoSerializer) {
-            return  ((SerdeCustomPojoSerializer) pojoSerializer).getJsonMapper()
+            return pojoSerializer.jsonMapper
         }
-        throw new ConfigurationException("CustomPojoSerializer no type of SerdeCustomPojoSerializer")
+        throw new ConfigurationException("CustomPojoSerializer is not a type of SerdeCustomPojoSerializer")
     }
 }
