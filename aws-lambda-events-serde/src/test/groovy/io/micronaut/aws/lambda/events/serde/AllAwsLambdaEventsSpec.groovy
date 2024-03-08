@@ -19,7 +19,6 @@ package io.micronaut.aws.lambda.events.serde
 import com.amazonaws.services.lambda.runtime.events.*
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.AttributeValue
 import com.amazonaws.services.lambda.runtime.events.models.dynamodb.StreamRecord
-import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification
 import com.amazonaws.services.lambda.runtime.serialization.events.LambdaEventSerializers
 import com.amazonaws.services.lambda.runtime.serialization.events.mixins.*
 import com.amazonaws.services.lambda.runtime.serialization.events.modules.DateModule
