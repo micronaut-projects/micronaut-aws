@@ -18,6 +18,7 @@ package io.micronaut.aws.lambda.events.serde;
 import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.serde.ObjectMapper;
 
 import java.util.Collections;
@@ -33,12 +34,9 @@ public class SerdeCustomPojoSerializer extends JsonMapperCustomPojoSerializer {
 
     private static final String PACKAGE_IO_MICRONAUT_AWS_LAMBDA_EVENTS_SERDE = "io.micronaut.aws.lambda.events.serde";
 
-    public SerdeCustomPojoSerializer() {
-        this.jsonMapper = instantiateObjectMapper();
-    }
-
+    @Override
     @NonNull
-    protected ObjectMapper instantiateObjectMapper() {
+    protected JsonMapper createDefault() {
         return ObjectMapper.create(Collections.emptyMap(), PACKAGE_IO_MICRONAUT_AWS_LAMBDA_EVENTS_SERDE);
     }
 
