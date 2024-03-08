@@ -7,7 +7,6 @@ spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
 fileupload = '0.0.6'
-jetty = '11.0.20'
 logback-json-classic = '0.1.5'
 
 micronaut-discovery = "4.2.0"
@@ -17,7 +16,7 @@ micronaut-mongodb = "5.2.0"
 micronaut-reactor = "3.2.1"
 micronaut-security = "4.6.6"
 micronaut-serde = "2.8.1"
-micronaut-servlet = "4.5.0"
+micronaut-servlet = "4.6.0"
 micronaut-test-resources="2.3.3"
 micronaut-views = "5.1.0"
 micronaut-validation = "4.4.0"
@@ -88,7 +87,7 @@ bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.re
 fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
 graal-sdk = { module = 'org.graalvm.sdk:graal-sdk', version.ref = 'graal' }
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
-jetty-server = { module = 'org.eclipse.jetty:jetty-server', version.ref = 'jetty' }
+jetty-server = { module = 'org.eclipse.jetty:jetty-server' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 junit-jupiter-engine = { module = 'org.junit.jupiter:junit-jupiter-engine' }
 junit-jupiter-api = { module = 'org.junit.jupiter:junit-jupiter-api' }
