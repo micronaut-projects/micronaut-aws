@@ -17,20 +17,13 @@
 package io.micronaut.aws.lambda.events.serde
 
 import com.amazonaws.services.lambda.runtime.events.CloudFrontEvent
-import io.micronaut.context.BeanContext
 import io.micronaut.serde.ObjectMapper
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
-import jakarta.inject.Inject
+import spock.lang.Shared
 import spock.lang.Specification
 
-@MicronautTest(startApplication = false)
 class CloudFrontSimpleRemoteCallSpec extends Specification {
-
-    @Inject
-    ObjectMapper objectMapper
-
-    @Inject
-    BeanContext beanContext
+    @Shared
+    ObjectMapper objectMapper = CustomPojoSerializerUtils.getObjectMapper()
 
     void "test deserialization of cloudfront simple remote call event"() {
         given:

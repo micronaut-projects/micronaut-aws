@@ -1,1 +1,1 @@
-io.micronaut.function.aws.JsonMapperCustomPojoSerializer
+io.micronaut.aws.lambda.events.serde.SerdeCustomPojoSerializer
