@@ -35,14 +35,19 @@ import java.util.stream.Stream;
  * @since 4.0.0
  */
 public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
-    private JsonMapper jsonMapper;
+    protected JsonMapper jsonMapper;
 
     public JsonMapperCustomPojoSerializer() {
         this.jsonMapper = createDefault();
     }
 
+    /**
+     *
+     * @return A JsonMapper
+     */
     // https://github.com/micronaut-projects/micronaut-core/pull/9445
-    private @NonNull JsonMapper createDefault() {
+    @NonNull
+    protected JsonMapper createDefault() {
         return ServiceLoader.load(JsonMapperSupplier.class).stream()
             .flatMap(p -> {
                 try {
@@ -62,6 +67,14 @@ public class JsonMapperCustomPojoSerializer implements CustomPojoSerializer {
             })
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No JsonMapper implementation found"));
+    }
+
+    /**
+     *
+     * @return The Json Mapper
+     */
+    public JsonMapper getJsonMapper() {
+        return jsonMapper;
     }
 
     @Override
