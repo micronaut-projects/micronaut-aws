@@ -2,20 +2,14 @@ package io.micronaut.aws.lambda.events.serde
 
 import com.amazonaws.services.lambda.runtime.events.S3Event
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification
-import io.micronaut.context.BeanContext
-import io.micronaut.serde.ObjectMapper
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
-import jakarta.inject.Inject
-import spock.lang.PendingFeature
+import io.micronaut.json.JsonMapper
+import spock.lang.Shared
 import spock.lang.Specification
 
-@MicronautTest(startApplication = false)
 class S3EventNotificationSpec extends Specification {
-    @Inject
-    ObjectMapper objectMapper
 
-    @Inject
-    BeanContext beanContext
+    @Shared
+    JsonMapper objectMapper = CustomPojoSerializerUtils.getJsonMapper()
 
     void "S3EventNotification can be serialized with s3-put"() {
         given:
@@ -48,7 +42,7 @@ class S3EventNotificationSpec extends Specification {
 
         when:
         String json = f.text
-        S3EventNotification event = objectMapper.readValue(json, S3EventNotification)
+        S3EventNotification event = getObjectMapper().readValue(json, S3EventNotification)
 
         then:
         assertionsS3Event(event)
@@ -63,7 +57,7 @@ class S3EventNotificationSpec extends Specification {
 
         when:
         String json = f.text
-        S3Event event = objectMapper.readValue(json, S3Event)
+        S3Event event = getObjectMapper().readValue(json, S3Event)
 
         then:
         assertionsS3Put(event)
@@ -78,7 +72,7 @@ class S3EventNotificationSpec extends Specification {
 
         when:
         String json = f.text
-        S3Event event = objectMapper.readValue(json, S3Event)
+        S3Event event = getObjectMapper().readValue(json, S3Event)
 
         then:
         assertionsS3Event(event)

@@ -1,20 +1,12 @@
 package io.micronaut.aws.lambda.events.serde
 
 import com.amazonaws.services.lambda.runtime.events.CloudWatchLogsEvent
-import io.micronaut.context.BeanContext
-import io.micronaut.serde.ObjectMapper
-import io.micronaut.test.extensions.spock.annotation.MicronautTest
-import jakarta.inject.Inject
+import io.micronaut.json.JsonMapper
 import spock.lang.Specification
 
-@MicronautTest(startApplication = false)
 class CloudWatchLogsEventSpec extends Specification {
 
-    @Inject
-    ObjectMapper objectMapper
-
-    @Inject
-    BeanContext beanContext
+    JsonMapper objectMapper = CustomPojoSerializerUtils.getJsonMapper()
 
     void "test deserialization of cloud watch scheduled event"() {
         given:
