@@ -1,5 +1,6 @@
 package io.micronaut.function.aws.proxy.test
 
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -79,6 +80,19 @@ class AwsApiProxyTestServerSpec extends Specification {
         response.body.get() == (1..256).collect { it as byte } as byte[]
     }
 
+    @Issue('https://github.com/micronaut-projects/micronaut-aws/issues/1861')
+    void 'ensure multiple headers are properly received'() {
+        when:
+        HttpResponse<String> response = client.toBlocking()
+                .exchange(HttpRequest.GET('/receive-multiple-headers')
+                            .header(HttpHeaders.ETAG, "A")
+                            .header(HttpHeaders.ETAG, "B"), String.class)
+
+        then:
+        response.status == HttpStatus.OK
+        response.body.get() == "2"
+    }
+
     @Controller
     static class TestController {
         @Get(value = '/test', produces = MediaType.TEXT_PLAIN)
@@ -104,6 +118,11 @@ class AwsApiProxyTestServerSpec extends Specification {
         @Get(value = "/byte-array", produces = MediaType.APPLICATION_OCTET_STREAM)
         HttpResponse<byte[]> byteArray() {
             return HttpResponse.ok((1..256).collect { it as byte } as byte[])
+        }
+
+        @Get(value = '/receive-multiple-headers', processes = MediaType.TEXT_PLAIN)
+        String receiveMultipleHeaders(HttpRequest<?> request) {
+            return String.valueOf(request.headers.getAll(HttpHeaders.ETAG).size());
         }
     }
 }
