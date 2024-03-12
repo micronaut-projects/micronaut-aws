@@ -73,7 +73,8 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
         MutableMapListOfStringAndMapStringConvertibleMultiValue entries = new MutableMapListOfStringAndMapStringConvertibleMultiValue(conversionService, multiValueHeaders, singleHeaders);
 
         for (String name: entries.names()) {
-            response.addHeader(name, String.join(",", entries.getAll(name)));
+            entries.getAll(name)
+                .forEach(headerValue -> response.addHeader(name, headerValue));
         }
     }
 
