@@ -1,0 +1,9 @@
+This section documents breaking changes between Micronaut AWS versions:
+
+== Micronaut AWS 5.0.0
+
+- The class `io.micronaut.function.aws.proxy.MicronautLambdaHandler` deprecated previously has been removed.
+Use one of the following classes instead:
+** `io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction`
+** `io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction`
+** `io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction`

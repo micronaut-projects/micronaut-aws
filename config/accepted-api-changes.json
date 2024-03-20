@@ -1664,5 +1664,25 @@
     "type": "io.micronaut.aws.lambda.events.serde.$LambdaDestinationEventSerde$IntrospectionRef2",
     "member": "Implemented interface io.micronaut.core.beans.BeanIntrospectionReference",
     "reason": "Serialization changes"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaHandler(io.micronaut.context.ApplicationContext)",
+    "reason": "Removed deprecated code for Micronaut Framework 5"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaHandler()",
+    "reason": "Removed deprecated code for Micronaut Framework 5"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Constructor io.micronaut.function.aws.proxy.MicronautLambdaHandler(io.micronaut.context.ApplicationContextBuilder)",
+    "reason": "Removed deprecated code for Micronaut Framework 5"
+  },
+  {
+    "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
+    "member": "Implemented interface com.amazonaws.services.lambda.runtime.RequestHandler",
+    "reason": "Removed deprecated code for Micronaut Framework 5"
   }
 ]

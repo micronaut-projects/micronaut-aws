@@ -79,5 +79,6 @@ distributedconfiguration:
   distributedconfigurationsecretsmanager: AWS Secrets Manager
   distributedconfigurationsecretsmanagersearch: Prefixes used for searching secrets
   parametersStore: AWS System Manager Parameter Store
+breaks: Breaking Changes
 repository: Repository
 thirdPartyLibraries: Third-party libraries
