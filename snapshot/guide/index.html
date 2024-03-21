@@ -68,9 +68,11 @@
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#distributedconfiguration"><strong>12</strong><span>Distributed Configuration</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>13</strong><span>Repository</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#breaks"><strong>13</strong><span>Breaking Changes</span></a></div>
                                 
-                                <div class="toc-item" style="margin-left:0"><a href="#thirdPartyLibraries"><strong>14</strong><span>Third-party libraries</span></a></div>
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>14</strong><span>Repository</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#thirdPartyLibraries"><strong>15</strong><span>Third-party libraries</span></a></div>
                                 
                             </div>
                         </div>
@@ -243,9 +245,11 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-parametersStore"><a href="#parametersStore"><strong>12.3</strong><span>AWS System Manager Parameter Store</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>13</strong><span>Repository</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-breaks"><a href="#breaks"><strong>13</strong><span>Breaking Changes</span></a></div>
         
-        <div class="toc-item" style="margin-left:0px" id="toc-item-thirdPartyLibraries"><a href="#thirdPartyLibraries"><strong>14</strong><span>Third-party libraries</span></a></div>
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>14</strong><span>Repository</span></a></div>
+        
+        <div class="toc-item" style="margin-left:0px" id="toc-item-thirdPartyLibraries"><a href="#thirdPartyLibraries"><strong>15</strong><span>Third-party libraries</span></a></div>
         
         </div>
     </div>
@@ -255,7 +259,7 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 4.5.0-SNAPSHOT </p>
+        <p><strong>Version:</strong> 5.0.0-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -4699,7 +4703,46 @@ aws:
 <p>For special secure information, such as keys or passwords, use the type <code>SecureString</code>. KMS will be automatically invoked when you add and retrieve values, and will decrypt them with the default key store for your account. If you set the configuration to not use secure strings, they will be returned to you encrypted and you must manually decrypt them.</p>
 </div>
 
-<h1 id="repository"><a class="anchor" href="#repository"></a>13 Repository</h1>
+<h1 id="breaks"><a class="anchor" href="#breaks"></a>13 Breaking Changes</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/breaks.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>This section documents breaking changes between Micronaut AWS versions:</p>
+</div>
+<div class="sect1">
+<h2 id="_micronaut_aws_5_0_0">Micronaut AWS 5.0.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>The class <code>io.micronaut.function.aws.proxy.MicronautLambdaHandler</code> deprecated previously has been removed.
+Use one of the following classes instead:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction</code></p>
+</li>
+<li>
+<p><code>io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction</code></p>
+</li>
+<li>
+<p><code>io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<h1 id="repository"><a class="anchor" href="#repository"></a>14 Repository</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/repository.adoc"'>
@@ -4715,7 +4758,7 @@ aws:
 <p><a href="https://github.com/micronaut-projects/micronaut-aws">https://github.com/micronaut-projects/micronaut-aws</a></p>
 </div>
 
-<h1 id="thirdPartyLibraries"><a class="anchor" href="#thirdPartyLibraries"></a>14 Third-party libraries</h1>
+<h1 id="thirdPartyLibraries"><a class="anchor" href="#thirdPartyLibraries"></a>15 Third-party libraries</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/master/src/main/docs/guide/thirdPartyLibraries.adoc"'>
