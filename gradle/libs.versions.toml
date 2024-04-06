@@ -15,6 +15,7 @@ micronaut-groovy = "4.2.0"
 micronaut-logging = "1.2.2"
 micronaut-mongodb = "5.2.0"
 micronaut-reactor = "3.2.1"
+
 micronaut-security = "4.6.9"
 micronaut-serde = "2.8.2"
 micronaut-servlet = "4.6.0"
