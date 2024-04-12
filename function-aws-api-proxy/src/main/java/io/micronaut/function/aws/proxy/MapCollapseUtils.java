@@ -43,7 +43,10 @@ public final class MapCollapseUtils {
     public static Map<String, String> getSingleValueHeaders(MutableHttpHeaders headers) {
         Map<String, String> result = new HashMap<>();
         for (String paramName : headers.names()) {
-            result.put(paramName, headers.get(paramName));
+            List<String> values = headers.getAll(paramName);
+            if (values.size() == 1) {
+                result.put(paramName, values.get(0));
+            }
         }
         return result;
     }
@@ -57,7 +60,10 @@ public final class MapCollapseUtils {
     public static Map<String, List<String>> getMultiHeaders(MutableHttpHeaders headers) {
         Map<String, List<String>> result = new HashMap<>();
         for (String paramName : headers.names()) {
-            result.put(paramName, headers.getAll(paramName));
+            List<String> values = headers.getAll(paramName);
+            if (values.size() > 1) {
+                result.put(paramName, values);
+            }
         }
         return result;
     }
