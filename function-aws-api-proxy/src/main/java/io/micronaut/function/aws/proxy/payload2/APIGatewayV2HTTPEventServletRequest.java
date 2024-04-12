@@ -73,7 +73,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return getHeaders(requestEvent::getHeaders, Collections::emptyMap);
+        return getHeaders(Collections::emptyMap, () -> transformCommaSeparatedValue(requestEvent.getHeaders()));
     }
 
     @Override
