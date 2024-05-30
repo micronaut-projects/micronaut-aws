@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * Secrets Manager client factory.
- * @author Luis Duarte
- * @since 2.6.0
- */
 package io.micronaut.aws.sdk.v2.service.lambda;
 
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
