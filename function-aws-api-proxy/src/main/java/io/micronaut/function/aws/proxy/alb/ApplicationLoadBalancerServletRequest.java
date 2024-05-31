@@ -66,7 +66,7 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
     }
 
     @Override
-    public byte[] getBodyBytes() throws IOException {
+    public byte[] getBodyBytes() throws EmptyBodyException {
         return getBodyBytes(requestEvent::getBody, requestEvent::getIsBase64Encoded);
     }
 
