@@ -1,5 +1,5 @@
 [versions]
-micronaut = "4.4.1"
+micronaut = "4.5.0"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.2.0"
 groovy = "4.0.15"
@@ -10,37 +10,37 @@ fileupload = '0.0.6'
 jetty = '11.0.20'
 logback-json-classic = '0.1.5'
 
-micronaut-discovery = "4.2.0"
-micronaut-groovy = "4.2.0"
+micronaut-discovery = "4.3.0"
+micronaut-groovy = "4.3.0"
 micronaut-logging = "1.2.2"
-micronaut-mongodb = "5.2.0"
-micronaut-reactor = "3.2.1"
+micronaut-mongodb = "5.3.0"
+micronaut-reactor = "3.3.0"
 
-micronaut-security = "4.6.9"
-micronaut-serde = "2.8.2"
+micronaut-security = "4.8.0"
+micronaut-serde = "2.10.0"
 micronaut-servlet = "4.8.0"
 micronaut-test-resources="2.5.2"
 micronaut-views = "5.4.0"
 micronaut-validation = "4.4.0"
 
 managed-alexa-ask-sdk = "2.86.0"
-managed-aws-java-sdk-v1 = '1.12.700'
+managed-aws-java-sdk-v1 = '1.12.733'
 managed-aws-java-sdk-v2 = '2.24.10'
 managed-aws-lambda = '1.2.3'
-managed-aws-lambda-events = '3.11.4'
+managed-aws-lambda-events = '3.11.5'
 managed-aws-lambda-java-serialization = '1.1.5'
 aws-lambda-java-runtime-interface-client = '2.5.0'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
-slf4j = "2.0.12"
+slf4j = "2.0.13"
 servlet-api = "2.5"
 javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "23.1.2"
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 
 # Micronaut
 micronaut-gradle-plugin = "4.3.6"
