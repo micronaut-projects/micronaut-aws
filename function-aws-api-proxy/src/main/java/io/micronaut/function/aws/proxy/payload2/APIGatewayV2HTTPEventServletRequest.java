@@ -67,7 +67,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     }
 
     @Override
-    public byte[] getBodyBytes() throws IOException {
+    public byte[] getBodyBytes() throws EmptyBodyException {
         return getBodyBytes(requestEvent::getBody, requestEvent::getIsBase64Encoded);
     }
 
