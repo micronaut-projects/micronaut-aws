@@ -31,7 +31,6 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;

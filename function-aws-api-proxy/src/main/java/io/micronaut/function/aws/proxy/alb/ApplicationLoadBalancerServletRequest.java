@@ -28,8 +28,6 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
  *
