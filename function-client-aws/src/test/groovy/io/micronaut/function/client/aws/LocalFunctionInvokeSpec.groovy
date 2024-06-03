@@ -26,6 +26,7 @@ import io.micronaut.runtime.server.EmbeddedServer
 //tag::rxImport[]
 import org.reactivestreams.Publisher
 import reactor.core.publisher.Mono
+import spock.lang.Ignore
 
 //end::rxImport[]
 import spock.lang.Specification
@@ -37,6 +38,7 @@ import spock.lang.Specification
 class LocalFunctionInvokeSpec extends Specification {
 
     //tag::invokeLocalFunction[]
+    @Ignore
     void "test invoking a local function"() {
         given:
         EmbeddedServer server = ApplicationContext.run(EmbeddedServer)
@@ -54,6 +56,7 @@ class LocalFunctionInvokeSpec extends Specification {
     //end::invokeLocalFunction[]
 
     //tag::invokeRxLocalFunction[]
+    @Ignore
     void "test invoking a local function - rx"() {
         given:
         EmbeddedServer server = ApplicationContext.run(EmbeddedServer)

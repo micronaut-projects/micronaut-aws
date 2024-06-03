@@ -28,8 +28,6 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 /**
  * Implementation of {@link ServletHttpRequest} for Application Load Balancer events.
  *
@@ -66,7 +64,7 @@ public class ApplicationLoadBalancerServletRequest<B> extends ApiGatewayServletR
     }
 
     @Override
-    public byte[] getBodyBytes() throws IOException {
+    public byte[] getBodyBytes() throws EmptyBodyException {
         return getBodyBytes(requestEvent::getBody, requestEvent::getIsBase64Encoded);
     }
 

@@ -28,7 +28,6 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -67,7 +66,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     }
 
     @Override
-    public byte[] getBodyBytes() throws IOException {
+    public byte[] getBodyBytes() throws EmptyBodyException {
         return getBodyBytes(requestEvent::getBody, requestEvent::getIsBase64Encoded);
     }
 
