@@ -68,11 +68,12 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
      * @param ioExecutor         ioExecutor
      */
     protected AwsLambdaFunctionExecutor(
+        LambdaClient syncClient,
         LambdaAsyncClient asyncClient,
         ByteBufferFactory byteBufferFactory,
         JsonMediaTypeCodec jsonMediaTypeCodec,
         @Named(TaskExecutors.IO) ExecutorService ioExecutor) {
-
+        this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
         this.jsonMediaTypeCodec = jsonMediaTypeCodec;
@@ -86,12 +87,13 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         }
 
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
-        SdkBytes input = encodeInput(input);
+        SdkBytes sdkBytes = encodeInput(input);
+        InvokeRequest invokeRequest = InvokeRequest.builder()
+            .functionName(definition.getName())
+            .payload(sdkBytes)
+            .build();
         if (isReactiveType) {
-            Mono<Object> invokeFlowable = Mono.fromFuture(asyncClient.invoke(InvokeRequest.builder()
-                    .functionName(definition.getName())
-                    .payload(input)
-                    .build()))
+            Mono<Object> invokeFlowable = Mono.fromFuture(asyncClient.invoke(invokeRequest))
                 .map(invokeResult ->
                     decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
                 .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
@@ -108,11 +110,11 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     }
 
     private Object decodeResult(FunctionDefinition definition, Argument<O> outputType, InvokeResponse invokeResult) {
-        Integer statusCode = invokeResult.getStatusCode();
+        Integer statusCode = invokeResult.statusCode();
         if (statusCode >= STATUS_CODE_ERROR) {
-            throw new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + invokeResult.getFunctionError());
+            throw new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + invokeResult.functionError());
         }
-        io.micronaut.core.io.buffer.ByteBuffer byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.getPayload().asByteArray());
+        io.micronaut.core.io.buffer.ByteBuffer byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
 
         return jsonMediaTypeCodec.decode(outputType, byteBuffer);
     }
@@ -120,7 +122,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private SdkBytes encodeInput(I input) {
         if (input != null) {
             ByteBuffer nioBuffer = jsonMediaTypeCodec.encode(input, byteBufferFactory).asNioBuffer();
-            return SdkBytes.fromByteArray(nioBuffer);
+            return SdkBytes.fromByteBuffer(nioBuffer);
         }
         return null;
     }
