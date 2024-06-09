@@ -10,8 +10,15 @@ dependencies {
     implementation(mn.micronaut.jackson.databind)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.inject.java)
+    testImplementation(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.server.netty)
     testImplementation(mn.micronaut.function.web)
     testImplementation(mnGroovy.micronaut.function.groovy)
     testImplementation(mnGroovy.micronaut.runtime.groovy)
+    // TODO: Switch to Test Resources, once Lambda Client is also included in Service Override
+    implementation(platform(libs.boms.testcontainers))
+    implementation(libs.testcontainers)
+    implementation(libs.testcontainers.localstack)
+    implementation(libs.testcontainers.junit)
+    implementation(libs.testcontainers.spock)
 }
