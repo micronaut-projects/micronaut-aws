@@ -15,18 +15,14 @@
  */
 package io.micronaut.function.client.aws;
 
-public class IsbnValidationRequest {
-    private String isbn;
+//tag::imports[]
+import io.micronaut.function.client.FunctionClient;
+import io.micronaut.http.annotation.Body;
+//end::imports[]
 
-    public IsbnValidationRequest() {
+@FunctionClient
+public interface TestFunctionClient {
 
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
+    TestFunctionClientResponse invokeFunction(@Body TestFunctionClientRequest request); // <1>
 }
+//end::clazz[]
