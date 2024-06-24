@@ -18,11 +18,13 @@ package io.micronaut.function.client.aws;
 //tag::imports[]
 import io.micronaut.function.client.FunctionClient;
 import io.micronaut.http.annotation.Body;
+import jakarta.inject.Named;
 //end::imports[]
 
 @FunctionClient
 public interface TestFunctionClient {
 
+    @Named("test-function")
     TestFunctionClientResponse invokeFunction(@Body TestFunctionClientRequest request); // <1>
 }
 //end::clazz[]

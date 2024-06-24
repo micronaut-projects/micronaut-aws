@@ -27,7 +27,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
-    private static final String FUNCTION_NAME = "FUNCTION_NAME";
+    private static final String FUNCTION_NAME = "TEST_FUNCTION_NAME";
 
     @Shared
     private LocalStackContainer localStackContainer = new LocalStackContainer(DockerImageName

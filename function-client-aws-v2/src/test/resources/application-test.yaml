@@ -1,0 +1,5 @@
+aws:
+  lambda:
+    functions:
+      test-function:
+        function-name: 'TEST_FUNCTION_NAME'
