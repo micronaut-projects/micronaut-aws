@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * Secrets Manager client factory.
+  * Lambda client factory.
  * @author Luis Duarte
  * @since 2.6.0
  */
