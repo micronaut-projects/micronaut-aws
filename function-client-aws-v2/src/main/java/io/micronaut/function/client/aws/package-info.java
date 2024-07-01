@@ -16,7 +16,6 @@
 /**
  * Function AWS lamda configuration.
  *
- * @author graemerocher
  * @since 1.0
  */
 package io.micronaut.function.client.aws;
