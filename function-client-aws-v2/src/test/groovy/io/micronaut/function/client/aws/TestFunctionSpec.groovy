@@ -4,8 +4,6 @@ import io.micronaut.core.io.ResourceLoader
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
 import jakarta.inject.Inject
-import org.apache.commons.compress.archivers.ArchiveOutputStream
-import org.apache.commons.compress.archivers.ArchiveStreamFactory
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.spock.Testcontainers
 import org.testcontainers.utility.DockerImageName
@@ -15,11 +13,15 @@ import software.amazon.awssdk.services.lambda.model.Architecture
 import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest
 import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest
 import software.amazon.awssdk.services.lambda.model.FunctionCode
+import software.amazon.awssdk.services.lambda.model.LambdaRequest
 import software.amazon.awssdk.services.lambda.model.Runtime
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.file.Files
+import java.nio.file.Path
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.LAMBDA
 
@@ -27,12 +29,12 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
-    private static final String FUNCTION_NAME = "TEST_FUNCTION_NAME";
+    private static final String FUNCTION_NAME = "TEST_FUNCTION_NAME"
 
     @Shared
     private LocalStackContainer localStackContainer = new LocalStackContainer(DockerImageName
             .parse("localstack/localstack:3.4.0"))
-            .withServices(LAMBDA);
+            .withServices(LAMBDA)
 
     @Inject
     @Shared
@@ -44,59 +46,40 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
     @Override
     Map<String, String> getProperties() {
-        return Map.of(
-                "aws.accessKeyId", localStackContainer.getAccessKey(),
-                "aws.secretKey", localStackContainer.getSecretKey(),
+        Map.of(
+                "aws.access-key-id", localStackContainer.getAccessKey(),
+                "aws.secret-key", localStackContainer.getSecretKey(),
                 "aws.region", localStackContainer.getRegion(),
-                "aws.services.lambda.endpoint-override", localStackContainer.getEndpointOverride(LAMBDA)
-        )
+                "aws.services.lambda.endpoint-override", localStackContainer.getEndpointOverride(LAMBDA).toString()
+        ) as Map<String, String>
     }
 
     @Inject
-    TestFunctionClient functionClient;
+    TestFunctionClient functionClient
 
     def setupSpec() {
-        def resource = resourceLoader.getResource("classpath:lambda").orElseThrow()
-        def tempFile = File.createTempFile(UUID.randomUUID().toString(), UUID.randomUUID().toString())
-        tempFile.deleteOnExit()
-
-        def outputStream = new FileOutputStream(tempFile)
-
-        ArchiveOutputStream archive = new ArchiveStreamFactory()
-                .createArchiveOutputStream(ArchiveStreamFactory.ZIP, outputStream);
-
-        Arrays.stream(new File(resource.toURI()).listFiles())
-            .forEach { file ->
-                archive.createArchiveEntry(file, file.getName())
-            }
-
-        archive.finish()
-
-        lambdaClient.createFunction(CreateFunctionRequest.builder()
-                .functionName(FUNCTION_NAME)
-                .code(FunctionCode.builder()
-                        .zipFile(SdkBytes.fromByteArray(Files.readAllBytes(tempFile.toPath())))
-                        .build())
-                .runtime(Runtime.NODEJS20_X)
-                .architectures(Architecture.X86_64)
-                .handler("index.handler")
-                .build())
+        byte[] bytes = lambdaBytes(resourceLoader)
+        LambdaRequest lambdaRequest = createFunctionRequest(bytes)
+        if (lambdaRequest instanceof CreateFunctionRequest) {
+            lambdaClient.createFunction((CreateFunctionRequest) lambdaRequest)
+        }
     }
 
     def cleanupSpec() {
-        lambdaClient.deleteFunction(DeleteFunctionRequest.builder()
-                .functionName(FUNCTION_NAME)
-                .build())
+        LambdaRequest lambdaRequest = deleteFunctionRequest()
+        if (lambdaRequest instanceof DeleteFunctionRequest) {
+            lambdaClient.deleteFunction((DeleteFunctionRequest) lambdaRequest)
+        }
     }
 
-    def "foo"() {
+    def "can invoke a JS Lambda function with the an @FunctionClient"() {
         given:
-        def aNumber = 1
-        def aString = "someString"
+        Integer aNumber = 1
+        String aString = "someString"
 
         when:
-        def result = functionClient
-                .invokeFunction(new TestFunctionClientRequest(aNumber, aNumber, new ComplexType(aNumber, aString)))
+        TestFunctionClientResponse result = functionClient
+                .invokeFunction(new TestFunctionClientRequest(aNumber, aString, new ComplexType(aNumber, aString)))
 
         then:
         result.aNumber == aNumber
@@ -109,4 +92,35 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
         result.anArray[0].aString == aString
     }
 
+    private static byte[] lambdaBytes(ResourceLoader resourceLoader) {
+        try (InputStream inputStream = resourceLoader.getResourceAsStream("classpath:lambda/index.js.zip").orElseThrow()) {
+            byte[] fileBytes = inputStream.readAllBytes()
+            Path tempFile = Files.createTempFile(FUNCTION_NAME, ".zip");
+            try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(tempFile))) {
+                ZipEntry zipEntry = new ZipEntry("index.js")
+                zos.putNextEntry(zipEntry)
+                zos.write(fileBytes)
+                zos.closeEntry()
+            }
+            return Files.readAllBytes(tempFile);
+        }
+    }
+
+    private static LambdaRequest createFunctionRequest(byte[] arr) {
+        CreateFunctionRequest.builder()
+                .functionName(FUNCTION_NAME)
+                .code(FunctionCode.builder()
+                        .zipFile(SdkBytes.fromByteArray(arr))
+                        .build())
+                .runtime(Runtime.NODEJS20_X)
+                .architectures(Architecture.X86_64)
+                .handler("index.handler")
+                .build()
+    }
+
+    private static LambdaRequest deleteFunctionRequest() {
+        DeleteFunctionRequest.builder()
+                .functionName(FUNCTION_NAME)
+                .build()
+    }
 }

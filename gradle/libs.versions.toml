@@ -45,8 +45,6 @@ kotlin = "1.9.24"
 # Micronaut
 micronaut-gradle-plugin = "4.4.0"
 
-commons-compress = "1.26.2"
-
 [libraries]
 # Core
 
@@ -126,5 +124,3 @@ testcontainers = { module = "org.testcontainers:testcontainers" }
 testcontainers-localstack = { module = "org.testcontainers:localstack" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-spock = { module = "org.testcontainers:spock" }
-
-commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
