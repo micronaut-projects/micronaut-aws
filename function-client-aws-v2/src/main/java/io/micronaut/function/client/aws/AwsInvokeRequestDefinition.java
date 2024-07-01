@@ -20,7 +20,7 @@ import io.micronaut.context.annotation.Parameter;
 import io.micronaut.function.client.FunctionDefinition;
 
 /**
- * Builds an {@link InvokeRequest} for each definition under {@code aws.lambda.functions}.
+ * Builds an {@link AwsInvokeRequestDefinition} for each definition under {@code aws.lambda.functions}.
  *
  * @since 4.7.0
  */
