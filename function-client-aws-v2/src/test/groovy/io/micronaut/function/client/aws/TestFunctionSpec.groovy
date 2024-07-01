@@ -93,7 +93,7 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
     }
 
     private static byte[] lambdaBytes(ResourceLoader resourceLoader) {
-        try (InputStream inputStream = resourceLoader.getResourceAsStream("classpath:lambda/index.js.zip").orElseThrow()) {
+        try (InputStream inputStream = resourceLoader.getResourceAsStream("classpath:lambda/index.js").orElseThrow()) {
             byte[] fileBytes = inputStream.readAllBytes()
             Path tempFile = Files.createTempFile(FUNCTION_NAME, ".zip");
             try (ZipOutputStream zos = new ZipOutputStream(Files.newOutputStream(tempFile))) {
