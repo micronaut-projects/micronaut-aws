@@ -1,6 +1,10 @@
 Micronaut AWS provides support for invoking AWS Lambda functions within a Micronaut application context.
 
-To use the features described in this section, you will need to have the `micronaut-function-client-aws` dependency on your classpath.
+To use the features described in this section, you will need to have the following dependency on your classpath:
+
+dependency:micronaut-function-client-aws-v2[groupId="io.micronaut.aws"]
+
+or for AWS SDK v1:
 
 dependency:micronaut-function-client-aws[groupId="io.micronaut.aws"]
 

@@ -28,6 +28,7 @@ sdkv2:
   s3: S3
   dynamodb: Dynamo DB
   ses: SES
+  lambdaClient: Lambda Client
   sns: SNS
   sqs: SQS
   ssm: SSM

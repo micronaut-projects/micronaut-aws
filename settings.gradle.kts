@@ -37,6 +37,7 @@ include("function-aws-api-proxy-test")
 include("function-aws-custom-runtime")
 include("function-aws-test")
 include("function-client-aws")
+include("function-client-aws-v2")
 
 include("test-suite")
 include("test-suite-aws-sdk-v2")

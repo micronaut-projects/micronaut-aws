@@ -24,6 +24,7 @@ dependencies {
     compileOnly(libs.awssdk.secretsmanager)
     compileOnly(libs.awssdk.servicediscovery)
     compileOnly(libs.awssdk.cloudwatchlogs)
+    compileOnly(libs.awssdk.lambda)
 
     // Tests
     testAnnotationProcessor(mn.micronaut.inject.java)
@@ -41,6 +42,7 @@ dependencies {
     testImplementation(libs.awssdk.sqs)
     testImplementation(libs.awssdk.ssm)
     testImplementation(libs.awssdk.rekognition)
+    testImplementation(libs.awssdk.lambda)
     testRuntimeOnly(libs.jcl.over.slf4j)
 
     testRuntimeOnly(mn.snakeyaml)
