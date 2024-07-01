@@ -16,10 +16,8 @@ dependencies {
     testImplementation(mnGroovy.micronaut.function.groovy)
     testImplementation(mnGroovy.micronaut.runtime.groovy)
     testImplementation(libs.commons.compress)
-    // TODO: Switch to Test Resources, once Lambda Client is also included in Service Override
-    implementation(platform(libs.boms.testcontainers))
-    implementation(libs.testcontainers)
-    implementation(libs.testcontainers.localstack)
-    implementation(libs.testcontainers.junit)
-    implementation(libs.testcontainers.spock)
+    testImplementation(platform(mnTestResources.boms.testcontainers))
+    testImplementation(libs.testcontainers)
+    testImplementation(libs.testcontainers.localstack)
+    testImplementation(libs.testcontainers.spock)
 }
