@@ -16,7 +16,7 @@
 /**
  * Lambda client factory.
  * @author Luis Duarte
- * @since 2.6.0
+ * @since 4.7.0
  */
 @Requires(classes = {LambdaClient.class, LambdaAsyncClient.class})
 @Configuration
