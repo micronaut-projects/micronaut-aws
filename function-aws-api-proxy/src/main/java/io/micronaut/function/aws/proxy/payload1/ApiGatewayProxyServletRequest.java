@@ -31,7 +31,6 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -72,10 +71,10 @@ public final class ApiGatewayProxyServletRequest<B> extends ApiGatewayServletReq
     }
 
     @Override
-    public byte[] getBodyBytes() throws IOException {
+    public byte[] getBodyBytes() throws EmptyBodyException {
         String body = requestEvent.getBody();
         if (StringUtils.isEmpty(body)) {
-            throw new IOException("Empty Body");
+            throw new EmptyBodyException();
         }
         Boolean isBase64Encoded = requestEvent.getIsBase64Encoded();
         return Boolean.TRUE.equals(isBase64Encoded) ? Base64.getDecoder().decode(body) : body.getBytes(getCharacterEncoding());

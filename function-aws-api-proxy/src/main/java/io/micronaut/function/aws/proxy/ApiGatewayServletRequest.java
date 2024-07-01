@@ -24,6 +24,7 @@ import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.execution.ExecutionFlow;
 import io.micronaut.core.io.buffer.ByteBuffer;
 import io.micronaut.core.type.Argument;
+import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
@@ -34,6 +35,8 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.http.ServerHttpRequest;
+import io.micronaut.http.body.ByteBody;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.uri.UriBuilder;
@@ -43,6 +46,7 @@ import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ParsedBodyHolder;
 import io.micronaut.servlet.http.ByteArrayByteBuffer;
+import io.micronaut.servlet.http.body.AvailableByteArrayBody;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -71,7 +75,7 @@ import java.util.function.Supplier;
  */
 @Internal
 @SuppressWarnings("java:S119") // More descriptive generics are better here
-public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES>, FullHttpRequest<T>, ParsedBodyHolder<T> {
+public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableServletHttpRequest<REQ, T>, ServletExchange<REQ, RES>, FullHttpRequest<T>, ParsedBodyHolder<T>, ServerHttpRequest<T> {
 
     private static final Set<Class<?>> RAW_BODY_TYPES = CollectionUtils.setOf(String.class, byte[].class, ByteBuffer.class, InputStream.class);
     private static final String SLASH = "/";
@@ -108,7 +112,16 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         });
     }
 
-    public abstract byte[] getBodyBytes() throws IOException;
+    @Override
+    public @NonNull ByteBody byteBody() {
+        try {
+            return new AvailableByteArrayBody(getBodyBytes());
+        } catch (EmptyBodyException e) {
+            return new AvailableByteArrayBody(ArrayUtils.EMPTY_BYTE_ARRAY);
+        }
+    }
+
+    public abstract byte[] getBodyBytes() throws EmptyBodyException;
 
     /**
      * Given a path and the query params from the event, build a URI.
@@ -300,10 +313,10 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      * @return body bytes
      * @throws IOException if the body is empty
      */
-    protected byte[] getBodyBytes(@NonNull Supplier<String> bodySupplier, @NonNull BooleanSupplier base64EncodedSupplier) throws IOException {
+    protected byte[] getBodyBytes(@NonNull Supplier<String> bodySupplier, @NonNull BooleanSupplier base64EncodedSupplier) throws EmptyBodyException {
         String requestBody = bodySupplier.get();
         if (StringUtils.isEmpty(requestBody)) {
-            throw new IOException("Empty Body");
+            throw new EmptyBodyException();
         }
         return base64EncodedSupplier.getAsBoolean() ?
             Base64.getDecoder().decode(requestBody) : requestBody.getBytes(getCharacterEncoding());
@@ -357,5 +370,11 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @NonNull
     protected MutableHttpHeaders getHeaders(@NonNull Supplier<Map<String, String>> singleHeaders, @NonNull Supplier<Map<String, List<String>>> multiValueHeaders) {
         return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
+    }
+
+    public static final class EmptyBodyException extends IOException {
+        public EmptyBodyException() {
+            super("Empty body");
+        }
     }
 }
