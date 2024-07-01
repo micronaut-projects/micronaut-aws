@@ -23,7 +23,7 @@ import io.micronaut.function.client.FunctionDefinition;
  * Builds an {@link InvokeRequest} for each definition under {@code aws.lambda.functions}.
  *
  * @author graemerocher
- * @since 1.0
+ * @since 4.7.0
  */
 @EachProperty(AwsInvokeRequestDefinition.AWS_LAMBDA_FUNCTIONS)
 public class AwsInvokeRequestDefinition implements FunctionDefinition {
