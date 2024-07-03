@@ -21,7 +21,6 @@ import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.Nullable;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
@@ -39,7 +38,6 @@ import software.amazon.awssdk.services.lambda.LambdaClientBuilder;
  * @since 4.7.0
  */
 @Factory
-@Internal
 class LambdaClientFactory extends AwsClientFactory<LambdaClientBuilder, LambdaAsyncClientBuilder, LambdaClient, LambdaAsyncClient> {
     /**
      * Constructor.
