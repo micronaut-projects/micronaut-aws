@@ -88,10 +88,17 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
 
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
         SdkBytes sdkBytes = encodeInput(input);
+
+        AwsInvokeRequestDefinition awsInvokeRequestDefinition =
+            (AwsInvokeRequestDefinition) definition;
+
         InvokeRequest invokeRequest = InvokeRequest.builder()
-            .functionName(definition.getName())
+            .functionName(awsInvokeRequestDefinition.getFunctionName())
+            .qualifier(awsInvokeRequestDefinition.getQualifier())
+            .clientContext(awsInvokeRequestDefinition.getClientContext())
             .payload(sdkBytes)
             .build();
+
         if (isReactiveType) {
             Mono<Object> invokeFlowable = Mono.fromFuture(asyncClient.invoke(invokeRequest))
                 .map(invokeResult ->

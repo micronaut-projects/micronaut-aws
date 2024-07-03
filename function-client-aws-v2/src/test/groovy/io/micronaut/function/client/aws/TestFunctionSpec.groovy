@@ -7,14 +7,17 @@ import jakarta.inject.Inject
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.spock.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
 import software.amazon.awssdk.core.SdkBytes
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.iam.IamClient
+import software.amazon.awssdk.services.iam.model.CreatePolicyRequest
+import software.amazon.awssdk.services.iam.model.Role
+import software.amazon.awssdk.services.iam.waiters.IamWaiter
 import software.amazon.awssdk.services.lambda.LambdaClient
-import software.amazon.awssdk.services.lambda.model.Architecture
 import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest
-import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest
-import software.amazon.awssdk.services.lambda.model.FunctionCode
 import software.amazon.awssdk.services.lambda.model.LambdaRequest
-import software.amazon.awssdk.services.lambda.model.Runtime
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -23,6 +26,7 @@ import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
+import static org.testcontainers.containers.localstack.LocalStackContainer.Service.IAM
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.LAMBDA
 
 @Testcontainers
@@ -34,7 +38,7 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
     @Shared
     private LocalStackContainer localStackContainer = new LocalStackContainer(DockerImageName
             .parse("localstack/localstack:3.4.0"))
-            .withServices(LAMBDA)
+            .withServices(IAM, LAMBDA)
 
     @Inject
     @Shared
@@ -58,17 +62,23 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
     TestFunctionClient functionClient
 
     def setupSpec() {
-        byte[] bytes = lambdaBytes(resourceLoader)
-        LambdaRequest lambdaRequest = createFunctionRequest(bytes)
-        if (lambdaRequest instanceof CreateFunctionRequest) {
-            lambdaClient.createFunction((CreateFunctionRequest) lambdaRequest)
-        }
-    }
+        try {
+            lambdaClient.getFunction(GetFunctionRequest.builder()
+                    .functionName(FUNCTION_NAME)
+                    .build())
+        } catch(Exception e) {
+            // Create if not exists
+            byte[] bytes = lambdaBytes(resourceLoader)
+            LambdaRequest lambdaRequest = createFunctionRequest(bytes)
+            if (lambdaRequest instanceof CreateFunctionRequest) {
+                def waiter = lambdaClient.waiter()
 
-    def cleanupSpec() {
-        LambdaRequest lambdaRequest = deleteFunctionRequest()
-        if (lambdaRequest instanceof DeleteFunctionRequest) {
-            lambdaClient.deleteFunction((DeleteFunctionRequest) lambdaRequest)
+                def function = lambdaClient.createFunction((CreateFunctionRequest) lambdaRequest)
+
+                waiter.waitUntilFunctionExists(GetFunctionRequest.builder()
+                        .functionName(function.functionName())
+                        .build())
+            }
         }
     }
 
@@ -92,7 +102,7 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
         result.anArray[0].aString == aString
     }
 
-    private static byte[] lambdaBytes(ResourceLoader resourceLoader) {
+    private byte[] lambdaBytes(ResourceLoader resourceLoader) {
         try (InputStream inputStream = resourceLoader.getResourceAsStream("classpath:lambda/index.js").orElseThrow()) {
             byte[] fileBytes = inputStream.readAllBytes()
             Path tempFile = Files.createTempFile(FUNCTION_NAME, ".zip");
@@ -106,19 +116,94 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
         }
     }
 
-    private static LambdaRequest createFunctionRequest(byte[] arr) {
+    private Role getLambdaRole() {
+        def iamClient = IamClient.builder()
+                .region(Region.of(localStackContainer.getRegion()))
+                .credentialsProvider(AwsCredentialsProviderChain.of(
+                        () -> AwsBasicCredentials.create(localStackContainer.getAccessKey(), localStackContainer.getSecretKey())
+                ))
+                .endpointOverride(localStackContainer.getEndpointOverride(IAM))
+                .build()
+        def roleName = "lambda-role";
+        try {
+            return iamClient.getRole(GetRoleRequest.builder()
+                    .roleName(roleName)
+                    .build()).role();
+        } catch (final Exception e) {
+            // Create if not exists
+            IamWaiter iamWaiter = iamClient.waiter();
+
+            CreatePolicyRequest request = CreatePolicyRequest.builder()
+                    .policyName("lambda-invoke-policy")
+                    .policyDocument("""
+                    {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Sid": "LambdaInvoke",
+                          "Effect": "Allow",
+                          "Action": [
+                            "lambda:InvokeFunction"
+                          ],
+                          "Resource": "*"
+                        }
+                      ]
+                    }
+                    """.stripIndent())
+                    .build();
+
+            def policy = iamClient.createPolicy(request)
+            iamWaiter.waitUntilPolicyExists(GetPolicyRequest.builder()
+                    .policyArn(policy.policy().arn())
+                    .build());
+
+            def role = iamClient.createRole(CreateRoleRequest.builder()
+                    .roleName(roleName)
+                    .path("/")
+                    .assumeRolePolicyDocument("""
+                        {
+                         "Version": "2012-10-17",
+                         "Statement": [
+                           {
+                             "Effect": "Allow",
+                             "Principal": {
+                               "Service": "lambda.amazonaws.com"
+                             },
+                             "Action": "sts:AssumeRole"
+                           }
+                         ]
+                        }
+                        """.stripIndent())
+                    .build())
+
+            iamWaiter.waitUntilRoleExists(GetRoleRequest.builder()
+                    .roleName(role.role().roleName())
+                    .build())
+
+            iamClient.attachRolePolicy(AttachRolePolicyRequest.builder()
+                    .roleName(role.role().roleName())
+                    .policyArn(policy.policy().arn())
+                    .build())
+
+            return role.role();
+        }
+    }
+
+    private LambdaRequest createFunctionRequest(byte[] arr) {
+        def role = getLambdaRole()
         CreateFunctionRequest.builder()
                 .functionName(FUNCTION_NAME)
+                .role(role.arn())
                 .code(FunctionCode.builder()
                         .zipFile(SdkBytes.fromByteArray(arr))
                         .build())
-                .runtime(Runtime.NODEJS20_X)
+                .runtime(Runtime.NODEJS18_X)
                 .architectures(Architecture.X86_64)
                 .handler("index.handler")
                 .build()
     }
 
-    private static LambdaRequest deleteFunctionRequest() {
+    private LambdaRequest deleteFunctionRequest() {
         DeleteFunctionRequest.builder()
                 .functionName(FUNCTION_NAME)
                 .build()

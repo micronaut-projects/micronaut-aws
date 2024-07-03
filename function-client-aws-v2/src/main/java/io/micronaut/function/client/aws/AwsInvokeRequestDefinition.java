@@ -17,6 +17,7 @@ package io.micronaut.function.client.aws;
 
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
+import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.client.FunctionDefinition;
 
 /**
@@ -24,14 +25,22 @@ import io.micronaut.function.client.FunctionDefinition;
  *
  * @since 4.7.0
  */
+@Introspected
 @EachProperty(AwsInvokeRequestDefinition.AWS_LAMBDA_FUNCTIONS)
 public class AwsInvokeRequestDefinition implements FunctionDefinition {
     public static final String AWS_LAMBDA_FUNCTIONS = "aws.lambda.functions";
 
     private final String name;
 
+    private String functionName;
+
+    private String qualifier;
+
+    private String clientContext;
+
     /**
      * Constructor.
+     *
      * @param name configured name from a property
      */
     public AwsInvokeRequestDefinition(@Parameter String name) {
@@ -41,5 +50,29 @@ public class AwsInvokeRequestDefinition implements FunctionDefinition {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public String getClientContext() {
+        return clientContext;
+    }
+
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+
+    public void setClientContext(String clientContext) {
+        this.clientContext = clientContext;
     }
 }
