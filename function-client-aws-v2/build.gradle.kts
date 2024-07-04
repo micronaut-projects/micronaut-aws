@@ -7,7 +7,6 @@ dependencies {
     implementation(libs.awssdk.lambda)
     implementation(mn.reactor)
     api(mn.micronaut.function.client)
-    implementation(mn.micronaut.jackson.databind)
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.inject.java)
     testImplementation(mnSerde.micronaut.serde.api)
