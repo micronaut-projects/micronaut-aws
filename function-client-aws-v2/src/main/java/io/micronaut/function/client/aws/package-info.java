@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * Function AWS lamda configuration.
+ * AWS Lambda Function Client related classes.
  *
  * @since 4.7.0
  */
