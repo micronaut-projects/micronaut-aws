@@ -5,7 +5,7 @@ plugins {
 }
 dependencies {
     testImplementation(projects.micronautFunctionAws)
-    testImplementation(projects.micronautFunctionClientAws)
+    testImplementation(projects.micronautFunctionClientAwsV2)
 }
 
 tasks {
