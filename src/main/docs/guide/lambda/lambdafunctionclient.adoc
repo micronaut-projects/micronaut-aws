@@ -1,15 +1,19 @@
 Micronaut AWS provides support for invoking AWS Lambda functions within a Micronaut application context.
 
+
+=== AWS SDK V2
+
 To use the features described in this section, you will need to have the following dependency on your classpath:
 
 dependency:micronaut-function-client-aws-v2[groupId="io.micronaut.aws"]
 
-or for AWS SDK v1:
-
-dependency:micronaut-function-client-aws[groupId="io.micronaut.aws"]
+NOTE: To invoke a function Micronaut configures a `LambdaAsyncClient` and `LambdaClient`. You can configure them by registering a https://docs.micronaut.io/latest/api/io/micronaut/context/event/BeanCreatedEventListener.html[BeanCreatedEventListener] for `software.amazon.awssdk.services.lambda.LambdaAsyncClient` or `software.amazon.awssdk.services.lambda.LambdaAsyncClientBuilder`
 
 You can define multiple named functions under the `aws.lambda.functions` configuration.
-Each is configured by `AWSInvokeRequestDefinition` that allows setting any property on the underlying `com.amazonaws.services.lambda.model.InvokeRequest`.
+Each is configured by `AwsInvokeRequestDefinition` that allows setting any property on the underlying `software.amazon.awssdk.services.lambda.model.InvokeRequest`.
+
+
+=== Example
 
 For example, you invoke a function named `AwsLambdaFunctionName`, in the AWS Lambda console, with the following configuration:
 
@@ -28,6 +32,16 @@ Alternatively, you can remove the `@Named` annotation and match the method name 
 
 snippet::io.micronaut.docs.function.client.aws.methodnamed.AnalyticsClient[tags="clazz"]
 
-To configure credentials for invoking the function you can either define a `~/.aws/credentials` file or use the application configuration file. Micronaut registers a api:configurations.aws.EnvironmentAWSCredentialsProvider[] that resolves AWS credentials from the Micronaut Environment.
+
+=== AWS SDK V1
+
+To use AWS SDK v1 add the following dependency instead:
+
+dependency:micronaut-function-client-aws[groupId="io.micronaut.aws"]
 
 NOTE: To invoke a function Micronaut configures a `AWSLambdaAsyncClient` using api:function.client.aws.AWSLambdaConfiguration[] that allows configuring any of the properties of the `AWSLambdaAsyncClientBuilder` class.
+
+You can define multiple named functions under the `aws.lambda.functions` configuration.
+Each is configured by `AWSInvokeRequestDefinition` that allows setting any property on the underlying `com.amazonaws.services.lambda.model.InvokeRequest`.
+
+To configure credentials for invoking the function you can either define a `~/.aws/credentials` file or use the application configuration file. Micronaut registers a api:configurations.aws.EnvironmentAWSCredentialsProvider[] that resolves AWS credentials from the Micronaut Environment.
