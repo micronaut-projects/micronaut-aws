@@ -1,4 +1,4 @@
-package io.micronaut.function.client.aws;
+package io.micronaut.function.client.aws.v2;
 
 import io.micronaut.serde.annotation.Serdeable;
 

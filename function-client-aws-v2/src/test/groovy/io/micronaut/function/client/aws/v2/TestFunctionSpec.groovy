@@ -1,4 +1,4 @@
-package io.micronaut.function.client.aws
+package io.micronaut.function.client.aws.v2
 
 import io.micronaut.core.io.ResourceLoader
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
@@ -24,7 +24,6 @@ import software.amazon.awssdk.services.lambda.model.Architecture
 import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest
 import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest
 import software.amazon.awssdk.services.lambda.model.FunctionCode
-import software.amazon.awssdk.services.lambda.model.GetFunctionConcurrencyRequest
 import software.amazon.awssdk.services.lambda.model.GetFunctionConfigurationRequest
 import software.amazon.awssdk.services.lambda.model.Runtime
 import software.amazon.awssdk.services.lambda.model.GetFunctionRequest
