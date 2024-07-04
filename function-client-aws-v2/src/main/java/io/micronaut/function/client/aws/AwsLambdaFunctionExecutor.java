@@ -16,6 +16,7 @@
 package io.micronaut.function.client.aws;
 
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.io.buffer.ByteBufferFactory;
@@ -50,6 +51,7 @@ import java.util.concurrent.ExecutorService;
  */
 @Requires(beans = LambdaAsyncClient.class)
 @Singleton
+@Internal
 public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, FunctionInvokerChooser {
 
     private static final int STATUS_CODE_ERROR = 300;
