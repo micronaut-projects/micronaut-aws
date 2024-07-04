@@ -123,7 +123,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         if (statusCode >= STATUS_CODE_ERROR) {
             throw new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + invokeResult.functionError());
         }
-        io.micronaut.core.io.buffer.ByteBuffer byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
+        io.micronaut.core.io.buffer.ByteBuffer<?> byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
 
         return mediaTypeCodec.decode(outputType, byteBuffer);
     }
