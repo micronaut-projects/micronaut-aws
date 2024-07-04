@@ -26,6 +26,9 @@ import io.micronaut.function.client.FunctionDefinition;
  */
 @EachProperty(AwsInvokeRequestDefinition.AWS_LAMBDA_FUNCTIONS)
 public class AwsInvokeRequestDefinition implements FunctionDefinition {
+    /**
+     * Configuration prefix.
+     */
     public static final String AWS_LAMBDA_FUNCTIONS = "aws.lambda.functions";
 
     private final String name;

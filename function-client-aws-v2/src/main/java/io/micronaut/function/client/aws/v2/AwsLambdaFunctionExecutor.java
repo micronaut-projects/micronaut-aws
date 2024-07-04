@@ -70,6 +70,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
      * @param byteBufferFactory  byteBufferFactory
      * @param mediaTypeCodec JsonMediaTypeCodec
      * @param executor blocking executor
+     * @param conversionService ConversionService
      */
     protected AwsLambdaFunctionExecutor(
             LambdaClient syncClient,
