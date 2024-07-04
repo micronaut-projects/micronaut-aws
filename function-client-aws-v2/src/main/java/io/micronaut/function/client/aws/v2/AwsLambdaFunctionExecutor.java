@@ -93,16 +93,8 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
 
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
         SdkBytes sdkBytes = encodeInput(input);
-
-        AwsInvokeRequestDefinition awsInvokeRequestDefinition =
-            (AwsInvokeRequestDefinition) definition;
-
-        InvokeRequest invokeRequest = InvokeRequest.builder()
-            .functionName(awsInvokeRequestDefinition.getFunctionName())
-            .qualifier(awsInvokeRequestDefinition.getQualifier())
-            .clientContext(awsInvokeRequestDefinition.getClientContext())
-            .payload(sdkBytes)
-            .build();
+        AwsInvokeRequestDefinition awsInvokeRequestDefinition = (AwsInvokeRequestDefinition) definition;
+        InvokeRequest invokeRequest = createInvokeRequest(awsInvokeRequestDefinition, sdkBytes);
 
         if (isReactiveType) {
             Mono<Object> invokeFlowable = Mono.fromFuture(asyncClient.invoke(invokeRequest))
@@ -111,6 +103,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                 .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
                 .subscribeOn(Schedulers.fromExecutor(ioExecutor));
             return conversionService.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
+
         } else {
             InvokeResponse invokeResult = syncClient.invoke(invokeRequest);
             try {
@@ -119,6 +112,16 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                 throw new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + e.getMessage(), e);
             }
         }
+    }
+
+    private InvokeRequest createInvokeRequest(AwsInvokeRequestDefinition awsInvokeRequestDefinition,
+                                              SdkBytes sdkBytes) {
+        return InvokeRequest.builder()
+                .functionName(awsInvokeRequestDefinition.getFunctionName())
+                .qualifier(awsInvokeRequestDefinition.getQualifier())
+                .clientContext(awsInvokeRequestDefinition.getClientContext())
+                .payload(sdkBytes)
+                .build();
     }
 
     private Object decodeResult(FunctionDefinition definition, Argument<O> outputType, InvokeResponse invokeResult) {

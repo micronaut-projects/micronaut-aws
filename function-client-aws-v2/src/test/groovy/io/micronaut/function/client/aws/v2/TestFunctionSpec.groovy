@@ -7,6 +7,7 @@ import jakarta.inject.Inject
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.spock.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import reactor.core.publisher.Mono
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
 import software.amazon.awssdk.core.SdkBytes
@@ -71,6 +72,9 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
     @Inject
     TestFunctionClient functionClient
 
+    @Inject
+    TestFunctionReactiveClient testFunctionReactiveClient
+
     def setupSpec() {
         try {
             lambdaClient.getFunction(GetFunctionRequest.builder()
@@ -102,6 +106,24 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
         when:
         TestFunctionClientResponse result = functionClient
                 .invokeFunction(new TestFunctionClientRequest(aNumber, aString, new ComplexType(aNumber, aString)))
+
+        then:
+        result.aNumber == aNumber
+        result.aString == aString
+        result.aObject
+        result.aObject.aNumber == aNumber
+        result.aObject.aString == aString
+        result.anArray.size() == 1
+        result.anArray[0].aNumber == aNumber
+        result.anArray[0].aString == aString
+    }
+
+    def "can invoke a JS Lambda function with the an @FunctionClient wtih reactive types"() {
+        given:
+        Integer aNumber = 1
+        String aString = "someString"
+        when:
+        TestFunctionClientResponse result = Mono.from(testFunctionReactiveClient.invokeFunctionReactive(new TestFunctionClientRequest(aNumber, aString, new ComplexType(aNumber, aString)))).block()
 
         then:
         result.aNumber == aNumber

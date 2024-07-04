@@ -19,5 +19,4 @@ dependencies {
     testImplementation(libs.testcontainers.localstack)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.awssdk.iam)
-    testRuntimeOnly(mn.snakeyaml)
 }
