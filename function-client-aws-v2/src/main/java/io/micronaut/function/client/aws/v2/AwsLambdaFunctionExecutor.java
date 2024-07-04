@@ -74,7 +74,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         LambdaAsyncClient asyncClient,
         ByteBufferFactory byteBufferFactory,
         JsonMediaTypeCodec mediaTypeCodec,
-        @Named(TaskExecutors.IO) ExecutorService ioExecutor) {
+        @Named(TaskExecutors.BLOCKING) ExecutorService ioExecutor) {
         this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
