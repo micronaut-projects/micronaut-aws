@@ -57,7 +57,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private static final int STATUS_CODE_ERROR = 300;
     private final LambdaClient syncClient;
     private final LambdaAsyncClient asyncClient;
-    private final ByteBufferFactory byteBufferFactory;
+    private final ByteBufferFactory<?, ?> byteBufferFactory;
     private final JsonMediaTypeCodec mediaTypeCodec;
     private final ExecutorService ioExecutor;
 
@@ -72,7 +72,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     protected AwsLambdaFunctionExecutor(
         LambdaClient syncClient,
         LambdaAsyncClient asyncClient,
-        ByteBufferFactory byteBufferFactory,
+        ByteBufferFactory<?, ?> byteBufferFactory,
         JsonMediaTypeCodec mediaTypeCodec,
         @Named(TaskExecutors.BLOCKING) ExecutorService ioExecutor) {
         this.syncClient = syncClient;
