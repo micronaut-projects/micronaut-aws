@@ -9,7 +9,7 @@ dependencies {
     testImplementation(mnTest.micronaut.test.spock)
     testImplementation(platform(mn.micronaut.core.bom))
     testImplementation(projects.micronautFunctionAws)
-    testImplementation(projects.micronautFunctionClientAwsV2)
+    testImplementation(projects.micronautFunctionClientAws)
     testRuntimeOnly(mn.snakeyaml)
 }
 
