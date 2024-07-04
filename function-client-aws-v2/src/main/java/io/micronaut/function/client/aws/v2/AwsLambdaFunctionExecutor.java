@@ -60,6 +60,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private final ByteBufferFactory<?, ?> byteBufferFactory;
     private final JsonMediaTypeCodec mediaTypeCodec;
     private final ExecutorService ioExecutor;
+    private final ConversionService conversionService;
 
     /**
      * Constructor.
@@ -70,16 +71,18 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
      * @param ioExecutor         ioExecutor
      */
     protected AwsLambdaFunctionExecutor(
-        LambdaClient syncClient,
-        LambdaAsyncClient asyncClient,
-        ByteBufferFactory<?, ?> byteBufferFactory,
-        JsonMediaTypeCodec mediaTypeCodec,
-        @Named(TaskExecutors.BLOCKING) ExecutorService ioExecutor) {
+            LambdaClient syncClient,
+            LambdaAsyncClient asyncClient,
+            ByteBufferFactory<?, ?> byteBufferFactory,
+            JsonMediaTypeCodec mediaTypeCodec,
+            @Named(TaskExecutors.BLOCKING) ExecutorService ioExecutor,
+            ConversionService conversionService) {
         this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
         this.mediaTypeCodec = mediaTypeCodec;
         this.ioExecutor = ioExecutor;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -107,7 +110,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                     decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
                 .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
                 .subscribeOn(Schedulers.fromExecutor(ioExecutor));
-            return ConversionService.SHARED.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
+            return conversionService.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
         } else {
             InvokeResponse invokeResult = syncClient.invoke(invokeRequest);
             try {
