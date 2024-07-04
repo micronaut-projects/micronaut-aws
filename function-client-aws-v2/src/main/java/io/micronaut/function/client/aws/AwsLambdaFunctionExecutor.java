@@ -25,7 +25,7 @@ import io.micronaut.function.client.FunctionDefinition;
 import io.micronaut.function.client.FunctionInvoker;
 import io.micronaut.function.client.FunctionInvokerChooser;
 import io.micronaut.function.client.exceptions.FunctionExecutionException;
-import io.micronaut.jackson.codec.JsonMediaTypeCodec;
+import io.micronaut.json.codec.JsonMediaTypeCodec;
 import io.micronaut.scheduling.TaskExecutors;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
@@ -58,7 +58,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private final LambdaClient syncClient;
     private final LambdaAsyncClient asyncClient;
     private final ByteBufferFactory byteBufferFactory;
-    private final JsonMediaTypeCodec jsonMediaTypeCodec;
+    private final JsonMediaTypeCodec mediaTypeCodec;
     private final ExecutorService ioExecutor;
 
     /**
@@ -66,19 +66,19 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
      *
      * @param asyncClient        asyncClient
      * @param byteBufferFactory  byteBufferFactory
-     * @param jsonMediaTypeCodec jsonMediaTypeCodec
+     * @param mediaTypeCodec JsonMediaTypeCodec
      * @param ioExecutor         ioExecutor
      */
     protected AwsLambdaFunctionExecutor(
         LambdaClient syncClient,
         LambdaAsyncClient asyncClient,
         ByteBufferFactory byteBufferFactory,
-        JsonMediaTypeCodec jsonMediaTypeCodec,
+        JsonMediaTypeCodec mediaTypeCodec,
         @Named(TaskExecutors.IO) ExecutorService ioExecutor) {
         this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
-        this.jsonMediaTypeCodec = jsonMediaTypeCodec;
+        this.mediaTypeCodec = mediaTypeCodec;
         this.ioExecutor = ioExecutor;
     }
 
@@ -125,12 +125,12 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         }
         io.micronaut.core.io.buffer.ByteBuffer byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
 
-        return jsonMediaTypeCodec.decode(outputType, byteBuffer);
+        return mediaTypeCodec.decode(outputType, byteBuffer);
     }
 
     private SdkBytes encodeInput(I input) {
         if (input != null) {
-            ByteBuffer nioBuffer = jsonMediaTypeCodec.encode(input, byteBufferFactory).asNioBuffer();
+            ByteBuffer nioBuffer = mediaTypeCodec.encode(input, byteBufferFactory).asNioBuffer();
             return SdkBytes.fromByteBuffer(nioBuffer);
         }
         return null;

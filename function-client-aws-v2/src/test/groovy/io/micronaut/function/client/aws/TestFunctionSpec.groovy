@@ -12,11 +12,22 @@ import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
 import software.amazon.awssdk.core.SdkBytes
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.iam.IamClient
+import software.amazon.awssdk.services.iam.model.AttachRolePolicyRequest
 import software.amazon.awssdk.services.iam.model.CreatePolicyRequest
+import software.amazon.awssdk.services.iam.model.CreateRoleRequest
+import software.amazon.awssdk.services.iam.model.GetPolicyRequest
+import software.amazon.awssdk.services.iam.model.GetRoleRequest
 import software.amazon.awssdk.services.iam.model.Role
 import software.amazon.awssdk.services.iam.waiters.IamWaiter
 import software.amazon.awssdk.services.lambda.LambdaClient
+import software.amazon.awssdk.services.lambda.model.Architecture
 import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest
+import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest
+import software.amazon.awssdk.services.lambda.model.FunctionCode
+import software.amazon.awssdk.services.lambda.model.GetFunctionConcurrencyRequest
+import software.amazon.awssdk.services.lambda.model.GetFunctionConfigurationRequest
+import software.amazon.awssdk.services.lambda.model.Runtime
+import software.amazon.awssdk.services.lambda.model.GetFunctionRequest
 import software.amazon.awssdk.services.lambda.model.LambdaRequest
 import spock.lang.Shared
 import spock.lang.Specification
@@ -74,10 +85,12 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
                 def waiter = lambdaClient.waiter()
 
                 def function = lambdaClient.createFunction((CreateFunctionRequest) lambdaRequest)
-
                 waiter.waitUntilFunctionExists(GetFunctionRequest.builder()
                         .functionName(function.functionName())
                         .build())
+                GetFunctionConfigurationRequest getFunctionConfigurationRequest =
+                        GetFunctionConfigurationRequest.builder().functionName(function.functionName()).build()
+                waiter.waitUntilFunctionActive(getFunctionConfigurationRequest)
             }
         }
     }
