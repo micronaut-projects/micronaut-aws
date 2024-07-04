@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2024 original authors
+ * Copyright 2017-2020 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * AWS Lambda Function Client related classes.
- *
- * @since 4.7.0
- */
-package io.micronaut.function.client.aws;
+package io.micronaut.function.client.aws.v2;
 
+//tag::imports[]
+import io.micronaut.function.client.FunctionClient;
+import io.micronaut.http.annotation.Body;
+import jakarta.inject.Named;
+//end::imports[]
+
+@FunctionClient
+public interface TestFunctionClient {
+
+    @Named("test-function")
+    TestFunctionClientResponse invokeFunction(@Body TestFunctionClientRequest request); // <1>
+}
+//end::clazz[]
