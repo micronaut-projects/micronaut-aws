@@ -17,7 +17,6 @@ package io.micronaut.function.client.aws.v2;
 
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
-import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.client.FunctionDefinition;
 
 /**
@@ -25,7 +24,6 @@ import io.micronaut.function.client.FunctionDefinition;
  *
  * @since 4.7.0
  */
-@Introspected
 @EachProperty(AwsInvokeRequestDefinition.AWS_LAMBDA_FUNCTIONS)
 public class AwsInvokeRequestDefinition implements FunctionDefinition {
     public static final String AWS_LAMBDA_FUNCTIONS = "aws.lambda.functions";
