@@ -20,3 +20,9 @@ dependencies {
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.awssdk.iam)
 }
+micronautBuild {
+    // new module, so no binary check
+    binaryCompatibility {
+        enabled.set(false)
+    }
+}
