@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 /**
-<<<<<<< HEAD:function-client-aws-v2/src/main/java/io/micronaut/function/client/aws/package-info.java
  * AWS Lambda Function Client related classes.
-=======
- * AWS Lambda Function Client related classes. 
->>>>>>> f00002268 (move to package v2):function-client-aws-v2/src/main/java/io/micronaut/function/client/aws/v2/package-info.java
  *
  * @since 4.7.0
  */
