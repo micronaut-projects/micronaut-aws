@@ -59,29 +59,30 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private final LambdaAsyncClient asyncClient;
     private final ByteBufferFactory<?, ?> byteBufferFactory;
     private final JsonMediaTypeCodec mediaTypeCodec;
-    private final ExecutorService ioExecutor;
+    private final ExecutorService executor;
     private final ConversionService conversionService;
 
     /**
      * Constructor.
      *
-     * @param asyncClient        asyncClient
+     * @param syncClient Lambda Sync Client
+     * @param asyncClient Lambda Async Client
      * @param byteBufferFactory  byteBufferFactory
      * @param mediaTypeCodec JsonMediaTypeCodec
-     * @param ioExecutor         ioExecutor
+     * @param executor blocking executor
      */
     protected AwsLambdaFunctionExecutor(
             LambdaClient syncClient,
             LambdaAsyncClient asyncClient,
             ByteBufferFactory<?, ?> byteBufferFactory,
             JsonMediaTypeCodec mediaTypeCodec,
-            @Named(TaskExecutors.BLOCKING) ExecutorService ioExecutor,
+            @Named(TaskExecutors.BLOCKING) ExecutorService executor,
             ConversionService conversionService) {
         this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
         this.mediaTypeCodec = mediaTypeCodec;
-        this.ioExecutor = ioExecutor;
+        this.executor = executor;
         this.conversionService = conversionService;
     }
 
@@ -101,7 +102,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                 .map(invokeResult ->
                     decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
                 .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
-                .subscribeOn(Schedulers.fromExecutor(ioExecutor));
+                .subscribeOn(Schedulers.fromExecutor(executor));
             return conversionService.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
 
         } else {

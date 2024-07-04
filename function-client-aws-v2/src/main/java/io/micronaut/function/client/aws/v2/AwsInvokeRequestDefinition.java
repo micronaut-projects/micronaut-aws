@@ -75,7 +75,7 @@ public class AwsInvokeRequestDefinition implements FunctionDefinition {
     }
 
     /**
-     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#clientContext}
+     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#clientContext}.
      * @return Up to 3,583 bytes of base64-encoded data about the invoking client to pass to the function in the context object.
      */
     public String getClientContext() {
@@ -83,7 +83,7 @@ public class AwsInvokeRequestDefinition implements FunctionDefinition {
     }
 
     /**
-     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#qualifier}
+     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#qualifier}.
      * @param qualifier Specify a version or alias to invoke a published version of the function.
      */
     public void setQualifier(String qualifier) {
