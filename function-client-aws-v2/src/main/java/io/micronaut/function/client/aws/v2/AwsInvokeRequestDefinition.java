@@ -50,26 +50,50 @@ public class AwsInvokeRequestDefinition implements FunctionDefinition {
         return this.name;
     }
 
+    /**
+     *
+     * @return The name or ARN of the Lambda function, version, or alias.
+     */
     public String getFunctionName() {
         return functionName;
     }
 
-    public String getQualifier() {
-        return qualifier;
-    }
-
-    public String getClientContext() {
-        return clientContext;
-    }
-
+    /**
+     *
+     * @param functionName The name or ARN of the Lambda function, version, or alias.
+     */
     public void setFunctionName(String functionName) {
         this.functionName = functionName;
     }
 
+    /**
+     *
+     * @return Specify a version or alias to invoke a published version of the function.
+     */
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    /**
+     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#clientContext}
+     * @return Up to 3,583 bytes of base64-encoded data about the invoking client to pass to the function in the context object.
+     */
+    public String getClientContext() {
+        return clientContext;
+    }
+
+    /**
+     * {@see software.amazon.awssdk.services.lambda.model.InvokeRequest#qualifier}
+     * @param qualifier Specify a version or alias to invoke a published version of the function.
+     */
     public void setQualifier(String qualifier) {
         this.qualifier = qualifier;
     }
 
+    /**
+     *
+     * @param clientContext Up to 3,583 bytes of base64-encoded data about the invoking client to pass to the function in the context object.
+     */
     public void setClientContext(String clientContext) {
         this.clientContext = clientContext;
     }
