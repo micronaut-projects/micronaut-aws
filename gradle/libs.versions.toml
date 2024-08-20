@@ -29,7 +29,7 @@ managed-aws-java-sdk-v2 = '2.26.12'
 managed-aws-lambda = '1.2.3'
 managed-aws-lambda-events = '3.11.6'
 managed-aws-lambda-java-serialization = '1.1.5'
-aws-lambda-java-runtime-interface-client = '2.5.0'
+aws-lambda-java-runtime-interface-client = '2.6.0'
 
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
