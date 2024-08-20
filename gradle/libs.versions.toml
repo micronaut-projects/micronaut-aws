@@ -69,6 +69,7 @@ awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
 awssdk-cloudwatchlogs = { module = 'software.amazon.awssdk:cloudwatchlogs'}
 awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }
+awssdk-lambda = { module = 'software.amazon.awssdk:lambda' }
 awssdk-netty-nio-client = { module = 'software.amazon.awssdk:netty-nio-client' }
 awssdk-rekognition = { module = 'software.amazon.awssdk:rekognition' }
 awssdk-s3 = { module = 'software.amazon.awssdk:s3' }
@@ -78,6 +79,7 @@ awssdk-ses = { module = 'software.amazon.awssdk:ses' }
 awssdk-sns = { module = 'software.amazon.awssdk:sns' }
 awssdk-sqs = { module = 'software.amazon.awssdk:sqs' }
 awssdk-ssm = { module = 'software.amazon.awssdk:ssm' }
+awssdk-iam = { module = 'software.amazon.awssdk:iam' }
 awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection-client' }
 
 kotlin-stdlib-jdk8 = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk8', version.ref = 'kotlin' }
@@ -118,3 +120,8 @@ servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api
 
 gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+testcontainers = { module = "org.testcontainers:testcontainers" }
+testcontainers-localstack = { module = "org.testcontainers:localstack" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
+testcontainers-spock = { module = "org.testcontainers:spock" }

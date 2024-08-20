@@ -73,7 +73,7 @@ class AwsLambdaInvokeSpec extends Specification {
     void "test setup lambda config"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'aws.lambda.functions.test.functionName':'micronaut-function',
+                'aws.lambda.functions.test.function-name':'micronaut-function',
                 'aws.lambda.functions.test.qualifier':'something',
                 'aws.lambda.region':'us-east-1'
         )
@@ -94,7 +94,7 @@ class AwsLambdaInvokeSpec extends Specification {
     void "test invoke function"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'aws.lambda.functions.test.functionName':'micronaut-function',
+                'aws.lambda.functions.test.function-name':'micronaut-function',
                 'aws.lambda.region':'us-east-1'
         )
 
@@ -123,7 +123,7 @@ class AwsLambdaInvokeSpec extends Specification {
     void "test invoke client with @FunctionClient"() {
         given:
         ApplicationContext applicationContext = ApplicationContext.run(
-                'aws.lambda.functions.test.functionName':'micronaut-function',
+                'aws.lambda.functions.test.function-name':'micronaut-function',
                 'aws.lambda.region':'us-east-1'
         )
 

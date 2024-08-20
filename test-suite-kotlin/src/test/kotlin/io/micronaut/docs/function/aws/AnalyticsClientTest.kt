@@ -2,7 +2,7 @@ package io.micronaut.docs.function.aws
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.function.client.FunctionDefinition
-import io.micronaut.function.client.aws.AWSInvokeRequestDefinition
+import io.micronaut.function.client.aws.v2.AwsInvokeRequestDefinition
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.junit.jupiter.api.Assertions
@@ -17,8 +17,8 @@ internal class AnalyticsClientTest {
         val definitions = applicationContext.getBeansOfType(FunctionDefinition::class.java)
         Assertions.assertEquals(1, definitions.size)
         Assertions.assertTrue(definitions.stream().findFirst().isPresent)
-        Assertions.assertTrue(definitions.stream().findFirst().get() is AWSInvokeRequestDefinition)
-        val invokeRequestDefinition = definitions.stream().findFirst().get() as AWSInvokeRequestDefinition
+        Assertions.assertTrue(definitions.stream().findFirst().get() is AwsInvokeRequestDefinition)
+        val invokeRequestDefinition = definitions.stream().findFirst().get() as AwsInvokeRequestDefinition
         Assertions.assertEquals("analytics", invokeRequestDefinition.name)
         //Assertions.assertEquals("AwsLambdaFunctionName", invokeRequestDefinition.invokeRequest.functionName)
     }

@@ -2,7 +2,7 @@ package io.micronaut.docs.function.aws;
 
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.client.FunctionDefinition;
-import io.micronaut.function.client.aws.AWSInvokeRequestDefinition;
+import io.micronaut.function.client.aws.v2.AwsInvokeRequestDefinition;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,9 @@ class AnalyticsClientTest {
 
         assertEquals(1, definitions.size());
         assertTrue(definitions.stream().findFirst().isPresent());
-        assertTrue(definitions.stream().findFirst().get() instanceof AWSInvokeRequestDefinition);
+        assertTrue(definitions.stream().findFirst().get() instanceof AwsInvokeRequestDefinition);
 
-        AWSInvokeRequestDefinition invokeRequestDefinition = (AWSInvokeRequestDefinition) definitions.stream().findFirst().get();
+        AwsInvokeRequestDefinition invokeRequestDefinition = (AwsInvokeRequestDefinition) definitions.stream().findFirst().get();
 
         assertEquals("analytics", invokeRequestDefinition.getName());
         //assertEquals("AwsLambdaFunctionName", invokeRequestDefinition.getInvokeRequest().getFunctionName());

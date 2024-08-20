@@ -14,4 +14,6 @@ dependencies {
     testImplementation(mn.micronaut.function.web)
     testImplementation(mnGroovy.micronaut.function.groovy)
     testImplementation(mnGroovy.micronaut.runtime.groovy)
+    testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
