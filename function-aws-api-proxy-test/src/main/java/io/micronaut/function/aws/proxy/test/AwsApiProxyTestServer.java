@@ -191,13 +191,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
         @Override
         public void destroy() {
             super.destroy();
-            try {
-                this.lambdaHandler.close();
-            } catch (IOException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("could not close Handler", e);
-                }
-            }
+             this.lambdaHandler.close();
         }
 
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
