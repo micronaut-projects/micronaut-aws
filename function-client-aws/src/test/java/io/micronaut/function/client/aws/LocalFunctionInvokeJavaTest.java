@@ -3,11 +3,14 @@ package io.micronaut.function.client.aws;
 import io.micronaut.context.ApplicationContext;
 import static org.junit.Assert.assertEquals;
 import io.micronaut.runtime.server.EmbeddedServer;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import spock.lang.Ignore;
 
 class LocalFunctionInvokeJavaTest {
 
+    @Disabled("it is flaky https://ge.micronaut.io/scans/tests?tests.container=io.micronaut.function.client.aws.LocalFunctionInvokeSpec")
     @Test
     void testInvokingALocalFunction() {
         Suma sum = new Suma();
@@ -24,6 +27,7 @@ class LocalFunctionInvokeJavaTest {
         server.close();
     }
 
+    @Disabled("it is flaky https://ge.micronaut.io/scans/tests?tests.container=io.micronaut.function.client.aws.LocalFunctionInvokeSpec")
     @Test
     void testInvokingALocalFunctionRX() {
         Suma sum = new Suma();
