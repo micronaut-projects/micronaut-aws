@@ -149,31 +149,33 @@
         
         <div class="toc-item" style="margin-left:10px" id="toc-item-ses"><a href="#ses"><strong>8.8</strong><span>SES</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>8.9</strong><span>SNS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-lambdaClient"><a href="#lambdaClient"><strong>8.9</strong><span>Lambda Client</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>8.10</strong><span>SQS</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sns"><a href="#sns"><strong>8.10</strong><span>SNS</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>8.11</strong><span>SSM</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-sqs"><a href="#sqs"><strong>8.11</strong><span>SQS</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>8.12</strong><span>Secrets Manager</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-ssm"><a href="#ssm"><strong>8.12</strong><span>SSM</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>8.13</strong><span>Service discovery</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-secretsmanager"><a href="#secretsmanager"><strong>8.13</strong><span>Secrets Manager</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-cloudWatchLogging"><a href="#cloudWatchLogging"><strong>8.14</strong><span>CloudWatch logging</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-servicediscovery"><a href="#servicediscovery"><strong>8.14</strong><span>Service discovery</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-setCloudWatchLogging"><a href="#setCloudWatchLogging"><strong>8.14.1</strong><span>Set CloudWatch Logging</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-cloudWatchLogging"><a href="#cloudWatchLogging"><strong>8.15</strong><span>CloudWatch logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-logbackConfiguration"><a href="#logbackConfiguration"><strong>8.14.2</strong><span>Logback configuration</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-setCloudWatchLogging"><a href="#setCloudWatchLogging"><strong>8.15.1</strong><span>Set CloudWatch Logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-openTelemetryAndLogging"><a href="#openTelemetryAndLogging"><strong>8.14.3</strong><span>OpenTelemetry and logging</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-logbackConfiguration"><a href="#logbackConfiguration"><strong>8.15.2</strong><span>Logback configuration</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-emergencyAppender"><a href="#emergencyAppender"><strong>8.14.4</strong><span>Emergency Appender</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-openTelemetryAndLogging"><a href="#openTelemetryAndLogging"><strong>8.15.3</strong><span>OpenTelemetry and logging</span></a></div>
         
-        <div class="toc-item" style="margin-left:20px" id="toc-item-browsingTheLogs"><a href="#browsingTheLogs"><strong>8.14.5</strong><span>Browsing the Logs</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-emergencyAppender"><a href="#emergencyAppender"><strong>8.15.4</strong><span>Emergency Appender</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>8.15</strong><span>Advanced configuration</span></a></div>
+        <div class="toc-item" style="margin-left:20px" id="toc-item-browsingTheLogs"><a href="#browsingTheLogs"><strong>8.15.5</strong><span>Browsing the Logs</span></a></div>
         
-        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>8.16</strong><span>Other services</span></a></div>
+        <div class="toc-item" style="margin-left:10px" id="toc-item-advancedConfiguration"><a href="#advancedConfiguration"><strong>8.16</strong><span>Advanced configuration</span></a></div>
+        
+        <div class="toc-item" style="margin-left:10px" id="toc-item-otherServices"><a href="#otherServices"><strong>8.17</strong><span>Other services</span></a></div>
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-amazonApiGateway"><a href="#amazonApiGateway"><strong>9</strong><span>Amazon API Gateway</span></a></div>
         
@@ -1606,7 +1608,65 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sns"><a class="anchor" href="#sns"></a>8.9 SNS</h2>
+<h2 id="lambdaClient"><a class="anchor" href="#lambdaClient"></a>8.9 Lambda Client</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/lambdaClient.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use a Lambda client, add the following dependency:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"software.amazon.awssdk:lambda")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+    &lt;artifactId&gt;lambda&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
+</div>
+<div class="paragraph">
+<p>Then, the following beans will be created:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.lambda.LambdaClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.lambda.LambdaClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>software.amazon.awssdk.services.lambda.LambdaAsyncClientBuilder</code></p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.services.lambda.LambdaAsyncClient</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
+</div>
+
+<h2 id="sns"><a class="anchor" href="#sns"></a>8.10 SNS</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/sns.adoc"'>
@@ -1664,7 +1724,7 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="sqs"><a class="anchor" href="#sqs"></a>8.10 SQS</h2>
+<h2 id="sqs"><a class="anchor" href="#sqs"></a>8.11 SQS</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/sqs.adoc"'>
@@ -1722,7 +1782,7 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="ssm"><a class="anchor" href="#ssm"></a>8.11 SSM</h2>
+<h2 id="ssm"><a class="anchor" href="#ssm"></a>8.12 SSM</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/ssm.adoc"'>
@@ -1780,7 +1840,7 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>8.12 Secrets Manager</h2>
+<h2 id="secretsmanager"><a class="anchor" href="#secretsmanager"></a>8.13 Secrets Manager</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/secretsmanager.adoc"'>
@@ -1838,7 +1898,7 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="servicediscovery"><a class="anchor" href="#servicediscovery"></a>8.13 Service discovery</h2>
+<h2 id="servicediscovery"><a class="anchor" href="#servicediscovery"></a>8.14 Service discovery</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/servicediscovery.adoc"'>
@@ -1896,7 +1956,7 @@ aws.sessionToken=your_session_token_here</code></pre>
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="cloudWatchLogging"><a class="anchor" href="#cloudWatchLogging"></a>8.14 CloudWatch logging</h2>
+<h2 id="cloudWatchLogging"><a class="anchor" href="#cloudWatchLogging"></a>8.15 CloudWatch logging</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging.adoc"'>
@@ -1966,7 +2026,7 @@ This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWa
 <p>The HTTP client, credentials and region will be configured as per described in the <a href="#sdkv2">SDK v2 documentation</a>.</p>
 </div>
 
-<h2 id="setCloudWatchLogging"><a class="anchor" href="#setCloudWatchLogging"></a>8.14.1 Set CloudWatch Logging</h2>
+<h2 id="setCloudWatchLogging"><a class="anchor" href="#setCloudWatchLogging"></a>8.15.1 Set CloudWatch Logging</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging/setCloudWatchLogging.adoc"'>
@@ -2041,7 +2101,7 @@ Default value for group name is your application name and for stream name is you
 </tbody>
 </table>
 
-<h2 id="logbackConfiguration"><a class="anchor" href="#logbackConfiguration"></a>8.14.2 Logback configuration</h2>
+<h2 id="logbackConfiguration"><a class="anchor" href="#logbackConfiguration"></a>8.15.2 Logback configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging/logbackConfiguration.adoc"'>
@@ -2083,7 +2143,7 @@ Default value for group name is your application name and for stream name is you
 <p>The <code>CloudWatchLoggingAppender</code> supports blacklisting the loggers by specifying the logger name. That might come handy if you want to use <code>level=DEBUG</code> or <code>level=TRACE</code> for the root logger level.</p>
 </div>
 
-<h2 id="openTelemetryAndLogging"><a class="anchor" href="#openTelemetryAndLogging"></a>8.14.3 OpenTelemetry and logging</h2>
+<h2 id="openTelemetryAndLogging"><a class="anchor" href="#openTelemetryAndLogging"></a>8.15.3 OpenTelemetry and logging</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging/openTelemetryAndLogging.adoc"'>
@@ -2144,7 +2204,7 @@ Default value for group name is your application name and for stream name is you
 </div>
 </div>
 
-<h2 id="emergencyAppender"><a class="anchor" href="#emergencyAppender"></a>8.14.4 Emergency Appender</h2>
+<h2 id="emergencyAppender"><a class="anchor" href="#emergencyAppender"></a>8.15.4 Emergency Appender</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging/emergencyAppender.adoc"'>
@@ -2192,7 +2252,7 @@ Default value for group name is your application name and for stream name is you
 </div>
 </div>
 
-<h2 id="browsingTheLogs"><a class="anchor" href="#browsingTheLogs"></a>8.14.5 Browsing the Logs</h2>
+<h2 id="browsingTheLogs"><a class="anchor" href="#browsingTheLogs"></a>8.15.5 Browsing the Logs</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/cloudWatchLogging/browsingTheLogs.adoc"'>
@@ -2210,7 +2270,7 @@ Default value for group name is your application name and for stream name is you
 </div>
 </div>
 
-<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>8.15 Advanced configuration</h2>
+<h2 id="advancedConfiguration"><a class="anchor" href="#advancedConfiguration"></a>8.16 Advanced configuration</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/advancedConfiguration.adoc"'>
@@ -2239,7 +2299,7 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 </div>
 </div>
 
-<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>8.16 Other services</h2>
+<h2 id="otherServices"><a class="anchor" href="#otherServices"></a>8.17 Other services</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-aws/edit/4.7.x/src/main/docs/guide/sdkv2/otherServices.adoc"'>
@@ -3492,29 +3552,46 @@ class Handler : MicronautRequestStreamHandler() {
 <div class="paragraph">
 <p>Micronaut AWS provides support for invoking AWS Lambda functions within a Micronaut application context.</p>
 </div>
+<div class="sect2">
+<h3 id="_aws_sdk_v2">AWS SDK V2</h3>
 <div class="paragraph">
-<p>To use the features described in this section, you will need to have the <code>micronaut-function-client-aws</code> dependency on your classpath.</p>
+<p>To use the features described in this section, you will need to have the following dependency on your classpath:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
 <div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws")</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws-v2")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
-    &lt;artifactId&gt;micronaut-function-client-aws&lt;/artifactId&gt;
+    &lt;artifactId&gt;micronaut-function-client-aws-v2&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div></p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To invoke a function Micronaut configures a <code>LambdaAsyncClient</code> and <code>LambdaClient</code>. You can configure them by registering a <a href="https://docs.micronaut.io/latest/api/io/micronaut/context/event/BeanCreatedEventListener.html">BeanCreatedEventListener</a> for <code>software.amazon.awssdk.services.lambda.LambdaAsyncClient</code> or <code>software.amazon.awssdk.services.lambda.LambdaAsyncClientBuilder</code>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>You can define multiple named functions under the <code>aws.lambda.functions</code> configuration.
-Each is configured by <code>AWSInvokeRequestDefinition</code> that allows setting any property on the underlying <code>com.amazonaws.services.lambda.model.InvokeRequest</code>.</p>
+Each is configured by <code>AwsInvokeRequestDefinition</code> that allows setting any property on the underlying <code>software.amazon.awssdk.services.lambda.model.InvokeRequest</code>.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_example">Example</h3>
 <div class="paragraph">
 <p>For example, you invoke a function named <code>AwsLambdaFunctionName</code>, in the AWS Lambda console, with the following configuration:</p>
 </div>
@@ -3668,8 +3745,27 @@ internal interface AnalyticsClient {
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_aws_sdk_v1">AWS SDK V1</h3>
 <div class="paragraph">
-<p>To configure credentials for invoking the function you can either define a <code>~/.aws/credentials</code> file or use the application configuration file. Micronaut registers a <a href="../api/io/micronaut/configurations/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a> that resolves AWS credentials from the Micronaut Environment.</p>
+<p>To use AWS SDK v1 add the following dependency instead:</p>
+</div>
+<div class="paragraph">
+<p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws")</span></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="maven">&lt;dependency&gt;
+    &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
+    &lt;artifactId&gt;micronaut-function-client-aws&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -3682,6 +3778,14 @@ To invoke a function Micronaut configures a <code>AWSLambdaAsyncClient</code> us
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>You can define multiple named functions under the <code>aws.lambda.functions</code> configuration.
+Each is configured by <code>AWSInvokeRequestDefinition</code> that allows setting any property on the underlying <code>com.amazonaws.services.lambda.model.InvokeRequest</code>.</p>
+</div>
+<div class="paragraph">
+<p>To configure credentials for invoking the function you can either define a <code>~/.aws/credentials</code> file or use the application configuration file. Micronaut registers a <a href="../api/io/micronaut/configurations/aws/EnvironmentAWSCredentialsProvider.html">EnvironmentAWSCredentialsProvider</a> that resolves AWS credentials from the Micronaut Environment.</p>
+</div>
 </div>
 
 <h2 id="lambdaGuides"><a class="anchor" href="#lambdaGuides"></a>10.19 AWS Lambda Guides</h2>

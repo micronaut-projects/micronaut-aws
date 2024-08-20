@@ -52,3 +52,4 @@ io.micronaut.function.aws.runtime
 io.micronaut.function.aws.test
 io.micronaut.function.aws.test.annotation
 io.micronaut.function.client.aws
+io.micronaut.function.client.aws.v2

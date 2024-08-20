@@ -625,6 +625,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#AWS_LAMBDA_FUNCTIONS" class="member-name-link">AWS_LAMBDA_FUNCTIONS</a> - Static variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#AWS_LAMBDA_FUNCTIONS" class="member-name-link">AWS_LAMBDA_FUNCTIONS</a> - Static variable in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>
+<div class="block">Configuration prefix.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html#AWS_LAMBDA_LOG_GROUP_NAME" class="member-name-link">AWS_LAMBDA_LOG_GROUP_NAME</a> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/ReservedRuntimeEnvironmentVariables.html" title="interface in io.micronaut.function.aws.runtime">ReservedRuntimeEnvironmentVariables</a></dt>
 <dd>
 <div class="block">The name of the Amazon CloudWatch Logs group for the function.</div>
@@ -709,6 +713,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#%3Cinit%3E()" class="member-name-link">AwsDistributedConfigurationProperties()</a> - Constructor for class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" class="type-name-link" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a> - Class in <a href="io/micronaut/function/client/aws/v2/package-summary.html">io.micronaut.function.client.aws.v2</a></dt>
+<dd>
+<div class="block">Builds an <a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2"><code>AwsInvokeRequestDefinition</code></a> for each definition under <code>aws.lambda.functions</code>.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#%3Cinit%3E(java.lang.String)" class="member-name-link">AwsInvokeRequestDefinition(String)</a> - Constructor for class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
 <dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" class="type-name-link" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a> - Class in <a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a></dt>
 <dd>
 <div class="block">Builds an <code>InvokeRequest</code> for each definition under <code>aws.lambda.functions</code>.</div>
@@ -728,6 +740,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Configuration options for AWS Lambda.</div>
 </dd>
 <dt><a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html#%3Cinit%3E(io.micronaut.aws.sdk.v1.AWSClientConfiguration,io.micronaut.context.env.Environment)" class="member-name-link">AWSLambdaConfiguration(AWSClientConfiguration, Environment)</a> - Constructor for class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaConfiguration.html" title="class in io.micronaut.function.client.aws">AWSLambdaConfiguration</a></dt>
+<dd>
+<div class="block">Constructor.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" class="type-name-link" title="class in io.micronaut.function.client.aws.v2">AwsLambdaFunctionExecutor</a>&lt;<a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" title="type parameter in AwsLambdaFunctionExecutor">I</a>,<wbr><a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" title="type parameter in AwsLambdaFunctionExecutor">O</a>&gt; - Class in <a href="io/micronaut/function/client/aws/v2/package-summary.html">io.micronaut.function.client.aws.v2</a></dt>
+<dd>
+<div class="block">A <code>FunctionInvoker</code> for invoking functions on AWS.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html#%3Cinit%3E(software.amazon.awssdk.services.lambda.LambdaClient,software.amazon.awssdk.services.lambda.LambdaAsyncClient,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.json.codec.JsonMediaTypeCodec,java.util.concurrent.ExecutorService,io.micronaut.core.convert.ConversionService)" class="member-name-link">AwsLambdaFunctionExecutor(LambdaClient, LambdaAsyncClient, ByteBufferFactory&lt;?, ?&gt;, JsonMediaTypeCodec, ExecutorService, ConversionService)</a> - Constructor for class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws.v2">AwsLambdaFunctionExecutor</a></dt>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
@@ -897,6 +917,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Spell out each letter.</div>
 </dd>
 <dt><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html#choose(io.micronaut.function.client.FunctionDefinition)" class="member-name-link">choose(FunctionDefinition)</a> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws">AWSLambdaFunctionExecutor</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html#choose(io.micronaut.function.client.FunctionDefinition)" class="member-name-link">choose(FunctionDefinition)</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws.v2">AwsLambdaFunctionExecutor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html#clientConfiguration" class="member-name-link">clientConfiguration</a> - Variable in class io.micronaut.aws.sdk.v1.<a href="io/micronaut/aws/sdk/v1/AWSClientConfiguration.html" title="class in io.micronaut.aws.sdk.v1">AWSClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -1679,6 +1701,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getClientContext()" class="member-name-link">getClientContext()</a> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#getClientContext()" class="member-name-link">getClientContext()</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>
+<div class="block">.</div>
+</dd>
 <dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html#getCommonApplicationName()" class="member-name-link">getCommonApplicationName()</a> - Method in interface io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfiguration.html" title="interface in io.micronaut.aws.distributedconfiguration">AwsDistributedConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#getCommonApplicationName()" class="member-name-link">getCommonApplicationName()</a> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
@@ -1743,6 +1769,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/micronaut/function/aws/proxy/MockLambdaContext.html#getFunctionName()" class="member-name-link">getFunctionName()</a> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MockLambdaContext.html" title="class in io.micronaut.function.aws.proxy">MockLambdaContext</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/RuntimeContext.html#getFunctionName()" class="member-name-link">getFunctionName()</a> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/RuntimeContext.html" title="class in io.micronaut.function.aws.runtime">RuntimeContext</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#getFunctionName()" class="member-name-link">getFunctionName()</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/MockLambdaContext.html#getFunctionVersion()" class="member-name-link">getFunctionVersion()</a> - Method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/MockLambdaContext.html" title="class in io.micronaut.function.aws.proxy">MockLambdaContext</a></dt>
 <dd>&nbsp;</dd>
@@ -1844,6 +1872,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#getName()" class="member-name-link">getName()</a> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#getName()" class="member-name-link">getName()</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html#getNamespaceId()" class="member-name-link">getNamespaceId()</a> - Method in class io.micronaut.discovery.aws.servicediscovery.<a href="io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html" title="class in io.micronaut.discovery.aws.servicediscovery">AwsServiceDiscoveryClientConfiguration</a></dt>
 <dd>
 <div class="block">This is the name space ID for the domain/subdomain in route 53 service registry.</div>
@@ -1917,6 +1947,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html#getProxy()" class="member-name-link">getProxy()</a> - Method in class io.micronaut.aws.sdk.v2.client.netty.<a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.netty">NettyClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#getPublishPeriod()" class="member-name-link">getPublishPeriod()</a> - Method in class io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging">CloudWatchLoggingAppender</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#getQualifier()" class="member-name-link">getQualifier()</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#getQueryProvider()" class="member-name-link">getQueryProvider()</a> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>&nbsp;</dd>
@@ -2196,6 +2228,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html#invoke(io.micronaut.function.client.FunctionDefinition,I,io.micronaut.core.type.Argument)" class="member-name-link">invoke(FunctionDefinition, I, Argument&lt;O&gt;)</a> - Method in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws">AWSLambdaFunctionExecutor</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html#invoke(io.micronaut.function.client.FunctionDefinition,I,io.micronaut.core.type.Argument)" class="member-name-link">invoke(FunctionDefinition, I, Argument&lt;O&gt;)</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsLambdaFunctionExecutor.html" title="class in io.micronaut.function.client.aws.v2">AwsLambdaFunctionExecutor</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html#invokeRequest" class="member-name-link">invokeRequest</a> - Variable in class io.micronaut.function.client.aws.<a href="io/micronaut/function/client/aws/AWSInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws">AWSInvokeRequestDefinition</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/package-summary.html">io.micronaut.aws</a> - package io.micronaut.aws</dt>
@@ -2375,6 +2409,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="io/micronaut/function/client/aws/package-summary.html">io.micronaut.function.client.aws</a> - package io.micronaut.function.client.aws</dt>
 <dd>
 <div class="block">Function AWS lamda configuration.</div>
+</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/package-summary.html">io.micronaut.function.client.aws.v2</a> - package io.micronaut.function.client.aws.v2</dt>
+<dd>
+<div class="block">AWS Lambda Function Client related classes.</div>
 </dd>
 <dt><a href="io/micronaut/aws/lambda/events/serde/IoTButtonEventSerde.html" class="type-name-link" title="class in io.micronaut.aws.lambda.events.serde">IoTButtonEventSerde</a> - Class in <a href="io/micronaut/aws/lambda/events/serde/package-summary.html">io.micronaut.aws.lambda.events.serde</a></dt>
 <dd>
@@ -3348,6 +3386,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#setClient(software.amazon.awssdk.services.ssm.SsmAsyncClient)" class="member-name-link">setClient(SsmAsyncClient)</a> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#setClientContext(java.lang.String)" class="member-name-link">setClientContext(String)</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html#setCommonApplicationName(java.lang.String)" class="member-name-link">setCommonApplicationName(String)</a> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationProperties.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationProperties</a></dt>
 <dd>
 <div class="block">Default Application name.</div>
@@ -3413,6 +3453,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Sets the fixed locale.</div>
 </dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#setFunctionName(java.lang.String)" class="member-name-link">setFunctionName(String)</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setGroupName(java.lang.String)" class="member-name-link">setGroupName(String)</a> - Method in class io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging">CloudWatchLoggingAppender</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html#setInstanceDocumentUrl(java.lang.String)" class="member-name-link">setInstanceDocumentUrl(String)</a> - Method in class io.micronaut.discovery.cloud.aws.<a href="io/micronaut/discovery/cloud/aws/AmazonMetadataConfiguration.html" title="class in io.micronaut.discovery.cloud.aws">AmazonMetadataConfiguration</a></dt>
@@ -3453,6 +3495,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setPublishPeriod(long)" class="member-name-link">setPublishPeriod(long)</a> - Method in class io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging">CloudWatchLoggingAppender</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html#setQualifier(java.lang.String)" class="member-name-link">setQualifier(String)</a> - Method in class io.micronaut.function.client.aws.v2.<a href="io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html" title="class in io.micronaut.function.client.aws.v2">AwsInvokeRequestDefinition</a></dt>
+<dd>
+<div class="block">.</div>
+</dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#setQueryProvider(io.micronaut.discovery.aws.parameterstore.AWSParameterQueryProvider)" class="member-name-link">setQueryProvider(AWSParameterQueryProvider)</a> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html#setQueueSize(int)" class="member-name-link">setQueueSize(int)</a> - Method in class io.micronaut.aws.cloudwatch.logging.<a href="io/micronaut/aws/cloudwatch/logging/CloudWatchLoggingAppender.html" title="class in io.micronaut.aws.cloudwatch.logging">CloudWatchLoggingAppender</a></dt>
