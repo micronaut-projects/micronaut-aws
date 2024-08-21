@@ -35,7 +35,6 @@ import spock.lang.Specification
  * @author graemerocher
  * @since 1.0
  */
-@Ignore("it is flaky https://ge.micronaut.io/scans/tests?tests.container=io.micronaut.function.client.aws.LocalFunctionInvokeSpec")
 class LocalFunctionInvokeSpec extends Specification {
 
     //tag::invokeLocalFunction[]
