@@ -43,7 +43,6 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
     @Override
     public APIGatewayProxyResponseEvent getNativeResponse() {
         APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = new APIGatewayProxyResponseEvent()
-            .withBody(body.toString())
             .withStatusCode(status)
             .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers));
