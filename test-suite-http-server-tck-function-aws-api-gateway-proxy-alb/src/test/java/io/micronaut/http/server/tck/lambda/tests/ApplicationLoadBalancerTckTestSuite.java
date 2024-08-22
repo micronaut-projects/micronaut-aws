@@ -16,7 +16,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
     "io.micronaut.http.server.tck.tests.filter.options.OptionsFilterTest",
     "io.micronaut.http.server.tck.tests.hateoas.JsonErrorTest",
-        "io.micronaut.http.server.tck.tests.ResponseStatusTest",
     "io.micronaut.http.server.tck.tests.hateoas.VndErrorTest"
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy Application Load Balancer Event")
