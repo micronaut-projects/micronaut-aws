@@ -2,7 +2,7 @@
 micronaut = "4.6.2"
 micronaut-docs = "2.0.0"
 micronaut-test = "4.5.0"
-groovy = "4.0.15"
+groovy = "4.0.22"
 spock = "2.3-groovy-4.0"
 
 bouncycastle = '1.70'
