@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy.payload1;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
@@ -53,8 +54,11 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
                 .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
         } else {
             apiGatewayProxyResponseEvent
-                .withIsBase64Encoded(false)
-                .withBody(body.toString(getCharacterEncoding()));
+                .withIsBase64Encoded(false);
+            String bodyStr = body.toString(getCharacterEncoding());
+            if (StringUtils.isNotEmpty(bodyStr)) {
+                apiGatewayProxyResponseEvent.withBody(bodyStr);
+            }
         }
         return apiGatewayProxyResponseEvent;
     }
