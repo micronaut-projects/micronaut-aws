@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy.alb;
 import com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
@@ -49,7 +50,10 @@ public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHt
             nativeResponse.setBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
         } else {
             nativeResponse.setIsBase64Encoded(false);
-            nativeResponse.setBody(body.toString(getCharacterEncoding()));
+            String bodyStr = body.toString(getCharacterEncoding());
+            if (StringUtils.isNotEmpty(bodyStr)) {
+                nativeResponse.setBody(bodyStr);
+            }
         }
         return nativeResponse;
     }
