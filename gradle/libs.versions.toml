@@ -16,7 +16,7 @@ micronaut-logging = "1.4.0"
 micronaut-mongodb = "5.3.0"
 micronaut-reactor = "3.5.0"
 
-micronaut-security = "4.9.1"
+micronaut-security = "4.10.2"
 micronaut-serde = "2.11.1"
 micronaut-servlet = "4.10.1"
 micronaut-test-resources="2.5.4"
