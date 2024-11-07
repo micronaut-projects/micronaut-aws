@@ -11,6 +11,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
+        "io.micronaut.http.server.tck.tests.jsonview.JsonViewsTest", // https://github.com/micronaut-projects/micronaut-servlet/pull/826
         "io.micronaut.http.server.tck.tests.hateoas.JsonErrorTest",
         "io.micronaut.http.server.tck.tests.hateoas.VndErrorTest",
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request

@@ -311,7 +311,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      * @param bodySupplier HTTP Request's Body Supplier
      * @param base64EncodedSupplier Whether the body is Base 64 encoded
      * @return body bytes
-     * @throws IOException if the body is empty
+     * @throws EmptyBodyException if the body is empty
      */
     protected byte[] getBodyBytes(@NonNull Supplier<String> bodySupplier, @NonNull BooleanSupplier base64EncodedSupplier) throws EmptyBodyException {
         String requestBody = bodySupplier.get();
