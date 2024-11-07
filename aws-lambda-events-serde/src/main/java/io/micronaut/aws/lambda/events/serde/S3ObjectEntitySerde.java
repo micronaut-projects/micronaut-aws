@@ -32,7 +32,7 @@ import jakarta.inject.Singleton;
 import java.io.IOException;
 
 /**
- * This seems to be necessary because Serde was not picking the appropriate constructor {@link com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification.S3ObjectEntity(String, Long, String, String, String)}.
+ * This seems to be necessary because Serde was not picking the appropriate constructor  {@code  S3EventNotification.S3ObjectEntity(String, Long, String, String, String)}.
  */
 @Internal
 @Singleton
