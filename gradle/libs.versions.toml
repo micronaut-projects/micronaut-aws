@@ -34,6 +34,7 @@ micronaut-starter = "3.9.2"
 slf4j = "2.0.16"
 servlet-api = "2.5"
 javapoet = "1.13.0"
+sonatype-scan = "3.0.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
@@ -114,6 +115,8 @@ managed-awssdk-secretsmanager = { module = 'software.amazon.awssdk:secretsmanage
 managed-jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 
 servlet-api = { module = 'javax.servlet:servlet-api', version.ref = 'servlet-api' }
+sonatype-scan = { module = "org.sonatype.gradle.plugins:scan-gradle-plugin", version.ref = "sonatype-scan" }
+
 # Gradle
 
 gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", version.ref = "micronaut-gradle-plugin" }
