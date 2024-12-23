@@ -60,6 +60,7 @@ jobs:
 
       - name: "🚔 Sonatype Scan"
         id: sonatypescan
+        if: matrix.java == '17'
         run: |
           ./gradlew ossIndexAudit --no-parallel
 
