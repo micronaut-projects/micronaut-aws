@@ -48,6 +48,7 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
     public APIGatewayV2HTTPEvent createAwsProxyRequest(@NonNull HttpServletRequest request) {
         final boolean isBase64Encoded = true;
         return new APIGatewayV2HTTPEvent() {
+            private String body;
 
             @Override
             public Map<String, String> getHeaders() {
@@ -116,18 +117,20 @@ public class DefaultServletToAwsProxyRequestAdapter implements ServletToAwsProxy
 
             @Override
             public String getBody() {
-                HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
-                if (HttpMethod.permitsRequestBody(httpMethod)) {
-                    try (InputStream requestBody = request.getInputStream()) {
-                        byte[] data = requestBody.readAllBytes();
-                        if (isBase64Encoded) {
-                            return Base64.getEncoder().encodeToString(data);
+                if (body == null) {
+                    HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
+                    if (HttpMethod.permitsRequestBody(httpMethod)) {
+                        try (InputStream requestBody = request.getInputStream()) {
+                            byte[] data = requestBody.readAllBytes();
+                            if (isBase64Encoded) {
+                                body = Base64.getEncoder().encodeToString(data);
+                            }
+                        } catch (IOException e) {
+                            // ignore
                         }
-                    } catch (IOException e) {
-                        // ignore
                     }
                 }
-                return null;
+                return body;
             }
         };
     }

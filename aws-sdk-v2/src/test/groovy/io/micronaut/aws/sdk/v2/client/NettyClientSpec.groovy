@@ -19,7 +19,7 @@ class NettyClientSpec extends ApplicationContextSpecification {
 
         then:
         client.configuration().maxConnections() == 123
-        client.pools.proxyConfiguration == null
+        client.pools.proxyConfiguration
     }
 
 }

@@ -14,7 +14,7 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(projects.micronautFunctionAws)
     testImplementation(libs.kotlin.stdlib.jdk8)
-    testImplementation(projects.micronautFunctionClientAws)
+    testImplementation(projects.micronautFunctionClientAwsV2)
     testRuntimeOnly(mn.snakeyaml)
 }
 

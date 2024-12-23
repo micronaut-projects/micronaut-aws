@@ -45,14 +45,14 @@ jobs:
           fetch-depth: 0
 
       - name: "🔧 Setup GraalVM CE"
-        uses: graalvm/setup-graalvm@v1.2.1
+        uses: graalvm/setup-graalvm@v1.2.6
         with:
           distribution: 'graalvm'
           java-version: ${{ matrix.java }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "🔧 Setup Gradle"
-        uses: gradle/gradle-build-action@v3.1.0
+        uses: gradle/gradle-build-action@v3.5.0
 
       - name: "❓ Optional setup step"
         run: |
@@ -70,7 +70,7 @@ jobs:
 
       - name: "📊 Publish Test Report"
         if: always()
-        uses: mikepenz/action-junit-report@v4
+        uses: mikepenz/action-junit-report@v5
         with:
           check_name: Java CI / Test Report (${{ matrix.java }})
           report_paths: '**/build/test-results/test/TEST-*.xml'
@@ -78,7 +78,7 @@ jobs:
 
       - name: "📜 Upload binary compatibility check results"
         if: matrix.java == '17'
-        uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
         with:
           name: binary-compatibility-reports
           path: "**/build/reports/binary-compatibility-*.html"

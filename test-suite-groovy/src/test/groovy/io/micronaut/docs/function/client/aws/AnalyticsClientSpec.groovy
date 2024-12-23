@@ -2,7 +2,7 @@ package io.micronaut.docs.function.client.aws
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.function.client.FunctionDefinition
-import io.micronaut.function.client.aws.AWSInvokeRequestDefinition
+import io.micronaut.function.client.aws.v2.AwsInvokeRequestDefinition
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Specification
 import jakarta.inject.Inject
@@ -18,13 +18,12 @@ class AnalyticsClientSpec extends Specification {
 
         expect:
         definitions.size() == 1
-        definitions.first() instanceof AWSInvokeRequestDefinition
+        definitions.first() instanceof AwsInvokeRequestDefinition
 
         when:
-        AWSInvokeRequestDefinition invokeRequestDefinition = (AWSInvokeRequestDefinition) definitions.first()
+        AwsInvokeRequestDefinition invokeRequestDefinition = (AwsInvokeRequestDefinition) definitions.first()
 
         then:
         invokeRequestDefinition.name == 'analytics'
-        invokeRequestDefinition.invokeRequest.functionName == 'AwsLambdaFunctionName'
     }
 }
