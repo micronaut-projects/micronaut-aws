@@ -72,7 +72,7 @@ class ServiceRegistrationStatusTask implements Runnable {
             GetOperationResponse result = serviceDiscoveryClient.getOperation(
                     GetOperationRequest.builder().operationId(operationId).build()
             );
-            LOG.info("Service registration for operation {} resulted in {}", operationId, result.operation().status());
+            LOG.info("Service registration for operation {} resulted in {}", operationId, result == null || result.operation() == null ? null : result.operation().status());
             if (result.operation().status() == OperationStatus.FAIL || result.operation().status() == OperationStatus.SUCCESS) {
                 registered = true; // either way we are done
                 if (result.operation().status() == OperationStatus.FAIL) {

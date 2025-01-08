@@ -11,4 +11,5 @@ dependencies {
     implementation libs.javapoet
     implementation libs.gradle.micronaut
     implementation libs.gradle.kotlin
+    implementation(libs.sonatype.scan)
 }
