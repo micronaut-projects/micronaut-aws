@@ -18,6 +18,6 @@ if (sonatypePluginConfigured) {
 }
 configurations.all {
     resolutionStrategy {
-        force("commons-io:commons-io:2.14.0") // first version patched https://ossindex.sonatype.org/component/pkg:maven/commons-io/commons-io
+        force("commons-io:commons-io:2.18.0") // first version patched https://ossindex.sonatype.org/component/pkg:maven/commons-io/commons-io
     }
 }
