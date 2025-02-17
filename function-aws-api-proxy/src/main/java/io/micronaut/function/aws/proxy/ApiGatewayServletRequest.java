@@ -22,6 +22,7 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.execution.ExecutionFlow;
+import io.micronaut.core.io.buffer.ByteArrayBufferFactory;
 import io.micronaut.core.io.buffer.ByteBuffer;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.ArrayUtils;
@@ -41,12 +42,12 @@ import io.micronaut.http.body.stream.AvailableByteArrayBody;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.uri.UriBuilder;
+import io.micronaut.servlet.http.ByteArrayByteBuffer;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ParsedBodyHolder;
-import io.micronaut.servlet.http.ByteArrayByteBuffer;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -115,9 +116,9 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public @NonNull ByteBody byteBody() {
         try {
-            return new AvailableByteArrayBody(getBodyBytes());
+            return AvailableByteArrayBody.create(ByteArrayBufferFactory.INSTANCE, getBodyBytes());
         } catch (EmptyBodyException e) {
-            return new AvailableByteArrayBody(ArrayUtils.EMPTY_BYTE_ARRAY);
+            return AvailableByteArrayBody.create(ByteArrayBufferFactory.INSTANCE, ArrayUtils.EMPTY_BYTE_ARRAY);
         }
     }
 
