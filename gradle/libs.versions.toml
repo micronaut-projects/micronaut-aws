@@ -10,8 +10,8 @@ fileupload = '0.0.6'
 logback-json-classic = '0.1.5'
 
 micronaut-discovery = "4.5.2"
-micronaut-groovy = "4.5.0"
 micronaut-logging = "1.5.1"
+micronaut-groovy = "4.6.0"
 micronaut-mongodb = "5.5.0"
 micronaut-reactor = "3.7.0"
 micronaut-security = "4.12.0"
