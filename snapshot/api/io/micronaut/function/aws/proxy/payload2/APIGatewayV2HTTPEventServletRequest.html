@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>io.micronaut.core.attr.AttributeHolder</code>, <code>io.micronaut.core.attr.MutableAttributeHolder</code>, <code>io.micronaut.core.convert.ConversionServiceAware</code>, <code>io.micronaut.http.FullHttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.HttpMessage&lt;B&gt;</code>, <code>io.micronaut.http.HttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.MutableHttpMessage&lt;B&gt;</code>, <code>io.micronaut.http.MutableHttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.ServerHttpRequest&lt;B&gt;</code>, <code>io.micronaut.servlet.http.MutableServletHttpRequest&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>B&gt;</code>, <code>io.micronaut.servlet.http.ParsedBodyHolder&lt;B&gt;</code>, <code>io.micronaut.servlet.http.ServletExchange&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&gt;</code>, <code>io.micronaut.servlet.http.ServletHttpRequest&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>B&gt;</code></dd>
+<dd><code>io.micronaut.core.attr.AttributeHolder</code>, <code>io.micronaut.core.attr.MutableAttributeHolder</code>, <code>io.micronaut.core.convert.ConversionServiceAware</code>, <code>io.micronaut.http.FullHttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.HttpMessage&lt;B&gt;</code>, <code>io.micronaut.http.HttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.MutableHttpMessage&lt;B&gt;</code>, <code>io.micronaut.http.MutableHttpRequest&lt;B&gt;</code>, <code>io.micronaut.http.ServerHttpRequest&lt;B&gt;</code>, <code>io.micronaut.servlet.http.MutableServletHttpRequest&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>B&gt;</code>, <code>io.micronaut.servlet.http.ParsedBodyHolder&lt;B&gt;</code>, <code>io.micronaut.servlet.http.ServletExchange&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse&gt;</code>, <code>io.micronaut.servlet.http.ServletHttpRequest&lt;com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent,<wbr>B&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Closeable.html" title="class or interface in java.io" class="external-link">Closeable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Internal
@@ -182,7 +182,7 @@ loadScripts(document, 'script');</script>
 <code>getBody, getBody, getBodyWriter, getCharacterEncoding, getContentLength, getContentType</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.http.HttpRequest">Methods inherited from interface&nbsp;io.micronaut.http.HttpRequest</h3>
-<code>accept, getCertificate, getHttpVersion, getLocale, getMethodName, getOrigin, getPath, getRemoteAddress, getServerAddress, getServerName, getSslSession, getUserPrincipal, getUserPrincipal, isSecure, mutate, setAttribute</code></div>
+<code>accept, getCertificate, getHttpVersion, getLocale, getMethodName, getOrigin, getPath, getRemoteAddress, getServerAddress, getServerName, getSslSession, getUserPrincipal, getUserPrincipal, isSecure, mutate, setAttribute, setUserPrincipal</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.core.attr.MutableAttributeHolder">Methods inherited from interface&nbsp;io.micronaut.core.attr.MutableAttributeHolder</h3>
 <code>removeAttribute</code></div>
@@ -192,6 +192,9 @@ loadScripts(document, 'script');</script>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.http.MutableHttpRequest">Methods inherited from interface&nbsp;io.micronaut.http.MutableHttpRequest</h3>
 <code>accept, accept, basicAuth, bearerAuth, contentEncoding, contentLength, contentType, contentType, cookies, header, headers, headers, toMutableRequest, uri</code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-io.micronaut.servlet.http.ServletExchange">Methods inherited from interface&nbsp;io.micronaut.servlet.http.ServletExchange</h3>
+<code>close, createResponse</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.servlet.http.ServletHttpRequest">Methods inherited from interface&nbsp;io.micronaut.servlet.http.ServletHttpRequest</h3>
 <code>executeAsync, getContextPath, isAsyncSupported</code></div>

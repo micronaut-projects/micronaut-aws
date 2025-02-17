@@ -906,6 +906,11 @@ following JVM system properties:</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.auth-scheme-provider-registry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.config.Registry</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.endpoint</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.net.URI</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1044,6 +1049,11 @@ following JVM system properties:</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.protocol</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.Protocol</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.protocol-negotiation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.ProtocolNegotiation</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
@@ -1461,11 +1471,6 @@ aws.sessionToken=your_session_token_here</code></pre>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.path-style-access-enabled</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.s3.checksum-validation-enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -3076,7 +3081,7 @@ When a new instance handles its first request it has to start the JVM and load y
 </ul>
 </div>
 <div class="paragraph">
-<p>The intialization phase has access to more CPU, because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
+<p>The initialization phase has access to more CPU, because of that Micronaut starts the application context and eagerly inits singletons during the intialization of the handler class.</p>
 </div>
 
 <h2 id="customRuntimes"><a class="anchor" href="#customRuntimes"></a>10.13 GraalVM and AWS Custom runtimes</h2>
