@@ -37,6 +37,7 @@ import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.ServerHttpRequest;
 import io.micronaut.http.body.ByteBody;
+import io.micronaut.http.body.stream.AvailableByteArrayBody;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.uri.UriBuilder;
@@ -46,7 +47,6 @@ import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ParsedBodyHolder;
 import io.micronaut.servlet.http.ByteArrayByteBuffer;
-import io.micronaut.servlet.http.body.AvailableByteArrayBody;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
