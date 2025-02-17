@@ -50,7 +50,7 @@ public class DefaultServletToAwsProxyResponseAdapter implements ServletToAwsProx
         populateHeaders(conversionService, awsProxyResponse, response);
         response.setStatus(awsProxyResponse.getStatusCode());
         HttpMethod httpMethod = HttpMethod.parse(request.getMethod());
-        if (httpMethod != HttpMethod.HEAD && httpMethod != HttpMethod.OPTIONS) {
+        if (httpMethod != HttpMethod.HEAD) {
 
             byte[] bodyAsBytes = parseBodyAsBytes(awsProxyResponse);
             if (bodyAsBytes != null) {
