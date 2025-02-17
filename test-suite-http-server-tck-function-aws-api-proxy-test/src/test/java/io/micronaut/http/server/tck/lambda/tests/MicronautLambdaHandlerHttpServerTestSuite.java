@@ -12,10 +12,8 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 })
 @ExcludeClassNamePatterns({
         "io.micronaut.http.server.tck.tests.forms.FormUrlEncodedBodyInRequestFilterTest",
-        "io.micronaut.http.server.tck.tests.jsonview.JsonViewsTest", // https://github.com/micronaut-projects/micronaut-servlet/pull/826
         "io.micronaut.http.server.tck.tests.forms.FormsSubmissionsWithListsTest",
         "io.micronaut.http.server.tck.tests.filter.options.OptionsFilterTest",
-    "io.micronaut.http.server.tck.tests.LocalErrorReadingBodyTest", // Binding body different type (e.g. a String in error handler)
     "io.micronaut.http.server.tck.tests.FilterProxyTest" // Immmutable request
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy Test")
