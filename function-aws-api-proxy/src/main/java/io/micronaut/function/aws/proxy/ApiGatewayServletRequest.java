@@ -29,6 +29,7 @@ import io.micronaut.core.util.ArrayUtils;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.SupplierUtil;
+import io.micronaut.function.aws.proxy.multipart.MultipartDataDecoder;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.FullHttpRequest;
 import io.micronaut.http.HttpMethod;
@@ -41,6 +42,7 @@ import io.micronaut.http.body.ByteBody;
 import io.micronaut.http.body.stream.AvailableByteArrayBody;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.servlet.http.ByteArrayByteBuffer;
 import io.micronaut.servlet.http.MutableServletHttpRequest;
@@ -91,6 +93,8 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private Supplier<Optional<T>> body;
     private T parsedBody;
     private T overriddenBody;
+    private final Supplier<Optional<MultipartDataDecoder>> multipartDataDecoder;
+    private Map<String, CompletedFileUpload> fileUploads;
 
     private ByteArrayByteBuffer<T> servletByteBuffer;
 
@@ -110,6 +114,19 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         this.body = SupplierUtil.memoizedNonEmpty(() -> {
             T built = parsedBody != null ? parsedBody :  (T) bodyBuilder.buildBody(this::getInputStream, this);
             return Optional.ofNullable(built);
+        });
+        this.multipartDataDecoder = SupplierUtil.memoized(() -> {
+            try {
+                MediaType contentType = getContentType().orElse(null);
+                if (MediaType.MULTIPART_FORM_DATA_TYPE.equals(contentType)) {
+                    return Optional.of(new MultipartDataDecoder(getBodyBytes(), getHeaders(), getCharacterEncoding()));
+                }
+            } catch (IOException e) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Error decoding multipart form data: {}", e.getMessage(), e);
+                }
+            }
+            return Optional.empty();
         });
     }
 
@@ -266,14 +283,36 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      */
     protected MapListOfStringAndMapStringMutableHttpParameters getParametersFromBody(Map<String, String> queryStringParameters) {
         Map<String, List<String>> parameters = null;
-        try {
-            parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
-        } catch (IOException ex) {
-            if (log.isDebugEnabled()) {
-                log.debug("Error decoding form data: " + ex.getMessage(), ex);
+        MediaType contentType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+
+        if (MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(contentType)) {
+            try {
+                parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
+            } catch (IOException ex) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Error decoding form data: {}", ex.getMessage(), ex);
+                }
             }
+        } else if (MediaType.MULTIPART_FORM_DATA_TYPE.equals(contentType)) {
+            parameters = multipartDataDecoder.get()
+                .map(MultipartDataDecoder::parameters)
+                .orElse(Collections.emptyMap());
         }
+
         return new MapListOfStringAndMapStringMutableHttpParameters(conversionService, parameters, queryStringParameters);
+    }
+
+    /**
+     * Gets a map of uploaded files from the multipart request.
+     * @return A map of field names to file uploads
+     */
+    public Map<String, CompletedFileUpload> getFileUploads() {
+        if (fileUploads != null) {
+            log.trace("Skipping decoding file uploads as they have already been processed");
+        } else {
+            fileUploads = multipartDataDecoder.get().map(MultipartDataDecoder::fileUploads).orElse(Collections.emptyMap());
+        }
+        return Collections.unmodifiableMap(fileUploads);
     }
 
     @Override
@@ -355,6 +394,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         Map<String, List<String>> multi = multiQueryStringParametersSupplier.get();
         Map<String, String> single = queryStringParametersSupplier.get();
         MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+
         if (isFormSubmission(mediaType)) {
             return getParametersFromBody(MapCollapseUtils.collapse(MapCollapseUtils.collapse(multi, single)));
         } else {

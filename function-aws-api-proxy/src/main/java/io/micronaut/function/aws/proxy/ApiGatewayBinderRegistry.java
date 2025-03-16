@@ -18,6 +18,9 @@ package io.micronaut.function.aws.proxy;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.function.aws.proxy.multipart.CompletedFileUploadBinder;
+import io.micronaut.function.aws.proxy.multipart.PartAnnotationRequestArgumentBinder;
+import io.micronaut.http.annotation.Part;
 import io.micronaut.http.bind.DefaultRequestBinderRegistry;
 import io.micronaut.http.bind.binders.DefaultBodyAnnotationBinder;
 import io.micronaut.http.bind.binders.RequestArgumentBinder;
@@ -39,5 +42,8 @@ class ApiGatewayBinderRegistry<T> extends ServletBinderRegistry<T> {
         DefaultBodyAnnotationBinder<T> defaultBodyAnnotationBinder
     ) {
         super(mediaTypeCodecRegistry, conversionService, binders, defaultBodyAnnotationBinder);
+
+        CompletedFileUploadBinder completedFileUploadBinder = new CompletedFileUploadBinder();
+        byAnnotation.put(Part.class, new PartAnnotationRequestArgumentBinder<>(conversionService, completedFileUploadBinder));
     }
 }
