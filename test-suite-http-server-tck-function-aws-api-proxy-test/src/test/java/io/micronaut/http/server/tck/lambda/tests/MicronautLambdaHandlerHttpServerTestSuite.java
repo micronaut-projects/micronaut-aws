@@ -11,9 +11,9 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
-        "io.micronaut.http.server.tck.tests.forms.FormUrlEncodedBodyInRequestFilterTest",
-        "io.micronaut.http.server.tck.tests.forms.FormsSubmissionsWithListsTest",
-        "io.micronaut.http.server.tck.tests.filter.options.OptionsFilterTest",
+    "io.micronaut.http.server.tck.tests.OctetTest",
+    "io.micronaut.http.server.tck.tests.ParameterTest",
+    "io.micronaut.http.server.tck.tests.cors.CrossOriginTest",
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy Test")

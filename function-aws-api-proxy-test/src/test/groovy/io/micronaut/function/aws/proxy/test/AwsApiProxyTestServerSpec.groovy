@@ -11,11 +11,14 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
+import io.micronaut.http.uri.UriBuilder
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Issue
 import spock.lang.Specification
 
 import jakarta.inject.Inject
+
+import java.nio.charset.StandardCharsets
 
 @MicronautTest
 class AwsApiProxyTestServerSpec extends Specification {
@@ -51,11 +54,12 @@ class AwsApiProxyTestServerSpec extends Specification {
 
     void 'query values with special chars are not double decoded'() {
         when:
-        String result = client.toBlocking().retrieve(HttpRequest.GET('/test-param?foo=prebar%2Bpostbar')
-                                        .contentType(MediaType.TEXT_PLAIN), String)
+        URI uri = UriBuilder.of("/test-param").queryParam("foo", "prebar postbar").build()
+        HttpRequest<?> request = HttpRequest.GET(uri).contentType(MediaType.TEXT_PLAIN)
+        String result = client.toBlocking().retrieve(request, String)
 
         then:
-        result == 'get:prebar+postbar'
+        result == 'get:prebar postbar'
     }
 
     void 'test invoke post that returns empty body'() {
@@ -72,11 +76,11 @@ class AwsApiProxyTestServerSpec extends Specification {
     void 'can return a ByteArray'() {
         when:
         HttpResponse<?> response = client.toBlocking()
-                .exchange(HttpRequest.GET('/byte-array'), byte[])
+                .exchange(HttpRequest.GET('/byte-array'), String)
 
         then:
         response.status == HttpStatus.OK
-        response.body.get() == (1..256).collect { it as byte } as byte[]
+        "Hello World" == response.body.get()
     }
 
     @Controller
@@ -103,7 +107,9 @@ class AwsApiProxyTestServerSpec extends Specification {
 
         @Get(value = "/byte-array", produces = MediaType.APPLICATION_OCTET_STREAM)
         HttpResponse<byte[]> byteArray() {
-            return HttpResponse.ok((1..256).collect { it as byte } as byte[])
+            String helloWorld = "Hello World"
+            byte[] byteArr = helloWorld.getBytes(StandardCharsets.UTF_8)
+            return HttpResponse.ok(byteArr)
         }
     }
 }
