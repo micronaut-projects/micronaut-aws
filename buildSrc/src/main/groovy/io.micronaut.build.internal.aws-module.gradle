@@ -11,9 +11,6 @@ if (sonatypePluginConfigured) {
         username = ossIndexUsername
         password = ossIndexPassword
         excludeCompileOnly = true
-        excludeCoordinates = [
-                "org.eclipse.jetty:jetty-http:11.0.25" // no version of Jetty 11 patched https://ossindex.sonatype.org/component/pkg:maven/org.eclipse.jetty/jetty-http
-        ]
     }
 }
 configurations.all {
