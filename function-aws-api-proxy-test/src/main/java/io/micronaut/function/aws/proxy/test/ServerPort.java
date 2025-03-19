@@ -15,60 +15,40 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
+import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.Internal;
+import io.micronaut.http.server.HttpServerConfiguration;
+
+import java.util.Optional;
+import java.util.Set;
+
 /**
  * Encapsulates the port assignment to be used when starting a server.
  *
  * @author Sergio del Amo
+ * @param random
+ * @param port
  */
-public class ServerPort {
-    private boolean random;
-    private Integer port;
+@Internal
+record ServerPort(boolean random, Integer port) {
 
-    /**
-     * Constructor.
-     */
-    public ServerPort() {
-    }
+    static ServerPort of(HttpServerConfiguration httpServerConfiguration,
+                                Set<String> activeNames) {
+        Optional<Integer> portOpt = httpServerConfiguration.getPort();
+        if (portOpt.isPresent()) {
+            Integer port = portOpt.get();
+            if (port == -1) {
+                return new ServerPort(true, 0);
 
-    /**
-     *
-     * @param random Whether the port was randomly assigned
-     * @param port Port number
-     */
-    public ServerPort(boolean random, Integer port) {
-        this.random = random;
-        this.port = port;
-    }
-
-    /**
-     *
-     * @return Whether the port was randomly assigned
-     */
-    public boolean isRandom() {
-        return random;
-    }
-
-    /**
-     *
-     * @param random true if the port was randomly assigned
-     */
-    public void setRandom(boolean random) {
-        this.random = random;
-    }
-
-    /**
-     *
-     * @return The port number
-     */
-    public Integer getPort() {
-        return port;
-    }
-
-    /**
-     *
-     * @param port Port number
-     */
-    public void setPort(Integer port) {
-        this.port = port;
+            } else {
+                return new ServerPort(false, port);
+            }
+        } else {
+            if (activeNames.contains(Environment.TEST)) {
+                return new ServerPort(true, 0);
+            } else {
+                return new ServerPort(false, 8080);
+            }
+        }
     }
 }

@@ -15,13 +15,11 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
-import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
-import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import io.micronaut.context.ApplicationContextProvider;
 
 /**
- * Creates a {@link APIGatewayV2HTTPEvent} given a {@link HttpExchange}.
+ * An {@link HttpHandler} that is aware of the Micronaut {@link io.micronaut.context.ApplicationContext}.
  */
-@FunctionalInterface
-public interface HttpExchangeToAwsProxyRequestAdapter {
-    APIGatewayV2HTTPEvent createAwsProxyRequest(HttpExchange httpExchange);
+public interface HttpHandlerApplicationContextAware extends HttpHandler, ApplicationContextProvider {
 }
