@@ -194,6 +194,7 @@ public class AwsApiProxyTestServer implements EmbeddedServer {
              this.lambdaHandler.close();
         }
 
+        @Override
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
             APIGatewayV2HTTPEvent awsProxyRequest = requestAdapter.createAwsProxyRequest(request);
             APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = lambdaHandler.handleRequest(awsProxyRequest, contextProvider.getContext());
