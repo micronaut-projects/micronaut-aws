@@ -18,35 +18,37 @@ package io.micronaut.function.aws.proxy.test;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.NonNull;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpMethod;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Internal
-class AwsProxyHttpHandler implements HttpHandlerApplicationContextAware {
+class AwsProxyHttpHandler implements HttpHandler {
     APIGatewayV2HTTPEventFunction handler;
-    private final HttpExchangeToAwsProxyRequestAdapter requestAdapter;
     private final ContextProvider contextProvider;
 
     AwsProxyHttpHandler(APIGatewayV2HTTPEventFunction handler) {
         this.handler = handler;
         ApplicationContext ctx = handler.getApplicationContext();
         this.contextProvider = ctx.getBean(ContextProvider.class);
-        this.requestAdapter = ctx.getBean(HttpExchangeToAwsProxyRequestAdapter.class);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        APIGatewayV2HTTPEvent awsProxyRequest = requestAdapter.createAwsProxyRequest(httpExchange);
+        APIGatewayV2HTTPEvent awsProxyRequest = createAwsProxyRequest(httpExchange);
         APIGatewayV2HTTPResponse apiGatewayV2HTTPResponse = handler.handleRequest(awsProxyRequest, contextProvider.getContext());
         String payload = apiGatewayV2HTTPResponse.getBody();
         String contentLengthObject = apiGatewayV2HTTPResponse.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
@@ -69,8 +71,92 @@ class AwsProxyHttpHandler implements HttpHandlerApplicationContextAware {
         httpExchange.close();
     }
 
-    @Override
-    public @NonNull ApplicationContext getApplicationContext() {
-        return handler.getApplicationContext();
+    private APIGatewayV2HTTPEvent createAwsProxyRequest(HttpExchange httpExchange) {
+        final boolean isBase64Encoded = true;
+        return new APIGatewayV2HTTPEvent() {
+            private String body;
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> result = new HashMap<>();
+                Set<String> headerNames = httpExchange.getRequestHeaders().keySet();
+
+                for (String headerName : headerNames) {
+                    List<String> values = httpExchange.getRequestHeaders().get(headerName);
+                    result.put(headerName, String.join(",", values));
+                }
+                return result;
+            }
+
+            @Override
+            public List<String> getCookies() {
+                return httpExchange.getRequestHeaders().get(HttpHeaders.COOKIE);
+            }
+
+            private Optional<String> firstHeaderValue(String headerName) {
+                List<String> headerValues = httpExchange.getRequestHeaders().get(headerName);
+                if (CollectionUtils.isEmpty(headerValues)) {
+                    return Optional.empty();
+                }
+                return Optional.of(headerValues.get(0));
+            }
+
+            @Override
+            public Map<String, String> getQueryStringParameters() {
+                URI requestURI = httpExchange.getRequestURI();
+                return getQueryParams(requestURI);
+            }
+
+            public static Map<String, String> getQueryParams(URI uri) {
+                Map<String, String> queryParams = new HashMap<>();
+                String query = uri.getQuery();
+                if (query != null) {
+                    String[] pairs = query.split("&");
+                    for (String pair : pairs) {
+                        int idx = pair.indexOf("=");
+                        String key = URLDecoder.decode(pair.substring(0, idx), StandardCharsets.UTF_8);
+                        String value = URLDecoder.decode(pair.substring(idx + 1), StandardCharsets.UTF_8);
+                        queryParams.put(key, value);
+                    }
+                }
+                return queryParams;
+            }
+
+            @Override
+            public RequestContext getRequestContext() {
+                RequestContext.Http.HttpBuilder httpBuilder = RequestContext.Http.builder()
+                    .withPath(httpExchange.getRequestURI().getPath())
+                    .withMethod(httpExchange.getRequestMethod())
+                    .withProtocol(httpExchange.getProtocol());
+                firstHeaderValue(HttpHeaders.USER_AGENT).ifPresent(httpBuilder::withUserAgent);
+                return RequestContext.builder()
+                    .withHttp(httpBuilder.build())
+                    .build();
+            }
+
+            @Override
+            public boolean getIsBase64Encoded() {
+                return isBase64Encoded;
+            }
+
+            @Override
+            public String getBody() {
+                if (body == null) {
+                    HttpMethod httpMethod = HttpMethod.parse(httpExchange.getRequestMethod());
+                    if (HttpMethod.permitsRequestBody(httpMethod)) {
+                        try (InputStream requestBody = httpExchange.getRequestBody()) {
+                            byte[] data = requestBody.readAllBytes();
+                            if (isBase64Encoded) {
+                                body = Base64.getEncoder().encodeToString(data);
+                            }
+                        } catch (IOException e) {
+                            // ignore
+                        }
+                    }
+                }
+                return body;
+            }
+        };
+
     }
 }

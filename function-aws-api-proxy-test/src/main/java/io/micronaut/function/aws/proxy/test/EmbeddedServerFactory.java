@@ -15,37 +15,39 @@
  */
 package io.micronaut.function.aws.proxy.test;
 
+import com.sun.net.httpserver.HttpHandler;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.env.PropertySource;
+import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
-import io.micronaut.http.server.HttpServerConfiguration;
-import io.micronaut.runtime.server.EmbeddedServer;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
+@Experimental
 @Internal
 @Factory
 class EmbeddedServerFactory {
 
+    @Named("HttpServer")
     @Singleton
-    HttpHandlerApplicationContextAware httpHandlerApplicationContextAware(ApplicationContext applicationContext) {
-        APIGatewayV2HTTPEventFunction function = createLambdaHandler(applicationContext);
-        return new AwsProxyHttpHandler(function);
-    }
-
-    @Singleton
-    EmbeddedServer createServer(HttpServerConfiguration httpServerConfiguration,
-                                HttpHandlerApplicationContextAware httpHandlerApplicationContextAware) {
-        return new HttpServerEmbeddedServer(httpHandlerApplicationContextAware, httpServerConfiguration);
-    }
-
-    private static APIGatewayV2HTTPEventFunction createLambdaHandler(ApplicationContext ctx) {
+    ApplicationContextProvider httpServerApplicationContextProvider(ApplicationContext applicationContext) {
         ApplicationContextBuilder builder = ApplicationContext.builder();
-        for (PropertySource propertySource : ctx.getEnvironment().getPropertySources()) {
+        for (PropertySource propertySource : applicationContext.getEnvironment().getPropertySources()) {
             builder = builder.propertySources(propertySource);
         }
         return new APIGatewayV2HTTPEventFunction(builder.build());
+    }
+
+    @Singleton
+    HttpHandler createHandler(@Named("HttpServer") ApplicationContextProvider applicationContextProvider) {
+        if (applicationContextProvider instanceof APIGatewayV2HTTPEventFunction function) {
+            return new AwsProxyHttpHandler(function);
+        }
+        throw new ConfigurationException("ApplicationContextProvider with name qualifier HttpServer should be of type APIGatewayV2HTTPEventFunction");
     }
 }
