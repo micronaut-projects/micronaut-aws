@@ -9,7 +9,6 @@ import org.junit.platform.suite.api.*;
 })
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.OctetTest",
-    "io.micronaut.http.server.tck.tests.ParameterTest",
     "io.micronaut.http.server.tck.tests.cors.CrossOriginTest",
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
 })
