@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-
 @Internal
 class AwsProxyHttpHandler implements HttpHandler {
     APIGatewayV2HTTPEventFunction handler;
