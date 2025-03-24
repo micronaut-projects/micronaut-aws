@@ -27,6 +27,8 @@ import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.uri.QueryStringDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +43,8 @@ import java.util.Set;
 
 @Internal
 class AwsProxyHttpHandler implements HttpHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(AwsProxyHttpHandler.class);
+
     APIGatewayV2HTTPEventFunction handler;
     private final ContextProvider contextProvider;
 
@@ -68,6 +72,11 @@ class AwsProxyHttpHandler implements HttpHandler {
             byte[] payloadBytes = payload.getBytes();
             if (apiGatewayV2HTTPResponse.getIsBase64Encoded())  {
                 payloadBytes = Base64.getDecoder().decode(payloadBytes);
+                try {
+                    payloadBytes = Base64.getDecoder().decode(payloadBytes);
+                } catch (IllegalArgumentException e) {
+                    LOG.error("{}", e.getMessage(), e);
+                }
             }
             output.write(payloadBytes);
             output.flush();
