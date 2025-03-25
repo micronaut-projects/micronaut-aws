@@ -8,7 +8,6 @@ import org.junit.platform.suite.api.*;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
-    "io.micronaut.http.server.tck.tests.OctetTest",
     "io.micronaut.http.server.tck.tests.cors.CrossOriginTest", // CrossOriginTest#httHeaderValueAccessControlExposeHeaderValueCanBeSetViaCrossOriginAnnotation fails
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
 })
