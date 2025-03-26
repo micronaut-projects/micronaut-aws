@@ -16,6 +16,7 @@
 package io.micronaut.aws.sdk.v2.service;
 
 import io.micronaut.aws.AWSConfiguration;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.EachProperty;
 import io.micronaut.context.annotation.Parameter;
 import io.micronaut.core.annotation.NonNull;
@@ -31,6 +32,7 @@ import java.net.URISyntaxException;
  * @since 3.10.0
  *
  */
+@BootstrapContextCompatible
 @EachProperty(AWSServiceConfigurationProperties.SERVICE_PREFIX)
 public class AWSServiceConfigurationProperties implements AWSServiceConfiguration {
 
