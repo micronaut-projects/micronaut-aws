@@ -72,7 +72,7 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
     @Override
     public Optional<T> getBody() {
         if (event.getIsBase64Encoded() != null && event.getIsBase64Encoded()) {
-            return (Optional<T>) Optional.ofNullable(Base64.getMimeDecoder().decode(event.getBody()));
+            return (Optional<T>) Optional.ofNullable(Base64.getDecoder().decode(event.getBody()));
         }
         return (Optional<T>) Optional.ofNullable(event.getBody());
     }
