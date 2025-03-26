@@ -71,7 +71,7 @@ class AwsProxyHttpHandler implements HttpHandler {
             final OutputStream output = httpExchange.getResponseBody();
             byte[] payloadBytes = payload.getBytes();
             if (apiGatewayV2HTTPResponse.getIsBase64Encoded())  {
-                payloadBytes = Base64.getMimeDecoder().decode(payloadBytes);
+                payloadBytes = Base64.getDecoder().decode(payloadBytes);
             }
             output.write(payloadBytes);
             output.flush();

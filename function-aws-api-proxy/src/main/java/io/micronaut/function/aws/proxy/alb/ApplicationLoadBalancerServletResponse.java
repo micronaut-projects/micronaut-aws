@@ -47,7 +47,7 @@ public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHt
         nativeResponse.setStatusCode(status);
         if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             nativeResponse.setIsBase64Encoded(true);
-            nativeResponse.setBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
+            nativeResponse.setBody(Base64.getEncoder().encodeToString(body.toByteArray()));
         } else {
             nativeResponse.setIsBase64Encoded(false);
             String bodyStr = body.toString(getCharacterEncoding());

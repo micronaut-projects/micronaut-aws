@@ -50,7 +50,7 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
         if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             apiGatewayV2HTTPResponseBuilder
                 .withIsBase64Encoded(true)
-                .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
+                .withBody(Base64.getEncoder().encodeToString(body.toByteArray()));
         } else {
             String bodyStr = body.toString(getCharacterEncoding());
             if (StringUtils.isNotEmpty(bodyStr)) {
