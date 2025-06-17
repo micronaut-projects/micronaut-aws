@@ -9,9 +9,9 @@ bouncycastle = '1.70'
 fileupload = '0.0.8'
 logback-json-classic = '0.1.5'
 
-micronaut-groovy = "4.6.0"
 micronaut-logging = "1.6.1"
 micronaut-discovery = "4.7.0"
+micronaut-groovy = "4.7.0"
 micronaut-mongodb = "5.6.0"
 micronaut-reactor = "3.7.0"
 micronaut-security = "4.12.1"
