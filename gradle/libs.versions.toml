@@ -38,7 +38,7 @@ sonatype-scan = "3.1.1"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "23.1.7"
+graal = "23.1.8"
 kotlin = "1.9.25"
 
 # Micronaut
