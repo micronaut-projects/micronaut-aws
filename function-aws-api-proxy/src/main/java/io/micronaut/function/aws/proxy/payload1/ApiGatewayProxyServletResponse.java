@@ -50,7 +50,7 @@ public class ApiGatewayProxyServletResponse<B> extends AbstractServletHttpRespon
         if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             apiGatewayProxyResponseEvent
                 .withIsBase64Encoded(true)
-                .withBody(Base64.getMimeEncoder().encodeToString(body.toByteArray()));
+                .withBody(Base64.getEncoder().encodeToString(body.toByteArray()));
         } else {
             apiGatewayProxyResponseEvent
                 .withIsBase64Encoded(false);

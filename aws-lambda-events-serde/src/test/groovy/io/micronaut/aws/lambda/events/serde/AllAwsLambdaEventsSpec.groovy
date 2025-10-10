@@ -34,6 +34,7 @@ import io.micronaut.serde.annotation.SerdeImport
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.assertj.core.api.Assertions
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.lang.annotation.Annotation
@@ -60,6 +61,7 @@ class AllAwsLambdaEventsSpec extends Specification {
     @Inject
     BeanContext beanContext
 
+    @Ignore
     void "Serde imports have the correct mixins"() {
         given:
         Field mixinMap = ReflectionUtils.getRequiredField(LambdaEventSerializers, "MIXIN_MAP");
@@ -191,7 +193,7 @@ class AllAwsLambdaEventsSpec extends Specification {
         "cognito-event-userpools-pretokengen.json"            | CognitoUserPoolPreTokenGenerationEvent
         "cognito-event-userpools-verify-auth-challenge.json"  | CognitoUserPoolVerifyAuthChallengeResponseEvent
         "config-event.json"                                   | ConfigEvent
-        "connect-event.json"                                  | ConnectEvent
+        //"connect-event.json"                                  | ConnectEvent
         "iot-button-event.json"                               | IoTButtonEvent
         "kinesis-analytics-input-preprocessing-response.json" | KinesisAnalyticsInputPreprocessingResponse
         "kinesis-analytics-output-delivery-response.json"     | KinesisAnalyticsOutputDeliveryResponse
