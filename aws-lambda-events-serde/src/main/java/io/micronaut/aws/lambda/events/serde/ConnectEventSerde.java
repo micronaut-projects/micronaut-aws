@@ -29,6 +29,7 @@ import io.micronaut.serde.annotation.SerdeImport;
 @SerdeImport(value = ConnectEvent.CustomerEndpoint.class, mixin = ConnectEventMixin.CustomerEndpointMixin.class)
 @SerdeImport(value = ConnectEvent.Details.class, mixin = ConnectEventMixin.DetailsMixin.class)
 @SerdeImport(value = ConnectEvent.SystemEndpoint.class, mixin = ConnectEventMixin.SystemEndpointMixin.class)
+@SerdeImport(value = ConnectEvent.Queue.class, mixin = ConnectEventMixin.QueueMixin.class)
 @SerdeImport(value = ConnectEvent.class, mixin = ConnectEventMixin.class)
 public class ConnectEventSerde {
 
