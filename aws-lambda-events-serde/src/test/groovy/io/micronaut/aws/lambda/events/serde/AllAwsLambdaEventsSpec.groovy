@@ -193,7 +193,7 @@ class AllAwsLambdaEventsSpec extends Specification {
         "cognito-event-userpools-pretokengen.json"            | CognitoUserPoolPreTokenGenerationEvent
         "cognito-event-userpools-verify-auth-challenge.json"  | CognitoUserPoolVerifyAuthChallengeResponseEvent
         "config-event.json"                                   | ConfigEvent
-        //"connect-event.json"                                  | ConnectEvent
+        "connect-event.json"                                  | ConnectEvent
         "iot-button-event.json"                               | IoTButtonEvent
         "kinesis-analytics-input-preprocessing-response.json" | KinesisAnalyticsInputPreprocessingResponse
         "kinesis-analytics-output-delivery-response.json"     | KinesisAnalyticsOutputDeliveryResponse
