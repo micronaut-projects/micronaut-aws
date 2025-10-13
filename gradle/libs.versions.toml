@@ -1,6 +1,6 @@
 [versions]
 micronaut = "4.10.3"
-micronaut-docs = "2.0.0"
+micronaut-docs = "3.0.0"
 micronaut-test = "4.9.0"
 groovy = "4.0.26"
 spock = "2.3-groovy-4.0"
