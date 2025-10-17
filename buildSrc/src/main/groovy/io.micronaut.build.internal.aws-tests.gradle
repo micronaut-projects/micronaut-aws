@@ -1,7 +1,13 @@
 plugins {
     id "io.micronaut.build.internal.aws-base"
+    id "java-library"
 }
-
+repositories {
+    mavenCentral()
+}
+dependencies {
+    testRuntimeOnly(mnTest.junit.platform.suite)
+}
 tasks.named("test") {
     useJUnitPlatform()
 }
