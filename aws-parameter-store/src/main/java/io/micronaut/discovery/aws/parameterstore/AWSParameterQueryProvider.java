@@ -27,17 +27,14 @@ import java.util.List;
  * own custom paths need to implement this interface and replace the default
  * implementation:
  *
- * <pre>
- * {@code
- * @Singleton
- * @BootstrapContextCompatible
- * @Replaces(AWSParameterQueryProvider.class)
+ * <pre><code>
+ * &#64;Singleton
+ * &#64;BootstrapContextCompatible
+ * &#64;Replaces(AWSParameterQueryProvider.class)
  * public class CustomParameterQueryProvider implements AWSParameterQueryProvider {
- *
- * ...
- *
- * }}
- * </pre>
+ *     // ...
+ * }
+ * </code></pre>
  *
  * @author ttzn
  * @since 2.3.0
