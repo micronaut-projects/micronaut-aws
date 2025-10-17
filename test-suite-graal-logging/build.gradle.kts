@@ -12,3 +12,16 @@ micronaut {
     runtime("netty")
     testRuntime("junit5")
 }
+
+graalvmNative {
+    binaries {
+        all {
+            buildArgs.add("--trace-class-initialization=org.slf4j.LoggerFactory")
+
+            buildArgs.add("--initialize-at-build-time=org.junit.platform.engine.support.store.NamespacedHierarchicalStore\$EvaluatedValue")
+            buildArgs.add("--initialize-at-build-time=org.junit.platform.launcher.core.LauncherPhase")
+            buildArgs.add("--initialize-at-build-time=org.junit.platform.launcher.core.DiscoveryIssueNotifier")
+            buildArgs.add("--initialize-at-build-time=org.junit.platform.launcher.core.HierarchicalOutputDirectoryCreator")
+        }
+    }
+}
