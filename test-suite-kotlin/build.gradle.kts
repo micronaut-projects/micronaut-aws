@@ -9,9 +9,9 @@ val micronautVersion: String by project
 dependencies {
     kaptTest(mn.micronaut.inject.java)
     testAnnotationProcessor(platform(mn.micronaut.core.bom))
-    testImplementation(libs.junit.jupiter.api)
+    testImplementation(mnTest.junit.jupiter.api)
     testImplementation(mnTest.micronaut.test.junit5)
-    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
     testImplementation(projects.micronautFunctionAws)
     testImplementation(libs.kotlin.stdlib.jdk8)
     testImplementation(projects.micronautFunctionClientAwsV2)
@@ -26,7 +26,7 @@ tasks {
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 
 }

@@ -13,15 +13,15 @@ dependencies {
     testImplementation(mn.micronaut.http.server.tck)
     testImplementation(libs.junit.platform.engine)
     testImplementation(mn.micronaut.jackson.databind)
-    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(mnTest.junit.jupiter.engine)
     testRuntimeOnly(mnLogging.logback.classic)
 
     testRuntimeOnly(mnValidation.micronaut.validation)
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("17")
-    targetCompatibility = JavaVersion.toVersion("17")
+    sourceCompatibility = JavaVersion.toVersion("21")
+    targetCompatibility = JavaVersion.toVersion("21")
 }
 
 tasks.named("test") {
