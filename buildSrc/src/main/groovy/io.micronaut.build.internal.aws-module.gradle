@@ -11,3 +11,6 @@ configurations.all {
         // first version patched https://ossindex.sonatype.org/component/pkg:maven/commons-io/commons-io
     }
 }
+dependencies {
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
