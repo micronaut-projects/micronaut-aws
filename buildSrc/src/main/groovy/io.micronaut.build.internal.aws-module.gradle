@@ -1,6 +1,7 @@
 plugins {
     id "io.micronaut.build.internal.aws-base"
     id "io.micronaut.build.internal.module"
+    id "java-library"
 }
 ossIndexAudit {
     excludeCompileOnly = true
@@ -11,6 +12,14 @@ configurations.all {
         // first version patched https://ossindex.sonatype.org/component/pkg:maven/commons-io/commons-io
     }
 }
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly(mnTest.junit.platform.suite)
+    testRuntimeOnly(mnTest.junit.platform.launcher)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
+    testImplementation(mnTest.junit.jupiter.api)
 }
