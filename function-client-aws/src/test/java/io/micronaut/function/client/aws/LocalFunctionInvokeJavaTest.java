@@ -1,7 +1,7 @@
 package io.micronaut.function.client.aws;
 
 import io.micronaut.context.ApplicationContext;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import io.micronaut.runtime.server.EmbeddedServer;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

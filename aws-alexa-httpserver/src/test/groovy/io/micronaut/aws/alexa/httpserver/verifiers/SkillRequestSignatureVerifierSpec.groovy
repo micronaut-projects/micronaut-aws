@@ -7,7 +7,6 @@ import io.micronaut.http.MutableHttpHeaders
 import io.micronaut.http.simple.SimpleHttpHeaders
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.x509.X509V3CertificateGenerator
-import org.junit.Test
 import spock.lang.Specification
 
 import javax.security.auth.x500.X500Principal
@@ -94,7 +93,6 @@ class SkillRequestSignatureVerifierSpec extends Specification {
         e.message.contains("contains an invalid port")
     }
 
-    @Test
     void "getAndVerifySigningCertificateChainUrl malformedUrl certificateExceptionThrown"() {
         when:
         getAndVerifySigningCertificateChainUrl(MALFORMED_URL)
