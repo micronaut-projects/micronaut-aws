@@ -1,7 +1,7 @@
 [versions]
-micronaut = "4.10.3"
+micronaut = "4.10.8"
 micronaut-docs = "3.0.0"
-micronaut-test = "4.9.0"
+micronaut-test = "4.10.2"
 groovy = "4.0.26"
 spock = "2.3-groovy-4.0"
 
@@ -41,7 +41,7 @@ graal = "24.0.0"
 kotlin = "2.2.20"
 
 # Micronaut
-micronaut-gradle-plugin = "4.5.4"
+micronaut-gradle-plugin = "4.6.1"
 
 [libraries]
 # Core

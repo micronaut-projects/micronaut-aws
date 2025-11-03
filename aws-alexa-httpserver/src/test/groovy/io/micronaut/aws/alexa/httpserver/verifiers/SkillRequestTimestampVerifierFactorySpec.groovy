@@ -18,8 +18,7 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.environment.RestoreSystemProperties
 
-import static org.junit.Assert.assertNull
-
+import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * NOTICE: This test is a spock rewrite of com.amazon.ask.servlet.util.ServletUtilsTest https://github.com/alexa/alexa-skills-kit-sdk-for-java ask-sdk-servlet-support module
  */
