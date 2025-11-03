@@ -18,7 +18,6 @@ import spock.lang.Specification
 import spock.lang.Subject
 import spock.util.environment.RestoreSystemProperties
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * NOTICE: This test is a spock rewrite of com.amazon.ask.servlet.util.ServletUtilsTest https://github.com/alexa/alexa-skills-kit-sdk-for-java ask-sdk-servlet-support module
  */
@@ -38,13 +37,14 @@ class SkillRequestTimestampVerifierFactorySpec extends Specification {
         System.setProperty(AskHttpServerConstants.TIMESTAMP_TOLERANCE_SYSTEM_PROPERTY, "");
 
         expect:
-        assertNull(factory.timeStampToleranceSystemProperty());
+        null == factory.timeStampToleranceSystemProperty()
     }
 
     @RestoreSystemProperties
     void "whitespace only timestamp tolerance system property returns null"() {
         System.setProperty(AskHttpServerConstants.TIMESTAMP_TOLERANCE_SYSTEM_PROPERTY, "    ");
-        assertNull(factory.timeStampToleranceSystemProperty());
+        expect:
+        null == factory.timeStampToleranceSystemProperty()
     }
 
     @RestoreSystemProperties
