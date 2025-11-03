@@ -1,7 +1,6 @@
 plugins {
     id "io.micronaut.build.internal.aws-base"
     id "io.micronaut.build.internal.module"
-    id "java-library"
 }
 ossIndexAudit {
     excludeCompileOnly = true
