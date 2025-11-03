@@ -12,11 +12,6 @@ configurations.all {
         // first version patched https://ossindex.sonatype.org/component/pkg:maven/commons-io/commons-io
     }
 }
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     testRuntimeOnly(mnTest.junit.platform.suite)
     testRuntimeOnly(mnTest.junit.platform.launcher)
