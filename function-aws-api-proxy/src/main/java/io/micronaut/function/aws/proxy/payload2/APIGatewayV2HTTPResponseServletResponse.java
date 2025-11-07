@@ -15,6 +15,7 @@
  */
 package io.micronaut.function.aws.proxy.payload2;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
@@ -22,9 +23,16 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.encoding.EncodingService;
+import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link ServletHttpResponse} for AWS API Gateway Proxy.
@@ -35,28 +43,51 @@ import java.util.Base64;
  */
 @Internal
 public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletHttpResponse<APIGatewayV2HTTPResponse, B> {
+    private final APIGatewayV2HTTPEvent request;
+    private final ConversionService conversionService;
 
-    protected APIGatewayV2HTTPResponseServletResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
-        super(conversionService, binaryTypeConfiguration);
+    protected APIGatewayV2HTTPResponseServletResponse(ConversionService conversionService,
+                                                      BinaryTypeConfiguration binaryTypeConfiguration,
+                                                      EncodingService encodingService,
+                                                      APIGatewayV2HTTPEvent request) {
+        super(conversionService, binaryTypeConfiguration, encodingService);
+        this.request = request;
+        this.conversionService = conversionService;
     }
 
     @Override
     public APIGatewayV2HTTPResponse getNativeResponse() {
-        APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
-            .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
-            .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
-            .withStatusCode(status);
+        APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder();
 
-        if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
+        boolean isMediaTypeBinary = binaryTypeConfiguration
+            .isMediaTypeBinary(getHeaders().getContentType().orElse(null));
+
+        Map<String, List<String>> requestHeaders = request.getHeaders().entrySet().stream()
+            .map(entry -> Map.entry(entry.getKey(), Arrays.stream(entry.getValue().split(","))
+                .toList()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        HttpHeaders entries =
+            new CaseInsensitiveMutableHttpHeaders(requestHeaders, conversionService);
+
+        // Apply compression if needed (i.e.: gzip/deflate)
+        boolean isBodyCompressed = isBodyCompressed(entries);
+        byte[] compressedBody = compressBody(entries, getHeaders(), body.toByteArray());
+
+        if (isMediaTypeBinary || isBodyCompressed) {
             apiGatewayV2HTTPResponseBuilder
                 .withIsBase64Encoded(true)
-                .withBody(Base64.getEncoder().encodeToString(body.toByteArray()));
+                .withBody(Base64.getEncoder().encodeToString(compressedBody));
         } else {
             String bodyStr = body.toString(getCharacterEncoding());
             if (StringUtils.isNotEmpty(bodyStr)) {
                 apiGatewayV2HTTPResponseBuilder.withBody(bodyStr);
             }
         }
+        apiGatewayV2HTTPResponseBuilder
+            .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
+            .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
+            .withStatusCode(status);
 
         return apiGatewayV2HTTPResponseBuilder.build();
     }

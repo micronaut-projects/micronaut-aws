@@ -20,7 +20,10 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
+import io.micronaut.function.aws.proxy.encoding.ContentEncoder;
+import io.micronaut.function.aws.proxy.encoding.EncodingService;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
@@ -29,32 +32,46 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.ServerCookieEncoder;
 import io.micronaut.servlet.http.ServletHttpResponse;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Abstract class for implementations of {@link ServletHttpResponse}.
- * @author Sergio del Amo
- * @since 4.0.0
+ *
  * @param <R> Response Type
  * @param <B> Body Type
+ * @author Sergio del Amo
+ * @since 4.0.0
  */
 @Internal
 public abstract class AbstractServletHttpResponse<R, B> implements ServletHttpResponse<R, B> {
+    private static final Logger LOG = Logger.getLogger(AbstractServletHttpResponse.class.getSimpleName());
     protected final ByteArrayOutputStream body = new ByteArrayOutputStream();
     protected int status = HttpStatus.OK.getCode();
-    protected  final MutableHttpHeaders headers;
+    protected final MutableHttpHeaders headers;
     protected final BinaryTypeConfiguration binaryTypeConfiguration;
     private MutableConvertibleValues<Object> attributes;
     private B bodyObject;
     private String reason = HttpStatus.OK.getReason();
+    private EncodingService encodingService;
+    private ConversionService conversionService;
 
-    protected AbstractServletHttpResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
+    protected AbstractServletHttpResponse(ConversionService conversionService,
+                                          BinaryTypeConfiguration binaryTypeConfiguration,
+                                          EncodingService encodingService) {
         this.headers = new CaseInsensitiveMutableHttpHeaders(conversionService);
+        this.conversionService = conversionService;
         this.binaryTypeConfiguration = binaryTypeConfiguration;
+        this.encodingService = encodingService;
     }
 
     @Override
@@ -125,5 +142,58 @@ public abstract class AbstractServletHttpResponse<R, B> implements ServletHttpRe
     @Override
     public String reason() {
         return reason;
+    }
+
+    protected boolean isBodyCompressed(final HttpHeaders headers) {
+        String acceptEncoding = headers.get(HttpHeaders.ACCEPT_ENCODING);
+        if (StringUtils.isEmpty(acceptEncoding)) {
+            return false;
+        }
+        Set<String> acceptTokens = Arrays.stream(acceptEncoding.split(","))
+            .map(e -> e.split(";", 2)[0])
+            .map(String::trim)
+            .map(String::toLowerCase)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toSet());
+
+        return acceptTokens.stream()
+            .anyMatch(encodingService::supportsEncoding);
+    }
+
+    protected byte[] compressBody(final HttpHeaders requestHeaders,
+                                  final MutableHttpHeaders responseHeaders,
+                                  final byte[] body) {
+        String acceptEncoding = requestHeaders.get(HttpHeaders.ACCEPT_ENCODING);
+        if (StringUtils.isEmpty(acceptEncoding)) {
+            return body;
+        }
+        Set<String> acceptTokens = Arrays.stream(acceptEncoding.split(","))
+            .map(e -> e.split(";", 2)[0])
+            .map(String::trim)
+            .map(String::toLowerCase)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toSet());
+
+        String firstSupportedEncoding = acceptTokens.stream()
+            .filter(encodingService::supportsEncoding)
+            .findFirst()
+            .orElse(null);
+
+        if (StringUtils.isEmpty(firstSupportedEncoding)) {
+            LOG.finest("No encoding found for accept-encoding: " + acceptEncoding);
+        }
+
+        ContentEncoder contentEncoder = encodingService
+            .getContentEncoder(firstSupportedEncoding);
+
+        if (Objects.isNull(contentEncoder)) {
+            LOG.finest("No encoder found for accept-encoding: " + acceptEncoding);
+            return body;
+        }
+
+        byte[] result = contentEncoder.encodeContent(body);
+        responseHeaders.set(HttpHeaders.CONTENT_ENCODING, contentEncoder.getName());
+        responseHeaders.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(result.length));
+        return result;
     }
 }
