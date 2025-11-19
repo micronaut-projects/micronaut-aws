@@ -35,10 +35,10 @@ public class ApacheClientConfiguration extends AWSConfiguration {
     public static final String PREFIX = "apache-client";
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"applyMutation", "proxyConfiguration", "httpRoutePlanner", "credentialsProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "buildWithDefaults"})
-    private ApacheHttpClient.Builder builder = ApacheHttpClient.builder();
+    private final ApacheHttpClient.Builder builder = ApacheHttpClient.builder();
 
     @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
-    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
+    private final ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
 
     /**
      * @return The builder for {@link ApacheHttpClient}

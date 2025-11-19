@@ -1,3 +1,5 @@
 The Netty client can be configured with the following options:
 
-include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.netty.NettyClientConfiguration.adoc[]
+include::{includedir}configurationProperties/software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder.adoc[]
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.nio.netty.ProxyConfiguration$Builder.adoc[]
