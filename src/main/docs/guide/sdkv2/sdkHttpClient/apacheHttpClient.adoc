@@ -1,3 +1,5 @@
 The Apache HTTP client can be configured with the following options:
 
-include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration.adoc[]
+include::{includedir}configurationProperties/software.amazon.awssdk.http.apache.ApacheHttpClient$Builder.adoc[]
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.apache.ProxyConfiguration$Builder.adoc[]
