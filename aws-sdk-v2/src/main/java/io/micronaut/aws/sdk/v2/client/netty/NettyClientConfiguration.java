@@ -35,10 +35,10 @@ public class NettyClientConfiguration extends AWSConfiguration {
     public static final String PREFIX = "netty-client";
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"eventLoopGroup", "eventLoopGroupBuilder", "sslProvider", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "proxyConfiguration", "http2Configuration", "buildWithDefaults", "applyMutation"})
-    private NettyNioAsyncHttpClient.Builder builder = NettyNioAsyncHttpClient.builder();
+    private final NettyNioAsyncHttpClient.Builder builder = NettyNioAsyncHttpClient.builder();
 
     @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation"})
-    private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
+    private final ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
 
     /**
      * @return The builder for {@link NettyNioAsyncHttpClient}

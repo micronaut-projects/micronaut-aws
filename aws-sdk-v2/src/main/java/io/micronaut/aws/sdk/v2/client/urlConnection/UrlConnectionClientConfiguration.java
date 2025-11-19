@@ -33,7 +33,7 @@ public class UrlConnectionClientConfiguration extends AWSConfiguration {
     public static final String PREFIX = "url-connection-client";
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"applyMutation", "tlsKeyManagersProvider", "tlsTrustManagersProvider", "buildWithDefaults"})
-    private UrlConnectionHttpClient.Builder builder = UrlConnectionHttpClient.builder();
+    private final UrlConnectionHttpClient.Builder builder = UrlConnectionHttpClient.builder();
 
     /**
      * @return The builder for {@link UrlConnectionHttpClient}

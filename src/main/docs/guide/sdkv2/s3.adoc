@@ -24,4 +24,4 @@ The HTTP client, credentials and region will be configured as per described in t
 
 Additionally, this service accepts the following configuration properties:
 
-include::{includedir}configurationProperties/io.micronaut.aws.sdk.v2.service.s3.S3ConfigurationProperties.adoc[]
+include::{includedir}configurationProperties/software.amazon.awssdk.services.s3.S3Configuration$Builder.adoc[]
