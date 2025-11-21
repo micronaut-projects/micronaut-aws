@@ -12,6 +12,7 @@ dependencies {
     compileOnly(libs.awssdk.url.connection.client)
     compileOnly(libs.awssdk.netty.nio.client)
     compileOnly(libs.awssdk.apache.client)
+    compileOnly(libs.awssdk.aws.crt.client)
 
     // Services
     compileOnly(libs.awssdk.apigatewaymanagementapi)
@@ -34,6 +35,7 @@ dependencies {
     testImplementation(libs.awssdk.url.connection.client)
     testImplementation(libs.awssdk.netty.nio.client)
     testImplementation(libs.awssdk.apache.client)
+    testImplementation(libs.awssdk.aws.crt.client)
     testImplementation(libs.awssdk.s3)
     testImplementation(libs.awssdk.dynamodb)
     testImplementation(libs.awssdk.ses)
