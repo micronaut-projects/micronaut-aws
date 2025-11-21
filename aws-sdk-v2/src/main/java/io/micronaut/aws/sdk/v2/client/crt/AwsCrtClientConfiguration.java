@@ -54,7 +54,7 @@ public class AwsCrtClientConfiguration extends AWSConfiguration {
         return proxy;
     }
 
-    boolean isProxyConfigured() {
+    final boolean isProxyConfigured() {
         ProxyConfiguration proxyConfig = proxy.build();
         return proxyConfig.host() != null;
     }

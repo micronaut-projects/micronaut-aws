@@ -54,7 +54,7 @@ public class NettyClientConfiguration extends AWSConfiguration {
         return proxy;
     }
 
-    boolean isProxyConfigured() {
+    final boolean isProxyConfigured() {
         ProxyConfiguration proxyConfig = proxy.build();
         return proxyConfig.host() != null;
     }
