@@ -1,7 +1,7 @@
 package io.micronaut.docs;
 
 //tag::imports[]
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.core.annotation.Introspected;
 //end::imports[]
 

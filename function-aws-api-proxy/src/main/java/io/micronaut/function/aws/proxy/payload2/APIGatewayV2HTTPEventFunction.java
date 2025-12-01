@@ -21,7 +21,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.function.aws.HandlerUtils;
 import io.micronaut.function.aws.LambdaApplicationContextBuilder;
 import io.micronaut.function.executor.FunctionInitializer;

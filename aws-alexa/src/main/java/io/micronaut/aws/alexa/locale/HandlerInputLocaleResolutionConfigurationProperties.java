@@ -17,8 +17,8 @@ package io.micronaut.aws.alexa.locale;
 
 import io.micronaut.aws.alexa.conf.AlexaSkillConfigurationProperties;
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.Optional;

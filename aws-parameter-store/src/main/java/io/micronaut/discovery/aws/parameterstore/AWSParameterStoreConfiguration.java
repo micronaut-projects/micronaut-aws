@@ -21,7 +21,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.core.util.Toggleable;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * This is the configuration class for the AWSParameterStoreConfigClient for AWS Parameter Store based configuration.

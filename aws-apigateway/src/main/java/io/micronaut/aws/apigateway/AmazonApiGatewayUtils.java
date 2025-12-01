@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.apigateway;
 
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Utility class to use when working with Amazon API Gateway.

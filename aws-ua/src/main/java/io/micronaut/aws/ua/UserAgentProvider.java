@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.ua;
 
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Provides value for User-Agent HTTP Header Value.

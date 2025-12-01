@@ -16,7 +16,7 @@
 package io.micronaut.aws.lambda.events.serde;
 
 import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.function.aws.JsonMapperCustomPojoSerializer;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.serde.ObjectMapper;

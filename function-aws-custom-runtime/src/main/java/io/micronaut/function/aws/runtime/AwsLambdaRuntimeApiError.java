@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.runtime;
 
 import io.micronaut.core.annotation.Introspected;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * AWS Lambda Runtime Interface Error.

@@ -20,8 +20,8 @@ import com.amazon.ask.builder.SkillBuilder;
 import io.micronaut.aws.alexa.conf.AlexaSkillConfiguration;
 import io.micronaut.context.annotation.DefaultImplementation;
 
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import jakarta.validation.constraints.NotNull;
 
 /**
