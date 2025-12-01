@@ -16,7 +16,7 @@
 package io.micronaut.function.aws;
 import com.amazonaws.services.lambda.runtime.Context;
 import io.micronaut.context.annotation.DefaultImplementation;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Register Lambda Context singletons for the current Handler execution.

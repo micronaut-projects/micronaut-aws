@@ -15,7 +15,7 @@
  */
 package io.micronaut.function.aws;
 
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.core.util.StringUtils;
 
 import java.util.Optional;
