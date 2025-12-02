@@ -43,5 +43,8 @@ following JVM system properties:
 * `software.amazon.awssdk.http.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` for the `URLConnection` based client.
 ** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` for the Apache HTTP client (if in the classpath).
+** `software.amazon.awssdk.http.crt.AwsCrtSdkHttpService` for the <<awsCrtClient, AWS CRT client>>.
+
 * `software.amazon.awssdk.http.async.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService` for the Netty client (if in the classpath).
+** `software.amazon.awssdk.http.crt.AwsCrtSdkHttpService` for the <<awsCrtClient, AWS Async CRT client>>.

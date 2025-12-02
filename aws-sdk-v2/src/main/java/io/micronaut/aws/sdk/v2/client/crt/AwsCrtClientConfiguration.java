@@ -19,7 +19,9 @@ import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.core.annotation.NonNull;
 import software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient;
+import software.amazon.awssdk.http.crt.AwsCrtHttpClient;
 import software.amazon.awssdk.http.crt.ProxyConfiguration;
 
 /**
@@ -32,19 +34,33 @@ import software.amazon.awssdk.http.crt.ProxyConfiguration;
 @BootstrapContextCompatible
 public class AwsCrtClientConfiguration extends AWSConfiguration {
 
-    public static final String PREFIX = "aws-crt-client";
+    public static final String PREFIX = "crt-client";
 
     @ConfigurationBuilder(prefixes = {""}, excludes = {"proxyConfiguration", "buildWithDefaults", "applyMutation"})
-    private AwsCrtAsyncHttpClient.Builder builder = AwsCrtAsyncHttpClient.builder();
+    private AwsCrtHttpClient.Builder sync = AwsCrtHttpClient.builder();
+
+    @ConfigurationBuilder(prefixes = {""}, excludes = {"proxyConfiguration", "buildWithDefaults", "applyMutation"})
+    private AwsCrtAsyncHttpClient.Builder async = AwsCrtAsyncHttpClient.builder();
 
     @ConfigurationBuilder(configurationPrefix = "proxy", prefixes = {""}, excludes = {"applyMutation", "copy"})
     private ProxyConfiguration.Builder proxy = ProxyConfiguration.builder();
 
     /**
-     * @return The builder for {@link AwsCrtAsyncHttpClient}
+     *
+     * @return AWS CRT HTTP Client builder
      */
-    public AwsCrtAsyncHttpClient.Builder getBuilder() {
-        return isProxyConfigured() ? builder.proxyConfiguration(proxy.build()) : builder;
+    @NonNull
+    public AwsCrtHttpClient.Builder getSync() {
+        return sync;
+    }
+
+    /**
+     *
+     * @return AWS CRT Async HTTP Client builder
+     */
+    @NonNull
+    public AwsCrtAsyncHttpClient.Builder getAsync() {
+        return async;
     }
 
     /**
@@ -52,10 +68,5 @@ public class AwsCrtClientConfiguration extends AWSConfiguration {
      */
     public ProxyConfiguration.Builder getProxy() {
         return proxy;
-    }
-
-    final boolean isProxyConfigured() {
-        ProxyConfiguration proxyConfig = proxy.build();
-        return proxyConfig.host() != null;
     }
 }

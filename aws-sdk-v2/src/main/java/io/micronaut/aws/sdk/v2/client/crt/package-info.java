@@ -19,10 +19,10 @@
  * @author Luis Duarte
  * @since 4.12.x
  */
-@Requires(classes = AwsCrtAsyncHttpClient.class)
+@Requires(classes = { AwsCrtHttpClient.class })
 @Configuration
 package io.micronaut.aws.sdk.v2.client.crt;
 
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
-import software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient;
+import software.amazon.awssdk.http.crt.AwsCrtHttpClient;
