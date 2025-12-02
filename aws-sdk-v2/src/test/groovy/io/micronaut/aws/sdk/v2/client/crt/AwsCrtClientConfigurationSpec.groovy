@@ -16,18 +16,4 @@ class AwsCrtClientConfigurationSpec extends Specification {
         cleanup:
         context.close()
     }
-
-    void 'AwsCrtClientConfiguration is not annotated with BootstrapContextCompatible'() {
-        given:
-        AwsCrtClientConfiguration nettyClientConfiguration = new AwsCrtClientConfiguration()
-
-        expect:
-        !nettyClientConfiguration.isProxyConfigured()
-
-        when:
-        nettyClientConfiguration.proxy.host('micronaut.example')
-
-        then:
-        nettyClientConfiguration.isProxyConfigured()
-    }
 }

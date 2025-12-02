@@ -71,17 +71,6 @@ class AwsCrtClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
-    @Requires(missingBeans = SdkHttpClient.class)
-    @Singleton
-    public SdkHttpClient sdkHttpClient(AwsCrtHttpClient.Builder awsCrtHttpClientBuilder) {
-        return awsCrtHttpClientBuilder.build();
-    }
-
-    /**
-     * @param awsCrtHttpClientBuilder AWS CRT HTTP Client Builder
-     * @return an instance of {@link SdkAsyncHttpClient}
-     */
-    @Bean(preDestroy = "close")
     @Singleton
     @Requires(property = HTTP_SERVICE_IMPL, value = AWS_CRT_SDK_HTTP_SERVICE)
     public SdkHttpClient systemPropertySdkHttpClient(AwsCrtHttpClient.Builder awsCrtHttpClientBuilder) {
@@ -102,17 +91,6 @@ class AwsCrtClientFactory {
             builder.proxyConfiguration(proxyConfiguration);
         }
         return builder;
-    }
-
-    /**
-     * @param awsCrtAsyncHttpClientBuilder AWS CRT Async HTTP Client Builder
-     * @return an instance of {@link SdkAsyncHttpClient}
-     */
-    @Bean(preDestroy = "close")
-    @Singleton
-    @Requires(missingBeans = SdkAsyncHttpClient.class)
-    public SdkAsyncHttpClient sdkAsyncHttpClient(AwsCrtAsyncHttpClient.Builder awsCrtAsyncHttpClientBuilder) {
-        return awsCrtAsyncHttpClientBuilder.build();
     }
 
     /**
