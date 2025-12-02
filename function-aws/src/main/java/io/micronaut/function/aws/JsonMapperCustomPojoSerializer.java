@@ -16,7 +16,7 @@
 package io.micronaut.function.aws;
 
 import com.amazonaws.services.lambda.runtime.CustomPojoSerializer;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.core.order.OrderUtil;
 import io.micronaut.core.type.Argument;
 import io.micronaut.json.JsonMapper;

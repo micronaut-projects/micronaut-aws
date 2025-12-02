@@ -19,7 +19,7 @@ import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.core.annotation.Experimental;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 

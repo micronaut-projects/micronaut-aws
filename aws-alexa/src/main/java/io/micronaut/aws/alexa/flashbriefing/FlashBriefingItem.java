@@ -17,8 +17,8 @@ package io.micronaut.aws.alexa.flashbriefing;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.annotation.Introspected;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

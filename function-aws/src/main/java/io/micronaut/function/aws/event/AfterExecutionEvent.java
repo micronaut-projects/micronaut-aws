@@ -16,7 +16,7 @@
 package io.micronaut.function.aws.event;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 /**
  * This event is published after the execution of {@link io.micronaut.function.aws.MicronautRequestHandler#execute(Object)}

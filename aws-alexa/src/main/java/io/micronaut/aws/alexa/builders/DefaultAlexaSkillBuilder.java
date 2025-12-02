@@ -28,8 +28,8 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.order.OrderUtil;
 import io.micronaut.inject.qualifiers.Qualifiers;
 
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;

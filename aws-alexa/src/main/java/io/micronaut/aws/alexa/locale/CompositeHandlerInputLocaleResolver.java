@@ -17,7 +17,7 @@ package io.micronaut.aws.alexa.locale;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import io.micronaut.context.annotation.Primary;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import jakarta.inject.Singleton;
 
 import java.util.Arrays;

@@ -15,7 +15,7 @@
  */
 package io.micronaut.aws.sdk.v2.service;
 
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.aws.ua.UserAgentProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
