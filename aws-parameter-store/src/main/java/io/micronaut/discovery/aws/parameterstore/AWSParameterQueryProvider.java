@@ -15,10 +15,10 @@
  */
 package io.micronaut.discovery.aws.parameterstore;
 
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.context.annotation.DefaultImplementation;
 import io.micronaut.context.env.Environment;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 /**

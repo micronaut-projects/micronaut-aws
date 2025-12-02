@@ -17,7 +17,7 @@ package io.micronaut.http.server.tck.lambda;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import io.micronaut.function.aws.proxy.test.BodyUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;

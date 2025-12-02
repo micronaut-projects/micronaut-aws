@@ -19,8 +19,8 @@ import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonGett
 import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import io.micronaut.core.annotation.Internal;
-import io.micronaut.core.annotation.NonNull;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import io.micronaut.core.type.Argument;
 import io.micronaut.serde.Decoder;
 import io.micronaut.serde.Deserializer;
