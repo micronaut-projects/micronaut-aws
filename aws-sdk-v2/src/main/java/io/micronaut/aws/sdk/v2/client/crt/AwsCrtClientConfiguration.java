@@ -23,7 +23,7 @@ import software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient;
 import software.amazon.awssdk.http.crt.ProxyConfiguration;
 
 /**
- * Configuration properties for the Netty async client.
+ * Configuration properties for the CRT HTTP client.
  *
  * @author Luis Duarte
  * @since 4.12.x
