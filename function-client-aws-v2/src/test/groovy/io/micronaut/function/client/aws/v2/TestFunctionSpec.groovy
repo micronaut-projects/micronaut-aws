@@ -4,6 +4,7 @@ import io.micronaut.core.io.ResourceLoader
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
 import jakarta.inject.Inject
+import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.spock.Testcontainers
 import org.testcontainers.utility.DockerImageName
@@ -40,6 +41,7 @@ import java.util.zip.ZipOutputStream
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.IAM
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.LAMBDA
 
+@spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
 @Testcontainers
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {

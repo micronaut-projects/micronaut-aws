@@ -20,6 +20,8 @@ dependencies {
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
     testImplementation(libs.junit.jupiter.params)
+    testImplementation(platform(mnTestResources.boms.testcontainers))
+    testImplementation(libs.testcontainers.junit.jupiter)
 }
 
 micronaut {
