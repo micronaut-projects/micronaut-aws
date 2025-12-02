@@ -1,4 +1,4 @@
-The AWS CRT Client can be configured with the following options:
+The https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/http-configuration-crt.html[AWS CRT Client] can be configured with the following options:
 
 include::{includedir}configurationProperties/software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient$Builder.adoc[]
 
