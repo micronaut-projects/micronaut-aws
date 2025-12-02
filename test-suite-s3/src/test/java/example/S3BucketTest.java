@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 @Property(name = "micronaut.http.client.read-timeout", value = "300")
-public class S3BucketTest {
+class S3BucketTest {
 
     @Inject
     @Client("/")
