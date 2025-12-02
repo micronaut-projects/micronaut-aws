@@ -71,6 +71,7 @@ class AwsCrtClientFactory {
      * @return an instance of {@link SdkAsyncHttpClient}
      */
     @Bean(preDestroy = "close")
+    @Requires(missingBeans = SdkHttpClient.class)
     @Singleton
     public SdkHttpClient sdkHttpClient(AwsCrtHttpClient.Builder awsCrtHttpClientBuilder) {
         return awsCrtHttpClientBuilder.build();
