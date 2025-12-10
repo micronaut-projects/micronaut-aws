@@ -14,3 +14,9 @@ configurations.all {
 dependencies {
     testRuntimeOnly(mnTest.junit.platform.launcher)
 }
+micronautBuild {
+    descriptor {
+        parentModuleId = "io.micronaut.aws:micronaut-aws-common"
+    }
+}
+
