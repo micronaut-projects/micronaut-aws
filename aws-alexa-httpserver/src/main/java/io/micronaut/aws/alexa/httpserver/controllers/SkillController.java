@@ -17,7 +17,7 @@ package io.micronaut.aws.alexa.httpserver.controllers;
 
 import com.amazon.ask.model.RequestEnvelope;
 import com.amazon.ask.model.ResponseEnvelope;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.micronaut.aws.alexa.httpserver.AskHttpServerConstants;
 import io.micronaut.aws.alexa.httpserver.conf.AlexaControllerConfigurationProperties;
 import io.micronaut.aws.alexa.httpserver.services.RequestEnvelopeService;
