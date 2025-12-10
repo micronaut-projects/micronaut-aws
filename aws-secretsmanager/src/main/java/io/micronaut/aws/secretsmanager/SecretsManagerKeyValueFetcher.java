@@ -124,7 +124,6 @@ public class SecretsManagerKeyValueFetcher implements SecretsKeyValueFetcher {
      * @param secret a secret list entry
      * @param result a map that collects the results
      */
-    @NonNull
     protected void addSecretDetailsToResults(SecretListEntry secret, Map result)  {
         Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());
         if (secretValueOptional.isPresent()) {

@@ -49,14 +49,14 @@ public class ResponseElementsEntitySerde implements Deserializer<S3EventNotifica
         Deserializer<? extends ResponseElementsEntityDes> specific = context.findDeserializer(ResponseElementsEntityDes.class).createSpecific(context, arg);
         return new Deserializer<>() {
             @Override
-            public @Nullable S3EventNotification.ResponseElementsEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
+            public S3EventNotification.@Nullable ResponseElementsEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
                 return specific.deserialize(decoder, context, arg).actual;
             }
         };
     }
 
     @Override
-    public @Nullable S3EventNotification.ResponseElementsEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
+    public S3EventNotification.@Nullable ResponseElementsEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.ResponseElementsEntity> type) throws IOException {
         throw new UnsupportedEncodingException("Specific deserializer required");
     }
 

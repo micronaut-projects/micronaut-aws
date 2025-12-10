@@ -56,7 +56,6 @@ public class SecretsManagerGroupNameAwareKeyValueFetcher extends SecretsManagerK
     }
 
     @Override
-    @NonNull
     protected void addSecretDetailsToResults(SecretListEntry secret, Map result) {
         Map<String, Object> keyValues = new HashMap<>();
         Optional<String> secretValueOptional = fetchSecretValue(secretsClient, secret.name());

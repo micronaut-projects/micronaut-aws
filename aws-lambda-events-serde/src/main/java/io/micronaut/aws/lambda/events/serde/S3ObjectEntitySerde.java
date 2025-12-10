@@ -50,14 +50,14 @@ public class S3ObjectEntitySerde implements Deserializer<S3EventNotification.S3O
         Deserializer<? extends S3ObjectEntityDes> specific = context.findDeserializer(S3ObjectEntityDes.class).createSpecific(context, arg);
         return new Deserializer<>() {
             @Override
-            public @Nullable S3EventNotification.S3ObjectEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
+            public S3EventNotification.@Nullable S3ObjectEntity deserialize(@NonNull Decoder decoder, DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
                 return specific.deserialize(decoder, context, arg).actual;
             }
         };
     }
 
     @Override
-    public @Nullable S3EventNotification.S3ObjectEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
+    public S3EventNotification.@Nullable S3ObjectEntity deserialize(@NonNull Decoder decoder, @NonNull DecoderContext context, @NonNull Argument<? super S3EventNotification.S3ObjectEntity> type) throws IOException {
         throw new UnsupportedOperationException("Use specific deserializer");
     }
 

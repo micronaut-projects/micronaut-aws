@@ -96,7 +96,7 @@ public class AWSLambdaConfiguration {
      * @param endpointConfiguration The {@link AwsClientBuilder#getEndpoint()}
      */
     @Inject
-    public void setEndpointConfiguration(@Nullable AwsClientBuilder.EndpointConfiguration endpointConfiguration) {
+    public void setEndpointConfiguration(AwsClientBuilder.@Nullable EndpointConfiguration endpointConfiguration) {
         if (endpointConfiguration != null) {
             builder.setEndpointConfiguration(endpointConfiguration);
         }
