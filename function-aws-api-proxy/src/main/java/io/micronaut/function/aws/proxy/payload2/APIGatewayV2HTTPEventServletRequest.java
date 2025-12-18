@@ -18,24 +18,38 @@ package io.micronaut.function.aws.proxy.payload2;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
 import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
+import io.micronaut.http.simple.SimpleHttpParameters;
+import io.micronaut.http.uri.QueryStringDecoder;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletHttpRequest;
 import io.micronaut.servlet.http.ServletHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  *
  * @param <B> The body type
  * @author Tim Yates
@@ -57,16 +71,50 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         super(
             conversionService,
             requestEvent,
-            ApiGatewayServletRequest.buildUri(
-                requestEvent.getRequestContext().getHttp().getPath(),
-                requestEvent.getQueryStringParameters(),
-                Collections.emptyMap()
-            ),
+            // We'll set the URI in a moment once we have the character encoding available
+            null,
             parseMethod(() -> requestEvent.getRequestContext().getHttp().getMethod()),
             LOG,
             bodyBuilder
         );
+        this.uri(ApiGatewayServletRequest.buildUri(
+            requestEvent.getRequestContext().getHttp().getPath(),
+            Collections.emptyMap(),
+            buildMultiQueryParameters(requestEvent, getCharacterEncoding())
+        ));
         this.response = response;
+    }
+
+    private static Map<String, List<String>> buildMultiQueryParameters(
+        APIGatewayV2HTTPEvent requestEvent, Charset charset
+    ) {
+        // We're NOT going to use requestEvent.getQueryStringParameters() because AWS API Gateway V2
+        // provides a parameter value of e.g. "value1,value2,value3" when the "rawQueryString" is
+        // "parameter1=value1%2Cvalue2&parameter1=value3". In that case, we expect to have two
+        // values, not three, where the first value is "value1,value2" and the second value is
+        // "value3". However, if the "rawQueryString" is "parameter1=value1%2Cvalue2", the default
+        // Micronaut behavior is to treat that as two strings, using the comma as a delimiter.
+        String rawQueryString = requestEvent.getRawQueryString();
+        if (StringUtils.isEmpty(rawQueryString)) {
+            return Collections.emptyMap();
+        } else {
+            QueryStringDecoder decoder = new QueryStringDecoder(rawQueryString, charset, false);
+            Map<String, List<String>> params = decoder.parameters();
+            splitCommasIfSingleValue(params);
+            return params;
+        }
+    }
+
+    private static void splitCommasIfSingleValue(Map<String, List<String>> params) {
+        if (!CollectionUtils.isEmpty(params)) {
+            params.forEach((k, v) -> {
+                if (v != null && v.size() == 1) {
+                    String first = v.getFirst();
+                    // Allow commas to be treated as delimiters, which is the default behavior for Micronaut
+                    params.put(k, splitCommaSeparatedValue(first));
+                }
+            });
+        }
     }
 
     @Override
@@ -81,7 +129,49 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
     @Override
     public MutableHttpParameters getParameters() {
-        return getParameters(Collections::emptyMap, () -> transformCommaSeparatedValue(requestEvent.getQueryStringParameters()));
+        return getParameters(
+            Collections::emptyMap,
+            () -> buildMultiQueryParameters(getNativeRequest(), getCharacterEncoding())
+        );
+    }
+
+    /**
+     * @param queryStringParametersSupplier Query String parameters as a map with key string and value string
+     * @param multiQueryStringParametersSupplier Query String parameters as a map with key string and value list of strings
+     * @return Mutable HTTP parameters
+     */
+    @Override
+    @NonNull
+    protected MutableHttpParameters getParameters(
+        @NonNull Supplier<Map<String, String>> queryStringParametersSupplier,
+        @NonNull Supplier<Map<String, List<String>>> multiQueryStringParametersSupplier
+    ) {
+        MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
+
+        final Map<String, List<String>> parameters;
+        if (isFormSubmission(mediaType)) {
+            MapListOfStringAndMapStringMutableHttpParameters result = getParametersFromBody(null);
+
+            // With request bodies for "application/x-www-form-urlencoded", Micronaut's form bodies
+            // are "parameter bags", not multi-maps, so repeated keys are overwritten.
+            // Comma-splitting will occur on the single-value.
+            parameters = new LinkedHashMap<>();
+            for (String name : result.names()) {
+                // Only get the first value since that's what Micronaut will be doing when it receives the request
+                String singleValue = result.get(name);
+                if (singleValue != null) {
+                    parameters.put(name, Collections.singletonList(singleValue));
+                }
+            }
+            splitCommasIfSingleValue(parameters);
+        } else {
+            parameters = multiQueryStringParametersSupplier.get();
+        }
+
+        Map<CharSequence, List<String>> charSeqMap = parameters == null ?
+            Collections.emptyMap() :
+            parameters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return new SimpleHttpParameters(charSeqMap, conversionService);
     }
 
     @Override
