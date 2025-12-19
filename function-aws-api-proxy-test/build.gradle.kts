@@ -4,6 +4,13 @@ plugins {
 dependencies {
     api(mn.micronaut.http.server)
     api(projects.micronautFunctionAwsApiProxy)
+    testAnnotationProcessor(platform(libs.micronaut.security))
+    testAnnotationProcessor(mn.micronaut.inject.java)
+    testImplementation(libs.junit.jupiter.api)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mn.micronaut.jackson.databind)
+    testImplementation(platform(libs.micronaut.security))
+    testImplementation("io.micronaut.security:micronaut-security")
+    testImplementation("io.micronaut:micronaut-http-server-netty")
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
