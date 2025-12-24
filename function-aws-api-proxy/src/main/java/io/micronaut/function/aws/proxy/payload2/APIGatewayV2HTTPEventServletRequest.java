@@ -21,6 +21,7 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
@@ -99,21 +100,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
             return Collections.emptyMap();
         } else {
             QueryStringDecoder decoder = new QueryStringDecoder(rawQueryString, charset, false);
-            Map<String, List<String>> params = decoder.parameters();
-            splitCommasIfSingleValue(params);
-            return params;
-        }
-    }
-
-    private static void splitCommasIfSingleValue(Map<String, List<String>> params) {
-        if (!CollectionUtils.isEmpty(params)) {
-            params.forEach((k, v) -> {
-                if (v != null && v.size() == 1) {
-                    String first = v.getFirst();
-                    // Allow commas to be treated as delimiters, which is the default behavior for Micronaut
-                    params.put(k, splitCommaSeparatedValue(first));
-                }
-            });
+            return decoder.parameters();
         }
     }
 
@@ -152,18 +139,23 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         if (isFormSubmission(mediaType)) {
             MapListOfStringAndMapStringMutableHttpParameters result = getParametersFromBody(null);
 
-            // With request bodies for "application/x-www-form-urlencoded", Micronaut's form bodies
-            // are "parameter bags", not multi-maps, so repeated keys are overwritten.
-            // Comma-splitting will occur on the single-value.
             parameters = new LinkedHashMap<>();
             for (String name : result.names()) {
-                // Only get the first value since that's what Micronaut will be doing when it receives the request
-                String singleValue = result.get(name);
-                if (singleValue != null) {
-                    parameters.put(name, Collections.singletonList(singleValue));
+                List<String> values = result.getAll(name);
+
+                if (!values.isEmpty()) {
+                    // Unlike query parameters, Micronaut only takes one value per key in a body request
+                    String first = values.getFirst();
+                    // This mirrors Micronaut's default binding behavior:
+                    // If there is only one value, try to convert it to a List<String>.
+                    // This triggers the StringToIterableConverter, unless overridden, which splits on commas.
+                    List<String> converted = conversionService.convert(
+                        first,
+                        Argument.listOf(String.class)
+                    ).orElse(values);
+                    parameters.put(name, converted);
                 }
             }
-            splitCommasIfSingleValue(parameters);
         } else {
             parameters = multiQueryStringParametersSupplier.get();
         }

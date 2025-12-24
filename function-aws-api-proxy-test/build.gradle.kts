@@ -12,5 +12,6 @@ dependencies {
     testImplementation(platform(libs.micronaut.security))
     testImplementation("io.micronaut.security:micronaut-security")
     testImplementation("io.micronaut:micronaut-http-server-netty")
+    testImplementation(libs.micronaut.datajdbc)
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
