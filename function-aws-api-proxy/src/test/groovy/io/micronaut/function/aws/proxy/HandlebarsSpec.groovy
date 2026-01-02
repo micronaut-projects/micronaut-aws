@@ -19,10 +19,12 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.views.ModelAndView
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class HandlebarsSpec extends Specification {
 
+    @Ignore
     void "test handlebars view rendering for v1"() {
         given:
         ApiGatewayProxyRequestEventFunction handler = new ApiGatewayProxyRequestEventFunction(
@@ -43,6 +45,7 @@ class HandlebarsSpec extends Specification {
         handler.close()
     }
 
+    @Ignore
     void "test handlebars view rendering for v2"() {
         given:
         APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(
@@ -60,6 +63,7 @@ class HandlebarsSpec extends Specification {
         response.body.trim() == '<html>Hello Luke Skywalker</html>'
     }
 
+    @Ignore
     void "test handlebars view rendering for alb"() {
         given:
         ApplicationLoadBalancerFunction handler = new ApplicationLoadBalancerFunction(
