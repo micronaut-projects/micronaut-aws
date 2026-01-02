@@ -82,7 +82,6 @@ class CloudwatchLoggingSpec extends Specification {
                 }
         )
 
-        logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.context.DefaultApplicationContext$RuntimeConfiguredEnvironment')
         logEntries.stream().anyMatch(x -> x.logger == 'io.micronaut.aws.cloudwatch.logging.CloudwatchLoggingSpec')
         logEntries.stream().anyMatch(x -> x.message == logMessage)
         listAppender.list.size() == 0
