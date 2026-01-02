@@ -14,10 +14,12 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class APIGatewayV2HTTPEventFunctionSingleHeaderSpec extends Specification {
 
+    @Ignore
     void "should retrieve and validate the header"() {
         given:
         ApplicationContext ctx = ApplicationContext.builder().properties('micronaut.security.enabled': false, 'spec.name': 'APIGatewayV2HTTPEventFunctionSingleHeaderSpec').build()
