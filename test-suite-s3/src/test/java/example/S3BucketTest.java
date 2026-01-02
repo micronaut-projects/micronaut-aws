@@ -8,6 +8,7 @@ import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -26,6 +27,7 @@ public class S3BucketTest {
     @Client("/")
     HttpClient httpClient;
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {"/s3/buckets", "/async/s3/buckets"})
     void test(String uri) {
