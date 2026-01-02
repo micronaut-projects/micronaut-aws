@@ -14,7 +14,7 @@ dependencies {
     testImplementation(mn.micronaut.function.web)
     testImplementation(mnGroovy.micronaut.function.groovy)
     testImplementation(mnGroovy.micronaut.runtime.groovy)
-    testImplementation(platform(mnTestResources.boms.testcontainers))
+    testImplementation(platform(mnTest.boms.testcontainers))
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.localstack)
     testImplementation(libs.testcontainers.spock)
