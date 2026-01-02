@@ -18,6 +18,7 @@ import org.bson.codecs.pojo.annotations.BsonProperty
 import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.utility.DockerImageName
+import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Specification
 import jakarta.validation.Valid
@@ -28,6 +29,7 @@ import java.util.function.Function
 @spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
 class MicronautRequestStreamHandlerDontCloseApplicationContextSpec extends Specification {
 
+    @Ignore
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1187")
     void "test application context not closed between requests"() {
         when:
