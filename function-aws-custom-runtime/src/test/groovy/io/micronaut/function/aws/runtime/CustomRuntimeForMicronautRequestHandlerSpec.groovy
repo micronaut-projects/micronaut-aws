@@ -31,11 +31,13 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
 
         MockLambadaRuntimeApi lambadaRuntimeApi = embeddedServer.applicationContext.getBean(MockLambadaRuntimeApi)
 
+        String expected = '{"isbn":"XXX","name":"Building Microservices"}'.bytes.encodeBase64().toString()
+
         expect:
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            assert lambadaRuntimeApi.responses['123456'].body == '{"name":"Building Microservices","isbn":"XXX"}'.bytes.encodeBase64().toString()
+            assert expected == lambadaRuntimeApi.responses['123456'].body
         }
 
         cleanup:
