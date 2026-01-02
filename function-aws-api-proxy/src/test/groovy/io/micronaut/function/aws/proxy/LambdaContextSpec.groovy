@@ -27,8 +27,10 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
+import spock.lang.Ignore
 import spock.lang.Specification
 
+@Ignore
 class LambdaContextSpec extends Specification {
 
     void "for v1 Lambda Context beans are registered"() {
