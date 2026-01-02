@@ -119,4 +119,4 @@ gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 testcontainers = { module = "org.testcontainers:testcontainers" }
 testcontainers-localstack = { module = "org.testcontainers:localstack" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
-testcontainers-spock = { module = "org.testcontainers:spock" }
+testcontainers-spock = { module = "org.testcontainers:testcontainers-spock" }
