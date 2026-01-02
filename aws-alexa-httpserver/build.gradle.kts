@@ -18,3 +18,9 @@ dependencies {
     testImplementation(libs.alexa.ask.sdk.apache.client)
     testRuntimeOnly(libs.jcl.over.slf4j)
 }
+configurations.all {
+    resolutionStrategy {
+        force("com.fasterxml.jackson.core:jackson-core:2.15.0")
+        // first version patched https://ossindex.sonatype.org/component/pkg:maven/com.fasterxml.jackson.core/jackson-core
+    }
+}
