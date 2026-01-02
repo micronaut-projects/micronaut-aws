@@ -113,6 +113,6 @@ gradle-micronaut = { module = "io.micronaut.gradle:micronaut-gradle-plugin", ver
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 testcontainers = { module = "org.testcontainers:testcontainers" }
-testcontainers-localstack = { module = "org.testcontainers:localstack" }
+testcontainers-localstack = { module = "org.testcontainers:testcontainers-localstack" }
 testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter" }
 testcontainers-spock = { module = "org.testcontainers:testcontainers-spock" }
