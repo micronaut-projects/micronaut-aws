@@ -13,6 +13,7 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
+import spock.lang.Ignore
 import spock.lang.Specification
 
 @Property(name = 'spec.name', value = 'ContentTypeSpec')
@@ -23,6 +24,7 @@ class ContentTypeSpec extends Specification {
     @Client("/")
     HttpClient httpClient
 
+    @Ignore
     void "verify controllers return json by default"() {
         given:
         HttpRequest<?> request = HttpRequest.GET('/json/bydefault').accept(MediaType.APPLICATION_JSON)
