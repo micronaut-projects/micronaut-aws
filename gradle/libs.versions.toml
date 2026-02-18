@@ -1,5 +1,5 @@
 [versions]
-micronaut = "4.10.11"
+micronaut = "4.10.15"
 micronaut-docs = "3.0.0"
 micronaut-test = "4.10.2"
 groovy = "4.0.29"
