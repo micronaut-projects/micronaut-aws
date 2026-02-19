@@ -4,6 +4,7 @@ import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
+import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 @Property(name = "micronaut.http.client.read-timeout", value = "300")
-public class S3BucketTest {
+class S3BucketTest {
 
     @Inject
     @Client("/")
@@ -33,7 +34,8 @@ public class S3BucketTest {
 
         // create a new bucket
         HttpRequest createBucketRequest = HttpRequest.POST(uri + "/" + bucketName, "");
-        HttpResponse<Result> createBucketResponse = httpClient.toBlocking().exchange(createBucketRequest, Result.class);
+        BlockingHttpClient client = httpClient.toBlocking();
+        HttpResponse<Result> createBucketResponse = client.exchange(createBucketRequest, Result.class);
         Optional<Result> createBucketResult = createBucketResponse.getBody();
 
         assertTrue(createBucketResult.isPresent());
@@ -41,7 +43,7 @@ public class S3BucketTest {
         assertTrue(createBucketResult.get().getMessage().contains(bucketName));
 
         // list buckets
-        ListBucketsResult listBucketsResult = httpClient.toBlocking().retrieve(uri, ListBucketsResult.class);
+        ListBucketsResult listBucketsResult = client.retrieve(uri, ListBucketsResult.class);
 
         assertNotNull(listBucketsResult);
         assertEquals(String.valueOf(HttpStatus.OK.getCode()), listBucketsResult.getStatus());
@@ -51,7 +53,7 @@ public class S3BucketTest {
 
         // delete the bucket
         HttpRequest deleteBucketRequest = HttpRequest.DELETE(uri + "/" + bucketName, "");
-        HttpResponse<Result> deleteBucketResponse = httpClient.toBlocking().exchange(deleteBucketRequest, Result.class);
+        HttpResponse<Result> deleteBucketResponse = client.exchange(deleteBucketRequest, Result.class);
         Optional<Result> deleteBucketResult = deleteBucketResponse.getBody();
 
         assertTrue(deleteBucketResult.isPresent());
@@ -59,11 +61,10 @@ public class S3BucketTest {
         assertNull(deleteBucketResult.get().getMessage());
 
         // confirm the bucket deleted
-        listBucketsResult = httpClient.toBlocking().retrieve(uri, ListBucketsResult.class);
+        listBucketsResult = client.retrieve(uri, ListBucketsResult.class);
 
         assertNotNull(listBucketsResult);
         assertEquals(String.valueOf(HttpStatus.OK.getCode()), listBucketsResult.getStatus());
         assertNull(listBucketsResult.getBuckets());
     }
-
 }

@@ -65,7 +65,6 @@ configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-servlet")
     importMicronautCatalog("micronaut-security")
-    importMicronautCatalog("micronaut-test-resources")
     importMicronautCatalog("micronaut-views")
     importMicronautCatalog("micronaut-validation")
 }
