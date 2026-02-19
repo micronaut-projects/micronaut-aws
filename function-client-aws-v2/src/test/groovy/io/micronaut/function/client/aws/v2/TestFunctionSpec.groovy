@@ -48,7 +48,7 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
     @Shared
     private LocalStackContainer localStackContainer = new LocalStackContainer(DockerImageName
-            .parse("localstack/localstack:3.4.0"))
+            .parse("localstack/localstack:4.9.2"))
             .withServices(IAM, LAMBDA)
 
     @Inject
