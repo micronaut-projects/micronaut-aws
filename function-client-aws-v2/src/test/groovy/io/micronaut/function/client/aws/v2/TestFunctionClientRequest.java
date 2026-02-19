@@ -1,11 +1,15 @@
 package io.micronaut.function.client.aws.v2;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public class TestFunctionClientRequest {
+    @JsonProperty("aNumber")
     private int aNumber;
+    @JsonProperty("aString")
     private String aString;
+    @JsonProperty("aObject")
     private ComplexType aObject;
 
     public TestFunctionClientRequest() {
