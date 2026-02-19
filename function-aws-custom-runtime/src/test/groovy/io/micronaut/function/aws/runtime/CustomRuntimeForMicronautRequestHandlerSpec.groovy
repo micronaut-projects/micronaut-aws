@@ -16,6 +16,9 @@ import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
+
 class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
 
     void "test runtime API loop"() {
@@ -35,7 +38,8 @@ class CustomRuntimeForMicronautRequestHandlerSpec extends Specification {
         new PollingConditions(timeout: 5).eventually {
             assert lambadaRuntimeApi.responses
             assert lambadaRuntimeApi.responses['123456']
-            assert lambadaRuntimeApi.responses['123456'].body == '{"name":"Building Microservices","isbn":"XXX"}'.bytes.encodeBase64().toString()
+            String body = new String(Base64.decoder.decode(lambadaRuntimeApi.responses['123456'].body), StandardCharsets.UTF_8)
+            assert (body == '{"name":"Building Microservices","isbn":"XXX"}' || body == '{"isbn":"XXX","name":"Building Microservices"}')
         }
 
         cleanup:
