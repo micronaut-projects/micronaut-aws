@@ -4,7 +4,12 @@ plugins {
 }
 ossIndexAudit {
     excludeCompileOnly = true
+    excludeVulnerabilityIds = [
+            "CVE-2025-52999", // aws alexa ships with a vulnerable jackson 2.0 version.
+            "CVE-2024-47554", // aws alexa ships with a vulnerable commons-io version
+    ]
 }
+
 dependencies {
     testRuntimeOnly(mnTest.junit.platform.launcher)
 }
