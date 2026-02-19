@@ -10,6 +10,8 @@ graalvmNative {
     binaries {
         all {
             resources.autodetect()
+            buildArgs.add("-H:+SharedArenaSupport")
         }
+
     }
 }
