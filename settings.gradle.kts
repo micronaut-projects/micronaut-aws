@@ -41,6 +41,7 @@ include("function-client-aws-v2")
 
 include("test-suite-function-client-aws")
 include("test-suite")
+include("test-suite-utils")
 include("test-suite-aws-sdk-v2")
 include("test-suite-graal")
 include("test-suite-graal-logging")
@@ -64,7 +65,6 @@ configure<io.micronaut.build.MicronautBuildSettingsExtension> {
     importMicronautCatalog("micronaut-serde")
     importMicronautCatalog("micronaut-servlet")
     importMicronautCatalog("micronaut-security")
-    importMicronautCatalog("micronaut-test-resources")
     importMicronautCatalog("micronaut-views")
     importMicronautCatalog("micronaut-validation")
 }

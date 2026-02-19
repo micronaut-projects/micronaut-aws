@@ -1,8 +1,6 @@
 plugins {
     id("java-library")
     id("io.micronaut.build.internal.aws-tests-java")
-    id("io.micronaut.build.internal.aws-native-tests")
-    id("io.micronaut.build.internal.aws-tests-resources")
 }
 
 dependencies {
@@ -16,15 +14,8 @@ dependencies {
     implementation(mnValidation.micronaut.validation)
     implementation(mnSerde.micronaut.serde.jackson)
     implementation(mnLogging.logback.classic)
-
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mnTest.junit.jupiter.params)
-}
-
-micronaut {
-    importMicronautPlatform.set(false)
-    testResources {
-        additionalModules.add("localstack-s3")
-    }
+    testImplementation(projects.testSuiteUtils)
 }

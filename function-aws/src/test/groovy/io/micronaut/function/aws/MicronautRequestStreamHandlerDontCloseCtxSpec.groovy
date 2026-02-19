@@ -16,8 +16,7 @@ import jakarta.inject.Singleton
 import org.bson.codecs.pojo.annotations.BsonCreator
 import org.bson.codecs.pojo.annotations.BsonProperty
 import org.testcontainers.DockerClientFactory
-import org.testcontainers.containers.MongoDBContainer
-import org.testcontainers.utility.DockerImageName
+import io.micronaut.mongodb.testcontainers.MongoDb
 import spock.lang.Issue
 import spock.lang.Specification
 import jakarta.validation.Valid
@@ -26,10 +25,19 @@ import jakarta.validation.constraints.NotNull
 import java.util.function.Function
 
 @spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
-class MicronautRequestStreamHandlerDontCloseApplicationContextSpec extends Specification {
+class MicronautRequestStreamHandlerDontCloseCtxSpec extends Specification {
 
     @Issue("https://github.com/micronaut-projects/micronaut-aws/issues/1187")
     void "test application context not closed between requests"() {
+        given:
+        Handler handler = new MockHandler()
+
+        when:
+        handler.applicationContext.getBean(FruitRepository)
+
+        then:
+        noExceptionThrown()
+
         when:
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         handler.execute(createInputStream("I am Sergio."), outputStream)
@@ -43,50 +51,30 @@ class MicronautRequestStreamHandlerDontCloseApplicationContextSpec extends Speci
 
         then:
         "I am Sergio. My favourite fruit is Banana" == outputStream.toString()
-    }
 
-    private static Handler handler
-
-    private static MongoDBContainer mongoDBContainer
-
-    private static Map<String, Object> properties
-
-    def setupSpec() {
-        mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"))
-                .withExposedPorts(27017)
-
-        mongoDBContainer.start()
-
-        properties = new HashMap<>()
-        properties.put('spec.name', 'MicronautRequestStreamHandlerDontCloseApplicationContextSpec')
-        properties.put("db.name", "fruits");
-        properties.put("db.collection", "fruits")
-        properties.put("mongodb.uri", mongoDBContainer.getReplicaSetUrl())
-        handler = new MockHandler()
-    }
-
-    def cleanupSpec() {
-        handler?.getApplicationContext()?.close()
-        shutdownMongo()
-    }
-
-    static void shutdownMongo() {
-        mongoDBContainer?.stop()
+        cleanup:
+        handler.getApplicationContext().close()
+        handler.close()
+        MongoDb.close()
     }
 
     static class MockHandler extends Handler {
         @NonNull
         @Override
         protected ApplicationContextBuilder newApplicationContextBuilder() {
+            Map<String, Object> properties = new HashMap<>()
+            properties.put('spec.name', 'MicronautRequestStreamHandlerDontCloseApplicationContextSpec')
+            properties.put("db.name", "fruits");
+            properties.put("db.collection", "fruits")
+            properties.putAll(MongoDb.getProperties())
             return super.newApplicationContextBuilder().properties(properties)
         }
     }
 
-    private InputStream createInputStream(String message) {
+    private static InputStream createInputStream(String message) {
         String initialString = '{"message": "' + message + '"}'
         return new ByteArrayInputStream(initialString.bytes)
     }
-
 
     static class Handler extends MicronautRequestStreamHandler {
         @Override
@@ -136,7 +124,7 @@ class MicronautRequestStreamHandlerDontCloseApplicationContextSpec extends Speci
         private final MongoClient mongoClient
 
         MongoDbFruitRepository(MongoDbConfiguration mongoConf,
-                                      MongoClient mongoClient) {
+                               MongoClient mongoClient) {
             this.mongoConf = mongoConf
             this.mongoClient = mongoClient
         }

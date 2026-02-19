@@ -1,12 +1,12 @@
 package io.micronaut.function.client.aws.v2
 
 import io.micronaut.core.io.ResourceLoader
+import io.micronaut.localstack.testcontainers.Localstack
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import io.micronaut.test.support.TestPropertyProvider
 import jakarta.inject.Inject
-import org.testcontainers.containers.localstack.LocalStackContainer
+import org.testcontainers.localstack.LocalStackContainer
 import org.testcontainers.spock.Testcontainers
-import org.testcontainers.utility.DockerImageName
 import reactor.core.publisher.Mono
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
@@ -37,19 +37,11 @@ import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.IAM
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.LAMBDA
-
 @Testcontainers
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
     private static final String FUNCTION_NAME = "TEST_FUNCTION_NAME"
-
-    @Shared
-    private LocalStackContainer localStackContainer = new LocalStackContainer(DockerImageName
-            .parse("localstack/localstack:3.4.0"))
-            .withServices(IAM, LAMBDA)
 
     @Inject
     @Shared
@@ -61,12 +53,7 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
     @Override
     Map<String, String> getProperties() {
-        Map.of(
-                "aws.access-key-id", localStackContainer.getAccessKey(),
-                "aws.secret-key", localStackContainer.getSecretKey(),
-                "aws.region", localStackContainer.getRegion(),
-                "aws.services.lambda.endpoint-override", localStackContainer.getEndpointOverride(LAMBDA).toString()
-        ) as Map<String, String>
+        return Localstack.getProperties("iam", "lambda")
     }
 
     @Inject
@@ -151,12 +138,13 @@ class TestFunctionSpec extends Specification implements TestPropertyProvider {
     }
 
     private Role getLambdaRole() {
+        LocalStackContainer localStackContainer = Localstack.getLocalStackContainer("iam", "s3");
         def iamClient = IamClient.builder()
                 .region(Region.of(localStackContainer.getRegion()))
                 .credentialsProvider(AwsCredentialsProviderChain.of(
                         () -> AwsBasicCredentials.create(localStackContainer.getAccessKey(), localStackContainer.getSecretKey())
                 ))
-                .endpointOverride(localStackContainer.getEndpointOverride(IAM))
+                .endpointOverride(localStackContainer.getEndpoint())
                 .build()
         def roleName = "lambda-role";
         try {

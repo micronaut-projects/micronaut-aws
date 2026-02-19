@@ -1,14 +1,19 @@
 package io.micronaut.function.client.aws.v2;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.util.List;
 
 @Serdeable
 public class TestFunctionClientResponse {
+    @JsonProperty("aNumber")
     private int aNumber;
+    @JsonProperty("aString")
     private String aString;
+    @JsonProperty("aObject")
     private ComplexType aObject;
+    @JsonProperty("anArray")
     private List<ComplexType> anArray;
 
     public TestFunctionClientResponse() {

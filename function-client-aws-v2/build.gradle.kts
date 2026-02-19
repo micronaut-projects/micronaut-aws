@@ -19,6 +19,7 @@ dependencies {
     testImplementation(libs.testcontainers.localstack)
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.awssdk.iam)
+    testImplementation(projects.testSuiteUtils)
 }
 micronautBuild {
     // new module, so no binary check
