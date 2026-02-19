@@ -13,6 +13,7 @@ io.micronaut.aws.alexa.ssml
 io.micronaut.aws.apigateway
 io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
+io.micronaut.aws.info
 io.micronaut.aws.lambda.events
 io.micronaut.aws.lambda.events.serde
 io.micronaut.aws.lambda.events.tests
@@ -53,3 +54,5 @@ io.micronaut.function.aws.test
 io.micronaut.function.aws.test.annotation
 io.micronaut.function.client.aws
 io.micronaut.function.client.aws.v2
+io.micronaut.localstack.testcontainers
+io.micronaut.mongodb.testcontainers
