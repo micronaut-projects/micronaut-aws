@@ -1,17 +1,22 @@
 package example;
 
 import io.micronaut.context.annotation.Property;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.localstack.testcontainers.Localstack;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.micronaut.test.support.TestPropertyProvider;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
 @Property(name = "micronaut.http.client.read-timeout", value = "300")
-class S3BucketTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class S3BucketTest implements TestPropertyProvider {
 
     @Inject
     @Client("/")
@@ -66,5 +72,10 @@ class S3BucketTest {
         assertNotNull(listBucketsResult);
         assertEquals(String.valueOf(HttpStatus.OK.getCode()), listBucketsResult.getStatus());
         assertNull(listBucketsResult.getBuckets());
+    }
+
+    @Override
+    public @NonNull Map<String, String> getProperties() {
+        return Localstack.getProperties();
     }
 }
