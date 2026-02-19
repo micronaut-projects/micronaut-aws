@@ -41,6 +41,7 @@ include("function-client-aws-v2")
 
 include("test-suite-function-client-aws")
 include("test-suite")
+include("test-suite-utils")
 include("test-suite-aws-sdk-v2")
 include("test-suite-graal")
 include("test-suite-graal-logging")
