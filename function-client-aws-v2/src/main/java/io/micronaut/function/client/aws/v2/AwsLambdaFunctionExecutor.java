@@ -25,7 +25,7 @@ import io.micronaut.function.client.FunctionDefinition;
 import io.micronaut.function.client.FunctionInvoker;
 import io.micronaut.function.client.FunctionInvokerChooser;
 import io.micronaut.function.client.exceptions.FunctionExecutionException;
-import io.micronaut.json.codec.JsonMediaTypeCodec;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.scheduling.TaskExecutors;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
@@ -37,7 +37,7 @@ import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
-import java.nio.ByteBuffer;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
@@ -58,7 +58,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private final LambdaClient syncClient;
     private final LambdaAsyncClient asyncClient;
     private final ByteBufferFactory<?, ?> byteBufferFactory;
-    private final JsonMediaTypeCodec mediaTypeCodec;
+    private final JsonMapper jsonMapper;
     private final ExecutorService executor;
     private final ConversionService conversionService;
 
@@ -68,7 +68,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
      * @param syncClient Lambda Sync Client
      * @param asyncClient Lambda Async Client
      * @param byteBufferFactory  byteBufferFactory
-     * @param mediaTypeCodec JsonMediaTypeCodec
+     * @param jsonMapper JsonMapper
      * @param executor blocking executor
      * @param conversionService ConversionService
      */
@@ -76,13 +76,13 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
             LambdaClient syncClient,
             LambdaAsyncClient asyncClient,
             ByteBufferFactory<?, ?> byteBufferFactory,
-            JsonMediaTypeCodec mediaTypeCodec,
+            JsonMapper jsonMapper,
             @Named(TaskExecutors.BLOCKING) ExecutorService executor,
             ConversionService conversionService) {
         this.syncClient = syncClient;
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
-        this.mediaTypeCodec = mediaTypeCodec;
+        this.jsonMapper = jsonMapper;
         this.executor = executor;
         this.conversionService = conversionService;
     }
@@ -94,7 +94,7 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         }
 
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
-        SdkBytes sdkBytes = encodeInput(input);
+        SdkBytes sdkBytes = encodeInput(definition, input);
         AwsInvokeRequestDefinition awsInvokeRequestDefinition = (AwsInvokeRequestDefinition) definition;
         InvokeRequest invokeRequest = createInvokeRequest(awsInvokeRequestDefinition, sdkBytes);
 
@@ -133,13 +133,24 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         }
         io.micronaut.core.io.buffer.ByteBuffer<?> byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
 
-        return mediaTypeCodec.decode(outputType, byteBuffer);
+        if (byteBuffer.readableBytes() == 0) {
+            return null;
+        }
+        try {
+            return jsonMapper.readValue(byteBuffer.toByteArray(), outputType);
+        } catch (IOException e) {
+            throw new FunctionExecutionException("Error decoding AWS Lambda [" + definition.getName() + "] response body: " + e.getMessage(), e);
+        }
     }
 
-    private SdkBytes encodeInput(I input) {
+    private SdkBytes encodeInput(FunctionDefinition definition, I input) {
         if (input != null) {
-            ByteBuffer nioBuffer = mediaTypeCodec.encode(input, byteBufferFactory).asNioBuffer();
-            return SdkBytes.fromByteBuffer(nioBuffer);
+            try {
+                byte[] bytes = jsonMapper.writeValueAsBytes(input);
+                return SdkBytes.fromByteArray(bytes);
+            } catch (IOException e) {
+                throw new FunctionExecutionException("Error encoding AWS Lambda [" + definition.getName() + "] request body: " + e.getMessage(), e);
+            }
         }
         return null;
     }

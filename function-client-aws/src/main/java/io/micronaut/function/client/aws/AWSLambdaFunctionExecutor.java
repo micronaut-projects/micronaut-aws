@@ -28,12 +28,13 @@ import io.micronaut.function.client.FunctionDefinition;
 import io.micronaut.function.client.FunctionInvoker;
 import io.micronaut.function.client.FunctionInvokerChooser;
 import io.micronaut.function.client.exceptions.FunctionExecutionException;
-import io.micronaut.jackson.codec.JsonMediaTypeCodec;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.scheduling.TaskExecutors;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -53,25 +54,25 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
     private static final int STATUS_CODE_ERROR = 300;
     private final AWSLambdaAsync asyncClient;
     private final ByteBufferFactory byteBufferFactory;
-    private final JsonMediaTypeCodec jsonMediaTypeCodec;
+    private final JsonMapper jsonMapper;
     private final ExecutorService ioExecutor;
 
     /**
      * Constructor.
      * @param asyncClient asyncClient
      * @param byteBufferFactory byteBufferFactory
-     * @param jsonMediaTypeCodec jsonMediaTypeCodec
+     * @param jsonMapper jsonMapper
      * @param ioExecutor ioExecutor
      */
     protected AWSLambdaFunctionExecutor(
         AWSLambdaAsync asyncClient,
         ByteBufferFactory byteBufferFactory,
-        JsonMediaTypeCodec jsonMediaTypeCodec,
+        JsonMapper jsonMapper,
         @Named(TaskExecutors.IO) ExecutorService ioExecutor) {
 
         this.asyncClient = asyncClient;
         this.byteBufferFactory = byteBufferFactory;
-        this.jsonMediaTypeCodec = jsonMediaTypeCodec;
+        this.jsonMapper = jsonMapper;
         this.ioExecutor = ioExecutor;
     }
 
@@ -84,7 +85,12 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         boolean isReactiveType = Publishers.isConvertibleToPublisher(outputType.getType());
         if (isReactiveType) {
             final Mono<Object> invokeFlowable = Mono.<InvokeResult>create(emitter -> {
-                encodeInput(input, invokeRequest);
+                try {
+                    encodeInput(definition, input, invokeRequest);
+                } catch (FunctionExecutionException e) {
+                    emitter.error(e);
+                    return;
+                }
 
                 asyncClient.invokeAsync(invokeRequest, new AsyncHandler<InvokeRequest, InvokeResult>() {
                     @Override
@@ -98,15 +104,14 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                     }
                 });
             })
-                    .map(invokeResult ->
-                            decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
+                    .map(invokeResult -> decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
                     .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
                     .subscribeOn(Schedulers.fromExecutor(ioExecutor));
 
             return ConversionService.SHARED.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
 
         } else {
-            encodeInput(input, invokeRequest);
+            encodeInput(definition, input, invokeRequest);
             InvokeResult invokeResult = asyncClient.invoke(invokeRequest);
             try {
                 return (O) decodeResult(definition, outputType, invokeResult);
@@ -123,13 +128,25 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
         }
         io.micronaut.core.io.buffer.ByteBuffer byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.getPayload());
 
-        return jsonMediaTypeCodec.decode(outputType, byteBuffer);
+        if (byteBuffer.readableBytes() == 0) {
+            return null;
+        }
+        try {
+            return jsonMapper.readValue(byteBuffer.toByteArray(), outputType);
+        } catch (IOException e) {
+            throw new FunctionExecutionException("Error decoding AWS Lambda [" + definition.getName() + "] response body: " + e.getMessage(), e);
+        }
     }
 
-    private void encodeInput(I input, InvokeRequest invokeRequest) {
+    private void encodeInput(FunctionDefinition definition, I input, InvokeRequest invokeRequest) {
         if (input != null) {
-            ByteBuffer byteBuffer = jsonMediaTypeCodec.encode(input, byteBufferFactory).asNioBuffer();
-            invokeRequest.setPayload(byteBuffer);
+            try {
+                byte[] bytes = jsonMapper.writeValueAsBytes(input);
+                ByteBuffer byteBuffer = byteBufferFactory.wrap(bytes).asNioBuffer();
+                invokeRequest.setPayload(byteBuffer);
+            } catch (IOException e) {
+                throw new FunctionExecutionException("Error encoding AWS Lambda [" + definition.getName() + "] request body: " + e.getMessage(), e);
+            }
         }
     }
 
