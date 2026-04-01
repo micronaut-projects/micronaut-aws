@@ -26,10 +26,20 @@ import java.util.concurrent.CompletableFuture
 
 class AWSParameterStorePropertySourceImporterSpec extends Specification {
 
-    static {
+    private static String previousAwsRegion
+
+    def setupSpec() {
+        previousAwsRegion = System.getProperty('aws.region')
         System.setProperty('aws.region', 'us-west-1')
     }
 
+    def cleanupSpec() {
+        if (previousAwsRegion == null) {
+            System.clearProperty('aws.region')
+        } else {
+            System.setProperty('aws.region', previousAwsRegion)
+        }
+    }
     void "parameter store importer supports scalar and structured declarations"() {
         given:
         ApplicationContext context = ApplicationContext.run([

@@ -123,7 +123,14 @@ public final class SecretsManagerPropertySourceImporter extends RetryablePropert
         if (path == null || path.isBlank()) {
             throw new ConfigurationException("AWS Secrets Manager imports require a non-blank path");
         }
-        return path;
+        String normalized = path.trim();
+        if (!normalized.startsWith("/")) {
+            normalized = "/" + normalized;
+        }
+        if (normalized.length() > 1 && normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized;
     }
 
     private static Map<String, Object> providerPropertiesFromConnectionString(ConnectionString connectionString) {

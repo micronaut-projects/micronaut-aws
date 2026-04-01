@@ -121,7 +121,14 @@ public final class ParameterStorePropertySourceImporter extends RetryablePropert
         if (path == null || path.isBlank()) {
             throw new ConfigurationException("AWS Parameter Store imports require a non-blank path");
         }
-        return path;
+        String normalized = path.trim();
+        if (!normalized.startsWith("/")) {
+            normalized = "/" + normalized;
+        }
+        if (normalized.length() > 1 && normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized;
     }
 
     private static Map<String, Object> providerPropertiesFromConnectionString(ConnectionString connectionString) {
@@ -222,12 +229,11 @@ public final class ParameterStorePropertySourceImporter extends RetryablePropert
                                              List<Parameter> parameters,
                                              String nextToken) throws Exception {
             GetParametersByPathResponse response = getHierarchyPage(client, configuration, path, nextToken).get();
-            List<Parameter> accumulated = new ArrayList<>(parameters);
-            accumulated.addAll(response.parameters());
+            parameters.addAll(response.parameters());
             if (response.nextToken() != null) {
-                return getHierarchy(client, configuration, path, accumulated, response.nextToken());
+                return getHierarchy(client, configuration, path, parameters, response.nextToken());
             }
-            return accumulated;
+            return parameters;
         }
 
         private CompletableFuture<GetParametersByPathResponse> getHierarchyPage(SsmAsyncClient client,
