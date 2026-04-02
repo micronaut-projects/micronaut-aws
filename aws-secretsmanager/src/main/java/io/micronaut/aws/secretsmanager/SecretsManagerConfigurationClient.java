@@ -17,6 +17,7 @@ package io.micronaut.aws.secretsmanager;
 
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfiguration;
 import io.micronaut.aws.distributedconfiguration.AwsDistributedConfigurationClient;
+import io.micronaut.aws.distributedconfiguration.imports.LegacyConfigClientDeprecationLogger;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.NonNull;
@@ -77,6 +78,12 @@ public class SecretsManagerConfigurationClient extends AwsDistributedConfigurati
     @NonNull
     protected String getPropertySourceName() {
         return "awssecretsmanager";
+    }
+
+    @Override
+    public org.reactivestreams.Publisher<io.micronaut.context.env.PropertySource> getPropertySources(io.micronaut.context.env.Environment environment) {
+        LegacyConfigClientDeprecationLogger.warn(org.slf4j.LoggerFactory.getLogger(SecretsManagerConfigurationClient.class), "secretsmanager", "Legacy bootstrap/context AWS Secrets Manager configuration is deprecated. Use micronaut.config.import=secretsmanager:/... instead.");
+        return super.getPropertySources(environment);
     }
 
     @Override
