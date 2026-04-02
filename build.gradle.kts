@@ -4,6 +4,20 @@ plugins {
 }
 
 repositories {
+    mavenLocal {
+        content {
+            includeGroup("io.micronaut")
+        }
+    }
+    maven("https://central.sonatype.com/repository/maven-snapshots/") {
+        name = "Central Portal Snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+        content {
+            includeGroupByRegex("io\\.micronaut(\\..+)?")
+        }
+    }
     mavenCentral()
 }
 configurations.all {

@@ -1,12 +1,46 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        mavenLocal {
+            content {
+                includeGroup("io.micronaut")
+            }
+        }
+        maven("https://central.sonatype.com/repository/maven-snapshots/") {
+            name = "Central Portal Snapshots"
+            mavenContent {
+                snapshotsOnly()
+            }
+            content {
+                includeGroupByRegex("io\\.micronaut(\\..+)?")
+            }
+        }
         mavenCentral()
     }
 }
 
 plugins {
     id("io.micronaut.build.shared.settings") version "8.0.0-M17"
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal {
+            content {
+                includeGroup("io.micronaut")
+            }
+        }
+        maven("https://central.sonatype.com/repository/maven-snapshots/") {
+            name = "Central Portal Snapshots"
+            mavenContent {
+                snapshotsOnly()
+            }
+            content {
+                includeGroupByRegex("io\\.micronaut(\\..+)?")
+            }
+        }
+        mavenCentral()
+    }
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
