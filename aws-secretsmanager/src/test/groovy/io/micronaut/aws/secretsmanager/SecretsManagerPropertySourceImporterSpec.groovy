@@ -41,7 +41,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         ]))
 
         then:
-        scalar.declaration().path() == 'config/myapp_dev'
+        scalar.declaration().path() == '/config/myapp_dev'
         scalar.declaration().providerProperties()['aws.access-key-id'] == 'AKIA123'
         scalar.declaration().providerProperties()['aws.secret-access-key'] == 'SECRET456'
         scalar.declaration().providerProperties()['aws.region'] == 'eu-west-1'

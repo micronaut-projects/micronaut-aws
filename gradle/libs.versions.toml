@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.0.0-SNAPSHOT"
+micronaut = "5.0.0-M20"
 micronaut-test = "5.0.0-M6"
 
 bouncycastle = '1.70'
