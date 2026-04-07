@@ -43,11 +43,11 @@ For connection-string declarations, use the user-info portion for credentials an
 micronaut:
   config:
     import:
-      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@/config/application?aws.region=eu-west-1&use-secure-parameters=true"
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@/config/application?region=eu-west-1&use-secure-parameters=true"
       - "secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@/config/myapp?aws.region=eu-west-1"
 ----
 
-For structured declarations, use the same documented Micronaut AWS credential keys (`aws.access-key-id`, `aws.secret-access-key`, `aws.secret-key`, `aws.session-token`, `aws.region`). Parameter Store also supports `root-hierarchy-path`, `use-secure-parameters`, and `search-active-environments` in the map form.
+For structured declarations, use the same documented Micronaut AWS credential keys (`access-key-id` / `aws.access-key-id`, `secret-access-key` / `aws.secret-access-key`, `secret-key` / `aws.secret-key`, `session-token` / `aws.session-token`, `region` / `aws.region`). Parameter Store also supports `root-hierarchy-path`, `use-secure-parameters`, and `search-active-environments` in the map form.
 
 Parameter Store imports also support Micronaut's standard retry declaration options. You can set them either as query parameters on the connection string or as keys in the structured map declaration.
 
@@ -56,25 +56,45 @@ Parameter Store imports also support Micronaut's standard retry declaration opti
 |===
 | Query parameter / map key | Description | Example
 
+| `access-key-id`
+| AWS access key ID query parameter alias. In connection strings, this is normally supplied as the username portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`, but the alias is also accepted.
+| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1`
+
 | `aws.access-key-id`
-| AWS access key ID. In connection strings, this is normally supplied as the username portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`.
-| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?aws.region=eu-west-1`
+| Canonical Micronaut AWS property key for structured map declarations.
+| `aws.access-key-id: my-access-key`
+
+| `secret-access-key`
+| AWS secret access key query parameter alias. In connection strings, this is normally supplied as the password portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`, but the alias is also accepted.
+| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1`
 
 | `aws.secret-access-key`
-| AWS secret access key. In connection strings, this is normally supplied as the password portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`.
-| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?aws.region=eu-west-1`
+| Canonical Micronaut AWS property key for structured map declarations.
+| `aws.secret-access-key: my-secret-key`
+
+| `secret-key`
+| Unprefixed alias accepted in connection strings and structured declarations.
+| `parameterstore:/config/application?secret-key=my-secret-key`
 
 | `aws.secret-key`
-| Alternate Micronaut AWS secret-key property supported in structured map declarations.
+| Canonical Micronaut AWS property key supported in structured map declarations.
 | `aws.secret-key: my-secret-key`
 
+| `session-token`
+| Optional AWS session token alias for connection strings.
+| `parameterstore:/config/application?session-token=token123`
+
 | `aws.session-token`
-| Optional AWS session token.
-| `parameterstore:/config/application?aws.session-token=token123`
+| Canonical Micronaut AWS property key supported in structured map declarations.
+| `aws.session-token: token123`
+
+| `region`
+| Preferred connection-string query parameter for AWS region.
+| `parameterstore:/config/application?region=eu-west-1`
 
 | `aws.region`
-| AWS region used by the importer-owned client context.
-| `parameterstore:/config/application?aws.region=eu-west-1`
+| Canonical Micronaut AWS property key supported in structured map declarations.
+| `aws.region: eu-west-1`
 
 | `root-hierarchy-path`
 | Overrides `aws.client.system-manager.parameterstore.root-hierarchy-path` in structured or query-bound configuration.

@@ -34,8 +34,11 @@ import java.util.concurrent.CompletableFuture;
  *
  * <p>Supported credentials/configuration options may be supplied either in the connection string or the
  * structured map declaration. User-info in the connection string maps to `aws.access-key-id` and
- * `aws.secret-access-key`. Supported option keys are `aws.access-key-id`, `aws.secret-access-key`,
- * `aws.secret-key`, `aws.session-token`, `aws.region`, `root-hierarchy-path`, `use-secure-parameters`,
+ * `aws.secret-access-key`. Connection-string query parameters accept both prefixed and unprefixed aliases
+ * for AWS credentials and region (for example `region` or `aws.region`). Supported option keys are
+ * `aws.access-key-id` / `access-key-id`, `aws.secret-access-key` / `secret-access-key`,
+ * `aws.secret-key` / `secret-key`, `aws.session-token` / `session-token`, `aws.region` / `region`,
+ * `root-hierarchy-path`, `use-secure-parameters`,
  * `search-active-environments`, `retry-attempts`, `retry-count`, `retry-delay`, `retry-max-delay`,
  * `retry-multiplier`, and `retry-jitter`.</p>
  *
@@ -156,7 +159,11 @@ public final class ParameterStorePropertySourceImporter extends RetryablePropert
             String key = entry.getKey();
             String value = entry.getValue();
             switch (key) {
-                case "aws.access-key-id", "aws.secret-access-key", "aws.secret-key", "aws.session-token", "aws.region" -> properties.put(key, value);
+                case "aws.access-key-id", "access-key-id" -> properties.put("aws.access-key-id", value);
+                case "aws.secret-access-key", "secret-access-key" -> properties.put("aws.secret-access-key", value);
+                case "aws.secret-key", "secret-key" -> properties.put("aws.secret-key", value);
+                case "aws.session-token", "session-token" -> properties.put("aws.session-token", value);
+                case "aws.region", "region" -> properties.put("aws.region", value);
                 case "root-hierarchy-path" -> properties.put(AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".root-hierarchy-path", value);
                 case "use-secure-parameters" -> properties.put(AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".use-secure-parameters", value);
                 case "search-active-environments" -> properties.put(AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".search-active-environments", value);

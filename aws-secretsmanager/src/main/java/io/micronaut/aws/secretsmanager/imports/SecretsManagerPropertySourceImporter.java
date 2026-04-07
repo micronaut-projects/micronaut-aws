@@ -32,8 +32,10 @@ import java.util.Optional;
  *
  * <p>Supported credentials/configuration options may be supplied either in the connection string or the
  * structured map declaration. User-info in the connection string maps to `aws.access-key-id` and
- * `aws.secret-access-key`. Supported option keys are `aws.access-key-id`, `aws.secret-access-key`,
- * `aws.secret-key`, `aws.session-token`, `aws.region`, and repeated `secret` / `prefix` pairs in the structured
+ * `aws.secret-access-key`. Connection-string query parameters accept both prefixed and unprefixed aliases
+ * for AWS credentials and region (for example `region` or `aws.region`). Supported option keys are
+ * `aws.access-key-id` / `access-key-id`, `aws.secret-access-key` / `secret-access-key`,
+ * `aws.secret-key` / `secret-key`, `aws.session-token` / `session-token`, `aws.region` / `region`, and repeated `secret` / `prefix` pairs in the structured
  * map form via `secrets` entries. Standard retry settings are also supported with `retry-attempts`,
  * `retry-count`, `retry-delay`, `retry-max-delay`, `retry-multiplier`, and `retry-jitter`.</p>
  *
@@ -156,7 +158,11 @@ public final class SecretsManagerPropertySourceImporter extends RetryablePropert
             String key = entry.getKey();
             String value = entry.getValue();
             switch (key) {
-                case "aws.access-key-id", "aws.secret-access-key", "aws.secret-key", "aws.session-token", "aws.region" -> properties.put(key, value);
+                case "aws.access-key-id", "access-key-id" -> properties.put("aws.access-key-id", value);
+                case "aws.secret-access-key", "secret-access-key" -> properties.put("aws.secret-access-key", value);
+                case "aws.secret-key", "secret-key" -> properties.put("aws.secret-key", value);
+                case "aws.session-token", "session-token" -> properties.put("aws.session-token", value);
+                case "aws.region", "region" -> properties.put("aws.region", value);
                 case RETRY_ATTEMPTS, RETRY_COUNT, RETRY_DELAY, RETRY_MAX_DELAY, RETRY_MULTIPLIER, RETRY_JITTER -> {
                     // Retry settings are consumed by the retryable base class.
                 }
