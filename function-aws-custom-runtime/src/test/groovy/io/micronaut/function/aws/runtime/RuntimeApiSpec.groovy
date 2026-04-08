@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import io.micronaut.context.ApplicationContext
+import io.micronaut.context.ApplicationContextBuilder
 import io.micronaut.context.BeanProvider
 import io.micronaut.context.annotation.Any
 import io.micronaut.context.annotation.Requires
@@ -61,6 +62,12 @@ class RuntimeApiSpec extends Specification {
             if (name == ReservedRuntimeEnvironmentVariables.AWS_LAMBDA_RUNTIME_API) {
                 return serverUrl
             }
+        }
+
+        @Override
+        ApplicationContextBuilder createApplicationContextBuilderWithArgs(String... args) {
+            return super.createApplicationContextBuilderWithArgs(args)
+                .properties('micronaut.propagation': 'thread-local')
         }
     }
 
