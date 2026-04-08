@@ -1,6 +1,7 @@
 package io.micronaut.aws.lambda.events.serde.tests;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.aws.proxy.MockLambdaContext;
 import io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction;
 import io.micronaut.http.HttpMethod;
@@ -8,6 +9,8 @@ import io.micronaut.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,7 +20,11 @@ class Issue2056Test {
 
     @BeforeEach
     void setupSpec() {
-        handler = new ApiGatewayProxyRequestEventFunction();
+        handler = new ApiGatewayProxyRequestEventFunction(
+            ApplicationContext.builder()
+                .properties(Map.of("micronaut.propagation", "thread-local"))
+                .build()
+        );
     }
 
     @AfterEach
