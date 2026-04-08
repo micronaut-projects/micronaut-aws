@@ -31,7 +31,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         SecretsManagerPropertySourceImporter importer = new SecretsManagerPropertySourceImporter()
 
         when:
-        def scalar = importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('secretsmanager://AKIA123:SECRET456@localhost/config/myapp_dev?aws.region=eu-west-1'))
+        def scalar = importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('aws-secretsmanager://AKIA123:SECRET456@localhost/config/myapp_dev?aws.region=eu-west-1'))
         def structured = importer.newImportDeclaration(io.micronaut.core.convert.value.ConvertibleValues.of([
             path: '/config/myapp_dev',
             'aws.access-key-id': 'AKIA123',
@@ -67,7 +67,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         thrown(ConfigurationException)
 
         when:
-        importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('secretsmanager:///config/myapp_dev?foo=bar'))
+        importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('aws-secretsmanager:///config/myapp_dev?foo=bar'))
 
         then:
         thrown(ConfigurationException)
@@ -75,6 +75,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         cleanup:
         context.close()
     }
+
 
     void "secrets manager importer applies standard retry declarations"() {
         given:
@@ -99,7 +100,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         )
 
         when:
-        def declaration = importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('secretsmanager:///config/myapp_dev?retry-attempts=3&retry-delay=25ms'))
+        def declaration = importer.newImportDeclaration(io.micronaut.core.util.ConnectionString.parse('aws-secretsmanager:///config/myapp_dev?retry-attempts=3&retry-delay=25ms'))
         Optional<PropertySource> imported = importer.importPropertySource(new TestImportContext(context.environment, declaration))
 
         then:
@@ -226,7 +227,7 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
 
         @Override
         io.micronaut.core.util.ConnectionString connectionString() {
-            io.micronaut.core.util.ConnectionString.parse("secretsmanager://${declaration.declaration().path()}")
+            io.micronaut.core.util.ConnectionString.parse("aws-secretsmanager://${declaration.declaration().path()}")
         }
 
         @Override

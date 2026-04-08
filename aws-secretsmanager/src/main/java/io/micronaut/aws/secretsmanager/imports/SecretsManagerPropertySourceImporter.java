@@ -88,7 +88,7 @@ public final class SecretsManagerPropertySourceImporter extends RetryablePropert
 
     @Override
     public String getProvider() {
-        return "secretsmanager";
+        return "aws-secretsmanager";
     }
 
     @Override
