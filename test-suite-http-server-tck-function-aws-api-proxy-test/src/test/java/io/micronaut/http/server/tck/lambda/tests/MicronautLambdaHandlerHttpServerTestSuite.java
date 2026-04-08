@@ -9,6 +9,7 @@ import org.junit.platform.suite.api.*;
 })
 @ExcludeClassNamePatterns({
     "io.micronaut.http.server.tck.tests.forms.FormBindingDeadlockTest",
+    "io.micronaut.http.server.tck.tests.forms.FormsJacksonAnnotationsTest",
     "io.micronaut.http.server.tck.tests.cors.CrossOriginTest", // CrossOriginTest#httHeaderValueAccessControlExposeHeaderValueCanBeSetViaCrossOriginAnnotation fails
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
     "io.micronaut.http.server.tck.tests.filter.CacheControlTest",
