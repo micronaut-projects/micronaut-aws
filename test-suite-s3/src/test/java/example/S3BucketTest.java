@@ -13,7 +13,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.micronaut.test.support.TestPropertyProvider;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest
-@EnabledIfSystemProperty(named = "test.docker.available", matches = "true")
 @Property(name = "micronaut.http.client.read-timeout", value = "300")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class S3BucketTest implements TestPropertyProvider {
