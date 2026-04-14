@@ -29,6 +29,7 @@ import software.amazon.awssdk.services.lambda.model.GetFunctionConfigurationRequ
 import software.amazon.awssdk.services.lambda.model.Runtime
 import software.amazon.awssdk.services.lambda.model.GetFunctionRequest
 import software.amazon.awssdk.services.lambda.model.LambdaRequest
+import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -38,6 +39,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 @Testcontainers
+@IgnoreIf({ !Boolean.getBoolean("test.docker.available") })
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {
 
