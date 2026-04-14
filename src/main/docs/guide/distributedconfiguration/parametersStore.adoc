@@ -43,9 +43,11 @@ For connection-string declarations, use the user-info portion for credentials an
 micronaut:
   config:
     import:
-      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@/config/application?region=eu-west-1&use-secure-parameters=true"
-      - "aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@/config/myapp?aws.region=eu-west-1"
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&use-secure-parameters=true"
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&search-active-environments=true"
 ----
+
+The authority portion is ignored by the importer. `localhost` is only shown to make credential-bearing examples syntactically valid.
 
 For structured declarations, use the same documented Micronaut AWS credential keys (`access-key-id` / `aws.access-key-id`, `secret-access-key` / `aws.secret-access-key`, `secret-key` / `aws.secret-key`, `session-token` / `aws.session-token`, `region` / `aws.region`). Parameter Store also supports `root-hierarchy-path`, `use-secure-parameters`, and `search-active-environments` in the map form.
 

@@ -4,6 +4,8 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.Environment
 import spock.lang.Specification
 
+import java.util.concurrent.TimeUnit
+
 class SecretsManagerDeprecationAndCoexistenceSpec extends Specification {
 
     void "legacy secrets manager still resolves with configured grouped prefixes"() {
@@ -56,7 +58,7 @@ class SecretsManagerDeprecationAndCoexistenceSpec extends Specification {
                 latch.countDown()
             }
         })
-        latch.await()
+        assert latch.await(5, TimeUnit.SECONDS): 'Timed out waiting for secrets manager property sources'
         if (error.get() != null) {
             throw error.get()
         }

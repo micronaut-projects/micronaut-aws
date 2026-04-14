@@ -55,6 +55,35 @@ class SecretsManagerPropertySourceImporterSpec extends Specification {
         context.close()
     }
 
+    void "secrets manager importer accepts documented structured aliases"() {
+        given:
+        ApplicationContext context = ApplicationContext.run(['spec.name': 'SecretsManagerPropertySourceImporterSpec'])
+        SecretsManagerPropertySourceImporter importer = new SecretsManagerPropertySourceImporter()
+
+        when:
+        def structured = importer.newImportDeclaration(io.micronaut.core.convert.value.ConvertibleValues.of([
+            path: 'config/myapp_dev',
+            'access-key-id': 'AKIA123',
+            'secret-access-key': 'SECRET456',
+            'secret-key': 'SECRET789',
+            'session-token': 'TOKEN123',
+            region: 'eu-west-1',
+            secrets: [[ 'secret-name': 'oauthcompanyauthserver', prefix: 'datasources.default' ]]
+        ]))
+
+        then:
+        structured.declaration().path() == '/config/myapp_dev'
+        structured.declaration().providerProperties()['aws.access-key-id'] == 'AKIA123'
+        structured.declaration().providerProperties()['aws.secret-access-key'] == 'SECRET456'
+        structured.declaration().providerProperties()['aws.secret-key'] == 'SECRET789'
+        structured.declaration().providerProperties()['aws.session-token'] == 'TOKEN123'
+        structured.declaration().providerProperties()['aws.region'] == 'eu-west-1'
+        structured.declaration().providerProperties()['aws.secretsmanager.secrets'] instanceof List
+
+        cleanup:
+        context.close()
+    }
+
     void "secrets manager importer rejects blank paths and unsupported query parameters"() {
         given:
         ApplicationContext context = ApplicationContext.run(['spec.name': 'SecretsManagerPropertySourceImporterSpec'])

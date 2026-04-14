@@ -12,14 +12,27 @@ import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse
 import software.amazon.awssdk.services.ssm.model.GetParametersRequest
 import software.amazon.awssdk.services.ssm.model.GetParametersResponse
 import software.amazon.awssdk.services.ssm.model.Parameter
+import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.concurrent.CompletableFuture
 
 class AWSParameterStoreDeprecationAndCoexistenceSpec extends Specification {
 
-    static {
+    @Shared
+    private String previousAwsRegion
+
+    void setupSpec() {
+        previousAwsRegion = System.getProperty('aws.region')
         System.setProperty('aws.region', 'us-west-1')
+    }
+
+    void cleanupSpec() {
+        if (previousAwsRegion == null) {
+            System.clearProperty('aws.region')
+        } else {
+            System.setProperty('aws.region', previousAwsRegion)
+        }
     }
 
     void "legacy parameter store still resolves while import order wins over legacy"() {

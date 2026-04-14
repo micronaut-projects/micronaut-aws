@@ -36,7 +36,6 @@ import software.amazon.awssdk.services.secretsmanager.model.ListSecretsRequest;
 import software.amazon.awssdk.services.secretsmanager.model.SecretListEntry;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +49,9 @@ import java.util.Optional;
  * `aws.secret-access-key`. Connection-string query parameters accept both prefixed and unprefixed aliases
  * for AWS credentials and region (for example `region` or `aws.region`). Supported option keys are
  * `aws.access-key-id` / `access-key-id`, `aws.secret-access-key` / `secret-access-key`,
- * `aws.secret-key` / `secret-key`, `aws.session-token` / `session-token`, `aws.region` / `region`, and repeated `secret` / `prefix` pairs in the structured
- * map form via `secrets` entries. Standard retry settings are also supported with `retry-attempts`,
+ * `aws.secret-key` / `secret-key`, `aws.session-token` / `session-token`, and `aws.region` / `region`.
+ * In the structured map form, secret mappings are supplied via `secrets` entries using `secret-name`
+ * and optional `prefix` fields. Standard retry settings are also supported with `retry-attempts`,
  * `retry-count`, `retry-delay`, `retry-max-delay`, `retry-multiplier`, and `retry-jitter`.</p>
  *
  * @since 5.0.0
@@ -159,11 +159,11 @@ public final class SecretsManagerPropertySourceImporter extends RetryablePropert
 
     private static Map<String, Object> providerPropertiesFromValues(ConvertibleValues<Object> values) {
         Map<String, Object> properties = new LinkedHashMap<>();
-        copyValue(values, properties, "aws.access-key-id");
-        copyValue(values, properties, "aws.secret-access-key");
-        copyValue(values, properties, "aws.secret-key");
-        copyValue(values, properties, "aws.session-token");
-        copyValue(values, properties, "aws.region");
+        copyAliasedValue(values, properties, "aws.access-key-id", "access-key-id");
+        copyAliasedValue(values, properties, "aws.secret-access-key", "secret-access-key");
+        copyAliasedValue(values, properties, "aws.secret-key", "secret-key");
+        copyAliasedValue(values, properties, "aws.session-token", "session-token");
+        copyAliasedValue(values, properties, "aws.region", "region");
         values.get("secrets", List.class).ifPresent(secrets -> properties.put(SecretsManagerConfigurationProperties.PREFIX + ".secrets", secrets));
         return properties;
     }
@@ -197,8 +197,20 @@ public final class SecretsManagerPropertySourceImporter extends RetryablePropert
         properties.put("aws.secret-access-key", password);
     }
 
-    private static void copyValue(ConvertibleValues<Object> values, Map<String, Object> properties, String key) {
-        values.get(key, String.class).ifPresent(value -> properties.put(key, value));
+    private static void copyAliasedValue(ConvertibleValues<Object> values, Map<String, Object> properties, String canonicalKey, String alias) {
+        if (copyValue(values, properties, canonicalKey, canonicalKey)) {
+            return;
+        }
+        copyValue(values, properties, alias, canonicalKey);
+    }
+
+    private static boolean copyValue(ConvertibleValues<Object> values, Map<String, Object> properties, String sourceKey, String targetKey) {
+        Optional<String> value = values.get(sourceKey, String.class);
+        if (value.isPresent()) {
+            properties.put(targetKey, value.get());
+            return true;
+        }
+        return false;
     }
 
     @FunctionalInterface

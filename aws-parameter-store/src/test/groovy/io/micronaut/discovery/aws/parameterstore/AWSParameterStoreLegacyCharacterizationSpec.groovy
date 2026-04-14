@@ -33,8 +33,20 @@ import java.util.concurrent.CompletableFuture
 
 class AWSParameterStoreLegacyCharacterizationSpec extends Specification {
 
-    static {
-        System.setProperty("aws.region", "us-west-1")
+    @Shared
+    private String previousAwsRegion
+
+    void setupSpec() {
+        previousAwsRegion = System.getProperty('aws.region')
+        System.setProperty('aws.region', 'us-west-1')
+    }
+
+    void cleanupSpec() {
+        if (previousAwsRegion == null) {
+            System.clearProperty('aws.region')
+        } else {
+            System.setProperty('aws.region', previousAwsRegion)
+        }
     }
 
     @AutoCleanup

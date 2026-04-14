@@ -158,11 +158,11 @@ public final class ParameterStorePropertySourceImporter extends RetryablePropert
 
     private static Map<String, Object> providerPropertiesFromValues(ConvertibleValues<Object> values) {
         Map<String, Object> properties = new LinkedHashMap<>();
-        copyValue(values, properties, "aws.access-key-id");
-        copyValue(values, properties, "aws.secret-access-key");
-        copyValue(values, properties, "aws.secret-key");
-        copyValue(values, properties, "aws.session-token");
-        copyValue(values, properties, "aws.region");
+        copyAliasedValue(values, properties, "aws.access-key-id", "access-key-id");
+        copyAliasedValue(values, properties, "aws.secret-access-key", "secret-access-key");
+        copyAliasedValue(values, properties, "aws.secret-key", "secret-key");
+        copyAliasedValue(values, properties, "aws.session-token", "session-token");
+        copyAliasedValue(values, properties, "aws.region", "region");
         mapIfPresent(values, properties, "root-hierarchy-path", AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".root-hierarchy-path");
         mapIfPresent(values, properties, "use-secure-parameters", AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".use-secure-parameters");
         mapIfPresent(values, properties, "search-active-environments", AWSParameterStoreConfiguration.CONFIGURATION_PREFIX + ".search-active-environments");
@@ -201,8 +201,20 @@ public final class ParameterStorePropertySourceImporter extends RetryablePropert
         properties.put("aws.secret-access-key", password);
     }
 
-    private static void copyValue(ConvertibleValues<Object> values, Map<String, Object> properties, String key) {
-        values.get(key, String.class).ifPresent(value -> properties.put(key, value));
+    private static void copyAliasedValue(ConvertibleValues<Object> values, Map<String, Object> properties, String canonicalKey, String alias) {
+        if (copyValue(values, properties, canonicalKey, canonicalKey)) {
+            return;
+        }
+        copyValue(values, properties, alias, canonicalKey);
+    }
+
+    private static boolean copyValue(ConvertibleValues<Object> values, Map<String, Object> properties, String sourceKey, String targetKey) {
+        Optional<String> value = values.get(sourceKey, String.class);
+        if (value.isPresent()) {
+            properties.put(targetKey, value.get());
+            return true;
+        }
+        return false;
     }
 
     private static void mapIfPresent(ConvertibleValues<Object> values, Map<String, Object> properties, String sourceKey, String targetKey) {

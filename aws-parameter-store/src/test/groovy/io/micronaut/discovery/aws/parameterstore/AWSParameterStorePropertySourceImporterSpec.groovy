@@ -61,6 +61,39 @@ class AWSParameterStorePropertySourceImporterSpec extends Specification {
         context.close()
     }
 
+    void "parameter store importer accepts documented structured aliases"() {
+        given:
+        ApplicationContext context = ApplicationContext.run([
+            'spec.name': 'AWSParameterStorePropertySourceImporterSpec'
+        ])
+        ParameterStorePropertySourceImporter importer = new ParameterStorePropertySourceImporter()
+
+        when:
+        def structured = importer.newImportDeclaration(io.micronaut.core.convert.value.ConvertibleValues.of([
+            path: 'config/application',
+            'access-key-id': 'AKIA123',
+            'secret-access-key': 'SECRET456',
+            'secret-key': 'SECRET789',
+            'session-token': 'TOKEN123',
+            region: 'eu-west-1',
+            'use-secure-parameters': true,
+            'search-active-environments': false
+        ]))
+
+        then:
+        structured.declaration().path() == '/config/application'
+        structured.declaration().providerProperties()['aws.access-key-id'] == 'AKIA123'
+        structured.declaration().providerProperties()['aws.secret-access-key'] == 'SECRET456'
+        structured.declaration().providerProperties()['aws.secret-key'] == 'SECRET789'
+        structured.declaration().providerProperties()['aws.session-token'] == 'TOKEN123'
+        structured.declaration().providerProperties()['aws.region'] == 'eu-west-1'
+        structured.declaration().providerProperties()['aws.client.system-manager.parameterstore.use-secure-parameters'] == true
+        structured.declaration().providerProperties()['aws.client.system-manager.parameterstore.search-active-environments'] == false
+
+        cleanup:
+        context.close()
+    }
+
     void "parameter store importer rejects blank paths and unknown query parameters"() {
         given:
         ApplicationContext context = ApplicationContext.run([
