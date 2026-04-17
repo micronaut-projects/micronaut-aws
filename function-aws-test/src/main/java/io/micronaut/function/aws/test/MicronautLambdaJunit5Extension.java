@@ -58,7 +58,8 @@ public class MicronautLambdaJunit5Extension extends MicronautJunit5Extension {
                 micronautTest.contextBuilder(),
                 micronautTest.transactionMode(),
                 micronautTest.startApplication(),
-            micronautTest.resolveParameters());
+                micronautTest.resolveParameters(),
+                micronautTest.deduceEnvironment());
     }
 
     @Override
