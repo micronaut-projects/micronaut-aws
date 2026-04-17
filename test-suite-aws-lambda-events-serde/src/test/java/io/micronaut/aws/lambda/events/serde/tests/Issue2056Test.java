@@ -22,7 +22,6 @@ class Issue2056Test {
     void setupSpec() {
         handler = new ApiGatewayProxyRequestEventFunction(
             ApplicationContext.builder()
-                .properties(Map.of("micronaut.propagation", "thread-local"))
                 .build()
         );
     }

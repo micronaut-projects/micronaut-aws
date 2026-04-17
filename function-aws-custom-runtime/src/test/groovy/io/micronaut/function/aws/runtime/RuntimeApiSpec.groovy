@@ -67,7 +67,6 @@ class RuntimeApiSpec extends Specification {
         @Override
         ApplicationContextBuilder createApplicationContextBuilderWithArgs(String... args) {
             return super.createApplicationContextBuilderWithArgs(args)
-                .properties('micronaut.propagation': 'thread-local')
         }
     }
 
