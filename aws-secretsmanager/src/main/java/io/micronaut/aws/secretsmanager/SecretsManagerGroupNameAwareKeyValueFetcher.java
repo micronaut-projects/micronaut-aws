@@ -19,7 +19,6 @@ import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Experimental;
-import org.jspecify.annotations.NonNull;
 import io.micronaut.json.JsonMapper;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;

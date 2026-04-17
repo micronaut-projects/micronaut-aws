@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
+import io.micronaut.aws.distributedconfiguration.imports.LegacyConfigClientDeprecationLogger;
 import io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration;
 import io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration;
 import io.micronaut.discovery.client.ClientUtil;
@@ -100,6 +101,7 @@ public class AWSParameterStoreConfigClient implements ConfigurationClient {
         if (!awsParameterStoreConfiguration.isEnabled()) {
             return Flux.empty();
         }
+        LegacyConfigClientDeprecationLogger.warn(LOG, "parameterstore", "Legacy bootstrap/context AWS Parameter Store configuration is deprecated. Use micronaut.config.import=parameterstore:/... instead.");
 
         List<ParameterQuery> queries = queryProvider.getParameterQueries(environment, serviceId, awsParameterStoreConfiguration);
         Flux<ParameterQueryResult> queryResults =
