@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api(mn.micronaut.discovery.core)
     api(projects.micronautAwsSdkV2)
     api(projects.micronautAwsDistributedConfiguration)
     api(libs.awssdk.secretsmanager)

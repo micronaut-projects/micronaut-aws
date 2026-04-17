@@ -36,6 +36,7 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
         properties.put("micronaut.server.context-path", "/");
         properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
         properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
+        properties.put("micronaut.propagation", "thread-local");
         this.applicationContext = ApplicationContext
             .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
             .eagerInitConfiguration(true)

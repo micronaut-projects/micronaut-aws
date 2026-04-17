@@ -13,16 +13,14 @@ on:
     branches:
       - master
       - '[0-9]+.[0-9]+.x'
-env:
-  ALLOW_SECRETS: ${{ github.event.pull_request == null && 'true' || '' }}
 jobs:
   build_matrix:
     if: github.repository != 'micronaut-projects/micronaut-project-template'
     runs-on: ubuntu-latest
     env:
-      DEVELOCITY_ACCESS_KEY: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_ACCESS_KEY || '' }}
-      DEVELOCITY_CACHE_USERNAME: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_CACHE_USERNAME || '' }}
-      DEVELOCITY_CACHE_PASSWORD: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD || '' }}
+      DEVELOCITY_ACCESS_KEY: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_ACCESS_KEY || '' }}
+      DEVELOCITY_CACHE_USERNAME: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_CACHE_USERNAME || '' }}
+      DEVELOCITY_CACHE_PASSWORD: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD || '' }}
     outputs:
       matrix: ${{ steps.build-matrix.outputs.matrix }}
     steps:
@@ -42,9 +40,9 @@ jobs:
         java: ['25']
         native_test_task: ${{ fromJson(needs.build_matrix.outputs.matrix).native_test_task }}
     env:
-      DEVELOCITY_ACCESS_KEY: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_ACCESS_KEY || '' }}
-      DEVELOCITY_CACHE_USERNAME: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_CACHE_USERNAME || '' }}
-      DEVELOCITY_CACHE_PASSWORD: ${{ env.ALLOW_SECRETS && secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD || '' }}
+      DEVELOCITY_ACCESS_KEY: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_ACCESS_KEY || '' }}
+      DEVELOCITY_CACHE_USERNAME: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_CACHE_USERNAME || '' }}
+      DEVELOCITY_CACHE_PASSWORD: ${{ github.event.pull_request == null && secrets.GRADLE_ENTERPRISE_CACHE_PASSWORD || '' }}
     steps:
       - name: Remove system JDKs
         run: |
@@ -64,8 +62,8 @@ jobs:
         uses: micronaut-projects/github-actions/graalvm/build@300bf6db7c062dcba77c90bb90e475df31b2acab # master
         id: build
         env:
-          GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ env.ALLOW_SECRETS && secrets.GH_TOKEN_PUBLIC_REPOS_READONLY || '' }}
-          GH_USERNAME: ${{ env.ALLOW_SECRETS && secrets.GH_USERNAME || '' }}
+          GH_TOKEN_PUBLIC_REPOS_READONLY: ${{ github.event.pull_request == null && secrets.GH_TOKEN_PUBLIC_REPOS_READONLY || '' }}
+          GH_USERNAME: ${{ github.event.pull_request == null && secrets.GH_USERNAME || '' }}
           GRAALVM_QUICK_BUILD: true
         with:
           nativeTestTask: ${{ matrix.native_test_task }}

@@ -1,31 +1,152 @@
-Micronaut supports configuration sharing via https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS System Manager Parameter Store]. You need the following dependencies configured:
+Micronaut supports configuration sharing via https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html[AWS System Manager Parameter Store]. You need the following dependency configured:
 
 dependency:io.micronaut.aws:micronaut-aws-parameter-store[]
 
-To enable distributed configuration a `src/main/resources/bootstrap.yml` configuration file must be created and configured to use Parameter Store:
+The recommended way to import configuration from Parameter Store is with `micronaut.config.import`.
 
-.bootstrap.yml
+.application.yml
 [source,yaml]
 ----
 micronaut:
   application:
     name: hello-world
-  config-client:
-    enabled: true
-aws:
-  client:
-    system-manager:
-      parameterstore:
-        enabled: true
+  config:
+    import:
+      - parameterstore:/config/application
+      - optional:parameterstore:/config/hello-world
 ----
+
+You can also use the structured form:
+
+.application.yml
+[source,yaml]
+----
+micronaut:
+  application:
+    name: hello-world
+  config:
+    import:
+      - provider: parameterstore
+        path: /config/application
+      - provider: parameterstore
+        path: /config/hello-world
+        optional: true
+----
+
+Authentication and AWS client configuration options can also be supplied directly on the import declaration.
+
+For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:
+
+.application.yml
+[source,yaml]
+----
+micronaut:
+  config:
+    import:
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&use-secure-parameters=true"
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&search-active-environments=true"
+----
+
+The authority portion is ignored by the importer. `localhost` is only shown to make credential-bearing examples syntactically valid.
+
+For structured declarations, use the same documented Micronaut AWS credential keys (`access-key-id` / `aws.access-key-id`, `secret-access-key` / `aws.secret-access-key`, `secret-key` / `aws.secret-key`, `session-token` / `aws.session-token`, `region` / `aws.region`). Parameter Store also supports `root-hierarchy-path`, `use-secure-parameters`, and `search-active-environments` in the map form.
+
+Parameter Store imports also support Micronaut's standard retry declaration options. You can set them either as query parameters on the connection string or as keys in the structured map declaration.
+
+.Supported Parameter Store import options
+[cols="1,2,2"]
+|===
+| Query parameter / map key | Description | Example
+
+| `access-key-id`
+| AWS access key ID query parameter alias. In connection strings, this is normally supplied as the username portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`, but the alias is also accepted.
+| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1`
+
+| `aws.access-key-id`
+| Canonical Micronaut AWS property key for structured map declarations.
+| `aws.access-key-id: my-access-key`
+
+| `secret-access-key`
+| AWS secret access key query parameter alias. In connection strings, this is normally supplied as the password portion of `ACCESS_KEY_ID:SECRET_ACCESS_KEY@...`, but the alias is also accepted.
+| `parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1`
+
+| `aws.secret-access-key`
+| Canonical Micronaut AWS property key for structured map declarations.
+| `aws.secret-access-key: my-secret-key`
+
+| `secret-key`
+| Unprefixed alias accepted in connection strings and structured declarations.
+| `parameterstore:/config/application?secret-key=my-secret-key`
+
+| `aws.secret-key`
+| Canonical Micronaut AWS property key supported in structured map declarations.
+| `aws.secret-key: my-secret-key`
+
+| `session-token`
+| Optional AWS session token alias for connection strings.
+| `parameterstore:/config/application?session-token=token123`
+
+| `aws.session-token`
+| Canonical Micronaut AWS property key supported in structured map declarations.
+| `aws.session-token: token123`
+
+| `region`
+| Preferred connection-string query parameter for AWS region.
+| `parameterstore:/config/application?region=eu-west-1`
+
+| `aws.region`
+| Canonical Micronaut AWS property key supported in structured map declarations.
+| `aws.region: eu-west-1`
+
+| `root-hierarchy-path`
+| Overrides `aws.client.system-manager.parameterstore.root-hierarchy-path` in structured or query-bound configuration.
+| `parameterstore:/config/application?root-hierarchy-path=/config/`
+
+| `use-secure-parameters`
+| Maps to `aws.client.system-manager.parameterstore.use-secure-parameters` to enable SecureString decryption.
+| `parameterstore:/config/application?use-secure-parameters=true`
+
+| `search-active-environments`
+| Maps to `aws.client.system-manager.parameterstore.search-active-environments`.
+| `parameterstore:/config/application?search-active-environments=false`
+
+| `retry-attempts`
+| Maximum number of import attempts.
+| `parameterstore:/config/application?retry-attempts=5`
+
+| `retry-count`
+| Alias for `retry-attempts`.
+| `retry-count: 5`
+
+| `retry-delay`
+| Delay between retry attempts.
+| `parameterstore:/config/application?retry-delay=250ms`
+
+| `retry-max-delay`
+| Maximum overall retry delay.
+| `parameterstore:/config/application?retry-max-delay=5s`
+
+| `retry-multiplier`
+| Backoff multiplier applied to each delay.
+| `parameterstore:/config/application?retry-multiplier=1.5`
+
+| `retry-jitter`
+| Jitter factor between `0.0` and `1.0`.
+| `parameterstore:/config/application?retry-jitter=0.2`
+|===
+
+IMPORTANT: This change does not add AWS watch/refresh support. Imported Parameter Store values are resolved at startup only.
+
+[NOTE]
+====
+The legacy bootstrap/context configuration client path remains available for migration, but it is deprecated. Existing applications using `src/main/resources/bootstrap.yml` with `micronaut.config-client.enabled=true` and `aws.client.system-manager.parameterstore.enabled=true` will continue to work for now.
+====
 
 See the https://micronaut-projects.github.io/micronaut-aws/latest/guide/configurationreference.html#io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfiguration[configuration reference] for all configuration options.
 
 You can configure shared properties from the AWS Console -> System Manager -> Parameter Store.
 
 Micronaut uses a hierarchy to read configuration values, and supports `String`, `StringList`, and `SecureString` types.
-
-
 
 Each level of the tree can be composed of key=value pairs. For multiple key/value pairs, set the type to `StringList`.
 
