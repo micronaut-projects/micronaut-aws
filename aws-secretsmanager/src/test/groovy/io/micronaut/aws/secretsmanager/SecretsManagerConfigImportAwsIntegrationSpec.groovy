@@ -1,12 +1,14 @@
 package io.micronaut.aws.secretsmanager
 
 import io.micronaut.context.ApplicationContext
+import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Specification
 
 @Requires({
     return resolveAwsRegion() && hasAwsCredentialConfiguration()
 })
+@Ignore(value = "the test is coupled to a developer machine")
 class SecretsManagerConfigImportAwsIntegrationSpec extends Specification {
 
     private static final String SECRET_NAME = '/config/myawesomesecret'
