@@ -14,7 +14,6 @@ import org.junit.platform.suite.api.*;
         "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
         "io.micronaut.http.server.tck.tests.ErrorHandlerFluxTest", // test fails testErrorHandlerWithFluxChunkedSignaledDelayedError
         "io.micronaut.http.server.tck.tests.forms.FormsJacksonAnnotationsTest", // test fails httpClientFormSubmissionsDoesNotSupportJacksonAnnotations"
-        "io.micronaut.http.server.tck.tests.filter.CacheControlTest",
         "io.micronaut.http.server.tck.tests.forms.UploadTest",
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Gateway Proxy v1 Event model")
