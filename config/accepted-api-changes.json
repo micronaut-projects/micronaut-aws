@@ -1684,5 +1684,40 @@
     "type": "io.micronaut.function.aws.proxy.MicronautLambdaHandler",
     "member": "Implemented interface com.amazonaws.services.lambda.runtime.RequestHandler",
     "reason": "Removed deprecated code for Micronaut Framework 5"
+  },
+  {
+    "type": "io.micronaut.aws.distributedconfiguration.imports.LegacyConfigClientDeprecationLogger",
+    "member": "Class io.micronaut.aws.distributedconfiguration.imports.LegacyConfigClientDeprecationLogger",
+    "reason": "New internal AWS config import support"
+  },
+  {
+    "type": "io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter$ParameterStoreImport",
+    "member": "Class io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter$ParameterStoreImport",
+    "reason": "New internal Parameter Store config import support"
+  },
+  {
+    "type": "io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter$ParameterStoreImportSupport",
+    "member": "Class io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter$ParameterStoreImportSupport",
+    "reason": "New internal Parameter Store config import support"
+  },
+  {
+    "type": "io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter",
+    "member": "Class io.micronaut.discovery.aws.parameterstore.imports.ParameterStorePropertySourceImporter",
+    "reason": "New internal Parameter Store config import support"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter$SecretsManagerImport",
+    "member": "Class io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter$SecretsManagerImport",
+    "reason": "New internal Secrets Manager config import support"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter$SecretsManagerImportSupport",
+    "member": "Class io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter$SecretsManagerImportSupport",
+    "reason": "New internal Secrets Manager config import support"
+  },
+  {
+    "type": "io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter",
+    "member": "Class io.micronaut.aws.secretsmanager.imports.SecretsManagerPropertySourceImporter",
+    "reason": "New internal Secrets Manager config import support"
   }
 ]

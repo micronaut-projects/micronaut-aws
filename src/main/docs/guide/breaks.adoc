@@ -7,3 +7,4 @@ Use one of the following classes instead:
 ** `io.micronaut.function.aws.proxy.payload1.ApiGatewayProxyRequestEventFunction`
 ** `io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction`
 ** `io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction`
+** The legacy bootstrap/context distributed configuration clients for AWS Parameter Store and AWS Secrets Manager are deprecated. Prefer `micronaut.config.import=parameterstore:/...` and `micronaut.config.import=aws-secretsmanager:///...` in `application.yml` instead of enabling the bootstrap config client path.

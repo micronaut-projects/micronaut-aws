@@ -9,6 +9,12 @@ plugins {
     id("io.micronaut.build.shared.settings") version "8.0.0-M17"
 }
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "aws-parent"

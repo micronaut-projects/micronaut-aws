@@ -115,4 +115,11 @@ public @interface MicronautLambdaTest {
      * @return Whether to resolve test method parameters as beans.
      */
     boolean resolveParameters() default true;
+
+    /**
+     * Controls whether Micronaut should deduce additional active environments.
+     *
+     * @return {@code false} to mimic setting {@code MICRONAUT_ENV_DEDUCTION=false}
+     */
+    boolean deduceEnvironment() default true;
 }

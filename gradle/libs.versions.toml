@@ -1,6 +1,6 @@
 [versions]
-micronaut = "5.0.0-M12"
-micronaut-test = "5.0.0-M6"
+micronaut = "5.0.0-M22"
+micronaut-test = "5.0.0-M8"
 
 bouncycastle = '1.70'
 fileupload = '0.0.8'
@@ -10,8 +10,8 @@ micronaut-discovery = "5.0.0-M1"
 micronaut-groovy = "5.0.0-M1"
 micronaut-logging = "2.0.0-M2"
 micronaut-mongodb = "6.0.1-M1"
-micronaut-reactor = "4.0.0-M1"
-micronaut-serde = "3.0.0-M2"
+micronaut-reactor = "4.0.0-M2"
+micronaut-serde = "3.0.0-M6"
 micronaut-servlet = "6.0.0-M2"
 micronaut-security = "5.0.0-M1"
 micronaut-views = "6.0.0-M1"
@@ -19,11 +19,11 @@ micronaut-validation = "5.0.0-M1"
 
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
-managed-aws-java-sdk-v2 = '2.41.34'
+managed-aws-java-sdk-v2 = '2.42.29'
 managed-aws-lambda = '1.4.0'
 managed-aws-lambda-events = '3.16.1'
-managed-aws-lambda-java-serialization = '1.2.0'
-aws-lambda-java-runtime-interface-client = '2.9.0'
+managed-aws-lambda-java-serialization = '1.3.1'
+aws-lambda-java-runtime-interface-client = '2.10.1'
 managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "3.9.2"
 slf4j = "2.0.17"
@@ -33,7 +33,7 @@ javapoet = "1.13.0"
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "25.0.2"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 
 # Micronaut
 micronaut-gradle-plugin = "4.6.2"
