@@ -13,6 +13,7 @@ io.micronaut.aws.alexa.ssml
 io.micronaut.aws.apigateway
 io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
+io.micronaut.aws.distributedconfiguration.imports
 io.micronaut.aws.info
 io.micronaut.aws.lambda.events
 io.micronaut.aws.lambda.events.serde
@@ -34,8 +35,10 @@ io.micronaut.aws.sdk.v2.service.sns
 io.micronaut.aws.sdk.v2.service.sqs
 io.micronaut.aws.sdk.v2.service.ssm
 io.micronaut.aws.secretsmanager
+io.micronaut.aws.secretsmanager.imports
 io.micronaut.aws.ua
 io.micronaut.discovery.aws.parameterstore
+io.micronaut.discovery.aws.parameterstore.imports
 io.micronaut.discovery.aws.servicediscovery
 io.micronaut.discovery.aws.servicediscovery.client
 io.micronaut.discovery.aws.servicediscovery.registration

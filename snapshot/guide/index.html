@@ -4584,21 +4584,40 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
 </p>
 </div>
 <div class="paragraph">
-<p>To enable distributed configuration, create a <code>src/main/resources/bootstrap.yml</code> file and enable the configuration client:</p>
+<p>The recommended way to load Secrets Manager configuration is with <code>micronaut.config.import</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/bootstrap.yml</div>
+<div class="title">application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
-  config-client:
-    enabled: true</code></pre>
+  application:
+    name: myapp
+  config:
+    import:
+      - aws-secretsmanager:///config/application
+      - optional:aws-secretsmanager:///config/myapp</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Example:</p>
+<p>You can also use the structured form:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: myapp
+  config:
+    import:
+      - provider: aws-secretsmanager
+        path: /config/application
+      - provider: aws-secretsmanager
+        path: /config/myapp
+        optional: true</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>If you add <code>micronaut.application.name: myapp</code> to <code>bootstrap.yml</code> and you start your app in the <code>dev</code> <a href="https://docs.micronaut.io/latest/guide/index.html#environments">Micronaut environment</a> the secret shown in the following image is read and two properties <code>micronaut.security.oauth2.clients.companyauthserver.client-id</code> and <code>micronaut.security.oauth2.clients.companyauthserver.client-secret</code> are exposed to your application:</p>
+<p>If you add <code>micronaut.application.name: myapp</code> and start your app in the <code>dev</code> <a href="https://docs.micronaut.io/latest/guide/index.html#environments">Micronaut environment</a>, a secret such as <code>/config/myapp_dev/oauthcompanyauthserver</code> can contribute properties like <code>micronaut.security.oauth2.clients.companyauthserver.client-id</code> and <code>micronaut.security.oauth2.clients.companyauthserver.client-secret</code> to your application.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -4638,16 +4657,12 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
 </tbody>
 </table>
 <div class="paragraph">
-<p>To avoid secret keys naming collision in the Micronaut application context, which is caused by the strict naming convention specified by some AWS services, add a configuration section to <code>src/main/resources/bootstrap.yml</code>.
-For example, if you would like to use multiple RDS instances, you can do it in the following way:</p>
+<p>To avoid secret key naming collisions in the Micronaut application context, configure grouped prefixes. For example, if you would like to use multiple RDS instances, configure it as follows:</p>
 </div>
 <div class="listingblock">
-<div class="title">src/main/resources/bootstrap.yml</div>
+<div class="title">application.yml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
-  config-client:
-    enabled: true
-aws:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
   secretsmanager:
     secrets:
       - secret-name: rds
@@ -4657,11 +4672,147 @@ aws:
 </div>
 </div>
 <div class="paragraph">
-<p>Note that <code>secret-name</code> is a name suffix of the secret configured in AWS Secret Manager. For example, to add <code>rds_backup</code> configuration for a <code>production</code> environment, add the <code>rds_backup</code> configuration entry to the <code>src/main/resources/bootstrap.yml</code> as shown in the example above. Also, create RDS secret in AWS Secret Manager with name <code>/config/application_prod/rds_backup</code> or <code>/config/[APPLICATION_NAME]_prod/rds_backup</code>.
-Note that <code>prefix</code> is a unique key prefix that is prepended to all keys that belong to a given secret.</p>
+<p>Note that <code>secret-name</code> is a name suffix of the secret configured in AWS Secrets Manager. For example, to add <code>rds_backup</code> configuration for a <code>production</code> environment, create a secret named <code>/config/application_prod/rds_backup</code> or <code>/config/[APPLICATION_NAME]_prod/rds_backup</code>. The <code>prefix</code> value is prepended to all keys that belong to the matching secret.</p>
 </div>
 <div class="paragraph">
-<p>To learn more about the Micronaut environments, go to <a href="https://docs.micronaut.io/latest/guide/#environments">Environments</a></p>
+<p>Authentication and AWS client configuration options can also be supplied directly on the import declaration.</p>
+</div>
+<div class="paragraph">
+<p>For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  config:
+    import:
+      - "aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The authority portion is ignored by the importer. <code>localhost</code> is only shown to make credential-bearing examples syntactically valid.</p>
+</div>
+<div class="paragraph">
+<p>For structured declarations, use the same documented Micronaut AWS credential keys (<code>access-key-id</code> / <code>aws.access-key-id</code>, <code>secret-access-key</code> / <code>aws.secret-access-key</code>, <code>secret-key</code> / <code>aws.secret-key</code>, <code>session-token</code> / <code>aws.session-token</code>, <code>region</code> / <code>aws.region</code>). Use the <code>secrets</code> list in the structured form when you need <code>secret-name</code> / <code>prefix</code> mappings.</p>
+</div>
+<div class="paragraph">
+<p>Secrets Manager imports also support Micronaut&#8217;s standard retry declaration options. You can set them either as query parameters on the connection string or as keys in the structured map declaration.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Supported Secrets Manager import options</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Query parameter / map key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.access-key-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS access key ID. In connection strings, this is normally supplied as the username portion of <code>ACCESS_KEY_ID:SECRET_ACCESS_KEY@&#8230;&#8203;</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-access-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS secret access key. In connection strings, this is normally supplied as the password portion of <code>ACCESS_KEY_ID:SECRET_ACCESS_KEY@&#8230;&#8203;</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secret-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unprefixed alias accepted in connection strings and structured declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?secret-key=my-secret-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key supported in structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-key: my-secret-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session-token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional AWS session token alias for connection strings.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?session-token=token123</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.session-token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key supported in structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.session-token: token123</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.region</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS region used by the importer-owned client context.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secrets</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Structured-map-only list of secret grouping definitions. Each entry can include <code>secret-name</code> and <code>prefix</code> to remap keys from a matched secret.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secrets: [{ secret-name: oauthcompanyauthserver, prefix: datasources.default }]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-attempts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of import attempts.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?retry-attempts=5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alias for <code>retry-attempts</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-count: 5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delay between retry attempts.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?retry-delay=250ms</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-max-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum overall retry delay.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?retry-max-delay=5s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-multiplier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Backoff multiplier applied to each delay.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?retry-multiplier=1.5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-jitter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jitter factor between <code>0.0</code> and <code>1.0</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-secretsmanager:///config/myapp?retry-jitter=0.2</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+This change does not add AWS watch/refresh support. Imported Secrets Manager values are resolved at startup only.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The legacy bootstrap/context configuration client path remains available for migration, but it is deprecated. Existing applications using <code>src/main/resources/bootstrap.yml</code> with <code>micronaut.config-client.enabled=true</code> and <code>aws.secretsmanager.enabled=true</code> will continue to work for now.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To learn more about Micronaut environments, go to <a href="https://docs.micronaut.io/latest/guide/#environments">Environments</a>.</p>
 </div>
 
 <h2 id="distributedconfigurationsecretsmanagersearch"><a class="anchor" href="#distributedconfigurationsecretsmanagersearch"></a>12.2 Prefixes used for searching secrets</h2>
@@ -4674,7 +4825,10 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 
 
 <div class="paragraph">
-<p>If your application name is <code>micronautguide</code> and it has the following <a href="https://micronaut-projects.github.io/micronaut-core/latest/guide/#environments">active environments</a> <code>ec2</code>, <code>cloud</code>, and <code>lambda</code>. The following configuration prefixes are searched:</p>
+<p>When you use the legacy distributed-configuration client path, Micronaut resolves Secrets Manager prefixes using the active application name and environments.</p>
+</div>
+<div class="paragraph">
+<p>If your application name is <code>micronautguide</code> and it has the following <a href="https://micronaut-projects.github.io/micronaut-core/latest/guide/#environments">active environments</a> <code>ec2</code>, <code>cloud</code>, and <code>lambda</code>, the following prefixes are searched:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -4711,26 +4865,29 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-active-environments:false</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration.search-active-environments=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
-    distributed-configuration:
-        search-active-environments:false</code></pre>
+  distributed-configuration:
+    search-active-environments: false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
-  distributed-configuration="search-active-environments:false"</code></pre>
+  [aws.distributed-configuration]
+    search-active-environments=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
-  distributedConfiguration = "search-active-environments:false"
+  distributedConfiguration {
+    searchActiveEnvironments = false
+  }
 }</code></pre>
 </div>
 </div>
@@ -4738,7 +4895,9 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
   aws {
-    distributed-configuration = "search-active-environments:false"
+    distributed-configuration {
+      search-active-environments = false
+    }
   }
 }</code></pre>
 </div>
@@ -4747,7 +4906,9 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
   "aws": {
-    "distributed-configuration": "search-active-environments:false"
+    "distributed-configuration": {
+      "search-active-environments": false
+    }
   }
 }</code></pre>
 </div>
@@ -4774,26 +4935,29 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-common-application:false</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration.search-common-application=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
-    distributed-configuration:
-        search-common-application:false</code></pre>
+  distributed-configuration:
+    search-common-application: false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
-  distributed-configuration="search-common-application:false"</code></pre>
+  [aws.distributed-configuration]
+    search-common-application=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
-  distributedConfiguration = "search-common-application:false"
+  distributedConfiguration {
+    searchCommonApplication = false
+  }
 }</code></pre>
 </div>
 </div>
@@ -4801,7 +4965,9 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
   aws {
-    distributed-configuration = "search-common-application:false"
+    distributed-configuration {
+      search-common-application = false
+    }
   }
 }</code></pre>
 </div>
@@ -4810,7 +4976,9 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
   "aws": {
-    "distributed-configuration": "search-common-application:false"
+    "distributed-configuration": {
+      "search-common-application": false
+    }
   }
 }</code></pre>
 </div>
@@ -4837,36 +5005,39 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 </ul>
 </div>
 <div class="paragraph">
-<p>By setting both:</p>
-</div>
-<div class="paragraph">
-<p>If you set:</p>
+<p>If you set both:</p>
 </div>
 <div class="openblock">
 <div class="content">
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration=search-active-environments:false search-common-application:false</code></pre>
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.distributed-configuration.search-active-environments=false
+aws.distributed-configuration.search-common-application=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
-    distributed-configuration:
-        search-active-environments:false
-        search-common-application:false</code></pre>
+  distributed-configuration:
+    search-active-environments: false
+    search-common-application: false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
-  distributed-configuration="search-active-environments:false search-common-application:false"</code></pre>
+  [aws.distributed-configuration]
+    search-active-environments=false
+    search-common-application=false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
-  distributedConfiguration = "search-active-environments:false search-common-application:false"
+  distributedConfiguration {
+    searchActiveEnvironments = false
+    searchCommonApplication = false
+  }
 }</code></pre>
 </div>
 </div>
@@ -4874,7 +5045,10 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
   aws {
-    distributed-configuration = "search-active-environments:false search-common-application:false"
+    distributed-configuration {
+      search-active-environments = false
+      search-common-application = false
+    }
   }
 }</code></pre>
 </div>
@@ -4883,7 +5057,10 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
   "aws": {
-    "distributed-configuration": "search-active-environments:false search-common-application:false"
+    "distributed-configuration": {
+      "search-active-environments": false,
+      "search-common-application": false
+    }
   }
 }</code></pre>
 </div>
@@ -4907,7 +5084,8 @@ Note that <code>prefix</code> is a unique key prefix that is prepended to all ke
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Reducing the number of prefixes reduces the application&#8217;s startup.
+Reducing the number of prefixes reduces application startup time.
+IMPORTANT: <code>micronaut.config.import=aws-secretsmanager:///&#8230;&#8203;</code> uses the explicit import path you declare instead of legacy prefix traversal.
 </td>
 </tr>
 </table>
@@ -4923,7 +5101,7 @@ Reducing the number of prefixes reduces the application&#8217;s startup.
 
 
 <div class="paragraph">
-<p>Micronaut supports configuration sharing via <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>. You need the following dependencies configured:</p>
+<p>Micronaut supports configuration sharing via <a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html">AWS System Manager Parameter Store</a>. You need the following dependency configured:</p>
 </div>
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
@@ -4943,22 +5121,200 @@ Reducing the number of prefixes reduces the application&#8217;s startup.
 </p>
 </div>
 <div class="paragraph">
-<p>To enable distributed configuration a <code>src/main/resources/bootstrap.yml</code> configuration file must be created and configured to use Parameter Store:</p>
+<p>The recommended way to import configuration from Parameter Store is with <code>micronaut.config.import</code>.</p>
 </div>
 <div class="listingblock">
-<div class="title">bootstrap.yml</div>
+<div class="title">application.yml</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   application:
     name: hello-world
-  config-client:
-    enabled: true
-aws:
-  client:
-    system-manager:
-      parameterstore:
-        enabled: true</code></pre>
+  config:
+    import:
+      - parameterstore:/config/application
+      - optional:parameterstore:/config/hello-world</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>You can also use the structured form:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  application:
+    name: hello-world
+  config:
+    import:
+      - provider: parameterstore
+        path: /config/application
+      - provider: parameterstore
+        path: /config/hello-world
+        optional: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Authentication and AWS client configuration options can also be supplied directly on the import declaration.</p>
+</div>
+<div class="paragraph">
+<p>For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:</p>
+</div>
+<div class="listingblock">
+<div class="title">application.yml</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
+  config:
+    import:
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true"
+      - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The authority portion is ignored by the importer. <code>localhost</code> is only shown to make credential-bearing examples syntactically valid.</p>
+</div>
+<div class="paragraph">
+<p>For structured declarations, use the same documented Micronaut AWS credential keys (<code>access-key-id</code> / <code>aws.access-key-id</code>, <code>secret-access-key</code> / <code>aws.secret-access-key</code>, <code>secret-key</code> / <code>aws.secret-key</code>, <code>session-token</code> / <code>aws.session-token</code>, <code>region</code> / <code>aws.region</code>). Parameter Store also supports <code>root-hierarchy-path</code>, <code>use-secure-parameters</code>, and <code>search-active-environments</code> in the map form.</p>
+</div>
+<div class="paragraph">
+<p>Parameter Store imports also support Micronaut&#8217;s standard retry declaration options. You can set them either as query parameters on the connection string or as keys in the structured map declaration.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Supported Parameter Store import options</caption>
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 40%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Query parameter / map key</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access-key-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS access key ID query parameter alias. In connection strings, this is normally supplied as the username portion of <code>ACCESS_KEY_ID:SECRET_ACCESS_KEY@&#8230;&#8203;</code>, but the alias is also accepted.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.access-key-id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key for structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.access-key-id: my-access-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secret-access-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS secret access key query parameter alias. In connection strings, this is normally supplied as the password portion of <code>ACCESS_KEY_ID:SECRET_ACCESS_KEY@&#8230;&#8203;</code>, but the alias is also accepted.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-access-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key for structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-access-key: my-secret-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secret-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unprefixed alias accepted in connection strings and structured declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?secret-key=my-secret-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key supported in structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.secret-key: my-secret-key</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>session-token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional AWS session token alias for connection strings.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?session-token=token123</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.session-token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key supported in structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.session-token: token123</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>region</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Preferred connection-string query parameter for AWS region.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?region=eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.region</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Canonical Micronaut AWS property key supported in structured map declarations.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.region: eu-west-1</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>root-hierarchy-path</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Overrides <code>aws.client.system-manager.parameterstore.root-hierarchy-path</code> in structured or query-bound configuration.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?root-hierarchy-path=/config/</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>use-secure-parameters</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maps to <code>aws.client.system-manager.parameterstore.use-secure-parameters</code> to enable SecureString decryption.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?use-secure-parameters=true</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>search-active-environments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maps to <code>aws.client.system-manager.parameterstore.search-active-environments</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?search-active-environments=false</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-attempts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of import attempts.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?retry-attempts=5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alias for <code>retry-attempts</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-count: 5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delay between retry attempts.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?retry-delay=250ms</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-max-delay</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum overall retry delay.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?retry-max-delay=5s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-multiplier</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Backoff multiplier applied to each delay.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?retry-multiplier=1.5</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>retry-jitter</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Jitter factor between <code>0.0</code> and <code>1.0</code>.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>parameterstore:/config/application?retry-jitter=0.2</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+This change does not add AWS watch/refresh support. Imported Parameter Store values are resolved at startup only.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The legacy bootstrap/context configuration client path remains available for migration, but it is deprecated. Existing applications using <code>src/main/resources/bootstrap.yml</code> with <code>micronaut.config-client.enabled=true</code> and <code>aws.client.system-manager.parameterstore.enabled=true</code> will continue to work for now.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>See the <a href="https://micronaut-projects.github.io/micronaut-aws/latest/guide/configurationreference.html#io.micronaut.discovery.aws.parameterstore.AWSParameterStoreConfiguration">configuration reference</a> for all configuration options.</p>
@@ -5006,6 +5362,9 @@ Use one of the following classes instead:</p>
 </li>
 <li>
 <p><code>io.micronaut.function.aws.proxy.alb.ApplicationLoadBalancerFunction</code></p>
+</li>
+<li>
+<p>The legacy bootstrap/context distributed configuration clients for AWS Parameter Store and AWS Secrets Manager are deprecated. Prefer <code>micronaut.config.import=parameterstore:/&#8230;&#8203;</code> and <code>micronaut.config.import=aws-secretsmanager:///&#8230;&#8203;</code> in <code>application.yml</code> instead of enabling the bootstrap config client path.</p>
 </li>
 </ul>
 </div>

@@ -676,6 +676,14 @@ Helper class to hold package's constant values.</div>
 <dd>
 <div class="block">Constructor.</div>
 </dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/AwsConfigImportContextFactory.html" class="type-name-link" title="class in io.micronaut.aws.distributedconfiguration.imports">AwsConfigImportContextFactory</a> - Class in <a href="io/micronaut/aws/distributedconfiguration/imports/package-summary.html">io.micronaut.aws.distributedconfiguration.imports</a></dt>
+<dd>
+<div class="block">Builds importer-owned child contexts for AWS config import support.</div>
+</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/AwsConfigImportContextFactory.html#%3Cinit%3E()" class="member-name-link">AwsConfigImportContextFactory()</a> - Constructor for class io.micronaut.aws.distributedconfiguration.imports.<a href="io/micronaut/aws/distributedconfiguration/imports/AwsConfigImportContextFactory.html" title="class in io.micronaut.aws.distributedconfiguration.imports">AwsConfigImportContextFactory</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
 <dt><a href="io/micronaut/aws/AWSConfiguration.html" class="type-name-link" title="class in io.micronaut.aws">AWSConfiguration</a> - Class in <a href="io/micronaut/aws/package-summary.html">io.micronaut.aws</a></dt>
 <dd>
 <div class="block">Configuration options for AWS.</div>
@@ -873,6 +881,10 @@ to be processed by the configuration client.</div>
 <dt><a href="io/micronaut/discovery/aws/servicediscovery/registration/EC2ServiceInstance.html#build()" class="member-name-link">build()</a> - Method in class io.micronaut.discovery.aws.servicediscovery.registration.<a href="io/micronaut/discovery/aws/servicediscovery/registration/EC2ServiceInstance.html" title="class in io.micronaut.discovery.aws.servicediscovery.registration">EC2ServiceInstance</a></dt>
 <dd>
 <div class="block">build for the builder.</div>
+</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/AwsConfigImportContextFactory.html#build(io.micronaut.context.env.Environment,java.util.Map,java.lang.String...)" class="member-name-link">build(Environment, Map, String...)</a> - Method in class io.micronaut.aws.distributedconfiguration.imports.<a href="io/micronaut/aws/distributedconfiguration/imports/AwsConfigImportContextFactory.html" title="class in io.micronaut.aws.distributedconfiguration.imports">AwsConfigImportContextFactory</a></dt>
+<dd>
+<div class="block">Build a child context with provider-specific properties.</div>
 </dd>
 <dt><a href="io/micronaut/function/aws/alexa/AlexaFunction.html#buildApplicationContext()" class="member-name-link">buildApplicationContext()</a> - Method in class io.micronaut.function.aws.alexa.<a href="io/micronaut/function/aws/alexa/AlexaFunction.html" title="class in io.micronaut.function.aws.alexa">AlexaFunction</a></dt>
 <dd>&nbsp;</dd>
@@ -1913,10 +1925,16 @@ it adds an HTTP Header User-Agent.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html#getPropertySources(io.micronaut.context.env.Environment)" class="member-name-link">getPropertySources(Environment)</a> - Method in class io.micronaut.aws.distributedconfiguration.<a href="io/micronaut/aws/distributedconfiguration/AwsDistributedConfigurationClient.html" title="class in io.micronaut.aws.distributedconfiguration">AwsDistributedConfigurationClient</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html#getPropertySources(io.micronaut.context.env.Environment)" class="member-name-link">getPropertySources(Environment)</a> - Method in class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerConfigurationClient.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerConfigurationClient</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html#getPropertySources(io.micronaut.context.env.Environment)" class="member-name-link">getPropertySources(Environment)</a> - Method in class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/AWSParameterStoreConfigClient.html" title="class in io.micronaut.discovery.aws.parameterstore">AWSParameterStoreConfigClient</a></dt>
 <dd>
 <div class="block">Get your PropertySources from AWS Parameter Store.</div>
 </dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html#getProvider()" class="member-name-link">getProvider()</a> - Method in class io.micronaut.aws.secretsmanager.imports.<a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html#getProvider()" class="member-name-link">getProvider()</a> - Method in class io.micronaut.discovery.aws.parameterstore.imports.<a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html#getProxy()" class="member-name-link">getProxy()</a> - Method in class io.micronaut.aws.sdk.v2.client.apache.<a href="io/micronaut/aws/sdk/v2/client/apache/ApacheClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.apache">ApacheClientConfiguration</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html#getProxy()" class="member-name-link">getProxy()</a> - Method in class io.micronaut.aws.sdk.v2.client.netty.<a href="io/micronaut/aws/sdk/v2/client/netty/NettyClientConfiguration.html" title="class in io.micronaut.aws.sdk.v2.client.netty">NettyClientConfiguration</a></dt>
@@ -2157,6 +2175,10 @@ it adds an HTTP Header User-Agent.</div>
 </dd>
 <dt><a href="io/micronaut/aws/lambda/events/serde/IamPolicyResponseV1Serde.html#%3Cinit%3E()" class="member-name-link">IamPolicyResponseV1Serde()</a> - Constructor for class io.micronaut.aws.lambda.events.serde.<a href="io/micronaut/aws/lambda/events/serde/IamPolicyResponseV1Serde.html" title="class in io.micronaut.aws.lambda.events.serde">IamPolicyResponseV1Serde</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html#importRetryablePropertySource(io.micronaut.context.env.PropertySourceImporter.ImportContext)" class="member-name-link">importRetryablePropertySource(PropertySourceImporter.ImportContext)</a> - Method in class io.micronaut.aws.secretsmanager.imports.<a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html#importRetryablePropertySource(io.micronaut.context.env.PropertySourceImporter.ImportContext)" class="member-name-link">importRetryablePropertySource(PropertySourceImporter.ImportContext)</a> - Method in class io.micronaut.discovery.aws.parameterstore.imports.<a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#INIT_ERROR_URI" class="member-name-link">INIT_ERROR_URI</a> - Static variable in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html#initializationErrorRequest(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">initializationErrorRequest(String, String, String)</a> - Method in interface io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AwsLambdaRuntimeApi.html" title="interface in io.micronaut.function.aws.runtime">AwsLambdaRuntimeApi</a></dt>
@@ -2245,6 +2267,8 @@ it adds an HTTP Header User-Agent.</div>
 <dd>
 <div class="block">Classes related to distributed configuration coming from AWS Services.</div>
 </dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/package-summary.html">io.micronaut.aws.distributedconfiguration.imports</a> - package io.micronaut.aws.distributedconfiguration.imports</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/info/package-summary.html">io.micronaut.aws.info</a> - package io.micronaut.aws.info</dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/lambda/events/package-summary.html">io.micronaut.aws.lambda.events</a> - package io.micronaut.aws.lambda.events</dt>
@@ -2315,6 +2339,8 @@ it adds an HTTP Header User-Agent.</div>
 <dd>
 <div class="block">Integration classes for AWS Secrets Manager.</div>
 </dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/package-summary.html">io.micronaut.aws.secretsmanager.imports</a> - package io.micronaut.aws.secretsmanager.imports</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/ua/package-summary.html">io.micronaut.aws.ua</a> - package io.micronaut.aws.ua</dt>
 <dd>
 <div class="block">Classes related with the generation of a <code>User-Agent</code> HTTP Header to use when communicating with AWS SDK.</div>
@@ -2323,6 +2349,8 @@ it adds an HTTP Header User-Agent.</div>
 <dd>
 <div class="block">Integration with AWS ParameterStore.</div>
 </dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/package-summary.html">io.micronaut.discovery.aws.parameterstore.imports</a> - package io.micronaut.discovery.aws.parameterstore.imports</dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/aws/servicediscovery/package-summary.html">io.micronaut.discovery.aws.servicediscovery</a> - package io.micronaut.discovery.aws.servicediscovery</dt>
 <dd>
 <div class="block">Integration with AWS service discovery.</div>
@@ -2592,6 +2620,10 @@ it adds an HTTP Header User-Agent.</div>
 </dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/Ssml.html#lang(java.lang.String,io.micronaut.aws.alexa.ssml.SupportedLang)" class="member-name-link">lang(String, SupportedLang)</a> - Method in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/LegacyConfigClientDeprecationLogger.html" class="type-name-link" title="class in io.micronaut.aws.distributedconfiguration.imports">LegacyConfigClientDeprecationLogger</a> - Class in <a href="io/micronaut/aws/distributedconfiguration/imports/package-summary.html">io.micronaut.aws.distributedconfiguration.imports</a></dt>
+<dd>
+<div class="block">Emits deprecation warnings once per backend.</div>
+</dd>
 <dt><a href="io/micronaut/aws/lambda/events/serde/LexEventSerde.html" class="type-name-link" title="class in io.micronaut.aws.lambda.events.serde">LexEventSerde</a> - Class in <a href="io/micronaut/aws/lambda/events/serde/package-summary.html">io.micronaut.aws.lambda.events.serde</a></dt>
 <dd>
 <div class="block"><code>SerdeImport</code> for <code>LexEvent</code>.</div>
@@ -2929,6 +2961,14 @@ Lambda deployment.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html#newApplicationContextBuilder()" class="member-name-link">newApplicationContextBuilder()</a> - Method in class io.micronaut.function.aws.proxy.payload2.<a href="io/micronaut/function/aws/proxy/payload2/APIGatewayV2HTTPEventFunction.html" title="class in io.micronaut.function.aws.proxy.payload2">APIGatewayV2HTTPEventFunction</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html#newImportDeclaration(io.micronaut.core.convert.value.ConvertibleValues,io.micronaut.retry.RetryPolicy)" class="member-name-link">newImportDeclaration(ConvertibleValues, RetryPolicy)</a> - Method in class io.micronaut.aws.secretsmanager.imports.<a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html#newImportDeclaration(io.micronaut.core.convert.value.ConvertibleValues,io.micronaut.retry.RetryPolicy)" class="member-name-link">newImportDeclaration(ConvertibleValues, RetryPolicy)</a> - Method in class io.micronaut.discovery.aws.parameterstore.imports.<a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html#newImportDeclaration(io.micronaut.core.util.ConnectionString,io.micronaut.retry.RetryPolicy)" class="member-name-link">newImportDeclaration(ConnectionString, RetryPolicy)</a> - Method in class io.micronaut.aws.secretsmanager.imports.<a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html#newImportDeclaration(io.micronaut.core.util.ConnectionString,io.micronaut.retry.RetryPolicy)" class="member-name-link">newImportDeclaration(ConnectionString, RetryPolicy)</a> - Method in class io.micronaut.discovery.aws.parameterstore.imports.<a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html#NEWS" class="member-name-link">NEWS</a> - Enum constant in enum class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/AmazonDomain.html" title="enum class in io.micronaut.aws.alexa.ssml">AmazonDomain</a></dt>
 <dd>
 <div class="block">Style the speech similar to what you hear when listening to the news on the radio or television (available in English (US) and English (AU)).</div>
@@ -2981,6 +3021,14 @@ resulting property source and associated priority.</div>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html#%3Cinit%3E(java.lang.String,java.lang.String,int,boolean)" class="member-name-link">ParameterQuery(String, String, int, boolean)</a> - Constructor for class io.micronaut.discovery.aws.parameterstore.<a href="io/micronaut/discovery/aws/parameterstore/ParameterQuery.html" title="class in io.micronaut.discovery.aws.parameterstore">ParameterQuery</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" class="type-name-link" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a> - Class in <a href="io/micronaut/discovery/aws/parameterstore/imports/package-summary.html">io.micronaut.discovery.aws.parameterstore.imports</a></dt>
+<dd>
+<div class="block">Property source importer for AWS Parameter Store.</div>
+</dd>
+<dt><a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html#%3Cinit%3E()" class="member-name-link">ParameterStorePropertySourceImporter()</a> - Constructor for class io.micronaut.discovery.aws.parameterstore.imports.<a href="io/micronaut/discovery/aws/parameterstore/imports/ParameterStorePropertySourceImporter.html" title="class in io.micronaut.discovery.aws.parameterstore.imports">ParameterStorePropertySourceImporter</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
 <dt><a href="io/micronaut/function/aws/runtime/AbstractMicronautLambdaRuntime.html#parseHandlerClass(java.lang.String)" class="member-name-link">parseHandlerClass(String)</a> - Method in class io.micronaut.function.aws.runtime.<a href="io/micronaut/function/aws/runtime/AbstractMicronautLambdaRuntime.html" title="class in io.micronaut.function.aws.runtime">AbstractMicronautLambdaRuntime</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="io/micronaut/function/aws/proxy/ApiGatewayServletRequest.html#parseMethod(java.util.function.Supplier)" class="member-name-link">parseMethod(Supplier)</a> - Static method in class io.micronaut.function.aws.proxy.<a href="io/micronaut/function/aws/proxy/ApiGatewayServletRequest.html" title="class in io.micronaut.function.aws.proxy">ApiGatewayServletRequest</a></dt>
@@ -3333,6 +3381,14 @@ resulting property source and associated priority.</div>
 </dd>
 <dt><a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html#%3Cinit%3E(software.amazon.awssdk.services.secretsmanager.SecretsManagerClient,io.micronaut.json.JsonMapper)" class="member-name-link">SecretsManagerKeyValueFetcher(SecretsManagerClient, JsonMapper)</a> - Constructor for class io.micronaut.aws.secretsmanager.<a href="io/micronaut/aws/secretsmanager/SecretsManagerKeyValueFetcher.html" title="class in io.micronaut.aws.secretsmanager">SecretsManagerKeyValueFetcher</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" class="type-name-link" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a> - Class in <a href="io/micronaut/aws/secretsmanager/imports/package-summary.html">io.micronaut.aws.secretsmanager.imports</a></dt>
+<dd>
+<div class="block">Property source importer for AWS Secrets Manager.</div>
+</dd>
+<dt><a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html#%3Cinit%3E()" class="member-name-link">SecretsManagerPropertySourceImporter()</a> - Constructor for class io.micronaut.aws.secretsmanager.imports.<a href="io/micronaut/aws/secretsmanager/imports/SecretsManagerPropertySourceImporter.html" title="class in io.micronaut.aws.secretsmanager.imports">SecretsManagerPropertySourceImporter</a></dt>
+<dd>
+<div class="block">Default constructor.</div>
+</dd>
 <dt><a href="io/micronaut/aws/lambda/events/serde/SecretsManagerRotationEventSerde.html" class="type-name-link" title="class in io.micronaut.aws.lambda.events.serde">SecretsManagerRotationEventSerde</a> - Class in <a href="io/micronaut/aws/lambda/events/serde/package-summary.html">io.micronaut.aws.lambda.events.serde</a></dt>
 <dd>
 <div class="block"><code>SerdeImport</code> for <code>SecretsManagerRotationEvent</code>.</div>
@@ -4205,6 +4261,10 @@ past or future, of the current system time.</div>
 <dl class="index">
 <dt><a href="io/micronaut/aws/alexa/ssml/Ssml.html#w(java.lang.String,io.micronaut.aws.alexa.ssml.WordRole)" class="member-name-link">w(String, WordRole)</a> - Method in class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/Ssml.html" title="class in io.micronaut.aws.alexa.ssml">Ssml</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="io/micronaut/aws/distributedconfiguration/imports/LegacyConfigClientDeprecationLogger.html#warn(org.slf4j.Logger,java.lang.String,java.lang.String)" class="member-name-link">warn(Logger, String, String)</a> - Static method in class io.micronaut.aws.distributedconfiguration.imports.<a href="io/micronaut/aws/distributedconfiguration/imports/LegacyConfigClientDeprecationLogger.html" title="class in io.micronaut.aws.distributedconfiguration.imports">LegacyConfigClientDeprecationLogger</a></dt>
+<dd>
+<div class="block">Log the warning only once for the given key.</div>
+</dd>
 <dt><a href="io/micronaut/aws/alexa/ssml/BreakStrength.html#WEAK" class="member-name-link">WEAK</a> - Enum constant in enum class io.micronaut.aws.alexa.ssml.<a href="io/micronaut/aws/alexa/ssml/BreakStrength.html" title="enum class in io.micronaut.aws.alexa.ssml">BreakStrength</a></dt>
 <dd>
 <div class="block">Treat adjacent words as if separated by a single comma (equivalent to medium).</div>
