@@ -21,7 +21,8 @@ import io.micronaut.core.convert.ConversionService;
 import io.micronaut.http.bind.DefaultRequestBinderRegistry;
 import io.micronaut.http.bind.binders.DefaultBodyAnnotationBinder;
 import io.micronaut.http.bind.binders.RequestArgumentBinder;
-import io.micronaut.http.codec.MediaTypeCodecRegistry;
+import io.micronaut.http.body.MessageBodyHandlerRegistry;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.servlet.http.ServletBinderRegistry;
 import jakarta.inject.Singleton;
 
@@ -30,14 +31,15 @@ import java.util.List;
 @Singleton
 @Internal
 @Replaces(DefaultRequestBinderRegistry.class)
-class ApiGatewayBinderRegistry<T> extends ServletBinderRegistry<T> {
+final class ApiGatewayBinderRegistry<T> extends ServletBinderRegistry<T> {
 
     ApiGatewayBinderRegistry(
-        MediaTypeCodecRegistry mediaTypeCodecRegistry,
+        MessageBodyHandlerRegistry messageBodyHandlerRegistry,
         ConversionService conversionService,
         List<RequestArgumentBinder> binders,
-        DefaultBodyAnnotationBinder<T> defaultBodyAnnotationBinder
+        DefaultBodyAnnotationBinder<T> defaultBodyAnnotationBinder,
+        JsonMapper jsonMapper
     ) {
-        super(mediaTypeCodecRegistry, conversionService, binders, defaultBodyAnnotationBinder);
+        super(messageBodyHandlerRegistry, conversionService, binders, defaultBodyAnnotationBinder, jsonMapper);
     }
 }
