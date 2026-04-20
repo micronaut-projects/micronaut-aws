@@ -57,7 +57,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
-<li><a href="#%3Cinit%3E(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.jackson.codec.JsonMediaTypeCodec,java.util.concurrent.ExecutorService)" tabindex="0">AWSLambdaFunctionExecutor(AWSLambdaAsync, ByteBufferFactory, JsonMediaTypeCodec, ExecutorService)</a></li>
+<li><a href="#%3Cinit%3E(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.json.JsonMapper,java.util.concurrent.ExecutorService)" tabindex="0">AWSLambdaFunctionExecutor(AWSLambdaAsync, ByteBufferFactory, JsonMapper, ExecutorService)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -114,9 +114,9 @@ implements io.micronaut.function.client.FunctionInvoker&lt;I,<wbr>O&gt;, io.micr
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.jackson.codec.JsonMediaTypeCodec,java.util.concurrent.ExecutorService)" class="member-name-link">AWSLambdaFunctionExecutor</a><wbr>(com.amazonaws.services.lambda.AWSLambdaAsync&nbsp;asyncClient,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.json.JsonMapper,java.util.concurrent.ExecutorService)" class="member-name-link">AWSLambdaFunctionExecutor</a><wbr>(com.amazonaws.services.lambda.AWSLambdaAsync&nbsp;asyncClient,
  io.micronaut.core.io.buffer.ByteBufferFactory&nbsp;byteBufferFactory,
- io.micronaut.jackson.codec.JsonMediaTypeCodec&nbsp;jsonMediaTypeCodec,
+ io.micronaut.json.JsonMapper&nbsp;jsonMapper,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ExecutorService</a>&nbsp;ioExecutor)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor.</div>
@@ -161,12 +161,12 @@ implements io.micronaut.function.client.FunctionInvoker&lt;I,<wbr>O&gt;, io.micr
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.jackson.codec.JsonMediaTypeCodec,java.util.concurrent.ExecutorService)">
+<section class="detail" id="&lt;init&gt;(com.amazonaws.services.lambda.AWSLambdaAsync,io.micronaut.core.io.buffer.ByteBufferFactory,io.micronaut.json.JsonMapper,java.util.concurrent.ExecutorService)">
 <h3>AWSLambdaFunctionExecutor</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">AWSLambdaFunctionExecutor</span><wbr><span class="parameters">(com.amazonaws.services.lambda.AWSLambdaAsync&nbsp;asyncClient,
  io.micronaut.core.io.buffer.ByteBufferFactory&nbsp;byteBufferFactory,
- io.micronaut.jackson.codec.JsonMediaTypeCodec&nbsp;jsonMediaTypeCodec,
+ io.micronaut.json.JsonMapper&nbsp;jsonMapper,
  @Named("io")
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ExecutorService</a>&nbsp;ioExecutor)</span></div>
 <div class="block">Constructor.</div>
@@ -174,7 +174,7 @@ implements io.micronaut.function.client.FunctionInvoker&lt;I,<wbr>O&gt;, io.micr
 <dt>Parameters:</dt>
 <dd><code>asyncClient</code> - asyncClient</dd>
 <dd><code>byteBufferFactory</code> - byteBufferFactory</dd>
-<dd><code>jsonMediaTypeCodec</code> - jsonMediaTypeCodec</dd>
+<dd><code>jsonMapper</code> - jsonMapper</dd>
 <dd><code>ioExecutor</code> - ioExecutor</dd>
 </dl>
 </div>
