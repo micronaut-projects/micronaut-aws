@@ -15,7 +15,7 @@ micronaut-security = "5.0.0-M1"
 micronaut-serde = "3.0.0-M7"
 micronaut-servlet = "6.0.0-M3"
 micronaut-views = "6.0.0-M1"
-micronaut-validation = "5.0.0-M1"
+micronaut-validation = "5.0.0-M2"
 
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
