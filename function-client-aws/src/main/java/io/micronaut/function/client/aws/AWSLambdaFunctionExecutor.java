@@ -105,7 +105,12 @@ public class AWSLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
                 });
             })
                     .map(invokeResult -> decodeResult(definition, (Argument<O>) outputType.getFirstTypeVariable().orElse(Argument.OBJECT_ARGUMENT), invokeResult))
-                    .onErrorResume(throwable -> Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable)))
+                    .onErrorResume(throwable -> {
+                        if (throwable instanceof FunctionExecutionException) {
+                            return Mono.error(throwable);
+                        }
+                        return Mono.error(new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + throwable.getMessage(), throwable));
+                    })
                     .subscribeOn(Schedulers.fromExecutor(ioExecutor));
 
             return ConversionService.SHARED.convert(invokeFlowable, outputType).orElseThrow(() -> new IllegalArgumentException("Unsupported Reactive type: " + outputType));
