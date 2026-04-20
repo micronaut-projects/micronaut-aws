@@ -132,12 +132,12 @@ public class AwsLambdaFunctionExecutor<I, O> implements FunctionInvoker<I, O>, F
             throw new FunctionExecutionException("Error executing AWS Lambda [" + definition.getName() + "]: " + invokeResult.functionError());
         }
         io.micronaut.core.io.buffer.ByteBuffer<?> byteBuffer = byteBufferFactory.copiedBuffer(invokeResult.payload().asByteArray());
-
-        if (byteBuffer.readableBytes() == 0) {
+        byte[] byteArray = byteBuffer.toByteArray();
+        if (byteArray.length == 0) {
             return null;
         }
         try {
-            return jsonMapper.readValue(byteBuffer.toByteArray(), outputType);
+            return jsonMapper.readValue(byteArray, outputType);
         } catch (IOException e) {
             throw new FunctionExecutionException("Error decoding AWS Lambda [" + definition.getName() + "] response body: " + e.getMessage(), e);
         }
