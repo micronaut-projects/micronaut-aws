@@ -145,7 +145,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
                 if (!values.isEmpty()) {
                     // Unlike query parameters, Micronaut only takes one value per key in a body request
-                    String first = values.getFirst();
+                    String first = values.get(0);
                     // This mirrors Micronaut's default binding behavior:
                     // If there is only one value, try to convert it to a List<String>.
                     // This triggers the StringToIterableConverter, unless overridden, which splits on commas.
