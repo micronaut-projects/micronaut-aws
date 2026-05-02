@@ -23,7 +23,11 @@ import io.micronaut.test.annotation.TransactionMode;
 import io.micronaut.test.condition.TestActiveCondition;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation that can be applied to any JUnit 5 test to enable testing
