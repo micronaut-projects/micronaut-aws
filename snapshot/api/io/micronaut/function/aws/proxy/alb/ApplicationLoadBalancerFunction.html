@@ -67,6 +67,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#handleRequest(com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent,com.amazonaws.services.lambda.runtime.Context)" tabindex="0">handleRequest(ApplicationLoadBalancerRequestEvent, Context)</a></li>
 <li><a href="#newApplicationContextBuilder()" tabindex="0">newApplicationContextBuilder()</a></li>
+<li><a href="#close()" tabindex="0">close()</a></li>
 </ol>
 </li>
 </ol>
@@ -151,19 +152,22 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;com.amazonaws
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleRequest(com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent,com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">handleRequest</a><wbr>(com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent&nbsp;input,
- com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @NonNull io.micronaut.context.ApplicationContextBuilder</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newApplicationContextBuilder()" class="member-name-link">newApplicationContextBuilder</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleRequest(com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent,com.amazonaws.services.lambda.runtime.Context)" class="member-name-link">handleRequest</a><wbr>(com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent&nbsp;input,
+ com.amazonaws.services.lambda.runtime.Context&nbsp;context)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected @NonNull io.micronaut.context.ApplicationContextBuilder</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newApplicationContextBuilder()" class="member-name-link">newApplicationContextBuilder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.function.executor.FunctionInitializer">Methods inherited from class&nbsp;io.micronaut.function.executor.FunctionInitializer</h3>
-<code>close, injectThis, run, startThis</code></div>
+<code>injectThis, run, startThis</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-io.micronaut.function.executor.AbstractExecutor">Methods inherited from class&nbsp;io.micronaut.function.executor.AbstractExecutor</h3>
 <code>buildApplicationContext, getApplicationContext, resolveFunction, resolveFunctionName, startEnvironment</code></div>
@@ -226,6 +230,22 @@ implements com.amazonaws.services.lambda.runtime.RequestHandler&lt;com.amazonaws
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code>newApplicationContextBuilder</code>&nbsp;in class&nbsp;<code>io.micronaut.function.executor.AbstractExecutor</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="close()">
+<h3>close</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">close</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html#close()" title="class or interface in java.lang" class="external-link">close</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/AutoCloseable.html" title="class or interface in java.lang" class="external-link">AutoCloseable</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Closeable.html#close()" title="class or interface in java.io" class="external-link">close</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Closeable.html" title="class or interface in java.io" class="external-link">Closeable</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code>close</code>&nbsp;in class&nbsp;<code>io.micronaut.function.executor.FunctionInitializer</code></dd>
 </dl>
 </div>
 </section>
