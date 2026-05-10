@@ -35,6 +35,7 @@ import io.micronaut.servlet.http.ServletHttpHandler;
 public class ApplicationLoadBalancerFunction extends FunctionInitializer implements
     RequestHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> {
     private final ServletHttpHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> httpHandler;
+    private Thread shutdownHook;
 
     public ApplicationLoadBalancerFunction() {
         httpHandler = initializeHandler();
@@ -48,9 +49,8 @@ public class ApplicationLoadBalancerFunction extends FunctionInitializer impleme
 
     private ServletHttpHandler<ApplicationLoadBalancerRequestEvent, ApplicationLoadBalancerResponseEvent> initializeHandler() {
         ApplicationLoadBalancerHandler applicationLoadBalancerHandler = new ApplicationLoadBalancerHandler(applicationContext);
-        Runtime.getRuntime().addShutdownHook(
-            new Thread(applicationLoadBalancerHandler::close)
-        );
+        shutdownHook = new Thread(applicationLoadBalancerHandler::close);
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
         return applicationLoadBalancerHandler;
     }
 
@@ -64,5 +64,27 @@ public class ApplicationLoadBalancerFunction extends FunctionInitializer impleme
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         return new LambdaApplicationContextBuilder();
+    }
+
+    @Override
+    public void close() {
+        removeShutdownHook();
+        if (closeContext) {
+            super.close();
+        } else {
+            httpHandler.close();
+        }
+    }
+
+    private void removeShutdownHook() {
+        Thread hook = shutdownHook;
+        if (hook != null) {
+            try {
+                Runtime.getRuntime().removeShutdownHook(hook);
+            } catch (IllegalStateException ignored) {
+                // The JVM is already shutting down, so the hook cannot be removed.
+            }
+            shutdownHook = null;
+        }
     }
 }

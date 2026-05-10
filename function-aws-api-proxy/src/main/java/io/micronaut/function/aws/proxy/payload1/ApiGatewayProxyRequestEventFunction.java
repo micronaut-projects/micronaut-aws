@@ -34,6 +34,7 @@ public class ApiGatewayProxyRequestEventFunction extends FunctionInitializer imp
     RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private final ServletHttpHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> httpHandler;
+    private Thread shutdownHook;
 
     public ApiGatewayProxyRequestEventFunction() {
         httpHandler = initializeHandler();
@@ -47,9 +48,8 @@ public class ApiGatewayProxyRequestEventFunction extends FunctionInitializer imp
 
     private ServletHttpHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> initializeHandler() {
         ApiGatewayProxyEventHandler apiGatewayProxyEventHandler = new ApiGatewayProxyEventHandler(applicationContext);
-        Runtime.getRuntime().addShutdownHook(
-            new Thread(apiGatewayProxyEventHandler::close)
-        );
+        shutdownHook = new Thread(apiGatewayProxyEventHandler::close);
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
         return apiGatewayProxyEventHandler;
     }
 
@@ -63,5 +63,27 @@ public class ApiGatewayProxyRequestEventFunction extends FunctionInitializer imp
     @Override
     protected ApplicationContextBuilder newApplicationContextBuilder() {
         return new LambdaApplicationContextBuilder();
+    }
+
+    @Override
+    public void close() {
+        removeShutdownHook();
+        if (closeContext) {
+            super.close();
+        } else {
+            httpHandler.close();
+        }
+    }
+
+    private void removeShutdownHook() {
+        Thread hook = shutdownHook;
+        if (hook != null) {
+            try {
+                Runtime.getRuntime().removeShutdownHook(hook);
+            } catch (IllegalStateException ignored) {
+                // The JVM is already shutting down, so the hook cannot be removed.
+            }
+            shutdownHook = null;
+        }
     }
 }
