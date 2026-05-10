@@ -62,6 +62,9 @@ class AwsProxyHttpHandler implements HttpHandler {
         String contentLengthObject = apiGatewayV2HTTPResponse.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
         int contentLength = StringUtils.isNotEmpty(contentLengthObject) ? Integer.parseInt(contentLengthObject) : 0;
         for (String headerName : apiGatewayV2HTTPResponse.getHeaders().keySet()) {
+            if (HttpHeaders.CONTENT_LENGTH.equalsIgnoreCase(headerName)) {
+                continue;
+            }
             String headerValue = apiGatewayV2HTTPResponse.getHeaders().get(headerName);
             List<String> headerValues = List.of(headerValue.split(","));
             httpExchange.getResponseHeaders().put(headerName, StringUtils.isEmpty(headerValue) ? Collections.emptyList() : headerValues);
