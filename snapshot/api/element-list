@@ -14,6 +14,7 @@ io.micronaut.aws.apigateway
 io.micronaut.aws.cloudwatch.logging
 io.micronaut.aws.distributedconfiguration
 io.micronaut.aws.distributedconfiguration.imports
+io.micronaut.aws.info
 io.micronaut.aws.lambda.events
 io.micronaut.aws.lambda.events.serde
 io.micronaut.aws.lambda.events.tests
