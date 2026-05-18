@@ -24,7 +24,6 @@ managed-aws-lambda = '1.4.0'
 managed-aws-lambda-events = '3.16.1'
 managed-aws-lambda-java-serialization = '1.4.0'
 aws-lambda-java-runtime-interface-client = '2.10.1'
-managed-aws-serverless-core = '1.9.3'
 micronaut-starter = "4.10.12"
 slf4j = "2.0.17"
 servlet-api = "2.5"
