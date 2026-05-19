@@ -14,7 +14,7 @@ micronaut-reactor = "4.0.0"
 micronaut-serde = "3.0.0"
 micronaut-servlet = "6.0.0"
 micronaut-security = "5.0.0"
-micronaut-views = "6.0.0-RC1"
+micronaut-views = "6.0.0"
 micronaut-validation = "5.0.0"
 
 managed-alexa-ask-sdk = "2.86.0"
