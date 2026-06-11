@@ -16,7 +16,7 @@ dependencies {
             because("Require a non-vulnerable jackson-core version instead of the transitive version")
         }
         // "com.amazon.alexa:ask-sdk-lambda-support 2.86.0 requests commons-io:commons-io:2.7 which is affected by GHSA-78wr-2p64-hpwj"
-        api("commons-io:commons-io:2.14.0") {
+        api("commons-io:commons-io:2.22.0") {
             because("Require a non-vulnerable commons-io")
         }
     }
