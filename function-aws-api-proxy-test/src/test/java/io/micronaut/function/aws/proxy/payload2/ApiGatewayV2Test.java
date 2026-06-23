@@ -232,8 +232,7 @@ public class ApiGatewayV2Test {
                 "value3"
             ),
             List.of(
-                "value1",
-                "value2"
+                "value1,value2"
             )
         ),
         new QueryStringValues<>(
@@ -249,8 +248,7 @@ public class ApiGatewayV2Test {
                 "value3"
             ),
             List.of(
-                "value1",
-                "value2"
+                "value1,value2"
             )
         ),
         // In this case, since the parameter key is only used once, Micronaut assumes by default that the comma is a
@@ -267,8 +265,7 @@ public class ApiGatewayV2Test {
                 "value2"
             ),
             List.of(
-                "value1",
-                "value2"
+                "value1,value2"
             )
         ),
         // In this case, since the parameter key is only used once, Micronaut assumes by default that the comma is a
@@ -285,8 +282,7 @@ public class ApiGatewayV2Test {
                 "value2"
             ),
             List.of(
-                "value1",
-                "value2"
+                "value1,value2"
             )
         ),
         new QueryStringValues<>(
