@@ -31,7 +31,7 @@ javapoet = "1.13.0"
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "25.0.3"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 
 # Micronaut
 micronaut-gradle-plugin = "5.0.0-M1"
