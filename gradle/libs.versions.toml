@@ -6,7 +6,7 @@ bouncycastle = '1.70'
 fileupload = '0.0.8'
 logback-json-classic = '0.1.5'
 
-micronaut-data = "4.14.2"
+micronaut-data = "5.0.4"
 micronaut-discovery = "5.1.0"
 micronaut-groovy = "5.1.0"
 micronaut-logging = "2.1.0"
