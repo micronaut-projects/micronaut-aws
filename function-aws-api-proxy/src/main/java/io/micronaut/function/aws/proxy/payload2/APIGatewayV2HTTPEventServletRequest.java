@@ -21,7 +21,6 @@ import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.CollectionUtils;
-import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
 import io.micronaut.function.aws.proxy.MapListOfStringAndMapStringMutableHttpParameters;
@@ -146,13 +145,16 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
                 if (!values.isEmpty()) {
                     // Unlike query parameters, Micronaut only takes one value per key in a body request
                     String first = values.get(0);
-                    // This mirrors Micronaut's default binding behavior:
+                    List<String> converted = Collections.singletonList(first);
+
+                    // This mirrors Micronaut v4's default binding behavior:
                     // If there is only one value, try to convert it to a List<String>.
                     // This triggers the StringToIterableConverter, unless overridden, which splits on commas.
-                    List<String> converted = conversionService.convert(
-                        first,
-                        Argument.listOf(String.class)
-                    ).orElse(values);
+                    //List<String> converted = conversionService.convert(
+                    //    first,
+                    //    Argument.listOf(String.class)
+                    //).orElse(values);
+
                     parameters.put(name, converted);
                 }
             }
