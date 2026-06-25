@@ -24,7 +24,7 @@ managed-aws-lambda = '1.4.0'
 managed-aws-lambda-events = '3.16.1'
 managed-aws-lambda-java-serialization = '1.4.1'
 aws-lambda-java-runtime-interface-client = '2.10.1'
-slf4j = "2.0.17"
+slf4j = "2.0.18"
 servlet-api = "2.5"
 javapoet = "1.13.0"
 
