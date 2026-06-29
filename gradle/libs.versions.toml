@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.0.0"
+micronaut = "5.1.2"
 micronaut-test = "5.0.0"
 
 bouncycastle = '1.70'
@@ -10,10 +10,10 @@ micronaut-discovery = "5.0.0"
 micronaut-groovy = "5.0.0"
 micronaut-logging = "2.0.0"
 micronaut-mongodb = "6.0.1"
-micronaut-reactor = "4.0.0"
+micronaut-reactor = "4.1.0"
 micronaut-serde = "3.0.0"
 micronaut-servlet = "6.0.0"
-micronaut-security = "5.0.0"
+micronaut-security = "5.2.0"
 micronaut-views = "6.0.0"
 micronaut-validation = "5.0.0"
 
@@ -34,7 +34,7 @@ graal = "25.0.3"
 kotlin = "2.3.21"
 
 # Micronaut
-micronaut-gradle-plugin = "5.0.0-M1"
+micronaut-gradle-plugin = "5.0.1"
 
 [libraries]
 # Core
