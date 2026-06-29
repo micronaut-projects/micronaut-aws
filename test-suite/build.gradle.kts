@@ -6,6 +6,7 @@ plugins {
 dependencies {
     testImplementation(projects.micronautFunctionAws)
     testImplementation(projects.micronautFunctionClientAwsV2)
+    testRuntimeOnly(libs.awssdk.url.connection.client)
 }
 
 tasks {

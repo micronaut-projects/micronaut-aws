@@ -20,5 +20,6 @@ dependencies {
     testImplementation(libs.testcontainers.spock)
     testImplementation(libs.awssdk.iam)
     testImplementation(projects.testSuiteUtils)
+    testRuntimeOnly(libs.awssdk.url.connection.client)
 }
 

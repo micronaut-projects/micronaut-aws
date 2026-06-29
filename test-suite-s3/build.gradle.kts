@@ -18,4 +18,5 @@ dependencies {
     testImplementation(mn.micronaut.http.client)
     testImplementation(mnTest.junit.jupiter.params)
     testImplementation(projects.testSuiteUtils)
+    testRuntimeOnly(libs.awssdk.url.connection.client)
 }
