@@ -21,9 +21,4 @@ dependencies {
     testImplementation(libs.awssdk.iam)
     testImplementation(projects.testSuiteUtils)
 }
-micronautBuild {
-    // new module, so no binary check
-    binaryCompatibility {
-        enabled.set(false)
-    }
-}
+
