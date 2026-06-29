@@ -11,6 +11,9 @@ dependencies {
     compileOnly(mnSecurity.micronaut.security)
     testImplementation(mn.micronaut.jackson.databind)
     testImplementation(mnViews.micronaut.views.handlebars)
+    implementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
+    testAnnotationProcessor(mn.micronaut.inject.java)
 }
 
 spotless {
