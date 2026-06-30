@@ -1,6 +1,8 @@
 package io.micronaut.function.aws.proxy.payload1
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import io.micronaut.core.convert.ConversionContext
+import io.micronaut.core.convert.ConversionService
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest
 import spock.lang.Specification
 
@@ -29,12 +31,14 @@ class ApiGatewayProxyServletRequestSpec extends Specification {
         request.setHttpMethod("GET")
 
         when:
-        ApiGatewayProxyServletRequest servletRequest = new ApiGatewayProxyServletRequest(request, null, null, null)
+        ApiGatewayProxyServletRequest servletRequest = new ApiGatewayProxyServletRequest(request, null, ConversionService.SHARED, null)
 
         then:
         servletRequest
         "Bar" == servletRequest.getHeaders().get("Foo")
         ["Bar"] == servletRequest.getHeaders().getAll("Foo")
         ["value1", "value2", "value3"] == servletRequest.getHeaders().getAll("Key")
+        "value1" == servletRequest.getHeaders().get("Key", ConversionContext.STRING).get()
+        ["value1", "value2", "value3"] == servletRequest.getHeaders().get("Key", ConversionContext.LIST_OF_STRING).get()
     }
 }

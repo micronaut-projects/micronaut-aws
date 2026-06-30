@@ -370,7 +370,12 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
      */
     @NonNull
     protected MutableHttpHeaders getHeaders(@NonNull Supplier<Map<String, String>> singleHeaders, @NonNull Supplier<Map<String, List<String>>> multiValueHeaders) {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(multiValueHeaders.get(), singleHeaders.get()), conversionService);
+        Map<String, List<String>> multi = multiValueHeaders.get();
+        Map<String, List<String>> values = MapCollapseUtils.collapse(multi, singleHeaders.get());
+        if (CollectionUtils.isNotEmpty(multi)) {
+            return new MultiValueMutableHttpHeaders(values, conversionService);
+        }
+        return new CaseInsensitiveMutableHttpHeaders(values, conversionService);
     }
 
     public static final class EmptyBodyException extends IOException {

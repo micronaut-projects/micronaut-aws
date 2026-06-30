@@ -49,9 +49,11 @@ public final class AwsCookies implements Cookies {
      */
     public AwsCookies(String path, HttpHeaders headers, ConversionService conversionService) {
         this.conversionService = conversionService;
-        String value = headers.get(HttpHeaders.COOKIE);
-        if (value != null) {
-            List<Cookie> decodeCookies = ServerCookieDecoder.INSTANCE.decode(value);
+        List<String> values = headers.getAll(HttpHeaders.COOKIE);
+        if (!values.isEmpty()) {
+            List<Cookie> decodeCookies = values.stream()
+                .flatMap(value -> ServerCookieDecoder.INSTANCE.decode(value).stream())
+                .toList();
             cookies = new LinkedHashMap<>(decodeCookies.size());
             decodeCookies.stream()
                 .filter(cookie -> cookie.getPath() == null || path.startsWith(cookie.getPath()))
