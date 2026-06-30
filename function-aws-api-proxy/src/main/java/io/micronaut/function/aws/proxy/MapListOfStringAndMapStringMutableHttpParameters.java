@@ -73,10 +73,6 @@ public final class MapListOfStringAndMapStringMutableHttpParameters implements M
 
     @Override
     public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
-        final String v = get(name);
-        if (v != null) {
-            return values.getConversionService().convert(v, conversionContext);
-        }
-        return Optional.empty();
+        return values.get(name, conversionContext);
     }
 }

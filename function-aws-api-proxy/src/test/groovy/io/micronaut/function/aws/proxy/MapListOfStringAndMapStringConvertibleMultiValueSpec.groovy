@@ -1,6 +1,7 @@
 package io.micronaut.function.aws.proxy
 
 import io.micronaut.core.convert.ConversionService
+import io.micronaut.core.convert.ConversionContext
 import spock.lang.See
 import spock.lang.Specification
 
@@ -24,6 +25,27 @@ class MapListOfStringAndMapStringConvertibleMultiValueSpec extends Specification
         map.getAll('foo') == ['bar', 'baz']
         map.getAll('FOO') == ['bar', 'baz']
         map.get('foo') == 'bar'
+    }
+
+    void "typed conversion preserves multi values for iterable and array targets"() {
+        given:
+        def multi = ['foo': ['bar', 'baz']]
+        def map = new MapListOfStringAndMapStringConvertibleMultiValue(ConversionService.SHARED, multi, [:])
+
+        expect:
+        map.get('foo', ConversionContext.LIST_OF_STRING).get() == ['bar', 'baz']
+        map.get('foo', ConversionContext.of(String[].class)).get().toList() == ['bar', 'baz']
+        map.get('foo', ConversionContext.STRING).get() == 'bar'
+    }
+
+    void "mutable http parameters typed conversion preserves multi values for iterable targets"() {
+        given:
+        def multi = ['foo': ['bar', 'baz']]
+        def parameters = new MapListOfStringAndMapStringMutableHttpParameters(ConversionService.SHARED, multi, [:])
+
+        expect:
+        parameters.get('foo', ConversionContext.LIST_OF_STRING).get() == ['bar', 'baz']
+        parameters.get('foo', ConversionContext.STRING).get() == 'bar'
     }
 
     void "works with single maps"() {

@@ -18,13 +18,16 @@ package io.micronaut.function.aws.proxy.payload2;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.servlet.http.ServletHttpResponse;
 
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Implementation of {@link ServletHttpResponse} for AWS API Gateway Proxy.
@@ -46,7 +49,10 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
             .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
             .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
             .withStatusCode(status);
-
+        List<String> cookies = headers.getAll(HttpHeaders.SET_COOKIE);
+        if (CollectionUtils.isNotEmpty(cookies)) {
+            apiGatewayV2HTTPResponseBuilder.withCookies(cookies);
+        }
         if (binaryTypeConfiguration.isMediaTypeBinary(getHeaders().getContentType().orElse(null))) {
             apiGatewayV2HTTPResponseBuilder
                 .withIsBase64Encoded(true)

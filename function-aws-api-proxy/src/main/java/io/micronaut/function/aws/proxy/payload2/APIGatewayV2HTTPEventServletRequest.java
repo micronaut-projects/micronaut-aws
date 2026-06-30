@@ -19,7 +19,9 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.function.aws.proxy.ApiGatewayServletRequest;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpParameters;
 import io.micronaut.servlet.http.BodyBuilder;
@@ -29,6 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
@@ -72,7 +76,7 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return getHeaders(requestEvent::getHeaders, Collections::emptyMap);
+        return getHeaders(requestEvent::getHeaders, this::getCookieHeaders);
     }
 
     @Override
@@ -83,5 +87,12 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     @Override
     public ServletHttpResponse<APIGatewayV2HTTPResponse, ?> getResponse() {
         return response;
+    }
+
+    private Map<String, List<String>> getCookieHeaders() {
+        List<String> cookies = requestEvent.getCookies();
+        return CollectionUtils.isEmpty(cookies)
+            ? Collections.emptyMap()
+            : Map.of(HttpHeaders.COOKIE, cookies);
     }
 }
