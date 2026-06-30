@@ -10,6 +10,7 @@ import io.micronaut.function.aws.proxy.utils.MockContext;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
@@ -103,7 +104,6 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Test
     void allCookieHeadersInTheRequestAreCombinedWithCommasAndAddedToTheCookiesField() throws IOException {
         executeTest("/cookies", response -> {
-            assertEquals(200, response.getStatusCode());
             assertEquals(Set.of("cookie1=value1", "cookie2=value2"), Set.copyOf(response.getCookies()));
         });
     }
@@ -111,7 +111,6 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Test
     void duplicateHeadersAreCombinedWithCommas() throws IOException {
         executeTest("/duplicatedheaders", response -> {
-            assertEquals(200, response.getStatusCode());
             assertEquals("""
         {"header2":["value1","value2"]}""", response.getBody());
         });
@@ -120,7 +119,6 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Test
     void duplicateQueryStringsAreCombinedWithCommas () throws IOException {
         executeTest("/duplicateQueryStrings", response -> {
-            assertEquals(200, response.getStatusCode());
             assertEquals("""
         {"parameter1":["value1","value2"]}""", response.getBody());
         });
@@ -129,9 +127,15 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Test
     void singleValueQueryString() throws IOException {
         executeTest("/singleValueQueryString", response -> {
-            assertEquals(200, response.getStatusCode());
             assertEquals("""
         {"parameter2":["value"]}""", response.getBody());
+        });
+    }
+
+    @Test
+    void body() throws IOException {
+        executeTest("/body", response -> {
+            assertEquals("Hello from Lambda", response.getBody());
         });
     }
 
@@ -144,6 +148,7 @@ class APIGatewayV2HTTPEventFunctionTest {
             APIGatewayV2HTTPEvent input = jsonMapper.readValue(json, APIGatewayV2HTTPEvent.class);
             Context lambdaContext = new MockContext();
             APIGatewayV2HTTPResponse response = handler.handleRequest(input, lambdaContext);
+            assertEquals(200, response.getStatusCode());
             assertNotNull(response);
             responseConsumer.accept(response);
         }
@@ -152,6 +157,10 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Requires(property = "spec.name", value = "APIGatewayV2HTTPEventFunctionTest")
     @Controller
     static class DuplicatedHeadersController {
+        @Post("/body")
+        String body(@Body String body) {
+            return body;
+        }
 
         @Post("/cookies")
         HttpResponse<?> cookies(HttpRequest<?> request) {

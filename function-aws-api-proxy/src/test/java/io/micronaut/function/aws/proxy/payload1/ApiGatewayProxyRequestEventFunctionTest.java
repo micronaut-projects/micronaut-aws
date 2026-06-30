@@ -10,6 +10,7 @@ import io.micronaut.function.aws.proxy.utils.MockContext;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
@@ -137,6 +138,12 @@ class ApiGatewayProxyRequestEventFunctionTest {
         });
     }
 
+    @Test
+    void body() throws IOException {
+        executeTest("/body", response -> {
+            assertEquals("Hello from Lambda!", response.getBody());
+        });
+    }
     private static void executeTest(String path, Consumer<APIGatewayProxyResponseEvent> responseConsumer) throws IOException {
         Map<String, Object> config = Map.of("micronaut.security.enabled", StringUtils.FALSE, "spec.name", "ApiGatewayProxyRequestEventFunctionTest");
         ApplicationContext ctx = ApplicationContext.builder().properties(config).build();
@@ -154,6 +161,10 @@ class ApiGatewayProxyRequestEventFunctionTest {
     @Requires(property = "spec.name", value = "ApiGatewayProxyRequestEventFunctionTest")
     @Controller
     static class DuplicatedHeadersController {
+        @Post("/body")
+        String body(@Body String body) {
+            return body;
+        }
 
         @Post("/cookies")
         HttpResponse<?> cookies(HttpRequest<?> request) {
