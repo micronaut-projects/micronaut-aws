@@ -18,6 +18,7 @@ package io.micronaut.function.aws.proxy;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ArgumentConversionContext;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
@@ -50,7 +51,7 @@ public final class AwsCookies implements Cookies {
     public AwsCookies(String path, HttpHeaders headers, ConversionService conversionService) {
         this.conversionService = conversionService;
         List<String> values = headers.getAll(HttpHeaders.COOKIE);
-        if (!values.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(values)) {
             List<Cookie> decodeCookies = values.stream()
                 .flatMap(value -> ServerCookieDecoder.INSTANCE.decode(value).stream())
                 .toList();
