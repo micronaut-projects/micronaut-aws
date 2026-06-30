@@ -7,6 +7,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.proxy.utils.MockContext;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpResponse;
@@ -154,6 +155,25 @@ class APIGatewayV2HTTPEventFunctionTest {
         }
     }
 
+    @Test
+    void cookieHeaderSingleValueAccessPreservesAllCookies() throws IOException {
+        executeTest("/cookieHeader", response -> {
+            assertEquals("cookie1=value1; cookie2=value2", response.getBody());
+        });
+    }
+
+    @Test
+    void v2ResponseMissesCookieInHeader() throws IOException {
+        executeTest("/cookies", response -> {
+            assertEquals(Set.of("cookie1=value1", "cookie2=value2"), Set.copyOf(response.getCookies()));
+            List<String> cookies = response.getMultiValueHeaders().get(HttpHeaders.SET_COOKIE);
+            assertEquals(2, cookies.size());
+            assertTrue(cookies.contains("cookie1=value1"));
+            assertTrue(cookies.contains("cookie2=value2"));
+            assertEquals("cookie1=value1; cookie2=value2", response.getHeaders().get(HttpHeaders.SET_COOKIE));
+        });
+    }
+
     @Requires(property = "spec.name", value = "APIGatewayV2HTTPEventFunctionTest")
     @Controller
     static class DuplicatedHeadersController {
@@ -185,6 +205,11 @@ class APIGatewayV2HTTPEventFunctionTest {
         @Post("/singleValueQueryString")
         Map<String, Object> singleValueQueryString(@QueryValue List<String> parameter2) {
             return Map.of("parameter2", parameter2);
+        }
+
+        @Post("/cookieHeader")
+        String cookieHeader(@Header(HttpHeaders.COOKIE) String cookieHeader) {
+            return cookieHeader;
         }
     }
 }
