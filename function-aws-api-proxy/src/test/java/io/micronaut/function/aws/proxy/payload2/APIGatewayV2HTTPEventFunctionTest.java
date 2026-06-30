@@ -18,6 +18,7 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.cookie.Cookie;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.cookie.ServerCookieEncoder;
 import io.micronaut.json.JsonMapper;
 import org.junit.jupiter.api.Test;
 
@@ -156,9 +157,18 @@ class APIGatewayV2HTTPEventFunctionTest {
     }
 
     @Test
-    void cookieHeaderSingleValueAccessPreservesAllCookies() throws IOException {
+    void cookieHeaderSingleValueAccessPreservesAllCookiesWhenBindingCookies() throws IOException {
+        executeTest("/cookiesObject", response -> {
+            assertEquals("""
+                ["cookie1=value1","cookie2=value2"]""", response.getBody());
+        });
+    }
+
+    @Test
+    void cookieHeaderSingleValueAccessPreservesAllCookiesWhenBindingToHeader() throws IOException {
         executeTest("/cookieHeader", response -> {
-            assertEquals("cookie1=value1; cookie2=value2", response.getBody());
+            assertEquals("""
+                ["cookie1=value1","cookie2=value2"]""", response.getBody());
         });
     }
 
@@ -178,6 +188,13 @@ class APIGatewayV2HTTPEventFunctionTest {
     @Requires(property = "spec.name", value = "APIGatewayV2HTTPEventFunctionTest")
     @Controller
     static class DuplicatedHeadersController {
+
+        private final ServerCookieEncoder serverCookieEncoder;
+
+        DuplicatedHeadersController() {
+            this.serverCookieEncoder = ServerCookieEncoder.INSTANCE;
+        }
+
         @Post("/body")
         String body(@Body String body) {
             return body;
@@ -206,6 +223,11 @@ class APIGatewayV2HTTPEventFunctionTest {
         @Post("/singleValueQueryString")
         Map<String, Object> singleValueQueryString(@QueryValue List<String> parameter2) {
             return Map.of("parameter2", parameter2);
+        }
+
+        @Post("/cookiesObject")
+        List<String> cookiesObject(Cookies cookies) {
+            return serverCookieEncoder.encode(cookies.get("cookie1"), cookies.get("cookie2"));
         }
 
         @Post("/cookieHeader")
