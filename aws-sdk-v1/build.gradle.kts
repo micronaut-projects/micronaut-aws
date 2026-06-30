@@ -8,8 +8,8 @@ dependencies {
         exclude(group = "com.fasterxml.jackson.core", module = "jackson-core")
     }
     constraints {
-        // "com.amazonaws:aws-java-sdk-core 1.12.797 requests jackson-core 2.17.2, which is affected by GHSA-72hv-8253-57qq"
-        api("com.fasterxml.jackson.core:jackson-core:2.18.6") {
+        // "com.amazonaws:aws-java-sdk-core 1.12.797 requests jackson-core 2.17.2, which is affected by several CVEs"
+        api("com.fasterxml.jackson.core:jackson-core:2.18.8") {
             because("Require a non-vulnerable jackson-core version instead of the transitive version")
         }
     }
