@@ -1,6 +1,6 @@
 [versions]
 micronaut = "5.1.3"
-micronaut-test = "5.0.0"
+micronaut-test = "5.0.1"
 
 bouncycastle = '1.70'
 fileupload = '0.0.8'
