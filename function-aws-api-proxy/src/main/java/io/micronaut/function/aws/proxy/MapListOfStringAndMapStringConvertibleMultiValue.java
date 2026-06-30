@@ -75,11 +75,17 @@ class MapListOfStringAndMapStringConvertibleMultiValue implements ConvertibleMul
 
     @Override
     public <T> Optional<T> get(CharSequence name, ArgumentConversionContext<T> conversionContext) {
-        final String v = get(name);
-        if (v != null) {
-            return conversionService.convert(v, conversionContext);
+        List<String> valuesForName = getAll(name);
+        if (CollectionUtils.isEmpty(valuesForName)) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        Object value = isIterableOrArray(conversionContext) ? valuesForName : valuesForName.get(0);
+        return conversionService.convert(value, conversionContext);
+    }
+
+    private static boolean isIterableOrArray(ArgumentConversionContext<?> conversionContext) {
+        Class<?> type = conversionContext.getArgument().getType();
+        return type.isArray() || Iterable.class.isAssignableFrom(type);
     }
 
     @NonNull
