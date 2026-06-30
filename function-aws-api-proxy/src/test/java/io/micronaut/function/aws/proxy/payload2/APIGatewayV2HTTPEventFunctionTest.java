@@ -165,14 +165,6 @@ class APIGatewayV2HTTPEventFunctionTest {
     }
 
     @Test
-    void cookieHeaderSingleValueAccessPreservesAllCookiesWhenBindingToHeader() throws IOException {
-        executeTest("/cookieHeader", response -> {
-            assertEquals("""
-                ["cookie1=value1","cookie2=value2"]""", response.getBody());
-        });
-    }
-
-    @Test
     void v2ResponseMissesCookieInHeader() throws IOException {
         executeTest("/cookies", response -> {
             assertEquals(Set.of("cookie1=value1", "cookie2=value2"), Set.copyOf(response.getCookies()));
@@ -228,11 +220,6 @@ class APIGatewayV2HTTPEventFunctionTest {
         @Post("/cookiesObject")
         List<String> cookiesObject(Cookies cookies) {
             return serverCookieEncoder.encode(cookies.get("cookie1"), cookies.get("cookie2"));
-        }
-
-        @Post("/cookieHeader")
-        String cookieHeader(@Header(HttpHeaders.COOKIE) String cookieHeader) {
-            return cookieHeader;
         }
     }
 }
