@@ -56,6 +56,7 @@ micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-apache-client = { module = 'software.amazon.awssdk:apache-client' }
+awssdk-apache5-client = { module = 'software.amazon.awssdk:apache5-client' }
 awssdk-apigatewaymanagementapi = { module = 'software.amazon.awssdk:apigatewaymanagementapi' }
 awssdk-cloudwatchlogs = { module = 'software.amazon.awssdk:cloudwatchlogs'}
 awssdk-dynamodb = { module = 'software.amazon.awssdk:dynamodb' }

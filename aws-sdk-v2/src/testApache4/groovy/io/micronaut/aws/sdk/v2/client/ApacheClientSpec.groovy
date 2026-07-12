@@ -15,7 +15,7 @@ class ApacheClientSpec extends ApplicationContextSpecification {
         ]
     }
 
-    void "apache client can be configured"() {
+    void "the apache 4 client is the elected sync client and is configured via aws.apache-client"() {
         when:
         ApacheHttpClient client = applicationContext.getBean(SdkHttpClient) as ApacheHttpClient
 

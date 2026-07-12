@@ -9,6 +9,10 @@ To use the `URLConnection`-based client, you should exclude the other clients fr
     <exclusions>
         <exclusion>
             <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache5-client</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>software.amazon.awssdk</groupId>
             <artifactId>apache-client</artifactId>
         </exclusion>
         <exclusion>
@@ -27,6 +31,7 @@ To use the `URLConnection`-based client, you should exclude the other clients fr
 [source,groovy]
 ----
 implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache5-client"
     exclude group: "software.amazon.awssdk", module: "apache-client"
     exclude group: "software.amazon.awssdk", module: "netty-nio-client"
 }
@@ -37,11 +42,14 @@ Then, you can configure it with the following configuration properties:
 
 include::{includedir}configurationProperties/software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient$Builder.adoc[]
 
-If you don't exclude the other clients from the classpath, you still can configure which one is used by setting the
+If you don't exclude the other clients from the classpath, you can still influence which one is used by setting the
 following JVM system properties:
 
 * `software.amazon.awssdk.http.service.impl`. Possible values:
-** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` for the `URLConnection` based client.
-** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` for the Apache HTTP client (if in the classpath).
+** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` to force the `URLConnection` based client.
+** `software.amazon.awssdk.http.apache5.Apache5SdkHttpService` to use the Apache HttpClient 5.x client (if in the classpath).
+** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` to use the legacy Apache HttpClient 4.x client (if in the classpath).
++
+Only one sync HTTP client may be on the classpath; the AWS SDK fails if it finds more than one and no `software.amazon.awssdk.http.service.impl` is set.
 * `software.amazon.awssdk.http.async.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService` for the Netty client (if in the classpath).
