@@ -20,10 +20,13 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.ApplicationContextBuilder;
 import io.micronaut.context.ApplicationContextProvider;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.env.Environment;
 import io.micronaut.context.env.PropertySource;
 import io.micronaut.context.exceptions.ConfigurationException;
 import io.micronaut.core.annotation.Experimental;
 import io.micronaut.core.annotation.Internal;
+import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
@@ -31,12 +34,14 @@ import jakarta.inject.Singleton;
 @Experimental
 @Internal
 @Factory
+@Requires(notEnv = Environment.FUNCTION)
 class EmbeddedServerFactory {
 
     @Named("HttpServer")
     @Singleton
     ApplicationContextProvider httpServerApplicationContextProvider(ApplicationContext applicationContext) {
-        ApplicationContextBuilder builder = ApplicationContext.builder();
+        ApplicationContextBuilder builder = ApplicationContext.builder()
+            .environments(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA);
         for (PropertySource propertySource : applicationContext.getEnvironment().getPropertySources()) {
             builder = builder.propertySources(propertySource);
         }
