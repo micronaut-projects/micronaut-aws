@@ -2,14 +2,20 @@ package io.micronaut.function.aws.proxy.payload2;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import io.micronaut.context.ApplicationContextBuilder;
-import io.micronaut.context.env.Environment;
+import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.convert.DefaultMutableConversionService;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.model.Pageable;
-import io.micronaut.data.model.Sort;
-import io.micronaut.function.aws.MicronautLambdaContext;
 import io.micronaut.function.aws.proxy.MockLambdaContext;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpMethod;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
@@ -18,26 +24,29 @@ import io.micronaut.http.netty.NettyMutableHttpResponse;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.runtime.server.EmbeddedServer;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.scheduling.annotation.ExecuteOn;
-import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.rules.SecurityRule;
 import jakarta.validation.Valid;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test that a Lambda API Gateway returns the expected responses.
- * We're not running this as a @MicronautTest because APIGatewayV2HTTPEventFunction starts up its own ApplicationContext
+ * Test that a Lambda behind an AWS API Gateway V2 (or a Lambda function URL) returns the expected responses.
+ * <p>
+ * Most tests assert the same invariant: a controller must produce the same response whether the request reaches
+ * Micronaut directly (embedded server) or is first translated by API Gateway V2 into a payload format version 2.0
+ * event ({@link APIGatewayV2HTTPEvent}) and handled by {@link APIGatewayV2HTTPEventFunction}. This matters because
+ * API Gateway V2 combines duplicate query strings with commas in "queryStringParameters", so the Lambda handler must
+ * rely on "rawQueryString" to avoid misinterpreting values that legitimately contain commas.
+ *
  * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
  *     Payload format version 2.0
  *     </a>
@@ -45,56 +54,116 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *     AWS Lambda Test
  *     </a>
  */
-public class ApiGatewayV2Test {
+class ApiGatewayV2Test {
+
+    private static final String SPEC_NAME = "ApiGatewayV2Test";
 
     /**
-     * The APIGatewayV2HTTPEventFunction, as indicated as the MicronautFunction handler in LambdaConstruct.java
+     * A payload format version 2.0 event for a GET request, as AWS API Gateway V2 sends it.
+     * Parameters: 1) path, 2) rawQueryString, 3) queryStringParameters as a JSON object (or null).
      */
-    private static APIGatewayV2HTTPEventFunction handler;
+    private static final String GET_PAYLOAD_V2_JSON = """
+        {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "%1$s",
+          "rawQueryString": "%2$s",
+          "cookies": [
+            "cookie1",
+            "cookie2"
+          ],
+          "headers": {
+            "accept": "*/*",
+            "user-agent": "curl/8.7.1"
+          },
+          "queryStringParameters": %3$s,
+          "requestContext": {
+            "accountId": "123456789012",
+            "apiId": "api-id",
+            "domainName": "id.execute-api.us-east-1.amazonaws.com",
+            "domainPrefix": "id",
+            "http": {
+              "method": "GET",
+              "path": "%1$s",
+              "protocol": "HTTP/1.1",
+              "sourceIp": "192.0.2.1",
+              "userAgent": "curl/8.7.1"
+            },
+            "requestId": "id",
+            "routeKey": "$default",
+            "stage": "$default",
+            "time": "12/Mar/2020:19:03:58 +0000",
+            "timeEpoch": 1583348638390
+          },
+          "pathParameters": {
+            "parameter1": "value1"
+          },
+          "isBase64Encoded": false,
+          "stageVariables": {
+            "stageVariable1": "value1",
+            "stageVariable2": "value2"
+          }
+        }""";
 
-    @BeforeAll
-    public static void setupSpec() {
-        handler = new TestAPIGatewayV2HTTPEventFunction();
-    }
+    /**
+     * A payload format version 2.0 event for a form submission, as AWS API Gateway V2 sends it.
+     * Parameters: 1) path, 2) the "application/x-www-form-urlencoded" body.
+     */
+    private static final String FORM_POST_PAYLOAD_V2_JSON = """
+        {
+          "version": "2.0",
+          "routeKey": "$default",
+          "rawPath": "%1$s",
+          "rawQueryString": "",
+          "cookies": [
+            "cookie1",
+            "cookie2"
+          ],
+          "headers": {
+            "accept": "*/*",
+            "content-type": "application/x-www-form-urlencoded",
+            "user-agent": "curl/8.7.1"
+          },
+          "requestContext": {
+            "accountId": "123456789012",
+            "apiId": "api-id",
+            "domainName": "id.execute-api.us-east-1.amazonaws.com",
+            "domainPrefix": "id",
+            "http": {
+              "method": "POST",
+              "path": "%1$s",
+              "protocol": "HTTP/1.1",
+              "sourceIp": "192.0.2.1",
+              "userAgent": "curl/8.7.1"
+            },
+            "requestId": "id",
+            "routeKey": "$default",
+            "stage": "$default",
+            "time": "12/Mar/2020:19:03:58 +0000",
+            "timeEpoch": 1583348638390
+          },
+          "body": "%2$s",
+          "pathParameters": {
+            "parameter1": "value1"
+          },
+          "isBase64Encoded": false,
+          "stageVariables": {
+            "stageVariable1": "value1",
+            "stageVariable2": "value2"
+          }
+        }""";
 
-    @AfterAll
-    public static void cleanupSpec() {
-        handler.getApplicationContext().close();
-    }
-
-    // Custom handler that also includes the "test" environment
-    private static class TestAPIGatewayV2HTTPEventFunction extends APIGatewayV2HTTPEventFunction {
-        @Override
-        protected ApplicationContextBuilder newApplicationContextBuilder() {
-            ApplicationContextBuilder builder = super.newApplicationContextBuilder();
-            // We're overriding the builder so we can also include the "test" environment
-            builder.environments(
-                Environment.FUNCTION,
-                MicronautLambdaContext.ENVIRONMENT_LAMBDA,
-                Environment.TEST
-            );
-            builder.properties(Map.of(
-                //"micronaut.security.csrf.enabled", "false",
-                //"micronaut.server.cors.enabled", "false",
-                //"micronaut.security.csrf.filter.regex-pattern", "^(?!.*(/test/lambdaApiGateway/bodyParameters)).*$",
-                "micronaut.security.csrf.filter.enabled", "false"
-            ));
-            return builder;
-        }
-    }
-
-    @ExecuteOn(TaskExecutors.IO)
+    @Requires(property = "spec.name", value = SPEC_NAME)
     @Controller("/test/lambdaApiGateway")
-    public static class TestLambdaApiGatewayController {
-        @Secured(SecurityRule.IS_ANONYMOUS)
+    static class TestLambdaApiGatewayController {
+
         @Get("/sample")
-        public HttpResponse<?> sampleGet() {
+        HttpResponse<?> sampleGet() {
             return HttpResponse.ok("gotSampleLambdaValue-GET");
         }
 
-        @Secured(SecurityRule.IS_ANONYMOUS)
         @Get("/multiCookie")
-        public MutableHttpResponse<?> sampleMultiCookieGet() {
+        MutableHttpResponse<?> multiCookie() {
             NettyMutableHttpResponse<String> rsp = new NettyMutableHttpResponse<>(new DefaultMutableConversionService());
             rsp.cookie(new SimpleCookie("cookie-num-1", "cookie-val-1"));
             rsp.cookie(new SimpleCookie("cookie-num-2", "cookie-val-2"));
@@ -107,504 +176,366 @@ public class ApiGatewayV2Test {
             return rsp;
         }
 
-        @Secured(SecurityRule.IS_ANONYMOUS)
         @Get("/multiParameter")
-        public Map<String, Object> sampleMultiValueParameter(List<String> parameter1) {
+        Map<String, Object> multiParameter(List<String> parameter1) {
             return Map.of("parameter1", parameter1);
         }
 
-        @Secured(SecurityRule.IS_ANONYMOUS)
         @Get("/multiParameterNumeric")
-        public Map<String, Object> sampleMultiValueParameterNumeric(List<Integer> parameter1) {
+        Map<String, Object> multiParameterNumeric(List<Integer> parameter1) {
             return Map.of("parameter1", parameter1);
         }
 
-        @Secured(SecurityRule.IS_ANONYMOUS)
         @Post(value = "/bodyParameters", consumes = MediaType.APPLICATION_FORM_URLENCODED)
-        public Map<String, Object> sendPasswordResetLinkEmail(List<String> parameter1) {
+        Map<String, Object> bodyParameters(List<String> parameter1) {
             return Map.of("parameter1", parameter1);
         }
 
-        @Secured(SecurityRule.IS_ANONYMOUS)
         @Get("/pageableTest")
-        public Map<String, Object> getPageable(@Valid Pageable pageable) {
-            Sort sort = pageable.getSort();
-            List<Sort.Order> orderBy = sort.getOrderBy();
-            return Map.of(
-                "page", pageable.getNumber(),
-                "size", pageable.getSize(),
-                "sort", orderBy.stream()
-                    .map(order -> order.getProperty() + " " + order.getDirection())
-                    .collect(Collectors.toList())
-            );
+        Map<String, Object> pageable(@Valid Pageable pageable) {
+            // LinkedHashMap so the response body serializes with a deterministic key order
+            Map<String, Object> result = new LinkedHashMap<>();
+            result.put("page", pageable.getNumber());
+            result.put("size", pageable.getSize());
+            result.put("sort", pageable.getSort().getOrderBy().stream()
+                .map(order -> order.getProperty() + " " + order.getDirection())
+                .toList());
+            return result;
         }
     }
 
     @Test
-    public void testSimpleGetResponse() {
-        APIGatewayV2HTTPEvent request = new APIGatewayV2HTTPEvent();
-        request.setRequestContext(APIGatewayV2HTTPEvent.RequestContext.builder()
-            .withHttp(APIGatewayV2HTTPEvent.RequestContext.Http.builder()
-                .withPath("/test/lambdaApiGateway/sample")
-                .withMethod(HttpMethod.GET.toString())
-                .build()
-            ).build());
-        APIGatewayV2HTTPResponse response = handler.handleRequest(request, new MockLambdaContext());
-
-        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
-        assertEquals("gotSampleLambdaValue-GET", response.getBody());
+    void simpleGetRequest() throws IOException {
+        String eventJson = getEventJson("/test/lambdaApiGateway/sample", "", "null");
+        executeTest(eventJson, response ->
+            assertEquals("gotSampleLambdaValue-GET", response.getBody()));
     }
 
     /**
-     * Ensure that a response providing multiple cookies and headers still transmits more than one cookie in the Payload
-     * v2 response
+     * Ensure that a response providing multiple cookies and headers still transmits more than one cookie in the
+     * payload v2 response. In payload v2 format, "headers" is used, not "multiValueHeaders", and cookies belong in
+     * "cookies", not in a "Set-Cookie" header.
      */
     @Test
-    public void testMultipleCookieAndHeaderResponse() {
-        APIGatewayV2HTTPEvent request = new APIGatewayV2HTTPEvent();
-        request.setRequestContext(APIGatewayV2HTTPEvent.RequestContext.builder()
-            .withHttp(APIGatewayV2HTTPEvent.RequestContext.Http.builder()
-                .withPath("/test/lambdaApiGateway/multiCookie")
-                .withMethod(HttpMethod.GET.toString())
-                .build()
-            ).build());
-        APIGatewayV2HTTPResponse rsp2 = handler.handleRequest(request, new MockLambdaContext());
+    void multipleCookiesAndMultiValueHeadersInResponse() throws IOException {
+        String eventJson = getEventJson("/test/lambdaApiGateway/multiCookie", "", "null");
+        executeTest(eventJson, response -> {
+            Map<String, String> headers = response.getHeaders();
+            assertNotNull(headers);
 
-        assertEquals(HttpStatus.OK.getCode(), rsp2.getStatusCode());
+            // In v2, multi-value headers are combined with commas ("val1,val2"). In v1, "multiValueHeaders" was a
+            // Map<String, List<String>>.
+            assertEquals("multi-val-1,multi-val-2", headers.get("Super-Cool-Multi-Value-Header"));
 
-        // In Payload v2 format, "headers" is used, not "multiValueHeaders". And cookies should be in "cookies", not
-        // as a "Set-Cookie" header.
-        // See https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format
+            // In v2, cookies should be in "cookies", not as a "Set-Cookie" header
+            assertNull(headers.get(HttpHeaders.SET_COOKIE));
 
-        // Use "headers" not "multiValueHeaders" in v2 format
-        Map<String, String> headers = rsp2.getHeaders();
-        Assertions.assertNotNull(headers);
+            List<String> cookies = response.getCookies();
+            assertNotNull(cookies);
+            assertEquals(2, cookies.size());
+            assertTrue(cookies.get(0).contains("cookie-num-1=cookie-val-1"));
+            assertTrue(cookies.get(1).contains("cookie-num-2=cookie-val-2"));
 
-        String multiValueHeaderInV2Format = headers.get("Super-Cool-Multi-Value-Header");
-        // In v2, the format is "val1,val2". In v1, it was a Map<String, List<String>>.
-        Assertions.assertEquals("multi-val-1,multi-val-2", multiValueHeaderInV2Format);
-
-        // In v2, cookies should be in "cookies" not as a "Set-Cookie" header
-        Assertions.assertNull(headers.get(HttpHeaders.SET_COOKIE));
-
-        List<String> cookies = rsp2.getCookies();
-        Assertions.assertNotNull(cookies);
-        Assertions.assertEquals(2, cookies.size());
-        String cookie1 = cookies.get(0);
-        String cookie2 = cookies.get(1);
-
-        Assertions.assertTrue(cookie1.contains("cookie-num-1=cookie-val-1"));
-        Assertions.assertTrue(cookie2.contains("cookie-num-2=cookie-val-2"));
-
-        assertEquals("cookie-response-body",  rsp2.getBody());
+            assertEquals("cookie-response-body", response.getBody());
+        });
     }
 
     /**
-     * @param rawParameters
-     * @param queryStringParameters what AWS API Gateway V2 translates the "rawQueryString" into
-     * @param expectedValuesFromQueryString what we expect the controller to receive and respond with when the raw
-     *            parameters are provided in a query string. QueryStringDecoder is used, backed by a
-     *            {Map&lt;String, List&lt;String&gt;&gt;}. Repeated keys are preserved. Comma-splitting only occurs if
-     *            the key is only provided once.
-     * @param expectedValuesFromBodyString what we expect the controller to receive and respond with when the raw
-     *            parameters are provided in the request body. For "application/x-www-form-urlencoded", form bodies are
-     *            "parameter bags", not multi-maps, so repeated keys are overwritten. Comma-splitting will occur on the
-     *            single-value.
-     */
-    private record QueryStringValues<T>(
-        String rawParameters,
-        Map<String, String> queryStringParameters,
-        List<T> expectedValuesFromQueryString,
-        List<T> expectedValuesFromBodyString
-    ) {}
-
-    private static final List<QueryStringValues<String>> QUERY_STRINGS_AND_EXPECTED_VALUES = List.of(
-        new QueryStringValues<>(
-            // Should be two values for "parameter1", where the first value has URL-encoded comma in it. That
-            // comma should NOT cause these two values to be interpreted as three values.
-            "parameter1=value1%2Cvalue2&parameter1=value3",
-            // The following "queryStringParameters" value is not desired since we no longer have two values,
-            // where the first has a comma in it, but it's what AWS API Gateway provides for a request with the
-            // above raw query string.
-            Map.of("parameter1", "value1,value2,value3"),
-            List.of(
-                "value1,value2",
-                "value3"
-            ),
-            List.of(
-                "value1,value2"
-            )
-        ),
-        new QueryStringValues<>(
-            // Should be two values for "parameter1", where the first value has non-URL-encoded comma in it.
-            // That comma should NOT cause these two values to be interpreted as three values.
-            "parameter1=value1,value2&parameter1=value3",
-            // The following "queryStringParameters" value is not desired since we no longer have two values,
-            // where the first has a comma in it, but it's what AWS API Gateway provides for a request with the
-            // above raw query string.
-            Map.of("parameter1", "value1,value2,value3"),
-            List.of(
-                "value1,value2",
-                "value3"
-            ),
-            List.of(
-                "value1,value2"
-            )
-        ),
-        // In this case, since the parameter key is only used once, Micronaut assumes by default that the comma is a
-        // delimiter and provides two values.
-        new QueryStringValues<>(
-            // Should be two values for "parameter1" since the "parameter1" key is only found once and commas
-            // are delimiters by default in that case.
-            "parameter1=value1%2Cvalue2",
-            // In this case, the "queryStringParameters" value does match the desired result, at least for the
-            // default Micronaut parameter value implementation.
-            Map.of("parameter1", "value1,value2"),
-            List.of(
-                "value1",
-                "value2"
-            ),
-            List.of(
-                "value1,value2"
-            )
-        ),
-        // In this case, since the parameter key is only used once, Micronaut assumes by default that the comma is a
-        // delimiter and provides two values.
-        new QueryStringValues<>(
-            // Should be two values for "parameter1" since the "parameter1" key is only found once and commas
-            // are delimiters by default in that case.
-            "parameter1=value1,value2",
-            // In this case, the "queryStringParameters" value does match the desired result, at least for the
-            // default Micronaut parameter value implementation.
-            Map.of("parameter1", "value1,value2"),
-            List.of(
-                "value1",
-                "value2"
-            ),
-            List.of(
-                "value1,value2"
-            )
-        ),
-        new QueryStringValues<>(
-            // Should be one values for "parameter1" with a space in the middle
-            "parameter1=value1%20value2",
-            Map.of("parameter1", "value1 value2"),
-            List.of(
-                "value1 value2"
-            ),
-            List.of(
-                "value1 value2"
-            )
-        )
-    );
-
-    /**
-     * Test that a "rawQueryString" of "parameter1=value1&parameter1=value2&parameter2=value" follows API Gateway v2's
-     * expected format of "queryStringParameters": { "parameter1": "value1,value2", "parameter2": "value" }
-     * Also ensure that if a comma is included in the parameter values, whether URI encoded or not, it is treated as
-     * part of the string. This is important because API Gateway V2 provides comma-separated values for
-     * "queryStringParameters".
-     * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
-     *     Payload format version 2.0
-     *     </a>
+     * Two values for "parameter1", where the first value has a URL-encoded comma in it. That comma should NOT cause
+     * the two values to be interpreted as three values, even though API Gateway V2 provides
+     * "queryStringParameters": {"parameter1": "value1,value2,value3"} for this request.
      */
     @Test
-    public void testQueryStringParameters() {
-        // Create sample events with info that AWS API Gateway provides for e.g.
+    void urlEncodedCommaInRepeatedQueryParameterIsNotADelimiter() throws IOException {
         // curl 'https://0123456789.execute-api.us-east-1.amazonaws.com/test/lambdaApiGateway/multiParameter?parameter1=value1%2Cvalue2&parameter1=value3'
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameter",
+                "parameter1=value1%2Cvalue2&parameter1=value3",
+                """
+                {"parameter1": "value1,value2,value3"}"""),
+            """
+            {"parameter1":["value1,value2","value3"]}""");
+    }
 
-        for (QueryStringValues<String> queryStringValues : QUERY_STRINGS_AND_EXPECTED_VALUES) {
-            APIGatewayV2HTTPEvent apiGatewayV2HttpEvent = sampleEventBuilderWithoutQueryStringValues(
-                HttpMethod.GET,
-                "test/lambdaApiGateway/multiParameter"
-            )
-                .withRawQueryString(queryStringValues.rawParameters())
-                .withQueryStringParameters(queryStringValues.queryStringParameters())
-                .build();
+    /**
+     * Same as {@link #urlEncodedCommaInRepeatedQueryParameterIsNotADelimiter()}, but the comma in the first value is
+     * not URL-encoded.
+     */
+    @Test
+    void unencodedCommaInRepeatedQueryParameterIsNotADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameter",
+                "parameter1=value1,value2&parameter1=value3",
+                """
+                {"parameter1": "value1,value2,value3"}"""),
+            """
+            {"parameter1":["value1,value2","value3"]}""");
+    }
 
-            assertParamValuesMatchAndResponseContainsParams(
-                apiGatewayV2HttpEvent,
-                "parameter1",
-                queryStringValues
-            );
-        }
+    /**
+     * When the parameter key is only provided once, Micronaut assumes by default that the comma is a delimiter when
+     * binding to a {@code List<String>}, so two values are expected.
+     */
+    @Test
+    void urlEncodedCommaInSingleQueryParameterIsADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameter",
+                "parameter1=value1%2Cvalue2",
+                """
+                {"parameter1": "value1,value2"}"""),
+            """
+            {"parameter1":["value1","value2"]}""");
+    }
+
+    /**
+     * Same as {@link #urlEncodedCommaInSingleQueryParameterIsADelimiter()}, but the comma is not URL-encoded.
+     */
+    @Test
+    void unencodedCommaInSingleQueryParameterIsADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameter",
+                "parameter1=value1,value2",
+                """
+                {"parameter1": "value1,value2"}"""),
+            """
+            {"parameter1":["value1","value2"]}""");
     }
 
     @Test
-    public void testFormSubmissionBodyParameters() {
-        for (QueryStringValues<String> queryStringValues : QUERY_STRINGS_AND_EXPECTED_VALUES) {
-            APIGatewayV2HTTPEvent apiGatewayV2HttpEvent = sampleEventBuilderWithoutQueryStringValues(
-                HttpMethod.POST,
-                "test/lambdaApiGateway/bodyParameters"
-            )
-                .withHeaders(Map.of(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED))
-                .withBody(queryStringValues.rawParameters())
-                .withRawQueryString(null)
-                .withQueryStringParameters(null)
-                .build();
+    void urlEncodedSpaceInQueryParameterValueIsDecoded() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameter",
+                "parameter1=value1%20value2",
+                """
+                {"parameter1": "value1 value2"}"""),
+            """
+            {"parameter1":["value1 value2"]}""");
+    }
 
-            assertParamValuesMatchAndResponseContainsParams(
-                apiGatewayV2HttpEvent,
-                "parameter1",
-                queryStringValues
-            );
-        }
+    /**
+     * For "application/x-www-form-urlencoded", form bodies are "parameter bags", not multi-maps, so only a single
+     * value is retained for a repeated key. The URL-encoded comma in that value is part of the value, not a delimiter.
+     */
+    @Test
+    void formBodyUrlEncodedCommaWithRepeatedKeysIsNotADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            formPostEventJson(
+                "/test/lambdaApiGateway/bodyParameters",
+                "parameter1=value1%2Cvalue2&parameter1=value3"),
+            """
+            {"parameter1":["value1,value2"]}""");
+    }
+
+    /**
+     * Same as {@link #formBodyUrlEncodedCommaWithRepeatedKeysIsNotADelimiter()}, but the comma is not URL-encoded.
+     */
+    @Test
+    void formBodyUnencodedCommaWithRepeatedKeysIsNotADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            formPostEventJson(
+                "/test/lambdaApiGateway/bodyParameters",
+                "parameter1=value1,value2&parameter1=value3"),
+            """
+            {"parameter1":["value1,value2"]}""");
+    }
+
+    /**
+     * Unlike query parameters, a comma in a form body value is never treated as a delimiter, so a single value with a
+     * comma in it is expected.
+     */
+    @Test
+    void formBodyUrlEncodedCommaInSingleParameterIsNotADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            formPostEventJson(
+                "/test/lambdaApiGateway/bodyParameters",
+                "parameter1=value1%2Cvalue2"),
+            """
+            {"parameter1":["value1,value2"]}""");
+    }
+
+    /**
+     * Same as {@link #formBodyUrlEncodedCommaInSingleParameterIsNotADelimiter()}, but the comma is not URL-encoded.
+     */
+    @Test
+    void formBodyUnencodedCommaInSingleParameterIsNotADelimiter() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            formPostEventJson(
+                "/test/lambdaApiGateway/bodyParameters",
+                "parameter1=value1,value2"),
+            """
+            {"parameter1":["value1,value2"]}""");
     }
 
     @Test
-    public void testQueryStringParametersNumeric() {
-        List<QueryStringValues<Integer>> testValues = List.of(
-            new QueryStringValues<>(
+    void formBodyUrlEncodedSpaceIsDecoded() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            formPostEventJson(
+                "/test/lambdaApiGateway/bodyParameters",
+                "parameter1=value1%20value2"),
+            """
+            {"parameter1":["value1 value2"]}""");
+    }
+
+    @Test
+    void commaSeparatedNumericQueryParameterBindsToListOfIntegers() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameterNumeric",
                 "parameter1=3,4,5",
-                Map.of("parameter1", "3,4,5"),
-                List.of(3, 4, 5),
-                List.of(3, 4, 5)
-            ),
-            new QueryStringValues<>(
+                """
+                {"parameter1": "3,4,5"}"""),
+            """
+            {"parameter1":[3,4,5]}""");
+    }
+
+    @Test
+    void repeatedNumericQueryParameterBindsToListOfIntegers() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/multiParameterNumeric",
                 "parameter1=3&parameter1=4&parameter1=5",
-                Map.of("parameter1", "3,4,5"),
-                List.of(3, 4, 5),
-                List.of(3, 4, 5)
-            )
-        );
-
-        for (QueryStringValues<Integer> queryStringValues : testValues) {
-            APIGatewayV2HTTPEvent apiGatewayV2HttpEvent = sampleEventBuilderWithoutQueryStringValues(
-                HttpMethod.GET,
-                "test/lambdaApiGateway/multiParameterNumeric"
-            )
-                .withRawQueryString(queryStringValues.rawParameters())
-                .withQueryStringParameters(queryStringValues.queryStringParameters())
-                .build();
-
-            assertParamValuesMatchAndResponseContainsParams(
-                apiGatewayV2HttpEvent,
-                "parameter1",
-                queryStringValues
-            );
-        }
+                """
+                {"parameter1": "3,4,5"}"""),
+            """
+            {"parameter1":[3,4,5]}""");
     }
 
     /**
-     * Test objects with specialized binders, specifically Pageable in this case. I.e. PageableRequestArgumentBinder.
-     * The "sort" param has a comma in it. Even though it's for a List&lt;Sort.Order&gt;, we do not expect Micronaut to
-     * split on it because of its specialized binder.
+     * Test objects with specialized binders, specifically {@link Pageable} (PageableRequestArgumentBinder). There is
+     * a comma, not a space, between "created" and "desc", which is how {@link Pageable} expects it. The comma should
+     * not split into two separate values, even though it normally does for a single-key parameter bound to a
+     * {@code List<String>}, because {@link Pageable} is not bound via core collection splitting.
      */
     @Test
-    public void testPageableParameter() {
-        List<QueryStringValues<String>> testValues = List.of(
-            new QueryStringValues<>(
-                // There is a comma, not a space, between "created" and "desc", which is how "Pageable" expects it. The
-                // comma should not split into two separate values, even though it normally does for other cases, such
-                // as "parameter1=value1%2Cvalue2", where the controller accepts "List<String> parameter1". That is
-                // because Pageable is not bound via core collection splitting. It has a specialized binder
-                // (PageableRequestArgumentBinder).
+    void pageableSortParameterWithUrlEncodedCommaIsNotSplit() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/pageableTest",
                 "page=3&size=5&sort=created%2Cdesc",
-                Map.of(
-                    "page", "3",
-                    "size", "5",
-                    "sort", "created,desc"
-                ),
-                List.of(
-                    "created DESC"
-                ),
-                List.of(
-                    "created DESC"
-                )
-            ),
-            new QueryStringValues<>(
+                """
+                {"page": "3", "size": "5", "sort": "created,desc"}"""),
+            """
+            {"page":3,"size":5,"sort":["created DESC"]}""");
+    }
+
+    @Test
+    void pageableWithMultipleSortParameters() throws IOException {
+        assertSameResponseViaApiGatewayV2AndDirectRequest(
+            getEventJson(
+                "/test/lambdaApiGateway/pageableTest",
                 "page=3&size=5&sort=created%2Cdesc&sort=id%2Casc",
-                Map.of(
-                    "page", "3",
-                    "size", "5",
-                    "sort", "created,desc,id,asc"
-                ),
-                List.of(
-                    "created DESC",
-                    "id ASC"
-                ),
-                List.of(
-                    "created DESC",
-                    "id ASC"
-                )
-            )
-        );
+                """
+                {"page": "3", "size": "5", "sort": "created,desc,id,asc"}"""),
+            """
+            {"page":3,"size":5,"sort":["created DESC","id ASC"]}""");
+    }
 
-        for (QueryStringValues<String> queryStringValues : testValues) {
-            APIGatewayV2HTTPEvent apiGatewayV2HttpEvent = sampleEventBuilderWithoutQueryStringValues(
-                HttpMethod.GET,
-                "test/lambdaApiGateway/pageableTest"
-            )
-                .withRawQueryString(queryStringValues.rawParameters())
-                .withQueryStringParameters(queryStringValues.queryStringParameters())
-                .build();
+    /**
+     * @param path the request path, with a leading slash
+     * @param rawQueryString the query string exactly as the client sent it
+     * @param queryStringParametersJson what AWS API Gateway V2 translates the "rawQueryString" into, as a JSON object
+     *            (or "null"). Duplicate query strings are combined with commas, so this translation is lossy: it is
+     *            impossible to tell a separator comma from a comma within a value. The handler is expected to use
+     *            "rawQueryString" instead.
+     */
+    private static String getEventJson(String path, String rawQueryString, String queryStringParametersJson) {
+        return GET_PAYLOAD_V2_JSON.formatted(path, rawQueryString, queryStringParametersJson);
+    }
 
-            assertParamValuesMatchAndResponseContainsParams(
-                apiGatewayV2HttpEvent,
-                "sort",
-                queryStringValues
-            );
+    private static String formPostEventJson(String path, String formUrlEncodedBody) {
+        return FORM_POST_PAYLOAD_V2_JSON.formatted(path, formUrlEncodedBody);
+    }
+
+    private static void executeTest(String eventJson, Consumer<APIGatewayV2HTTPResponse> responseConsumer) throws IOException {
+        try (
+            ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+            APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)
+        ) {
+            APIGatewayV2HTTPResponse response = handler.handleRequest(readEvent(ctx, eventJson), new MockLambdaContext());
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
+            responseConsumer.accept(response);
         }
     }
 
-    private static APIGatewayV2HTTPEvent.APIGatewayV2HTTPEventBuilder sampleEventBuilderWithoutQueryStringValues(
-        HttpMethod httpMethod, String rawPathWithoutLeadingSlash
-    ) {
-        return APIGatewayV2HTTPEvent.builder()
-            .withRawPath("/" + rawPathWithoutLeadingSlash)
-            .withPathParameters(Map.of("proxy", rawPathWithoutLeadingSlash))
-            .withStageVariables(null)
-            .withRequestContext(APIGatewayV2HTTPEvent.RequestContext.builder()
-                .withHttp(APIGatewayV2HTTPEvent.RequestContext.Http.builder()
-                    .withPath("/" + rawPathWithoutLeadingSlash)
-                    .withMethod(httpMethod.toString())
-                    .build()
-                ).build()
-            );
+    /**
+     * Asserts that the controller responds with {@code expectedBody} both when the equivalent HTTP request is made
+     * directly against an embedded server and when the request is delivered as an API Gateway V2 payload through the
+     * Lambda handler. The two must match: putting API Gateway V2 (or a Lambda function URL) in front of Micronaut
+     * must not change what a controller receives.
+     */
+    private static void assertSameResponseViaApiGatewayV2AndDirectRequest(String eventJson, String expectedBody) throws IOException {
+        try (
+            ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+            APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)
+        ) {
+            APIGatewayV2HTTPEvent event = readEvent(ctx, eventJson);
+
+            String directBody = executeDirectRequest(ctx, event);
+            assertEquals(expectedBody, directBody,
+                () -> "Unexpected response for a direct request, bypassing API Gateway. Event: " + eventJson);
+
+            APIGatewayV2HTTPResponse response = handler.handleRequest(event, new MockLambdaContext());
+            assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
+            assertEquals(expectedBody, response.getBody(),
+                () -> "Unexpected response for a request through API Gateway V2. Event: " + eventJson);
+        }
     }
 
-    private <T> void assertParamValuesMatchAndResponseContainsParams(
-        APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, String paramName, QueryStringValues<T> queryStringValues
-    ) {
-        assertAsDirectRequest(apiGatewayV2HttpEvent, paramName, queryStringValues);
-
-        // No longer testing if param values match because Micronaut's conversionService will alter some parameters
-        // afterward. We're concerned with the final result, not the middle ground.
-        //assertParamValuesMatch(apiGatewayV2HttpEvent, paramName, queryStringValues);
-
-        assertAsApiGatewayV2Request(apiGatewayV2HttpEvent, paramName, queryStringValues);
+    private static Map<String, Object> testConfig() {
+        return Map.of(
+            "micronaut.security.enabled", StringUtils.FALSE,
+            "micronaut.security.csrf.filter.enabled", StringUtils.FALSE,
+            "micronaut.server.port", "-1",
+            "spec.name", SPEC_NAME
+        );
     }
 
-	/*
-	private <T> void assertParamValuesMatch(
-			APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, String paramName, QueryStringValues<T> queryStringValues
-	) {
-		ApplicationContext appCtx = handler.getApplicationContext();
-		APIGatewayV2HTTPEventHandler apiGatewayV2HTTPEventHandler = appCtx.getBean(APIGatewayV2HTTPEventHandler.class);
-
-		ServletExchange<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> req = apiGatewayV2HTTPEventHandler
-				.createExchange(apiGatewayV2HttpEvent, null);
-
-		HttpParameters params = req.getRequest().getParameters();
-		Assertions.assertNotNull(params);
-
-		List<String> values = params.getAll(paramName);
-
-		Assertions.assertNotNull(values);
-		String httpMethod = apiGatewayV2HttpEvent.getRequestContext().getHttp().getMethod();
-		List<T> expectedValues = findExpectedValues(apiGatewayV2HttpEvent, queryStringValues);
-		Assertions.assertEquals(expectedValues.size(), values.size(), "APIGatewayV2: Number of parameters does not match expected. Found " + values + ". Desired " + expectedValues + ". HttpMethod: " + httpMethod + ". RawParameters: " + queryStringValues.rawParameters());
-		Assertions.assertEquals(expectedValues, values, "APIGatewayV2: Expected values do not match. HttpMethod: " + httpMethod + ". RawParameters: " + queryStringValues.rawParameters());
-	}
-	*/
+    private static APIGatewayV2HTTPEvent readEvent(ApplicationContext ctx, String eventJson) throws IOException {
+        return ctx.getBean(JsonMapper.class).readValue(eventJson, APIGatewayV2HTTPEvent.class);
+    }
 
     /**
-     * Test that a request that passes through API Gateway V2 first responds with the expected results
+     * Executes the request described by the event directly against an embedded server, bypassing the API Gateway V2
+     * payload translation, and returns the response body.
      */
-    private <T> void assertAsApiGatewayV2Request(
-        APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, String paramName, QueryStringValues<T> queryStringValues
-    ) {
-        // Now submit the request and see what results we get
-        APIGatewayV2HTTPResponse rsp = handler.handleRequest(apiGatewayV2HttpEvent, new MockLambdaContext());
-        assertEquals(HttpStatus.OK.getCode(), rsp.getStatusCode());
-
-        String body = rsp.getBody();
-        assertResponseBody("apiGatewayV2Request", apiGatewayV2HttpEvent, paramName, queryStringValues, body);
+    private static String executeDirectRequest(ApplicationContext ctx, APIGatewayV2HTTPEvent event) {
+        EmbeddedServer server = ctx.getBean(EmbeddedServer.class);
+        if (!server.isRunning()) {
+            server.start();
+        }
+        try (HttpClient client = HttpClient.create(server.getURL())) {
+            HttpResponse<String> response = client.toBlocking().exchange(toDirectRequest(event), String.class);
+            assertEquals(HttpStatus.OK, response.getStatus());
+            return response.body();
+        }
     }
 
-    private static HttpRequest<?> convertToHttpRequest(APIGatewayV2HTTPEvent apiGatewayV2HttpEvent) {
+    private static MutableHttpRequest<?> toDirectRequest(APIGatewayV2HTTPEvent apiGatewayV2HttpEvent) {
         String rawPath = apiGatewayV2HttpEvent.getRawPath();
         String rawQueryString = apiGatewayV2HttpEvent.getRawQueryString();
-        String eventBody = apiGatewayV2HttpEvent.getBody();
-
         String httpMethod = apiGatewayV2HttpEvent.getRequestContext().getHttp().getMethod();
-        String contentType = apiGatewayV2HttpEvent.getHeaders() == null ?
-            null :
-            apiGatewayV2HttpEvent.getHeaders().get(HttpHeaders.CONTENT_TYPE);
 
         MutableHttpRequest<?> request;
-        if (HttpMethod.GET.toString().equals(httpMethod)) {
-            request = HttpRequest.GET(rawPath + (rawQueryString != null ? "?" + rawQueryString : ""));
-        } else if (HttpMethod.POST.toString().equals(httpMethod)) {
-            request = HttpRequest.POST(rawPath, eventBody != null ? eventBody : "");
+        if (HttpMethod.GET.name().equals(httpMethod)) {
+            request = HttpRequest.GET(StringUtils.isNotEmpty(rawQueryString) ? rawPath + "?" + rawQueryString : rawPath);
+        } else if (HttpMethod.POST.name().equals(httpMethod)) {
+            request = HttpRequest.POST(rawPath, apiGatewayV2HttpEvent.getBody() == null ? "" : apiGatewayV2HttpEvent.getBody());
         } else {
             throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
         }
 
+        String contentType = apiGatewayV2HttpEvent.getHeaders() == null ?
+            null :
+            apiGatewayV2HttpEvent.getHeaders().get(HttpHeaders.CONTENT_TYPE.toLowerCase());
         if (contentType != null) {
             request.contentType(contentType);
         }
         return request;
-    }
-
-    private static <T> List<T> findExpectedValues(
-        APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, QueryStringValues<T> queryStringValues
-    ) {
-        String httpMethod = apiGatewayV2HttpEvent.getRequestContext().getHttp().getMethod();
-
-        List<T> expectedValues;
-        if (HttpMethod.GET.toString().equals(httpMethod)) {
-            expectedValues = queryStringValues.expectedValuesFromQueryString();
-        } else if (HttpMethod.POST.toString().equals(httpMethod)) {
-            expectedValues = queryStringValues.expectedValuesFromBodyString();
-        } else {
-            throw new IllegalArgumentException("Unsupported HTTP method: " + httpMethod);
-        }
-
-        return expectedValues;
-    }
-
-    /**
-     * Test that a standard request that does not use API Gateway V2 responds with the expected results
-     */
-    private <T> void assertAsDirectRequest(
-        APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, String paramName, QueryStringValues<T> queryStringValues
-    ) {
-        HttpRequest<?> request = convertToHttpRequest(apiGatewayV2HttpEvent);
-
-        EmbeddedServer server = handler.getApplicationContext().getBean(EmbeddedServer.class);
-        if (!server.isRunning()) {
-            server.start();
-        }
-
-        // Create an HttpClient whose base URL behaves like @Client("/")
-        HttpClient client = HttpClient.create(server.getURL());
-
-        HttpResponse<String> rsp = client.toBlocking().exchange(request, String.class);
-        Assertions.assertEquals(HttpStatus.OK, rsp.getStatus());
-
-        String rspBody = rsp.body();
-        assertResponseBody("directRequest", apiGatewayV2HttpEvent, paramName, queryStringValues, rspBody);
-    }
-
-    private <T> void assertResponseBody(
-        String requestType, APIGatewayV2HTTPEvent apiGatewayV2HttpEvent, String paramName,
-        QueryStringValues<T> queryStringValues, String body
-    ) {
-        Assertions.assertNotNull(body);
-
-        JsonMapper jsonMapper = JsonMapper.createDefault();
-        final Map<String, Object> result;
-        try {
-            result = jsonMapper.readValue(body, Map.class);
-        } catch (IOException e) {
-            throw new RuntimeException("Unable ready body as JSON into Map [" + body + "]", e);
-        }
-
-        Assertions.assertNotNull(result);
-        List<T> expectedValues = findExpectedValues(apiGatewayV2HttpEvent, queryStringValues);
-
-        Object resultValuesObj = result.get(paramName);
-        if (resultValuesObj instanceof String resultValuesAsString) {
-            resultValuesObj = List.of(resultValuesAsString);
-        }
-        if (resultValuesObj instanceof List resultValues) {
-            Assertions.assertNotNull(resultValues);
-            Assertions.assertEquals(expectedValues.size(), resultValues.size(), "Response did not contain expected values. Request type: " + requestType + ". Found " + resultValues + ". Desired " + expectedValues + ". RawParameters: " + queryStringValues.rawParameters());
-
-            Assertions.assertEquals(expectedValues, resultValues, "Unexpected response for RawParameters. Request type: " + requestType + ": " + queryStringValues.rawParameters());
-        } else {
-            Assertions.fail("Response did not contain expected values. Found " + resultValuesObj + ". Desired " + expectedValues + ".");
-        }
     }
 }
