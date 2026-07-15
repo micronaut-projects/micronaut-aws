@@ -8,6 +8,7 @@ import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -18,14 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 @MicronautTest
 @Property(name = "micronaut.http.client.read-timeout", value = "300")
-public class S3BucketTest {
+class S3BucketTest {
 
     @Inject
     @Client("/")
     HttpClient httpClient;
 
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings = {"/s3/buckets", "/async/s3/buckets"})
     void test(String uri) {

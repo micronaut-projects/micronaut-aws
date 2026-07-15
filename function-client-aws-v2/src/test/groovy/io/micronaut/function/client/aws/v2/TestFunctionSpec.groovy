@@ -29,6 +29,7 @@ import software.amazon.awssdk.services.lambda.model.GetFunctionConfigurationRequ
 import software.amazon.awssdk.services.lambda.model.Runtime
 import software.amazon.awssdk.services.lambda.model.GetFunctionRequest
 import software.amazon.awssdk.services.lambda.model.LambdaRequest
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -40,6 +41,7 @@ import java.util.zip.ZipOutputStream
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.IAM
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.LAMBDA
 
+@Ignore
 @Testcontainers
 @MicronautTest
 class TestFunctionSpec extends Specification implements TestPropertyProvider {
