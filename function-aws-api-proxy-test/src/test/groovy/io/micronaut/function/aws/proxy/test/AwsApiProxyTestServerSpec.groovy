@@ -3,7 +3,6 @@ package io.micronaut.function.aws.proxy.test
 import com.sun.net.httpserver.HttpServer
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.ApplicationContextProvider
-import io.micronaut.context.annotation.Property
 import io.micronaut.context.env.Environment
 import io.micronaut.function.aws.MicronautLambdaContext
 import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction
@@ -30,7 +29,6 @@ import jakarta.inject.Named
 import java.nio.charset.StandardCharsets
 
 @MicronautTest
-@Property(name = 'micronaut.server.port', value = '18111')
 class AwsApiProxyTestServerSpec extends Specification {
     @Inject
     @Client('/')
