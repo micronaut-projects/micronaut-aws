@@ -1,3 +1,0 @@
-[[IgnoredVulns]]
-id = "GHSA-5jmj-h7xm-6q6v"
-reason = "com.fasterxml.jackson.core:jackson-databind:2.18.8 (GHSA-5jmj-h7xm-6q6v; fixed: 2.18.9, 2.21.5, 3.1.4) but 2.18.9 is not in Maven Central"

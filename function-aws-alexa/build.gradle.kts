@@ -12,7 +12,7 @@ dependencies {
     }
     constraints {
         // "com.amazon.alexa:ask-sdk-lambda-support 2.86.0 requests jackson-core 2.13.0, which is affected by several CVEs"
-        api("com.fasterxml.jackson.core:jackson-core:2.18.8") {
+        api("com.fasterxml.jackson.core:jackson-core:2.22.1") {
             because("Require a non-vulnerable jackson-core version instead of the transitive version")
         }
         // "com.amazon.alexa:ask-sdk-lambda-support 2.86.0 requests commons-io:commons-io:2.7 which is affected by GHSA-78wr-2p64-hpwj"

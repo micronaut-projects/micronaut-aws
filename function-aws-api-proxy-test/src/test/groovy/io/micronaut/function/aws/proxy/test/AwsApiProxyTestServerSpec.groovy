@@ -1,5 +1,12 @@
 package io.micronaut.function.aws.proxy.test
 
+import com.sun.net.httpserver.HttpServer
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.ApplicationContextProvider
+import io.micronaut.context.annotation.Property
+import io.micronaut.context.env.Environment
+import io.micronaut.function.aws.MicronautLambdaContext
+import io.micronaut.function.aws.proxy.payload2.APIGatewayV2HTTPEventFunction
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -12,19 +19,40 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
 import io.micronaut.http.uri.UriBuilder
+import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import spock.lang.Issue
 import spock.lang.Specification
 
 import jakarta.inject.Inject
+import jakarta.inject.Named
 
 import java.nio.charset.StandardCharsets
 
 @MicronautTest
+@Property(name = 'micronaut.server.port', value = '18111')
 class AwsApiProxyTestServerSpec extends Specification {
     @Inject
     @Client('/')
     HttpClient client
+
+    @Inject
+    @Named('HttpServer')
+    ApplicationContextProvider applicationContextProvider
+
+    void 'nested Lambda context does not create an embedded server'() {
+        expect:
+        applicationContextProvider instanceof APIGatewayV2HTTPEventFunction
+
+        when:
+        ApplicationContext lambdaContext = applicationContextProvider.applicationContext
+
+        then:
+        lambdaContext.environment.activeNames.contains(Environment.FUNCTION)
+        lambdaContext.environment.activeNames.contains(MicronautLambdaContext.ENVIRONMENT_LAMBDA)
+        !lambdaContext.containsBean(EmbeddedServer)
+        !lambdaContext.containsBean(HttpServer)
+    }
 
     void 'test invoke function via server'() {
         when:
