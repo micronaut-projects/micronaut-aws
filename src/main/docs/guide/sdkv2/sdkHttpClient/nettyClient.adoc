@@ -1,4 +1,7 @@
-The Netty client can be configured with the following options:
+The Netty client (`software.amazon.awssdk:netty-nio-client`) is used by asynchronous AWS service
+clients. It can coexist with the selected synchronous HTTP client.
+
+Configure it with the `aws.netty-client.*` properties. The available options are:
 
 include::{includedir}configurationProperties/software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder.adoc[]
 

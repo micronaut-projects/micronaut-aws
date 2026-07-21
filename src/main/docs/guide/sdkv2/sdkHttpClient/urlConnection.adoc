@@ -42,14 +42,17 @@ Then, you can configure it with the following configuration properties:
 
 include::{includedir}configurationProperties/software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient$Builder.adoc[]
 
-If you don't exclude the other clients from the classpath, you can still influence which one is used by setting the
-following JVM system properties:
+The recommended approach is to exclude the other synchronous clients, as shown above. The
+`software.amazon.awssdk.http.service.impl` JVM system property can force URLConnection when it is
+set to `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService`. Do not use it as a
+way to keep multiple synchronous implementations on the classpath; select a single implementation
+instead.
+
+The AWS SDK also recognises the following implementation names:
 
 * `software.amazon.awssdk.http.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService` to force the `URLConnection` based client.
 ** `software.amazon.awssdk.http.apache5.Apache5SdkHttpService` to use the Apache HttpClient 5.x client (if in the classpath).
 ** `software.amazon.awssdk.http.apache.ApacheSdkHttpService` to use the legacy Apache HttpClient 4.x client (if in the classpath).
-+
-Only one sync HTTP client may be on the classpath; the AWS SDK fails if it finds more than one and no `software.amazon.awssdk.http.service.impl` is set.
 * `software.amazon.awssdk.http.async.service.impl`. Possible values:
 ** `software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService` for the Netty client (if in the classpath).
