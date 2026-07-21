@@ -23,9 +23,9 @@ import software.amazon.awssdk.http.apache5.Apache5HttpClient;
 import software.amazon.awssdk.http.apache5.ProxyConfiguration;
 
 /**
- * Configuration properties for the Apache HTTP client 5.x. Bound under the same
- * {@value #PREFIX} prefix as the legacy Apache 4.x client so that migrating between the two
- * requires no configuration change.
+ * Configuration properties for the Apache HTTP client 5.x. Bound to the
+ * {@code aws.apache-client} prefix, the same prefix as the legacy Apache 4.x client, so that
+ * migrating between the two requires no configuration change.
  *
  * @since 5.1.0
  */

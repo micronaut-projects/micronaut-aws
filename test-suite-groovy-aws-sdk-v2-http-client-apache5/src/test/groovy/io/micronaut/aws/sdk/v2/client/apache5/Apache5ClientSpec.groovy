@@ -17,7 +17,7 @@ class Apache5ClientSpec extends Specification {
     @Inject
     BeanContext beanContext
 
-    void "the apache 5 client is the elected sync client and is configured via aws.apache-client"() {
+    void "the apache 5 client configuration uses the aws.apache-client prefix"() {
         when:
         Apache5HttpClient client = beanContext.getBean(SdkHttpClient) as Apache5HttpClient
 

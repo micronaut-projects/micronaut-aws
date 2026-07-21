@@ -20,9 +20,12 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Internal;
 import software.amazon.awssdk.http.SdkHttpClient;
 
 import jakarta.inject.Singleton;
+import software.amazon.awssdk.http.apache5.Apache5HttpClient;
+import software.amazon.awssdk.http.apache5.ProxyConfiguration;
 
 /**
  * Factory that creates an Apache HTTP client 5.x based {@link SdkHttpClient}. Exactly one AWS SDK
@@ -34,19 +37,36 @@ import jakarta.inject.Singleton;
  */
 @BootstrapContextCompatible
 @Factory
-public class Apache5ClientFactory {
+@Internal
+@Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, notEquals = UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE)
+class Apache5ClientFactory {
+    /**
+     * @param builder The Apache 5.x client builder
+     * @return An instance of {@link SdkHttpClient}
+     */
+    @Bean(preDestroy = "close")
+    @Singleton
+    SdkHttpClient apache5Client(Apache5HttpClient.Builder builder) {
+        return builder.build();
+    }
 
     /**
      * @param configuration The Apache 5.x client configuration
-     * @return An instance of {@link SdkHttpClient}
+     * @return An instance of {@link Apache5HttpClient.Builder}
      */
-    // Deliberately a single bean, unlike the legacy ApacheClientFactory's two methods: this
-    // condition already fires when the service-impl property names the apache5 service, so a
-    // separate systemPropertyClient method would be redundant (and would double-produce the bean).
-    @Bean(preDestroy = "close")
     @Singleton
-    @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, notEquals = UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE)
-    public SdkHttpClient apache5Client(Apache5ClientConfiguration configuration) {
-        return configuration.getBuilder().build();
+    Apache5HttpClient.Builder builder(Apache5ClientConfiguration configuration,
+                                             ProxyConfiguration proxyConfiguration) {
+        return configuration.getBuilder().proxyConfiguration(proxyConfiguration);
+    }
+
+    @Singleton
+    ProxyConfiguration.Builder proxyBuilder(Apache5ClientConfiguration configuration) {
+        return configuration.getProxy();
+    }
+
+    @Singleton
+    ProxyConfiguration proxyBuilder(ProxyConfiguration.Builder builder) {
+        return builder.build();
     }
 }
