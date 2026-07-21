@@ -1,4 +1,29 @@
-The Apache HTTP client can be configured with the following options:
+Micronaut AWS supports both the Apache HttpClient 5.x based client
+(`software.amazon.awssdk:apache5-client`) and the legacy Apache HttpClient 4.x based client
+(`software.amazon.awssdk:apache-client`). Both use the `aws.apache-client.*` configuration prefix.
+When migrating from 4.x to 5.x, the common settings do not need to change; client-specific builder
+options are documented below.
+
+As noted in <<sdkHttpClient, SDK HTTP Client>>, only one synchronous client implementation may be
+on the classpath. Apache HttpClient 5.x is normally brought in by the AWS service dependency. To
+keep using Apache HttpClient 4.x, exclude `apache5-client` and add `apache-client`:
+
+.Gradle
+[source,groovy]
+----
+implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache5-client"
+}
+implementation "software.amazon.awssdk:apache-client"
+----
+
+The Apache HttpClient 5.x client can be configured with the following options:
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.apache5.Apache5HttpClient$Builder.adoc[]
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.apache5.ProxyConfiguration$Builder.adoc[]
+
+The legacy Apache HttpClient 4.x client supports the following options:
 
 include::{includedir}configurationProperties/software.amazon.awssdk.http.apache.ApacheHttpClient$Builder.adoc[]
 

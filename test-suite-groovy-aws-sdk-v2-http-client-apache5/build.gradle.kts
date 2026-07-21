@@ -8,10 +8,8 @@ dependencies {
     testCompileOnly(mn.micronaut.inject.groovy)
     testImplementation(mnTest.micronaut.test.spock)
     testImplementation(projects.micronautAwsSdkV2)
-    testImplementation(libs.awssdk.apache.client)
-    testImplementation(libs.awssdk.s3) {
-        exclude(group = "software.amazon.awssdk", module = "apache5-client")
-    }
+    testImplementation(libs.awssdk.apache5.client)
+    testImplementation(libs.awssdk.s3)
 }
 
 tasks {

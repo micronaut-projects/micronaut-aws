@@ -12,6 +12,7 @@ dependencies {
     compileOnly(libs.awssdk.url.connection.client)
     compileOnly(libs.awssdk.netty.nio.client)
     compileOnly(libs.awssdk.apache.client)
+    compileOnly(libs.awssdk.apache5.client)
 
     // Services
     compileOnly(libs.awssdk.apigatewaymanagementapi)
@@ -31,7 +32,6 @@ dependencies {
     testImplementation(libs.awssdk.cloudwatchlogs)
     testImplementation(libs.awssdk.apigatewaymanagementapi)
     testImplementation(libs.awssdk.servicediscovery)
-    testImplementation(libs.awssdk.apache.client)
     testImplementation(libs.awssdk.s3)
     testImplementation(libs.awssdk.dynamodb)
     testImplementation(libs.awssdk.ses)

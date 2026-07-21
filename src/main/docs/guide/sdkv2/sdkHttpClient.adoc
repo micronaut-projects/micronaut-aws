@@ -1,4 +1,20 @@
-By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
-to use a client based on the JVM's lightweight `URLConnection`, you should configure it as explained below.
+The AWS SDK v2 uses separate HTTP clients for synchronous and asynchronous service clients.
+Micronaut AWS creates the corresponding `SdkHttpClient` or `SdkAsyncHttpClient` bean from the
+client implementation on the runtime classpath.
+
+Since AWS SDK v2 `2.46.0`, AWS service modules pull the Apache HttpClient 5.x based synchronous
+client (`software.amazon.awssdk:apache5-client`) transitively. Netty
+(`software.amazon.awssdk:netty-nio-client`) is the asynchronous client.
+
+Choose exactly one synchronous client implementation: Apache HttpClient 5.x, legacy Apache
+HttpClient 4.x, or URLConnection. Do not place multiple synchronous client implementations on the
+classpath: the AWS SDK may fail client discovery and Micronaut AWS may create multiple
+`SdkHttpClient` beans. A synchronous and the Netty asynchronous client can coexist.
+
+The supported clients and their configuration are described in the following sections:
+
+* <<apacheHttpClient, Apache HTTP client>> for Apache HttpClient 5.x or 4.x.
+* <<urlConnection, URLConnection client>> for the JDK URLConnection implementation.
+* <<nettyClient, Netty client>> for asynchronous AWS service clients.
 
 NOTE: Micronaut AWS sets the `User-Agent` header for all clients as `micronaut/<version>`. If you don't want to include that HTTP Header, set `aws.ua.enabled` to `false` or https://docs.micronaut.io/latest/guide/#replaces[replace] the bean of type `io.micronaut.aws.ua.UserAgentProvider`.
