@@ -22,6 +22,7 @@ io.micronaut.aws.sdk.v1
 io.micronaut.aws.sdk.v2
 io.micronaut.aws.sdk.v2.client.apache
 io.micronaut.aws.sdk.v2.client.apache5
+io.micronaut.aws.sdk.v2.client.crt
 io.micronaut.aws.sdk.v2.client.netty
 io.micronaut.aws.sdk.v2.client.urlConnection
 io.micronaut.aws.sdk.v2.service

@@ -1071,9 +1071,192 @@
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
+<a id="software.amazon.awssdk.http.crt.AwsCrtHttpClient$Builder" href="#software.amazon.awssdk.http.crt.AwsCrtHttpClient$Builder">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/crt/AwsCrtHttpClient.Builder.html">AwsCrtHttpClient$Builder</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.max-concurrency</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.read-buffer-size-in-bytes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.connection-health-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.crt.ConnectionHealthConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.connection-max-idle-time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.connection-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.connection-acquisition-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.tls-negotiation-timeout</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.time.Duration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.tcp-keep-alive-configuration</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.crt.TcpKeepAliveConfiguration</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.post-quantum-tls-enabled</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.min-tls-version</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.crt.TlsVersion</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient$Builder" href="#software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient$Builder">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/crt/AwsCrtAsyncHttpClient.Builder.html">AwsCrtAsyncHttpClient$Builder</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.protocol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.Protocol</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<a id="software.amazon.awssdk.http.crt.ProxyConfiguration$Builder" href="#software.amazon.awssdk.http.crt.ProxyConfiguration$Builder">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/crt/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.port</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.scheme</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.use-system-property-values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.use-environment-variable-values</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.non-proxy-hosts</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.util.Set</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.proxy.add-non-proxy-host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
 <a id="software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder" href="#software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 13. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/nio/netty/NettyNioAsyncHttpClient.Builder.html">NettyNioAsyncHttpClient$Builder</a></caption>
+<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/nio/netty/NettyNioAsyncHttpClient.Builder.html">NettyNioAsyncHttpClient$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1184,7 +1367,7 @@
 <div style="page-break-after: always;"></div>
 <a id="software.amazon.awssdk.http.nio.netty.ProxyConfiguration$Builder" href="#software.amazon.awssdk.http.nio.netty.ProxyConfiguration$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 14. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/nio/netty/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
+<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/nio/netty/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1253,7 +1436,7 @@
 <div style="page-break-after: always;"></div>
 <a id="software.amazon.awssdk.services.s3.S3Configuration$Builder" href="#software.amazon.awssdk.services.s3.S3Configuration$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 15. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/services/s3/S3Configuration.Builder.html">S3Configuration$Builder</a></caption>
+<caption class="title">Table 18. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/services/s3/S3Configuration.Builder.html">S3Configuration$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1322,7 +1505,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.aws.sdk.v2.service.AWSServiceConfigurationProperties" href="#io.micronaut.aws.sdk.v2.service.AWSServiceConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 16. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/AWSServiceConfigurationProperties.html">AWSServiceConfigurationProperties</a></caption>
+<caption class="title">Table 19. Configuration Properties for <a href="../api/io/micronaut/aws/sdk/v2/service/AWSServiceConfigurationProperties.html">AWSServiceConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1349,7 +1532,7 @@
 <div style="page-break-after: always;"></div>
 <a id="software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient$Builder" href="#software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 17. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/urlconnection/UrlConnectionHttpClient.Builder.html">UrlConnectionHttpClient$Builder</a></caption>
+<caption class="title">Table 20. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/urlconnection/UrlConnectionHttpClient.Builder.html">UrlConnectionHttpClient$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1391,7 +1574,7 @@
 <h3 id="_micronaut_aws_secretsmanager_config_properties">Micronaut Aws Secretsmanager Config Properties</h3>
 <a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 18. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html">SecretsManagerConfigurationProperties</a></caption>
+<caption class="title">Table 21. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.html">SecretsManagerConfigurationProperties</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1424,7 +1607,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties$SecretConfiguration" href="#io.micronaut.aws.secretsmanager.SecretsManagerConfigurationProperties$SecretConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 19. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.SecretConfiguration.html">SecretsManagerConfigurationProperties$SecretConfiguration</a></caption>
+<caption class="title">Table 22. Configuration Properties for <a href="../api/io/micronaut/aws/secretsmanager/SecretsManagerConfigurationProperties.SecretConfiguration.html">SecretsManagerConfigurationProperties$SecretConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1460,7 +1643,7 @@
 <h3 id="_micronaut_aws_service_discovery_config_properties">Micronaut Aws Service Discovery Config Properties</h3>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 20. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
+<caption class="title">Table 23. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryConfiguration.html">AwsServiceDiscoveryConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1493,7 +1676,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryClientConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 21. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
+<caption class="title">Table 24. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryClientConfiguration.html">AwsServiceDiscoveryClientConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1802,7 +1985,7 @@
 <div style="page-break-after: always;"></div>
 <a id="io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration" href="#io.micronaut.discovery.aws.servicediscovery.AwsServiceDiscoveryRegistrationConfiguration">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 22. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
+<caption class="title">Table 25. Configuration Properties for <a href="../api/io/micronaut/discovery/aws/servicediscovery/AwsServiceDiscoveryRegistrationConfiguration.html">AwsServiceDiscoveryRegistrationConfiguration</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1886,7 +2069,7 @@
 <h3 id="_micronaut_function_client_aws_config_properties">Micronaut Function Client Aws Config Properties</h3>
 <a id="com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder" href="#com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/AWSLambdaAsyncClientBuilder.html">AWSLambdaAsyncClientBuilder</a></caption>
+<caption class="title">Table 26. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/AWSLambdaAsyncClientBuilder.html">AWSLambdaAsyncClientBuilder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -1961,7 +2144,7 @@
 <div style="page-break-after: always;"></div>
 <a id="com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder" href="#com.amazonaws.services.lambda.AWSLambdaAsyncClientBuilder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/AWSLambdaAsyncClientBuilder.html">AWSLambdaAsyncClientBuilder</a></caption>
+<caption class="title">Table 27. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/AWSLambdaAsyncClientBuilder.html">AWSLambdaAsyncClientBuilder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2036,7 +2219,7 @@
 <div style="page-break-after: always;"></div>
 <a id="com.amazonaws.services.lambda.model.InvokeRequest" href="#com.amazonaws.services.lambda.model.InvokeRequest">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/model/InvokeRequest.html">InvokeRequest</a></caption>
+<caption class="title">Table 28. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/model/InvokeRequest.html">InvokeRequest</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2123,7 +2306,7 @@
 <div style="page-break-after: always;"></div>
 <a id="com.amazonaws.services.lambda.model.InvokeRequest" href="#com.amazonaws.services.lambda.model.InvokeRequest">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/model/InvokeRequest.html">InvokeRequest</a></caption>
+<caption class="title">Table 29. Configuration Properties for <a href="../api/io/micronaut/com/amazonaws/services/lambda/model/InvokeRequest.html">InvokeRequest</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -2213,7 +2396,7 @@
 <h3 id="_micronaut_function_client_aws_v2_config_properties">Micronaut Function Client Aws V2 Config Properties</h3>
 <a id="io.micronaut.function.client.aws.v2.AwsInvokeRequestDefinition" href="#io.micronaut.function.client.aws.v2.AwsInvokeRequestDefinition">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html">AwsInvokeRequestDefinition</a></caption>
+<caption class="title">Table 30. Configuration Properties for <a href="../api/io/micronaut/function/client/aws/v2/AwsInvokeRequestDefinition.html">AwsInvokeRequestDefinition</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
