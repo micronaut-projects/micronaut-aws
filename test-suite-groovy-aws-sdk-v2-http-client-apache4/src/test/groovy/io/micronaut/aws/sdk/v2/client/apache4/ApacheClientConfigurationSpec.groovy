@@ -1,5 +1,6 @@
-package io.micronaut.aws.sdk.v2.client.apache
+package io.micronaut.aws.sdk.v2.client.apache4
 
+import io.micronaut.aws.sdk.v2.client.apache.ApacheClientConfiguration
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import spock.lang.Specification
