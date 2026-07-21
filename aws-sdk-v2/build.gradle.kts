@@ -13,6 +13,7 @@ dependencies {
     compileOnly(libs.awssdk.netty.nio.client)
     compileOnly(libs.awssdk.apache.client)
     compileOnly(libs.awssdk.apache5.client)
+    compileOnly(libs.awssdk.aws.crt.client)
 
     // Services
     compileOnly(libs.awssdk.apigatewaymanagementapi)

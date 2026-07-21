@@ -72,6 +72,7 @@ awssdk-sqs = { module = 'software.amazon.awssdk:sqs' }
 awssdk-ssm = { module = 'software.amazon.awssdk:ssm' }
 awssdk-iam = { module = 'software.amazon.awssdk:iam' }
 awssdk-url-connection-client = { module = 'software.amazon.awssdk:url-connection-client' }
+awssdk-aws-crt-client = { module = 'software.amazon.awssdk:aws-crt-client' }
 
 kotlin-stdlib-jdk8 = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk8', version.ref = 'kotlin' }
 
