@@ -1,4 +1,4 @@
-package io.micronaut.aws.sdk.v2.client
+package io.micronaut.aws.sdk.v2.client.urlConnection
 
 import io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory
 import io.micronaut.context.ApplicationContext

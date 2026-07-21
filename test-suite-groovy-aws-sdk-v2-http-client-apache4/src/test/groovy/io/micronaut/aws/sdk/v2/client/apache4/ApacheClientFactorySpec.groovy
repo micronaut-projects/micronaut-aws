@@ -1,11 +1,11 @@
-package io.micronaut.aws.sdk.v2.client.netty
+package io.micronaut.aws.sdk.v2.client.apache4
 
 import io.micronaut.aws.sdk.v2.client.apache.ApacheClientFactory
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.annotation.BootstrapContextCompatible
 import spock.lang.Specification
 
-class NettyClientFactorySpec extends Specification {
+class ApacheClientFactorySpec extends Specification {
 
     void 'ApacheClientFactory is annotated with BootstrapContextCompatible'() {
         given:

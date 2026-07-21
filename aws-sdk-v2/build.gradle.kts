@@ -31,8 +31,6 @@ dependencies {
     testImplementation(libs.awssdk.cloudwatchlogs)
     testImplementation(libs.awssdk.apigatewaymanagementapi)
     testImplementation(libs.awssdk.servicediscovery)
-    testImplementation(libs.awssdk.url.connection.client)
-    testImplementation(libs.awssdk.netty.nio.client)
     testImplementation(libs.awssdk.apache.client)
     testImplementation(libs.awssdk.s3)
     testImplementation(libs.awssdk.dynamodb)
