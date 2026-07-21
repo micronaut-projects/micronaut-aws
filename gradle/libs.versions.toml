@@ -8,7 +8,7 @@ logback-json-classic = '0.1.5'
 
 micronaut-discovery = "5.1.0"
 micronaut-groovy = "5.1.0"
-micronaut-logging = "2.0.1"
+micronaut-logging = "2.1.0"
 micronaut-mongodb = "6.1.0"
 micronaut-reactor = "4.1.0"
 micronaut-serde = "3.1.0"
