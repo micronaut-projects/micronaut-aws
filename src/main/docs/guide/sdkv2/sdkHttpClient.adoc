@@ -7,14 +7,16 @@ client (`software.amazon.awssdk:apache5-client`) transitively. Netty
 (`software.amazon.awssdk:netty-nio-client`) is the asynchronous client.
 
 Choose exactly one synchronous client implementation: Apache HttpClient 5.x, legacy Apache
-HttpClient 4.x, or URLConnection. Do not place multiple synchronous client implementations on the
-classpath: the AWS SDK may fail client discovery and Micronaut AWS may create multiple
-`SdkHttpClient` beans. A synchronous and the Netty asynchronous client can coexist.
+HttpClient 4.x, URLConnection, or AWS CRT. Do not place multiple synchronous client implementations
+on the classpath: the AWS SDK may fail client discovery and Micronaut AWS may create multiple
+`SdkHttpClient` beans. One synchronous client and one asynchronous client, such as Netty or AWS
+CRT, can coexist.
 
 The supported clients and their configuration are described in the following sections:
 
 * <<apacheHttpClient, Apache HTTP client>> for Apache HttpClient 5.x or 4.x.
 * <<urlConnection, URLConnection client>> for the JDK URLConnection implementation.
 * <<nettyClient, Netty client>> for asynchronous AWS service clients.
+* <<crtClient, AWS CRT client>> for synchronous and asynchronous AWS service clients.
 
 NOTE: Micronaut AWS sets the `User-Agent` header for all clients as `micronaut/<version>`. If you don't want to include that HTTP Header, set `aws.ua.enabled` to `false` or https://docs.micronaut.io/latest/guide/#replaces[replace] the bean of type `io.micronaut.aws.ua.UserAgentProvider`.

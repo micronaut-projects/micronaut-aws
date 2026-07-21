@@ -1,0 +1,37 @@
+The AWS Common Runtime (CRT) client (`software.amazon.awssdk:aws-crt-client`) supports both
+synchronous and asynchronous AWS service clients. Micronaut AWS creates an `SdkHttpClient` backed
+by `AwsCrtHttpClient` and an `SdkAsyncHttpClient` backed by `AwsCrtAsyncHttpClient` when the CRT
+client is the selected implementation for the corresponding client type.
+
+Add the CRT client dependency:
+
+dependency:software.amazon.awssdk:aws-crt-client[]
+
+As noted in <<sdkHttpClient, SDK HTTP Client>>, select only one implementation for each client
+type. To use CRT for both synchronous and asynchronous service clients, exclude Apache HttpClient
+5.x and Netty from the AWS service dependency, then add the CRT client:
+
+.Gradle
+[source,groovy]
+----
+implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache5-client"
+    exclude group: "software.amazon.awssdk", module: "netty-nio-client"
+}
+implementation "software.amazon.awssdk:aws-crt-client"
+----
+
+Configure both CRT client builders with properties whose names begin with `aws.crt-client.`. The
+proxy properties use the `aws.crt-client.proxy.` prefix.
+
+The synchronous CRT client supports the following options:
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.crt.AwsCrtHttpClient$Builder.adoc[]
+
+The asynchronous CRT client supports the following options:
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient$Builder.adoc[]
+
+Both clients share the following proxy options:
+
+include::{includedir}configurationProperties/software.amazon.awssdk.http.crt.ProxyConfiguration$Builder.adoc[]

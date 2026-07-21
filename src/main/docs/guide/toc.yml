@@ -21,6 +21,7 @@ sdkv2:
     urlConnection: URLConnection client
     apacheHttpClient: Apache HTTP client
     nettyClient: Netty client
+    crtClient: AWS CRT client
   awsCredentials: Supplying AWS credentials
   awsRegionSelection: AWS region selection
   endpointoverride: Endpoint override
