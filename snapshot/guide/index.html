@@ -696,8 +696,36 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
 
 
 <div class="paragraph">
-<p>By default, the AWS SDK v2 will pull transitively both the Netty (async) and Apache HTTP (sync) clients. If you wish
-to use a client based on the JVM&#8217;s lightweight <code>URLConnection</code>, you should configure it as explained below.</p>
+<p>The AWS SDK v2 uses separate HTTP clients for synchronous and asynchronous service clients.
+Micronaut AWS creates the corresponding <code>SdkHttpClient</code> or <code>SdkAsyncHttpClient</code> bean from the
+client implementation on the runtime classpath.</p>
+</div>
+<div class="paragraph">
+<p>Since AWS SDK v2 <code>2.46.0</code>, AWS service modules pull the Apache HttpClient 5.x based synchronous
+client (<code>software.amazon.awssdk:apache5-client</code>) transitively. Netty
+(<code>software.amazon.awssdk:netty-nio-client</code>) is the asynchronous client.</p>
+</div>
+<div class="paragraph">
+<p>Choose exactly one synchronous client implementation: Apache HttpClient 5.x, legacy Apache
+HttpClient 4.x, or URLConnection. Do not place multiple synchronous client implementations on the
+classpath: the AWS SDK may fail client discovery and Micronaut AWS may create multiple
+<code>SdkHttpClient</code> beans. A synchronous and the Netty asynchronous client can coexist.</p>
+</div>
+<div class="paragraph">
+<p>The supported clients and their configuration are described in the following sections:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#apacheHttpClient">Apache HTTP client</a> for Apache HttpClient 5.x or 4.x.</p>
+</li>
+<li>
+<p><a href="#urlConnection">URLConnection client</a> for the JDK URLConnection implementation.</p>
+</li>
+<li>
+<p><a href="#nettyClient">Netty client</a> for asynchronous AWS service clients.</p>
+</li>
+</ul>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -733,6 +761,10 @@ Micronaut AWS sets the <code>User-Agent</code> header for all clients as <code>m
     &lt;exclusions&gt;
         &lt;exclusion&gt;
             &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
+            &lt;artifactId&gt;apache5-client&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
             &lt;artifactId&gt;apache-client&lt;/artifactId&gt;
         &lt;/exclusion&gt;
         &lt;exclusion&gt;
@@ -751,6 +783,7 @@ Micronaut AWS sets the <code>User-Agent</code> header for all clients as <code>m
 <div class="title">Gradle</div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache5-client"
     exclude group: "software.amazon.awssdk", module: "apache-client"
     exclude group: "software.amazon.awssdk", module: "netty-nio-client"
 }
@@ -799,8 +832,14 @@ implementation "software.amazon.awssdk:url-connection-client"</code></pre>
 </tbody>
 </table>
 <div class="paragraph">
-<p>If you don&#8217;t exclude the other clients from the classpath, you still can configure which one is used by setting the
-following JVM system properties:</p>
+<p>The recommended approach is to exclude the other synchronous clients, as shown above. The
+<code>software.amazon.awssdk.http.service.impl</code> JVM system property can force URLConnection when it is
+set to <code>software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService</code>. Do not use it as a
+way to keep multiple synchronous implementations on the classpath; select a single implementation
+instead.</p>
+</div>
+<div class="paragraph">
+<p>The AWS SDK also recognises the following implementation names:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -809,10 +848,13 @@ following JVM system properties:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService</code> for the <code>URLConnection</code> based client.</p>
+<p><code>software.amazon.awssdk.http.urlconnection.UrlConnectionSdkHttpService</code> to force the <code>URLConnection</code> based client.</p>
 </li>
 <li>
-<p><code>software.amazon.awssdk.http.apache.ApacheSdkHttpService</code> for the Apache HTTP client (if in the classpath).</p>
+<p><code>software.amazon.awssdk.http.apache5.Apache5SdkHttpService</code> to use the Apache HttpClient 5.x client (if in the classpath).</p>
+</li>
+<li>
+<p><code>software.amazon.awssdk.http.apache.ApacheSdkHttpService</code> to use the legacy Apache HttpClient 4.x client (if in the classpath).</p>
 </li>
 </ul>
 </div>
@@ -840,11 +882,32 @@ following JVM system properties:</p>
 
 
 <div class="paragraph">
-<p>The Apache HTTP client can be configured with the following options:</p>
+<p>Micronaut AWS supports both the Apache HttpClient 5.x based client
+(<code>software.amazon.awssdk:apache5-client</code>) and the legacy Apache HttpClient 4.x based client
+(<code>software.amazon.awssdk:apache-client</code>). Both use the <code>aws.apache-client.*</code> configuration prefix.
+When migrating from 4.x to 5.x, the common settings do not need to change; client-specific builder
+options are documented below.</p>
 </div>
-<a id="software.amazon.awssdk.http.apache.ApacheHttpClient$Builder" href="#software.amazon.awssdk.http.apache.ApacheHttpClient$Builder">&#128279;</a>
+<div class="paragraph">
+<p>As noted in <a href="#sdkHttpClient">SDK HTTP Client</a>, only one synchronous client implementation may be
+on the classpath. Apache HttpClient 5.x is normally brought in by the AWS service dependency. To
+keep using Apache HttpClient 4.x, exclude <code>apache5-client</code> and add <code>apache-client</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">Gradle</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">implementation "software.amazon.awssdk:s3", {
+    exclude group: "software.amazon.awssdk", module: "apache5-client"
+}
+implementation "software.amazon.awssdk:apache-client"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Apache HttpClient 5.x client can be configured with the following options:</p>
+</div>
+<a id="software.amazon.awssdk.http.apache5.Apache5HttpClient$Builder" href="#software.amazon.awssdk.http.apache5.Apache5HttpClient$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache/ApacheHttpClient.Builder.html">ApacheHttpClient$Builder</a></caption>
+<caption class="title">Table 1. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache5/Apache5HttpClient.Builder.html">Apache5HttpClient$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -915,34 +978,16 @@ following JVM system properties:</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.dns-resolver</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.conn.DnsResolver</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.socket-factory</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.conn.socket.ConnectionSocketFactory</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.tcp-keep-alive</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.auth-scheme-provider-registry</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.config.Registry</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 </tbody>
 </table>
-<a id="software.amazon.awssdk.http.apache.ProxyConfiguration$Builder" href="#software.amazon.awssdk.http.apache.ProxyConfiguration$Builder">&#128279;</a>
+<a id="software.amazon.awssdk.http.apache5.ProxyConfiguration$Builder" href="#software.amazon.awssdk.http.apache5.ProxyConfiguration$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
+<caption class="title">Table 2. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache5/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
 <colgroup>
 <col style="width: 25%;">
 <col style="width: 25%;">
@@ -995,12 +1040,6 @@ following JVM system properties:</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.add-non-proxy-host</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.preemptive-basic-authentication-enabled</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Boolean</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1026,6 +1065,73 @@ following JVM system properties:</p>
 </tr>
 </tbody>
 </table>
+<div class="paragraph">
+<p>The legacy Apache HttpClient 4.x client supports the following options:</p>
+</div>
+<a id="software.amazon.awssdk.http.apache.ApacheHttpClient$Builder" href="#software.amazon.awssdk.http.apache.ApacheHttpClient$Builder">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache/ApacheHttpClient.Builder.html">ApacheHttpClient$Builder</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.dns-resolver</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.conn.DnsResolver</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.socket-factory</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.conn.socket.ConnectionSocketFactory</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.auth-scheme-provider-registry</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">org.apache.http.config.Registry</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<a id="software.amazon.awssdk.http.apache.ProxyConfiguration$Builder" href="#software.amazon.awssdk.http.apache.ProxyConfiguration$Builder">&#128279;</a>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Configuration Properties for <a href="../api/io/micronaut/software/amazon/awssdk/http/apache/ProxyConfiguration.Builder.html">ProxyConfiguration$Builder</a></caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.apache-client.proxy.add-non-proxy-host</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 
 <h2 id="nettyClient"><a class="anchor" href="#nettyClient"></a>8.1.3 Netty client</h2>
 
@@ -1037,7 +1143,11 @@ following JVM system properties:</p>
 
 
 <div class="paragraph">
-<p>The Netty client can be configured with the following options:</p>
+<p>The Netty client (<code>software.amazon.awssdk:netty-nio-client</code>) is used by asynchronous AWS service
+clients. It can coexist with the selected synchronous HTTP client.</p>
+</div>
+<div class="paragraph">
+<p>Configure it with the <code>aws.netty-client.*</code> properties. The available options are:</p>
 </div>
 <a id="software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder" href="#software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient$Builder">&#128279;</a>
 <table class="tableblock frame-all grid-all stretch">
