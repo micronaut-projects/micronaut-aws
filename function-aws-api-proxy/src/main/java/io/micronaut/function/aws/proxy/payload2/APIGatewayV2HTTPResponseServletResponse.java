@@ -51,8 +51,8 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
 
     @Override
     public APIGatewayV2HTTPResponse getNativeResponse() {
+        List<String> cookies = headers.getAll(HttpHeaders.SET_COOKIE);
         Map<String, List<String>> multiValueHeaders = MapCollapseUtils.getMultiHeaders(headers);
-        List<String> cookies = multiValueHeaders.get(HttpHeaders.SET_COOKIE);
         multiValueHeaders.remove(HttpHeaders.SET_COOKIE);
 
         APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
@@ -60,7 +60,6 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
             //.withMultiValueHeaders(multiValueHeaders)
             .withCookies(cookies)
             .withStatusCode(status);
-        List<String> cookies = headers.getAll(HttpHeaders.SET_COOKIE);
         if (CollectionUtils.isNotEmpty(cookies)) {
             apiGatewayV2HTTPResponseBuilder.withCookies(cookies);
         }
