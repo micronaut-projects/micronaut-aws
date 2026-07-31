@@ -22,6 +22,7 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.BinaryTypeConfiguration;
 import io.micronaut.function.aws.proxy.AbstractServletHttpResponse;
 import io.micronaut.function.aws.proxy.MapCollapseUtils;
+import io.micronaut.function.aws.proxy.encoding.EncodingService;
 
 import java.util.Base64;
 
@@ -35,8 +36,10 @@ import java.util.Base64;
 @Internal
 public class ApplicationLoadBalancerServletResponse<B> extends AbstractServletHttpResponse<ApplicationLoadBalancerResponseEvent, B> {
 
-    protected ApplicationLoadBalancerServletResponse(ConversionService conversionService, BinaryTypeConfiguration binaryTypeConfiguration) {
-        super(conversionService, binaryTypeConfiguration);
+    protected ApplicationLoadBalancerServletResponse(ConversionService conversionService,
+                                                     BinaryTypeConfiguration binaryTypeConfiguration,
+                                                     EncodingService encodingService) {
+        super(conversionService, binaryTypeConfiguration, encodingService);
     }
 
     @Override
