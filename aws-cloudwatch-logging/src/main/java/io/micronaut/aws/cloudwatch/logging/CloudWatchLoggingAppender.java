@@ -240,6 +240,10 @@ public final class CloudWatchLoggingAppender extends AppenderBase<ILoggingEvent>
             streamName = CloudWatchLoggingClient.getHost();
         }
 
+        if (groupName == null || streamName == null) {
+            return false;
+        }
+
         if (createGroupAndStream) {
             CreateLogGroupRequest createLogGroupRequest = CreateLogGroupRequest.builder().logGroupName(groupName).build();
             try {

@@ -54,6 +54,7 @@ final class CloudWatchLoggingClient implements ApplicationEventListener<ServerSt
     public CloudWatchLoggingClient(CloudWatchLogsClient logging, ApplicationConfiguration applicationConfiguration) {
         this.internalLogging = logging;
         this.internalAppName = applicationConfiguration.getName().orElse("");
+        setLogging(logging, null, internalAppName);
     }
 
     static synchronized boolean isReady() {
