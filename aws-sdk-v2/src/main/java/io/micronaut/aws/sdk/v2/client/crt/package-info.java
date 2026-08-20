@@ -19,11 +19,8 @@
  * @since 5.1.0
  */
 @NullMarked
-@Requires(classes = AwsCrtHttpClient.class)
 @Configuration
 package io.micronaut.aws.sdk.v2.client.crt;
 
 import io.micronaut.context.annotation.Configuration;
-import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.NullMarked;
-import software.amazon.awssdk.http.crt.AwsCrtHttpClient;

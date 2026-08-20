@@ -19,6 +19,7 @@ import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Prototype;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import jakarta.inject.Singleton;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -37,6 +38,7 @@ import software.amazon.awssdk.http.crt.ProxyConfiguration;
 @Factory
 @BootstrapContextCompatible
 @Internal
+@Requires(classes = {AwsCrtHttpClient.class, AwsCrtAsyncHttpClient.class})
 class AwsCrtClientFactory {
     /**
      * The AWS SDK HTTP service implementation class for the AWS CRT HTTP client.
