@@ -265,7 +265,7 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 5.1.0 </p>
+        <p><strong>Version:</strong> 5.1.1 </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -1308,6 +1308,12 @@ clients. It can coexist with the selected synchronous HTTP client.</p>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.proxy-auth-scheme</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">software.amazon.awssdk.http.ProxyAuthScheme</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.netty-client.proxy.username</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.String</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -1418,6 +1424,12 @@ proxy properties use the <code>aws.crt-client.proxy.</code> prefix.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.read-buffer-size-in-bytes</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Long</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws.crt-client.num-event-loop-threads</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">java.lang.Integer</p></td>
 <td class="tableblock halign-left valign-top"></td>
 <td class="tableblock halign-left valign-top"></td>
 </tr>
@@ -2535,6 +2547,9 @@ This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWa
 <div class="paragraph">
 <p>By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the <code>createGroupAndStream</code> flag to <code>false</code> inside your appender.
 Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value <code>groupName</code> for group name and <code>streamName</code> for stream name.</p>
+</div>
+<div class="paragraph">
+<p>For applications that do not start an embedded server, such as Picocli CLI applications, configure <code>streamName</code> explicitly.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configurable CloudWatchLoggingAppender Appender Properties</caption>
