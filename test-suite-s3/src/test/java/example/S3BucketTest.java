@@ -8,9 +8,9 @@ import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
-import io.micronaut.localstack.testcontainers.Localstack;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.micronaut.test.support.TestPropertyProvider;
+import io.floci.testcontainers.FlociContainer;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,6 +76,11 @@ class S3BucketTest implements TestPropertyProvider {
 
     @Override
     public @NonNull Map<String, String> getProperties() {
-        return Localstack.getProperties();
+        FlociContainer floci = Floci.getContainer();
+        return Map.of(
+            "aws.access-key-id", floci.getAccessKey(),
+            "aws.secret-key", floci.getSecretKey(),
+            "aws.region", floci.getRegion()
+        );
     }
 }

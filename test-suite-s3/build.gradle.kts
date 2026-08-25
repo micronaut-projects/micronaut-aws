@@ -17,6 +17,6 @@ dependencies {
     testAnnotationProcessor(mn.micronaut.inject.java)
     testImplementation(mn.micronaut.http.client)
     testImplementation(mnTest.junit.jupiter.params)
-    testImplementation(projects.testSuiteUtils)
+    testImplementation(libs.testcontainers.floci)
     testRuntimeOnly(libs.awssdk.url.connection.client)
 }
