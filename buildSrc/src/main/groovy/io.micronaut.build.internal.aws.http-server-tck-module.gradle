@@ -16,6 +16,7 @@ dependencies {
     testImplementation(mnTest.junit.jupiter.engine)
     testRuntimeOnly(mnLogging.logback.classic)
 
+    testRuntimeOnly(mn.micronaut.management)
     testRuntimeOnly(mnValidation.micronaut.validation)
 }
 

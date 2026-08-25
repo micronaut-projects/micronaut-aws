@@ -34,7 +34,6 @@ public class GatewayLambdaServerUnderTest implements ServerUnderTest {
     public GatewayLambdaServerUnderTest(Map<String, Object> properties) {
         properties.put("micronaut.server.context-path", "/");
         properties.put("endpoints.health.service-ready-indicator-enabled", StringUtils.FALSE);
-        properties.put("endpoints.refresh.enabled", StringUtils.FALSE);
         properties.put("micronaut.function.aws.proxy.test.enabled", StringUtils.FALSE);
         ctx = ApplicationContext
             .builder(Environment.FUNCTION, MicronautLambdaContext.ENVIRONMENT_LAMBDA, Environment.TEST)
