@@ -2548,6 +2548,9 @@ This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWa
 <p>By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the <code>createGroupAndStream</code> flag to <code>false</code> inside your appender.
 Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value <code>groupName</code> for group name and <code>streamName</code> for stream name.</p>
 </div>
+<div class="paragraph">
+<p>For applications that do not start an embedded server, such as Picocli CLI applications, configure <code>streamName</code> explicitly.</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Configurable CloudWatchLoggingAppender Appender Properties</caption>
 <colgroup>
