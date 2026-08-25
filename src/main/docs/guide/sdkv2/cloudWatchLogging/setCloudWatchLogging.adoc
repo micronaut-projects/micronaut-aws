@@ -1,6 +1,8 @@
 By default, Micronaut application will try to create the group and stream for you using AWS client. To disable this behavior you have to set the `createGroupAndStream` flag to `false` inside your appender.
 Default value for group name is your application name and for stream name is your hostname. If you want you can change them by setting value `groupName` for group name and `streamName` for stream name.
 
+For applications that do not start an embedded server, such as Picocli CLI applications, configure `streamName` explicitly.
+
 .Configurable CloudWatchLoggingAppender Appender Properties
 |===
 |Property|Type|Default value|Description

@@ -220,6 +220,29 @@ class CloudWatchLoggingAppenderSpec extends Specification {
         cloudWatchLogsClient.putLogsRequestList.get(0).logStreamName() == "testStream"
     }
 
+    void 'test logging before server startup with custom group and stream names'() {
+        given:
+        LoggingEvent event = createEvent("name", Level.INFO, "testMessage", System.currentTimeMillis())
+        def config = Stub(ApplicationConfiguration) {
+            getName() >> Optional.of("my-awesome-app")
+        }
+        CloudWatchLoggingClient.destroy()
+        new CloudWatchLoggingClient(cloudWatchLogsClient, config)
+
+        when:
+        appender.groupName = "testGroup"
+        appender.streamName = "testStream"
+        appender.start()
+        appender.doAppend(event)
+
+        then:
+        new PollingConditions(timeout: 10, initialDelay: 1.5, factor: 1.25).eventually {
+            cloudWatchLogsClient.putLogsRequestList.size() == 1
+        }
+        cloudWatchLogsClient.putLogsRequestList.get(0).logGroupName() == "testGroup"
+        cloudWatchLogsClient.putLogsRequestList.get(0).logStreamName() == "testStream"
+    }
+
     void 'custom groupName and StreamName'() {
         given:
         def testGroup = "testGroup"
