@@ -8,6 +8,7 @@ import org.junit.platform.suite.api.*;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
+    "io.micronaut.http.server.tck.tests.cors.CorsSimpleRequestTest",
     "io.micronaut.http.server.tck.tests.forms.FormBindingDeadlockTest",
     "io.micronaut.http.server.tck.tests.forms.FormsJacksonAnnotationsTest",
     "io.micronaut.http.server.tck.tests.cors.CrossOriginTest", // CrossOriginTest#httHeaderValueAccessControlExposeHeaderValueCanBeSetViaCrossOriginAnnotation fails

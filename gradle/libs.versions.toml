@@ -115,3 +115,4 @@ testcontainers-localstack = { module = "org.testcontainers:testcontainers-locals
 testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter" }
 testcontainers-spock = { module = "org.testcontainers:testcontainers-spock" }
 testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb" }
+testcontainers-floci = { module = "io.floci:testcontainers-floci", version = "2.15.0" }
