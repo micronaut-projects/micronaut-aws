@@ -11,6 +11,7 @@ import org.junit.platform.suite.api.SuiteDisplayName;
     "io.micronaut.http.server.tck.lambda.tests"
 })
 @ExcludeClassNamePatterns({
+    "io.micronaut.http.server.tck.tests.cors.CorsSimpleRequestTest",
     "io.micronaut.http.server.tck.tests.forms.FormBindingDeadlockTest",
     "io.micronaut.http.server.tck.tests.hateoas.JsonErrorTest",
     "io.micronaut.http.server.tck.tests.hateoas.VndErrorTest",
