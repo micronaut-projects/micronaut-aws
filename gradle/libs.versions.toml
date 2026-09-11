@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.1.12"
+micronaut = "5.2.0"
 micronaut-test = "5.1.1"
 
 bouncycastle = '1.70'
