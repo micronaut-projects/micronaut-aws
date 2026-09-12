@@ -42,7 +42,7 @@ public class ApacheClientFactory {
      */
     @Bean(preDestroy = "close")
     @Singleton
-    @Requires(property = UrlConnectionClientFactory.HTTP_SERVICE_IMPL, notEquals = UrlConnectionClientFactory.URL_CONNECTION_SDK_HTTP_SERVICE)
+    @Requires(missingProperty = UrlConnectionClientFactory.HTTP_SERVICE_IMPL)
     public SdkHttpClient apacheClient(ApacheClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
