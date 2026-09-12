@@ -21,16 +21,23 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
 import io.micronaut.function.BinaryTypeConfiguration;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
 import jakarta.inject.Singleton;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Implementation of {@link ServletHttpHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
- *
- * @author Tim Yates
- * @since 4.0.0
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  */
 @Internal
 @Singleton
@@ -45,6 +52,11 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
         APIGatewayV2HTTPEvent request,
         APIGatewayV2HTTPResponse response
     ) {
+        translateApiGatewayV2Cookies(request);
+
+        // If you see cookies: [...] but no headers.cookie, the V2 Payload was not translated to a standard request
+        //log.info("=== RAW EVENT JSON: " + JsonMapper.createDefault().writeValueAsString(request));
+
         return new APIGatewayV2HTTPEventServletRequest<>(
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(
@@ -54,5 +66,25 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)
         );
+    }
+
+    /**
+     * API Gateway v2 events have a top-level cookies array, but standard requests expect the cookies in a header
+     */
+    private static void translateApiGatewayV2Cookies(APIGatewayV2HTTPEvent apiGatewayV2Req) {
+        // If cookies[] are present, but there is no "cookie" header, then synthesize the header.
+        List<String> cookies = apiGatewayV2Req.getCookies();
+        if (cookies != null && !cookies.isEmpty()) {
+            final String cookieHeaderName = HttpHeaders.COOKIE.toLowerCase();
+
+            Map<String, String> headers = apiGatewayV2Req.getHeaders();
+            if (headers == null || !headers.containsKey(cookieHeaderName)) {
+                if (headers == null) {
+                    headers = new HashMap<>();
+                    apiGatewayV2Req.setHeaders(headers);
+                }
+                headers.put(cookieHeaderName, String.join("; ", cookies));
+            }
+        }
     }
 }
