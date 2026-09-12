@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.2.0"
+micronaut = "5.2.1"
 micronaut-test = "5.1.1"
 
 bouncycastle = '1.70'
@@ -10,7 +10,7 @@ micronaut-discovery = "5.1.0"
 micronaut-groovy = "5.1.0"
 micronaut-logging = "2.1.0"
 micronaut-mongodb = "6.1.0"
-micronaut-reactor = "4.1.0"
+micronaut-reactor = "4.2.0"
 micronaut-serde = "3.1.1"
 micronaut-servlet = "6.1.0"
 micronaut-security = "5.3.2"
