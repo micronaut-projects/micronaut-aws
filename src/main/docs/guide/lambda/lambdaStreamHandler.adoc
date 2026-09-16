@@ -21,4 +21,7 @@ By default, it is resolved via the property `micronaut.function.name`. If not pr
 
 Alternatively, you can write a custom Handler which extends api:function.aws.MicronautRequestStreamHandler[] and overrides `MicronautRequestStreamHandler::resolveFunctionName(Environment)`
 
-snippet::io.micronaut.docs.function.aws.Handler[tags="clazz"]
+snippet::io.micronaut.docs.function.aws.Handler[tags="clazz", languages="java,kotlin,groovy"]
+
+[.lang-python]
+NOTE: A Python class cannot extend the Java class `MicronautRequestStreamHandler`, so the handler configured in AWS Lambda is a Java, Kotlin or Groovy class. The `@FunctionBean` it resolves, such as the `EventLogger` above, can be written in Python: keep the default handler and set the `micronaut.function.name` property, or use the Java `Handler` shown here.
