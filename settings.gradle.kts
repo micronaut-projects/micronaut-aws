@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 plugins {
-    id("io.micronaut.build.shared.settings") version "8.0.2"
+    id("io.micronaut.build.shared.settings") version "8.1.1"
 }
 
 dependencyResolutionManagement {
@@ -63,6 +63,7 @@ include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv1")
 include("test-suite-http-server-tck-function-aws-api-gateway-proxy-payloadv2")
 include("test-suite-http-server-tck-function-aws-api-proxy-test")
 include("test-suite-kotlin")
+include("test-suite-python")
 include("test-suite-function-client-aws-kotlin")
 include("test-suite-s3")
 
