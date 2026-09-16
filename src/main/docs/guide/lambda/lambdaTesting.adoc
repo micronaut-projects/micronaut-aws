@@ -7,45 +7,17 @@ dependency:micronaut-function-aws-test[scope="testImplementation",groupId="io.mi
 Testing subclasses of `MicronautRequestHandler` or `MicronautRequestStreamHandler` with this annotation requires
 both a no-arg and a one-arg constructor, the latter being used to inject the test application context:
 
-```java
-public class SampleRequestHandler extends MicronautRequestHandler<String, String> {
-    // Used in AWS
-    public SampleRequestHandler() {
-    }
+snippet::io.micronaut.docs.function.aws.test.SampleRequestHandler[tags="clazz", languages="java,kotlin,groovy"]
 
-    // Used in tests
-    public SampleRequestHandler(ApplicationContext applicationContext) {
-        super(applicationContext);
-    }
-
-    @Override
-    public String execute(String input) {
-        return null;
-    }
-}
-```
+[.lang-python]
+NOTE: A Python class cannot extend the Java class `MicronautRequestHandler`: the handler is a Java, Kotlin or Groovy class such as the one above, which the Python test instantiates with the test application context.
 
 Example usage:
 
-```java
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
-import org.junit.jupiter.api.Test;
+snippet::io.micronaut.docs.function.aws.test.RequestHandlerTest[tags="clazz"]
 
-import jakarta.inject.Inject;
-
-@MicronautLambdaTest
-public class RequestHandlerTest {
-    @Inject
-    private ApplicationContext context;
-
-    @Test
-    void testHandler() {
-        SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context);
-        // ...
-    }
-}
-```
+[.lang-python]
+NOTE: `@MicronautLambdaTest` cannot be applied to a Python test class yet. The Python test uses `@MicronautTest` with the `function` and `lambda` environments that `@MicronautLambdaTest` activates, and instantiates the Java handler with the test application context.
 
 The annotation supports the same options as `@MicronautTest`. Please note that regardless of whether or not you provide
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).

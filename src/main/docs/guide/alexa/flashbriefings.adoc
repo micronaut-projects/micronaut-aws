@@ -4,7 +4,7 @@ Micronaut's eases the creation of https://developer.amazon.com/en-US/docs/alexa/
 
 Your application must expose an endpoint which returns a JSON Array of api:aws.alexa.flashbriefing.FlashBriefingItem[]
 
-snippet::io.micronaut.aws.alexa.flashbriefing.FlashBriefingsController[project="aws-alexa", source="test"]
+snippet::io.micronaut.docs.aws.alexa.flashbriefing.FlashBriefingsController[tags="clazz"]
 
 <1> By default, Micronaut sets the response HTTP Header `Content-Type` with the value `application-json`.
 <2> Flash Briefing Feed items must be valid according to https://developer.amazon.com/en-US/docs/alexa/flashbriefing/flash-briefing-skill-api-feed-reference.html[Flash Briefing Skill API Feed Reference] constraints.

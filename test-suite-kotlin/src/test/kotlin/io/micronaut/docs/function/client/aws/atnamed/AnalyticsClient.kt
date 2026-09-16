@@ -6,7 +6,7 @@ import jakarta.inject.Named
 
 @FunctionClient
 internal interface AnalyticsClient {
-    @Named("analytics")
+    @Named("analytics") // <1>
     fun visit(productId: String): String
 }
 //end::clazz[]

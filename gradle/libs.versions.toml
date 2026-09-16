@@ -86,6 +86,7 @@ jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-af
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
 aws-java-sdk-lambda = { module = 'com.amazonaws:aws-java-sdk-lambda' }
+aws-java-sdk-s3 = { module = 'com.amazonaws:aws-java-sdk-s3' }
 
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }

@@ -1,4 +1,4 @@
-package com.example
+package io.micronaut.docs.function.aws
 //tag::clazz[]
 import io.micronaut.function.FunctionBean
 import org.slf4j.LoggerFactory
