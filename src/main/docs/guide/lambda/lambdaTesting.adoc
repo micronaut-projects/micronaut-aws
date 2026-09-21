@@ -7,45 +7,11 @@ dependency:micronaut-function-aws-test[scope="testImplementation",groupId="io.mi
 Testing subclasses of `MicronautRequestHandler` or `MicronautRequestStreamHandler` with this annotation requires
 both a no-arg and a one-arg constructor, the latter being used to inject the test application context:
 
-```java
-public class SampleRequestHandler extends MicronautRequestHandler<String, String> {
-    // Used in AWS
-    public SampleRequestHandler() {
-    }
-
-    // Used in tests
-    public SampleRequestHandler(ApplicationContext applicationContext) {
-        super(applicationContext);
-    }
-
-    @Override
-    public String execute(String input) {
-        return null;
-    }
-}
-```
+snippet::io.micronaut.docs.function.aws.test.SampleRequestHandler[tags="clazz"]
 
 Example usage:
 
-```java
-import io.micronaut.context.ApplicationContext;
-import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
-import org.junit.jupiter.api.Test;
-
-import jakarta.inject.Inject;
-
-@MicronautLambdaTest
-public class RequestHandlerTest {
-    @Inject
-    private ApplicationContext context;
-
-    @Test
-    void testHandler() {
-        SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context);
-        // ...
-    }
-}
-```
+snippet::io.micronaut.docs.function.aws.test.RequestHandlerTest[tags="clazz"]
 
 The annotation supports the same options as `@MicronautTest`. Please note that regardless of whether or not you provide
 a custom builder, some Lambda-specific configuration will be set (e.g. eager initialization and active environments).

@@ -5,10 +5,10 @@ To do so, you would create a `@Factory` class that would get injected some other
 
 For example, to create a client for AWS Rekognition:
 
-snippet::io.micronaut.aws.sdk.v2.RekognitionClientFactory[tags="class", project="aws-sdk-v2", source="test"]
+snippet::io.micronaut.docs.aws.sdk.v2.RekognitionClientFactory[tags="class"]
 
 <1> This method needs to be implemented so that the parent factory class knows how to create the builder. You may apply
     additional customisations to the builder here.
-<2> This method gives a chance to register a `BeanCreaterEventListener` over the builder, so that any builder can be
+<2> This method gives a chance to register a `BeanCreatedEventListener` over the builder, so that any builder can be
     customised. Needs to be overridden to apply the `@Singleton` annotation.
 <3> This method builds the client. Needs to be overridden to apply the `@Bean` annotation.

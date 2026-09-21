@@ -1,5 +1,7 @@
 [versions]
 micronaut = "5.2.2"
+# The Python compiler and runtime of test-suite-python: only that suite resolves this core version
+micronaut-python = "5.2.3"
 micronaut-test = "5.1.1"
 
 bouncycastle = '1.70'
@@ -37,6 +39,7 @@ kotlin = "2.4.20"
 micronaut-gradle-plugin = "5.0.2"
 
 [libraries]
+micronaut-core-python = { module = "io.micronaut:micronaut-core-bom", version.ref = "micronaut-python" }
 # Core
 
 
@@ -86,6 +89,7 @@ jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-af
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j', version.ref = 'slf4j' }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-suite-engine" }
 aws-java-sdk-lambda = { module = 'com.amazonaws:aws-java-sdk-lambda' }
+aws-java-sdk-s3 = { module = 'com.amazonaws:aws-java-sdk-s3' }
 
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 logback-json-classic = { module = 'ch.qos.logback.contrib:logback-json-classic', version.ref = 'logback-json-classic' }

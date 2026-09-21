@@ -5,8 +5,22 @@ plugins {
 }
 dependencies {
     testImplementation(projects.micronautFunctionAws)
+    testImplementation(projects.micronautFunctionAwsTest)
     testImplementation(projects.micronautFunctionClientAwsV2)
+    testImplementation(projects.micronautAwsSdkV1)
+    testImplementation(libs.aws.java.sdk.s3)
+    testImplementation(projects.micronautAwsSdkV2)
+    testImplementation(projects.micronautAwsUa)
+    testImplementation(libs.awssdk.s3)
+    testImplementation(libs.awssdk.rekognition)
+    testImplementation(projects.micronautAwsAlexa)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.http.server.netty)
+    testImplementation(mn.micronaut.jackson.databind)
+    testImplementation(mnValidation.micronaut.validation)
     testRuntimeOnly(libs.awssdk.url.connection.client)
+    testRuntimeOnly(libs.jcl.over.slf4j)
+    testRuntimeOnly(mnLogging.logback.classic)
 }
 
 tasks {
