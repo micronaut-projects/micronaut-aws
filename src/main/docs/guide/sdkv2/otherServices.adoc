@@ -7,22 +7,8 @@ For example, to create a client for AWS Rekognition:
 
 snippet::io.micronaut.docs.aws.sdk.v2.RekognitionClientFactory[tags="class"]
 
-[.lang-java.lang-kotlin.lang-groovy]
---
 <1> This method needs to be implemented so that the parent factory class knows how to create the builder. You may apply
     additional customisations to the builder here.
 <2> This method gives a chance to register a `BeanCreatedEventListener` over the builder, so that any builder can be
     customised. Needs to be overridden to apply the `@Singleton` annotation.
 <3> This method builds the client. Needs to be overridden to apply the `@Bean` annotation.
---
-
-[.lang-python]
---
-NOTE: A Python class cannot extend the Java class `AwsClientFactory`, so the Python factory configures the builders itself with the same injected beans (`AwsCredentialsProviderChain`, `AwsRegionProviderChain`, `UserAgentProvider` and the named `AWSServiceConfiguration`) the parent class uses.
-
-<1> The builder is created and configured with the HTTP client, the region, the credentials and the endpoint override. You may apply
-    additional customisations to the builder here.
-<2> Exposing the builder as a `@Singleton` bean gives a chance to register a `BeanCreatedEventListener` over the builder, so that any builder can be
-    customised.
-<3> This method builds the client and exposes it as a `@Bean`.
---

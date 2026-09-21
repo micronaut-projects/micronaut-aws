@@ -1,5 +1,7 @@
 [versions]
 micronaut = "5.2.2"
+# The Python compiler and runtime of test-suite-python: only that suite resolves this core version
+micronaut-python = "5.2.3"
 micronaut-test = "5.1.1"
 
 bouncycastle = '1.70'
@@ -37,6 +39,7 @@ kotlin = "2.4.20"
 micronaut-gradle-plugin = "5.0.2"
 
 [libraries]
+micronaut-core-python = { module = "io.micronaut:micronaut-core-bom", version.ref = "micronaut-python" }
 # Core
 
 

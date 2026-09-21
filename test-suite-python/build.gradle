@@ -3,12 +3,20 @@ plugins {
     id "io.micronaut.build.internal.python"
 }
 
+// The Python compiler fixes this documentation relies on shipped with Micronaut core 5.2.3; the rest of the
+// build stays on the core version of the catalog, only this suite resolves the newer core.
+micronautBuild {
+    python {
+        compilerVersion.set(libs.versions.micronaut.python)
+    }
+}
+
 dependencies {
+    testImplementation(platform(libs.micronaut.core.python))
     // Annotation processors MUST be testImplementation (not testAnnotationProcessor): the Python
     // compiler takes the (jar-resolved) compile classpath as its annotation processor path.
     testImplementation(mn.micronaut.inject.python.test)
     testImplementation(mn.micronaut.context.python)
-    testImplementation(platform(mn.micronaut.core.bom))
     testImplementation(mnTest.junit.jupiter.api)
     testImplementation(mnTest.micronaut.test.junit5)
     testRuntimeOnly(mnTest.junit.jupiter.engine)
@@ -35,8 +43,6 @@ dependencies {
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
     systemProperty "micronaut.python.pool.enabled", "false"
-    // a Truffle host-interop assertion trips on varargs overloads (e.g. jakarta.validation.Validator#validate)
-    enableAssertions = false
 
     systemProperty "aws.accessKeyId", "XXX"
     systemProperty "aws.secretKey", "YYY"

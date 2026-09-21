@@ -1,18 +1,15 @@
 # tag::clazz[]
 from typing import Annotated
 
-import java
 from jakarta.inject import Inject
 from micronaut.context import ApplicationContext
-from micronaut.test.extensions.junit5.annotation import MicronautTest
+from micronaut.function.aws.test.annotation import MicronautLambdaTest
 from org.junit.jupiter.api import Test
 
-# TODO(python): java.type needed because the Java handler compiled from this project's src/test/java is not on the
-# Python compile classpath, so no importable module is generated for it; see DISABLED_TESTS.md
-SampleRequestHandler = java.type("io.micronaut.docs.function.aws.test.SampleRequestHandler")
+from .SampleRequestHandler import SampleRequestHandler
 
 
-@MicronautTest(environments=["function", "lambda"])
+@MicronautLambdaTest
 class RequestHandlerTest:
     context: Annotated[ApplicationContext, Inject]
 
