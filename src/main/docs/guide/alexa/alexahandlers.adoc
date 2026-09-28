@@ -3,34 +3,6 @@ https://developer.amazon.com/en-US/docs/alexa/alexa-skills-kit-sdk-for-java/deve
 
 You will do just one change, you will annotate those handlers with `jakarta.inject.Singleton`.
 
-[source, java]
-----
-import com.amazon.ask.dispatcher.request.handler.HandlerInput;
-import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.Response;
-import com.amazon.ask.request.Predicates;
-
-import jakarta.inject.Singleton;
-import java.util.Optional;
-
-@Singleton // <1>
-public class HelloWorldIntentHandler implements RequestHandler {
-
-    @Override
-    public boolean canHandle(HandlerInput input) {
-        return input.matches(Predicates.intentName("HelloWorldIntent"));
-    }
-
-    @Override
-    public Optional<Response> handle(HandlerInput input) {
-        String speechText = "Hello world";
-        return input.getResponseBuilder()
-                .withSpeech(speechText)
-                .withSimpleCard("HelloWorld", speechText)
-                .build();
-    }
-
-}
-----
+snippet::io.micronaut.docs.aws.alexa.handlers.HelloWorldIntentHandler[tags="clazz"]
 
 <1> The Singleton scope indicates only one instance of the bean should exist in the https://docs.micronaut.io/latest/guide/index.html#beanContext[Micronaut's Bean Context]

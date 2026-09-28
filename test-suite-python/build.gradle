@@ -1,0 +1,50 @@
+plugins {
+    id "io.micronaut.build.internal.aws-tests"
+    id "io.micronaut.build.internal.python"
+}
+
+// The Python compiler fixes this documentation relies on shipped with Micronaut core 5.2.3; the rest of the
+// build stays on the core version of the catalog, only this suite resolves the newer core.
+micronautBuild {
+    python {
+        compilerVersion.set(libs.versions.micronaut.python)
+    }
+}
+
+dependencies {
+    testImplementation(platform(libs.micronaut.core.python))
+    // Annotation processors MUST be testImplementation (not testAnnotationProcessor): the Python
+    // compiler takes the (jar-resolved) compile classpath as its annotation processor path.
+    testImplementation(mn.micronaut.inject.python.test)
+    testImplementation(mn.micronaut.context.python)
+    testImplementation(mnTest.junit.jupiter.api)
+    testImplementation(mnTest.micronaut.test.junit5)
+    testRuntimeOnly(mnTest.junit.jupiter.engine)
+    testImplementation(projects.micronautFunctionAws)
+    testImplementation(projects.micronautFunctionAwsTest)
+    testImplementation(projects.micronautFunctionClientAwsV2)
+    testImplementation(projects.micronautAwsSdkV1)
+    testImplementation(libs.aws.java.sdk.s3)
+    testImplementation(projects.micronautAwsSdkV2)
+    testImplementation(projects.micronautAwsUa)
+    testImplementation(libs.awssdk.s3)
+    testImplementation(libs.awssdk.rekognition)
+    testImplementation(projects.micronautAwsAlexa)
+    testImplementation(mn.micronaut.http.client)
+    testImplementation(mn.micronaut.http.server.netty)
+    testImplementation(mn.micronaut.jackson.databind)
+    testImplementation(mnValidation.micronaut.validation)
+    testRuntimeOnly(libs.awssdk.url.connection.client)
+    testRuntimeOnly(libs.jcl.over.slf4j)
+    testRuntimeOnly(mnLogging.logback.classic)
+    testRuntimeOnly(mn.snakeyaml)
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    systemProperty "micronaut.python.pool.enabled", "false"
+
+    systemProperty "aws.accessKeyId", "XXX"
+    systemProperty "aws.secretKey", "YYY"
+    systemProperty "aws.region", "us-east-1"
+}

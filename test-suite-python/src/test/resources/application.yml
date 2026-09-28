@@ -1,0 +1,8 @@
+#tag::config[]
+---
+aws:
+  lambda:
+    functions:
+      analytics:
+        function-name: 'AwsLambdaFunctionName'
+#end::config[]
