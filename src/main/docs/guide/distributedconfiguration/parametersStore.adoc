@@ -5,7 +5,7 @@ dependency:io.micronaut.aws:micronaut-aws-parameter-store[]
 The recommended way to import configuration from Parameter Store is with `micronaut.config.import`.
 
 .application.yml
-[source,yaml]
+[configuration]
 ----
 micronaut:
   application:
@@ -19,7 +19,7 @@ micronaut:
 You can also use the structured form:
 
 .application.yml
-[source,yaml]
+[configuration]
 ----
 micronaut:
   application:
@@ -38,7 +38,7 @@ Authentication and AWS client configuration options can also be supplied directl
 For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:
 
 .application.yml
-[source,yaml]
+[configuration]
 ----
 micronaut:
   config:
