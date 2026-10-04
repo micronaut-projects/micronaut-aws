@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.2.13"
+micronaut = "5.2.2"
 # The Python compiler and runtime of test-suite-python: only that suite resolves this core version
 micronaut-python = "5.2.13"
 micronaut-test = "5.1.1"
