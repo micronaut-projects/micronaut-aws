@@ -4,7 +4,7 @@ micronaut = "5.2.2"
 micronaut-python = "5.2.3"
 micronaut-test = "5.1.1"
 
-bouncycastle = '1.70'
+bouncycastle = "1.86"
 fileupload = '0.0.8'
 logback-json-classic = '0.1.5'
 
@@ -21,18 +21,18 @@ micronaut-validation = "5.1.0"
 
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
-managed-aws-java-sdk-v2 = '2.54.6'
+managed-aws-java-sdk-v2 = "2.55.11"
 managed-aws-lambda = '1.4.0'
 managed-aws-lambda-events = '3.16.1'
 managed-aws-lambda-java-serialization = '1.4.1'
-aws-lambda-java-runtime-interface-client = '2.10.1'
-slf4j = "2.0.18"
+aws-lambda-java-runtime-interface-client = "2.12.1"
+slf4j = "2.0.20"
 servlet-api = "2.5"
 javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "25.3.4.1"
+graal = "25.4.4.1.1"
 kotlin = "2.4.20"
 
 # Micronaut
@@ -82,7 +82,7 @@ kotlin-stdlib-jdk8 = { module = 'org.jetbrains.kotlin:kotlin-stdlib-jdk8', versi
 boms-aws-java-sdk-v1 = { module = 'com.amazonaws:aws-java-sdk-bom', version.ref = 'managed-aws-java-sdk-v1' }
 boms-aws-java-sdk-v2 = { module = 'software.amazon.awssdk:bom', version.ref = 'managed-aws-java-sdk-v2' }
 
-bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk15on', version.ref = 'bouncycastle'}
+bouncycastle-provider = { module = 'org.bouncycastle:bcprov-jdk18on', version.ref = 'bouncycastle'}
 fileupload = { module = 'org.javadelight:delight-fileupload', version.ref = 'fileupload' }
 graal-sdk = { module = 'org.graalvm.sdk:graal-sdk', version.ref = 'graal' }
 jackson-afterburner = { module = 'com.fasterxml.jackson.module:jackson-module-afterburner' }
@@ -119,4 +119,4 @@ testcontainers-localstack = { module = "org.testcontainers:testcontainers-locals
 testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter" }
 testcontainers-spock = { module = "org.testcontainers:testcontainers-spock" }
 testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb" }
-testcontainers-floci = { module = "io.floci:testcontainers-floci", version = "2.15.0" }
+testcontainers-floci = { module = "io.floci:testcontainers-floci", version = "2.16.1" }
