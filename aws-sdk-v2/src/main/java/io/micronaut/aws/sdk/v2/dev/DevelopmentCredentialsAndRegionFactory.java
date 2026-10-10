@@ -17,6 +17,7 @@ package io.micronaut.aws.sdk.v2.dev;
 
 import io.micronaut.aws.sdk.v2.CredentialsAndRegionFactory;
 import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.env.DevelopmentActive;
@@ -40,6 +41,7 @@ import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
 @Internal
 @Factory
 @DevelopmentActive
+@BootstrapContextCompatible
 final class DevelopmentCredentialsAndRegionFactory {
 
     /**

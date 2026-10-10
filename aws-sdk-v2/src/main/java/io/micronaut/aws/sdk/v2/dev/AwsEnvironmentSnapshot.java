@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.dev;
 import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider;
 import io.micronaut.aws.sdk.v2.EnvironmentAwsRegionProvider;
+import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.env.DevelopmentActive;
 import io.micronaut.core.annotation.Internal;
@@ -39,6 +40,7 @@ import org.jspecify.annotations.Nullable;
  */
 @Internal
 @DevelopmentActive
+@BootstrapContextCompatible
 @ConfigurationProperties(AWSConfiguration.PREFIX)
 final class AwsEnvironmentSnapshot {
 
