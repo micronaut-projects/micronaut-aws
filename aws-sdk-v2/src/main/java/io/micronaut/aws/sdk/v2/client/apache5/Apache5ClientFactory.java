@@ -19,6 +19,7 @@ import io.micronaut.aws.sdk.v2.client.urlConnection.UrlConnectionClientFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
 import software.amazon.awssdk.http.SdkHttpClient;
@@ -46,6 +47,7 @@ class Apache5ClientFactory {
      */
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain
     SdkHttpClient apache5Client(Apache5HttpClient.Builder builder) {
         return builder.build();
     }
