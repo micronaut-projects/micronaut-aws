@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.client.urlConnection;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import software.amazon.awssdk.http.SdkHttpClient;
 
@@ -45,6 +46,7 @@ public class UrlConnectionClientFactory {
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(missingBeans = SdkHttpClient.class)
+    @Retain
     public SdkHttpClient urlConnectionClient(UrlConnectionClientConfiguration configuration) {
         return doCreateClient(configuration);
     }
@@ -59,6 +61,7 @@ public class UrlConnectionClientFactory {
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(property = HTTP_SERVICE_IMPL, value = URL_CONNECTION_SDK_HTTP_SERVICE)
+    @Retain
     public SdkHttpClient systemPropertyClient(UrlConnectionClientConfiguration configuration) {
         return doCreateClient(configuration);
     }

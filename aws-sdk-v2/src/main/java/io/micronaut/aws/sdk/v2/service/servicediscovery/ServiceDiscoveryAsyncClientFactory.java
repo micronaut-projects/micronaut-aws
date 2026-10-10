@@ -15,11 +15,13 @@
  */
 package io.micronaut.aws.sdk.v2.service.servicediscovery;
 
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.Nullable;
 import jakarta.inject.Named;
@@ -77,6 +79,7 @@ public class ServiceDiscoveryAsyncClientFactory extends AwsClientFactory<Service
     @Override
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public ServiceDiscoveryClient syncClient(ServiceDiscoveryClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -94,6 +97,7 @@ public class ServiceDiscoveryAsyncClientFactory extends AwsClientFactory<Service
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public ServiceDiscoveryAsyncClient asyncClient(ServiceDiscoveryAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }
