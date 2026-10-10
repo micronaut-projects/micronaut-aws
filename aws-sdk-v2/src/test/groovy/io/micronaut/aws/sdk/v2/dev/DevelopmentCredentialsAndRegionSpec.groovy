@@ -14,12 +14,27 @@ import io.micronaut.inject.BeanIdentifier
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.awscore.retry.AwsRetryStrategy
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration
 import software.amazon.awssdk.core.interceptor.ExecutionInterceptor
+import software.amazon.awssdk.core.retry.RetryPolicy
+import software.amazon.awssdk.core.retry.backoff.BackoffStrategy
+import software.amazon.awssdk.core.retry.conditions.RetryCondition
+import software.amazon.awssdk.metrics.MetricPublisher
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain
+import software.amazon.awssdk.retries.api.RetryStrategy
 import software.amazon.awssdk.services.sqs.SqsClient
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
+import java.lang.reflect.Proxy
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.ThreadFactory
+import java.util.function.Predicate
 
 class DevelopmentCredentialsAndRegionSpec extends Specification {
 
@@ -118,6 +133,75 @@ class DevelopmentCredentialsAndRegionSpec extends Specification {
         plain?.close()
         intercepted?.close()
         context.close()
+    }
+
+    @Unroll
+    void "the policy refuses a client whose override configuration holds an application #kind"() {
+        given:
+        ApplicationContext context = ApplicationContext.run((DevelopmentMode.PROPERTY): 'true')
+        DevelopmentAwsRetentionPolicy policy = context.getBean(DevelopmentAwsRetentionPolicy)
+        SqsClient client = SqsClient.builder()
+            .region(Region.US_EAST_1)
+            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create('id', 'secret')))
+            .overrideConfiguration(override)
+            .build()
+
+        expect:
+        policy.decide(registration(context, client)) == BeanRetentionPolicy.Decision.REFUSE
+
+        cleanup:
+        client?.close()
+        context.close()
+
+        where:
+        kind                 | override
+        'metric publisher'   | { ClientOverrideConfiguration.Builder it -> it.addMetricPublisher(applicationClass(MetricPublisher)) }
+        'retry strategy'     | { ClientOverrideConfiguration.Builder it -> it.retryStrategy(applicationClass(RetryStrategy)) }
+        'retry condition'    | { ClientOverrideConfiguration.Builder it -> it.retryPolicy(RetryPolicy.builder().retryCondition(applicationClass(RetryCondition)).build()) }
+        'backoff strategy'   | { ClientOverrideConfiguration.Builder it -> it.retryPolicy(RetryPolicy.builder().backoffStrategy(applicationClass(BackoffStrategy)).build()) }
+        'retry predicate'    | { ClientOverrideConfiguration.Builder it -> it.retryStrategy(AwsRetryStrategy.standardRetryStrategy().toBuilder().retryOnException(applicationClass(Predicate)).build()) }
+        'thread factory'     | { ClientOverrideConfiguration.Builder it -> it.scheduledExecutorService(new ScheduledThreadPoolExecutor(1, applicationClass(ThreadFactory))) }
+        'scheduled executor' | { ClientOverrideConfiguration.Builder it -> it.scheduledExecutorService(applicationClass(ScheduledExecutorService)) }
+    }
+
+    void "the policy abstains on a client whose override configuration holds only what the SDK and the JDK built"() {
+        given:
+        ApplicationContext context = ApplicationContext.run((DevelopmentMode.PROPERTY): 'true')
+        DevelopmentAwsRetentionPolicy policy = context.getBean(DevelopmentAwsRetentionPolicy)
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1)
+        SqsClient client = SqsClient.builder()
+            .region(Region.US_EAST_1)
+            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create('id', 'secret')))
+            .overrideConfiguration { ClientOverrideConfiguration.Builder it ->
+                it.retryStrategy(AwsRetryStrategy.standardRetryStrategy().toBuilder().retryOnExceptionInstanceOf(IOException).build())
+                it.retryPolicy(RetryPolicy.builder().numRetries(2).build())
+                it.scheduledExecutorService(executor)
+            }
+            .build()
+
+        expect:
+        policy.decide(registration(context, client)) == BeanRetentionPolicy.Decision.ABSTAIN
+
+        cleanup:
+        client?.close()
+        executor.shutdownNow()
+        context.close()
+    }
+
+    /**
+     * An implementation of an interface whose class is defined by a loader below the one of the SDK, as the loader of
+     * the application's classes would.
+     */
+    private static <T> T applicationClass(Class<T> type) {
+        ClassLoader application = new URLClassLoader(new URL[0], DevelopmentCredentialsAndRegionSpec.classLoader)
+        return type.cast(Proxy.newProxyInstance(application, [type] as Class<?>[], { Object proxy, Method method, Object[] args ->
+            switch (method.name) {
+                case 'hashCode': return System.identityHashCode(proxy)
+                case 'equals': return proxy.is(args[0])
+                case 'toString': return 'application ' + type.simpleName
+                default: return method.isDefault() ? InvocationHandler.invokeDefault(proxy, method, args) : null
+            }
+        } as InvocationHandler))
     }
 
     private static Object resolve(Closure<?> resolution) {
