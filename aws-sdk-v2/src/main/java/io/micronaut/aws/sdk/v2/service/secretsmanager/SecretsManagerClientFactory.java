@@ -15,12 +15,14 @@
  */
 package io.micronaut.aws.sdk.v2.service.secretsmanager;
 
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.Nullable;
 import jakarta.inject.Named;
@@ -76,6 +78,7 @@ public class SecretsManagerClientFactory extends AwsClientFactory<SecretsManager
     @Override
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SecretsManagerClient syncClient(SecretsManagerClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -91,6 +94,7 @@ public class SecretsManagerClientFactory extends AwsClientFactory<SecretsManager
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SecretsManagerAsyncClient asyncClient(SecretsManagerAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }

@@ -35,6 +35,7 @@ sdkv2:
   ssm: SSM
   secretsmanager: Secrets Manager
   servicediscovery: Service discovery
+  devmode: Development mode
   cloudWatchLogging:
     title: CloudWatch logging
     setCloudWatchLogging: Set CloudWatch Logging
