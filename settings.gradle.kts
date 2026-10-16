@@ -9,10 +9,29 @@ plugins {
     id("io.micronaut.build.shared.settings") version "8.1.4"
 }
 
+// Micronaut core 5.2.16-SNAPSHOT comes from the Central snapshots repository. Only io.micronaut snapshots are
+// resolved from it. Projects declare their own repositories, which replace the settings ones, so it is added to
+// each project too. Remove once the build moves to the core 5.2.16 release.
+fun RepositoryHandler.micronautSnapshotRepository() {
+    maven {
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        mavenContent {
+            snapshotsOnly()
+        }
+        content {
+            includeGroupByRegex("io\\.micronaut(\\..*)?")
+        }
+    }
+}
+
 dependencyResolutionManagement {
     repositories {
+        micronautSnapshotRepository()
         mavenCentral()
     }
+}
+gradle.beforeProject {
+    repositories.micronautSnapshotRepository()
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
