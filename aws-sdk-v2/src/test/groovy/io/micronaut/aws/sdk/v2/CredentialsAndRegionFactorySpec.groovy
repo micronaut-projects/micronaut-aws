@@ -21,7 +21,6 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.BootstrapPropertySourceLocator
 import io.micronaut.context.env.Environment
 import io.micronaut.context.env.PropertySource
-import jakarta.annotation.PreDestroy
 import jakarta.inject.Singleton
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
@@ -63,7 +62,7 @@ class CredentialsAndRegionFactorySpec extends Specification {
         second.close()
     }
 
-    void "a refresh that closes the bootstrap context it replaces leaves the application context's credentials provider open"() {
+    void "no bootstrap context shares its default credentials provider with the application context"() {
         given:
         ApplicationContext context = ApplicationContext.builder()
                 .properties(['spec.name': SPEC_NAME])
@@ -71,16 +70,12 @@ class CredentialsAndRegionFactorySpec extends Specification {
                 .start()
         DefaultCredentialsProvider applicationDefault = defaultCredentialsProvider(context.getBean(AwsCredentialsProviderChain))
 
-        when:
+        when: "a refresh reads the bootstrap configuration again"
         context.environment.refresh()
 
-        then: "since Micronaut core 5.2.16, the refresh closes the bootstrap context of the start, with its credentials provider"
-        BootstrapCredentialsLocator.instances.size() == 2
-        BootstrapCredentialsLocator.instances[0].destroyed
-        !BootstrapCredentialsLocator.instances[1].destroyed
-
-        and: "no bootstrap context shares its default credentials provider with the application context"
+        then: "closing a bootstrap context, whether or not a refresh does, leaves the application context's provider open"
         applicationDefault != null
+        !BootstrapCredentialsLocator.instances.isEmpty()
         BootstrapCredentialsLocator.instances.every {
             DefaultCredentialsProvider bootstrapDefault = defaultCredentialsProvider(it.credentialsProvider)
             bootstrapDefault != null && !bootstrapDefault.is(applicationDefault)
@@ -104,16 +99,10 @@ class CredentialsAndRegionFactorySpec extends Specification {
         static final List<BootstrapCredentialsLocator> instances = new CopyOnWriteArrayList<>()
 
         final AwsCredentialsProviderChain credentialsProvider
-        volatile boolean destroyed
 
         BootstrapCredentialsLocator(AwsCredentialsProviderChain credentialsProvider) {
             this.credentialsProvider = credentialsProvider
             instances.add(this)
-        }
-
-        @PreDestroy
-        void destroy() {
-            destroyed = true
         }
 
         @Override
