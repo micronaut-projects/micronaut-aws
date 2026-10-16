@@ -44,9 +44,11 @@ public class CredentialsAndRegionFactory {
     @Bean(preDestroy = "close")
     @Singleton
     public AwsCredentialsProviderChain awsCredentialsProvider(Environment environment) {
+        // DefaultCredentialsProvider.create() returns a JVM-wide singleton. Closing this chain closes its delegates,
+        // so each context builds its own default provider instead of closing the one other contexts still use.
         return AwsCredentialsProviderChain.of(
                 EnvironmentAwsCredentialsProvider.create(environment),
-                DefaultCredentialsProvider.create()
+                DefaultCredentialsProvider.builder().build()
         );
     }
 
