@@ -28,9 +28,15 @@ import io.micronaut.servlet.http.ServletHttpResponse;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of {@link ServletHttpResponse} for AWS API Gateway Proxy.
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  *
  * @param <B> The body type
  * @author Tim Yates
@@ -45,11 +51,15 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
 
     @Override
     public APIGatewayV2HTTPResponse getNativeResponse() {
-        APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
-            .withHeaders(MapCollapseUtils.getSingleValueHeaders(headers))
-            .withMultiValueHeaders(MapCollapseUtils.getMultiHeaders(headers))
-            .withStatusCode(status);
         List<String> cookies = headers.getAll(HttpHeaders.SET_COOKIE);
+        Map<String, List<String>> multiValueHeaders = MapCollapseUtils.getMultiHeaders(headers);
+        multiValueHeaders.remove(HttpHeaders.SET_COOKIE);
+
+        APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
+            .withHeaders(MapCollapseUtils.collapse(multiValueHeaders))
+            //.withMultiValueHeaders(multiValueHeaders)
+            .withCookies(cookies)
+            .withStatusCode(status);
         if (CollectionUtils.isNotEmpty(cookies)) {
             apiGatewayV2HTTPResponseBuilder.withCookies(cookies);
         }
