@@ -24,7 +24,7 @@
         }
     </script>
     <style type="text/css">
-        .lang-java { display: block }; .lang-python { display: block }; .lang-kotlin { display: block }; .lang-groovy { display: block }; 
+        .lang-java { display: block }; .lang-python { display: block }; .lang-kotlin { display: block }; .lang-groovy { display: block }; .lang-scala { display: block }; 
     </style>
 </head>
 
@@ -265,7 +265,7 @@
         <h1>Micronaut AWS</h1>
         <p></p>
         <p>Provides integration between Micronaut and Amazon Web Services (AWS)</p>
-        <p><strong>Version:</strong> 5.1.2-SNAPSHOT </p>
+        <p><strong>Version:</strong> 5.2.0-SNAPSHOT </p>
     </div>
     
 <h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
@@ -623,6 +623,15 @@ a test that makes a call such as:</p>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-sdk-v1"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 
@@ -647,12 +656,104 @@ a test that makes a call such as:</p>
 export AWS_SECRET_KEY=YYYY</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AmazonS3ClientBuilder amazonS3ClientBuilder = AmazonS3ClientBuilder.standard();
-  amazonS3ClientBuilder.setCredentials(new EnvironmentAWSCredentialsProvider(applicationContext.getEnvironment()));
-AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider;
+import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.env.Environment;
+import jakarta.inject.Singleton;
+
+@Factory
+public class AmazonS3Factory {
+
+    @Singleton
+    @Bean(preDestroy = "shutdown")
+    public AmazonS3 amazonS3(Environment environment) {
+        AmazonS3ClientBuilder amazonS3ClientBuilder = AmazonS3ClientBuilder.standard();
+        amazonS3ClientBuilder.setCredentials(new EnvironmentAWSCredentialsProvider(environment)); // <b class="conum">(1)</b>
+        return amazonS3ClientBuilder.build();
+    }
+}</code></pre>
 </div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from com.amazonaws.services.s3 import AmazonS3, AmazonS3ClientBuilder
+from jakarta.inject import Singleton
+from micronaut.aws.sdk.v1 import EnvironmentAWSCredentialsProvider
+from micronaut.context.annotation import Bean, Factory
+from micronaut.context.env import Environment
+
+
+@Factory
+class AmazonS3Factory:
+
+    @Singleton
+    @Bean(preDestroy="shutdown")
+    def amazon_s3(self, environment: Environment) -&gt; AmazonS3:
+        amazon_s3_client_builder = AmazonS3ClientBuilder.standard()
+        amazon_s3_client_builder.setCredentials(EnvironmentAWSCredentialsProvider(environment))  # <b class="conum">(1)</b>
+        return amazon_s3_client_builder.build()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.env.Environment
+import jakarta.inject.Singleton
+
+@Factory
+class AmazonS3Factory {
+
+    @Singleton
+    @Bean(preDestroy = "shutdown")
+    fun amazonS3(environment: Environment): AmazonS3 {
+        val amazonS3ClientBuilder = AmazonS3ClientBuilder.standard()
+        amazonS3ClientBuilder.credentials = EnvironmentAWSCredentialsProvider(environment) // <b class="conum">(1)</b>
+        return amazonS3ClientBuilder.build()
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.AmazonS3ClientBuilder
+import groovy.transform.CompileStatic
+import io.micronaut.aws.sdk.v1.EnvironmentAWSCredentialsProvider
+import io.micronaut.context.annotation.Bean
+import io.micronaut.context.annotation.Factory
+import io.micronaut.context.env.Environment
+import jakarta.inject.Singleton
+
+@CompileStatic
+@Factory
+class AmazonS3Factory {
+
+    @Singleton
+    @Bean(preDestroy = "shutdown")
+    AmazonS3 amazonS3(Environment environment) {
+        AmazonS3ClientBuilder amazonS3ClientBuilder = AmazonS3ClientBuilder.standard()
+        amazonS3ClientBuilder.credentials = new EnvironmentAWSCredentialsProvider(environment) // <b class="conum">(1)</b>
+        amazonS3ClientBuilder.build()
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The credentials provider resolves the credentials from the properties <code>aws.access-key-id</code> and <code>aws.secret-key</code> of the Micronaut <a href="https://docs.micronaut.io/latest/api/io/micronaut/context/env/Environment.html">Environment</a>.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Read about <a href="https://docs.micronaut.io/latest/guide/index.html#propertySource">externalized Configuration with property sources</a> in Micronaut.</p>
@@ -683,6 +784,15 @@ AmazonS3 s3 = amazonS3ClientBuilder.build();</code></pre>
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-aws-sdk-v2&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-sdk-v2"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -1373,6 +1483,15 @@ client is the selected implementation for the corresponding client type.</p>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:aws-crt-client"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -1647,7 +1766,10 @@ aws.sessionToken=your_session_token_here</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {accessKeyId = "your_access_key_id_here", secretKey = "your_secret_key_id_here", sessionToken = "your_session_token_here"}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+accessKeyId = "your_access_key_id_here"
+secretKey = "your_secret_key_id_here"
+sessionToken = "your_session_token_here"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1730,7 +1852,8 @@ aws.sessionToken=your_session_token_here</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {region = "eu-west-1"}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws]
+region = "eu-west-1"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -1804,6 +1927,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:apigatewaymanagementapi"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -1866,6 +1998,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.objectstorage:micronaut-object-storage-aws"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -1887,6 +2028,15 @@ aws.sessionToken=your_session_token_here</code></pre>
     &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
     &lt;artifactId&gt;s3&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:s3"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2019,6 +2169,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:dynamodb"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -2076,6 +2235,15 @@ aws.sessionToken=your_session_token_here</code></pre>
     &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
     &lt;artifactId&gt;ses&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:ses"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2137,6 +2305,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:lambda"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -2194,6 +2371,15 @@ aws.sessionToken=your_session_token_here</code></pre>
     &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
     &lt;artifactId&gt;sns&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:sns"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2255,6 +2441,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:sqs"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -2312,6 +2507,15 @@ aws.sessionToken=your_session_token_here</code></pre>
     &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
     &lt;artifactId&gt;ssm&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:ssm"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2373,6 +2577,15 @@ aws.sessionToken=your_session_token_here</code></pre>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:secretsmanager"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -2430,6 +2643,15 @@ aws.sessionToken=your_session_token_here</code></pre>
     &lt;groupId&gt;software.amazon.awssdk&lt;/groupId&gt;
     &lt;artifactId&gt;servicediscovery&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"software.amazon.awssdk:servicediscovery"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2501,6 +2723,15 @@ This does not apply to AWS Lambda. AWS Lambda publishes automatically to CloudWa
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-aws-cloudwatch-logging&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-cloudwatch-logging"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -2684,6 +2915,15 @@ Default value for group name is your application name and for stream name is you
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0:1.16.0-alpha"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -2811,6 +3051,47 @@ public class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3Cl
 }</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">@Singleton
+class S3ClientBuilderListener(BeanCreatedEventListener[S3ClientBuilder]):
+
+    def onCreated(self, event: BeanCreatedEvent[S3ClientBuilder]) -&gt; S3ClientBuilder:
+        builder = event.getBean()
+        builder.overrideConfiguration(ClientOverrideConfiguration.builder().retryPolicy(RetryMode.LEGACY).build())
+
+        return builder</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Singleton
+class S3ClientBuilderListener : BeanCreatedEventListener&lt;S3ClientBuilder&gt; {
+
+    override fun onCreated(event: BeanCreatedEvent&lt;S3ClientBuilder&gt;): S3ClientBuilder {
+        val builder = event.bean
+        builder.overrideConfiguration(ClientOverrideConfiguration.builder().retryPolicy(RetryMode.LEGACY).build())
+
+        return builder
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">@Singleton
+class S3ClientBuilderListener implements BeanCreatedEventListener&lt;S3ClientBuilder&gt; {
+
+    @Override
+    S3ClientBuilder onCreated(BeanCreatedEvent&lt;S3ClientBuilder&gt; event) {
+        S3ClientBuilder builder = event.bean
+        builder.overrideConfiguration(ClientOverrideConfiguration.builder().retryPolicy(RetryMode.LEGACY).build())
+
+        return builder
+    }
+}</code></pre>
+</div>
+</div>
 
 <h2 id="otherServices"><a class="anchor" href="#otherServices"></a>8.17 Other services</h2>
 
@@ -2889,6 +3170,149 @@ public class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionCli
 }</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">@Factory
+class RekognitionClientFactory(AwsClientFactory[RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient]):
+
+    def __init__(self,
+                 credentials_provider: AwsCredentialsProviderChain,
+                 region_provider: AwsRegionProviderChain,
+                 user_agent_provider: UserAgentProvider | None,
+                 aws_service_configuration: Annotated[AWSServiceConfiguration | None, Named("rekognition")]):
+        super().__init__(credentials_provider, region_provider, user_agent_provider, aws_service_configuration)
+
+    # Sync client
+    def createSyncBuilder(self) -&gt; RekognitionClientBuilder:  # <b class="conum">(1)</b>
+        return RekognitionClient.builder()
+
+    @Singleton
+    def syncBuilder(self, http_client: SdkHttpClient) -&gt; RekognitionClientBuilder:  # <b class="conum">(2)</b>
+        return super().syncBuilder(http_client)
+
+    @Bean(preDestroy="close")
+    def syncClient(self, builder: RekognitionClientBuilder) -&gt; RekognitionClient:  # <b class="conum">(3)</b>
+        return super().syncClient(builder)
+
+    # Async client
+    def createAsyncBuilder(self) -&gt; RekognitionAsyncClientBuilder:  # <b class="conum">(1)</b>
+        return RekognitionAsyncClient.builder()
+
+    @Singleton
+    @Requires(beans=SdkAsyncHttpClient)
+    def asyncBuilder(self, http_client: SdkAsyncHttpClient) -&gt; RekognitionAsyncClientBuilder:  # <b class="conum">(2)</b>
+        return super().asyncBuilder(http_client)
+
+    @Bean(preDestroy="close")
+    @Requires(beans=SdkAsyncHttpClient)
+    def asyncClient(self, builder: RekognitionAsyncClientBuilder) -&gt; RekognitionAsyncClient:  # <b class="conum">(3)</b>
+        return super().asyncClient(builder)</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">@Factory
+class RekognitionClientFactory(
+    credentialsProvider: AwsCredentialsProviderChain,
+    regionProvider: AwsRegionProviderChain,
+    userAgentProvider: UserAgentProvider?,
+    @Named(RekognitionClient.SERVICE_NAME) awsServiceConfiguration: AWSServiceConfiguration?
+) : AwsClientFactory&lt;RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient&gt;(
+    credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration
+) {
+
+    // Sync client
+    override fun createSyncBuilder(): RekognitionClientBuilder { // <b class="conum">(1)</b>
+        return RekognitionClient.builder()
+    }
+
+    @Singleton
+    override fun syncBuilder(httpClient: SdkHttpClient): RekognitionClientBuilder { // <b class="conum">(2)</b>
+        return super.syncBuilder(httpClient)
+    }
+
+    @Bean(preDestroy = "close")
+    override fun syncClient(builder: RekognitionClientBuilder): RekognitionClient { // <b class="conum">(3)</b>
+        return super.syncClient(builder)
+    }
+
+    // Async client
+    override fun createAsyncBuilder(): RekognitionAsyncClientBuilder { // <b class="conum">(1)</b>
+        return RekognitionAsyncClient.builder()
+    }
+
+    @Singleton
+    @Requires(beans = [SdkAsyncHttpClient::class])
+    override fun asyncBuilder(httpClient: SdkAsyncHttpClient): RekognitionAsyncClientBuilder { // <b class="conum">(2)</b>
+        return super.asyncBuilder(httpClient)
+    }
+
+    @Bean(preDestroy = "close")
+    @Requires(beans = [SdkAsyncHttpClient::class])
+    override fun asyncClient(builder: RekognitionAsyncClientBuilder): RekognitionAsyncClient { // <b class="conum">(3)</b>
+        return super.asyncClient(builder)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">@Factory
+class RekognitionClientFactory extends AwsClientFactory&lt;RekognitionClientBuilder, RekognitionAsyncClientBuilder, RekognitionClient, RekognitionAsyncClient&gt; {
+    /**
+     *
+     * @param credentialsProvider The credentials provider
+     * @param regionProvider      The region provider
+     * @param userAgentProvider User-Agent provider
+     * @param awsServiceConfiguration  AWS Service Configuration
+     */
+    protected RekognitionClientFactory(AwsCredentialsProviderChain credentialsProvider,
+                                       AwsRegionProviderChain regionProvider,
+                                       @Nullable UserAgentProvider userAgentProvider,
+                                       @Nullable @Named(RekognitionClient.SERVICE_NAME) AWSServiceConfiguration awsServiceConfiguration) {
+        super(credentialsProvider, regionProvider, userAgentProvider, awsServiceConfiguration)
+    }
+
+    // Sync client
+    @Override
+    protected RekognitionClientBuilder createSyncBuilder() { // <b class="conum">(1)</b>
+        RekognitionClient.builder()
+    }
+
+    @Override
+    @Singleton
+    RekognitionClientBuilder syncBuilder(SdkHttpClient httpClient) { // <b class="conum">(2)</b>
+        super.syncBuilder(httpClient)
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    RekognitionClient syncClient(RekognitionClientBuilder builder) { // <b class="conum">(3)</b>
+        super.syncClient(builder)
+    }
+
+    // Async client
+    @Override
+    protected RekognitionAsyncClientBuilder createAsyncBuilder() { // <b class="conum">(1)</b>
+        RekognitionAsyncClient.builder()
+    }
+
+    @Override
+    @Singleton
+    @Requires(beans = SdkAsyncHttpClient)
+    RekognitionAsyncClientBuilder asyncBuilder(SdkAsyncHttpClient httpClient) { // <b class="conum">(2)</b>
+        super.asyncBuilder(httpClient)
+    }
+
+    @Override
+    @Bean(preDestroy = "close")
+    @Requires(beans = SdkAsyncHttpClient)
+    RekognitionAsyncClient asyncClient(RekognitionAsyncClientBuilder builder) { // <b class="conum">(3)</b>
+        super.asyncClient(builder)
+    }
+}</code></pre>
+</div>
+</div>
 <div class="colist arabic">
 <table>
 <tr>
@@ -2898,7 +3322,7 @@ additional customisations to the builder here.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>This method gives a chance to register a <code>BeanCreaterEventListener</code> over the builder, so that any builder can be
+<td>This method gives a chance to register a <code>BeanCreatedEventListener</code> over the builder, so that any builder can be
 customised. Needs to be overridden to apply the <code>@Singleton</code> annotation.</td>
 </tr>
 <tr>
@@ -2946,6 +3370,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-aws-apigateway&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-apigateway"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3201,6 +3634,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+build = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-api-proxy-test"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -3220,6 +3662,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
     &lt;artifactId&gt;micronaut-function-aws-api-proxy-test&lt;/artifactId&gt;
     &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+test = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-api-proxy-test"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3373,6 +3824,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-api-proxy"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -3394,6 +3854,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-function-aws&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3481,6 +3950,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut:micronaut-jackson-databind"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -3499,6 +3977,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
     &lt;groupId&gt;io.micronaut.serde&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-serde-jackson&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.serde:micronaut-serde-jackson"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3529,6 +4016,15 @@ customised. Needs to be overridden to apply the <code>@Singleton</code> annotati
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-aws-lambda-events-serde&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-lambda-events-serde"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3682,6 +4178,15 @@ When a new instance handles its first request it has to start the JVM and load y
     &lt;groupId&gt;io.micronaut&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-http-client&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut:micronaut-http-client"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -3853,15 +4358,27 @@ dependency is needed:</p>
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+test = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-test"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
 <p>Testing subclasses of <code>MicronautRequestHandler</code> or <code>MicronautRequestStreamHandler</code> with this annotation requires
 both a no-arg and a one-arg constructor, the latter being used to inject the test application context:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class SampleRequestHandler extends MicronautRequestHandler&lt;String, String&gt; {
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.ApplicationContext;
+import io.micronaut.function.aws.MicronautRequestHandler;
+
+public class SampleRequestHandler extends MicronautRequestHandler&lt;String, String&gt; {
     // Used in AWS
     public SampleRequestHandler() {
     }
@@ -3873,7 +4390,65 @@ both a no-arg and a one-arg constructor, the latter being used to inject the tes
 
     @Override
     public String execute(String input) {
-        return null;
+        return "Hello " + input;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from micronaut.context import ApplicationContext
+from micronaut.function.aws import MicronautRequestHandler
+
+
+class SampleRequestHandler(MicronautRequestHandler[str, str]):
+
+    # Used in tests
+    def __init__(self, application_context: ApplicationContext):
+        super().__init__(application_context)
+
+    def execute(self, input: str) -&gt; str:
+        return "Hello " + input</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.ApplicationContext
+import io.micronaut.function.aws.MicronautRequestHandler
+
+class SampleRequestHandler : MicronautRequestHandler&lt;String, String&gt; {
+    // Used in AWS
+    constructor() : super()
+
+    // Used in tests
+    constructor(applicationContext: ApplicationContext) : super(applicationContext)
+
+    override fun execute(input: String): String {
+        return "Hello $input"
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import groovy.transform.CompileStatic
+import io.micronaut.context.ApplicationContext
+import io.micronaut.function.aws.MicronautRequestHandler
+
+@CompileStatic
+class SampleRequestHandler extends MicronautRequestHandler&lt;String, String&gt; {
+    // Used in AWS
+    SampleRequestHandler() {
+    }
+
+    // Used in tests
+    SampleRequestHandler(ApplicationContext applicationContext) {
+        super(applicationContext)
+    }
+
+    @Override
+    String execute(String input) {
+        "Hello " + input
     }
 }</code></pre>
 </div>
@@ -3881,13 +4456,15 @@ both a no-arg and a one-arg constructor, the latter being used to inject the tes
 <div class="paragraph">
 <p>Example usage:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.context.ApplicationContext;
 import io.micronaut.function.aws.test.annotation.MicronautLambdaTest;
 import org.junit.jupiter.api.Test;
 
 import jakarta.inject.Inject;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @MicronautLambdaTest
 public class RequestHandlerTest {
@@ -3897,7 +4474,70 @@ public class RequestHandlerTest {
     @Test
     void testHandler() {
         SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context);
-        // ...
+        assertEquals("Hello world", sampleRequestHandler.execute("world"));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from typing import Annotated
+
+from jakarta.inject import Inject
+from micronaut.context import ApplicationContext
+from micronaut.function.aws.test.annotation import MicronautLambdaTest
+from org.junit.jupiter.api import Test
+
+from .SampleRequestHandler import SampleRequestHandler
+
+
+@MicronautLambdaTest
+class RequestHandlerTest:
+    context: Annotated[ApplicationContext, Inject]
+
+    @Test
+    def test_handler(self):
+        sample_request_handler = SampleRequestHandler(self.context)
+        assert sample_request_handler.execute("world") == "Hello world"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.ApplicationContext
+import io.micronaut.function.aws.test.annotation.MicronautLambdaTest
+import jakarta.inject.Inject
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
+@MicronautLambdaTest
+class RequestHandlerTest {
+    @Inject
+    lateinit var context: ApplicationContext
+
+    @Test
+    fun testHandler() {
+        val sampleRequestHandler = SampleRequestHandler(context)
+        assertEquals("Hello world", sampleRequestHandler.execute("world"))
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import io.micronaut.context.ApplicationContext
+import io.micronaut.function.aws.test.annotation.MicronautLambdaTest
+import jakarta.inject.Inject
+import org.junit.jupiter.api.Test
+
+@MicronautLambdaTest
+class RequestHandlerTest {
+    @Inject
+    ApplicationContext context
+
+    @Test
+    void testHandler() {
+        SampleRequestHandler sampleRequestHandler = new SampleRequestHandler(context)
+        assert sampleRequestHandler.execute("world") == "Hello world"
     }
 }</code></pre>
 </div>
@@ -3976,6 +4616,23 @@ public class EventLogger implements Consumer&lt;String&gt; {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">import logging
+
+from java.util.function import Consumer
+from micronaut.function import FunctionBean
+
+LOG = logging.getLogger(__name__)
+
+
+@FunctionBean("eventlogger")
+class EventLogger(Consumer[str]):
+
+    def accept(self, input: str) -&gt; None:
+        LOG.info("Received: %s", input)</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.function.FunctionBean
 import org.slf4j.LoggerFactory
 import java.util.function.Consumer
@@ -4038,8 +4695,10 @@ public class Handler extends MicronautRequestStreamHandler {
 <div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.context.env.Environment
+import io.micronaut.core.annotation.Introspected
 import io.micronaut.function.aws.MicronautRequestStreamHandler
 
+@Introspected
 class Handler : MicronautRequestStreamHandler() {
     override fun resolveFunctionName(env: Environment): String {
         return "eventlogger"
@@ -4061,6 +4720,18 @@ class Handler extends MicronautRequestStreamHandler {
     }
 }</code></pre>
 </div>
+</div>
+<div class="admonitionblock note lang-python">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The AWS Lambda runtime instantiates the handler class before any Micronaut application context (and with it the Python runtime) exists, so the handler configured in AWS Lambda is a Java, Kotlin or Groovy class. The <code>@FunctionBean</code> it resolves, such as the <code>EventLogger</code> above, can be written in Python: keep the default handler and set the <code>micronaut.function.name</code> property, or use the Java <code>Handler</code> shown here.
+</td>
+</tr>
+</table>
 </div>
 
 <h2 id="lambdafunctionclient"><a class="anchor" href="#lambdafunctionclient"></a>10.18 Invoke Lambda with @FunctionClient</h2>
@@ -4093,6 +4764,15 @@ class Handler extends MicronautRequestStreamHandler {
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-function-client-aws-v2&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws-v2"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -4138,7 +4818,8 @@ aws:
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {lambda = {functions = {analytics = {function-name = "AwsLambdaFunctionName"}}}}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws.lambda.functions.analytics]
+function-name = "AwsLambdaFunctionName"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4203,12 +4884,29 @@ public interface AnalyticsClient {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from abc import ABC, abstractmethod
+
+from jakarta.inject import Named
+from micronaut.function.client import FunctionClient
+
+
+@FunctionClient
+class AnalyticsClient(ABC):
+
+    @Named("analytics")  # <b class="conum">(1)</b>
+    @abstractmethod
+    def visit(self, product_id: str) -&gt; str:
+        ...</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
 <pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.function.client.FunctionClient
 import jakarta.inject.Named
 
 @FunctionClient
 internal interface AnalyticsClient {
-    @Named("analytics")
+    @Named("analytics") // <b class="conum">(1)</b>
     fun visit(productId: String): String
 }</code></pre>
 </div>
@@ -4243,6 +4941,21 @@ interface AnalyticsClient {
 public interface AnalyticsClient {
     String analytics(String productId);
 }</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from abc import ABC, abstractmethod
+
+from micronaut.function.client import FunctionClient
+
+
+@FunctionClient
+class AnalyticsClient(ABC):
+
+    @abstractmethod
+    def analytics(self, product_id: str) -&gt; str:
+        ...</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4284,6 +4997,15 @@ interface AnalyticsClient {
     &lt;groupId&gt;io.micronaut.aws&lt;/groupId&gt;
     &lt;artifactId&gt;micronaut-function-client-aws&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-client-aws"</span>,
+]</code></pre>
 </div>
 </div>
 </p>
@@ -4377,6 +5099,15 @@ Each is configured by <code>AWSInvokeRequestDefinition</code> that allows settin
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-alexa"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 
@@ -4410,7 +5141,8 @@ Each is configured by <code>AWSInvokeRequestDefinition</code> that allows settin
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">alexa = {skills = {myskill = "skill-id \'xxxx-yaaa-zz123\'"}}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[alexa.skills]
+myskill = "skill-id \'xxxx-yaaa-zz123\'"</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -4478,6 +5210,15 @@ Each is configured by <code>AWSInvokeRequestDefinition</code> that allows settin
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"com.amazon.alexa:ask-sdk"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -4520,17 +5261,17 @@ Micronaut uses the builder provided by [<a href="../api/io/micronaut/aws/alexa/b
 <div class="paragraph">
 <p>You will do just one change, you will annotate those handlers with <code>jakarta.inject.Singleton</code>.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
-
 import jakarta.inject.Singleton;
+
 import java.util.Optional;
 
-@Singleton <i class="conum" data-value="1"></i><b>(1)</b>
+@Singleton // <b class="conum">(1)</b>
 public class HelloWorldIntentHandler implements RequestHandler {
 
     @Override
@@ -4545,6 +5286,86 @@ public class HelloWorldIntentHandler implements RequestHandler {
                 .withSpeech(speechText)
                 .withSimpleCard("HelloWorld", speechText)
                 .build();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from com.amazon.ask.dispatcher.request.handler import HandlerInput, RequestHandler
+from com.amazon.ask.model import Response
+from com.amazon.ask.request import Predicates
+from jakarta.inject import Singleton
+from java.util import Optional
+
+
+@Singleton  # <b class="conum">(1)</b>
+class HelloWorldIntentHandler(RequestHandler):
+
+    def canHandle(self, input: HandlerInput) -&gt; bool:
+        return input.matches(Predicates.intentName("HelloWorldIntent"))
+
+    def handle(self, input: HandlerInput) -&gt; Optional[Response]:
+        speech_text = "Hello world"
+        return (input.getResponseBuilder()
+                .withSpeech(speech_text)
+                .withSimpleCard("HelloWorld", speech_text)
+                .build())</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import com.amazon.ask.dispatcher.request.handler.HandlerInput
+import com.amazon.ask.dispatcher.request.handler.RequestHandler
+import com.amazon.ask.model.Response
+import com.amazon.ask.request.Predicates
+import jakarta.inject.Singleton
+import java.util.Optional
+
+@Singleton // <b class="conum">(1)</b>
+class HelloWorldIntentHandler : RequestHandler {
+
+    override fun canHandle(input: HandlerInput): Boolean {
+        return input.matches(Predicates.intentName("HelloWorldIntent"))
+    }
+
+    override fun handle(input: HandlerInput): Optional&lt;Response&gt; {
+        val speechText = "Hello world"
+        return input.responseBuilder
+            .withSpeech(speechText)
+            .withSimpleCard("HelloWorld", speechText)
+            .build()
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import com.amazon.ask.dispatcher.request.handler.HandlerInput
+import com.amazon.ask.dispatcher.request.handler.RequestHandler
+import com.amazon.ask.model.Response
+import com.amazon.ask.request.Predicates
+import groovy.transform.CompileStatic
+import jakarta.inject.Singleton
+
+@CompileStatic
+@Singleton // <b class="conum">(1)</b>
+class HelloWorldIntentHandler implements RequestHandler {
+
+    @Override
+    boolean canHandle(HandlerInput input) {
+        input.matches(Predicates.intentName("HelloWorldIntent"))
+    }
+
+    @Override
+    Optional&lt;Response&gt; handle(HandlerInput input) {
+        String speechText = "Hello world"
+        input.responseBuilder
+                .withSpeech(speechText)
+                .withSimpleCard("HelloWorld", speechText)
+                .build()
     }
 
 }</code></pre>
@@ -4586,6 +5407,15 @@ public class HelloWorldIntentHandler implements RequestHandler {
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-function-aws-alexa"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -4625,6 +5455,15 @@ public class HelloWorldIntentHandler implements RequestHandler {
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-alexa-httpserver"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
@@ -4645,6 +5484,21 @@ public class HelloWorldIntentHandler implements RequestHandler {
 
 <div class="paragraph">
 <p>Micronaut Alexa ships with a <a href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/speech-synthesis-markup-language-ssml-reference.html">Speech Systhesys Markup Language</a> builder.</p>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">new Ssml().speak(new Ssml("Welcome to Ride Hailer. ").audio("soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01").build()).build()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">Ssml().speak(Ssml("Welcome to Ride Hailer. ").audio("soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01").build()).build()</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">Ssml().speak(Ssml("Welcome to Ride Hailer. ").audio("soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01").build()).build()</code></pre>
+</div>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
@@ -4676,12 +5530,11 @@ public class HelloWorldIntentHandler implements RequestHandler {
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">package io.micronaut.aws.alexa.flashbriefing;
-
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">import io.micronaut.aws.alexa.flashbriefing.FlashBriefingItem;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-
 import jakarta.validation.Validator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -4705,6 +5558,88 @@ public class FlashBriefingsController {
                 .sorted() // <b class="conum">(3)</b>
                 .limit(5) // <b class="conum">(4)</b>
                 .collect(Collectors.toList());
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from functools import cmp_to_key
+
+from jakarta.validation import Validator
+from micronaut.aws.alexa.flashbriefing import FlashBriefingItem
+from micronaut.http.annotation import Controller, Get
+
+from .FlashBriefingRepository import FlashBriefingRepository
+
+
+@Controller("/news")
+class FlashBriefingsController:
+
+    def __init__(self, validator: Validator, flash_briefing_repository: FlashBriefingRepository):
+        self.validator = validator
+        self.flash_briefing_repository = flash_briefing_repository
+
+    @Get  # <b class="conum">(1)</b>
+    def index(self) -&gt; list[FlashBriefingItem]:
+        items = [item for item in self.flash_briefing_repository.find()
+                 if self.validator.validate(item).isEmpty()]  # <b class="conum">(2)</b>
+        items.sort(key=cmp_to_key(lambda a, b: a.compareTo(b)))  # <b class="conum">(3)</b>
+        return items[:5]  # <b class="conum">(4)</b></code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="kotlin">import io.micronaut.aws.alexa.flashbriefing.FlashBriefingItem
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import jakarta.validation.Validator
+
+@Controller("/news")
+class FlashBriefingsController(
+    private val validator: Validator,
+    private val flashBriefingRepository: FlashBriefingRepository
+) {
+
+    @Get // <b class="conum">(1)</b>
+    fun index(): List&lt;FlashBriefingItem&gt; {
+        return flashBriefingRepository.find()
+            .filter { item -&gt; validator.validate(item).isEmpty() } // <b class="conum">(2)</b>
+            .sorted() // <b class="conum">(3)</b>
+            .take(5) // <b class="conum">(4)</b>
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="groovy">import groovy.transform.CompileStatic
+import io.micronaut.aws.alexa.flashbriefing.FlashBriefingItem
+import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
+import jakarta.validation.Validator
+
+@CompileStatic
+@Controller("/news")
+class FlashBriefingsController {
+
+    private final Validator validator
+    private final FlashBriefingRepository flashBriefingRepository
+
+    FlashBriefingsController(Validator validator,
+                             FlashBriefingRepository flashBriefingRepository) {
+        this.validator = validator
+        this.flashBriefingRepository = flashBriefingRepository
+    }
+
+    @Get // <b class="conum">(1)</b>
+    List&lt;FlashBriefingItem&gt; index() {
+        flashBriefingRepository.find()
+                .findAll { FlashBriefingItem item -&gt; validator.validate(item).isEmpty() } // <b class="conum">(2)</b>
+                .sort() // <b class="conum">(3)</b>
+                .take(5) // <b class="conum">(4)</b>
     }
 
 }</code></pre>
@@ -4952,13 +5887,31 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-secretsmanager"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
 <p>The recommended way to load Secrets Manager configuration is with <code>micronaut.config.import</code>.</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=myapp
+micronaut.config.import[0]=aws-secretsmanager:///config/application
+micronaut.config.import[1]=optional:aws-secretsmanager:///config/myapp</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   application:
@@ -4969,11 +5922,77 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
       - optional:aws-secretsmanager:///config/myapp</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
+name = "myapp"
+
+[micronaut.config]
+import = [
+  "aws-secretsmanager:///config/application",
+  "optional:aws-secretsmanager:///config/myapp",
+]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "myapp"
+  }
+  config {
+    'import' = ["aws-secretsmanager:///config/application", "optional:aws-secretsmanager:///config/myapp"]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "myapp"
+    }
+    config {
+      import = ["aws-secretsmanager:///config/application", "optional:aws-secretsmanager:///config/myapp"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "myapp"
+    },
+    "config": {
+      "import": ["aws-secretsmanager:///config/application", "optional:aws-secretsmanager:///config/myapp"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>You can also use the structured form:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=myapp
+micronaut.config.import[0].provider=aws-secretsmanager
+micronaut.config.import[0].path=/config/application
+micronaut.config.import[1].provider=aws-secretsmanager
+micronaut.config.import[1].path=/config/myapp
+micronaut.config.import[1].optional=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   application:
@@ -4985,6 +6004,84 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
       - provider: aws-secretsmanager
         path: /config/myapp
         optional: true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
+name = "myapp"
+
+[[micronaut.config.import]]
+provider = "aws-secretsmanager"
+path = "/config/application"
+
+[[micronaut.config.import]]
+provider = "aws-secretsmanager"
+path = "/config/myapp"
+optional = true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "myapp"
+  }
+  config {
+    'import' = [{
+        provider = "aws-secretsmanager"
+        path = "/config/application"
+      }, {
+        provider = "aws-secretsmanager"
+        path = "/config/myapp"
+        optional = true
+      }]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "myapp"
+    }
+    config {
+      import = [{
+          provider = "aws-secretsmanager"
+          path = "/config/application"
+        }, {
+          provider = "aws-secretsmanager"
+          path = "/config/myapp"
+          optional = true
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "myapp"
+    },
+    "config": {
+      "import": [{
+          "provider": "aws-secretsmanager",
+          "path": "/config/application"
+        }, {
+          "provider": "aws-secretsmanager",
+          "path": "/config/myapp",
+          "optional": true
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -5030,8 +6127,18 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
 <div class="paragraph">
 <p>To avoid secret key naming collisions in the Micronaut application context, configure grouped prefixes. For example, if you would like to use multiple RDS instances, configure it as follows:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">aws.secretsmanager.secrets[0].secret-name=rds
+aws.secretsmanager.secrets[0].prefix=datasources.default
+aws.secretsmanager.secrets[1].secret-name=rds_backup
+aws.secretsmanager.secrets[1].prefix=datasources.backup</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">aws:
   secretsmanager:
@@ -5040,6 +6147,68 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
         prefix: datasources.default
       - secret-name: rds_backup
         prefix: datasources.backup</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[[aws.secretsmanager.secrets]]
+secret-name = "rds"
+prefix = "datasources.default"
+
+[[aws.secretsmanager.secrets]]
+secret-name = "rds_backup"
+prefix = "datasources.backup"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">aws {
+  secretsmanager {
+    secrets = [{
+        secretName = "rds"
+        prefix = "datasources.default"
+      }, {
+        secretName = "rds_backup"
+        prefix = "datasources.backup"
+      }]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  aws {
+    secretsmanager {
+      secrets = [{
+          secret-name = "rds"
+          prefix = "datasources.default"
+        }, {
+          secret-name = "rds_backup"
+          prefix = "datasources.backup"
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "aws": {
+    "secretsmanager": {
+      "secrets": [{
+          "secret-name": "rds",
+          "prefix": "datasources.default"
+        }, {
+          "secret-name": "rds_backup",
+          "prefix": "datasources.backup"
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -5051,13 +6220,61 @@ Read <a href="https://guides.micronaut.io/latest/micronaut-aws-parameter-store.h
 <div class="paragraph">
 <p>For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.config.import[0]=aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   config:
     import:
       - "aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.config]
+import = [
+  "aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1",
+]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  config {
+    'import' = ["aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1"]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    config {
+      import = ["aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "config": {
+      "import": ["aws-secretsmanager://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/myapp?region=eu-west-1"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -5248,7 +6465,8 @@ This change does not add AWS watch/refresh support. Imported Secrets Manager val
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {distributed-configuration = {search-active-environments = false}}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws.distributed-configuration]
+search-active-environments = false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5316,7 +6534,8 @@ This change does not add AWS watch/refresh support. Imported Secrets Manager val
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {distributed-configuration = {search-common-application = false}}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws.distributed-configuration]
+search-common-application = false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5392,7 +6611,9 @@ aws.distributed-configuration.search-common-application=false</code></pre>
 </div>
 <div class="listingblock multi-language-sample">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">aws = {distributed-configuration = {search-active-environments = false, search-common-application = false}}</code></pre>
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[aws.distributed-configuration]
+search-active-environments = false
+search-common-application = false</code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -5482,13 +6703,31 @@ IMPORTANT: <code>micronaut.config.import=aws-secretsmanager:///&#8230;&#8203;</c
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="title"></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="pyronaut">[tool.pyronaut.dependencies]
+runtime = [
+    <span class="hljs-string">"io.micronaut.aws:micronaut-aws-parameter-store"</span>,
+]</code></pre>
+</div>
+</div>
 </p>
 </div>
 <div class="paragraph">
 <p>The recommended way to import configuration from Parameter Store is with <code>micronaut.config.import</code>.</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=hello-world
+micronaut.config.import[0]=parameterstore:/config/application
+micronaut.config.import[1]=optional:parameterstore:/config/hello-world</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   application:
@@ -5499,11 +6738,77 @@ IMPORTANT: <code>micronaut.config.import=aws-secretsmanager:///&#8230;&#8203;</c
       - optional:parameterstore:/config/hello-world</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
+name = "hello-world"
+
+[micronaut.config]
+import = [
+  "parameterstore:/config/application",
+  "optional:parameterstore:/config/hello-world",
+]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "hello-world"
+  }
+  config {
+    'import' = ["parameterstore:/config/application", "optional:parameterstore:/config/hello-world"]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "hello-world"
+    }
+    config {
+      import = ["parameterstore:/config/application", "optional:parameterstore:/config/hello-world"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "hello-world"
+    },
+    "config": {
+      "import": ["parameterstore:/config/application", "optional:parameterstore:/config/hello-world"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>You can also use the structured form:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.application.name=hello-world
+micronaut.config.import[0].provider=parameterstore
+micronaut.config.import[0].path=/config/application
+micronaut.config.import[1].provider=parameterstore
+micronaut.config.import[1].path=/config/hello-world
+micronaut.config.import[1].optional=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   application:
@@ -5517,20 +6822,148 @@ IMPORTANT: <code>micronaut.config.import=aws-secretsmanager:///&#8230;&#8203;</c
         optional: true</code></pre>
 </div>
 </div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.application]
+name = "hello-world"
+
+[[micronaut.config.import]]
+provider = "parameterstore"
+path = "/config/application"
+
+[[micronaut.config.import]]
+provider = "parameterstore"
+path = "/config/hello-world"
+optional = true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  application {
+    name = "hello-world"
+  }
+  config {
+    'import' = [{
+        provider = "parameterstore"
+        path = "/config/application"
+      }, {
+        provider = "parameterstore"
+        path = "/config/hello-world"
+        optional = true
+      }]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    application {
+      name = "hello-world"
+    }
+    config {
+      import = [{
+          provider = "parameterstore"
+          path = "/config/application"
+        }, {
+          provider = "parameterstore"
+          path = "/config/hello-world"
+          optional = true
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "application": {
+      "name": "hello-world"
+    },
+    "config": {
+      "import": [{
+          "provider": "parameterstore",
+          "path": "/config/application"
+        }, {
+          "provider": "parameterstore",
+          "path": "/config/hello-world",
+          "optional": true
+        }]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>Authentication and AWS client configuration options can also be supplied directly on the import declaration.</p>
 </div>
 <div class="paragraph">
 <p>For connection-string declarations, use the user-info portion for credentials and query parameters for supported options:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="title">application.yml</div>
+<div class="content">
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-properties hljs" data-lang="properties">micronaut.config.import[0]=parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true
+micronaut.config.import[1]=parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">micronaut:
   config:
     import:
       - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true"
       - "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true"</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml">[micronaut.config]
+import = [
+  "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true",
+  "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true",
+]</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-groovy-config hljs" data-lang="groovy-config">micronaut {
+  config {
+    'import' = ["parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true", "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true"]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-hocon hljs" data-lang="hocon">{
+  micronaut {
+    config {
+      import = ["parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true", "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock multi-language-sample">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json-config hljs" data-lang="json-config">{
+  "micronaut": {
+    "config": {
+      "import": ["parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/application?region=eu-west-1&amp;use-secure-parameters=true", "parameterstore://ACCESS_KEY_ID:SECRET_ACCESS_KEY@localhost/config/hello-world?aws.region=eu-west-1&amp;search-active-environments=true"]
+    }
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
