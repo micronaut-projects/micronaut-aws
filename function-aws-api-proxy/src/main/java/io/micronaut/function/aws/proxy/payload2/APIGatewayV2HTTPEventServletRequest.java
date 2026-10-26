@@ -37,11 +37,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of {@link ServletHttpRequest} for AWS API Gateway Proxy.
@@ -95,6 +96,10 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
         // "value3". However, if the "rawQueryString" is "parameter1=value1%2Cvalue2", the default
         // Micronaut behavior is to treat that as two strings, using the comma as a delimiter.
         String rawQueryString = requestEvent.getRawQueryString();
+        if (rawQueryString == null) {
+            // API Gateway always provides "rawQueryString", but other callers, such as the test server, may not
+            return transformCommaSeparatedValue(requestEvent.getQueryStringParameters());
+        }
         if (StringUtils.isEmpty(rawQueryString)) {
             return Collections.emptyMap();
         } else {
@@ -134,14 +139,12 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
     ) {
         MediaType mediaType = getContentType().orElse(MediaType.APPLICATION_JSON_TYPE);
 
-        final Map<String, List<String>> parameters;
         if (isFormSubmission(mediaType)) {
             MapListOfStringAndMapStringMutableHttpParameters result = getParametersFromBody(null);
 
-            parameters = new LinkedHashMap<>();
+            Map<CharSequence, List<String>> all = new LinkedHashMap<>();
             for (String name : result.names()) {
                 List<String> values = result.getAll(name);
-
                 if (!values.isEmpty()) {
                     // Unlike query parameters, Micronaut only takes one value per key in a body request
                     String first = values.get(0);
@@ -155,13 +158,13 @@ public final class APIGatewayV2HTTPEventServletRequest<B> extends ApiGatewayServ
                     //    Argument.listOf(String.class)
                     //).orElse(values);
 
-                    parameters.put(name, converted);
+                    all.put(name, converted);
                 }
             }
-        } else {
-            parameters = multiQueryStringParametersSupplier.get();
+            return new SimpleHttpParameters(all, conversionService);
         }
 
+        Map<String, List<String>> parameters = multiQueryStringParametersSupplier.get();
         Map<CharSequence, List<String>> charSeqMap = parameters == null ?
             Collections.emptyMap() :
             parameters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

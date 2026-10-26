@@ -57,8 +57,6 @@ public class APIGatewayV2HTTPResponseServletResponse<B> extends AbstractServletH
 
         APIGatewayV2HTTPResponse.APIGatewayV2HTTPResponseBuilder apiGatewayV2HTTPResponseBuilder = APIGatewayV2HTTPResponse.builder()
             .withHeaders(MapCollapseUtils.collapse(multiValueHeaders))
-            //.withMultiValueHeaders(multiValueHeaders)
-            .withCookies(cookies)
             .withStatusCode(status);
         if (CollectionUtils.isNotEmpty(cookies)) {
             apiGatewayV2HTTPResponseBuilder.withCookies(cookies);
