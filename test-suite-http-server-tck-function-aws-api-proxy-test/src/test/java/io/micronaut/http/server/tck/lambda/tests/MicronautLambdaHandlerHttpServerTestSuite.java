@@ -15,6 +15,7 @@ import org.junit.platform.suite.api.*;
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
     "io.micronaut.http.server.tck.tests.filter.CacheControlTest",
     "io.micronaut.http.server.tck.tests.forms.UploadTest",
+    "io.micronaut.http.server.tck.tests.forms.FormsSubmissionsWithListsTest", // replaced by FormsSubmissionsWithListsFirstValueTest, which keeps only the first value of a repeated form key
 })
 @SuiteDisplayName("HTTP Server TCK for Function AWS API Proxy Test")
 public class MicronautLambdaHandlerHttpServerTestSuite {
