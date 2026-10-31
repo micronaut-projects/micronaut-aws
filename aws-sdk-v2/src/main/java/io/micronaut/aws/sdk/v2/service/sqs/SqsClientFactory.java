@@ -15,11 +15,13 @@
  */
 package io.micronaut.aws.sdk.v2.service.sqs;
 
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.Nullable;
 import jakarta.inject.Named;
@@ -75,6 +77,7 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
     @Override
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SqsClient syncClient(SqsClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -90,6 +93,7 @@ public class SqsClientFactory extends AwsClientFactory<SqsClientBuilder, SqsAsyn
     @Bean(preDestroy = "close")
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SqsAsyncClient asyncClient(SqsAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }
