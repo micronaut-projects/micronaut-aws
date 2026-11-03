@@ -28,6 +28,11 @@ import jakarta.inject.Singleton;
 
 /**
  * Implementation of {@link ServletHttpHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  *
  * @author Tim Yates
  * @since 4.0.0
@@ -45,6 +50,9 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
         APIGatewayV2HTTPEvent request,
         APIGatewayV2HTTPResponse response
     ) {
+        // If you see cookies: [...] but no headers.cookie, the V2 Payload was not translated to a standard request
+        //log.info("=== RAW EVENT JSON: " + JsonMapper.createDefault().writeValueAsString(request));
+
         return new APIGatewayV2HTTPEventServletRequest<>(
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(

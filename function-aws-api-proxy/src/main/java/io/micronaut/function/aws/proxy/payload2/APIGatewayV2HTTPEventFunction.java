@@ -29,6 +29,11 @@ import io.micronaut.servlet.http.ServletHttpHandler;
 
 /**
  * Handles requests from API Gateway using the v2 payload format.
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  */
 public class APIGatewayV2HTTPEventFunction extends FunctionInitializer implements
     RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {

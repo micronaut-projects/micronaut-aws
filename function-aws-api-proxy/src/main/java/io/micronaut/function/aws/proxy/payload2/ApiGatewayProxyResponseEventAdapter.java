@@ -23,12 +23,15 @@ import io.micronaut.core.convert.value.MutableConvertibleValues;
 import io.micronaut.core.convert.value.MutableConvertibleValuesMap;
 import io.micronaut.core.util.ArgumentUtils;
 import io.micronaut.http.CaseInsensitiveMutableHttpHeaders;
+import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MutableHttpHeaders;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.cookie.Cookie;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,7 +64,13 @@ public class ApiGatewayProxyResponseEventAdapter<T> implements MutableHttpRespon
 
     @Override
     public MutableHttpHeaders getHeaders() {
-        return new CaseInsensitiveMutableHttpHeaders(MapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()), conversionService);
+        Map<String, List<String>> headers = new HashMap<>(MapCollapseUtils.collapse(event.getMultiValueHeaders(), event.getHeaders()));
+        // In the V2 payload format, "Set-Cookie" values are in "cookies", not in the headers
+        List<String> setCookies = event.getCookies();
+        if (setCookies != null && !setCookies.isEmpty()) {
+            headers.put(HttpHeaders.SET_COOKIE, setCookies);
+        }
+        return new CaseInsensitiveMutableHttpHeaders(headers, conversionService);
     }
 
     @Override
