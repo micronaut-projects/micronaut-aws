@@ -9,10 +9,30 @@ plugins {
     id("io.micronaut.build.shared.settings") version "8.1.4"
 }
 
+// Micronaut core 5.3.0-SNAPSHOT, which carries the development-mode API, comes from the Central snapshots
+// repository; only io.micronaut snapshots are resolved from it. Projects declare their own repositories, which
+// replace the settings ones, so it is added to each project too.
+// Remove once the build moves to a core release.
+fun RepositoryHandler.micronautSnapshotRepositories() {
+    maven {
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        mavenContent {
+            snapshotsOnly()
+        }
+        content {
+            includeGroupByRegex("io\\.micronaut(\\..*)?")
+        }
+    }
+}
+
 dependencyResolutionManagement {
     repositories {
+        micronautSnapshotRepositories()
         mavenCentral()
     }
+}
+gradle.beforeProject {
+    repositories.micronautSnapshotRepositories()
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -49,6 +69,7 @@ include("test-suite-function-client-aws")
 include("test-suite")
 include("test-suite-utils")
 include("test-suite-aws-sdk-v2")
+include("test-suite-dev-reload")
 include("test-suite-graal")
 include("test-suite-graal-logging")
 include("test-suite-groovy")

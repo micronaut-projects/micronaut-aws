@@ -1,0 +1,7 @@
+In development mode, when the application restarts after a change, the AWS SDK v2 clients this module creates (such as `S3Client`, `SqsClient` or `DynamoDbAsyncClient`) are kept for the next generation, along with the SDK HTTP client they use (`SdkHttpClient` or `SdkAsyncHttpClient`) and its connection pool.
+
+A change of configuration under `aws` releases the clients: the next generation creates them again from the new configuration. An SDK HTTP client is released by a change of its own configuration, such as `aws.apache-client` or `aws.netty-client`, so a client created again after a change of region uses the HTTP client that was kept.
+
+To keep the clients, the credentials and region provider chains of development mode copy the `aws.access-key-id` (or `aws.access-key`), `aws.secret-key` (or `aws.secret-access-key`), `aws.session-token` and `aws.region` values when they are created, rather than reading them from the environment each time they are asked. They resolve the same values in the same order, and fall back to the default providers of the SDK as before. Outside development mode nothing changes.
+
+A client is not kept, and is created again on each restart, when it holds a class of the application: an `ExecutionInterceptor`, a credentials, endpoint or auth scheme provider given to its builder by a `BeanCreatedEventListener` of the application, or a credentials or region provider, `UserAgentProvider` or SDK HTTP client bean of the application.
