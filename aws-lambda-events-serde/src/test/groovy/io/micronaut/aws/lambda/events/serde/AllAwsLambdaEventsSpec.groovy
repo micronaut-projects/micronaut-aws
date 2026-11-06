@@ -24,20 +24,15 @@ import com.amazonaws.services.lambda.runtime.serialization.events.mixins.*
 import com.amazonaws.services.lambda.runtime.serialization.events.modules.DateModule
 import com.amazonaws.services.lambda.runtime.serialization.events.modules.DateTimeModule
 import io.micronaut.context.BeanContext
-import io.micronaut.core.annotation.AnnotationValue
 import io.micronaut.core.annotation.Introspected
-import io.micronaut.core.beans.BeanIntrospection
 import io.micronaut.core.reflect.ReflectionUtils
 import io.micronaut.serde.ObjectMapper
 import io.micronaut.serde.SerdeIntrospections
 import io.micronaut.serde.annotation.SerdeImport
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
-import org.assertj.core.api.Assertions
-import spock.lang.Ignore
 import spock.lang.Specification
 
-import java.lang.annotation.Annotation
 import java.lang.reflect.Field
 
 @MicronautTest(startApplication = false)
@@ -61,7 +56,6 @@ class AllAwsLambdaEventsSpec extends Specification {
     @Inject
     BeanContext beanContext
 
-    @Ignore
     void "Serde imports have the correct mixins"() {
         given:
         Field mixinMap = ReflectionUtils.getRequiredField(LambdaEventSerializers, "MIXIN_MAP");
@@ -71,53 +65,61 @@ class AllAwsLambdaEventsSpec extends Specification {
         //not used in AWS lib and not present in classpath
         eventToMixin.remove("com.amazonaws.services.dynamodbv2.model.StreamRecord")
         eventToMixin.remove("com.amazonaws.services.dynamodbv2.model.AttributeValue")
-        // Fails in CI
-        eventToMixin.remove("com.amazonaws.services.lambda.runtime.events.KinesisEvent.Record")
 
+        when:
+        Map<Class<?>, Class<?>> importedMixins = importedMixins()
+        List<String> problems = []
         for (Map.Entry<String, Class> entry : eventToMixin.entrySet()) {
-            try {
-                when:
-                Class<?> eventType = Class.forName(entry.getKey())
-                Class<?> expectedEventMixin = entry.getValue()
-                BeanIntrospection<?> eventIntrospection =
-                        serde.getBeanIntrospector().findIntrospection(eventType)
-                                .orElseThrow(() -> new AssertionError("No SerdeImport found for " + entry.getKey(), null))
-
-                /*
-                 * TODO
-                 *
-                 * When both a parent class and one of its inner classes have the same annotation then `getAnnotation`
-                 * doesn't reliably (or ever) return the annotation of the parent class. It returns the inner class's
-                 * annotation. But isn't the intuitive behavior returning the annotation of the parent class?
-                 *
-                 * So ideally we could write this code but we can't:
-                 * serde.getBeanIntrospector().getIntrospection(eventType).getAnnotation(SerdeImport)
-                 *
-                 * On the next two lines we'll get annotations from both parent and inner classes and then filter for the parent.
-                 */
-                List<AnnotationValue<Annotation>> serdeAnnotations = eventIntrospection.getAnnotationValuesByType(SerdeImport)
-                AnnotationValue<Annotation> serdeAnnotation =
-                        serdeAnnotations.stream()
-                                .filter(annotation -> annotation.classValue().get() == eventType)
-                                .findAny()
-                                .orElseThrow(() -> new AssertionError("Unexpected state", null))
-
-                then:
-                Class<?> actualEventMixin = serdeAnnotation.get("mixin", Class)
-                        .orElseThrow(() -> new AssertionError(
-                                String.format("No SerdeImport mixin found for %s.\nExpects mixin %s",
-                                        entry.getKey(), expectedEventMixin.getName()),
-                                null))
-                Assertions.assertThat(actualEventMixin)
-                        .withFailMessage("The SerdeImport %s\nexpects the mixin %s\nbut actually has the mixin %s",
-                                entry.getKey(),
-                                expectedEventMixin.getName(),
-                                actualEventMixin.getName())
-                        .isEqualTo(expectedEventMixin)
-            } catch (Exception exception) {
-                Assertions.fail("Failure encountered when validating the serdeability of " + entry.getKey(), exception);
+            String problem = mixinProblem(entry.getKey(), entry.getValue(), importedMixins)
+            if (problem != null) {
+                problems << problem
             }
         }
+
+        then:
+        !importedMixins.isEmpty()
+        problems.empty
+    }
+
+    /**
+     * The mixin each {@link SerdeImport} of this module declares, by imported type. Read from the import classes
+     * themselves: the serde processor does not copy {@code @SerdeImport} onto the introspection it generates.
+     */
+    private static Map<Class<?>, Class<?>> importedMixins() {
+        String pkg = AllAwsLambdaEventsSpec.package.name
+        Map<Class<?>, Class<?>> mixins = [:]
+        // the package spans the main and the test output directories
+        Collections.list(AllAwsLambdaEventsSpec.classLoader.getResources(pkg.replace('.', '/')))
+                .findAll { it.protocol == 'file' }
+                .collectMany { new File(it.toURI()).listFiles().toList() }
+                .findAll { it.name.endsWith('Serde.class') }
+                .collect { Class.forName(pkg + '.' + it.name - '.class') }
+                .each { Class<?> importClass ->
+                    for (SerdeImport serdeImport : importClass.getAnnotationsByType(SerdeImport)) {
+                        mixins.put(serdeImport.value(), serdeImport.mixin())
+                    }
+                }
+        return mixins
+    }
+
+    /**
+     * @return why the SerdeImport of the event does not declare the mixin the AWS library uses, or null if it does
+     */
+    private static String mixinProblem(String eventName, Class<?> expectedEventMixin, Map<Class<?>, Class<?>> importedMixins) {
+        Class<?> eventType
+        try {
+            eventType = Class.forName(eventName)
+        } catch (ClassNotFoundException e) {
+            return "${eventName}: not on the classpath"
+        }
+        if (!importedMixins.containsKey(eventType)) {
+            return "${eventName}: no SerdeImport (expects mixin ${expectedEventMixin.name})"
+        }
+        Class<?> actualEventMixin = importedMixins.get(eventType)
+        if (actualEventMixin != expectedEventMixin) {
+            return "${eventName}: expects mixin ${expectedEventMixin.name} but has ${actualEventMixin.name}"
+        }
+        return null
     }
 
     void "AWS lambda event can be serialized"(String jsonFilename, Class<Object> type) {

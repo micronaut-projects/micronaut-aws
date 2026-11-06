@@ -1,31 +1,31 @@
 [versions]
-micronaut = "5.2.2"
+micronaut = "5.2.20"
 # The Python compiler and runtime of test-suite-python: only that suite resolves this core version
-micronaut-python = "5.2.3"
+micronaut-python = "5.2.20"
 micronaut-test = "5.1.1"
 
 bouncycastle = "1.86"
 fileupload = '0.0.8'
 logback-json-classic = '0.1.5'
 
-micronaut-discovery = "5.1.0"
+micronaut-discovery = "5.2.0"
 micronaut-groovy = "5.1.0"
 micronaut-logging = "2.1.0"
-micronaut-mongodb = "6.1.0"
-micronaut-reactor = "4.2.0"
-micronaut-serde = "3.1.1"
-micronaut-servlet = "6.1.0"
-micronaut-security = "5.3.2"
-micronaut-views = "6.2.0"
-micronaut-validation = "5.1.0"
+micronaut-mongodb = "6.2.0"
+micronaut-reactor = "4.3.0"
+micronaut-serde = "3.2.6"
+micronaut-servlet = "6.2.2"
+micronaut-security = "5.5.1"
+micronaut-views = "6.3.1"
+micronaut-validation = "5.2.1"
 
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
-managed-aws-java-sdk-v2 = "2.55.11"
-managed-aws-lambda = '1.4.0'
+managed-aws-java-sdk-v2 = "2.57.3"
+managed-aws-lambda = "1.4.1"
 managed-aws-lambda-events = '3.16.1'
 managed-aws-lambda-java-serialization = '1.4.1'
-aws-lambda-java-runtime-interface-client = "2.12.1"
+aws-lambda-java-runtime-interface-client = "2.12.2"
 slf4j = "2.0.20"
 servlet-api = "2.5"
 javapoet = "1.13.0"
@@ -33,7 +33,7 @@ javapoet = "1.13.0"
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "25.4.4.1.1"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 
 # Micronaut
 micronaut-gradle-plugin = "5.0.2"
@@ -119,4 +119,4 @@ testcontainers-localstack = { module = "org.testcontainers:testcontainers-locals
 testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter" }
 testcontainers-spock = { module = "org.testcontainers:testcontainers-spock" }
 testcontainers-mongodb = { module = "org.testcontainers:testcontainers-mongodb" }
-testcontainers-floci = { module = "io.floci:testcontainers-floci", version = "2.16.1" }
+testcontainers-floci = { module = "io.floci:testcontainers-floci", version = "2.17.0" }
