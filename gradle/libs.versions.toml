@@ -18,7 +18,6 @@ micronaut-servlet = "6.2.2"
 micronaut-security = "5.5.1"
 micronaut-views = "6.3.1"
 micronaut-validation = "5.2.1"
-
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
 managed-aws-java-sdk-v2 = "2.57.11"
@@ -34,7 +33,6 @@ javapoet = "1.13.0"
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
 graal = "25.5.5.0.3"
 kotlin = "2.4.21"
-
 # Micronaut
 micronaut-gradle-plugin = "5.0.2"
 
@@ -48,13 +46,13 @@ javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 micronaut-core = { module = 'io.micronaut:micronaut-core-bom', version.ref = 'micronaut' }
 micronaut-discovery-client = { module = "io.micronaut.discovery:micronaut-discovery-client-bom", version.ref = "micronaut-discovery" }
 micronaut-groovy = { module = "io.micronaut.groovy:micronaut-groovy-bom", version.ref = "micronaut-groovy" }
-micronaut-mongodb = "6.2.0"
-micronaut-reactor = "4.3.0"
-micronaut-serde = "3.2.6"
-micronaut-servlet = "6.2.2"
-micronaut-security = "5.5.1"
-micronaut-views = "6.3.1"
-micronaut-validation = "5.2.1"
+micronaut-mongodb = { module = "io.micronaut.mongodb:micronaut-mongo-bom", version.ref = "micronaut-mongodb" }
+micronaut-reactor = { module = "io.micronaut.reactor:micronaut-reactor-bom", version.ref = "micronaut-reactor" }
+micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+micronaut-servlet = { module = "io.micronaut.servlet:micronaut-servlet-bom", version.ref = "micronaut-servlet" }
+micronaut-security = { module = "io.micronaut.security:micronaut-security-bom", version.ref = "micronaut-security" }
+micronaut-views = { module = "io.micronaut.views:micronaut-views-bom", version.ref = "micronaut-views" }
+micronaut-validation = { module = "io.micronaut.validation:micronaut-validation-bom", version.ref = "micronaut-validation" }
 
 alexa-ask-sdk-apache-client = { module = 'com.amazon.alexa:ask-sdk-apache-client', version.ref = 'managed-alexa-ask-sdk' }
 aws-ssm = { module = 'software.amazon.awssdk:ssm' }
