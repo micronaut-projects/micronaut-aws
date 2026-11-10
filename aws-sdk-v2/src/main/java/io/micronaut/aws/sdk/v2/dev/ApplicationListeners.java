@@ -62,7 +62,11 @@ final class ApplicationListeners {
         for (Class<?> listenerType : LISTENER_TYPES) {
             for (BeanDefinition<?> definition : beanContext.getBeanDefinitions(listenerType)) {
                 Class<?> type = definition.getBeanType();
-                if (isApplicationClass.test(type)) {
+                // a listener a factory of the application produces, a lambda for instance, is typed by the interface:
+                // its definition, and the factory that declares it, are of the application
+                if (isApplicationClass.test(type)
+                    || isApplicationClass.test(definition.getClass())
+                    || definition.getDeclaringType().filter(isApplicationClass).isPresent()) {
                     List<Argument<?>> arguments = definition.getTypeArguments(listenerType);
                     found.add(new Listener(type, arguments.isEmpty() ? Object.class : arguments.get(0).getType()));
                 }
