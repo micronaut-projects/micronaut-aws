@@ -53,9 +53,11 @@ final class DevelopmentCredentialsAndRegionFactory {
     @Singleton
     @Replaces(bean = AwsCredentialsProviderChain.class, factory = CredentialsAndRegionFactory.class)
     AwsCredentialsProviderChain awsCredentialsProvider(AwsEnvironmentSnapshot environment) {
+        // DefaultCredentialsProvider.create() returns a JVM-wide singleton, which closing this chain would close for
+        // every other user of the SDK, the next chain included: each chain builds its own, as the production factory does
         return AwsCredentialsProviderChain.of(
             new CopiedAwsCredentialsProvider(environment),
-            DefaultCredentialsProvider.create()
+            DefaultCredentialsProvider.builder().build()
         );
     }
 
