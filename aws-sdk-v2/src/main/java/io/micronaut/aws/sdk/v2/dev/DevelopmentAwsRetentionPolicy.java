@@ -16,10 +16,12 @@
 package io.micronaut.aws.sdk.v2.dev;
 
 import io.micronaut.aws.ua.UserAgentProvider;
+import io.micronaut.context.BeanContext;
 import io.micronaut.context.BeanRegistration;
 import io.micronaut.context.env.DevelopmentActive;
 import io.micronaut.context.reload.BeanRetentionPolicy;
 import io.micronaut.core.annotation.Internal;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -36,17 +38,10 @@ import software.amazon.awssdk.identity.spi.IdentityProvider;
 import software.amazon.awssdk.regions.providers.AwsRegionProvider;
 import software.amazon.awssdk.utils.ScheduledExecutorUtils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.function.Predicate;
 
 /**
  * Refuses, in development mode only, to retain an AWS SDK client, or a bean that the clients are built from, that
@@ -54,15 +49,18 @@ import java.util.concurrent.ThreadPoolExecutor;
  * {@link io.micronaut.context.annotation.Retain retained} across a restart, and the context refuses those built from
  * beans of the application, but it cannot see what an application listener gives a client builder: execution
  * interceptors, metric publishers, a retry strategy or policy, a scheduled executor, a signer, a credentials, endpoint
- * or auth scheme provider. A retained client would keep running those after
- * the restart replaced their classes, and keep the retired generation reachable. It refuses:
+ * or auth scheme provider. A retained client would keep running those after the restart replaced their classes, and
+ * keep the retired generation reachable. It refuses:
  *
  * <ul>
- *     <li>an {@link SdkClient} whose class, credentials, endpoint or auth scheme provider, or execution interceptors,
- *     metric publishers, retry strategy or policy, scheduled executor, profile file supplier or signers of its
- *     override configuration, are classes of the application or, when the SDK built them, hold one, as a retry
- *     strategy built with a predicate of the application, or an executor with its thread factory, does; or that does
- *     not tell what it holds;</li>
+ *     <li>an {@link SdkClient}, {@link SdkHttpClient} or {@link SdkAsyncHttpClient} made from a bean that a
+ *     {@code BeanCreatedEventListener} or {@code BeanInitializedEventListener} of the application applies to, such as
+ *     its builder, whatever the listener gave it: this is decided from the definitions of the context and its
+ *     dependency graph, not from what the SDK built;</li>
+ *     <li>an {@link SdkClient} whose class, credentials or endpoint provider, auth schemes, or execution interceptors,
+ *     metric publishers, retry strategy or its configurator, retry policy, scheduled executor, with the thread factory
+ *     and rejection handler of a thread pool, profile file supplier or signers of its override configuration, as the
+ *     client tells them, are classes of the application; or that does not tell what it holds;</li>
  *     <li>an {@link SdkHttpClient}, {@link SdkAsyncHttpClient}, credentials or region provider, {@link UserAgentProvider}
  *     or {@link ExecutionInterceptor} bean whose class is a class of the application.</li>
  * </ul>
@@ -80,39 +78,74 @@ import java.util.concurrent.ThreadPoolExecutor;
 final class DevelopmentAwsRetentionPolicy implements BeanRetentionPolicy {
 
     private static final Logger LOG = LoggerFactory.getLogger(DevelopmentAwsRetentionPolicy.class);
-    private static final String SDK_PACKAGE = "software.amazon.awssdk.";
-    private static final int MAX_DEPTH = 8;
+
+    private final BeanContext beanContext;
+    private final Predicate<Class<?>> isApplicationClass;
+    private @Nullable ApplicationListeners listeners;
+
+    /**
+     * @param beanContext The context, whose listeners and dependency graph tell what the clients were made from
+     */
+    @Inject
+    DevelopmentAwsRetentionPolicy(BeanContext beanContext) {
+        this(beanContext, DevelopmentAwsRetentionPolicy::isApplicationClass);
+    }
+
+    /**
+     * @param beanContext The context
+     * @param isApplicationClass Whether a class is of the application, which the restart replaces
+     */
+    DevelopmentAwsRetentionPolicy(BeanContext beanContext, Predicate<Class<?>> isApplicationClass) {
+        this.beanContext = beanContext;
+        this.isApplicationClass = isApplicationClass;
+    }
 
     @Override
     public Decision decide(BeanRegistration<?> registration) {
         Object bean = registration.bean();
-        String applicationClass;
+        String reason;
         if (bean instanceof SdkClient client) {
-            applicationClass = applicationClassOf(client);
+            reason = applicationClassOf(client);
         } else if (bean instanceof SdkHttpClient
             || bean instanceof SdkAsyncHttpClient
             || bean instanceof IdentityProvider<?>
             || bean instanceof AwsRegionProvider
             || bean instanceof UserAgentProvider
             || bean instanceof ExecutionInterceptor) {
-            applicationClass = isApplicationClass(bean.getClass()) ? bean.getClass().getName() : null;
+            reason = isApplicationClass.test(bean.getClass()) ? "it holds the class [" + bean.getClass().getName() + "] of the application" : null;
         } else {
             return Decision.ABSTAIN;
         }
-        if (applicationClass != null) {
-            LOG.debug("The AWS bean [{}] is not retained across the restart: it holds the class [{}] of the application", bean, applicationClass);
+        if (reason == null && (bean instanceof SdkClient || bean instanceof SdkHttpClient || bean instanceof SdkAsyncHttpClient)) {
+            reason = listeners().customizing(registration.getBeanDefinition());
+        }
+        if (reason != null) {
+            LOG.debug("The AWS bean [{}] is not retained across the restart: {}", bean, reason);
             return Decision.REFUSE;
         }
         return Decision.ABSTAIN;
     }
 
+    private synchronized ApplicationListeners listeners() {
+        ApplicationListeners found = listeners;
+        if (found == null) {
+            // read as the context stops, which is when the policy is asked, so that a listener added meanwhile counts
+            found = new ApplicationListeners(beanContext, isApplicationClass);
+            listeners = found;
+        }
+        return found;
+    }
+
     /**
-     * The first class of the application a client holds, among those it tells: its own, its credentials, endpoint and
-     * auth scheme providers, and what its override configuration holds, or what any of those built by the SDK hold.
+     * Why a client is refused, among what it tells it holds: its own class, its credentials and endpoint providers, its
+     * auth schemes, and what its override configuration holds. What the SDK built from what a builder was given, such
+     * as a retry strategy built with a predicate of the application, is not read: only a listener of the application
+     * gives a builder such a thing, and a client made from a builder a listener of the application applies to is
+     * refused whatever it holds.
      */
-    private static @Nullable String applicationClassOf(SdkClient client) {
-        if (isApplicationClass(client.getClass())) {
-            return client.getClass().getName();
+    private @Nullable String applicationClassOf(SdkClient client) {
+        if (isApplicationClass.test(client.getClass())) {
+            return "it is of the class [" + client.getClass().getName() + "] of the application";
         }
         List<@Nullable Object> held = new ArrayList<>();
         try {
@@ -121,71 +154,15 @@ final class DevelopmentAwsRetentionPolicy implements BeanRetentionPolicy {
                 held.add(aws.credentialsProvider());
             }
             held.add(configuration.endpointProvider().orElse(null));
-            held.add(authSchemeProviderOf(configuration));
+            held.addAll(configuration.authSchemes().values());
             held.addAll(overrides(configuration.overrideConfiguration()));
-            Set<Object> visited = Collections.newSetFromMap(new IdentityHashMap<>());
-            for (Object object : held) {
-                String applicationClass = applicationClassIn(object, 0, visited);
-                if (applicationClass != null) {
-                    return applicationClass;
-                }
-            }
-            return null;
         } catch (RuntimeException e) {
             // a client, of the application, that does not tell what it holds
-            return client.getClass().getName();
+            return "it does not tell what it holds";
         }
-    }
-
-    /**
-     * The first class of the application an object is, names or holds. What the SDK builds from what it is given, such
-     * as a retry strategy built with predicates of the application, or the conditions of a retry policy that a client
-     * composes with its own, is of a class of the SDK that holds them; so are the lambdas the SDK makes, which capture
-     * them. The fields of those are read, to a bounded depth, as are the elements of collections, maps and arrays and
-     * the thread factory and rejection handler of an executor. Other objects of the JDK or the libraries are not.
-     */
-    private static @Nullable String applicationClassIn(@Nullable Object object, int depth, Set<Object> visited) {
-        if (object == null || !visited.add(object)) {
-            return null;
-        }
-        if (object instanceof Class<?> type) {
-            return isApplicationClass(type) ? type.getName() : null;
-        }
-        Class<?> type = object.getClass();
-        if (isApplicationClass(type)) {
-            return type.getName();
-        }
-        if (depth >= MAX_DEPTH) {
-            return null;
-        }
-        List<@Nullable Object> held = new ArrayList<>();
-        if (object instanceof Collection<?> collection) {
-            held.addAll(Arrays.asList(collection.toArray()));
-        } else if (object instanceof Map<?, ?> map) {
-            held.addAll(Arrays.asList(map.keySet().toArray()));
-            held.addAll(Arrays.asList(map.values().toArray()));
-        } else if (object instanceof Object[] array) {
-            held.addAll(Arrays.asList(array));
-        } else if (object instanceof ThreadPoolExecutor executor) {
-            held.add(executor.getThreadFactory());
-            held.add(executor.getRejectedExecutionHandler());
-        } else if (type.getName().startsWith(SDK_PACKAGE) || type.isHidden()) {
-            for (Class<?> declaring = type; declaring != null && declaring != Object.class; declaring = declaring.getSuperclass()) {
-                for (Field field : declaring.getDeclaredFields()) {
-                    if (!Modifier.isStatic(field.getModifiers()) && !field.getType().isPrimitive() && field.trySetAccessible()) {
-                        try {
-                            held.add(field.get(object));
-                        } catch (IllegalAccessException e) {
-                            // not readable, as trySetAccessible said otherwise
-                        }
-                    }
-                }
-            }
-        }
-        for (Object value : held) {
-            String applicationClass = applicationClassIn(value, depth + 1, visited);
-            if (applicationClass != null) {
-                return applicationClass;
+        for (Object object : held) {
+            if (object != null && isApplicationClass.test(object.getClass())) {
+                return "it holds the class [" + object.getClass().getName() + "] of the application";
             }
         }
         return null;
@@ -194,7 +171,8 @@ final class DevelopmentAwsRetentionPolicy implements BeanRetentionPolicy {
     /**
      * What the override configuration of a client holds that an application may implement: its execution
      * interceptors, metric publishers, retry strategy, the configurator of its retry strategy, its retry policy, its
-     * scheduled executor, the supplier of its default profile file and its signers.
+     * scheduled executor, with the thread factory and rejection handler of a thread pool, the supplier of its default
+     * profile file and its signers.
      */
     @SuppressWarnings("deprecation")
     private static List<@Nullable Object> overrides(@Nullable ClientOverrideConfiguration configuration) {
@@ -209,25 +187,17 @@ final class DevelopmentAwsRetentionPolicy implements BeanRetentionPolicy {
         // the client wraps the executor it was given, so that closing the client does not shut it down
         configuration.scheduledExecutorService()
             .map(ScheduledExecutorUtils::unwrapUnmanagedScheduledExecutor)
-            .ifPresent(overrides::add);
+            .ifPresent(executor -> {
+                overrides.add(executor);
+                if (executor instanceof ThreadPoolExecutor pool) {
+                    overrides.add(pool.getThreadFactory());
+                    overrides.add(pool.getRejectedExecutionHandler());
+                }
+            });
         configuration.defaultProfileFileSupplier().ifPresent(overrides::add);
         configuration.advancedOption(SdkAdvancedClientOption.SIGNER).ifPresent(overrides::add);
         configuration.advancedOption(SdkAdvancedClientOption.TOKEN_SIGNER).ifPresent(overrides::add);
         return overrides;
-    }
-
-    /**
-     * The auth scheme provider of a client, which each service's configuration declares for its own provider type
-     * rather than {@link SdkServiceClientConfiguration}.
-     */
-    private static @Nullable Object authSchemeProviderOf(SdkServiceClientConfiguration configuration) {
-        try {
-            return configuration.getClass().getMethod("authSchemeProvider").invoke(configuration);
-        } catch (NoSuchMethodException e) {
-            return null;
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Cannot read the auth scheme provider of " + configuration, e);
-        }
     }
 
     /**

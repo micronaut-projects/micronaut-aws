@@ -53,6 +53,23 @@ class SqsClientReloadTest {
         }
         """;
 
+    private static final String BUILDER_LISTENER = """
+        package example;
+
+        import io.micronaut.context.event.BeanCreatedEvent;
+        import io.micronaut.context.event.BeanCreatedEventListener;
+        import jakarta.inject.Singleton;
+        import software.amazon.awssdk.services.sqs.SqsClientBuilder;
+
+        @Singleton
+        public class BuilderListener implements BeanCreatedEventListener<SqsClientBuilder> {
+            @Override
+            public SqsClientBuilder onCreated(BeanCreatedEvent<SqsClientBuilder> event) {
+                return event.getBean().overrideConfiguration(configuration -> configuration.putHeader("x-generation", "%s"));
+            }
+        }
+        """;
+
     private static LocalStackContainer localStack;
 
     @TempDir
@@ -110,6 +127,34 @@ class SqsClientReloadTest {
             client = null;
             released = null;
             httpClient = null;
+
+            ReloadTck.assertRetiredGenerationsCollected(harness);
+        }
+    }
+
+    @Test
+    void aClientWhoseBuilderAListenerOfTheApplicationCustomizesIsMadeAgain() throws Exception {
+        LocalStackContainer localStack = localStack();
+        try (ReloadHarness harness = ReloadHarness.inDirectory(project)) {
+            harness.property("aws.region", localStack.getRegion());
+            harness.property("aws.access-key-id", localStack.getAccessKey());
+            harness.property("aws.secret-key", localStack.getSecretKey());
+            harness.property("aws.services.sqs.endpoint-override", localStack.getEndpoint().toString());
+            harness.source("example.Probe", PROBE.formatted("first"));
+            harness.source("example.BuilderListener", BUILDER_LISTENER.formatted("first"));
+            harness.start();
+            assertTrue(createQueue(harness.context(), "dev-reload-listener-one").startsWith("first "));
+            SqsClient client = harness.context().getBean(SqsClient.class);
+
+            // what the listener gave the builder is not injected: the client is made again, from the builder the next
+            // generation's listener customizes
+            harness.source("example.Probe", PROBE.formatted("second"));
+            harness.source("example.BuilderListener", BUILDER_LISTENER.formatted("second"));
+            harness.reload();
+            assertEquals(2, harness.generation());
+            assertNotSame(client, harness.context().getBean(SqsClient.class), "a client made from a builder a listener of the application customizes is not retained");
+            assertTrue(createQueue(harness.context(), "dev-reload-listener-two").startsWith("second "));
+            client = null;
 
             ReloadTck.assertRetiredGenerationsCollected(harness);
         }

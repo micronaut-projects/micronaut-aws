@@ -3,6 +3,7 @@ package io.micronaut.aws.sdk.v2.dev
 import io.micronaut.aws.sdk.v2.CredentialsAndRegionFactory
 import io.micronaut.aws.sdk.v2.EnvironmentAwsCredentialsProvider
 import io.micronaut.aws.sdk.v2.EnvironmentAwsRegionProvider
+import io.micronaut.aws.sdk.v2.S3ClientBuilderListener
 import io.micronaut.context.ApplicationContext
 import io.micronaut.context.BeanLocator
 import io.micronaut.context.BeanRegistration
@@ -18,12 +19,11 @@ import software.amazon.awssdk.awscore.retry.AwsRetryStrategy
 import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration
 import software.amazon.awssdk.core.interceptor.ExecutionInterceptor
 import software.amazon.awssdk.core.retry.RetryPolicy
-import software.amazon.awssdk.core.retry.backoff.BackoffStrategy
-import software.amazon.awssdk.core.retry.conditions.RetryCondition
 import software.amazon.awssdk.metrics.MetricPublisher
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.regions.providers.AwsRegionProviderChain
 import software.amazon.awssdk.retries.api.RetryStrategy
+import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.sqs.SqsClient
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -34,7 +34,6 @@ import java.lang.reflect.Proxy
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.ThreadFactory
-import java.util.function.Predicate
 
 class DevelopmentCredentialsAndRegionSpec extends Specification {
 
@@ -157,11 +156,29 @@ class DevelopmentCredentialsAndRegionSpec extends Specification {
         kind                 | override
         'metric publisher'   | { ClientOverrideConfiguration.Builder it -> it.addMetricPublisher(applicationClass(MetricPublisher)) }
         'retry strategy'     | { ClientOverrideConfiguration.Builder it -> it.retryStrategy(applicationClass(RetryStrategy)) }
-        'retry condition'    | { ClientOverrideConfiguration.Builder it -> it.retryPolicy(RetryPolicy.builder().retryCondition(applicationClass(RetryCondition)).build()) }
-        'backoff strategy'   | { ClientOverrideConfiguration.Builder it -> it.retryPolicy(RetryPolicy.builder().backoffStrategy(applicationClass(BackoffStrategy)).build()) }
-        'retry predicate'    | { ClientOverrideConfiguration.Builder it -> it.retryStrategy(AwsRetryStrategy.standardRetryStrategy().toBuilder().retryOnException(applicationClass(Predicate)).build()) }
         'thread factory'     | { ClientOverrideConfiguration.Builder it -> it.scheduledExecutorService(new ScheduledThreadPoolExecutor(1, applicationClass(ThreadFactory))) }
         'scheduled executor' | { ClientOverrideConfiguration.Builder it -> it.scheduledExecutorService(applicationClass(ScheduledExecutorService)) }
+    }
+
+    void "the policy refuses a client made from a builder that a listener of the application customizes, whatever the listener gave it"() {
+        given:
+        ApplicationContext context = ApplicationContext.run(
+            (DevelopmentMode.PROPERTY): 'true',
+            'spec.name': 'S3ClientSpec.builders',
+            'aws.region': 'us-east-1',
+            'aws.access-key-id': 'id',
+            'aws.secret-key': 'secret')
+        S3Client client = context.getBean(S3Client)
+        BeanRegistration<S3Client> registration = context.findBeanRegistration(client).orElseThrow()
+
+        expect: 'the listener sets a retry policy of the SDK, which nothing of the client tells to be of the application'
+        new DevelopmentAwsRetentionPolicy(context, { false }).decide(registration) == BeanRetentionPolicy.Decision.ABSTAIN
+
+        and: 'once the listener is a class of the application, the client made from the builder it customized is refused'
+        new DevelopmentAwsRetentionPolicy(context, { it == S3ClientBuilderListener }).decide(registration) == BeanRetentionPolicy.Decision.REFUSE
+
+        cleanup:
+        context.close()
     }
 
     void "the policy abstains on a client whose override configuration holds only what the SDK and the JDK built"() {
