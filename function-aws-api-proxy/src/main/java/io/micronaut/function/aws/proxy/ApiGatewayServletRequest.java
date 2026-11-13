@@ -155,7 +155,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
         }
         try {
             return getBodyBytes().length;
-        } catch (EmptyBodyException e) {
+        } catch (EmptyBodyException _) {
             return 0;
         }
     }
