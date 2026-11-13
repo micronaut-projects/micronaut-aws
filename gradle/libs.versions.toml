@@ -21,7 +21,7 @@ micronaut-validation = "5.2.1"
 
 managed-alexa-ask-sdk = "2.86.0"
 managed-aws-java-sdk-v1 = '1.12.797'
-managed-aws-java-sdk-v2 = "2.57.3"
+managed-aws-java-sdk-v2 = "2.57.11"
 managed-aws-lambda = "1.4.1"
 managed-aws-lambda-events = '3.16.1'
 managed-aws-lambda-java-serialization = '1.4.1'
@@ -32,7 +32,7 @@ javapoet = "1.13.0"
 
 # The following version should probably
 # be defined in Micronaut Graal but it's not shipped with a BOM yet
-graal = "25.4.4.1.1"
+graal = "25.5.5.0.3"
 kotlin = "2.4.21"
 
 # Micronaut
