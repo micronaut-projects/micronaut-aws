@@ -13,6 +13,7 @@ import org.junit.platform.suite.api.*;
     "io.micronaut.http.server.tck.tests.hateoas.JsonErrorTest",
     "io.micronaut.http.server.tck.tests.hateoas.VndErrorTest",
     "io.micronaut.http.server.tck.tests.FilterProxyTest", // Immmutable request
+    "io.micronaut.http.server.tck.tests.filter.FilterMutatedRequestTest", // the mutable request view a filter continues with is not implemented by the servlet request yet. See https://github.com/micronaut-projects/micronaut-servlet/issues/1143
     "io.micronaut.http.server.tck.tests.ErrorHandlerFluxTest", // test fails testErrorHandlerWithFluxChunkedSignaledDelayedError
     "io.micronaut.http.server.tck.tests.forms.FormsJacksonAnnotationsTest", // test fails httpClientFormSubmissionsDoesNotSupportJacksonAnnotations"
     "io.micronaut.http.server.tck.tests.forms.UploadTest",

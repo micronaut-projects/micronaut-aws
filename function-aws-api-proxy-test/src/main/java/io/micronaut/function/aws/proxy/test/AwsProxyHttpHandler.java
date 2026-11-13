@@ -62,12 +62,17 @@ class AwsProxyHttpHandler implements HttpHandler {
         String contentLengthObject = apiGatewayV2HTTPResponse.getHeaders().get(HttpHeaders.CONTENT_LENGTH);
         int contentLength = StringUtils.isNotEmpty(contentLengthObject) ? Integer.parseInt(contentLengthObject) : 0;
         for (String headerName : apiGatewayV2HTTPResponse.getHeaders().keySet()) {
-            if (HttpHeaders.CONTENT_LENGTH.equalsIgnoreCase(headerName)) {
+            if (HttpHeaders.CONTENT_LENGTH.equalsIgnoreCase(headerName) || HttpHeaders.SET_COOKIE.equalsIgnoreCase(headerName)) {
+                // the cookies of a payload format 2.0 response are in its cookies field, one Set-Cookie header each
                 continue;
             }
             String headerValue = apiGatewayV2HTTPResponse.getHeaders().get(headerName);
             List<String> headerValues = List.of(headerValue.split(","));
             httpExchange.getResponseHeaders().put(headerName, StringUtils.isEmpty(headerValue) ? Collections.emptyList() : headerValues);
+        }
+        List<String> cookies = apiGatewayV2HTTPResponse.getCookies();
+        if (cookies != null && !cookies.isEmpty()) {
+            httpExchange.getResponseHeaders().put(HttpHeaders.SET_COOKIE, cookies);
         }
         httpExchange.sendResponseHeaders(apiGatewayV2HTTPResponse.getStatusCode(), contentLength);
         if (StringUtils.isNotEmpty(payload)) {

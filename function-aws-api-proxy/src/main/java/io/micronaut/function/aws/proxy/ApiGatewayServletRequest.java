@@ -39,7 +39,9 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.ServerHttpRequest;
 import io.micronaut.http.body.ByteBody;
 import io.micronaut.http.body.stream.AvailableByteArrayBody;
+import io.micronaut.http.body.stream.BodySizeLimits;
 import io.micronaut.http.cookie.Cookie;
+import io.micronaut.http.exceptions.ContentLengthExceededException;
 import io.micronaut.http.cookie.Cookies;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.servlet.http.ByteArrayByteBuffer;
@@ -63,6 +65,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -93,6 +96,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     private T overriddenBody;
 
     private ByteArrayByteBuffer<T> servletByteBuffer;
+    private long maxBodySize = BodySizeLimits.UNLIMITED.maxBodySize();
 
     protected ApiGatewayServletRequest(
         ConversionService conversionService,
@@ -116,13 +120,58 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     @Override
     public @NonNull ByteBody byteBody() {
         try {
-            return AvailableByteArrayBody.create(ByteArrayBufferFactory.INSTANCE, getBodyBytes());
+            return AvailableByteArrayBody.create(ByteArrayBufferFactory.INSTANCE, getBodyBytesWithinLimit());
         } catch (EmptyBodyException e) {
             return AvailableByteArrayBody.create(ByteArrayBufferFactory.INSTANCE, ArrayUtils.EMPTY_BYTE_ARRAY);
         }
     }
 
     public abstract byte[] getBodyBytes() throws EmptyBodyException;
+
+    /**
+     * Applies {@code micronaut.server.max-request-size} to the body of this request: a body over the limit fails
+     * with {@link ContentLengthExceededException} when it is read, so that the route is still resolved, and the
+     * filters run, before the 413 is produced.
+     *
+     * @param bodySizeLimits The body size limits
+     * @since 5.2.0
+     */
+    @Internal
+    public void setBodySizeLimits(@NonNull BodySizeLimits bodySizeLimits) {
+        this.maxBodySize = bodySizeLimits.maxBodySize();
+    }
+
+    /**
+     * The event carries the whole body, so when the event has no {@code Content-Length} header the length is that
+     * of the body. Without it a body-less framing would be assumed, and the body would not be read.
+     *
+     * @return The content length
+     */
+    @Override
+    public long getContentLength() {
+        OptionalLong declared = getHeaders().contentLength();
+        if (declared.isPresent()) {
+            return declared.getAsLong();
+        }
+        try {
+            return getBodyBytes().length;
+        } catch (EmptyBodyException _) {
+            return 0;
+        }
+    }
+
+    /**
+     * @return The body bytes
+     * @throws EmptyBodyException if the body is empty
+     * @throws ContentLengthExceededException if the body is over {@code micronaut.server.max-request-size}
+     */
+    private byte[] getBodyBytesWithinLimit() throws EmptyBodyException {
+        byte[] bytes = getBodyBytes();
+        if (bytes.length > maxBodySize) {
+            throw new ContentLengthExceededException(maxBodySize, bytes.length);
+        }
+        return bytes;
+    }
 
     /**
      * Given a path and the query params from the event, build a URI.
@@ -157,7 +206,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return servletByteBuffer != null ? servletByteBuffer.toInputStream() : new ByteArrayInputStream(getBodyBytes());
+        return servletByteBuffer != null ? servletByteBuffer.toInputStream() : new ByteArrayInputStream(getBodyBytesWithinLimit());
     }
 
     @Override
@@ -267,7 +316,7 @@ public abstract class ApiGatewayServletRequest<T, REQ, RES> implements MutableSe
     protected MapListOfStringAndMapStringMutableHttpParameters getParametersFromBody(Map<String, String> queryStringParameters) {
         Map<String, List<String>> parameters = null;
         try {
-            parameters = new QueryStringDecoder(new String(getBodyBytes(), getCharacterEncoding()), false).parameters();
+            parameters = new QueryStringDecoder(new String(getBodyBytesWithinLimit(), getCharacterEncoding()), false).parameters();
         } catch (IOException ex) {
             if (log.isDebugEnabled()) {
                 log.debug("Error decoding form data: " + ex.getMessage(), ex);
