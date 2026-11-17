@@ -19,18 +19,22 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.Put;
 import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.multipart.MultipartBody;
+import io.micronaut.http.multipart.CompletedFileUpload;
 import io.micronaut.http.netty.NettyMutableHttpResponse;
+import io.micronaut.http.server.HttpServerConfiguration;
 import io.micronaut.http.simple.cookies.SimpleCookie;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.runtime.server.EmbeddedServer;
 import jakarta.validation.Valid;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -191,6 +195,11 @@ class ApiGatewayV2Test {
             return Map.of("parameter1", parameter1);
         }
 
+        @Put(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA)
+        String avatar(CompletedFileUpload file) throws IOException {
+            return file.getFilename() + ":" + Base64.getEncoder().encodeToString(file.getBytes());
+        }
+
         @Get("/pageableTest")
         Map<String, Object> pageable(@Valid Pageable pageable) {
             // LinkedHashMap so the response body serializes with a deterministic key order
@@ -209,6 +218,127 @@ class ApiGatewayV2Test {
         String eventJson = getEventJson("/test/lambdaApiGateway/sample", "", "null");
         executeTest(eventJson, response ->
             assertEquals("gotSampleLambdaValue-GET", response.getBody()));
+    }
+
+    @Test
+    void multipartFileUpload() throws IOException {
+        final String path = "/test/lambdaApiGateway/avatar";
+        final String png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/aXcAAAAASUVORK5CYII=";
+        final String expected = "avatar.png:" + png;
+
+        // First check a direct upload
+        try (ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).start()) {
+            EmbeddedServer server = ctx.getBean(EmbeddedServer.class).start();
+            try (HttpClient client = HttpClient.create(server.getURL())) {
+                MultipartBody directBody = MultipartBody.builder()
+                    .addPart("file", "avatar.png", MediaType.IMAGE_PNG_TYPE, Base64.getDecoder().decode(png))
+                    .build();
+                HttpResponse<String> response = client.toBlocking().exchange(
+                    HttpRequest.PUT(path, directBody).contentType(MediaType.MULTIPART_FORM_DATA), String.class);
+                assertEquals(HttpStatus.OK, response.getStatus());
+                assertEquals(expected, response.body());
+            }
+        }
+
+        // Now check via the request adapter
+        final String boundary = "----WebKitFormBoundarysK5MDvTM2R15B53J";
+
+        ByteArrayOutputStream body = new ByteArrayOutputStream();
+        body.write(("--" + boundary + "\r\nContent-Disposition: form-data; name=\"file\"; filename=\"avatar.png\"\r\n"
+            + "Content-Type: image/png\r\n\r\n").getBytes(StandardCharsets.US_ASCII));
+        body.write(Base64.getDecoder().decode(png));
+        body.write(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.US_ASCII));
+
+        String eventJson = """
+				{"version":"2.0","rawPath":"%1$s","rawQueryString":"",
+				 "headers":{"content-type":"multipart/form-data; boundary=%2$s"},
+				 "requestContext":{"http":{"method":"PUT","path":"%1$s"}},
+				 "body":"%3$s","isBase64Encoded":true}"""
+            .formatted(path, boundary, Base64.getEncoder().encodeToString(body.toByteArray()));
+        try (
+            ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+            APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)
+        ) {
+            APIGatewayV2HTTPResponse response = handler.handleRequest(readEvent(ctx, eventJson), new MockLambdaContext());
+            assertEquals(HttpStatus.OK.getCode(), response.getStatusCode(), () -> "Lambda response: " + response.getBody());
+            assertEquals(expected, response.getBody());
+        }
+    }
+
+    @Test
+    void multipartWithQuotedBoundaryAndMultipleParts() throws IOException {
+        String path = "/test/lambdaApiGateway/avatar";
+        String boundary = "test-boundary";
+        String content = "before\r\n--test-boundary-not-a-delimiter\r\nafter";
+        String body = "--" + boundary + "\r\nContent-Disposition: form-data; name=\"other\"\r\n\r\nignored\r\n"
+            + "--" + boundary + "\r\nContent-Disposition: form-data; name=\"file\"; filename=\"a;b.png\"\r\n"
+            + "Content-Type: image/png\r\n\r\n" + content + "\r\n--" + boundary + "--\r\n";
+        String eventJson = """
+				{"version":"2.0","rawPath":"%1$s","rawQueryString":"",
+				 "headers":{"content-type":"multipart/form-data; boundary=\\\"%2$s\\\""},
+				 "requestContext":{"http":{"method":"PUT","path":"%1$s"}},
+				 "body":"%3$s","isBase64Encoded":true}"""
+            .formatted(path, boundary, Base64.getEncoder().encodeToString(body.getBytes(StandardCharsets.US_ASCII)));
+        try (ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+             APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)) {
+            APIGatewayV2HTTPResponse response = handler.handleRequest(readEvent(ctx, eventJson), new MockLambdaContext());
+            assertEquals(200, response.getStatusCode(), response.getBody());
+            assertEquals("a;b.png:" + Base64.getEncoder().encodeToString(content.getBytes(StandardCharsets.US_ASCII)), response.getBody());
+        }
+    }
+
+    @Test
+    void multipartRejectsTruncatedBody() throws IOException {
+        String path = "/test/lambdaApiGateway/avatar";
+        String body = "--test-boundary\r\nContent-Disposition: form-data; name=\"file\"; filename=\"a.png\"\r\n\r\ndata";
+        String eventJson = """
+				{"version":"2.0","rawPath":"%1$s","rawQueryString":"",
+				 "headers":{"content-type":"multipart/form-data; boundary=test-boundary"},
+				 "requestContext":{"http":{"method":"PUT","path":"%1$s"}},
+				 "body":"%2$s","isBase64Encoded":true}"""
+            .formatted(path, Base64.getEncoder().encodeToString(body.getBytes(StandardCharsets.US_ASCII)));
+        try (ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+             APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)) {
+            APIGatewayV2HTTPResponse response = handler.handleRequest(readEvent(ctx, eventJson), new MockLambdaContext());
+            assertEquals(400, response.getStatusCode(), response.getBody());
+        }
+    }
+
+    @Test
+    void multipartRejectsMissingAndOversizedFile() throws IOException {
+        String path = "/test/lambdaApiGateway/avatar";
+        String boundary = "test-boundary";
+        try (
+            ApplicationContext ctx = ApplicationContext.builder().properties(testConfig()).build();
+            APIGatewayV2HTTPEventFunction handler = new APIGatewayV2HTTPEventFunction(ctx)
+        ) {
+            record TestFileInfo(String formField, int expectedHttpStatusCode, String content) {}
+
+            int maxFileSizeAsInt = ctx.getProperty("micronaut.server.multipart.max-file-size", Long.class)
+                .orElse(HttpServerConfiguration.MultipartConfiguration.DEFAULT_MAX_FILE_SIZE)
+                .intValue();
+
+            List<TestFileInfo> fileInfos = Arrays.asList(
+                // Unexpected field name
+                new TestFileInfo("other", 400, "hello"),
+                // Large file
+                new TestFileInfo("file", 413, "x".repeat(maxFileSizeAsInt + 1))
+            );
+
+            for (TestFileInfo fileInfo : fileInfos) {
+                String body = "--" + boundary + "\r\nContent-Disposition: form-data; name=\"" + fileInfo.formField()
+                    + "\"; filename=\"avatar.png\"\r\nContent-Type: image/png\r\n\r\n"
+                    + fileInfo.content() + "\r\n--" + boundary + "--\r\n";
+                String eventJson = """
+						{"version":"2.0","rawPath":"%1$s","rawQueryString":"",
+						 "headers":{"content-type":"multipart/form-data; boundary=%2$s"},
+						 "requestContext":{"http":{"method":"PUT","path":"%1$s"}},
+						 "body":"%3$s","isBase64Encoded":true}"""
+                    .formatted(path, boundary, Base64.getEncoder().encodeToString(body.getBytes(StandardCharsets.US_ASCII)));
+                APIGatewayV2HTTPResponse response = handler.handleRequest(readEvent(ctx, eventJson), new MockLambdaContext());
+                assertEquals(fileInfo.expectedHttpStatusCode(), response.getStatusCode(), response.getBody());
+            }
+        }
     }
 
     /**
