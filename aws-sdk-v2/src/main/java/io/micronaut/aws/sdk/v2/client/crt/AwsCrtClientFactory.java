@@ -18,6 +18,7 @@ package io.micronaut.aws.sdk.v2.client.crt;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Prototype;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.Internal;
@@ -84,6 +85,7 @@ class AwsCrtClientFactory {
      */
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain
     public SdkAsyncHttpClient systemPropertySdkAsyncHttpClient(AwsCrtAsyncHttpClient.Builder awsCrtAsyncHttpClientBuilder) {
         return awsCrtAsyncHttpClientBuilder.build();
     }
@@ -109,6 +111,7 @@ class AwsCrtClientFactory {
      */
     @Bean(preDestroy = "close")
     @Singleton
+    @Retain
     public SdkHttpClient systemPropertySdkHttpClient(AwsCrtHttpClient.Builder awsCrtHttpClientBuilder) {
         return awsCrtHttpClientBuilder.build();
     }
