@@ -45,7 +45,7 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
         APIGatewayV2HTTPEvent request,
         APIGatewayV2HTTPResponse response
     ) {
-        return new APIGatewayV2HTTPEventServletRequest<>(
+        var exchange = new APIGatewayV2HTTPEventServletRequest<>(
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(
                 getApplicationContext().getConversionService(),
@@ -54,5 +54,7 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)
         );
+        exchange.setBodySizeLimits(bodySizeLimits());
+        return exchange;
     }
 }
