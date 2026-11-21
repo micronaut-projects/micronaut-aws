@@ -24,12 +24,9 @@ class SecretsManagerSecretsConfigurationSpec extends ApplicationContextSpecifica
 
         then:
         secretConfigurations.size() == 2
-        for (secretConfiguration in secretConfigurations) {
-            if (secretConfiguration.getSecretName() == 'rds_default') {
-                secretConfiguration.getPrefix() == 'datasources.default'
-            } else if (secretConfiguration.getSecretName() == 'rds_backup') {
-                secretConfiguration.getPrefix() == 'datasources.backup'
-            }
-        }
+        secretConfigurations.collectEntries { [it.secretName, it.prefix] } == [
+                rds_default: 'datasources.default',
+                rds_backup : 'datasources.backup'
+        ]
     }
 }
