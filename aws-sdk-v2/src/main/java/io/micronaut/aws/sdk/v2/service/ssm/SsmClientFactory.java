@@ -15,12 +15,14 @@
  */
 package io.micronaut.aws.sdk.v2.service.ssm;
 
+import io.micronaut.aws.AWSConfiguration;
 import io.micronaut.aws.sdk.v2.service.AWSServiceConfiguration;
 import io.micronaut.aws.sdk.v2.service.AwsClientFactory;
 import io.micronaut.aws.ua.UserAgentProvider;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.BootstrapContextCompatible;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Retain;
 import io.micronaut.context.annotation.Requires;
 import org.jspecify.annotations.Nullable;
 import jakarta.inject.Named;
@@ -80,6 +82,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
     @Bean(preDestroy = "close")
     @Singleton
     @BootstrapContextCompatible
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SsmClient syncClient(SsmClientBuilder builder) {
         return super.syncClient(builder);
     }
@@ -97,6 +100,7 @@ public class SsmClientFactory extends AwsClientFactory<SsmClientBuilder, SsmAsyn
     @Singleton
     @Requires(beans = SdkAsyncHttpClient.class)
     @BootstrapContextCompatible
+    @Retain(invalidatedBy = AWSConfiguration.PREFIX)
     public SsmAsyncClient asyncClient(SsmAsyncClientBuilder builder) {
         return super.asyncClient(builder);
     }
