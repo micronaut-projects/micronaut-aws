@@ -176,12 +176,17 @@ class APIGatewayV2HTTPEventFunctionTest {
     void v2ResponseMissesCookieInHeader() throws IOException {
         executeTest("/cookies", response -> {
             assertEquals(Set.of("cookie1=value1", "cookie2=value2"), Set.copyOf(response.getCookies()));
-            List<String> cookies = response.getMultiValueHeaders().get(HttpHeaders.SET_COOKIE);
+            List<String> cookies = response.getCookies();
             assertEquals(2, cookies.size());
             assertTrue(cookies.contains("cookie1=value1"));
             assertTrue(cookies.contains("cookie2=value2"));
+
+            // The API Gateway V2 payload format has no "multiValueHeaders" in the response, and "Set-Cookie" values
+            // belong only in "cookies". https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format
+            assertNull(response.getMultiValueHeaders());
+
             String singleHeader = response.getHeaders().get(HttpHeaders.SET_COOKIE);
-            assertTrue("cookie1=value1".equals(singleHeader) || "cookie2=value2".equals(singleHeader));
+            assertNull(singleHeader);
         });
     }
 
