@@ -20,7 +20,12 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.annotation.Internal;
 import io.micronaut.core.convert.ConversionService;
+import io.micronaut.core.type.Argument;
 import io.micronaut.function.BinaryTypeConfiguration;
+import io.micronaut.http.bind.RequestBinderRegistry;
+import io.micronaut.http.multipart.CompletedFileUpload;
+import io.micronaut.http.server.HttpServerConfiguration;
+import io.micronaut.http.server.binding.RequestArgumentSatisfier;
 import io.micronaut.servlet.http.BodyBuilder;
 import io.micronaut.servlet.http.ServletExchange;
 import io.micronaut.servlet.http.ServletHttpHandler;
@@ -28,6 +33,11 @@ import jakarta.inject.Singleton;
 
 /**
  * Implementation of {@link ServletHttpHandler} for input {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerRequestEvent} and response {@link com.amazonaws.services.lambda.runtime.events.ApplicationLoadBalancerResponseEvent}.
+ * Uses comma separated header values instead of "multiValueHeaders". And puts cookies in "cookies"
+ * instead of as "Set-Cookie" headers.
+ * @see <a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.proxy-format">
+ *     Create AWS Lambda proxy integrations for HTTP APIs in API Gateway
+ *     </a>
  *
  * @author Tim Yates
  * @since 4.0.0
@@ -38,6 +48,18 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
 
     public APIGatewayV2HTTPEventHandler(ApplicationContext applicationContext) {
         super(applicationContext, applicationContext.getBean(ConversionService.class));
+        RequestBinderRegistry registry = applicationContext.getBean(RequestArgumentSatisfier.class).getBinderRegistry();
+        var original = registry.findArgumentBinder(Argument.of(CompletedFileUpload.class)).orElse(null);
+        if (original != null && !(original instanceof LambdaCompletedFileUploadBinder)) {
+            long maxFileSize = applicationContext.getProperty("micronaut.server.multipart.max-file-size", Long.class)
+                .orElse(HttpServerConfiguration.MultipartConfiguration.DEFAULT_MAX_FILE_SIZE)
+                .longValue();
+            try {
+                registry.addArgumentBinder(new LambdaCompletedFileUploadBinder(maxFileSize, original));
+            } catch (UnsupportedOperationException ignored) {
+                // Immutable registries receive the Lambda binder through dependency injection.
+            }
+        }
     }
 
     @Override
@@ -45,6 +67,9 @@ public class APIGatewayV2HTTPEventHandler extends ServletHttpHandler<APIGatewayV
         APIGatewayV2HTTPEvent request,
         APIGatewayV2HTTPResponse response
     ) {
+        // If you see cookies: [...] but no headers.cookie, the V2 Payload was not translated to a standard request
+        //log.info("=== RAW EVENT JSON: " + JsonMapper.createDefault().writeValueAsString(request));
+
         return new APIGatewayV2HTTPEventServletRequest<>(
             request,
             new APIGatewayV2HTTPResponseServletResponse<>(
