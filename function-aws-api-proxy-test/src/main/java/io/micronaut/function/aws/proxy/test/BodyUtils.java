@@ -23,8 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.function.Supplier;
 
 /**
@@ -52,6 +56,8 @@ public final class BodyUtils {
             return Optional.of(body.toString());
         } else if (body instanceof byte[] bytes) {
             return Optional.of(new String(bytes, characterEncodingSupplier.get()));
+        } else if (body instanceof Map<?, ?> map && MediaType.APPLICATION_FORM_URLENCODED_TYPE.equals(mediaType)) {
+            return Optional.of(urlEncode(map, characterEncodingSupplier.get()));
         } else if (mapFromJson) {
             try {
                 return Optional.of(jsonMapper.writeValueAsString(body));
@@ -61,5 +67,16 @@ public final class BodyUtils {
             }
         }
         return Optional.empty();
+    }
+
+    private static String urlEncode(Map<?, ?> form, Charset charset) {
+        StringJoiner joiner = new StringJoiner("&");
+        form.forEach((name, value) -> {
+            Iterable<?> values = value instanceof Iterable<?> iterable ? iterable : Collections.singletonList(value);
+            for (Object v : values) {
+                joiner.add(URLEncoder.encode(String.valueOf(name), charset) + "=" + URLEncoder.encode(String.valueOf(v), charset));
+            }
+        });
+        return joiner.toString();
     }
 }

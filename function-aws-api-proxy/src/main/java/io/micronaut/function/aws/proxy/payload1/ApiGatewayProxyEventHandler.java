@@ -45,7 +45,7 @@ public class ApiGatewayProxyEventHandler extends ServletHttpHandler<APIGatewayPr
         APIGatewayProxyRequestEvent request,
         APIGatewayProxyResponseEvent response
     ) {
-        return new ApiGatewayProxyServletRequest<>(
+        var exchange = new ApiGatewayProxyServletRequest<>(
             request,
             new ApiGatewayProxyServletResponse<>(
                 getApplicationContext().getConversionService(),
@@ -54,5 +54,7 @@ public class ApiGatewayProxyEventHandler extends ServletHttpHandler<APIGatewayPr
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)
         );
+        exchange.setBodySizeLimits(bodySizeLimits());
+        return exchange;
     }
 }

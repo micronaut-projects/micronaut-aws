@@ -40,7 +40,7 @@ public class ApplicationLoadBalancerHandler extends ServletHttpHandler<Applicati
         ApplicationLoadBalancerRequestEvent request,
         ApplicationLoadBalancerResponseEvent response
     ) {
-        return new ApplicationLoadBalancerServletRequest<>(
+        var exchange = new ApplicationLoadBalancerServletRequest<>(
             request,
             new ApplicationLoadBalancerServletResponse<>(
                 getApplicationContext().getConversionService(),
@@ -49,5 +49,7 @@ public class ApplicationLoadBalancerHandler extends ServletHttpHandler<Applicati
             applicationContext.getConversionService(),
             applicationContext.getBean(BodyBuilder.class)
         );
+        exchange.setBodySizeLimits(bodySizeLimits());
+        return exchange;
     }
 }
